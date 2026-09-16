@@ -4,11 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>
-      Deep Dive: Multi-Account Governance &amp; Networking — Prudhvi Raj Anupoju
+      Deep Dive: U.S. Tolling Cloud Infrastructure — Prudhvi Raj Anupoju
     </title>
     <meta
       name="description"
-      content="How I designed a layered, multi-account AWS landing zone with hub-and-spoke networking and zero-accidental-apply CI/CD for a large public-sector platform."
+      content="How I designed a shared AWS foundation for U.S. tolling projects across 40+ accounts, with hub-and-spoke networking, security guardrails, and automated provisioning."
     />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
     <link
@@ -39,18 +39,17 @@
       <header class="hero">
         <div class="wrap">
           <div class="eyebrow">
-            Deep Dive · Public Sector &amp; Transportation Engagement
+            Deep Dive · U.S. Tolling Infrastructure
           </div>
           <h1>
-            Building one governed AWS foundation under 40+ independently-run
-            accounts
+            Building a shared AWS foundation for U.S. tolling platforms
           </h1>
           <p class="sub">
-            A regional government transportation authority runs toll collection
-            and roadside infrastructure across multiple agencies, each with its
-            own compliance requirements and, historically, its own ad-hoc AWS
-            setup. This is how I replaced that with a single layered landing
-            zone.
+            Multiple U.S. tolling projects relied on independently built AWS
+            environments to support toll collection and roadside infrastructure.
+            Each had its own operational and compliance requirements. I designed
+            a shared, layered landing zone across 40+ accounts to standardize
+            networking, security, and provisioning.
           </p>
           <div class="meta">
             <div>
@@ -71,13 +70,13 @@
           <div class="section-eyebrow">The problem</div>
           <h2>Every account was its own island</h2>
           <p>
-            Before this engagement, each participating agency's AWS environment
+            Before this work, each tolling project's AWS environment
             had been built independently — its own network design, its own
             security posture, its own way of provisioning a new environment.
             That meant no consistent audit trail across the platform, security
             tooling rolled out unevenly, and a new environment taking weeks of
-            manual configuration to stand up. For an organization operating
-            public infrastructure, that inconsistency is itself a risk.
+            manual configuration to stand up. For teams operating tolling
+            infrastructure, that inconsistency is itself a risk.
           </p>
           <p>
             The brief was to design a single governance model that every account
