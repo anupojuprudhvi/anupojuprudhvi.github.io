@@ -10,7 +10,6 @@
   --accent-bright: #81e4c1;
   --accent-soft: #19392f;
   --charcoal: #0a151c;
-  --charcoal-2: #112630;
   --maxw: 1160px;
 }
 :root[data-theme="light"] {
@@ -25,7 +24,6 @@
   --accent-bright: #81e4c1;
   --accent-soft: #e1f3ea;
   --charcoal: #0a151c;
-  --charcoal-2: #112630;
 }
 * {
   box-sizing: border-box;
