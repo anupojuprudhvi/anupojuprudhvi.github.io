@@ -119,7 +119,7 @@ if a use case was edited without running `npm run build`.
 - `content/usecases/`: use-case source. **Start here.**
 - `content/extra-index.json`: hand-written pages to include in the library.
 - `index.html`: introduction, selected work, expertise, career, credentials, contact.
-- `usecases/governance/…`, `usecases/telecom/…`, `usecases/healthcare/…`: engagement narratives.
+- `usecases/tolling/index.html`, `usecases/telecom/…`, `usecases/healthcare/…`: engagement narratives.
 - `scripts/build.mjs`: the generator.
 - `assets/site.css`, `assets/deepdive.css`, `assets/library.css`, `assets/assistant.css`: themes, layout, components.
 - `assets/theme.js`, `assets/site.js`, `assets/library.js`, `assets/assistant.js`: theme persistence, homepage interactions, library filtering, search panel.
