@@ -148,6 +148,141 @@
         </div>
       </section>
 
+      <section>
+        <div class="wrap">
+          <div class="section-eyebrow">Platform surface</div>
+          <h2>Every AWS service this platform runs on</h2>
+          <p>
+            The three use cases above are the parts written up in detail. This
+            is the whole surface — everything the four-layer landing zone
+            provisions and everything the workloads on top of it depend on.
+          </p>
+
+          <div class="layers">
+            <div class="layer">
+              <div class="lhead">
+                <span class="lnum">01</span>
+                <h3>Governance &amp; identity</h3>
+              </div>
+              <div class="chips">
+                <span class="chip">AWS Organizations</span
+                ><span class="chip">Service Control Policies</span
+                ><span class="chip">IAM</span
+                ><span class="chip">IAM OIDC federation</span
+                ><span class="chip">IAM SAML federation</span>
+              </div>
+            </div>
+
+            <div class="layer">
+              <div class="lhead">
+                <span class="lnum">02</span>
+                <h3>Security &amp; compliance</h3>
+              </div>
+              <div class="chips">
+                <span class="chip">CloudTrail</span
+                ><span class="chip">AWS Config</span
+                ><span class="chip">GuardDuty</span
+                ><span class="chip">Security Hub</span
+                ><span class="chip">KMS</span
+                ><span class="chip">AWS WAF</span
+                ><span class="chip">Secrets Manager</span
+                ><span class="chip">Certificate Manager</span>
+              </div>
+            </div>
+
+            <div class="layer">
+              <div class="lhead">
+                <span class="lnum">03</span>
+                <h3>Networking &amp; content delivery</h3>
+              </div>
+              <div class="chips">
+                <span class="chip">Amazon VPC</span
+                ><span class="chip">Transit Gateway</span
+                ><span class="chip">Site-to-Site VPN</span
+                ><span class="chip">VPC interface &amp; gateway endpoints</span
+                ><span class="chip">Route 53 public &amp; private zones</span
+                ><span class="chip">Route 53 Resolver</span
+                ><span class="chip">CloudFront</span
+                ><span class="chip">Application Load Balancer</span
+                ><span class="chip">Network Load Balancer</span
+                ><span class="chip">NAT Gateway</span
+                ><span class="chip">VPC Flow Logs</span>
+              </div>
+            </div>
+
+            <div class="layer">
+              <div class="lhead">
+                <span class="lnum">04</span>
+                <h3>Compute &amp; containers</h3>
+              </div>
+              <div class="chips">
+                <span class="chip">Amazon EC2</span
+                ><span class="chip">Amazon EKS on Graviton</span
+                ><span class="chip">Amazon ECS</span
+                ><span class="chip">AWS Lambda</span
+                ><span class="chip">EC2 Auto Scaling</span
+                ><span class="chip">Amazon ECR</span
+                ><span class="chip">EC2 Instance Connect</span>
+              </div>
+            </div>
+
+            <div class="layer">
+              <div class="lhead">
+                <span class="lnum">05</span>
+                <h3>Data &amp; storage</h3>
+              </div>
+              <div class="chips">
+                <span class="chip">Amazon S3</span
+                ><span class="chip">Amazon EFS</span
+                ><span class="chip">Aurora PostgreSQL &amp; MySQL, global</span
+                ><span class="chip">Amazon RDS</span
+                ><span class="chip">ElastiCache for Redis</span
+                ><span class="chip">AWS DataSync</span
+                ><span class="chip">AWS Backup</span>
+              </div>
+            </div>
+
+            <div class="layer">
+              <div class="lhead">
+                <span class="lnum">06</span>
+                <h3>Integration &amp; messaging</h3>
+              </div>
+              <div class="chips">
+                <span class="chip">API Gateway REST &amp; HTTP APIs</span
+                ><span class="chip">API Gateway VPC Link</span
+                ><span class="chip">Amazon SNS</span
+                ><span class="chip">Amazon SQS</span
+                ><span class="chip">Amazon MQ</span
+                ><span class="chip">AWS Transfer Family (SFTP)</span
+                ><span class="chip">Amazon SES</span
+                ><span class="chip">Amazon Connect</span>
+              </div>
+            </div>
+
+            <div class="layer">
+              <div class="lhead">
+                <span class="lnum">07</span>
+                <h3>Operations &amp; analytics</h3>
+              </div>
+              <div class="chips">
+                <span class="chip">Amazon CloudWatch</span
+                ><span class="chip">AWS Systems Manager</span
+                ><span class="chip">Amazon QuickSight</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout">
+            <b>Breadth isn't the point on its own.</b> Each of these exists
+            because a layer beneath it needed something specific, and each was
+            provisioned through the same modular Terraform structure rather than
+            added by hand. Endpoint protection and vulnerability scanning were
+            rolled out across the fleet through Systems Manager on that same
+            pattern.
+          </div>
+        </div>
+      </section>
+
       <aside class="next-study wrap">
         <a href="../index.html">← All use cases</a
         ><a
