@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Portfolio social preview</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        width: 1200px;
+        height: 630px;
+        background: #0b1218;
+        color: #eef5f6;
+        font-family: system-ui, sans-serif;
+        padding: 62px 70px;
+        position: relative;
+      }
+      .brand {
+        font-size: 20px;
+        letter-spacing: -0.5px;
+      }
+      .mark {
+        display: inline-grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        border: 1px solid #81e4c1;
+        margin-right: 14px;
+        color: #81e4c1;
+        font-size: 15px;
+      }
+      h1 {
+        font-size: 76px;
+        line-height: 1.08;
+        letter-spacing: -4px;
+        font-weight: 600;
+        margin: 56px 0 28px;
+      }
+      h1 span {
+        color: #81e4c1;
+      }
+      p {
+        color: #aabfca;
+        font-size: 20px;
+        margin: 0;
+      }
+      .footer {
+        position: absolute;
+        bottom: 45px;
+        left: 70px;
+        right: 70px;
+        border-top: 1px solid #2a3b46;
+        padding-top: 22px;
+        display: flex;
+        justify-content: space-between;
+        color: #92a7b4;
+        font-size: 14px;
+      }
+      .diagram {
+        position: absolute;
+        right: 70px;
+        top: 160px;
+        width: 330px;
+        height: 310px;
+        border: 1px solid #2a3b46;
+        background:
+          linear-gradient(#2a3b4660 1px, transparent 1px),
+          linear-gradient(90deg, #2a3b4660 1px, transparent 1px);
+        background-size: 30px 30px;
+        display: grid;
+        place-content: center;
+        text-align: center;
+      }
+      .core {
+        background: #0b1218;
+        border: 1px solid #81e4c1;
+        color: #81e4c1;
+        padding: 25px;
+        font-size: 19px;
+      }
+      .stem {
+        height: 35px;
+        width: 1px;
+        background: #81e4c1;
+        margin: auto;
+      }
+      .nodes {
+        display: flex;
+        gap: 8px;
+      }
+      .nodes span {
+        background: #111d26;
+        border: 1px solid #2a3b46;
+        padding: 15px 12px;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="brand"><span class="mark">PA</span>Prudhvi Raj Anupoju</div>
+    <h1>Infrastructure<br />you can<br /><span>build on.</span></h1>
+    <p>Cloud platform architect · Enterprise delivery</p>
+    <div class="diagram">
+      <div class="core">A governed foundation</div>
+      <div class="stem"></div>
+      <div class="nodes">
+        <span>Reliability</span><span>Governance</span
+        ><span>Cost discipline</span>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Telecom / Public transportation / Healthcare</span
+      ><span>anupojuprudhvi.github.io</span>
+    </div>
+  </body>
+</html>

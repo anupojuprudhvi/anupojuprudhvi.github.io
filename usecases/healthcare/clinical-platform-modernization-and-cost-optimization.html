@@ -1,351 +1,531 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Deep Dive: Clinical Platform Modernization &amp; Cost Architecture — Prudhvi Raj Anupoju</title>
-<meta name="description" content="How I decomposed an on-premise clinical monolith into containerized microservices, cut database read load with a caching layer, and applied cost-aware compute design across several engagements." />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23262B34'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='28' font-weight='600' fill='%23C9A96A' text-anchor='middle'%3EPA%3C/text%3E%3C/svg%3E" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-<style>
-  :root{
-    --ink:#23262B; --body:#4A5058; --muted:#767E8A; --line:#E7E8EC; --card:#F7F7F8;
-    --charcoal:#262B34; --charcoal-2:#2F3541;
-    --accent:#9A6B2F; --accent-bright:#C9A96A; --accent-soft:#F4EDE2;
-    --white:#FFFFFF; --maxw:880px;
-  }
-  :root[data-theme="dark"]{
-    --ink:#EDEFF3; --body:#C7CCD6; --muted:#8B93A3; --line:#3A4150; --card:#2B303B;
-    --charcoal:#15181D; --charcoal-2:#1B1F27;
-    --accent:#C9A96A; --accent-bright:#E4C88A; --accent-soft:#33301F;
-    --white:#1B1E24;
-  }
-  *{box-sizing:border-box;}
-  body{ margin:0; background:var(--white); color:var(--body); font-family:'Inter',system-ui,-apple-system,sans-serif; font-size:16px; line-height:1.65; -webkit-font-smoothing:antialiased; }
-  h1,h2,h3{ font-family:'Source Serif 4', Georgia, serif; color:var(--ink); margin:0 0 14px; line-height:1.2; }
-  a{color:inherit;}
-  code, .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; font-size:0.92em; }
-  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      Deep Dive: Clinical Platform Modernization &amp; Cost Architecture —
+      Prudhvi Raj Anupoju
+    </title>
+    <meta
+      name="description"
+      content="How I decomposed an on-premise clinical monolith into containerized microservices, cut database read load with a caching layer, and applied cost-aware compute design across several engagements."
+    />
+    <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <link
+      rel="canonical"
+      href="https://anupojuprudhvi.github.io/usecases/healthcare/clinical-platform-modernization-and-cost-optimization.html"
+    />
+    <script src="../../assets/theme.js"></script>
+    <link rel="stylesheet" href="../../assets/site.css" />
+    <link rel="stylesheet" href="../../assets/deepdive.css" />
+  </head>
+  <body class="deepdive">
+    <a class="skip-link" href="#main">Skip to content</a>
 
-  .topbar{ position:sticky; top:0; z-index:20; background:color-mix(in srgb, var(--white) 90%, transparent); backdrop-filter:saturate(180%) blur(10px); border-bottom:1px solid var(--line); }
-  .topbar .wrap{ display:flex; align-items:center; justify-content:space-between; height:56px; max-width:1040px; }
-  .back{ font-size:13.5px; font-weight:500; color:var(--muted); text-decoration:none; display:flex; align-items:center; gap:6px; }
-  .back:hover{ color:var(--accent); }
-  #themeToggle{ border:1px solid var(--line); background:transparent; color:var(--muted); width:32px; height:32px; border-radius:8px; cursor:pointer; font-size:15px; }
-  #themeToggle:hover{ border-color:var(--accent); color:var(--accent); }
-
-  header.hero{ background:linear-gradient(180deg, var(--charcoal) 0%, var(--charcoal-2) 100%); color:#fff; padding:56px 0 48px; }
-  .eyebrow{ font-size:12.5px; font-weight:700; letter-spacing:.13em; color:var(--accent-bright); text-transform:uppercase; margin-bottom:14px; }
-  .hero h1{ color:#fff; font-size:clamp(26px,4.4vw,38px); max-width:760px; }
-  .hero p.sub{ color:#B9C0CC; max-width:640px; font-size:15.5px; margin-top:14px; }
-  .hero .meta{ margin-top:26px; display:flex; gap:28px; flex-wrap:wrap; font-size:13px; color:#9FA8B8; }
-  .hero .meta b{ color:#EDEFF3; font-weight:600; }
-
-  section{ padding:52px 0; border-bottom:1px solid var(--line); }
-  section:last-of-type{ border-bottom:none; }
-  .section-eyebrow{ color:var(--accent); font-size:12.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; }
-  p{ margin:0 0 14px; }
-  ul{ margin:0 0 14px; padding-left:20px; }
-  li{ margin-bottom:8px; }
-
-  .callout{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 20px; font-size:14.5px; color:var(--body); margin:20px 0; }
-  .callout b{ color:var(--ink); }
-
-  /* Layered architecture diagram (reused pattern) */
-  .layers{ display:flex; flex-direction:column; gap:10px; margin:24px 0; }
-  .layer{ border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:var(--card); }
-  .layer .lhead{ display:flex; align-items:baseline; gap:10px; margin-bottom:10px; }
-  .layer .lnum{ font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--accent); border:1px solid var(--accent); border-radius:6px; padding:1px 7px; }
-  .layer h3{ font-size:15.5px; margin:0; }
-  .chips{ display:flex; flex-wrap:wrap; gap:8px; }
-  .chip{ font-size:12.5px; background:var(--white); border:1px solid var(--line); border-radius:999px; padding:5px 12px; color:var(--body); }
-  .layer-arrow{ text-align:center; color:var(--muted); font-size:13px; margin:-2px 0; }
-
-  /* Flow / hub diagram primitives (reused pattern) */
-  .hubwrap{ margin:28px 0; }
-  .hub-svg{ width:100%; height:auto; }
-  .hub-node rect{ fill:var(--card); stroke:var(--line); stroke-width:1.5; transition:stroke .2s ease, fill .2s ease; }
-  .hub-node.center rect{ fill:var(--charcoal); stroke:var(--accent); }
-  .hub-node text{ font-family:'Inter',sans-serif; font-size:11.5px; fill:var(--ink); transition:fill .2s ease; }
-  .hub-node.center text{ fill:#fff; }
-  .hub-node.active rect{ stroke:var(--accent); stroke-width:2.5; fill:var(--accent-soft); }
-  .hub-node.active text{ fill:var(--ink); }
-  .hub-line{ stroke:var(--line); stroke-width:1.5; fill:none; transition:stroke .2s ease, stroke-width .2s ease; }
-  .hub-line.active{ stroke:var(--accent); stroke-width:2.5; }
-  .hub-pulse{ fill:var(--accent-bright); opacity:0; }
-  .hub-caption{ text-align:center; font-size:12.5px; color:var(--muted); margin-top:8px; min-height:32px; }
-  .diagram-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; flex-wrap:wrap; gap:12px; }
-  #cachePlayBtn{ font-family:'Inter',sans-serif; font-size:12.5px; font-weight:600; padding:8px 16px; border-radius:8px; border:1px solid var(--accent); background:transparent; color:var(--accent); cursor:pointer; }
-  #cachePlayBtn:hover{ background:var(--accent); color:#fff; }
-  #cachePlayBtn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
-
-  /* Guardrail / comparison table (reused pattern) */
-  .gtable{ width:100%; border-collapse:collapse; margin:20px 0; font-size:13.5px; }
-  .gtable th{ text-align:left; font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); padding:8px 12px; border-bottom:1px solid var(--line); }
-  .gtable td{ padding:12px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
-  .gtable tr:last-child td{ border-bottom:none; }
-  .gtable .gnum{ font-family:'JetBrains Mono',monospace; color:var(--accent); font-weight:600; }
-
-  /* Sequence steps */
-  .seq{ counter-reset:step; margin:20px 0; }
-  .seq-item{ position:relative; padding:0 0 22px 34px; border-left:2px solid var(--line); }
-  .seq-item:last-child{ border-left-color:transparent; padding-bottom:0; }
-  .seq-item::before{ counter-increment:step; content:counter(step); position:absolute; left:-13px; top:0; width:24px; height:24px; border-radius:50%; background:var(--charcoal); color:var(--accent-bright); font-family:'JetBrains Mono',monospace; font-size:11.5px; display:flex; align-items:center; justify-content:center; }
-  .seq-item h3{ font-size:14.5px; margin-bottom:4px; }
-  .seq-item p{ font-size:14px; margin-bottom:0; color:var(--muted); }
-
-  .outcomes{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:22px 0; }
-  .outcome{ border:1px solid var(--line); border-radius:12px; padding:18px; background:var(--card); }
-  .outcome .num{ font-family:'Source Serif 4',serif; font-size:24px; font-weight:700; color:var(--accent); }
-  .outcome .txt{ font-size:13px; color:var(--muted); margin-top:4px; }
-
-  .closing{ background:var(--charcoal); color:#fff; padding:56px 0; text-align:center; }
-  .closing h2{ color:#fff; font-size:clamp(20px,3vw,26px); max-width:600px; margin:0 auto 14px; }
-  .closing p{ color:#B9C0CC; max-width:520px; margin:0 auto 22px; }
-  .closing a.cta{ display:inline-block; background:var(--accent-bright); color:#1B1E24; font-weight:600; font-size:14px; padding:11px 22px; border-radius:8px; text-decoration:none; }
-  footer{ padding:24px 0; text-align:center; font-size:12px; color:var(--muted); }
-
-  @media (max-width:640px){
-    .outcomes{ grid-template-columns:1fr; }
-  }
-  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
-</style>
-</head>
-<body>
-
-<div class="topbar">
-  <div class="wrap">
-    <a class="back" href="../../Prudhvi_Raj_Professional_Overview.html">← Back to overview</a>
-    <button id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme">◐</button>
-  </div>
-</div>
-
-<header class="hero">
-  <div class="wrap">
-    <div class="eyebrow">Deep Dive · Healthcare &amp; Cost Architecture Engagement</div>
-    <h1>Modernizing legacy clinical systems and cutting structural cost</h1>
-    <p class="sub">An on-premise clinical platform — collecting and routing patient biometric data from connected medical devices to care teams — had hit the scaling and reliability limits of running as a single monolith on fixed hardware. This is how I decomposed it into managed, containerized services and brought the same cost discipline to several other engagements alongside it.</p>
-    <div class="meta">
-      <div><b>My role</b><br>Application modernization &amp; cost-aware infrastructure design</div>
-      <div><b>Scope</b><br>Clinical monolith decomposition + cross-engagement cost work</div>
-      <div><b>Stack</b><br>Kubernetes (EKS) · RDS · ElastiCache · CloudFront · Client VPN</div>
+    <div class="topbar">
+      <div class="wrap">
+        <a class="back" href="../../index.html#work">← Back to overview</a>
+        <button
+          id="themeToggle"
+          aria-label="Toggle dark mode"
+          title="Toggle theme"
+        >
+          ◐
+        </button>
+      </div>
     </div>
-  </div>
-</header>
 
-<section>
-  <div class="wrap">
-    <div class="section-eyebrow">The problem</div>
-    <h2>A monolith that couldn't scale with the data it was collecting</h2>
-    <p>The platform ingests a continuous stream of biometric telemetry — vitals like blood pressure, pulse, glucose, and oxygen saturation — from thousands of connected patient devices, and routes it to clinical teams for real-time monitoring and historical trend review. It had been built and run as a single on-premise application, and that design was showing its limits in three specific ways:</p>
-    <ul>
-      <li><b>Fixed hardware couldn't absorb device growth.</b> Every new batch of connected devices meant provisioning more physical capacity ahead of time, whether or not it was needed yet.</li>
-      <li><b>Reporting queries competed with live ingestion.</b> Clinical dashboards querying historical vitals ran against the same database handling real-time device writes, so heavy report load could visibly slow down live data ingestion.</li>
-      <li><b>Deployment and disaster recovery were manual.</b> Shipping a change or recovering from a failure both depended on a person following a runbook by hand, which put a ceiling on how fast either could happen.</li>
-    </ul>
-  </div>
-</section>
+    <main id="main">
+      <header class="hero">
+        <div class="wrap">
+          <div class="eyebrow">
+            Deep Dive · Healthcare &amp; Cost Architecture Engagement
+          </div>
+          <h1>
+            Modernizing legacy clinical systems and cutting structural cost
+          </h1>
+          <p class="sub">
+            An on-premise clinical platform — collecting and routing patient
+            biometric data from connected medical devices to care teams — had
+            hit the scaling and reliability limits of running as a single
+            monolith on fixed hardware. This is how I decomposed it into
+            managed, containerized services and brought the same cost discipline
+            to several other engagements alongside it.
+          </p>
+          <div class="meta">
+            <div>
+              <b>My role</b><br />Application modernization &amp; cost-aware
+              infrastructure design
+            </div>
+            <div>
+              <b>Scope</b><br />Clinical monolith decomposition +
+              cross-engagement cost work
+            </div>
+            <div>
+              <b>Stack</b><br />Kubernetes (EKS) · RDS · ElastiCache ·
+              CloudFront · Client VPN
+            </div>
+          </div>
+        </div>
+      </header>
 
-<section>
-  <div class="wrap">
-    <div class="section-eyebrow">Architecture</div>
-    <h2>Decomposing the monolith into managed, independently-scaled services</h2>
-    <p>I re-architected the application as a set of containerized microservices running on managed Kubernetes, with a deliberate split between the two things clinical software actually does: handling live device and portal traffic, and running analytics on the history of that data.</p>
+      <section>
+        <div class="wrap">
+          <div class="section-eyebrow">The problem</div>
+          <h2>
+            A monolith that couldn't scale with the data it was collecting
+          </h2>
+          <p>
+            The platform ingests a continuous stream of biometric telemetry —
+            vitals like blood pressure, pulse, glucose, and oxygen saturation —
+            from thousands of connected patient devices, and routes it to
+            clinical teams for real-time monitoring and historical trend review.
+            It had been built and run as a single on-premise application, and
+            that design was showing its limits in three specific ways:
+          </p>
+          <ul>
+            <li>
+              <b>Fixed hardware couldn't absorb device growth.</b> Every new
+              batch of connected devices meant provisioning more physical
+              capacity ahead of time, whether or not it was needed yet.
+            </li>
+            <li>
+              <b>Reporting queries competed with live ingestion.</b> Clinical
+              dashboards querying historical vitals ran against the same
+              database handling real-time device writes, so heavy report load
+              could visibly slow down live data ingestion.
+            </li>
+            <li>
+              <b>Deployment and disaster recovery were manual.</b> Shipping a
+              change or recovering from a failure both depended on a person
+              following a runbook by hand, which put a ceiling on how fast
+              either could happen.
+            </li>
+          </ul>
+        </div>
+      </section>
 
-    <div class="layers">
-      <div class="layer">
-        <div class="lhead"><span class="lnum">A</span><h3>Ingress &amp; application tier</h3></div>
-        <div class="chips">
-          <span class="chip">Managed Kubernetes, multi-AZ</span>
-          <span class="chip">Shared load balancer across services</span>
-          <span class="chip">HL7-based device integration gateway</span>
-          <span class="chip">In-memory caching layer</span>
+      <section>
+        <div class="wrap">
+          <div class="section-eyebrow">Architecture</div>
+          <h2>
+            Decomposing the monolith into managed, independently-scaled services
+          </h2>
+          <p>
+            I re-architected the application as a set of containerized
+            microservices running on managed Kubernetes, with a deliberate split
+            between the two things clinical software actually does: handling
+            live device and portal traffic, and running analytics on the history
+            of that data.
+          </p>
+
+          <div class="layers">
+            <div class="layer">
+              <div class="lhead">
+                <span class="lnum">A</span>
+                <h3>Ingress &amp; application tier</h3>
+              </div>
+              <div class="chips">
+                <span class="chip">Managed Kubernetes, multi-AZ</span>
+                <span class="chip">Shared load balancer across services</span>
+                <span class="chip">HL7-based device integration gateway</span>
+                <span class="chip">In-memory caching layer</span>
+              </div>
+            </div>
+            <div class="layer-arrow">↓ streams to</div>
+            <div class="layer">
+              <div class="lhead">
+                <span class="lnum">B</span>
+                <h3>Analytics &amp; reporting tier</h3>
+              </div>
+              <div class="chips">
+                <span class="chip">Streaming ingestion &amp; enrichment</span>
+                <span class="chip">Real-time OLAP datastore</span>
+                <span class="chip"
+                  >Clinical dashboards, decoupled from OLTP</span
+                >
+              </div>
+            </div>
+            <div class="layer-arrow">↑ both sit behind</div>
+            <div class="layer">
+              <div class="lhead">
+                <span class="lnum">C</span>
+                <h3>Network &amp; access control</h3>
+              </div>
+              <div class="chips">
+                <span class="chip">Zero public ingress to data or compute</span>
+                <span class="chip">CDN in front of patient-facing apps</span>
+                <span class="chip">Mutual-TLS VPN for engineering access</span>
+              </div>
+            </div>
+          </div>
+
+          <p>
+            Multiple independent application APIs share one load balancer
+            instead of provisioning one per service — a small decision that has
+            a real cost effect once you're running more than a handful of
+            services, covered in the outcome below.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <div class="wrap">
+          <div class="section-eyebrow">Reducing database load</div>
+          <h2>Taking reporting traffic off the live database entirely</h2>
+          <p>
+            Rather than scaling the operational database up to absorb both live
+            writes and heavy analytical reads, I decoupled the two: vitals
+            stream out of the application tier into a purpose-built real-time
+            analytics pipeline, and clinical dashboards query that pipeline
+            instead of the production database.
+          </p>
+
+          <div class="hubwrap">
+            <div class="diagram-top">
+              <h3 style="font-size: 15.5px">
+                How a vitals reading reaches a clinician's dashboard
+              </h3>
+              <button id="cachePlayBtn">▶ Show the read path</button>
+            </div>
+            <div
+              class="diagram-scroll"
+              role="region"
+              aria-label="Architecture diagram"
+              tabindex="0"
+            >
+              <svg
+                role="img"
+                aria-label="Architecture flow diagram; the following walkthrough explains the sequence"
+                class="hub-svg"
+                viewBox="0 0 720 190"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path class="hub-line" id="cl-0" d="M100,95 L215,95" />
+                <path class="hub-line" id="cl-1" d="M255,95 L370,95" />
+                <path class="hub-line" id="cl-2" d="M410,95 L525,95" />
+                <path
+                  class="hub-line"
+                  id="cl-3"
+                  d="M255,65 L255,30 L565,30 L565,65"
+                  stroke-dasharray="4,3"
+                />
+                <circle
+                  class="hub-pulse"
+                  id="cachePulse"
+                  r="6"
+                  cx="100"
+                  cy="95"
+                />
+
+                <g class="hub-node" id="cn-0">
+                  <rect x="20" y="65" width="160" height="60" rx="10" />
+                  <text x="100" y="86" text-anchor="middle" font-weight="600">
+                    Device reading
+                  </text>
+                  <text x="100" y="102" text-anchor="middle" opacity=".7">
+                    via integration gateway
+                  </text>
+                </g>
+                <g class="hub-node center" id="cn-1">
+                  <rect x="175" y="65" width="160" height="60" rx="10" />
+                  <text x="255" y="86" text-anchor="middle" font-weight="600">
+                    Application tier
+                  </text>
+                  <text x="255" y="102" text-anchor="middle" opacity=".75">
+                    writes vitals
+                  </text>
+                </g>
+                <g class="hub-node" id="cn-2">
+                  <rect x="330" y="65" width="160" height="60" rx="10" />
+                  <text x="410" y="86" text-anchor="middle" font-weight="600">
+                    Operational DB
+                  </text>
+                  <text x="410" y="102" text-anchor="middle" opacity=".7">
+                    source of truth
+                  </text>
+                </g>
+                <g class="hub-node" id="cn-3">
+                  <rect x="485" y="65" width="160" height="60" rx="10" />
+                  <text x="565" y="86" text-anchor="middle" font-weight="600">
+                    Streaming pipeline
+                  </text>
+                  <text x="565" y="102" text-anchor="middle" opacity=".7">
+                    enrichment &amp; OLAP
+                  </text>
+                </g>
+              </svg>
+            </div>
+            <div class="hub-caption" id="cacheCaption" aria-live="polite">
+              Click <b>Show the read path</b> to see how a live vitals reading
+              reaches a dashboard without ever putting reporting load on the
+              operational database.
+            </div>
+          </div>
+
+          <div class="callout">
+            <b>The caching layer's role:</b> session state and frequently-read
+            reference data sit in an in-memory cache in front of the operational
+            database, so routine application reads don't round-trip to disk at
+            all. Combined with moving analytical reads onto the streaming
+            pipeline, direct database read load dropped by roughly half.
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="wrap">
+          <div class="section-eyebrow">Cost-aware compute</div>
+          <h2>Applying the same discipline across several engagements</h2>
+          <p>
+            This pattern — right-sizing compute instead of running static,
+            always-on fleets — wasn't unique to one platform. Across several
+            client engagements during the same period, I applied a consistent
+            set of cost levers:
+          </p>
+          <div
+            class="table-scroll"
+            role="region"
+            aria-label="Technical comparison"
+            tabindex="0"
+          >
+            <table class="gtable">
+              <tr>
+                <th>Lever</th>
+                <th>What it replaced</th>
+              </tr>
+              <tr>
+                <td class="gnum">1</td>
+                <td>
+                  Dynamic, right-sized compute in place of
+                  statically-provisioned server fleets sized for peak load
+                  year-round.
+                </td>
+              </tr>
+              <tr>
+                <td class="gnum">2</td>
+                <td>
+                  Shared load balancers across grouped services instead of one
+                  dedicated load balancer per microservice.
+                </td>
+              </tr>
+              <tr>
+                <td class="gnum">3</td>
+                <td>
+                  Graviton-compatible node pools where workloads allowed it,
+                  alongside legacy-compatible nodes for what couldn't move yet.
+                </td>
+              </tr>
+              <tr>
+                <td class="gnum">4</td>
+                <td>
+                  Automated deployment and disaster-recovery pipelines in place
+                  of manual, runbook-driven processes.
+                </td>
+              </tr>
+            </table>
+          </div>
+          <p>
+            None of these are exotic individually — the value was in applying
+            all of them consistently, with actual financial modeling behind each
+            recommendation rather than a generic "move to cloud-native" pitch.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <div class="wrap">
+          <div class="section-eyebrow">Outcome</div>
+          <h2>What changed</h2>
+          <div class="outcomes">
+            <div class="outcome">
+              <div class="num">~50%</div>
+              <div class="txt">
+                Reduction in direct database read load after introducing caching
+                and decoupled analytics
+              </div>
+            </div>
+            <div class="outcome">
+              <div class="num">$300K+</div>
+              <div class="txt">
+                Combined annual infrastructure savings identified across recent
+                client engagements
+              </div>
+            </div>
+            <div class="outcome">
+              <div class="num">Sub-hour</div>
+              <div class="txt">
+                Automated disaster-recovery target for the modernized platform
+              </div>
+            </div>
+          </div>
+          <p>
+            The clinical platform now scales its application tier independently
+            of its analytics tier, absorbs new device growth without
+            pre-provisioning hardware, and ships changes and recovers from
+            failure through automation instead of a person following a checklist
+            under pressure.
+          </p>
+        </div>
+      </section>
+
+      <aside class="next-study wrap">
+        <span class="eyebrow">Continue exploring</span
+        ><a
+          href="../telecom/zero-downtime-database-modernization-and-failover.html"
+          >Explore telecom resilience →</a
+        >
+      </aside>
+      <div class="closing">
+        <div class="wrap">
+          <h2>
+            Want to talk through how this would apply to your environment?
+          </h2>
+          <p>
+            I'm happy to go deeper on any part of this — the service
+            decomposition, the analytics decoupling, or the cost-modeling
+            approach.
+          </p>
+          <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
+            >anupojuprudhvi@gmail.com</a
+          >
         </div>
       </div>
-      <div class="layer-arrow">↓ streams to</div>
-      <div class="layer">
-        <div class="lhead"><span class="lnum">B</span><h3>Analytics &amp; reporting tier</h3></div>
-        <div class="chips">
-          <span class="chip">Streaming ingestion &amp; enrichment</span>
-          <span class="chip">Real-time OLAP datastore</span>
-          <span class="chip">Clinical dashboards, decoupled from OLTP</span>
-        </div>
+    </main>
+    <footer>
+      <div class="wrap footer-inner">
+        <span>© 2026 Prudhvi Raj Anupoju</span
+        ><a href="../../index.html#work">All selected work ↗</a>
       </div>
-      <div class="layer-arrow">↑ both sit behind</div>
-      <div class="layer">
-        <div class="lhead"><span class="lnum">C</span><h3>Network &amp; access control</h3></div>
-        <div class="chips">
-          <span class="chip">Zero public ingress to data or compute</span>
-          <span class="chip">CDN in front of patient-facing apps</span>
-          <span class="chip">Mutual-TLS VPN for engineering access</span>
-        </div>
-      </div>
-    </div>
+    </footer>
 
-    <p>Multiple independent application APIs share one load balancer instead of provisioning one per service — a small decision that has a real cost effect once you're running more than a handful of services, covered in the outcome below.</p>
-  </div>
-</section>
+    <script>
+      (function () {
+        "use strict";
+        /* Read-path animation */
+        var reduceMotion =
+          window.matchMedia &&
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var DEFAULT_CAPTION =
+          "Click <b>Show the read path</b> to see how a live vitals reading reaches a dashboard without ever putting reporting load on the operational database.";
+        var steps = [
+          {
+            line: "cl-0",
+            from: { x: 100, y: 95 },
+            to: { x: 255, y: 95 },
+            nodes: ["cn-0", "cn-1"],
+            caption:
+              "A device reading comes in through the integration gateway to the application tier.",
+          },
+          {
+            line: "cl-1",
+            from: { x: 255, y: 95 },
+            to: { x: 410, y: 95 },
+            nodes: ["cn-1", "cn-2"],
+            caption:
+              "The application tier writes it to the <b>operational database</b> — the system of record for live clinical state.",
+          },
+          {
+            line: "cl-3",
+            from: { x: 255, y: 65 },
+            to: { x: 565, y: 65 },
+            nodes: ["cn-1", "cn-3"],
+            caption:
+              "The same reading is also streamed directly into the <b>analytics pipeline</b>, in parallel, rather than being read back out of the operational database later.",
+          },
+          {
+            line: "cl-2",
+            from: { x: 410, y: 95 },
+            to: { x: 565, y: 95 },
+            nodes: ["cn-2", "cn-3"],
+            caption:
+              "A clinician's dashboard query hits the analytics pipeline, not the operational database — so a heavy 90-day trend report can't slow down live device ingestion.",
+          },
+        ];
+        var playBtn = document.getElementById("cachePlayBtn");
+        var pulse = document.getElementById("cachePulse");
+        var caption = document.getElementById("cacheCaption");
+        var playing = false;
 
-<section>
-  <div class="wrap">
-    <div class="section-eyebrow">Reducing database load</div>
-    <h2>Taking reporting traffic off the live database entirely</h2>
-    <p>Rather than scaling the operational database up to absorb both live writes and heavy analytical reads, I decoupled the two: vitals stream out of the application tier into a purpose-built real-time analytics pipeline, and clinical dashboards query that pipeline instead of the production database.</p>
+        function reset() {
+          document.querySelectorAll(".hub-line").forEach(function (l) {
+            l.classList.remove("active");
+          });
+          document.querySelectorAll(".hub-node").forEach(function (n) {
+            n.classList.remove("active");
+          });
+          pulse.style.opacity = 0;
+        }
 
-    <div class="hubwrap">
-      <div class="diagram-top">
-        <h3 style="font-size:15.5px;">How a vitals reading reaches a clinician's dashboard</h3>
-        <button id="cachePlayBtn">▶ Show the read path</button>
-      </div>
-      <svg class="hub-svg" viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg">
-        <path class="hub-line" id="cl-0" d="M100,95 L215,95"/>
-        <path class="hub-line" id="cl-1" d="M255,95 L370,95"/>
-        <path class="hub-line" id="cl-2" d="M410,95 L525,95"/>
-        <path class="hub-line" id="cl-3" d="M255,65 L255,30 L565,30 L565,65" stroke-dasharray="4,3"/>
-        <circle class="hub-pulse" id="cachePulse" r="6" cx="100" cy="95"/>
+        function animatePulse(fromX, fromY, toX, toY, duration, cb) {
+          pulse.setAttribute("cx", fromX);
+          pulse.setAttribute("cy", fromY);
+          if (reduceMotion) {
+            pulse.setAttribute("cx", toX);
+            pulse.setAttribute("cy", toY);
+            cb();
+            return;
+          }
+          var t0 = null;
+          pulse.style.opacity = 1;
+          function frame(ts) {
+            if (!t0) t0 = ts;
+            var p = Math.min((ts - t0) / duration, 1);
+            pulse.setAttribute("cx", fromX + (toX - fromX) * p);
+            pulse.setAttribute("cy", fromY + (toY - fromY) * p);
+            if (p < 1) {
+              requestAnimationFrame(frame);
+            } else {
+              cb();
+            }
+          }
+          requestAnimationFrame(frame);
+        }
 
-        <g class="hub-node" id="cn-0"><rect x="20" y="65" width="160" height="60" rx="10"/><text x="100" y="86" text-anchor="middle" font-weight="600">Device reading</text><text x="100" y="102" text-anchor="middle" opacity=".7">via integration gateway</text></g>
-        <g class="hub-node center" id="cn-1"><rect x="175" y="65" width="160" height="60" rx="10"/><text x="255" y="86" text-anchor="middle" font-weight="600">Application tier</text><text x="255" y="102" text-anchor="middle" opacity=".75">writes vitals</text></g>
-        <g class="hub-node" id="cn-2"><rect x="330" y="65" width="160" height="60" rx="10"/><text x="410" y="86" text-anchor="middle" font-weight="600">Operational DB</text><text x="410" y="102" text-anchor="middle" opacity=".7">source of truth</text></g>
-        <g class="hub-node" id="cn-3"><rect x="485" y="65" width="160" height="60" rx="10"/><text x="565" y="86" text-anchor="middle" font-weight="600">Streaming pipeline</text><text x="565" y="102" text-anchor="middle" opacity=".7">enrichment &amp; OLAP</text></g>
-      </svg>
-      <div class="hub-caption" id="cacheCaption" aria-live="polite">Click <b>Show the read path</b> to see how a live vitals reading reaches a dashboard without ever putting reporting load on the operational database.</div>
-    </div>
-
-    <div class="callout"><b>The caching layer's role:</b> session state and frequently-read reference data sit in an in-memory cache in front of the operational database, so routine application reads don't round-trip to disk at all. Combined with moving analytical reads onto the streaming pipeline, direct database read load dropped by roughly half.</div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="section-eyebrow">Cost-aware compute</div>
-    <h2>Applying the same discipline across several engagements</h2>
-    <p>This pattern — right-sizing compute instead of running static, always-on fleets — wasn't unique to one platform. Across several client engagements during the same period, I applied a consistent set of cost levers:</p>
-    <table class="gtable">
-      <tr><th>Lever</th><th>What it replaced</th></tr>
-      <tr><td class="gnum">1</td><td>Dynamic, right-sized compute in place of statically-provisioned server fleets sized for peak load year-round.</td></tr>
-      <tr><td class="gnum">2</td><td>Shared load balancers across grouped services instead of one dedicated load balancer per microservice.</td></tr>
-      <tr><td class="gnum">3</td><td>Graviton-compatible node pools where workloads allowed it, alongside legacy-compatible nodes for what couldn't move yet.</td></tr>
-      <tr><td class="gnum">4</td><td>Automated deployment and disaster-recovery pipelines in place of manual, runbook-driven processes.</td></tr>
-    </table>
-    <p>None of these are exotic individually — the value was in applying all of them consistently, with actual financial modeling behind each recommendation rather than a generic "move to cloud-native" pitch.</p>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="section-eyebrow">Outcome</div>
-    <h2>What changed</h2>
-    <div class="outcomes">
-      <div class="outcome"><div class="num">~50%</div><div class="txt">Reduction in direct database read load after introducing caching and decoupled analytics</div></div>
-      <div class="outcome"><div class="num">$300K+</div><div class="txt">Combined annual infrastructure savings identified across recent client engagements</div></div>
-      <div class="outcome"><div class="num">Sub-hour</div><div class="txt">Automated disaster-recovery target for the modernized platform</div></div>
-    </div>
-    <p>The clinical platform now scales its application tier independently of its analytics tier, absorbs new device growth without pre-provisioning hardware, and ships changes and recovers from failure through automation instead of a person following a checklist under pressure.</p>
-  </div>
-</section>
-
-<div class="closing">
-  <div class="wrap">
-    <h2>Want to talk through how this would apply to your environment?</h2>
-    <p>I'm happy to go deeper on any part of this — the service decomposition, the analytics decoupling, or the cost-modeling approach.</p>
-    <a class="cta" href="mailto:anupojuprudhvi@gmail.com">anupojuprudhvi@gmail.com</a>
-  </div>
-</div>
-
-<footer>© 2026 Prudhvi Raj Anupoju</footer>
-
-<script>
-(function(){
-  "use strict";
-  var root = document.documentElement;
-  var toggle = document.getElementById('themeToggle');
-  function setTheme(t){
-    if(t === 'dark'){ root.setAttribute('data-theme','dark'); } else { root.removeAttribute('data-theme'); }
-    try{ localStorage.setItem('theme', t); }catch(e){}
-  }
-  var saved = null;
-  try{ saved = localStorage.getItem('theme'); }catch(e){}
-  if(saved === 'dark' || (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)){
-    setTheme('dark');
-  }
-  toggle.addEventListener('click', function(){
-    var isDark = root.getAttribute('data-theme') === 'dark';
-    setTheme(isDark ? 'light' : 'dark');
-  });
-
-  /* Read-path animation */
-  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var DEFAULT_CAPTION = 'Click <b>Show the read path</b> to see how a live vitals reading reaches a dashboard without ever putting reporting load on the operational database.';
-  var steps = [
-    { line: 'cl-0', from: { x: 100, y: 95 }, to: { x: 255, y: 95 }, nodes: ['cn-0', 'cn-1'],
-      caption: 'A device reading comes in through the integration gateway to the application tier.' },
-    { line: 'cl-1', from: { x: 255, y: 95 }, to: { x: 410, y: 95 }, nodes: ['cn-1', 'cn-2'],
-      caption: 'The application tier writes it to the <b>operational database</b> — the system of record for live clinical state.' },
-    { line: 'cl-3', from: { x: 255, y: 65 }, to: { x: 565, y: 65 }, nodes: ['cn-1', 'cn-3'],
-      caption: 'The same reading is also streamed directly into the <b>analytics pipeline</b>, in parallel, rather than being read back out of the operational database later.' },
-    { line: 'cl-2', from: { x: 410, y: 95 }, to: { x: 565, y: 95 }, nodes: ['cn-2', 'cn-3'],
-      caption: 'A clinician\'s dashboard query hits the analytics pipeline, not the operational database — so a heavy 90-day trend report can\'t slow down live device ingestion.' }
-  ];
-  var playBtn = document.getElementById('cachePlayBtn');
-  var pulse = document.getElementById('cachePulse');
-  var caption = document.getElementById('cacheCaption');
-  var playing = false;
-
-  function reset(){
-    document.querySelectorAll('.hub-line').forEach(function(l){ l.classList.remove('active'); });
-    document.querySelectorAll('.hub-node').forEach(function(n){ n.classList.remove('active'); });
-    pulse.style.opacity = 0;
-  }
-
-  function animatePulse(fromX, fromY, toX, toY, duration, cb){
-    pulse.setAttribute('cx', fromX);
-    pulse.setAttribute('cy', fromY);
-    if(reduceMotion){ pulse.setAttribute('cx', toX); pulse.setAttribute('cy', toY); cb(); return; }
-    var t0 = null;
-    pulse.style.opacity = 1;
-    function frame(ts){
-      if(!t0) t0 = ts;
-      var p = Math.min((ts - t0) / duration, 1);
-      pulse.setAttribute('cx', fromX + (toX - fromX) * p);
-      pulse.setAttribute('cy', fromY + (toY - fromY) * p);
-      if(p < 1){ requestAnimationFrame(frame); } else { cb(); }
-    }
-    requestAnimationFrame(frame);
-  }
-
-  function play(){
-    if(playing) return;
-    playing = true;
-    reset();
-    var i = 0;
-    function nextStep(){
-      if(i >= steps.length){
-        playing = false;
-        reset();
-        caption.innerHTML = DEFAULT_CAPTION;
-        return;
-      }
-      var s = steps[i];
-      document.getElementById(s.line).classList.add('active');
-      s.nodes.forEach(function(id){ document.getElementById(id).classList.add('active'); });
-      caption.innerHTML = s.caption;
-      animatePulse(s.from.x, s.from.y, s.to.x, s.to.y, reduceMotion ? 1 : 600, function(){
-        setTimeout(function(){
-          document.getElementById(s.line).classList.remove('active');
-          s.nodes.forEach(function(id){ document.getElementById(id).classList.remove('active'); });
-          i++;
+        function play() {
+          if (playing) return;
+          playing = true;
+          reset();
+          var i = 0;
+          function nextStep() {
+            if (i >= steps.length) {
+              playing = false;
+              reset();
+              caption.innerHTML = DEFAULT_CAPTION;
+              return;
+            }
+            var s = steps[i];
+            document.getElementById(s.line).classList.add("active");
+            s.nodes.forEach(function (id) {
+              document.getElementById(id).classList.add("active");
+            });
+            caption.innerHTML = s.caption;
+            animatePulse(
+              s.from.x,
+              s.from.y,
+              s.to.x,
+              s.to.y,
+              reduceMotion ? 1 : 600,
+              function () {
+                setTimeout(
+                  function () {
+                    document.getElementById(s.line).classList.remove("active");
+                    s.nodes.forEach(function (id) {
+                      document.getElementById(id).classList.remove("active");
+                    });
+                    i++;
+                    nextStep();
+                  },
+                  reduceMotion ? 250 : 550,
+                );
+              },
+            );
+          }
           nextStep();
-        }, reduceMotion ? 250 : 550);
-      });
-    }
-    nextStep();
-  }
-  playBtn.addEventListener('click', play);
-})();
-</script>
-
-</body>
+        }
+        playBtn.addEventListener("click", play);
+      })();
+    </script>
+  </body>
 </html>

@@ -1,0 +1,12 @@
+{
+  "name": "prudhvi-portfolio",
+  "private": true,
+  "scripts": {
+    "test": "node scripts/verify.mjs",
+    "preview": "node scripts/serve.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "playwright": "^1.55.0"
+  }
+}

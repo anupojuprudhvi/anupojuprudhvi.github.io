@@ -1,284 +1,450 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Deep Dive: Zero-Downtime Database Modernization &amp; Automated Failover — Prudhvi Raj Anupoju</title>
-<meta name="description" content="How I migrated a secure telecom platform across an 8+ major PostgreSQL version leap, replaced manual failover with a sub-60-second automated engine, and preserved hardware-locked licensing through the move — without downtime." />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23262B34'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='28' font-weight='600' fill='%23C9A96A' text-anchor='middle'%3EPA%3C/text%3E%3C/svg%3E" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-<style>
-  :root{
-    --ink:#23262B; --body:#4A5058; --muted:#767E8A; --line:#E7E8EC; --card:#F7F7F8;
-    --charcoal:#262B34; --charcoal-2:#2F3541;
-    --accent:#9A6B2F; --accent-bright:#C9A96A; --accent-soft:#F4EDE2;
-    --white:#FFFFFF; --maxw:880px;
-  }
-  :root[data-theme="dark"]{
-    --ink:#EDEFF3; --body:#C7CCD6; --muted:#8B93A3; --line:#3A4150; --card:#2B303B;
-    --charcoal:#15181D; --charcoal-2:#1B1F27;
-    --accent:#C9A96A; --accent-bright:#E4C88A; --accent-soft:#33301F;
-    --white:#1B1E24;
-  }
-  *{box-sizing:border-box;}
-  body{ margin:0; background:var(--white); color:var(--body); font-family:'Inter',system-ui,-apple-system,sans-serif; font-size:16px; line-height:1.65; -webkit-font-smoothing:antialiased; }
-  h1,h2,h3{ font-family:'Source Serif 4', Georgia, serif; color:var(--ink); margin:0 0 14px; line-height:1.2; }
-  a{color:inherit;}
-  code, .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; font-size:0.92em; }
-  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      Deep Dive: Zero-Downtime Database Modernization &amp; Automated Failover —
+      Prudhvi Raj Anupoju
+    </title>
+    <meta
+      name="description"
+      content="How I migrated a secure telecom platform across an 8+ major PostgreSQL version leap, replaced manual failover with a sub-60-second automated engine, and preserved hardware-locked licensing through the move — without downtime."
+    />
+    <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <link
+      rel="canonical"
+      href="https://anupojuprudhvi.github.io/usecases/telecom/zero-downtime-database-modernization-and-failover.html"
+    />
+    <script src="../../assets/theme.js"></script>
+    <link rel="stylesheet" href="../../assets/site.css" />
+    <link rel="stylesheet" href="../../assets/deepdive.css" />
+  </head>
+  <body class="deepdive">
+    <a class="skip-link" href="#main">Skip to content</a>
 
-  .topbar{ position:sticky; top:0; z-index:20; background:color-mix(in srgb, var(--white) 90%, transparent); backdrop-filter:saturate(180%) blur(10px); border-bottom:1px solid var(--line); }
-  .topbar .wrap{ display:flex; align-items:center; justify-content:space-between; height:56px; max-width:1040px; }
-  .back{ font-size:13.5px; font-weight:500; color:var(--muted); text-decoration:none; display:flex; align-items:center; gap:6px; }
-  .back:hover{ color:var(--accent); }
-  #themeToggle{ border:1px solid var(--line); background:transparent; color:var(--muted); width:32px; height:32px; border-radius:8px; cursor:pointer; font-size:15px; }
-  #themeToggle:hover{ border-color:var(--accent); color:var(--accent); }
-
-  header.hero{ background:linear-gradient(180deg, var(--charcoal) 0%, var(--charcoal-2) 100%); color:#fff; padding:56px 0 48px; }
-  .eyebrow{ font-size:12.5px; font-weight:700; letter-spacing:.13em; color:var(--accent-bright); text-transform:uppercase; margin-bottom:14px; }
-  .hero h1{ color:#fff; font-size:clamp(26px,4.4vw,38px); max-width:760px; }
-  .hero p.sub{ color:#B9C0CC; max-width:640px; font-size:15.5px; margin-top:14px; }
-  .hero .meta{ margin-top:26px; display:flex; gap:28px; flex-wrap:wrap; font-size:13px; color:#9FA8B8; }
-  .hero .meta b{ color:#EDEFF3; font-weight:600; }
-
-  section{ padding:52px 0; border-bottom:1px solid var(--line); }
-  section:last-of-type{ border-bottom:none; }
-  .section-eyebrow{ color:var(--accent); font-size:12.5px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; margin-bottom:10px; }
-  p{ margin:0 0 14px; }
-  ul{ margin:0 0 14px; padding-left:20px; }
-  li{ margin-bottom:8px; }
-
-  .callout{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 20px; font-size:14.5px; color:var(--body); margin:20px 0; }
-  .callout b{ color:var(--ink); }
-
-  /* Layered architecture diagram (reused pattern) */
-  .layers{ display:flex; flex-direction:column; gap:10px; margin:24px 0; }
-  .layer{ border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:var(--card); }
-  .layer .lhead{ display:flex; align-items:baseline; gap:10px; margin-bottom:10px; }
-  .layer .lnum{ font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--accent); border:1px solid var(--accent); border-radius:6px; padding:1px 7px; }
-  .layer h3{ font-size:15.5px; margin:0; }
-  .chips{ display:flex; flex-wrap:wrap; gap:8px; }
-  .chip{ font-size:12.5px; background:var(--white); border:1px solid var(--line); border-radius:999px; padding:5px 12px; color:var(--body); }
-  .layer-arrow{ text-align:center; color:var(--muted); font-size:13px; margin:-2px 0; }
-
-  /* Flow / hub diagram primitives (reused pattern from the governance deep dive) */
-  .hubwrap{ margin:28px 0; }
-  .hub-svg{ width:100%; height:auto; }
-  .hub-node rect{ fill:var(--card); stroke:var(--line); stroke-width:1.5; transition:stroke .2s ease, fill .2s ease; }
-  .hub-node.center rect{ fill:var(--charcoal); stroke:var(--accent); }
-  .hub-node text{ font-family:'Inter',sans-serif; font-size:11.5px; fill:var(--ink); transition:fill .2s ease; }
-  .hub-node.center text{ fill:#fff; }
-  .hub-node.active rect{ stroke:var(--accent); stroke-width:2.5; fill:var(--accent-soft); }
-  .hub-node.active text{ fill:var(--ink); }
-  .hub-node.danger rect{ stroke-dasharray:4,3; }
-  .hub-line{ stroke:var(--line); stroke-width:1.5; fill:none; transition:stroke .2s ease, stroke-width .2s ease; }
-  .hub-line.active{ stroke:var(--accent); stroke-width:2.5; }
-  .hub-pulse{ fill:var(--accent-bright); opacity:0; }
-  .hub-caption{ text-align:center; font-size:12.5px; color:var(--muted); margin-top:8px; min-height:32px; }
-  .diagram-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; flex-wrap:wrap; gap:12px; }
-  #failoverPlayBtn{ font-family:'Inter',sans-serif; font-size:12.5px; font-weight:600; padding:8px 16px; border-radius:8px; border:1px solid var(--accent); background:transparent; color:var(--accent); cursor:pointer; }
-  #failoverPlayBtn:hover{ background:var(--accent); color:#fff; }
-  #failoverPlayBtn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
-
-  /* Before/after two-box comparison */
-  .compare{ display:grid; grid-template-columns:1fr auto 1fr; gap:14px; align-items:center; margin:22px 0; }
-  .compare .cbox{ border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:var(--card); }
-  .compare .cbox .clbl{ font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:700; margin-bottom:6px; }
-  .compare .cbox.after{ border-color:var(--accent); }
-  .compare .cbox.after .clbl{ color:var(--accent); }
-  .compare .carrow{ font-size:20px; color:var(--accent); }
-  .compare .mono-line{ display:block; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--body); margin-top:6px; }
-
-  /* Comparison / guardrail table (reused pattern) */
-  .gtable{ width:100%; border-collapse:collapse; margin:20px 0; font-size:13.5px; }
-  .gtable th{ text-align:left; font-size:11.5px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); padding:8px 12px; border-bottom:1px solid var(--line); }
-  .gtable td{ padding:12px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
-  .gtable tr:last-child td{ border-bottom:none; }
-  .gtable .gnum{ font-family:'JetBrains Mono',monospace; color:var(--accent); font-weight:600; }
-
-  pre.code{ background:var(--charcoal); color:#D8DEE9; border-radius:12px; padding:16px 18px; overflow-x:auto; font-family:'JetBrains Mono',monospace; font-size:12.5px; line-height:1.6; margin:18px 0; }
-  pre.code .cmt{ color:#8B93A3; }
-
-  /* Sequence steps */
-  .seq{ counter-reset:step; margin:20px 0; }
-  .seq-item{ position:relative; padding:0 0 22px 34px; border-left:2px solid var(--line); }
-  .seq-item:last-child{ border-left-color:transparent; padding-bottom:0; }
-  .seq-item::before{ counter-increment:step; content:counter(step); position:absolute; left:-13px; top:0; width:24px; height:24px; border-radius:50%; background:var(--charcoal); color:var(--accent-bright); font-family:'JetBrains Mono',monospace; font-size:11.5px; display:flex; align-items:center; justify-content:center; }
-  .seq-item h3{ font-size:14.5px; margin-bottom:4px; }
-  .seq-item p{ font-size:14px; margin-bottom:0; color:var(--muted); }
-
-  .outcomes{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:22px 0; }
-  .outcome{ border:1px solid var(--line); border-radius:12px; padding:18px; background:var(--card); }
-  .outcome .num{ font-family:'Source Serif 4',serif; font-size:24px; font-weight:700; color:var(--accent); }
-  .outcome .txt{ font-size:13px; color:var(--muted); margin-top:4px; }
-
-  .closing{ background:var(--charcoal); color:#fff; padding:56px 0; text-align:center; }
-  .closing h2{ color:#fff; font-size:clamp(20px,3vw,26px); max-width:600px; margin:0 auto 14px; }
-  .closing p{ color:#B9C0CC; max-width:520px; margin:0 auto 22px; }
-  .closing a.cta{ display:inline-block; background:var(--accent-bright); color:#1B1E24; font-weight:600; font-size:14px; padding:11px 22px; border-radius:8px; text-decoration:none; }
-  footer{ padding:24px 0; text-align:center; font-size:12px; color:var(--muted); }
-
-  @media (max-width:640px){
-    .outcomes{ grid-template-columns:1fr; }
-    .compare{ grid-template-columns:1fr; }
-    .compare .carrow{ transform:rotate(90deg); justify-self:center; }
-  }
-  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
-</style>
-</head>
-<body>
-
-<div class="topbar">
-  <div class="wrap">
-    <a class="back" href="../../Prudhvi_Raj_Professional_Overview.html">← Back to overview</a>
-    <button id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme">◐</button>
-  </div>
-</div>
-
-<header class="hero">
-  <div class="wrap">
-    <div class="eyebrow">Deep Dive · Telecom &amp; Secure Communications Engagement</div>
-    <h1>Modernizing a secure telecom platform without downtime</h1>
-    <p class="sub">A secure mobile-communications platform used by financial institutions and healthcare organizations, handling large volumes of sensitive call and message data every day. It ran on a legacy on-premise database with manual, hardware-dependent failover and no room for an extended maintenance window. This is how I moved it to the cloud without breaking any of that.</p>
-    <div class="meta">
-      <div><b>My role</b><br>Database modernization &amp; high-availability architecture</div>
-      <div><b>Scope</b><br>Primary + DR region, zero-downtime cutover</div>
-      <div><b>Stack</b><br>Aurora PostgreSQL · AWS DMS · Lambda · DynamoDB · Terraform</div>
+    <div class="topbar">
+      <div class="wrap">
+        <a class="back" href="../../index.html#work">← Back to overview</a>
+        <button
+          id="themeToggle"
+          aria-label="Toggle dark mode"
+          title="Toggle theme"
+        >
+          ◐
+        </button>
+      </div>
     </div>
-  </div>
-</header>
 
-<section>
-  <div class="wrap">
-    <div class="section-eyebrow">The problem</div>
-    <h2>Three constraints that couldn't be traded off against each other</h2>
-    <p>The platform's database had been running the same major version for years in an on-premise datacenter, and every part of the stack around it had grown to depend on that fact. Three specific constraints made a normal "lift and shift" impossible:</p>
-    <ul>
-      <li><b>The database was eight-plus major versions behind current.</b> Bridging that gap meant not just a version upgrade but a full rewrite of legacy triggers, deprecated data types, and C-level extension code — while the platform kept taking live traffic.</li>
-      <li><b>Failover was manual and hardware-dependent.</b> High availability relied on an on-premise clustering setup with a node-fencing script tied to physical server power control. When a node failed, recovery meant a human being paged in, not an automated response measured in seconds.</li>
-      <li><b>The telecom software was licensed to physical hardware.</b> The call-processing and messaging engines had licenses bound to a network interface's MAC address and static IP. A standard cloud autoscaling event — where a replacement instance gets a new virtual network interface — would silently invalidate the license and take the service down.</li>
-    </ul>
-    <p>Any one of these would be a normal migration problem. Solving all three at once, with a platform that financial and healthcare customers depend on for real-time communications, is what made this engagement different.</p>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="section-eyebrow">Architecture</div>
-    <h2>Splitting stateful and stateless workloads onto purpose-built node types</h2>
-    <p>Rather than treating every EC2 instance the same way, I separated the platform into two node roles, each with its own provisioning pipeline and its own failover story — connected through one networking hub, with a mirrored standby in a second region for disaster recovery.</p>
-
-    <div class="layers">
-      <div class="layer">
-        <div class="lhead"><span class="lnum">A</span><h3>Persistent database nodes</h3></div>
-        <div class="chips">
-          <span class="chip">Aurora PostgreSQL, 4 logical databases</span>
-          <span class="chip">Local connection pooling</span>
-          <span class="chip">License-pinned network interface</span>
-          <span class="chip">Field-level PII encryption</span>
+    <main id="main">
+      <header class="hero">
+        <div class="wrap">
+          <div class="eyebrow">
+            Deep Dive · Telecom &amp; Secure Communications Engagement
+          </div>
+          <h1>Modernizing a secure telecom platform without downtime</h1>
+          <p class="sub">
+            A secure mobile-communications platform used by financial
+            institutions and healthcare organizations, handling large volumes of
+            sensitive call and message data every day. It ran on a legacy
+            on-premise database with manual, hardware-dependent failover and no
+            room for an extended maintenance window. This is how I moved it to
+            the cloud without breaking any of that.
+          </p>
+          <div class="meta">
+            <div>
+              <b>My role</b><br />Database modernization &amp; high-availability
+              architecture
+            </div>
+            <div>
+              <b>Scope</b><br />Primary + DR region, zero-downtime cutover
+            </div>
+            <div>
+              <b>Stack</b><br />Aurora PostgreSQL · AWS DMS · Lambda · DynamoDB
+              · Terraform
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="layer-arrow">↔ shares the network hub with</div>
-      <div class="layer">
-        <div class="lhead"><span class="lnum">B</span><h3>Call-processing application nodes</h3></div>
-        <div class="chips">
-          <span class="chip">Auto-scaled behind ALB / NLB</span>
-          <span class="chip">Shared multi-AZ file storage</span>
-          <span class="chip">Stateless — safe to replace</span>
+      </header>
+
+      <section>
+        <div class="wrap">
+          <div class="section-eyebrow">The problem</div>
+          <h2>
+            Three constraints that couldn't be traded off against each other
+          </h2>
+          <p>
+            The platform's database had been running the same major version for
+            years in an on-premise datacenter, and every part of the stack
+            around it had grown to depend on that fact. Three specific
+            constraints made a normal "lift and shift" impossible:
+          </p>
+          <ul>
+            <li>
+              <b>The database was eight-plus major versions behind current.</b>
+              Bridging that gap meant not just a version upgrade but a full
+              rewrite of legacy triggers, deprecated data types, and C-level
+              extension code — while the platform kept taking live traffic.
+            </li>
+            <li>
+              <b>Failover was manual and hardware-dependent.</b> High
+              availability relied on an on-premise clustering setup with a
+              node-fencing script tied to physical server power control. When a
+              node failed, recovery meant a human being paged in, not an
+              automated response measured in seconds.
+            </li>
+            <li>
+              <b>The telecom software was licensed to physical hardware.</b> The
+              call-processing and messaging engines had licenses bound to a
+              network interface's MAC address and static IP. A standard cloud
+              autoscaling event — where a replacement instance gets a new
+              virtual network interface — would silently invalidate the license
+              and take the service down.
+            </li>
+          </ul>
+          <p>
+            Any one of these would be a normal migration problem. Solving all
+            three at once, with a platform that financial and healthcare
+            customers depend on for real-time communications, is what made this
+            engagement different.
+          </p>
         </div>
-      </div>
-      <div class="layer-arrow">↑ both attach to</div>
-      <div class="layer">
-        <div class="lhead"><span class="lnum">C</span><h3>Regional network hub</h3></div>
-        <div class="chips">
-          <span class="chip">Transit Gateway</span>
-          <span class="chip">Site-to-Site VPN back to the datacenter during cutover</span>
-          <span class="chip">Cross-region peering to the DR hub</span>
+      </section>
+
+      <section>
+        <div class="wrap">
+          <div class="section-eyebrow">Architecture</div>
+          <h2>
+            Splitting stateful and stateless workloads onto purpose-built node
+            types
+          </h2>
+          <p>
+            Rather than treating every EC2 instance the same way, I separated
+            the platform into two node roles, each with its own provisioning
+            pipeline and its own failover story — connected through one
+            networking hub, with a mirrored standby in a second region for
+            disaster recovery.
+          </p>
+
+          <div class="layers">
+            <div class="layer">
+              <div class="lhead">
+                <span class="lnum">A</span>
+                <h3>Persistent database nodes</h3>
+              </div>
+              <div class="chips">
+                <span class="chip">Aurora PostgreSQL, 4 logical databases</span>
+                <span class="chip">Local connection pooling</span>
+                <span class="chip">License-pinned network interface</span>
+                <span class="chip">Field-level PII encryption</span>
+              </div>
+            </div>
+            <div class="layer-arrow">↔ shares the network hub with</div>
+            <div class="layer">
+              <div class="lhead">
+                <span class="lnum">B</span>
+                <h3>Call-processing application nodes</h3>
+              </div>
+              <div class="chips">
+                <span class="chip">Auto-scaled behind ALB / NLB</span>
+                <span class="chip">Shared multi-AZ file storage</span>
+                <span class="chip">Stateless — safe to replace</span>
+              </div>
+            </div>
+            <div class="layer-arrow">↑ both attach to</div>
+            <div class="layer">
+              <div class="lhead">
+                <span class="lnum">C</span>
+                <h3>Regional network hub</h3>
+              </div>
+              <div class="chips">
+                <span class="chip">Transit Gateway</span>
+                <span class="chip"
+                  >Site-to-Site VPN back to the datacenter during cutover</span
+                >
+                <span class="chip">Cross-region peering to the DR hub</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout">
+            <b>Why split them at all:</b> the application nodes are disposable —
+            replace one and nothing is lost. The database nodes are not, and
+            that's exactly where the licensing constraint and the failover
+            constraint both live. Keeping that distinction explicit in the
+            infrastructure, rather than treating every instance identically, is
+            what made a purpose-built failover path possible in the first place.
+          </div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <div class="callout"><b>Why split them at all:</b> the application nodes are disposable — replace one and nothing is lost. The database nodes are not, and that's exactly where the licensing constraint and the failover constraint both live. Keeping that distinction explicit in the infrastructure, rather than treating every instance identically, is what made a purpose-built failover path possible in the first place.</div>
-  </div>
-</section>
+      <section>
+        <div class="wrap">
+          <div class="section-eyebrow">Database modernization</div>
+          <h2>Bridging an 8+ major-version gap without a maintenance window</h2>
+          <p>
+            The database side of the platform is four separate logical
+            databases: core accounts and billing, an asynchronous task queue,
+            SMS/MMS messaging, and call detail records (CDR). All four needed to
+            move from the legacy engine to a modern Aurora PostgreSQL cluster
+            together, without a multi-hour cutover window the business couldn't
+            afford.
+          </p>
+          <p>
+            The migration ran on AWS Database Migration Service using
+            change-data-capture replication, so the target database stayed
+            continuously in sync with live production traffic while the schema
+            and application code were modernized underneath it:
+          </p>
+          <div class="seq">
+            <div class="seq-item">
+              <h3>Schema &amp; syntax modernization</h3>
+              <p>
+                Extracted the legacy schema, rewrote deprecated triggers and
+                geometric types, and recompiled C-level extension code against
+                the modern engine's internal APIs.
+              </p>
+            </div>
+            <div class="seq-item">
+              <h3>Baseline full-load migration</h3>
+              <p>
+                DMS performed an initial bulk load of all four databases over an
+                encrypted VPN tunnel while the legacy system kept serving live
+                traffic.
+              </p>
+            </div>
+            <div class="seq-item">
+              <h3>Continuous CDC replication</h3>
+              <p>
+                Ongoing transactions streamed to the new cluster in near real
+                time, keeping replication lag effectively at zero for the full
+                migration window.
+              </p>
+            </div>
+            <div class="seq-item">
+              <h3>Automated validation</h3>
+              <p>
+                Scripted checks compared row counts, checksums, and index
+                integrity between the legacy and Aurora databases before cutover
+                was even scheduled.
+              </p>
+            </div>
+            <div class="seq-item">
+              <h3>Final cutover</h3>
+              <p>
+                Paused write traffic briefly, let DMS apply the last
+                transactions, verified sequence alignment, and redirected the
+                application layer to the new cluster through local connection
+                pooling.
+              </p>
+            </div>
+          </div>
+          <p>
+            Every database connection now routes through a local pooling layer
+            on the database node itself rather than opening a raw connection per
+            request — the difference between a few hundred pooled connections
+            and the connection exhaustion that direct-to-database access at this
+            scale would otherwise cause.
+          </p>
+        </div>
+      </section>
 
-<section>
-  <div class="wrap">
-    <div class="section-eyebrow">Database modernization</div>
-    <h2>Bridging an 8+ major-version gap without a maintenance window</h2>
-    <p>The database side of the platform is four separate logical databases: core accounts and billing, an asynchronous task queue, SMS/MMS messaging, and call detail records (CDR). All four needed to move from the legacy engine to a modern Aurora PostgreSQL cluster together, without a multi-hour cutover window the business couldn't afford.</p>
-    <p>The migration ran on AWS Database Migration Service using change-data-capture replication, so the target database stayed continuously in sync with live production traffic while the schema and application code were modernized underneath it:</p>
-    <div class="seq">
-      <div class="seq-item"><h3>Schema &amp; syntax modernization</h3><p>Extracted the legacy schema, rewrote deprecated triggers and geometric types, and recompiled C-level extension code against the modern engine's internal APIs.</p></div>
-      <div class="seq-item"><h3>Baseline full-load migration</h3><p>DMS performed an initial bulk load of all four databases over an encrypted VPN tunnel while the legacy system kept serving live traffic.</p></div>
-      <div class="seq-item"><h3>Continuous CDC replication</h3><p>Ongoing transactions streamed to the new cluster in near real time, keeping replication lag effectively at zero for the full migration window.</p></div>
-      <div class="seq-item"><h3>Automated validation</h3><p>Scripted checks compared row counts, checksums, and index integrity between the legacy and Aurora databases before cutover was even scheduled.</p></div>
-      <div class="seq-item"><h3>Final cutover</h3><p>Paused write traffic briefly, let DMS apply the last transactions, verified sequence alignment, and redirected the application layer to the new cluster through local connection pooling.</p></div>
-    </div>
-    <p>Every database connection now routes through a local pooling layer on the database node itself rather than opening a raw connection per request — the difference between a few hundred pooled connections and the connection exhaustion that direct-to-database access at this scale would otherwise cause.</p>
-  </div>
-</section>
+      <section>
+        <div class="wrap">
+          <div class="section-eyebrow">High availability</div>
+          <h2>
+            Replacing a 37-line fencing script with a sub-60-second automated
+            failover engine
+          </h2>
+          <p>
+            The original high-availability design was a Linux clustering setup
+            using a fencing script: if a node looked unresponsive, the script
+            would cut its power and hope nothing else was wrong. It had no
+            application-level health checks, no protection against two nodes
+            both believing they were primary at once, and it had no concept of
+            the licensing constraint at all.
+          </p>
+          <p>
+            I replaced it with a serverless failover engine that runs the entire
+            recovery sequence — including the parts a hardware fencing script
+            structurally can't do, like carrying the license-pinned network
+            interface across to the new primary.
+          </p>
 
-<section>
-  <div class="wrap">
-    <div class="section-eyebrow">High availability</div>
-    <h2>Replacing a 37-line fencing script with a sub-60-second automated failover engine</h2>
-    <p>The original high-availability design was a Linux clustering setup using a fencing script: if a node looked unresponsive, the script would cut its power and hope nothing else was wrong. It had no application-level health checks, no protection against two nodes both believing they were primary at once, and it had no concept of the licensing constraint at all.</p>
-    <p>I replaced it with a serverless failover engine that runs the entire recovery sequence — including the parts a hardware fencing script structurally can't do, like carrying the license-pinned network interface across to the new primary.</p>
+          <div class="hubwrap">
+            <div class="diagram-top">
+              <h3 style="font-size: 15.5px">
+                Walk through an automated failover
+              </h3>
+              <button id="failoverPlayBtn">▶ Play failover sequence</button>
+            </div>
+            <div
+              class="diagram-scroll"
+              role="region"
+              aria-label="Architecture diagram"
+              tabindex="0"
+            >
+              <svg
+                role="img"
+                aria-label="Architecture flow diagram; the following walkthrough explains the sequence"
+                class="hub-svg"
+                viewBox="0 0 720 190"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path class="hub-line" id="fl-0" d="M100,95 L215,95" />
+                <path class="hub-line" id="fl-1" d="M255,95 L370,95" />
+                <path class="hub-line" id="fl-2" d="M410,95 L525,95" />
+                <path class="hub-line" id="fl-3" d="M565,95 L680,95" />
+                <circle
+                  class="hub-pulse"
+                  id="failoverPulse"
+                  r="6"
+                  cx="100"
+                  cy="95"
+                />
 
-    <div class="hubwrap">
-      <div class="diagram-top">
-        <h3 style="font-size:15.5px;">Walk through an automated failover</h3>
-        <button id="failoverPlayBtn">▶ Play failover sequence</button>
-      </div>
-      <svg class="hub-svg" viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg">
-        <path class="hub-line" id="fl-0" d="M100,95 L215,95"/>
-        <path class="hub-line" id="fl-1" d="M255,95 L370,95"/>
-        <path class="hub-line" id="fl-2" d="M410,95 L525,95"/>
-        <path class="hub-line" id="fl-3" d="M565,95 L680,95"/>
-        <circle class="hub-pulse" id="failoverPulse" r="6" cx="100" cy="95"/>
+                <g class="hub-node" id="fn-0">
+                  <rect x="20" y="65" width="160" height="60" rx="10" />
+                  <text x="100" y="90" text-anchor="middle" font-weight="600">
+                    Alarm fires
+                  </text>
+                  <text x="100" y="106" text-anchor="middle" opacity=".7">
+                    Heartbeat lost
+                  </text>
+                </g>
+                <g class="hub-node center" id="fn-1">
+                  <rect x="175" y="65" width="160" height="60" rx="10" />
+                  <text x="255" y="86" text-anchor="middle" font-weight="600">
+                    Acquire lock
+                  </text>
+                  <text x="255" y="102" text-anchor="middle" opacity=".75">
+                    DynamoDB, split-brain-safe
+                  </text>
+                </g>
+                <g class="hub-node" id="fn-2">
+                  <rect x="330" y="65" width="160" height="60" rx="10" />
+                  <text x="410" y="86" text-anchor="middle" font-weight="600">
+                    Move VIP interface
+                  </text>
+                  <text x="410" y="102" text-anchor="middle" opacity=".7">
+                    License-pinned ENI
+                  </text>
+                </g>
+                <g class="hub-node" id="fn-3">
+                  <rect x="485" y="65" width="160" height="60" rx="10" />
+                  <text x="565" y="86" text-anchor="middle" font-weight="600">
+                    Promote &amp; validate
+                  </text>
+                  <text x="565" y="102" text-anchor="middle" opacity=".7">
+                    Health checks pass
+                  </text>
+                </g>
+                <g class="hub-node danger" id="fn-4">
+                  <rect x="640" y="65" width="60" height="60" rx="10" />
+                  <text
+                    x="670"
+                    y="86"
+                    text-anchor="middle"
+                    font-weight="600"
+                    font-size="10"
+                  >
+                    Fence
+                  </text>
+                  <text
+                    x="670"
+                    y="100"
+                    text-anchor="middle"
+                    opacity=".7"
+                    font-size="9.5"
+                  >
+                    old node
+                  </text>
+                </g>
+              </svg>
+            </div>
+            <div class="hub-caption" id="failoverCaption" aria-live="polite">
+              Click <b>Play failover sequence</b> to step through what happens
+              in the seconds after a node stops responding.
+            </div>
+          </div>
+          <p style="font-size: 13.5px; color: var(--muted)">
+            The old node isn't just abandoned — once the new primary is
+            confirmed healthy, the engine forcibly fences it (so it can never
+            write again or serve stale data), then restarts it as the new warm
+            standby, ready for the next failover.
+          </p>
 
-        <g class="hub-node" id="fn-0"><rect x="20" y="65" width="160" height="60" rx="10"/><text x="100" y="90" text-anchor="middle" font-weight="600">Alarm fires</text><text x="100" y="106" text-anchor="middle" opacity=".7">Heartbeat lost</text></g>
-        <g class="hub-node center" id="fn-1"><rect x="175" y="65" width="160" height="60" rx="10"/><text x="255" y="86" text-anchor="middle" font-weight="600">Acquire lock</text><text x="255" y="102" text-anchor="middle" opacity=".75">DynamoDB, split-brain-safe</text></g>
-        <g class="hub-node" id="fn-2"><rect x="330" y="65" width="160" height="60" rx="10"/><text x="410" y="86" text-anchor="middle" font-weight="600">Move VIP interface</text><text x="410" y="102" text-anchor="middle" opacity=".7">License-pinned ENI</text></g>
-        <g class="hub-node" id="fn-3"><rect x="485" y="65" width="160" height="60" rx="10"/><text x="565" y="86" text-anchor="middle" font-weight="600">Promote &amp; validate</text><text x="565" y="102" text-anchor="middle" opacity=".7">Health checks pass</text></g>
-        <g class="hub-node danger" id="fn-4"><rect x="640" y="65" width="60" height="60" rx="10"/><text x="670" y="86" text-anchor="middle" font-weight="600" font-size="10">Fence</text><text x="670" y="100" text-anchor="middle" opacity=".7" font-size="9.5">old node</text></g>
-      </svg>
-      <div class="hub-caption" id="failoverCaption" aria-live="polite">Click <b>Play failover sequence</b> to step through what happens in the seconds after a node stops responding.</div>
-    </div>
-    <p style="font-size:13.5px; color:var(--muted);">The old node isn't just abandoned — once the new primary is confirmed healthy, the engine forcibly fences it (so it can never write again or serve stale data), then restarts it as the new warm standby, ready for the next failover.</p>
+          <div
+            class="table-scroll"
+            role="region"
+            aria-label="Technical comparison"
+            tabindex="0"
+          >
+            <table class="gtable" style="margin-top: 24px">
+              <tr>
+                <th>Dimension</th>
+                <th>Before</th>
+                <th>After</th>
+              </tr>
+              <tr>
+                <td class="gnum">Fencing</td>
+                <td>IPMI power cut, on-premise only</td>
+                <td>EC2 API stop/reboot, serverless</td>
+              </tr>
+              <tr>
+                <td class="gnum">Split-brain risk</td>
+                <td>Local heartbeat / ping quorum</td>
+                <td>Conditional DynamoDB lock with an auto-expiring lease</td>
+              </tr>
+              <tr>
+                <td class="gnum">Health validation</td>
+                <td>None — blind failover</td>
+                <td>Active service and socket checks before traffic returns</td>
+              </tr>
+              <tr>
+                <td class="gnum">Recovery time</td>
+                <td>Manual, measured in hours</td>
+                <td>Fully automated, under 60 seconds</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </section>
 
-    <table class="gtable" style="margin-top:24px;">
-      <tr><th>Dimension</th><th>Before</th><th>After</th></tr>
-      <tr><td class="gnum">Fencing</td><td>IPMI power cut, on-premise only</td><td>EC2 API stop/reboot, serverless</td></tr>
-      <tr><td class="gnum">Split-brain risk</td><td>Local heartbeat / ping quorum</td><td>Conditional DynamoDB lock with an auto-expiring lease</td></tr>
-      <tr><td class="gnum">Health validation</td><td>None — blind failover</td><td>Active service and socket checks before traffic returns</td></tr>
-      <tr><td class="gnum">Recovery time</td><td>Manual, measured in hours</td><td>Fully automated, under 60 seconds</td></tr>
-    </table>
-  </div>
-</section>
+      <section>
+        <div class="wrap">
+          <div class="section-eyebrow">Licensing continuity</div>
+          <h2>
+            Making the cloud look like fixed hardware to a license that can't
+            tell the difference
+          </h2>
+          <p>
+            The call-processing and messaging software licenses are node-locked
+            to a MAC address and a static private IP — a normal assumption for
+            on-premise hardware, and a direct conflict with how cloud
+            autoscaling and failover normally work. The fix was to stop treating
+            the database node's identity as tied to the instance at all, and pin
+            it to a portable resource instead.
+          </p>
 
-<section>
-  <div class="wrap">
-    <div class="section-eyebrow">Licensing continuity</div>
-    <h2>Making the cloud look like fixed hardware to a license that can't tell the difference</h2>
-    <p>The call-processing and messaging software licenses are node-locked to a MAC address and a static private IP — a normal assumption for on-premise hardware, and a direct conflict with how cloud autoscaling and failover normally work. The fix was to stop treating the database node's identity as tied to the instance at all, and pin it to a portable resource instead.</p>
+          <div class="compare">
+            <div class="cbox">
+              <div class="clbl">Primary network interface</div>
+              Handles OS management, SSM access, and monitoring. Freely
+              replaceable — the license never looks at it.
+            </div>
+            <div class="carrow">+</div>
+            <div class="cbox after">
+              <div class="clbl">Secondary, license-pinned interface</div>
+              A dedicated elastic network interface with a fixed MAC address and
+              static IP, detached from the failed instance and reattached to the
+              standby during failover.
+            </div>
+          </div>
 
-    <div class="compare">
-      <div class="cbox">
-        <div class="clbl">Primary network interface</div>
-        Handles OS management, SSM access, and monitoring. Freely replaceable — the license never looks at it.
-      </div>
-      <div class="carrow">+</div>
-      <div class="cbox after">
-        <div class="clbl">Secondary, license-pinned interface</div>
-        A dedicated elastic network interface with a fixed MAC address and static IP, detached from the failed instance and reattached to the standby during failover.
-      </div>
-    </div>
-
-    <pre class="code">resource "aws_network_interface" "license_pinned_vip" {
+          <pre
+            class="code"
+          >resource "aws_network_interface" "license_pinned_vip" {
   subnet_id       = var.private_db_subnet_id
   private_ips     = [var.vip_private_ip]
   security_groups = [aws_security_group.db_persistent.id]
@@ -287,150 +453,297 @@
   # this interface and nothing else</span>
 }</pre>
 
-    <p>During failover, the engine detaches this interface from the failed node and reattaches it to the promoted standby. The application reads back the identical MAC address and IP it started with, so it boots without triggering a licensing fault — zero manual re-licensing, and zero downtime attributable to software licensing across the entire migration.</p>
-  </div>
-</section>
+          <p>
+            During failover, the engine detaches this interface from the failed
+            node and reattaches it to the promoted standby. The application
+            reads back the identical MAC address and IP it started with, so it
+            boots without triggering a licensing fault — zero manual
+            re-licensing, and zero downtime attributable to software licensing
+            across the entire migration.
+          </p>
+        </div>
+      </section>
 
-<section>
-  <div class="wrap">
-    <div class="section-eyebrow">Data protection</div>
-    <h2>Field-level encryption the database itself never sees through</h2>
-    <p>Disk-level encryption protects against physical theft, but not against a compromised query path reading plaintext rows directly. Given the sensitivity of the data — phone numbers, message content, and subscriber identity across call and messaging records — that gap wasn't acceptable, so encryption happens before the data ever reaches the database.</p>
-    <ul>
-      <li><b>13 distinct fields</b> across call, SMS/MMS, and directory records are encrypted at the application layer using AES-256-CBC with a unique initialization vector per value.</li>
-      <li>A lightweight local key service on each node keeps encryption keys in memory rather than in application code or config files, and supports online key rotation without re-encrypting historical data.</li>
-      <li>PostgreSQL-side functions handle the encryption and decryption calls natively, so both the legacy C-based engines and the modern services could adopt it without a parallel code path.</li>
-    </ul>
-    <div class="callout"><b>Validated, not assumed:</b> automated compliance scans of full database exports searched for unencrypted phone numbers and message content across the entire dataset. Zero plaintext matches — the standard the SOC2 and GDPR audit process required.</div>
-  </div>
-</section>
+      <section>
+        <div class="wrap">
+          <div class="section-eyebrow">Data protection</div>
+          <h2>Field-level encryption the database itself never sees through</h2>
+          <p>
+            Disk-level encryption protects against physical theft, but not
+            against a compromised query path reading plaintext rows directly.
+            Given the sensitivity of the data — phone numbers, message content,
+            and subscriber identity across call and messaging records — that gap
+            wasn't acceptable, so encryption happens before the data ever
+            reaches the database.
+          </p>
+          <ul>
+            <li>
+              <b>13 distinct fields</b> across call, SMS/MMS, and directory
+              records are encrypted at the application layer using AES-256-CBC
+              with a unique initialization vector per value.
+            </li>
+            <li>
+              A lightweight local key service on each node keeps encryption keys
+              in memory rather than in application code or config files, and
+              supports online key rotation without re-encrypting historical
+              data.
+            </li>
+            <li>
+              PostgreSQL-side functions handle the encryption and decryption
+              calls natively, so both the legacy C-based engines and the modern
+              services could adopt it without a parallel code path.
+            </li>
+          </ul>
+          <div class="callout">
+            <b>Validated, not assumed:</b> automated compliance scans of full
+            database exports searched for unencrypted phone numbers and message
+            content across the entire dataset. Zero plaintext matches — the
+            standard the SOC2 and GDPR audit process required.
+          </div>
+        </div>
+      </section>
 
-<section>
-  <div class="wrap">
-    <div class="section-eyebrow">Storage</div>
-    <h2>Retiring a single point of failure, and cutting cold-storage cost with it</h2>
-    <p>Call recordings, message attachments, and application configuration lived on a single on-premise file server — a hardware failure there took down every dependent service at once. I migrated that to a Multi-AZ Elastic File System, replicated by AWS DataSync with end-to-end checksum verification so a multi-terabyte transfer completed with zero file corruption.</p>
-    <table class="gtable">
-      <tr><th>Dimension</th><th>Before</th><th>After</th></tr>
-      <tr><td class="gnum">Availability</td><td>Single physical server</td><td>Replicated across 3 Availability Zones</td></tr>
-      <tr><td class="gnum">Access isolation</td><td>Shared mount, no per-service boundary</td><td>Dedicated access points per service, path-restricted</td></tr>
-      <tr><td class="gnum">Cold storage cost</td><td>Flat rate regardless of access pattern</td><td>Automatic tiering after 90 days — 85%+ cheaper for rarely-accessed recordings</td></tr>
-    </table>
-  </div>
-</section>
+      <section>
+        <div class="wrap">
+          <div class="section-eyebrow">Storage</div>
+          <h2>
+            Retiring a single point of failure, and cutting cold-storage cost
+            with it
+          </h2>
+          <p>
+            Call recordings, message attachments, and application configuration
+            lived on a single on-premise file server — a hardware failure there
+            took down every dependent service at once. I migrated that to a
+            Multi-AZ Elastic File System, replicated by AWS DataSync with
+            end-to-end checksum verification so a multi-terabyte transfer
+            completed with zero file corruption.
+          </p>
+          <div
+            class="table-scroll"
+            role="region"
+            aria-label="Technical comparison"
+            tabindex="0"
+          >
+            <table class="gtable">
+              <tr>
+                <th>Dimension</th>
+                <th>Before</th>
+                <th>After</th>
+              </tr>
+              <tr>
+                <td class="gnum">Availability</td>
+                <td>Single physical server</td>
+                <td>Replicated across 3 Availability Zones</td>
+              </tr>
+              <tr>
+                <td class="gnum">Access isolation</td>
+                <td>Shared mount, no per-service boundary</td>
+                <td>Dedicated access points per service, path-restricted</td>
+              </tr>
+              <tr>
+                <td class="gnum">Cold storage cost</td>
+                <td>Flat rate regardless of access pattern</td>
+                <td>
+                  Automatic tiering after 90 days — 85%+ cheaper for
+                  rarely-accessed recordings
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </section>
 
-<section>
-  <div class="wrap">
-    <div class="section-eyebrow">Outcome</div>
-    <h2>What changed</h2>
-    <div class="outcomes">
-      <div class="outcome"><div class="num">&lt; 60 sec</div><div class="txt">Automated recovery time, down from manual intervention measured in hours</div></div>
-      <div class="outcome"><div class="num">Zero</div><div class="txt">Data loss across the full 8+ major-version database migration</div></div>
-      <div class="outcome"><div class="num">Full</div><div class="txt">Continuity of hardware-bound telecom licensing through the transition</div></div>
-    </div>
-    <p>Beyond the headline numbers: every one of the three original constraints — the version gap, the manual failover, and the hardware-locked licensing — got solved with infrastructure, not with a process document telling someone to be careful. That's the difference between an incident that resolves itself in under a minute and one that pages a human at 3am.</p>
-  </div>
-</section>
+      <section>
+        <div class="wrap">
+          <div class="section-eyebrow">Outcome</div>
+          <h2>What changed</h2>
+          <div class="outcomes">
+            <div class="outcome">
+              <div class="num">&lt; 60 sec</div>
+              <div class="txt">
+                Automated recovery time, down from manual intervention measured
+                in hours
+              </div>
+            </div>
+            <div class="outcome">
+              <div class="num">Zero</div>
+              <div class="txt">
+                Data loss across the full 8+ major-version database migration
+              </div>
+            </div>
+            <div class="outcome">
+              <div class="num">Full</div>
+              <div class="txt">
+                Continuity of hardware-bound telecom licensing through the
+                transition
+              </div>
+            </div>
+          </div>
+          <p>
+            Beyond the headline numbers: every one of the three original
+            constraints — the version gap, the manual failover, and the
+            hardware-locked licensing — got solved with infrastructure, not with
+            a process document telling someone to be careful. That's the
+            difference between an incident that resolves itself in under a
+            minute and one that pages a human at 3am.
+          </p>
+        </div>
+      </section>
 
-<div class="closing">
-  <div class="wrap">
-    <h2>Want to talk through how this would apply to your environment?</h2>
-    <p>I'm happy to go deeper on any part of this — the CDC migration strategy, the failover engine's design, or the encryption approach.</p>
-    <a class="cta" href="mailto:anupojuprudhvi@gmail.com">anupojuprudhvi@gmail.com</a>
-  </div>
-</div>
+      <aside class="next-study wrap">
+        <span class="eyebrow">Continue exploring</span
+        ><a href="../governance/multi-account-governance-and-networking.html"
+          >Explore cloud governance →</a
+        >
+      </aside>
+      <div class="closing">
+        <div class="wrap">
+          <h2>
+            Want to talk through how this would apply to your environment?
+          </h2>
+          <p>
+            I'm happy to go deeper on any part of this — the CDC migration
+            strategy, the failover engine's design, or the encryption approach.
+          </p>
+          <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
+            >anupojuprudhvi@gmail.com</a
+          >
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="wrap footer-inner">
+        <span>© 2026 Prudhvi Raj Anupoju</span
+        ><a href="../../index.html#work">All selected work ↗</a>
+      </div>
+    </footer>
 
-<footer>© 2026 Prudhvi Raj Anupoju</footer>
+    <script>
+      (function () {
+        "use strict";
+        /* Failover sequence animation */
+        var reduceMotion =
+          window.matchMedia &&
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var DEFAULT_CAPTION =
+          "Click <b>Play failover sequence</b> to step through what happens in the seconds after a node stops responding.";
+        var steps = [
+          {
+            line: "fl-0",
+            from: { x: 100, y: 95 },
+            to: { x: 255, y: 95 },
+            nodes: ["fn-0", "fn-1"],
+            caption:
+              "A CloudWatch alarm detects a lost heartbeat and invokes the failover Lambda.",
+          },
+          {
+            line: "fl-1",
+            from: { x: 255, y: 95 },
+            to: { x: 410, y: 95 },
+            nodes: ["fn-1", "fn-2"],
+            caption:
+              "Before touching anything, the Lambda acquires a conditional lock in <b>DynamoDB</b> — if another invocation already holds it, this one backs off instead of racing it, which is what prevents split-brain.",
+          },
+          {
+            line: "fl-2",
+            from: { x: 410, y: 95 },
+            to: { x: 565, y: 95 },
+            nodes: ["fn-2", "fn-3"],
+            caption:
+              "The <b>license-pinned network interface</b> is detached from the failed node and reattached to the standby, carrying its MAC address and static IP with it.",
+          },
+          {
+            line: "fl-3",
+            from: { x: 565, y: 95 },
+            to: { x: 670, y: 95 },
+            nodes: ["fn-3", "fn-4"],
+            caption:
+              "Services on the standby are promoted and health-checked. Only once they pass is the failed node forcibly <b>fenced</b> — stopped at the API level so it can never write again — then restarted as the new warm standby.",
+          },
+        ];
+        var playBtn = document.getElementById("failoverPlayBtn");
+        var pulse = document.getElementById("failoverPulse");
+        var caption = document.getElementById("failoverCaption");
+        var playing = false;
 
-<script>
-(function(){
-  "use strict";
-  var root = document.documentElement;
-  var toggle = document.getElementById('themeToggle');
-  function setTheme(t){
-    if(t === 'dark'){ root.setAttribute('data-theme','dark'); } else { root.removeAttribute('data-theme'); }
-    try{ localStorage.setItem('theme', t); }catch(e){}
-  }
-  var saved = null;
-  try{ saved = localStorage.getItem('theme'); }catch(e){}
-  if(saved === 'dark' || (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)){
-    setTheme('dark');
-  }
-  toggle.addEventListener('click', function(){
-    var isDark = root.getAttribute('data-theme') === 'dark';
-    setTheme(isDark ? 'light' : 'dark');
-  });
+        function reset() {
+          document.querySelectorAll(".hub-line").forEach(function (l) {
+            l.classList.remove("active");
+          });
+          document.querySelectorAll(".hub-node").forEach(function (n) {
+            n.classList.remove("active");
+          });
+          pulse.style.opacity = 0;
+        }
 
-  /* Failover sequence animation */
-  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var DEFAULT_CAPTION = 'Click <b>Play failover sequence</b> to step through what happens in the seconds after a node stops responding.';
-  var steps = [
-    { line: 'fl-0', from: { x: 100, y: 95 }, to: { x: 255, y: 95 }, nodes: ['fn-0', 'fn-1'],
-      caption: 'A CloudWatch alarm detects a lost heartbeat and invokes the failover Lambda.' },
-    { line: 'fl-1', from: { x: 255, y: 95 }, to: { x: 410, y: 95 }, nodes: ['fn-1', 'fn-2'],
-      caption: 'Before touching anything, the Lambda acquires a conditional lock in <b>DynamoDB</b> — if another invocation already holds it, this one backs off instead of racing it, which is what prevents split-brain.' },
-    { line: 'fl-2', from: { x: 410, y: 95 }, to: { x: 565, y: 95 }, nodes: ['fn-2', 'fn-3'],
-      caption: 'The <b>license-pinned network interface</b> is detached from the failed node and reattached to the standby, carrying its MAC address and static IP with it.' },
-    { line: 'fl-3', from: { x: 565, y: 95 }, to: { x: 670, y: 95 }, nodes: ['fn-3', 'fn-4'],
-      caption: 'Services on the standby are promoted and health-checked. Only once they pass is the failed node forcibly <b>fenced</b> — stopped at the API level so it can never write again — then restarted as the new warm standby.' }
-  ];
-  var playBtn = document.getElementById('failoverPlayBtn');
-  var pulse = document.getElementById('failoverPulse');
-  var caption = document.getElementById('failoverCaption');
-  var playing = false;
+        function animatePulse(fromX, fromY, toX, toY, duration, cb) {
+          pulse.setAttribute("cx", fromX);
+          pulse.setAttribute("cy", fromY);
+          if (reduceMotion) {
+            pulse.setAttribute("cx", toX);
+            pulse.setAttribute("cy", toY);
+            cb();
+            return;
+          }
+          var t0 = null;
+          pulse.style.opacity = 1;
+          function frame(ts) {
+            if (!t0) t0 = ts;
+            var p = Math.min((ts - t0) / duration, 1);
+            pulse.setAttribute("cx", fromX + (toX - fromX) * p);
+            pulse.setAttribute("cy", fromY + (toY - fromY) * p);
+            if (p < 1) {
+              requestAnimationFrame(frame);
+            } else {
+              cb();
+            }
+          }
+          requestAnimationFrame(frame);
+        }
 
-  function reset(){
-    document.querySelectorAll('.hub-line').forEach(function(l){ l.classList.remove('active'); });
-    document.querySelectorAll('.hub-node').forEach(function(n){ n.classList.remove('active'); });
-    pulse.style.opacity = 0;
-  }
-
-  function animatePulse(fromX, fromY, toX, toY, duration, cb){
-    pulse.setAttribute('cx', fromX);
-    pulse.setAttribute('cy', fromY);
-    if(reduceMotion){ pulse.setAttribute('cx', toX); pulse.setAttribute('cy', toY); cb(); return; }
-    var t0 = null;
-    pulse.style.opacity = 1;
-    function frame(ts){
-      if(!t0) t0 = ts;
-      var p = Math.min((ts - t0) / duration, 1);
-      pulse.setAttribute('cx', fromX + (toX - fromX) * p);
-      pulse.setAttribute('cy', fromY + (toY - fromY) * p);
-      if(p < 1){ requestAnimationFrame(frame); } else { cb(); }
-    }
-    requestAnimationFrame(frame);
-  }
-
-  function play(){
-    if(playing) return;
-    playing = true;
-    reset();
-    var i = 0;
-    function nextStep(){
-      if(i >= steps.length){
-        playing = false;
-        reset();
-        caption.innerHTML = DEFAULT_CAPTION;
-        return;
-      }
-      var s = steps[i];
-      document.getElementById(s.line).classList.add('active');
-      s.nodes.forEach(function(id){ document.getElementById(id).classList.add('active'); });
-      caption.innerHTML = s.caption;
-      animatePulse(s.from.x, s.from.y, s.to.x, s.to.y, reduceMotion ? 1 : 600, function(){
-        setTimeout(function(){
-          document.getElementById(s.line).classList.remove('active');
-          s.nodes.forEach(function(id){ document.getElementById(id).classList.remove('active'); });
-          i++;
+        function play() {
+          if (playing) return;
+          playing = true;
+          reset();
+          var i = 0;
+          function nextStep() {
+            if (i >= steps.length) {
+              playing = false;
+              reset();
+              caption.innerHTML = DEFAULT_CAPTION;
+              return;
+            }
+            var s = steps[i];
+            document.getElementById(s.line).classList.add("active");
+            s.nodes.forEach(function (id) {
+              document.getElementById(id).classList.add("active");
+            });
+            caption.innerHTML = s.caption;
+            animatePulse(
+              s.from.x,
+              s.from.y,
+              s.to.x,
+              s.to.y,
+              reduceMotion ? 1 : 600,
+              function () {
+                setTimeout(
+                  function () {
+                    document.getElementById(s.line).classList.remove("active");
+                    s.nodes.forEach(function (id) {
+                      document.getElementById(id).classList.remove("active");
+                    });
+                    i++;
+                    nextStep();
+                  },
+                  reduceMotion ? 250 : 550,
+                );
+              },
+            );
+          }
           nextStep();
-        }, reduceMotion ? 250 : 550);
-      });
-    }
-    nextStep();
-  }
-  playBtn.addEventListener('click', play);
-})();
-</script>
-
-</body>
+        }
+        playBtn.addEventListener("click", play);
+      })();
+    </script>
+  </body>
 </html>
