@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Prudhvi Raj Anupoju — Cloud Platform Architect</title>
+<meta name="description" content="Cloud platform architect — multi-account governance, mission-critical resilience, and cost-aware infrastructure." />
+
+<meta property="og:type" content="profile" />
+<meta property="og:title" content="Prudhvi Raj Anupoju — Cloud Platform Architect" />
+<meta property="og:description" content="I design and modernize mission-critical cloud infrastructure for enterprises in regulated, high-stakes industries — telecom, public transportation, and healthcare." />
+<meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Prudhvi Raj Anupoju — Cloud Platform Architect" />
+<meta name="twitter:description" content="I design and modernize mission-critical cloud infrastructure for enterprises in regulated, high-stakes industries — telecom, public transportation, and healthcare." />
+<meta name="twitter:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23262B34'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='28' font-weight='600' fill='%23C9A96A' text-anchor='middle'%3EPA%3C/text%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#23262B; --body:#4A5058; --muted:#767E8A; --line:#E7E8EC; --card:#F7F7F8;
+    --charcoal:#262B34; --charcoal-2:#2F3541;
+    --accent:#9A6B2F; --accent-bright:#C9A96A; --accent-soft:#F4EDE2;
+    --white:#FFFFFF; --maxw:960px;
+  }
+  :root[data-theme="dark"]{
+    --ink:#EDEFF3; --body:#C7CCD6; --muted:#8B93A3; --line:#3A4150; --card:#2B303B;
+    --charcoal:#15181D; --charcoal-2:#1B1F27;
+    --accent:#C9A96A; --accent-bright:#E4C88A; --accent-soft:#33301F;
+    --white:#1B1E24;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{ margin:0; background:var(--white); color:var(--body); font-family:'Inter',system-ui,-apple-system,sans-serif; font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased; transition:background .25s ease, color .25s ease; }
+  h1,h2,h3{ font-family:'Source Serif 4', Georgia, serif; color:var(--ink); margin:0; line-height:1.15; }
+  a{color:inherit;}
+  code, .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+  ::selection{ background:var(--accent-soft); color:var(--ink); }
+
+  nav{ position:sticky; top:0; z-index:30; background:color-mix(in srgb, var(--white) 90%, transparent); backdrop-filter:saturate(180%) blur(10px); border-bottom:1px solid var(--line); }
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; height:58px;}
+  .brand{font-family:'Source Serif 4',serif; font-weight:600; font-size:16px; color:var(--ink); text-decoration:none;}
+  .navlinks{display:flex; align-items:center; gap:16px; font-size:13px; font-weight:500;}
+  .navscroll{display:flex; align-items:center; gap:26px;}
+  .navlinks a{text-decoration:none; color:var(--muted); letter-spacing:.02em; white-space:nowrap;}
+  .navlinks a:hover{color:var(--accent);}
+  #themeToggle{ border:1px solid var(--line); background:transparent; color:var(--muted); width:32px; height:32px; min-width:32px; border-radius:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:15px; flex-shrink:0; }
+  #themeToggle:hover{ border-color:var(--accent); color:var(--accent); }
+  @media (max-width:640px){
+    nav .wrap{ height:auto; padding-top:10px; padding-bottom:10px; flex-wrap:wrap; row-gap:8px; }
+    .navlinks{ width:100%; order:3; gap:10px; }
+    .navscroll{ gap:14px; font-size:12px; overflow-x:auto; -webkit-overflow-scrolling:touch; flex:1; min-width:0; }
+    .navscroll a{ flex-shrink:0; }
+  }
+
+  /* Offset anchor targets so the sticky nav never covers the section heading */
+  #background, #focus, #work, #credentials, #contact{ scroll-margin-top:74px; }
+
+  .hero{ background:linear-gradient(180deg, var(--charcoal) 0%, var(--charcoal-2) 100%); color:#fff; padding:88px 0 56px; }
+  .eyebrow{ font-size:12.5px; font-weight:700; letter-spacing:.14em; color:var(--accent-bright); text-transform:uppercase; margin-bottom:18px; }
+  .hero h1{ font-size:clamp(32px,5.6vw,52px); font-weight:700; color:#fff; margin-bottom:18px;}
+  .hero p.lede{ font-size:17px; color:#CBD2DE; max-width:600px; margin-bottom:36px;}
+
+  .term{ background:#12151A; border:1px solid #2A303B; border-radius:10px; max-width:600px; overflow:hidden; box-shadow:0 20px 50px -20px rgba(0,0,0,.6); margin-bottom:40px; }
+  .term-bar{ display:flex; gap:6px; padding:10px 14px; background:#1A1E25; border-bottom:1px solid #2A303B; }
+  .term-dot{ width:10px; height:10px; border-radius:50%; }
+  .term-body{ padding:16px 18px 20px; font-size:12.8px; line-height:1.7; min-height:150px; color:#C6D0DE; white-space:pre-wrap; word-break:break-word; }
+  .term-body .prompt{ color:#7FD99A; }
+  .term-body .cmd{ color:#E8ECF2; }
+  .term-body .out{ color:#8B93A3; }
+  .term-body .accent2{ color:var(--accent-bright); }
+  .caret{ display:inline-block; width:7px; height:14px; background:var(--accent-bright); vertical-align:middle; margin-left:2px; animation:blink 1s step-end infinite; }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; max-width:760px;}
+  .stat{ border-top:2px solid var(--accent); padding-top:12px;}
+  .stat .num{ font-family:'Source Serif 4',serif; font-weight:700; font-size:26px; color:#fff;}
+  .stat .lbl{ font-size:12.5px; color:#9FA8B8; margin-top:6px; line-height:1.4;}
+  @media (max-width:640px){ .stat-row{grid-template-columns:1fr; gap:22px;} }
+  .contact-line{ margin-top:36px; font-size:13px; color:#8C96A6;}
+  .contact-line a{ color:#CBD2DE; text-decoration:none; border-bottom:1px solid rgba(255,255,255,.25); }
+
+  section{ padding:72px 0; border-bottom:1px solid var(--line); }
+  section:last-of-type{ border-bottom:none; }
+  .section-head{ margin-bottom:38px; }
+  .section-head h2{ font-size:28px; margin-top:6px; }
+
+  .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+  .no-js .reveal{ opacity:1; transform:none; }
+
+  .role{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:22px 24px; margin-bottom:16px; display:grid; grid-template-columns:140px 1fr; gap:18px; }
+  @media (max-width:640px){ .role{grid-template-columns:1fr; gap:6px;} }
+  .role .period{ color:var(--accent); font-weight:700; font-size:13.5px; }
+  .role h3{ font-size:17px; margin-bottom:6px; }
+  .role p{ margin:0; font-size:14.5px; }
+  .aside{ background:var(--accent-soft); border:1px solid var(--line); border-radius:12px; padding:20px 24px; font-size:14px; margin-top:6px; }
+  .aside b{ color:var(--accent); }
+
+  .chiprow{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:32px; }
+  .chip{ font-size:12.5px; font-weight:600; padding:7px 14px; border-radius:999px; border:1px solid var(--line); background:var(--card); color:var(--body); cursor:pointer; transition:all .15s ease; user-select:none; }
+  .chip:hover{ border-color:var(--accent); color:var(--accent); }
+  .chip.active{ background:var(--accent); border-color:var(--accent); color:#fff; }
+
+  .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  @media (max-width:640px){ .grid-2{grid-template-columns:1fr;} }
+  .pillar{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:24px; }
+  .pillar h3{ font-size:16.5px; margin-bottom:12px; }
+  .pillar ul{ margin:0; padding-left:18px; font-size:14px; }
+  .pillar li{ margin-bottom:8px; }
+
+  .case{ margin-bottom:48px; transition:opacity .3s ease, filter .3s ease; }
+  .case.dim{ opacity:.28; filter:grayscale(.4); }
+  .case .tag{ font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:8px;}
+  .case h3{ font-size:22px; margin-bottom:10px; }
+  .case .ctx{ color:var(--muted); font-size:14.5px; margin-bottom:22px; max-width:720px; }
+  .case-body{ display:grid; grid-template-columns:1.6fr 1fr; gap:20px; }
+  @media (max-width:760px){ .case-body{grid-template-columns:1fr;} }
+  .role-box{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:24px; }
+  .role-box .lbl{ font-size:11.5px; font-weight:700; letter-spacing:.08em; color:var(--accent); margin-bottom:14px; }
+  .role-box ul{ margin:0; padding-left:18px; font-size:14.5px; }
+  .role-box li{ margin-bottom:12px; }
+  .outcome-box{ background:var(--charcoal); color:#fff; border-radius:12px; padding:24px; }
+  .outcome-box .lbl{ font-size:11px; font-weight:700; letter-spacing:.08em; color:#9FA8B8; margin-bottom:16px; }
+  .case-deep-link{ display:inline-flex; align-items:center; gap:7px; margin-top:18px; font-family:'Inter',sans-serif; font-size:13px; font-weight:600; padding:9px 16px; border-radius:8px; border:1px solid var(--accent); color:var(--accent); text-decoration:none; }
+  .case-deep-link:hover{ background:var(--accent); color:#fff; }
+  .case-deep-link .arrow{ transition:transform .15s ease; }
+  .case-deep-link:hover .arrow{ transform:translateX(3px); }
+  .outcome-item{ margin-bottom:20px; }
+  .outcome-item:last-child{ margin-bottom:0; }
+  .outcome-item .num{ font-family:'Source Serif 4',serif; font-weight:700; font-size:22px; color:var(--accent-bright); }
+  .outcome-item .txt{ font-size:12.5px; color:#DCE1EA; margin-top:4px; line-height:1.4; }
+
+  /* Interactive architecture diagram */
+  .diagram-wrap{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:28px 24px 22px; }
+  .diagram-top{ display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; flex-wrap:wrap; gap:12px; }
+  .diagram-top h3{ font-size:17px; }
+  #playBtn{ font-family:'Inter',sans-serif; font-size:12.5px; font-weight:600; padding:8px 16px; border-radius:8px; border:1px solid var(--accent); background:transparent; color:var(--accent); cursor:pointer; }
+  #playBtn:hover{ background:var(--accent); color:#fff; }
+  svg#flowSvg{ width:100%; height:auto; display:block; }
+  .flow-node rect{ fill:var(--white); stroke:var(--line); stroke-width:1.5; transition:stroke .25s ease, fill .25s ease; }
+  .flow-node.active rect{ stroke:var(--accent); stroke-width:2.5; fill:var(--accent-soft); }
+  .flow-node text{ fill:var(--body); font-family:'Inter',sans-serif; font-size:11.5px; transition:fill .25s ease; }
+  .flow-node .flabel{ font-weight:700; fill:var(--ink); font-size:12px; }
+  .flow-node.active .flabel{ fill:var(--accent); }
+  .flow-line{ stroke:var(--line); stroke-width:2; fill:none; }
+  .flow-line.active{ stroke:var(--accent); }
+  .flow-pulse{ fill:var(--accent-bright); opacity:0; }
+  .diagram-caption{ margin-top:16px; font-size:13.5px; color:var(--muted); min-height:20px; }
+  .diagram-caption b{ color:var(--accent); }
+
+  .cred{ background:var(--card); border:1px solid var(--line); border-radius:12px; padding:22px 24px; }
+  .cred h3{ font-size:15.5px; margin-bottom:8px; }
+  .cred p{ margin:0; font-size:13.5px; color:var(--muted); }
+
+  .closing{ background:linear-gradient(180deg,var(--charcoal) 0%, var(--charcoal-2) 100%); color:#fff; padding:88px 0; }
+  .closing .eyebrow{ margin-bottom:14px; }
+  .closing h2{ color:#fff; font-size:clamp(24px,4vw,34px); max-width:760px; margin-bottom:20px; }
+  .closing p{ color:#CBD2DE; font-size:15px; max-width:600px; margin-bottom:40px; }
+  .closing .who{ font-size:14px; font-weight:600; color:#fff; }
+  .closing .email{ font-size:13.5px; color:#9FA8B8; margin-top:4px; }
+  .closing .email a{ color:#CBD2DE; }
+
+  footer{ padding:26px 0; text-align:center; font-size:12px; color:var(--muted); }
+
+  .chip:focus-visible, .pillar[data-filter]:focus-visible, #themeToggle:focus-visible, #playBtn:focus-visible, a:focus-visible{
+    outline:2px solid var(--accent); outline-offset:2px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *, *::before, *::after{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+    .reveal{ opacity:1; transform:none; }
+    .caret{ animation:none; }
+  }
+
+  @media print{
+    nav, #themeToggle, .chiprow, #playBtn, .term-bar{ display:none !important; }
+    body{ background:#fff; color:#000; }
+    .reveal, .case.dim{ opacity:1 !important; filter:none !important; transform:none !important; }
+    a{ text-decoration:underline; }
+    .hero, section{ page-break-inside:avoid; }
+  }
+</style>
+</head>
+<body class="no-js">
+<noscript><style>.reveal{opacity:1 !important; transform:none !important;} .case.dim{opacity:1 !important; filter:none !important;}</style></noscript>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top">Prudhvi Raj Anupoju</a>
+    <div class="navlinks">
+      <div class="navscroll">
+        <a href="#background">Background</a>
+        <a href="#focus">Focus</a>
+        <a href="#work">Engagements</a>
+        <a href="#credentials">Credentials</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <button id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme">◐</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="eyebrow">Cloud Platform Architect &nbsp;·&nbsp; 10 Years Enterprise Delivery</div>
+    <h1>Prudhvi Raj Anupoju</h1>
+    <p class="lede">I design and modernize mission-critical cloud infrastructure for enterprises in regulated, high-stakes industries — telecom, public transportation, and healthcare.</p>
+
+    <div class="term" aria-hidden="true">
+      <div class="term-bar">
+        <div class="term-dot" style="background:#FF5F57"></div>
+        <div class="term-dot" style="background:#FEBC2E"></div>
+        <div class="term-dot" style="background:#28C840"></div>
+      </div>
+      <div class="term-body" id="termBody"></div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat"><div class="num" data-count="10" data-suffix=" yrs">0</div><div class="lbl">Enterprise cloud &amp; platform engineering</div></div>
+      <div class="stat"><div class="num" data-count="40" data-suffix="+">0</div><div class="lbl">AWS accounts governed under one architecture</div></div>
+      <div class="stat"><div class="num">&lt; 60 sec</div><div class="lbl">Automated failover recovery time, in production</div></div>
+    </div>
+    <div class="contact-line"><a href="mailto:anupojuprudhvi@gmail.com">anupojuprudhvi@gmail.com</a></div>
+  </div>
+</header>
+
+<section id="background">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="color:var(--accent)">Background</div>
+      <h2>A decade of production infrastructure work</h2>
+    </div>
+
+    <div class="role reveal">
+      <div class="period">2016 – 2020</div>
+      <div>
+        <h3>Vortex Technologies · Cloud/DevOps Engineer</h3>
+        <p>Built the fundamentals: CI/CD automation, Linux systems administration, and early containerization for Java workloads on AWS.</p>
+      </div>
+    </div>
+
+    <div class="role reveal">
+      <div class="period">2020 – 2021</div>
+      <div>
+        <h3>Spectromax Solutions · Senior Cloud Engineer</h3>
+        <p>Moved into enterprise-scale database clustering and distributed storage, supporting ERP systems for manufacturing clients.</p>
+      </div>
+    </div>
+
+    <div class="role reveal">
+      <div class="period">2021 – Present</div>
+      <div>
+        <h3>Cloud Destinations · Lead Cloud Platform Architect</h3>
+        <p>My primary role today. I lead multi-account AWS governance, mission-critical database modernization, and FinOps-driven cost architecture for enterprise clients — the engagements below.</p>
+      </div>
+    </div>
+
+    <div class="aside reveal">
+      <b>Alongside this role:</b> I build small AI-assisted tools in my own time — a workflow-automation assistant and a document-processing utility — as a way of staying hands-on with emerging platform patterns. These are personal projects, not a separate employer.
+    </div>
+  </div>
+</section>
+
+<section id="focus">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="color:var(--accent)">Focus Areas</div>
+      <h2>Where I focus</h2>
+      <p style="color:var(--muted); font-size:13.5px; margin-top:10px;">Click a focus area to see which engagement below it shows up in.</p>
+    </div>
+    <div class="grid-2 reveal">
+      <div class="pillar" data-filter="governance" tabindex="0" role="button" aria-label="Filter engagements: Multi-Account Cloud Governance">
+        <h3>Multi-Account Cloud Governance</h3>
+        <ul>
+          <li>Enterprise AWS Organizations landing zones with centralized networking and security guardrails</li>
+          <li>Standardized, auditable account provisioning at scale</li>
+        </ul>
+      </div>
+      <div class="pillar" data-filter="resilience" tabindex="0" role="button" aria-label="Filter engagements: Mission-Critical Resilience">
+        <h3>Mission-Critical Resilience</h3>
+        <ul>
+          <li>Zero-downtime database modernization across major version gaps</li>
+          <li>Automated failover design for environments with strict uptime requirements</li>
+        </ul>
+      </div>
+      <div class="pillar" data-filter="platform" tabindex="0" role="button" aria-label="Filter engagements: Platform Engineering and GitOps">
+        <h3>Platform Engineering &amp; GitOps</h3>
+        <ul>
+          <li>Modular, decoupled Terraform architecture and CI/CD workflow standardization</li>
+          <li>Reducing manual deployment steps and configuration drift</li>
+        </ul>
+      </div>
+      <div class="pillar" data-filter="finops" tabindex="0" role="button" aria-label="Filter engagements: Cost-Aware Architecture">
+        <h3>Cost-Aware Architecture</h3>
+        <ul>
+          <li>Structural cost reduction through rightsizing, caching, and compute modernization</li>
+          <li>Financial modeling to support migration and modernization decisions</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="color:var(--accent)">Engagements</div>
+      <h2>Selected work</h2>
+    </div>
+
+    <div class="chiprow reveal" role="group" aria-label="Filter engagements by focus area">
+      <div class="chip active" data-chip="all" tabindex="0" role="button" aria-pressed="true">All</div>
+      <div class="chip" data-chip="resilience" tabindex="0" role="button" aria-pressed="false">Resilience</div>
+      <div class="chip" data-chip="governance" tabindex="0" role="button" aria-pressed="false">Governance</div>
+      <div class="chip" data-chip="platform" tabindex="0" role="button" aria-pressed="false">GitOps</div>
+      <div class="chip" data-chip="finops" tabindex="0" role="button" aria-pressed="false">FinOps</div>
+    </div>
+
+    <div class="case reveal" data-tags="resilience finops">
+      <div class="tag">Telecom &amp; Secure Communications</div>
+      <h3>Modernizing a secure telecom platform without downtime</h3>
+      <p class="ctx">A secure mobile-communications platform used by financial institutions and healthcare organizations, handling large volumes of sensitive call and message data daily.</p>
+      <div class="case-body">
+        <div class="role-box">
+          <div class="lbl">MY ROLE</div>
+          <ul>
+            <li><b>Led the database modernization:</b> a phased, zero-downtime upgrade spanning multiple major PostgreSQL versions to Aurora PostgreSQL, planned around a legacy platform with no room for extended downtime.</li>
+            <li><b>Designed the failover architecture:</b> replaced a manual, hardware-dependent recovery process with an automated, serverless failover path.</li>
+            <li><b>Preserved licensing continuity:</b> engineered a networking approach that kept hardware-bound software licenses valid through the cloud transition.</li>
+            <li><b>Implemented data protection:</b> added encryption for sensitive customer fields to support regulatory compliance requirements.</li>
+          </ul>
+        </div>
+        <div class="outcome-box">
+          <div class="lbl">OUTCOME</div>
+          <div class="outcome-item"><div class="num">&lt; 60 sec</div><div class="txt">Automated recovery time, down from manual intervention measured in hours</div></div>
+          <div class="outcome-item"><div class="num">Zero</div><div class="txt">Data loss across the full multi-version database migration</div></div>
+          <div class="outcome-item"><div class="num">Full</div><div class="txt">Continuity of existing telecom licensing through the transition</div></div>
+        </div>
+      </div>
+      <a class="case-deep-link" href="usecases/telecom/zero-downtime-database-modernization-and-failover.html">See how this was built — database migration, failover engine &amp; licensing continuity <span class="arrow">→</span></a>
+    </div>
+
+    <!-- Interactive failover diagram, tied to the telecom case study -->
+    <div class="reveal" style="margin:-16px 0 48px;">
+      <div class="diagram-wrap">
+        <div class="diagram-top">
+          <h3>How the automated failover actually works</h3>
+          <button id="playBtn">▶ Play walkthrough</button>
+        </div>
+        <svg id="flowSvg" viewBox="0 0 920 150" xmlns="http://www.w3.org/2000/svg">
+          <!-- connecting lines -->
+          <path class="flow-line" id="line0" d="M110,75 H210" />
+          <path class="flow-line" id="line1" d="M310,75 H410" />
+          <path class="flow-line" id="line2" d="M510,75 H610" />
+          <path class="flow-line" id="line3" d="M710,75 H810" />
+          <circle class="flow-pulse" id="pulse" r="5" cx="110" cy="75"/>
+
+          <g class="flow-node" id="node0"><rect x="10" y="45" width="100" height="60" rx="10"/><text class="flabel" x="60" y="70" text-anchor="middle">Step 1</text><text x="60" y="88" text-anchor="middle">CloudWatch alarm</text></g>
+          <g class="flow-node" id="node1"><rect x="210" y="45" width="100" height="60" rx="10"/><text class="flabel" x="260" y="70" text-anchor="middle">Step 2</text><text x="260" y="88" text-anchor="middle">Lambda triggers</text></g>
+          <g class="flow-node" id="node2"><rect x="410" y="45" width="100" height="60" rx="10"/><text class="flabel" x="460" y="70" text-anchor="middle">Step 3</text><text x="460" y="88" text-anchor="middle">Standby promoted</text></g>
+          <g class="flow-node" id="node3"><rect x="610" y="45" width="100" height="60" rx="10"/><text class="flabel" x="660" y="70" text-anchor="middle">Step 4</text><text x="660" y="88" text-anchor="middle">Network re-attach</text></g>
+          <g class="flow-node" id="node4"><rect x="810" y="45" width="100" height="60" rx="10"/><text class="flabel" x="860" y="70" text-anchor="middle">Step 5</text><text x="860" y="88" text-anchor="middle">Traffic restored</text></g>
+        </svg>
+        <div class="diagram-caption" id="diagramCaption" aria-live="polite">Click <b>Play</b> to step through the failover sequence, end to end in under 60 seconds.</div>
+      </div>
+    </div>
+
+    <div class="case reveal" data-tags="governance platform">
+      <div class="tag">Public Sector &amp; Transportation</div>
+      <h3>Standardizing governance across 40+ AWS accounts</h3>
+      <p class="ctx">Electronic toll collection and roadside infrastructure spanning multiple state transportation authorities, each with independent compliance requirements.</p>
+      <div class="case-body">
+        <div class="role-box">
+          <div class="lbl">MY ROLE</div>
+          <ul>
+            <li><b>Architected the landing zone:</b> a modular, tiered Terraform structure separating foundation, networking, shared services, and applications.</li>
+            <li><b>Centralized the network design:</b> a hub-and-spoke model that replaced fragmented, per-account networking with one consistent pattern.</li>
+            <li><b>Reduced provisioning time:</b> automated environment setup that previously took weeks of manual configuration.</li>
+            <li><b>Simplified security oversight:</b> centralized logging and monitoring across all accounts for a single, consistent audit trail.</li>
+          </ul>
+        </div>
+        <div class="outcome-box">
+          <div class="lbl">OUTCOME</div>
+          <div class="outcome-item"><div class="num">40+</div><div class="txt">AWS accounts under one consistent governance model</div></div>
+          <div class="outcome-item"><div class="num">Weeks → Hours</div><div class="txt">Reduction in new environment provisioning time</div></div>
+          <div class="outcome-item"><div class="num">One</div><div class="txt">Unified audit and monitoring view across all authorities</div></div>
+        </div>
+      </div>
+      <a class="case-deep-link" href="usecases/governance/multi-account-governance-and-networking.html">See how this was built — architecture, rollout sequence &amp; CI/CD guardrails <span class="arrow">→</span></a>
+    </div>
+
+    <div class="case reveal" data-tags="finops resilience">
+      <div class="tag">Healthcare &amp; Cost Architecture</div>
+      <h3>Modernizing legacy systems and cutting structural cost</h3>
+      <p class="ctx">On-premise clinical platforms facing scaling limits and rising infrastructure cost, alongside a broader pattern of cost-optimization work across several client engagements.</p>
+      <div class="case-body">
+        <div class="role-box">
+          <div class="lbl">MY ROLE</div>
+          <ul>
+            <li><b>Re-architected a legacy monolith:</b> decomposed an on-premise clinical application into containerized services running on managed infrastructure, removing the on-prem hardware dependency.</li>
+            <li><b>Reduced database load:</b> introduced an in-memory caching layer that meaningfully cut direct database read traffic.</li>
+            <li><b>Applied cost-aware compute design:</b> moved static server fleets to dynamic, right-sized compute across several engagements.</li>
+            <li><b>Standardized delivery pipelines:</b> automated deployment and disaster-recovery processes to reduce manual operational overhead.</li>
+          </ul>
+        </div>
+        <div class="outcome-box">
+          <div class="lbl">OUTCOME</div>
+          <div class="outcome-item"><div class="num">~50%</div><div class="txt">Reduction in direct database read load after introducing caching</div></div>
+          <div class="outcome-item"><div class="num">$300K+</div><div class="txt">Combined annual infrastructure savings identified across recent client engagements</div></div>
+          <div class="outcome-item"><div class="num">Sub-hour</div><div class="txt">Automated disaster-recovery target for the modernized platform</div></div>
+        </div>
+      </div>
+      <a class="case-deep-link" href="usecases/healthcare/clinical-platform-modernization-and-cost-optimization.html">See how this was built — service decomposition, analytics decoupling &amp; cost levers <span class="arrow">→</span></a>
+    </div>
+
+  </div>
+</section>
+
+<section id="credentials">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow" style="color:var(--accent)">Credentials</div>
+      <h2>Certifications and background</h2>
+    </div>
+    <div class="grid-2 reveal">
+      <div class="cred"><h3>AWS Certified Solutions Architect – Associate</h3><p>Amazon Web Services</p></div>
+      <div class="cred"><h3>HashiCorp Certified: Terraform Associate</h3><p>HashiCorp</p></div>
+      <div class="cred"><h3>AWS Migration Acceleration Program (MAP) — Accredited Practitioner</h3><p>AWS Partner Program</p></div>
+      <div class="cred"><h3>B.E., Mechanical Engineering</h3><p>KL University, 2010 – 2014</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="closing" id="contact" style="border-bottom:none;">
+  <div class="wrap">
+    <div class="eyebrow">What I'm looking for</div>
+    <h2>Senior architecture or advisory roles where reliability, governance, and cost discipline actually matter.</h2>
+    <p>I'm happy to go deeper on any of the engagements above, or talk through a specific problem you're working on.</p>
+    <div class="who">Prudhvi Raj Anupoju</div>
+    <div class="email"><a href="mailto:anupojuprudhvi@gmail.com">anupojuprudhvi@gmail.com</a></div>
+  </div>
+</section>
+
+<footer>© 2026 Prudhvi Raj Anupoju</footer>
+
+<script>
+(function(){
+  "use strict";
+  document.body.classList.remove('no-js');
+
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Theme toggle */
+  var root = document.documentElement;
+  var toggle = document.getElementById('themeToggle');
+  function setTheme(t){
+    if(t === 'dark'){ root.setAttribute('data-theme','dark'); } else { root.removeAttribute('data-theme'); }
+    try{ localStorage.setItem('theme', t); }catch(e){}
+  }
+  var saved = null;
+  try{ saved = localStorage.getItem('theme'); }catch(e){}
+  if(saved === 'dark' || (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)){
+    setTheme('dark');
+  }
+  toggle.addEventListener('click', function(){
+    var isDark = root.getAttribute('data-theme') === 'dark';
+    setTheme(isDark ? 'light' : 'dark');
+  });
+
+  /* Scroll reveal */
+  var revealEls = document.querySelectorAll('.reveal');
+  if(reduceMotion){
+    revealEls.forEach(function(el){ el.classList.add('in'); });
+  } else if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('in'); });
+  }
+  /* Safety net: never leave content permanently invisible */
+  setTimeout(function(){ revealEls.forEach(function(el){ el.classList.add('in'); }); }, 4000);
+
+  /* Count-up stats */
+  var counters = document.querySelectorAll('[data-count]');
+  function animateCount(el){
+    var target = parseInt(el.getAttribute('data-count'), 10) || 0;
+    var suffix = el.getAttribute('data-suffix') || '';
+    var start = 0, dur = 900, t0 = null;
+    function step(ts){
+      if(!t0) t0 = ts;
+      var p = Math.min((ts - t0) / dur, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(start + (target - start) * eased) + suffix;
+      if(p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  if(reduceMotion){
+    counters.forEach(function(el){ el.textContent = el.getAttribute('data-count') + (el.getAttribute('data-suffix')||''); });
+  } else if(counters.length && 'IntersectionObserver' in window){
+    var io2 = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ animateCount(en.target); io2.unobserve(en.target); }
+      });
+    }, { threshold: 0.6 });
+    counters.forEach(function(el){ io2.observe(el); });
+  } else {
+    counters.forEach(function(el){ el.textContent = el.getAttribute('data-count') + (el.getAttribute('data-suffix')||''); });
+  }
+
+  /* Terminal typewriter */
+  var termBody = document.getElementById('termBody');
+  var lines = [
+    { t: 'prompt', text: '$ ' },
+    { t: 'cmd', text: 'terraform plan -out=tfplan\n' },
+    { t: 'out', text: 'Plan: 3 to add, 1 to change, 0 to destroy.\n' },
+    { t: 'out', text: 'module.landing_zone.aws_organizations_account\n' },
+    { t: 'out', text: 'module.tgw_hub.aws_ec2_transit_gateway\n\n' },
+    { t: 'prompt', text: '$ ' },
+    { t: 'cmd', text: 'kubectl get nodes -l karpenter.sh/provisioner\n' },
+    { t: 'accent2', text: 'NAME                STATUS   ARCH\n' },
+    { t: 'out', text: 'ip-10-0-4-12.ec2     Ready    arm64\n' },
+    { t: 'out', text: 'ip-10-0-5-30.ec2     Ready    arm64\n\n' },
+    { t: 'prompt', text: '$ ' },
+    { t: 'cmd', text: 'echo "failover RTO: <60s ✓"' }
+  ];
+  function typeTerminal(){
+    termBody.innerHTML = '';
+    if(reduceMotion){
+      lines.forEach(function(l){
+        var s = document.createElement('span');
+        s.className = l.t;
+        s.textContent = l.text;
+        termBody.appendChild(s);
+      });
+      return;
+    }
+    var li = 0, ci = 0;
+    var span = document.createElement('span');
+    span.className = lines[0].t;
+    termBody.appendChild(span);
+    var caret = document.createElement('span');
+    caret.className = 'caret';
+    termBody.appendChild(caret);
+
+    function tick(){
+      if(li >= lines.length){ return; }
+      var cur = lines[li];
+      if(ci < cur.text.length){
+        span.textContent += cur.text.charAt(ci);
+        ci++;
+        setTimeout(tick, cur.t === 'cmd' ? 22 : 4);
+      } else {
+        li++; ci = 0;
+        if(li < lines.length){
+          span = document.createElement('span');
+          span.className = lines[li].t;
+          termBody.insertBefore(span, caret);
+          setTimeout(tick, 120);
+        }
+      }
+    }
+    tick();
+  }
+  typeTerminal();
+
+  /* Nav links: explicit scroll so behavior is consistent across browsers,
+     rather than relying only on native anchor jump + CSS scroll-behavior */
+  document.querySelectorAll('.navlinks a[href^="#"], a.brand[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      var id = a.getAttribute('href').slice(1);
+      var target = id ? document.getElementById(id) : null;
+      if(!target) return; // let default behavior handle it (e.g. "#top" with no element)
+      e.preventDefault();
+      target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      history.pushState(null, '', '#' + id);
+    });
+  });
+
+  /* Focus-area filter chips + pillar click shortcuts */
+  var chips = document.querySelectorAll('.chip');
+  var cases = document.querySelectorAll('.case');
+  function applyFilter(tag){
+    chips.forEach(function(c){
+      var isActive = c.getAttribute('data-chip') === tag;
+      c.classList.toggle('active', isActive);
+      c.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+    cases.forEach(function(cs){
+      var tags = (cs.getAttribute('data-tags') || '').split(' ');
+      var show = tag === 'all' || tags.indexOf(tag) !== -1;
+      cs.classList.toggle('dim', !show);
+    });
+  }
+  function onActivateKey(handler){
+    return function(e){
+      if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
+        e.preventDefault();
+        handler();
+      }
+    };
+  }
+  chips.forEach(function(c){
+    var handler = function(){ applyFilter(c.getAttribute('data-chip')); };
+    c.addEventListener('click', handler);
+    c.addEventListener('keydown', onActivateKey(handler));
+  });
+  document.querySelectorAll('.pillar[data-filter]').forEach(function(p){
+    p.style.cursor = 'pointer';
+    var handler = function(){
+      var tag = p.getAttribute('data-filter');
+      applyFilter(tag);
+      document.getElementById('work').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    };
+    p.addEventListener('click', handler);
+    p.addEventListener('keydown', onActivateKey(handler));
+  });
+
+  /* Interactive architecture diagram */
+  var steps = [
+    { node: 'node0', line: null,  caption: '<b>Step 1 — </b>CloudWatch detects a heartbeat failure on the primary node.' },
+    { node: 'node1', line: 'line0', caption: '<b>Step 2 — </b>An automated Lambda function is triggered to begin failover.' },
+    { node: 'node2', line: 'line1', caption: '<b>Step 3 — </b>The standby database and storage are promoted to primary.' },
+    { node: 'node3', line: 'line2', caption: '<b>Step 4 — </b>Networking is re-attached so licensing and IPs stay valid.' },
+    { node: 'node4', line: 'line3', caption: '<b>Step 5 — </b>Traffic is restored automatically — total time under 60 seconds.' }
+  ];
+  var playBtn = document.getElementById('playBtn');
+  var caption = document.getElementById('diagramCaption');
+  var playing = false;
+  function resetDiagram(){
+    document.querySelectorAll('.flow-node').forEach(function(n){ n.classList.remove('active'); });
+    document.querySelectorAll('.flow-line').forEach(function(l){ l.classList.remove('active'); });
+  }
+  function playDiagram(){
+    if(playing) return;
+    playing = true;
+    resetDiagram();
+    var i = 0;
+    var delay = reduceMotion ? 250 : 900;
+    function step(){
+      if(i >= steps.length){ playing = false; caption.innerHTML = 'Click <b>Play</b> to step through the failover sequence, end to end in under 60 seconds.'; return; }
+      var s = steps[i];
+      if(s.line){ document.getElementById(s.line).classList.add('active'); }
+      document.getElementById(s.node).classList.add('active');
+      caption.innerHTML = s.caption;
+      i++;
+      setTimeout(step, delay);
+    }
+    step();
+  }
+  playBtn.addEventListener('click', playDiagram);
+})();
+</script>
+
+</body>
+</html>
