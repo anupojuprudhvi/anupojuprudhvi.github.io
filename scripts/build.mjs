@@ -267,13 +267,38 @@ function renderBlocks(text) {
 }
 
 /* ------------------------------------------------------- scaffold sections */
+/**
+ * The request path. Each step may be a bare string, or an object with a
+ * `note` explaining what actually happens at that hop — which is the point,
+ * since a row of unexplained labels tells the reader nothing. A step marked
+ * `aside: true` is drawn off the main path (for things that aren't network
+ * hops at all, like a role being assumed).
+ */
+function flowBlock(d) {
+  if (!Array.isArray(d.flow) || !d.flow.length) return "";
+  const steps = d.flow.map((s) => (typeof s === "string" ? { step: s } : s));
+  let hop = 0; // asides sit off the path, so they don't consume a number
+  const items = steps
+    .map((s) => {
+      const aside = String(s.aside) === "true";
+      if (!aside) hop++;
+      return `<li class="reqflow-step${aside ? " is-aside" : ""}">
+<span class="reqflow-n">${aside ? "&bull;" : String(hop).padStart(2, "0")}</span>
+<span class="reqflow-name">${esc(s.step)}</span>
+${s.note ? `<span class="reqflow-note">${inline(s.note)}</span>` : ""}
+</li>`;
+    })
+    .join("\n");
+  return `<figure class="reqflow">
+${d.flowLabel ? `<figcaption class="reqflow-title">${esc(d.flowLabel)}</figcaption>` : ""}
+<ol class="reqflow-list">
+${items}
+</ol>
+</figure>`;
+}
+
 function scaffold(d) {
   if (!d.problem || !d.solution) return "";
-  const flow = Array.isArray(d.flow) && d.flow.length
-    ? `<ol class="integration-flow"${
-        d.flowLabel ? ` aria-label="${esc(d.flowLabel)}"` : ""
-      }>\n${d.flow.map((s) => `<li>${esc(s)}</li>`).join("\n")}\n</ol>`
-    : "";
   return `<div class="problem-solution">
 <div>
 <h3>The problem</h3>
@@ -284,7 +309,7 @@ ${para(d.problem)}
 ${para(d.solution)}
 </div>
 </div>
-${flow}`;
+${flowBlock(d)}`;
 }
 
 function outcomesBlock(d) {
@@ -348,7 +373,7 @@ function page(d, bodyHtml, { up, url, prev, next }) {
       ? `<section>
 <div class="wrap">
 <div class="section-eyebrow">${esc(d.label || "Use case")}</div>
-<h2>${inline(d.title)}</h2>
+<h2>${esc(d.heading || "How it works")}</h2>
 ${scaf}
 ${bodyHtml && !bodyHtml.trimStart().startsWith("<section") ? bodyHtml : ""}
 ${enables}
@@ -376,6 +401,7 @@ ${enables}
     <script src="${a("assets/theme.js")}"></script>
     <link rel="stylesheet" href="${a("assets/site.css")}" />
     <link rel="stylesheet" href="${a("assets/deepdive.css")}" />
+    <link rel="stylesheet" href="${a("assets/usecase.css")}" />
     <link rel="stylesheet" href="${a("assets/assistant.css")}" />
   </head>
   <body class="deepdive">

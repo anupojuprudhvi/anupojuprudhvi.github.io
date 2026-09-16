@@ -84,17 +84,17 @@
           <p>A four-layer landing zone, one hub-and-spoke network, and a CI/CD pipeline where an unintended apply is structurally impossible.</p>
           <p class="uc-stack">Terraform · AWS Organizations · Transit Gateway · GitHub Actions</p>
         </article>
-        <article class="uc-card" data-project="tolling" data-layer="Applications" data-tags="integration security serverless api">
+        <article class="uc-card" data-project="tolling" data-layer="Applications" data-tags="integration security api webhooks waf authentication">
           <div class="uc-meta"><span>U.S. Tolling Infrastructure</span><span>Applications</span></div>
-          <h3><a href="tolling/jsm-integration.html">Connect service-management events to private application services</a></h3>
-          <p>Webhook authentication and private backend routing, without exposing the load balancer or EKS workloads to the internet.</p>
-          <p class="uc-stack">API Gateway · Lambda authorizer · VPC Link · EKS · Terraform</p>
+          <h3><a href="tolling/jsm-integration.html">Letting a SaaS webhook reach a private service, safely</a></h3>
+          <p>Four layers of authentication in front of an internal service, where two of the architectural choices were forced by AWS platform limits rather than preference.</p>
+          <p class="uc-stack">API Gateway HTTP API · CloudFront · AWS WAF · Lambda authorizer · VPC Link · EKS · Secrets Manager</p>
         </article>
-        <article class="uc-card" data-project="tolling" data-layer="Applications" data-tags="storage security api cost">
+        <article class="uc-card" data-project="tolling" data-layer="Applications" data-tags="storage security api networking dns cost">
           <div class="uc-meta"><span>U.S. Tolling Infrastructure</span><span>Applications</span></div>
           <h3><a href="tolling/s3-image-api.html">A private image API without a proxy application to operate</a></h3>
-          <p>A private REST API integrating directly with S3 for uploads and reads — no Lambda proxy or load balancer in the transfer path.</p>
-          <p class="uc-stack">API Gateway · Amazon S3 · IAM · VPC endpoints · Terraform</p>
+          <p>Removing a load balancer and a Lambda proxy from the image path, leaving API Gateway talking to S3 directly through one shared private endpoint.</p>
+          <p class="uc-stack">API Gateway · Amazon S3 · Route 53 · VPC endpoints · IAM · Terraform</p>
         </article>
         <article class="uc-card" data-project="telecom" data-layer="Data" data-tags="resilience migration database failover encryption">
           <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Data</span></div>
