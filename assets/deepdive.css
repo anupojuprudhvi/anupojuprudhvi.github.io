@@ -448,7 +448,86 @@ pre.code .cmt {
 .deepdive .seq {
   padding-left: 12px;
 }
+.usecase-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 24px;
+}
+.usecase-links a {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  text-decoration: none;
+}
+.usecase-links a:hover {
+  border-color: var(--accent);
+}
+.usecase-links span {
+  font-size: 11px;
+  color: var(--accent);
+}
+.usecase-links strong {
+  color: var(--ink);
+  line-height: 1.4;
+}
+.usecase-links small {
+  color: var(--muted);
+  font-size: 12px;
+}
+.problem-solution {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+.problem-solution h3 {
+  font-size: 17px;
+  margin-bottom: 12px;
+}
+.problem-solution p {
+  font-size: 14px;
+}
+.integration-flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 0;
+  margin: 24px 0;
+  list-style: none;
+  counter-reset: integration-step;
+}
+.integration-flow li {
+  flex: 1 1 130px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: 6px;
+  font-size: 12px;
+}
+.integration-flow li::before {
+  counter-increment: integration-step;
+  content: counter(integration-step) " / ";
+  color: var(--accent);
+}
+.implementation-notes {
+  font-size: 14px;
+}
+.implementation-notes summary {
+  cursor: pointer;
+  color: var(--accent);
+}
+.implementation-notes ul {
+  margin-top: 18px;
+}
 @media (max-width: 640px) {
+  .usecase-links,
+  .problem-solution {
+    grid-template-columns: 1fr;
+  }
   .deepdive .hero {
     padding: 40px 0 32px;
   }

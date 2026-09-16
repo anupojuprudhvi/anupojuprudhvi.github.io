@@ -8,7 +8,7 @@
     </title>
     <meta
       name="description"
-      content="How I designed a shared AWS foundation for U.S. tolling projects across 40+ accounts, with hub-and-spoke networking, security guardrails, and automated provisioning."
+      content="Cloud infrastructure for U.S. tolling: a shared AWS foundation, JSM webhook integration with private application services, and a private S3 image upload and retrieval API."
     />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
     <link
@@ -38,18 +38,18 @@
     <main id="main">
       <header class="hero">
         <div class="wrap">
-          <div class="eyebrow">
-            Deep Dive · U.S. Tolling Infrastructure
-          </div>
+          <div class="eyebrow">Deep Dive · U.S. Tolling Infrastructure</div>
           <h1>
-            Building a shared AWS foundation for U.S. tolling platforms
+            A shared cloud foundation. Purpose-built tolling integrations.
           </h1>
           <p class="sub">
             Multiple U.S. tolling projects relied on independently built AWS
             environments to support toll collection and roadside infrastructure.
             Each had its own operational and compliance requirements. I designed
             a shared, layered landing zone across 40+ accounts to standardize
-            networking, security, and provisioning.
+            networking, security, and provisioning. On that foundation, I built
+            API integrations for service-management workflows and image
+            handling.
           </p>
           <div class="meta">
             <div>
@@ -59,23 +59,54 @@
             <div><b>Scope</b><br />40+ AWS accounts, primary + DR region</div>
             <div>
               <b>Stack</b><br />Terraform · AWS Organizations · Transit Gateway
-              · GitHub Actions
+              · API Gateway · Amazon S3 · EKS
             </div>
           </div>
         </div>
       </header>
 
-      <section>
+      <section class="usecase-overview" aria-labelledby="usecases-heading">
+        <div class="wrap">
+          <div class="section-eyebrow">Inside the tolling platform</div>
+          <h2 id="usecases-heading">
+            One infrastructure story. Three use cases.
+          </h2>
+          <p>
+            Shared foundations and application integrations, drawn from work
+            across U.S. tolling projects.
+          </p>
+          <div class="usecase-links">
+            <a href="#cloud-foundation"
+              ><span>01 / Foundation</span><strong>Standardize the cloud</strong
+              ><small>Accounts, networking, and delivery guardrails →</small></a
+            >
+            <a href="#jsm-integration"
+              ><span>02 / Service integration</span
+              ><strong>Connect JSM to private services</strong
+              ><small
+                >Webhook authentication and private backend routing →</small
+              ></a
+            >
+            <a href="#s3-image-api"
+              ><span>03 / Image handling</span
+              ><strong>Upload and retrieve images</strong
+              ><small>A private API with direct S3 integration →</small></a
+            >
+          </div>
+        </div>
+      </section>
+
+      <section id="cloud-foundation">
         <div class="wrap">
           <div class="section-eyebrow">The problem</div>
           <h2>Every account was its own island</h2>
           <p>
-            Before this work, each tolling project's AWS environment
-            had been built independently — its own network design, its own
-            security posture, its own way of provisioning a new environment.
-            That meant no consistent audit trail across the platform, security
-            tooling rolled out unevenly, and a new environment taking weeks of
-            manual configuration to stand up. For teams operating tolling
+            Before this work, each tolling project's AWS environment had been
+            built independently — its own network design, its own security
+            posture, its own way of provisioning a new environment. That meant
+            no consistent audit trail across the platform, security tooling
+            rolled out unevenly, and a new environment taking weeks of manual
+            configuration to stand up. For teams operating tolling
             infrastructure, that inconsistency is itself a risk.
           </p>
           <p>
@@ -528,6 +559,146 @@
             ship a change with a pipeline that makes the unsafe path harder than
             the safe one.
           </p>
+        </div>
+      </section>
+
+      <section id="jsm-integration">
+        <div class="wrap">
+          <div class="section-eyebrow">Use case 02 / JSM integration</div>
+          <h2>
+            Connect service-management events to private application services
+          </h2>
+          <div class="problem-solution">
+            <div>
+              <h3>The problem</h3>
+              <p>
+                Jira Service Management (JSM) and Jira Automation needed to send
+                webhook events to application services running inside the
+                tolling platform. The integration needed a reachable entry
+                point, request authentication, and a route to the backend
+                without exposing the application load balancer or EKS workloads
+                directly to the internet.
+              </p>
+            </div>
+            <div>
+              <h3>The solution I built</h3>
+              <p>
+                I used an API Gateway HTTP API with a Lambda request authorizer,
+                then routed accepted requests over a VPC Link to an internal
+                load balancer and the application services. Terraform separates
+                the gateway, authorization, and optional CloudFront edge
+                components so environments can reuse the same pattern.
+              </p>
+            </div>
+          </div>
+          <ol class="integration-flow" aria-label="JSM request path">
+            <li>JSM webhook</li>
+            <li>HTTP API + authorizer</li>
+            <li>VPC Link</li>
+            <li>Internal load balancer</li>
+            <li>EKS service</li>
+          </ol>
+          <details class="implementation-notes">
+            <summary>Architecture decisions</summary>
+            <ul>
+              <li>
+                <b>Authenticate before forwarding:</b> the authorizer supports
+                signed JWT validation, including expiry and issuer checks, with
+                configured credentials for automation requests.
+              </li>
+              <li>
+                <b>Keep the backend private:</b> VPC Link provides the
+                integration path to the internal load balancer.
+              </li>
+              <li>
+                <b>Add edge controls where configured:</b> the CloudFront
+                variant includes WAF filtering and an origin header checked by
+                the authorizer to reject requests that bypass the intended edge
+                path.
+              </li>
+              <li>
+                <b>Make the pattern repeatable:</b> shared modules and separate
+                environment roots carry the gateway configuration through
+                development, staging, and production.
+              </li>
+            </ul>
+          </details>
+          <div class="callout">
+            <b>What this enables:</b> service-management events can reach
+            private application workflows through a dedicated, authenticated
+            integration boundary. The application backend remains inside the
+            VPC.
+          </div>
+        </div>
+      </section>
+
+      <section id="s3-image-api">
+        <div class="wrap">
+          <div class="section-eyebrow">
+            Use case 03 / S3 image upload &amp; retrieval
+          </div>
+          <h2>A private image API without a proxy application to operate</h2>
+          <div class="problem-solution">
+            <div>
+              <h3>The problem</h3>
+              <p>
+                Internal tolling services needed an HTTP interface to upload and
+                retrieve images in S3. That interface had to fit a
+                shared-account network design, handle binary image data, and
+                resolve through a consistent private domain across the
+                environments that needed access.
+              </p>
+            </div>
+            <div>
+              <h3>The solution I built</h3>
+              <p>
+                I used a private API Gateway REST API with direct AWS service
+                integrations for S3 GET and PUT operations. Requests arrive
+                through approved VPC endpoints; API Gateway assumes an IAM role
+                to access S3. The image-transfer path needs neither a Lambda
+                proxy nor an application load balancer.
+              </p>
+            </div>
+          </div>
+          <ol class="integration-flow" aria-label="Private image request path">
+            <li>Internal service</li>
+            <li>Private DNS + VPC endpoint</li>
+            <li>Private REST API</li>
+            <li>IAM service role</li>
+            <li>Amazon S3</li>
+          </ol>
+          <details class="implementation-notes">
+            <summary>Architecture decisions</summary>
+            <ul>
+              <li>
+                <b>Map HTTP operations directly to storage:</b> path parameters
+                identify the bucket and object key, including nested object
+                paths.
+              </li>
+              <li>
+                <b>Handle images as binary data:</b> media-type configuration
+                and response handling preserve the image payload through the
+                gateway.
+              </li>
+              <li>
+                <b>Coordinate cross-account access:</b> private DNS, API
+                resource policies, domain invocation permissions, and VPC
+                endpoint domain associations work together to make the private
+                domain reachable.
+              </li>
+              <li>
+                <b>Make failures diagnosable:</b> access logs and explicit
+                integration responses distinguish successful uploads from access
+                and backend errors.
+              </li>
+            </ul>
+          </details>
+          <div class="callout">
+            <b>What this enables:</b> a reusable private interface for image
+            uploads and reads, with storage access handled by API Gateway and
+            IAM. Removing the proxy runtime reduces the application code that
+            needs deployment and maintenance.
+          </div>
         </div>
       </section>
 
