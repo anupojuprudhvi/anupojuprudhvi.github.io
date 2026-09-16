@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Connect service-management events to private application services — Prudhvi Raj Anupoju</title>
+    <meta name="description" content="Webhook authentication and private backend routing, without exposing the load balancer or EKS workloads to the internet." />
+    <link rel="canonical" href="https://anupojuprudhvi.github.io/usecases/tolling/jsm-integration.html" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Connect service-management events to private application services" />
+    <meta property="og:description" content="Webhook authentication and private backend routing, without exposing the load balancer or EKS workloads to the internet." />
+    <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <script src="../../assets/theme.js"></script>
+    <link rel="stylesheet" href="../../assets/site.css" />
+    <link rel="stylesheet" href="../../assets/deepdive.css" />
+    <link rel="stylesheet" href="../../assets/assistant.css" />
+  </head>
+  <body class="deepdive">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="topbar">
+      <div class="wrap">
+        <a class="back" href="../../usecases/index.html">← All use cases</a>
+        <button id="themeToggle" aria-label="Switch to light theme">☼</button>
+      </div>
+    </div>
+    <main id="main">
+      <header class="hero">
+        <div class="wrap">
+          <div class="eyebrow">U.S. Tolling Infrastructure · Service integration</div>
+          <h1>Connect service-management events to private application services</h1>
+          <p class="sub">Webhook authentication and private backend routing, without exposing the load balancer or EKS workloads to the internet.</p>
+          <div class="meta">
+            <div><b>Project</b><br />U.S. Tolling Infrastructure</div>
+            <div><b>Layer</b><br />Applications</div>
+            <div><b>Stack</b><br />API Gateway · Lambda authorizer · VPC Link · EKS · Terraform</div>
+            <div><b>Tags</b><br />integration · security · serverless · api</div>
+          </div>
+        </div>
+      </header>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Service integration</div>
+<h2>Connect service-management events to private application services</h2>
+<div class="problem-solution">
+<div>
+<h3>The problem</h3>
+<p>Jira Service Management (JSM) and Jira Automation needed to send webhook events to application services running inside the tolling platform. The integration needed a reachable entry point, request authentication, and a route to the backend without exposing the application load balancer or EKS workloads directly to the internet.</p>
+</div>
+<div>
+<h3>The solution I built</h3>
+<p>I used an API Gateway HTTP API with a Lambda request authorizer, then routed accepted requests over a VPC Link to an internal load balancer and the application services. Terraform separates the gateway, authorization, and optional CloudFront edge components so environments can reuse the same pattern.</p>
+</div>
+</div>
+<ol class="integration-flow" aria-label="JSM request path">
+<li>JSM webhook</li>
+<li>HTTP API + authorizer</li>
+<li>VPC Link</li>
+<li>Internal load balancer</li>
+<li>EKS service</li>
+</ol>
+
+<div class="callout"><b>What this enables:</b> Service-management events can reach private application workflows through a dedicated, authenticated integration boundary. The application backend remains inside the VPC.</div>
+</div>
+</section>
+<section>
+<div class="wrap">
+<details class="implementation-notes">
+<summary>Architecture decisions</summary>
+<ul>
+<li><b>Authenticate before forwarding:</b> the authorizer supports signed JWT validation, including expiry and issuer checks, with configured credentials for automation requests.</li>
+<li><b>Keep the backend private:</b> VPC Link provides the integration path to the internal load balancer.</li>
+<li><b>Add edge controls where configured:</b> the CloudFront variant includes WAF filtering and an origin header checked by the authorizer to reject requests that bypass the intended edge path.</li>
+<li><b>Make the pattern repeatable:</b> shared modules and separate environment roots carry the gateway configuration through development, staging, and production.</li>
+</ul>
+</details>
+</div>
+</section>
+
+      <aside class="next-study wrap">
+        <a href="../../usecases/tolling/cloud-foundation.html">← Standardize the cloud</a>
+        <a href="../../usecases/tolling/s3-image-api.html">Upload and retrieve images →</a>
+      </aside>
+      <div class="closing">
+        <div class="wrap">
+          <h2>Want to talk through how this would apply to your environment?</h2>
+          <p>
+            I'm happy to go deeper on any part of this — the architecture, the
+            trade-offs, or how it would adapt to a different environment.
+          </p>
+          <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
+            >anupojuprudhvi@gmail.com</a
+          >
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="wrap footer-inner">
+        <span>© 2026 Prudhvi Raj Anupoju</span
+        ><a href="../../usecases/index.html">All use cases ↗</a
+        ><a href="../../index.html#work">Back to overview ↗</a>
+      </div>
+    </footer>
+    <script src="../../assets/assistant.js" defer></script>
+    
+  </body>
+</html>

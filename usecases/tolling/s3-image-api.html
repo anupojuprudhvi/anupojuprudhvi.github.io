@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A private image API without a proxy application to operate — Prudhvi Raj Anupoju</title>
+    <meta name="description" content="A private REST API integrating directly with S3 for uploads and reads — no Lambda proxy or load balancer in the transfer path." />
+    <link rel="canonical" href="https://anupojuprudhvi.github.io/usecases/tolling/s3-image-api.html" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="A private image API without a proxy application to operate" />
+    <meta property="og:description" content="A private REST API integrating directly with S3 for uploads and reads — no Lambda proxy or load balancer in the transfer path." />
+    <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <script src="../../assets/theme.js"></script>
+    <link rel="stylesheet" href="../../assets/site.css" />
+    <link rel="stylesheet" href="../../assets/deepdive.css" />
+    <link rel="stylesheet" href="../../assets/assistant.css" />
+  </head>
+  <body class="deepdive">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="topbar">
+      <div class="wrap">
+        <a class="back" href="../../usecases/index.html">← All use cases</a>
+        <button id="themeToggle" aria-label="Switch to light theme">☼</button>
+      </div>
+    </div>
+    <main id="main">
+      <header class="hero">
+        <div class="wrap">
+          <div class="eyebrow">U.S. Tolling Infrastructure · Image handling</div>
+          <h1>A private image API without a proxy application to operate</h1>
+          <p class="sub">A private REST API integrating directly with S3 for uploads and reads — no Lambda proxy or load balancer in the transfer path.</p>
+          <div class="meta">
+            <div><b>Project</b><br />U.S. Tolling Infrastructure</div>
+            <div><b>Layer</b><br />Applications</div>
+            <div><b>Stack</b><br />API Gateway · Amazon S3 · IAM · VPC endpoints · Terraform</div>
+            <div><b>Tags</b><br />storage · security · api · cost</div>
+          </div>
+        </div>
+      </header>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Image handling</div>
+<h2>A private image API without a proxy application to operate</h2>
+<div class="problem-solution">
+<div>
+<h3>The problem</h3>
+<p>Internal tolling services needed an HTTP interface to upload and retrieve images in S3. That interface had to fit a shared-account network design, handle binary image data, and resolve through a consistent private domain across the environments that needed access.</p>
+</div>
+<div>
+<h3>The solution I built</h3>
+<p>I used a private API Gateway REST API with direct AWS service integrations for S3 GET and PUT operations. Requests arrive through approved VPC endpoints; API Gateway assumes an IAM role to access S3. The image-transfer path needs neither a Lambda proxy nor an application load balancer.</p>
+</div>
+</div>
+<ol class="integration-flow" aria-label="Private image request path">
+<li>Internal service</li>
+<li>Private DNS + VPC endpoint</li>
+<li>Private REST API</li>
+<li>IAM service role</li>
+<li>Amazon S3</li>
+</ol>
+
+<div class="callout"><b>What this enables:</b> A reusable private interface for image uploads and reads, with storage access handled by API Gateway and IAM. Removing the proxy runtime reduces the application code that needs deployment and maintenance.</div>
+</div>
+</section>
+<section>
+<div class="wrap">
+<details class="implementation-notes">
+<summary>Architecture decisions</summary>
+<ul>
+<li><b>Map HTTP operations directly to storage:</b> path parameters identify the bucket and object key, including nested object paths.</li>
+<li><b>Handle images as binary data:</b> media-type configuration and response handling preserve the image payload through the gateway.</li>
+<li><b>Coordinate cross-account access:</b> private DNS, API resource policies, domain invocation permissions, and VPC endpoint domain associations work together to make the private domain reachable.</li>
+<li><b>Make failures diagnosable:</b> access logs and explicit integration responses distinguish successful uploads from access and backend errors.</li>
+</ul>
+</details>
+</div>
+</section>
+
+      <aside class="next-study wrap">
+        <a href="../../usecases/tolling/jsm-integration.html">← Connect JSM to private services</a>
+      </aside>
+      <div class="closing">
+        <div class="wrap">
+          <h2>Want to talk through how this would apply to your environment?</h2>
+          <p>
+            I'm happy to go deeper on any part of this — the architecture, the
+            trade-offs, or how it would adapt to a different environment.
+          </p>
+          <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
+            >anupojuprudhvi@gmail.com</a
+          >
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="wrap footer-inner">
+        <span>© 2026 Prudhvi Raj Anupoju</span
+        ><a href="../../usecases/index.html">All use cases ↗</a
+        ><a href="../../index.html#work">Back to overview ↗</a>
+      </div>
+    </footer>
+    <script src="../../assets/assistant.js" defer></script>
+    
+  </body>
+</html>

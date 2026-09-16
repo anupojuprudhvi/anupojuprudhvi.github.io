@@ -1,0 +1,156 @@
+/* Use-case library page. Additive — does not touch site.css. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.uc-head {
+  padding: 72px 0 40px;
+  border-bottom: 1px solid var(--line);
+}
+.uc-head h1 {
+  font-size: clamp(36px, 4.6vw, 54px);
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  margin: 20px 0 20px;
+  max-width: 16ch;
+}
+.uc-lede {
+  max-width: 620px;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.uc-controls {
+  margin-top: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.uc-search input {
+  width: 100%;
+  max-width: 520px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+  padding: 13px 16px;
+}
+.uc-search input::placeholder {
+  color: var(--muted);
+}
+.uc-search input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-color: var(--accent);
+}
+
+.uc-list {
+  padding: 56px 0 80px;
+  border-bottom: none;
+}
+.uc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 18px;
+}
+.uc-card {
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: 7px;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: border-color 0.2s;
+}
+.uc-card:hover {
+  border-color: var(--accent);
+}
+.uc-card[hidden] {
+  display: none;
+}
+.uc-meta {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  font:
+    10px/1.6 ui-monospace,
+    monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+.uc-meta span + span {
+  color: var(--muted);
+}
+.uc-meta span + span::before {
+  content: "/ ";
+}
+.uc-card h3 {
+  font-size: 19px;
+  font-weight: 550;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+.uc-card h3 a {
+  text-decoration: none;
+}
+.uc-card h3 a:hover {
+  color: var(--accent);
+}
+.uc-card h3 a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.uc-card {
+  position: relative;
+}
+.uc-card p {
+  font-size: 13px;
+  color: var(--body);
+}
+.uc-stack {
+  margin-top: auto;
+  padding-top: 8px;
+  font:
+    10px/1.7 ui-monospace,
+    monospace;
+  color: var(--muted);
+}
+.uc-empty {
+  font-size: 14px;
+  color: var(--muted);
+  padding: 40px 0;
+}
+.uc-empty a {
+  color: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .uc-head {
+    padding: 40px 0 28px;
+  }
+  .uc-head h1 {
+    font-size: 34px;
+  }
+  .uc-grid {
+    grid-template-columns: 1fr;
+  }
+  .uc-card {
+    padding: 22px;
+  }
+  .uc-list {
+    padding: 36px 0 56px;
+  }
+}

@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Use case library — Prudhvi Raj Anupoju</title>
+    <meta
+      name="description"
+      content="A searchable library of cloud architecture use cases — governance, networking, resilience, integration and cost, drawn from enterprise AWS delivery."
+    />
+    <link rel="canonical" href="https://anupojuprudhvi.github.io/usecases/" />
+    <meta property="og:title" content="Use case library — Prudhvi Raj Anupoju" />
+    <meta
+      property="og:description"
+      content="A searchable library of cloud architecture use cases from enterprise AWS delivery."
+    />
+    <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+    <script src="../assets/theme.js"></script>
+    <link rel="stylesheet" href="../assets/site.css" />
+    <link rel="stylesheet" href="../assets/library.css" />
+    <link rel="stylesheet" href="../assets/assistant.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <nav class="topnav" aria-label="Main navigation">
+      <div class="wrap nav-inner">
+        <a class="brand" href="../index.html"
+          ><span class="monogram" aria-hidden="true">PA</span>Prudhvi Raj
+          Anupoju</a
+        >
+        <div class="navlinks">
+          <a href="../index.html#work">Selected work</a
+          ><a href="index.html" aria-current="page">Use cases</a
+          ><a href="../index.html#contact" class="nav-cta">Let's connect ↗</a
+          ><button id="themeToggle" aria-label="Switch to light theme">
+            ☼
+          </button>
+        </div>
+      </div>
+    </nav>
+    <main id="main">
+      <section class="uc-head">
+        <div class="wrap">
+          <p class="eyebrow">Use case library</p>
+          <h1>Every problem, and how it was solved.</h1>
+          <p class="uc-lede">
+            Individual engineering problems from enterprise AWS delivery —
+            each one written up with the constraint, the approach, and the
+            trade-offs. Client details are anonymized; the engineering is not.
+          </p>
+          <div class="uc-controls">
+            <label class="uc-search">
+              <span class="visually-hidden">Search use cases</span>
+              <input
+                type="search"
+                id="ucSearch"
+                placeholder="Search by problem, service, or technology…"
+                autocomplete="off"
+              />
+            </label>
+            <div class="filters" role="group" aria-label="Filter use cases">
+              <button class="filter" data-uc-filter="all" aria-pressed="true">All</button>
+              <button class="filter" data-uc-filter="project:tolling" aria-pressed="false">U.S. Tolling Infrastructure</button>
+              <button class="filter" data-uc-filter="project:telecom" aria-pressed="false">Telecom &amp; Secure Communications</button>
+              <button class="filter" data-uc-filter="project:healthcare" aria-pressed="false">Healthcare &amp; Cost Architecture</button>
+              <button class="filter" data-uc-filter="layer:Foundation" aria-pressed="false">Foundation</button>
+              <button class="filter" data-uc-filter="layer:Applications" aria-pressed="false">Applications</button>
+              <button class="filter" data-uc-filter="layer:Data" aria-pressed="false">Data</button>
+            </div>
+          </div>
+          <p class="filter-status" id="ucStatus" role="status">
+            5 use cases
+          </p>
+        </div>
+      </section>
+      <section class="uc-list">
+        <div class="wrap">
+          <div class="uc-grid" id="ucGrid">
+        <article class="uc-card" data-project="tolling" data-layer="Foundation" data-tags="governance networking terraform cicd multi-account">
+          <div class="uc-meta"><span>U.S. Tolling Infrastructure</span><span>Foundation</span></div>
+          <h3><a href="tolling/cloud-foundation.html">One governed cloud foundation under 40+ independently-run accounts</a></h3>
+          <p>A four-layer landing zone, one hub-and-spoke network, and a CI/CD pipeline where an unintended apply is structurally impossible.</p>
+          <p class="uc-stack">Terraform · AWS Organizations · Transit Gateway · GitHub Actions</p>
+        </article>
+        <article class="uc-card" data-project="tolling" data-layer="Applications" data-tags="integration security serverless api">
+          <div class="uc-meta"><span>U.S. Tolling Infrastructure</span><span>Applications</span></div>
+          <h3><a href="tolling/jsm-integration.html">Connect service-management events to private application services</a></h3>
+          <p>Webhook authentication and private backend routing, without exposing the load balancer or EKS workloads to the internet.</p>
+          <p class="uc-stack">API Gateway · Lambda authorizer · VPC Link · EKS · Terraform</p>
+        </article>
+        <article class="uc-card" data-project="tolling" data-layer="Applications" data-tags="storage security api cost">
+          <div class="uc-meta"><span>U.S. Tolling Infrastructure</span><span>Applications</span></div>
+          <h3><a href="tolling/s3-image-api.html">A private image API without a proxy application to operate</a></h3>
+          <p>A private REST API integrating directly with S3 for uploads and reads — no Lambda proxy or load balancer in the transfer path.</p>
+          <p class="uc-stack">API Gateway · Amazon S3 · IAM · VPC endpoints · Terraform</p>
+        </article>
+        <article class="uc-card" data-project="telecom" data-layer="Data" data-tags="resilience migration database failover encryption">
+          <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Data</span></div>
+          <h3><a href="telecom/zero-downtime-database-modernization-and-failover.html">Zero-downtime database modernization and automated failover</a></h3>
+          <p>An eight-major-version PostgreSQL migration to Aurora with CDC replication, plus a serverless failover engine that recovers in under 60 seconds and preserves hardware-bound licensing.</p>
+          <p class="uc-stack">Aurora PostgreSQL · AWS DMS · Lambda · DynamoDB · Terraform</p>
+        </article>
+        <article class="uc-card" data-project="healthcare" data-layer="Applications" data-tags="finops modernization kubernetes caching analytics">
+          <div class="uc-meta"><span>Healthcare &amp; Cost Architecture</span><span>Applications</span></div>
+          <h3><a href="healthcare/clinical-platform-modernization-and-cost-optimization.html">Clinical platform modernization and cost architecture</a></h3>
+          <p>Decomposing an on-premise clinical monolith into containerized services, and taking reporting load off the live database with a decoupled analytics pipeline.</p>
+          <p class="uc-stack">Amazon EKS · RDS · ElastiCache · CloudFront</p>
+        </article>
+          </div>
+          <p class="uc-empty" id="ucEmpty" hidden>
+            Nothing matched that. <a href="mailto:anupojuprudhvi@gmail.com">Ask me directly ↗</a>
+          </p>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div class="wrap footer-inner">
+        <span>© 2026 Prudhvi Raj Anupoju</span
+        ><a href="../index.html#work">Selected work ↗</a>
+      </div>
+    </footer>
+    <script src="../assets/library.js" defer></script>
+    <script src="../assets/assistant.js" defer></script>
+  </body>
+</html>

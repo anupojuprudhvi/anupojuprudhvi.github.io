@@ -3,21 +3,34 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>
-      Deep Dive: U.S. Tolling Cloud Infrastructure — Prudhvi Raj Anupoju
-    </title>
+    <title>U.S. Tolling Infrastructure — Prudhvi Raj Anupoju</title>
     <meta
       name="description"
-      content="Cloud infrastructure for U.S. tolling: a shared AWS foundation, JSM webhook integration with private application services, and a private S3 image upload and retrieval API."
+      content="A shared AWS landing zone across 40+ accounts for U.S. tolling projects, plus the service-management and image-handling integrations built on top of it."
     />
-    <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
     <link
       rel="canonical"
       href="https://anupojuprudhvi.github.io/usecases/governance/multi-account-governance-and-networking.html"
     />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:title"
+      content="U.S. Tolling Infrastructure — Prudhvi Raj Anupoju"
+    />
+    <meta
+      property="og:description"
+      content="One shared cloud foundation across 40+ AWS accounts, and the purpose-built tolling integrations on top of it."
+    />
+    <meta
+      property="og:image"
+      content="https://anupojuprudhvi.github.io/og-image.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
     <script src="../../assets/theme.js"></script>
     <link rel="stylesheet" href="../../assets/site.css" />
     <link rel="stylesheet" href="../../assets/deepdive.css" />
+    <link rel="stylesheet" href="../../assets/assistant.css" />
   </head>
   <body class="deepdive">
     <a class="skip-link" href="#main">Skip to content</a>
@@ -25,20 +38,14 @@
     <div class="topbar">
       <div class="wrap">
         <a class="back" href="../../index.html#work">← Back to overview</a>
-        <button
-          id="themeToggle"
-          aria-label="Toggle dark mode"
-          title="Toggle theme"
-        >
-          ◐
-        </button>
+        <button id="themeToggle" aria-label="Switch to light theme">☼</button>
       </div>
     </div>
 
     <main id="main">
       <header class="hero">
         <div class="wrap">
-          <div class="eyebrow">Deep Dive · U.S. Tolling Infrastructure</div>
+          <div class="eyebrow">Engagement · U.S. Tolling Infrastructure</div>
           <h1>
             A shared cloud foundation. Purpose-built tolling integrations.
           </h1>
@@ -58,8 +65,8 @@
             </div>
             <div><b>Scope</b><br />40+ AWS accounts, primary + DR region</div>
             <div>
-              <b>Stack</b><br />Terraform · AWS Organizations · Transit Gateway
-              · API Gateway · Amazon S3 · EKS
+              <b>Stack</b><br />Terraform · AWS Organizations · Transit Gateway ·
+              API Gateway · Amazon S3 · EKS
             </div>
           </div>
         </div>
@@ -73,21 +80,22 @@
           </h2>
           <p>
             Shared foundations and application integrations, drawn from work
-            across U.S. tolling projects.
+            across U.S. tolling projects. Each use case is written up on its own
+            page — the constraint, the approach, and the trade-offs.
           </p>
           <div class="usecase-links">
-            <a href="#cloud-foundation"
+            <a href="../tolling/cloud-foundation.html"
               ><span>01 / Foundation</span><strong>Standardize the cloud</strong
               ><small>Accounts, networking, and delivery guardrails →</small></a
             >
-            <a href="#jsm-integration"
+            <a href="../tolling/jsm-integration.html"
               ><span>02 / Service integration</span
               ><strong>Connect JSM to private services</strong
               ><small
                 >Webhook authentication and private backend routing →</small
               ></a
             >
-            <a href="#s3-image-api"
+            <a href="../tolling/s3-image-api.html"
               ><span>03 / Image handling</span
               ><strong>Upload and retrieve images</strong
               ><small>A private API with direct S3 integration →</small></a
@@ -96,9 +104,9 @@
         </div>
       </section>
 
-      <section id="cloud-foundation">
+      <section>
         <div class="wrap">
-          <div class="section-eyebrow">The problem</div>
+          <div class="section-eyebrow">Why it was needed</div>
           <h2>Every account was its own island</h2>
           <p>
             Before this work, each tolling project's AWS environment had been
@@ -113,425 +121,10 @@
             The brief was to design a single governance model that every account
             — present and future — would inherit automatically, without slowing
             engineering teams down or requiring them to understand the
-            underlying plumbing.
+            underlying plumbing. The foundation use case covers how that was
+            built; the two integration use cases show what it then made
+            possible.
           </p>
-        </div>
-      </section>
-
-      <section>
-        <div class="wrap">
-          <div class="section-eyebrow">Architecture</div>
-          <h2>A four-layer landing zone, deployed bottom-up</h2>
-          <p>
-            I organized the entire platform into four dependency-ordered
-            Terraform layers, each one only allowed to depend on the layer
-            beneath it. That constraint is what keeps the blast radius of any
-            single change small and the deployment order unambiguous.
-          </p>
-
-          <div class="layers">
-            <div class="layer">
-              <div class="lhead">
-                <span class="lnum">03</span>
-                <h3>Applications</h3>
-              </div>
-              <div class="chips">
-                <span class="chip">API Gateway + Lambda</span>
-                <span class="chip">Aurora PostgreSQL</span>
-                <span class="chip">S3 &amp; EFS storage</span>
-                <span class="chip">SQS / SNS messaging</span>
-                <span class="chip">QuickSight BI</span>
-              </div>
-            </div>
-            <div class="layer-arrow">↑ depends on</div>
-            <div class="layer">
-              <div class="lhead">
-                <span class="lnum">02</span>
-                <h3>Shared Services</h3>
-              </div>
-              <div class="chips">
-                <span class="chip">Self-hosted HA identity provider</span>
-                <span class="chip">CI/CD controller</span>
-                <span class="chip">Bastion hosts</span>
-                <span class="chip">DNS &amp; certificates</span>
-                <span class="chip">EDR + vulnerability scanning</span>
-              </div>
-            </div>
-            <div class="layer-arrow">↑ depends on</div>
-            <div class="layer">
-              <div class="lhead">
-                <span class="lnum">01</span>
-                <h3>Core Network</h3>
-              </div>
-              <div class="chips">
-                <span class="chip">Transit Gateway hub</span>
-                <span class="chip">Spoke VPCs per account</span>
-                <span class="chip">Site-to-Site VPN</span>
-                <span class="chip">Centralized VPC endpoints</span>
-              </div>
-            </div>
-            <div class="layer-arrow">↑ depends on</div>
-            <div class="layer">
-              <div class="lhead">
-                <span class="lnum">00</span>
-                <h3>Foundation</h3>
-              </div>
-              <div class="chips">
-                <span class="chip">AWS Organizations &amp; SCPs</span>
-                <span class="chip">Centralized logging &amp; GuardDuty</span>
-                <span class="chip">Terraform remote state</span>
-                <span class="chip">OIDC federation for CI/CD</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="callout">
-            <b>Why layers, not one big Terraform config:</b> state is decoupled
-            between layers via remote-state lookups, so a change to an
-            application never risks touching the network hub, and a new account
-            only ever needs to run the layers it's missing — not rebuild the
-            platform from scratch.
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <div class="wrap">
-          <div class="section-eyebrow">Networking</div>
-          <h2>Hub-and-spoke, not point-to-point</h2>
-          <p>
-            Every account's VPC attaches to one central Transit Gateway rather
-            than maintaining its own peering relationships and its own path to
-            on-premises systems. A mirrored hub in a secondary region handles
-            disaster recovery, so failover is a routing decision, not a rebuild.
-          </p>
-
-          <div class="hubwrap">
-            <div class="diagram-top">
-              <h3 style="font-size: 15.5px">
-                How a request actually moves through the hub
-              </h3>
-              <button id="tgwPlayBtn">▶ Show traffic flow</button>
-            </div>
-            <div class="hub-legend">
-              <span class="lg-dot lg-public"></span> Public entry (edge + DNS)
-              <span class="lg-dot lg-internal"></span> Internal, hub-routed path
-            </div>
-            <div
-              class="diagram-scroll"
-              role="region"
-              aria-label="Architecture diagram"
-              tabindex="0"
-            >
-              <svg
-                role="img"
-                aria-label="Architecture flow diagram; the following walkthrough explains the sequence"
-                class="hub-svg"
-                viewBox="0 -150 720 520"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <!-- Group boxes -->
-                <rect
-                  class="hub-groupbox"
-                  x="12"
-                  y="55"
-                  width="156"
-                  height="265"
-                  rx="14"
-                />
-                <text class="hub-group-label" x="90" y="42">
-                  GOVERNANCE &amp; COMPLIANCE
-                </text>
-                <rect
-                  class="hub-groupbox"
-                  x="552"
-                  y="-20"
-                  width="156"
-                  height="360"
-                  rx="14"
-                />
-                <text class="hub-group-label" x="630" y="-27">
-                  WORKLOAD ACCOUNTS
-                </text>
-
-                <path class="hub-line" id="hl-security" d="M360,175 L90,100" />
-                <path class="hub-line" id="hl-archive" d="M360,175 L90,275" />
-                <path class="hub-line" id="hl-shared" d="M360,175 L630,25" />
-                <path class="hub-line" id="hl-prod" d="M360,175 L630,115" />
-                <path class="hub-line" id="hl-devstg" d="M360,175 L630,205" />
-                <path
-                  class="hub-line"
-                  id="hl-dr"
-                  d="M360,175 L630,295"
-                  stroke-dasharray="5,4"
-                />
-                <path
-                  class="hub-line public"
-                  id="hl-internet"
-                  d="M630,-75 L630,0"
-                />
-
-                <circle
-                  class="hub-pulse"
-                  id="hubPulse"
-                  r="6"
-                  cx="360"
-                  cy="175"
-                />
-
-                <text
-                  x="630"
-                  y="-58"
-                  text-anchor="middle"
-                  font-size="10.5"
-                  fill="var(--muted)"
-                  font-family="Inter,sans-serif"
-                >
-                  CloudFront + WAF → Route 53
-                </text>
-
-                <g class="hub-node public" id="hn-internet">
-                  <rect
-                    x="570"
-                    y="-125"
-                    width="120"
-                    height="50"
-                    rx="10"
-                    stroke-dasharray="4,3"
-                  />
-                  <text x="630" y="-104" text-anchor="middle" font-weight="600">
-                    Internet
-                  </text>
-                  <text x="630" y="-89" text-anchor="middle" opacity=".7">
-                    End Users
-                  </text>
-                </g>
-
-                <g class="hub-node center" id="hn-hub">
-                  <rect x="300" y="150" width="120" height="50" rx="10" />
-                  <text x="360" y="171" text-anchor="middle" font-weight="600">
-                    Transit Gateway
-                  </text>
-                  <text x="360" y="186" text-anchor="middle" opacity=".75">
-                    Networking Hub
-                  </text>
-                </g>
-
-                <g class="hub-node" id="hn-security">
-                  <rect x="30" y="75" width="120" height="50" rx="10" />
-                  <text x="90" y="96" text-anchor="middle" font-weight="600">
-                    Security
-                  </text>
-                  <text x="90" y="111" text-anchor="middle" opacity=".7">
-                    Account
-                  </text>
-                </g>
-                <g class="hub-node" id="hn-archive">
-                  <rect x="30" y="250" width="120" height="50" rx="10" />
-                  <text x="90" y="271" text-anchor="middle" font-weight="600">
-                    Archive
-                  </text>
-                  <text x="90" y="286" text-anchor="middle" opacity=".7">
-                    &amp; Migration
-                  </text>
-                </g>
-
-                <g class="hub-node" id="hn-shared">
-                  <rect x="570" y="0" width="120" height="50" rx="10" />
-                  <text x="630" y="21" text-anchor="middle" font-weight="600">
-                    Shared Services
-                  </text>
-                  <text x="630" y="36" text-anchor="middle" opacity=".7">
-                    Route 53 · Identity
-                  </text>
-                </g>
-                <g class="hub-node" id="hn-prod">
-                  <rect x="570" y="90" width="120" height="50" rx="10" />
-                  <text x="630" y="111" text-anchor="middle" font-weight="600">
-                    Production
-                  </text>
-                  <text x="630" y="126" text-anchor="middle" opacity=".7">
-                    Accounts
-                  </text>
-                </g>
-                <g class="hub-node" id="hn-devstg">
-                  <rect x="570" y="180" width="120" height="50" rx="10" />
-                  <text x="630" y="201" text-anchor="middle" font-weight="600">
-                    Dev / Staging
-                  </text>
-                  <text x="630" y="216" text-anchor="middle" opacity=".7">
-                    Accounts
-                  </text>
-                </g>
-                <g class="hub-node" id="hn-dr">
-                  <rect x="570" y="270" width="120" height="50" rx="10" />
-                  <text x="630" y="291" text-anchor="middle" font-weight="600">
-                    DR Region
-                  </text>
-                  <text x="630" y="306" text-anchor="middle" opacity=".7">
-                    Standby Hub
-                  </text>
-                </g>
-              </svg>
-            </div>
-            <div class="hub-caption" id="hubCaption" aria-live="polite">
-              Click <b>Show traffic flow</b> to follow a public request in
-              through the edge, and see how it's then distributed like any other
-              hub-routed traffic.
-            </div>
-          </div>
-          <p style="font-size: 13.5px; color: var(--muted); margin-top: 10px">
-            Security and Archive &amp; Migration are kept as a lightweight
-            <b>governance and compliance stack</b> — audit, guardrails,
-            long-term retention — structurally separate from the accounts that
-            actually run workloads. Every account in either group still connects
-            to the same single hub.
-          </p>
-          <p style="font-size: 14px; color: var(--muted); margin-top: 14px">
-            To be precise about the path: a public request hits CloudFront
-            first, with a WAF in front of it, then resolves through Route 53 —
-            both the public zone for the domain and the private zones used for
-            internal service discovery — hosted in the Shared Services account.
-            From there it reaches the Transit Gateway in the Networking account
-            and gets distributed to whichever account actually owns the
-            workload, Production included. It's one entry point, not a separate
-            ingress path per account.
-          </p>
-        </div>
-      </section>
-
-      <section>
-        <div class="wrap">
-          <div class="section-eyebrow">Rollout</div>
-          <h2>A strict, dependency-ordered build sequence</h2>
-          <p>
-            Because every layer depends only on the one below it, the entire
-            platform — or a single new account joining it — follows the same
-            fixed sequence. In practice this turned a bespoke, multi-week
-            onboarding into a repeatable checklist:
-          </p>
-          <div class="seq">
-            <div class="seq-item">
-              <h3>Organization &amp; guardrails</h3>
-              <p>
-                Stand up the AWS Organization, service control policies, and
-                centralized logging before anything else exists.
-              </p>
-            </div>
-            <div class="seq-item">
-              <h3>Primary network hub</h3>
-              <p>
-                Deploy the Transit Gateway and attach the first wave of spoke
-                VPCs.
-              </p>
-            </div>
-            <div class="seq-item">
-              <h3>DR network hub</h3>
-              <p>
-                Stand up the mirrored hub in the secondary region so failover
-                has somewhere to go.
-              </p>
-            </div>
-            <div class="seq-item">
-              <h3>Shared services</h3>
-              <p>
-                Bastion access, DNS, certificates, identity, and security
-                tooling — the layer every application depends on.
-              </p>
-            </div>
-            <div class="seq-item">
-              <h3>Applications, per account</h3>
-              <p>
-                Databases, storage, messaging, and the workload stack itself,
-                brought up once its dependencies are confirmed live.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <div class="wrap">
-          <div class="section-eyebrow">CI/CD</div>
-          <h2>Designing so a mistake literally cannot ship</h2>
-          <p>
-            Terraform changes are safe to review but dangerous to run carelessly
-            against 40+ live accounts, so I built the pipeline to make an
-            unintended <code>apply</code> structurally impossible rather than
-            relying on people remembering to be careful. Every module inherits
-            one shared pipeline engine instead of copy-pasted YAML, and every
-            run is confined to exactly one module and one environment.
-          </p>
-
-          <div
-            class="table-scroll"
-            role="region"
-            aria-label="Technical comparison"
-            tabindex="0"
-          >
-            <table class="gtable">
-              <tr>
-                <th>Layer</th>
-                <th>Guardrail</th>
-              </tr>
-              <tr>
-                <td class="gnum">1</td>
-                <td>
-                  Pull requests can only ever trigger a read-only <b>plan</b> —
-                  the automated PR job has no <code>apply</code> step to run,
-                  full stop.
-                </td>
-              </tr>
-              <tr>
-                <td class="gnum">2</td>
-                <td>
-                  That plan job assumes an IAM role scoped to AWS-managed
-                  read-only access — even a compromised or misconfigured
-                  workflow is hard-rejected by AWS itself if it attempts a
-                  write.
-                </td>
-              </tr>
-              <tr>
-                <td class="gnum">3</td>
-                <td>
-                  A manual deploy defaults to a dry-run plan. Actually changing
-                  infrastructure requires explicitly unchecking a "plan only"
-                  flag.
-                </td>
-              </tr>
-              <tr>
-                <td class="gnum">4</td>
-                <td>
-                  Applying still requires typing the exact target environment
-                  name as a confirmation string — a typo or a copy-paste from
-                  the wrong run aborts the pipeline before Terraform runs at
-                  all.
-                </td>
-              </tr>
-              <tr>
-                <td class="gnum">5</td>
-                <td>
-                  The apply step itself is conditionally skipped in the workflow
-                  definition unless every prior check passed — it's not a
-                  policy, it's how the job graph is built.
-                </td>
-              </tr>
-            </table>
-          </div>
-
-          <p>
-            The result: onboarding a brand-new module into this pipeline takes
-            under two minutes of YAML, but no engineer — however new — can
-            accidentally run <code>terraform apply</code> against production by
-            clicking the wrong button.
-          </p>
-        </div>
-      </section>
-
-      <section>
-        <div class="wrap">
-          <div class="section-eyebrow">Outcome</div>
-          <h2>What changed</h2>
           <div class="outcomes">
             <div class="outcome">
               <div class="num">40+</div>
@@ -540,7 +133,7 @@
               </div>
             </div>
             <div class="outcome">
-              <div class="num">Weeks → Hours</div>
+              <div class="num">Weeks to hours</div>
               <div class="txt">
                 Time to provision a fully governed new environment
               </div>
@@ -552,163 +145,17 @@
               </div>
             </div>
           </div>
-          <p>
-            Beyond the numbers, the platform stopped depending on any one
-            person's tribal knowledge. A new engineer can read the layer they're
-            touching, trust that everything beneath it is already governed, and
-            ship a change with a pipeline that makes the unsafe path harder than
-            the safe one.
-          </p>
-        </div>
-      </section>
-
-      <section id="jsm-integration">
-        <div class="wrap">
-          <div class="section-eyebrow">Use case 02 / JSM integration</div>
-          <h2>
-            Connect service-management events to private application services
-          </h2>
-          <div class="problem-solution">
-            <div>
-              <h3>The problem</h3>
-              <p>
-                Jira Service Management (JSM) and Jira Automation needed to send
-                webhook events to application services running inside the
-                tolling platform. The integration needed a reachable entry
-                point, request authentication, and a route to the backend
-                without exposing the application load balancer or EKS workloads
-                directly to the internet.
-              </p>
-            </div>
-            <div>
-              <h3>The solution I built</h3>
-              <p>
-                I used an API Gateway HTTP API with a Lambda request authorizer,
-                then routed accepted requests over a VPC Link to an internal
-                load balancer and the application services. Terraform separates
-                the gateway, authorization, and optional CloudFront edge
-                components so environments can reuse the same pattern.
-              </p>
-            </div>
-          </div>
-          <ol class="integration-flow" aria-label="JSM request path">
-            <li>JSM webhook</li>
-            <li>HTTP API + authorizer</li>
-            <li>VPC Link</li>
-            <li>Internal load balancer</li>
-            <li>EKS service</li>
-          </ol>
-          <details class="implementation-notes">
-            <summary>Architecture decisions</summary>
-            <ul>
-              <li>
-                <b>Authenticate before forwarding:</b> the authorizer supports
-                signed JWT validation, including expiry and issuer checks, with
-                configured credentials for automation requests.
-              </li>
-              <li>
-                <b>Keep the backend private:</b> VPC Link provides the
-                integration path to the internal load balancer.
-              </li>
-              <li>
-                <b>Add edge controls where configured:</b> the CloudFront
-                variant includes WAF filtering and an origin header checked by
-                the authorizer to reject requests that bypass the intended edge
-                path.
-              </li>
-              <li>
-                <b>Make the pattern repeatable:</b> shared modules and separate
-                environment roots carry the gateway configuration through
-                development, staging, and production.
-              </li>
-            </ul>
-          </details>
-          <div class="callout">
-            <b>What this enables:</b> service-management events can reach
-            private application workflows through a dedicated, authenticated
-            integration boundary. The application backend remains inside the
-            VPC.
-          </div>
-        </div>
-      </section>
-
-      <section id="s3-image-api">
-        <div class="wrap">
-          <div class="section-eyebrow">
-            Use case 03 / S3 image upload &amp; retrieval
-          </div>
-          <h2>A private image API without a proxy application to operate</h2>
-          <div class="problem-solution">
-            <div>
-              <h3>The problem</h3>
-              <p>
-                Internal tolling services needed an HTTP interface to upload and
-                retrieve images in S3. That interface had to fit a
-                shared-account network design, handle binary image data, and
-                resolve through a consistent private domain across the
-                environments that needed access.
-              </p>
-            </div>
-            <div>
-              <h3>The solution I built</h3>
-              <p>
-                I used a private API Gateway REST API with direct AWS service
-                integrations for S3 GET and PUT operations. Requests arrive
-                through approved VPC endpoints; API Gateway assumes an IAM role
-                to access S3. The image-transfer path needs neither a Lambda
-                proxy nor an application load balancer.
-              </p>
-            </div>
-          </div>
-          <ol class="integration-flow" aria-label="Private image request path">
-            <li>Internal service</li>
-            <li>Private DNS + VPC endpoint</li>
-            <li>Private REST API</li>
-            <li>IAM service role</li>
-            <li>Amazon S3</li>
-          </ol>
-          <details class="implementation-notes">
-            <summary>Architecture decisions</summary>
-            <ul>
-              <li>
-                <b>Map HTTP operations directly to storage:</b> path parameters
-                identify the bucket and object key, including nested object
-                paths.
-              </li>
-              <li>
-                <b>Handle images as binary data:</b> media-type configuration
-                and response handling preserve the image payload through the
-                gateway.
-              </li>
-              <li>
-                <b>Coordinate cross-account access:</b> private DNS, API
-                resource policies, domain invocation permissions, and VPC
-                endpoint domain associations work together to make the private
-                domain reachable.
-              </li>
-              <li>
-                <b>Make failures diagnosable:</b> access logs and explicit
-                integration responses distinguish successful uploads from access
-                and backend errors.
-              </li>
-            </ul>
-          </details>
-          <div class="callout">
-            <b>What this enables:</b> a reusable private interface for image
-            uploads and reads, with storage access handled by API Gateway and
-            IAM. Removing the proxy runtime reduces the application code that
-            needs deployment and maintenance.
-          </div>
         </div>
       </section>
 
       <aside class="next-study wrap">
-        <span class="eyebrow">Continue exploring</span
+        <a href="../index.html">← All use cases</a
         ><a
           href="../healthcare/clinical-platform-modernization-and-cost-optimization.html"
           >Explore clinical platform modernization →</a
         >
       </aside>
+
       <div class="closing">
         <div class="wrap">
           <h2>
@@ -725,173 +172,15 @@
         </div>
       </div>
     </main>
+
     <footer>
       <div class="wrap footer-inner">
         <span>© 2026 Prudhvi Raj Anupoju</span
+        ><a href="../index.html">All use cases ↗</a
         ><a href="../../index.html#work">All selected work ↗</a>
       </div>
     </footer>
 
-    <script>
-      (function () {
-        "use strict";
-        /* Transit Gateway traffic-flow animation */
-        var reduceMotion =
-          window.matchMedia &&
-          window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        var HUB = { x: 360, y: 175 };
-        var DEFAULT_CAPTION =
-          "Click <b>Show traffic flow</b> to follow a public request in through the edge, and see how it’s then distributed like any other hub-routed traffic.";
-        var SHARED = { x: 630, y: 25 };
-        var steps = [
-          {
-            line: "hl-internet",
-            from: { x: 630, y: -75 },
-            to: SHARED,
-            nodes: ["hn-internet", "hn-shared"],
-            caption:
-              "A public request hits <b>CloudFront</b> (with a WAF in front of it) and resolves through <b>Route 53</b> — both the public and private hosted zones live in the Shared Services account.",
-          },
-          {
-            line: "hl-shared",
-            from: SHARED,
-            to: HUB,
-            nodes: ["hn-shared", "hn-hub"],
-            caption:
-              "From Shared Services, it reaches the <b>Transit Gateway</b> in the Networking account — the same hub every other account uses.",
-          },
-          {
-            line: "hl-prod",
-            from: HUB,
-            to: { x: 630, y: 115 },
-            nodes: ["hn-hub", "hn-prod"],
-            caption:
-              "From the hub it’s distributed into the <b>Production</b> account like any other hub-routed traffic — there’s no separate ingress path to maintain. A test endpoint in Dev would arrive exactly the same way.",
-          },
-          {
-            line: "hl-security",
-            from: HUB,
-            to: { x: 90, y: 100 },
-            nodes: ["hn-hub", "hn-security"],
-            caption:
-              "The governance stack is reachable the same way — say, a centralized auth check against the <b>Security account</b> — even though it runs no workloads itself.",
-          },
-          {
-            line: "hl-devstg",
-            from: HUB,
-            to: { x: 630, y: 205 },
-            nodes: ["hn-hub", "hn-devstg"],
-            caption:
-              "<b>Dev/Staging</b> traffic rides the same hub but is isolated by routing policy from production paths.",
-          },
-          {
-            line: "hl-prod",
-            from: HUB,
-            to: { x: 630, y: 115 },
-            nodes: ["hn-hub", "hn-prod"],
-            caption:
-              "<b>Production</b>’s own outbound calls — to a database or a shared service — rejoin the same governed, logged path back through the hub.",
-          },
-          {
-            line: "hl-archive",
-            from: HUB,
-            to: { x: 90, y: 275 },
-            nodes: ["hn-hub", "hn-archive"],
-            caption:
-              "<b>Archive &amp; migration</b> — the other half of the governance stack — uses the identical pattern, no special-cased networking to maintain.",
-          },
-          {
-            line: "hl-dr",
-            from: HUB,
-            to: { x: 630, y: 295 },
-            nodes: ["hn-hub", "hn-dr"],
-            caption:
-              "If the primary hub is unavailable, routing shifts to the <b>DR region’s</b> standby hub instead.",
-          },
-        ];
-        var playBtn = document.getElementById("tgwPlayBtn");
-        var pulse = document.getElementById("hubPulse");
-        var tgwCaption = document.getElementById("hubCaption");
-        var tgwPlaying = false;
-
-        function resetTgw() {
-          document.querySelectorAll(".hub-line").forEach(function (l) {
-            l.classList.remove("active");
-          });
-          document.querySelectorAll(".hub-node").forEach(function (n) {
-            n.classList.remove("active");
-          });
-          pulse.style.opacity = 0;
-        }
-
-        function animatePulse(fromX, fromY, toX, toY, duration, cb) {
-          pulse.setAttribute("cx", fromX);
-          pulse.setAttribute("cy", fromY);
-          if (reduceMotion) {
-            pulse.setAttribute("cx", toX);
-            pulse.setAttribute("cy", toY);
-            cb();
-            return;
-          }
-          var t0 = null;
-          pulse.style.opacity = 1;
-          function frame(ts) {
-            if (!t0) t0 = ts;
-            var p = Math.min((ts - t0) / duration, 1);
-            pulse.setAttribute("cx", fromX + (toX - fromX) * p);
-            pulse.setAttribute("cy", fromY + (toY - fromY) * p);
-            if (p < 1) {
-              requestAnimationFrame(frame);
-            } else {
-              cb();
-            }
-          }
-          requestAnimationFrame(frame);
-        }
-
-        function playTraffic() {
-          if (tgwPlaying) return;
-          tgwPlaying = true;
-          resetTgw();
-          var i = 0;
-          function nextStep() {
-            if (i >= steps.length) {
-              tgwPlaying = false;
-              resetTgw();
-              tgwCaption.innerHTML = DEFAULT_CAPTION;
-              return;
-            }
-            var s = steps[i];
-            document.getElementById(s.line).classList.add("active");
-            s.nodes.forEach(function (id) {
-              document.getElementById(id).classList.add("active");
-            });
-            tgwCaption.innerHTML = s.caption;
-            animatePulse(
-              s.from.x,
-              s.from.y,
-              s.to.x,
-              s.to.y,
-              reduceMotion ? 1 : 550,
-              function () {
-                setTimeout(
-                  function () {
-                    document.getElementById(s.line).classList.remove("active");
-                    s.nodes.forEach(function (id) {
-                      document.getElementById(id).classList.remove("active");
-                    });
-                    i++;
-                    nextStep();
-                  },
-                  reduceMotion ? 250 : 500,
-                );
-              },
-            );
-          }
-          nextStep();
-        }
-        playBtn.addEventListener("click", playTraffic);
-      })();
-    </script>
+    <script src="../../assets/assistant.js" defer></script>
   </body>
 </html>
