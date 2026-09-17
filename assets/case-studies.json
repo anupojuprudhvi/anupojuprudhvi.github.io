@@ -413,5 +413,115 @@
     "url": "case-studies/healthcare/clinical-platform-modernization-and-cost-optimization.html",
     "problem": "An on-premise clinical platform past the scaling limits of fixed hardware, where heavy reporting queries competed with real-time device ingestion on the same database.",
     "solution": "Containerized microservices on managed Kubernetes, an in-memory caching layer, and a streaming analytics pipeline so dashboards never touch the operational database."
+  },
+  {
+    "title": "Institutional digital asset platform · AWS MAP assess and directional business case",
+    "nav": "Digital asset platform MAP assess",
+    "summary": "Executing an agentless VMware inventory discovery, resolving a JumpCloud-to-Identity Center SAML blocker, and delivering an executive Directional Business Case (DBC) for an institutional financial data platform.",
+    "project": "partner-engagements",
+    "projectName": "AWS APN & Migration Engagements",
+    "layer": "Strategy & Discovery",
+    "stack": [
+      "AWS Transform",
+      "VMware vCenter",
+      "RVTools",
+      "AWS IAM Identity Center",
+      "JumpCloud SAML",
+      "AWS CAF"
+    ],
+    "tags": [
+      "migration",
+      "map-assess",
+      "tco",
+      "vmware",
+      "identity-center",
+      "finops",
+      "enterprise"
+    ],
+    "url": "case-studies/partner-engagements/fintech-map-assess-business-case.html",
+    "problem": "An institutional digital asset and accounting platform running on-premises in VMware required a comprehensive evaluation for migration to AWS under the Migration Acceleration Program (MAP). To unlock executive sponsorship and AWS MAP co-funding, the engineering and finance leadership required empirical utilization baselines, right-sized EC2 compute recommendations, licensing optimization models, and a formal 6-pillar Migration Readiness Assessment (MRA). Furthermore, the client's existing JumpCloud SAML integration blocked access to AWS Transform workspaces, and strict financial compliance demanded a zero-agent discovery methodology.",
+    "solution": "I designed and executed a dual-path discovery architecture utilizing automated RVTools exports alongside an agentless AWS Transform OVA collector deployed directly into the private VMware vCenter cluster. To resolve the authentication deadlock, I engineered an identity bridge configuring JumpCloud as an external IdP for AWS IAM Identity Center via SAML and SCIM sync, allowing coexistence with legacy access. The ingested telemetry was evaluated in AWS Transform to produce a 3-year Directional Business Case (DBC), licensing comparison (BYOL vs. License Included), and a phased 7Rs workload migration roadmap."
+  },
+  {
+    "title": "Global media and localization platform · Cross-region MAP migration assessment",
+    "nav": "Global media MAP assessment",
+    "summary": "Inventory profiling and cloud transformation strategy across multi-region US and EU on-premises data centers, sizing high-capacity media storage, compute clusters, and localized workflows under AWS MAP.",
+    "project": "partner-engagements",
+    "projectName": "AWS APN & Migration Engagements",
+    "layer": "Strategy & Infrastructure",
+    "stack": [
+      "AWS Application Discovery",
+      "AWS MAP",
+      "Excel Analytics",
+      "Multi-Region Profiling",
+      "TCO Modeling"
+    ],
+    "tags": [
+      "migration",
+      "map",
+      "media",
+      "cross-region",
+      "tco",
+      "storage",
+      "finops"
+    ],
+    "url": "case-studies/partner-engagements/media-cross-region-map-migration.html",
+    "problem": "A global media localization, subtitling, and dubbing enterprise operated multi-petabyte media processing pipelines distributed across physical data centers in North America and Europe. The decentralized infrastructure footprint suffered from inconsistent visibility, spiraling on-premise SAN/NAS storage expansion costs, and fragmented licensing agreements across continents. Preparing for an enterprise-wide cloud transition under the AWS Migration Acceleration Program (MAP) required categorizing over 600 virtual and physical servers, analyzing transcode utilization peaks, and establishing a defensible multi-year Total Cost of Ownership (TCO) model.",
+    "solution": "I led the cross-region technical discovery and transformation analysis across both US and EU infrastructure environments. By normalizing inventory exports and workload telemetry, I mapped legacy render/transcode clusters to dynamic Amazon EC2 Graviton and Spot instance fleets, and architected tiered storage strategies (Amazon S3 Standard to Glacier Deep Archive) for multi-petabyte media catalogs. I authored the formal Migration Readiness Assessment (MRA) findings, established phase-wise success criteria, and presented the final financial TCO deck to C-level stakeholders."
+  },
+  {
+    "title": "Connected IoT and telemetry platform · Monolith to AWS cloud migration and service mapping",
+    "nav": "Connected IoT cloud migration",
+    "summary": "Modernizing a connected device platform from on-premise monolithic servers to high-throughput AWS managed services, establishing service translation matrices, ballpark estimates, and MAP Mobilize roadmaps.",
+    "project": "partner-engagements",
+    "projectName": "AWS APN & Migration Engagements",
+    "layer": "Architecture & Services",
+    "stack": [
+      "AWS IoT Core",
+      "Amazon EKS",
+      "Amazon Kinesis",
+      "Aurora PostgreSQL",
+      "DynamoDB",
+      "AWS MAP"
+    ],
+    "tags": [
+      "iot",
+      "telemetry",
+      "monolith-to-microservices",
+      "architecture",
+      "eks",
+      "kinesis",
+      "map"
+    ],
+    "url": "case-studies/partner-engagements/iot-telemetry-monolith-to-cloud-migration.html",
+    "problem": "A connected smart consumer IoT platform transmitting continuous streams of biometric and environmental telemetry from millions of deployed hardware units was constrained by an aging on-premises monolithic backend. Monolithic MQTT connection brokers, self-managed database clusters, and co-located background worker daemons created critical scaling bottlenecks and single points of failure during usage spikes. Transitioning to AWS under the Migration Acceleration Program (MAP) required a complete Well-Architected target blueprint, mapping legacy server daemons to managed cloud services, and establishing defensible infrastructure cost estimates.",
+    "solution": "I designed the target cloud architecture and authored the comprehensive Service Mapping Matrix translating monolithic components to scalable AWS managed equivalents: migrating self-hosted MQTT to AWS IoT Core, background processing to Amazon EKS on AWS Graviton, telemetry streaming to Amazon Kinesis, and operational persistence to Amazon Aurora and Amazon DynamoDB. I formulated the 3-year capacity cost models, authored the MAP Assessment Final Report, and established the technical governance and cadence framework for the Mobilize phase."
+  },
+  {
+    "title": "Enterprise AdTech SaaS · Cloud marketplace onboarding and commercialization architecture",
+    "nav": "AdTech SaaS marketplace onboarding",
+    "summary": "Designing and executing an automated cloud marketplace integration architecture for an enterprise AdTech SaaS platform, establishing buyer procurement flows, billing telemetry, and post-onboarding operational verification.",
+    "project": "partner-engagements",
+    "projectName": "AWS APN & Migration Engagements",
+    "layer": "Architecture & Delivery",
+    "stack": [
+      "Google Cloud Marketplace",
+      "AWS",
+      "SaaS Integration",
+      "Webhooks",
+      "API Gateway",
+      "Cloud Functions"
+    ],
+    "tags": [
+      "marketplace",
+      "saas",
+      "multi-cloud",
+      "adtech",
+      "commercialization",
+      "integration"
+    ],
+    "url": "case-studies/partner-engagements/adtech-saas-marketplace-onboarding.html",
+    "problem": "An enterprise AdTech software provider required multi-cloud commercialization channels to allow corporate clients to procure its analytics and audience optimization platform directly against their cloud enterprise discount commitments (such as Google Cloud and AWS Marketplace). The existing platform lacked automated subscription lifecycle endpoints, requiring manual sales engineering intervention to provision accounts and reconcile invoices. Launching on enterprise cloud marketplaces required an automated integration blueprint, webhook subscription receivers, licensing entitlement workflows, and a rigorous post-onboarding operational compliance checklist.",
+    "solution": "I authored the Architecture Initiation Blueprint and engineered the marketplace integration architecture connecting Cloud Marketplace procurement APIs to the SaaS platform's tenant management engine. I designed the automated onboarding workflows, formulated the Product Setup Matrix and Post-Onboarding Verification Checklist, and established automated tests validating procurement webhooks, account activation redirects, and usage metering telemetry."
   }
 ]

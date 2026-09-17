@@ -118,5 +118,33 @@
       <description>Decomposing an on-premise clinical monolith into containerized services, and taking reporting load off the live database with a decoupled analytics pipeline.</description>
       <category>Applications</category>
     </item>
+    <item>
+      <title>Institutional digital asset platform · AWS MAP assess and directional business case</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/partner-engagements/fintech-map-assess-business-case.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/partner-engagements/fintech-map-assess-business-case.html</guid>
+      <description>Executing an agentless VMware inventory discovery, resolving a JumpCloud-to-Identity Center SAML blocker, and delivering an executive Directional Business Case (DBC) for an institutional financial data platform.</description>
+      <category>Strategy &amp; Discovery</category>
+    </item>
+    <item>
+      <title>Global media and localization platform · Cross-region MAP migration assessment</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/partner-engagements/media-cross-region-map-migration.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/partner-engagements/media-cross-region-map-migration.html</guid>
+      <description>Inventory profiling and cloud transformation strategy across multi-region US and EU on-premises data centers, sizing high-capacity media storage, compute clusters, and localized workflows under AWS MAP.</description>
+      <category>Strategy &amp; Infrastructure</category>
+    </item>
+    <item>
+      <title>Connected IoT and telemetry platform · Monolith to AWS cloud migration and service mapping</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/partner-engagements/iot-telemetry-monolith-to-cloud-migration.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/partner-engagements/iot-telemetry-monolith-to-cloud-migration.html</guid>
+      <description>Modernizing a connected device platform from on-premise monolithic servers to high-throughput AWS managed services, establishing service translation matrices, ballpark estimates, and MAP Mobilize roadmaps.</description>
+      <category>Architecture &amp; Services</category>
+    </item>
+    <item>
+      <title>Enterprise AdTech SaaS · Cloud marketplace onboarding and commercialization architecture</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/partner-engagements/adtech-saas-marketplace-onboarding.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/partner-engagements/adtech-saas-marketplace-onboarding.html</guid>
+      <description>Designing and executing an automated cloud marketplace integration architecture for an enterprise AdTech SaaS platform, establishing buyer procurement flows, billing telemetry, and post-onboarding operational verification.</description>
+      <category>Architecture &amp; Delivery</category>
+    </item>
   </channel>
 </rss>

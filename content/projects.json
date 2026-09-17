@@ -12,5 +12,10 @@
   {
     "id": "healthcare",
     "name": "Healthcare & Cost Architecture"
+  },
+  {
+    "id": "partner-engagements",
+    "name": "AWS APN & Migration Engagements",
+    "customOverview": true
   }
 ]
