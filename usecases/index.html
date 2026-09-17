@@ -68,13 +68,13 @@
               <button class="filter" data-uc-filter="project:telecom" aria-pressed="false">Telecom &amp; Secure Communications</button>
               <button class="filter" data-uc-filter="project:healthcare" aria-pressed="false">Healthcare &amp; Cost Architecture</button>
               <button class="filter" data-uc-filter="layer:Foundation" aria-pressed="false">Foundation</button>
-              <button class="filter" data-uc-filter="layer:Shared Services" aria-pressed="false">Shared Services</button>
-              <button class="filter" data-uc-filter="layer:Applications" aria-pressed="false">Applications</button>
               <button class="filter" data-uc-filter="layer:Data" aria-pressed="false">Data</button>
+              <button class="filter" data-uc-filter="layer:Applications" aria-pressed="false">Applications</button>
+              <button class="filter" data-uc-filter="layer:Shared Services" aria-pressed="false">Shared Services</button>
             </div>
           </div>
           <p class="filter-status" id="ucStatus" role="status">
-            8 use cases
+            12 use cases
           </p>
         </div>
       </section>
@@ -87,11 +87,23 @@
           <p>A four-layer landing zone, one hub-and-spoke network, and a CI/CD pipeline where an unintended apply is structurally impossible.</p>
           <p class="uc-stack">Terraform · AWS Organizations · Transit Gateway · GitHub Actions</p>
         </article>
-        <article class="uc-card" data-project="tolling" data-layer="Shared Services" data-tags="identity sso saml workspaces entra active-directory terraform">
-          <div class="uc-meta"><span>U.S. Tolling Infrastructure</span><span>Shared Services</span></div>
-          <h3><a href="tolling/entra-workspaces-saml.html">Corporate SSO for Amazon WorkSpaces without losing the domain boundary</a></h3>
-          <p>Separating Entra authentication from Active Directory machine operations so Personal and Pool WorkSpaces can use corporate sign-in without weakening the domain boundary.</p>
-          <p class="uc-stack">Microsoft Entra ID · SAML 2.0 · AWS IAM · Amazon WorkSpaces · AD Connector · Terraform</p>
+        <article class="uc-card" data-project="tolling" data-layer="Foundation" data-tags="networking transit-gateway multi-account segmentation terraform">
+          <div class="uc-meta"><span>U.S. Tolling Infrastructure</span><span>Foundation</span></div>
+          <h3><a href="tolling/transit-gateway-hub-and-spoke.html">A Transit Gateway hub that keeps account routing deliberate</a></h3>
+          <p>Connecting shared services, workload accounts, security inspection, and a recovery region through one governed Transit Gateway without making every VPC route to every other VPC.</p>
+          <p class="uc-stack">AWS Transit Gateway · AWS RAM · VPC · Terraform · AWS Network Firewall</p>
+        </article>
+        <article class="uc-card" data-project="tolling" data-layer="Data" data-tags="resilience disaster-recovery database terraform security multi-region">
+          <div class="uc-meta"><span>U.S. Tolling Infrastructure</span><span>Data</span></div>
+          <h3><a href="tolling/aurora-multi-region-dr-parity.html">Make Aurora DR behave like the primary, not merely exist beside it</a></h3>
+          <p>Closing the two gaps that can make a replicated Aurora environment fail differently during recovery: secondary parameter-group drift and missing regional secret availability.</p>
+          <p class="uc-stack">Amazon Aurora Global Database · AWS Secrets Manager · AWS KMS · Terraform</p>
+        </article>
+        <article class="uc-card" data-project="tolling" data-layer="Applications" data-tags="eks kubernetes ingress incident-response observability networking">
+          <div class="uc-meta"><span>U.S. Tolling Infrastructure</span><span>Applications</span></div>
+          <h3><a href="tolling/eks-ingress-incident-rca.html">Turn an EKS ingress incident into a diagnosable traffic path</a></h3>
+          <p>A structured RCA pattern for an EKS ingress failure that separates DNS, load-balancer, target-registration, network-policy, and application causes instead of treating every 5xx as an application defect.</p>
+          <p class="uc-stack">Amazon EKS · AWS Load Balancer Controller · Application Load Balancer · Route 53 · CloudWatch</p>
         </article>
         <article class="uc-card" data-project="tolling" data-layer="Foundation" data-tags="cicd github-actions terraform oidc security deployment governance">
           <div class="uc-meta"><span>U.S. Tolling Infrastructure</span><span>Foundation</span></div>
@@ -99,23 +111,35 @@
           <p>Bootstrapping AWS OIDC roles once with SSO, then using one reusable GitHub Actions engine for speculative plans and explicitly gated, single-environment Terraform deployments.</p>
           <p class="uc-stack">GitHub Actions · Terraform · AWS IAM OIDC · AWS STS · GitHub Environments</p>
         </article>
+        <article class="uc-card" data-project="tolling" data-layer="Foundation" data-tags="security cloudtrail audit compliance s3 multi-account governance">
+          <div class="uc-meta"><span>U.S. Tolling Infrastructure</span><span>Foundation</span></div>
+          <h3><a href="tolling/cloudtrail-tamper-protection.html">Make organization CloudTrail evidence difficult to alter</a></h3>
+          <p>Centralizing organization-wide CloudTrail events in a separately governed archive account with encryption, restrictive bucket policy, retention controls, and alerting for changes to the trail or log destination.</p>
+          <p class="uc-stack">AWS CloudTrail · AWS Organizations · Amazon S3 · AWS KMS · S3 Object Lock · Amazon SNS</p>
+        </article>
+        <article class="uc-card" data-project="tolling" data-layer="Shared Services" data-tags="identity sso saml workspaces entra active-directory terraform">
+          <div class="uc-meta"><span>U.S. Tolling Infrastructure</span><span>Shared Services</span></div>
+          <h3><a href="tolling/entra-workspaces-saml.html">Corporate SSO for Amazon WorkSpaces without losing the domain boundary</a></h3>
+          <p>Separating Entra authentication from Active Directory machine operations so Personal and Pool WorkSpaces can use corporate sign-in without weakening the domain boundary.</p>
+          <p class="uc-stack">Microsoft Entra ID · SAML 2.0 · AWS IAM · Amazon WorkSpaces · AD Connector · Terraform</p>
+        </article>
         <article class="uc-card" data-project="tolling" data-layer="Applications" data-tags="integration security api webhooks waf authentication">
           <div class="uc-meta"><span>U.S. Tolling Infrastructure</span><span>Applications</span></div>
           <h3><a href="tolling/jsm-integration.html">Letting a SaaS webhook reach a private service, safely</a></h3>
           <p>A layered, authenticated path from Jira Service Management into a private service, with CloudFront and a Lambda authorizer retained because AWS platform constraints rule out the simpler alternatives.</p>
           <p class="uc-stack">API Gateway HTTP API · CloudFront · AWS WAF · Lambda authorizer · VPC Link · EKS · Secrets Manager</p>
         </article>
-        <article class="uc-card" data-project="tolling" data-layer="Applications" data-tags="storage security api networking dns cost">
-          <div class="uc-meta"><span>U.S. Tolling Infrastructure</span><span>Applications</span></div>
-          <h3><a href="tolling/s3-image-api.html">A private image API without a proxy application to operate</a></h3>
-          <p>Removing a load balancer and a Lambda proxy from the image path, leaving API Gateway talking to S3 directly through one shared private endpoint.</p>
-          <p class="uc-stack">API Gateway · Amazon S3 · Route 53 · VPC endpoints · IAM · Terraform</p>
-        </article>
         <article class="uc-card" data-project="tolling" data-layer="Shared Services" data-tags="dns route53 networking multi-account shared-services terraform">
           <div class="uc-meta"><span>U.S. Tolling Infrastructure</span><span>Shared Services</span></div>
           <h3><a href="tolling/route53-shared-dns.html">One DNS model for public services and private environments</a></h3>
           <p>Separating public internet resolution from private VPC resolution, then associating one centrally managed private hosted zone with shared and environment VPCs across accounts.</p>
           <p class="uc-stack">Amazon Route 53 · Route 53 Resolver · VPC · Transit Gateway · Terraform</p>
+        </article>
+        <article class="uc-card" data-project="tolling" data-layer="Applications" data-tags="storage security api networking dns cost">
+          <div class="uc-meta"><span>U.S. Tolling Infrastructure</span><span>Applications</span></div>
+          <h3><a href="tolling/s3-image-api.html">A private image API without a proxy application to operate</a></h3>
+          <p>Removing a load balancer and a Lambda proxy from the image path, leaving API Gateway talking to S3 directly through one shared private endpoint.</p>
+          <p class="uc-stack">API Gateway · Amazon S3 · Route 53 · VPC endpoints · IAM · Terraform</p>
         </article>
         <article class="uc-card" data-project="telecom" data-layer="Data" data-tags="resilience migration database failover encryption">
           <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Data</span></div>

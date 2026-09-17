@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Turn an EKS ingress incident into a diagnosable traffic path — Prudhvi Raj Anupoju</title>
+    <meta name="description" content="A structured RCA pattern for an EKS ingress failure that separates DNS, load-balancer, target-registration, network-policy, and application causes instead of treating every 5xx as an application defect." />
+    <link rel="canonical" href="https://anupojuprudhvi.github.io/usecases/tolling/eks-ingress-incident-rca.html" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Turn an EKS ingress incident into a diagnosable traffic path" />
+    <meta property="og:description" content="A structured RCA pattern for an EKS ingress failure that separates DNS, load-balancer, target-registration, network-policy, and application causes instead of treating every 5xx as an application defect." />
+    <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <script src="../../assets/theme.js"></script>
+    <link rel="stylesheet" href="../../assets/site.css" />
+    <link rel="stylesheet" href="../../assets/deepdive.css" />
+    <link rel="stylesheet" href="../../assets/usecase.css" />
+    <link rel="stylesheet" href="../../assets/assistant.css" />
+  </head>
+  <body class="deepdive">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="topbar">
+      <div class="wrap">
+        <a class="back" href="../../usecases/index.html">← All use cases</a>
+        <button id="themeToggle" aria-label="Switch to light theme">☼</button>
+      </div>
+    </div>
+    <main id="main">
+      <header class="hero">
+        <div class="wrap">
+          <div class="eyebrow">U.S. Tolling Infrastructure · Incident response</div>
+          <h1>Turn an EKS ingress incident into a diagnosable traffic path</h1>
+          <p class="sub">A structured RCA pattern for an EKS ingress failure that separates DNS, load-balancer, target-registration, network-policy, and application causes instead of treating every 5xx as an application defect.</p>
+          <div class="meta">
+            <div><b>Project</b><br />U.S. Tolling Infrastructure</div>
+            <div><b>Layer</b><br />Applications</div>
+            <div><b>Stack</b><br />Amazon EKS · AWS Load Balancer Controller · Application Load Balancer · Route 53 · CloudWatch</div>
+            <div><b>Tags</b><br />eks · kubernetes · ingress · incident-response · observability · networking</div>
+          </div>
+        </div>
+      </header>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Incident response</div>
+<h2>How the ingress path was narrowed from edge request to pod</h2>
+<div class="problem-solution">
+<div>
+<h3>The problem</h3>
+<p>An ingress incident can look like a single outage to a user while several different boundaries sit between the request and a pod. DNS may resolve the wrong endpoint, the load balancer may have unhealthy targets, a security group or network policy may block the target path, or the application may return an error after the request arrives. Without a fixed evidence order, responders change multiple layers at once and lose the original signal.</p>
+</div>
+<div>
+<h3>The solution I built</h3>
+<p>The RCA uses the request path as its diagnostic spine. Start with the hostname and listener, confirm the Application Load Balancer target group and health state, correlate the AWS Load Balancer Controller events with the Kubernetes Ingress and Service, then test the node, pod, and application path from inside the cluster. CloudWatch and Kubernetes logs preserve the evidence while a reversible routing or deployment change is evaluated separately from the investigation.</p>
+</div>
+</div>
+<figure class="reqflow">
+<figcaption class="reqflow-title">Request path and evidence checkpoints</figcaption>
+<ol class="reqflow-list">
+<li class="reqflow-step">
+<span class="reqflow-n">01</span>
+<span class="reqflow-name">Route 53 name</span>
+<span class="reqflow-note">Confirm the queried name, record, alias target, and TTL are the endpoint intended for the environment.</span>
+</li>
+<li class="reqflow-step">
+<span class="reqflow-n">02</span>
+<span class="reqflow-name">Application Load Balancer listener</span>
+<span class="reqflow-note">Verify listener rules, certificate behavior, response codes, and the target group selected for the host and path.</span>
+</li>
+<li class="reqflow-step">
+<span class="reqflow-n">03</span>
+<span class="reqflow-name">Target registration and health</span>
+<span class="reqflow-note">Compare registered targets with the Kubernetes Service endpoints and inspect health-check reason codes.</span>
+</li>
+<li class="reqflow-step">
+<span class="reqflow-n">04</span>
+<span class="reqflow-name">Cluster network path</span>
+<span class="reqflow-note">Check security groups, subnet routes, network policy, and load-balancer-controller events for the selected targets.</span>
+</li>
+<li class="reqflow-step">
+<span class="reqflow-n">05</span>
+<span class="reqflow-name">Pod and application</span>
+<span class="reqflow-note">Reproduce from an in-cluster client and correlate container logs, readiness state, and application response behavior.</span>
+</li>
+</ol>
+</figure>
+
+<div class="callout"><b>What this enables:</b> Responders can identify the failing boundary before changing the system, keep an auditable timeline of evidence, and convert the final correction into a health check, alert, runbook step, or deployment guard.</div>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Architecture</div>
+<h2>The decisions that mattered</h2>
+<p>The design treats ingress as a chain of contracts rather than one Kubernetes object. Route 53 must identify the right edge, the load balancer must select the right listener and target group, the controller must reconcile the intended objects, targets must pass health checks, and the pod must be ready to serve the request. Each checkpoint produces evidence that narrows the RCA.</p>
+<details class="implementation-notes">
+<summary>Implementation notes</summary>
+<ul>
+<li><b>Start outside the cluster:</b> Capture the exact hostname, path, status code,</li>
+</ul>
+</details>
+<p>response headers, and timestamp before investigating pods.</p>
+<ul>
+<li><b>Compare desired and observed state:</b> Inspect the Ingress, Service,</li>
+</ul>
+<p>EndpointSlices, controller events, target registrations, and target health as a single chain.</p>
+<ul>
+<li><b>Separate mitigation from cause:</b> A rollback, target drain, or temporary</li>
+</ul>
+<p>route change may restore service, but it is recorded separately from the evidence that identifies the fault.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Security</div>
+<h2>Preserve evidence while restoring service</h2>
+<p>Incident access is scoped to the affected cluster and AWS resources. Logs and events are read before changes where possible, sensitive headers and payloads are redacted from incident notes, and emergency changes retain an owner, timestamp, reason, and rollback condition. Network controls are investigated as boundaries, not disabled as a first response.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Delivery</div>
+<h2>How the change is rolled out</h2>
+<p>The runbook is tested in a non-production environment with intentionally unhealthy targets, a mismatched Service selector, and a blocked network path. Each exercise must show that responders can distinguish the resulting symptoms and restore the known-good configuration. Production adoption should add the checkpoints to the on-call workflow and alert links without changing application behavior merely to make the dashboard look healthy.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Trade-offs</div>
+<h2>What this does not solve</h2>
+<ul>
+<li>A structured RCA reduces investigation ambiguity but cannot prevent every bad</li>
+</ul>
+<p>deployment or cloud-provider failure.</p>
+<ul>
+<li>Health checks prove a particular probe path, not every user journey.</li>
+<li>Centralized logs improve correlation but require retention, access control, and</li>
+</ul>
+<p>cost management.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Outcome</div>
+<h2>What changed</h2>
+<p>Ingress troubleshooting now has a stable order of operations and a vocabulary shared by DNS, platform, networking, and application responders. The documented outcome is diagnostic repeatability; no uptime, recovery-time, or incident-volume claim is made without measurements from the incident system.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Next</div>
+<h2>Improvements worth funding</h2>
+<p>Instrument a synthetic request that records the same correlation identifier at the edge, load balancer, controller, and application layers. Use a tabletop exercise to measure investigation time and the number of handoffs before publishing those metrics.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Outcome</div>
+<h2>What changed</h2>
+<div class="outcomes">
+<div class="outcome"><div class="num">Five</div><div class="txt">Evidence checkpoints from DNS through application response</div></div>
+<div class="outcome"><div class="num">One</div><div class="txt">Repeatable incident timeline shared by platform and application teams</div></div>
+<div class="outcome"><div class="num">No invented</div><div class="txt">Availability or incident-count claim without source evidence</div></div>
+</div>
+</div>
+</section>
+      <aside class="next-study wrap">
+        <a href="../../usecases/tolling/aurora-multi-region-dr-parity.html">← Keep Aurora DR in configuration parity</a>
+        <a href="../../usecases/tolling/cicd-delivery-engine.html">Build the delivery engine →</a>
+      </aside>
+      <div class="closing">
+        <div class="wrap">
+          <h2>Want to talk through how this would apply to your environment?</h2>
+          <p>
+            I'm happy to go deeper on any part of this — the architecture, the
+            trade-offs, or how it would adapt to a different environment.
+          </p>
+          <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
+            >anupojuprudhvi@gmail.com</a
+          >
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="wrap footer-inner">
+        <span>© 2026 Prudhvi Raj Anupoju</span
+        ><a href="../../usecases/index.html">Technical use cases ↗</a
+        ><a href="../../index.html#work">Back to overview ↗</a>
+      </div>
+    </footer>
+    <script src="../../assets/assistant.js" defer></script>
+    
+  </body>
+</html>

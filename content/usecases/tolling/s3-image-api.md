@@ -7,7 +7,7 @@ project: tolling
 projectName: U.S. Tolling Infrastructure
 engagement: usecases/tolling/index.html
 layer: Applications
-order: 30
+order: 100
 stack: [API Gateway, Amazon S3, Route 53, VPC endpoints, IAM, Terraform]
 tags: [storage, security, api, networking, dns, cost]
 summary: Removing a load balancer and a Lambda proxy from the image path, leaving API Gateway talking to S3 directly through one shared private endpoint.

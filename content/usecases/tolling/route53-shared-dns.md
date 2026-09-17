@@ -7,7 +7,7 @@ project: tolling
 projectName: U.S. Tolling Infrastructure
 engagement: usecases/tolling/index.html
 layer: Shared Services
-order: 40
+order: 90
 stack: [Amazon Route 53, Route 53 Resolver, VPC, Transit Gateway, Terraform]
 tags: [dns, route53, networking, multi-account, shared-services, terraform]
 summary: Separating public internet resolution from private VPC resolution, then associating one centrally managed private hosted zone with shared and environment VPCs across accounts.

@@ -24,32 +24,80 @@
     "solution": ""
   },
   {
-    "title": "Corporate SSO for Amazon WorkSpaces without losing the domain boundary",
-    "nav": "Federate WorkSpaces with Entra",
-    "summary": "Separating Entra authentication from Active Directory machine operations so Personal and Pool WorkSpaces can use corporate sign-in without weakening the domain boundary.",
+    "title": "A Transit Gateway hub that keeps account routing deliberate",
+    "nav": "Connect accounts through Transit Gateway",
+    "summary": "Connecting shared services, workload accounts, security inspection, and a recovery region through one governed Transit Gateway without making every VPC route to every other VPC.",
     "project": "tolling",
     "projectName": "U.S. Tolling Infrastructure",
-    "layer": "Shared Services",
+    "layer": "Foundation",
     "stack": [
-      "Microsoft Entra ID",
-      "SAML 2.0",
-      "AWS IAM",
-      "Amazon WorkSpaces",
-      "AD Connector",
+      "AWS Transit Gateway",
+      "AWS RAM",
+      "VPC",
+      "Terraform",
+      "AWS Network Firewall"
+    ],
+    "tags": [
+      "networking",
+      "transit-gateway",
+      "multi-account",
+      "segmentation",
+      "terraform"
+    ],
+    "url": "usecases/tolling/transit-gateway-hub-and-spoke.html",
+    "problem": "A multi-account platform needs private connectivity between approved workloads, shared services, inspection controls, and recovery environments. A collection of VPC peering links would grow as accounts were added and would make route ownership and inspection paths difficult to review. The network also needed to preserve separation between environments instead of turning connectivity into implicit trust.",
+    "solution": "I used a Transit Gateway as the regional routing hub and shared it with approved accounts through AWS RAM. VPC attachments and route tables are owned by Terraform, with separate routing domains for workload, shared-service, inspection, and recovery paths. Spoke VPCs advertise only the prefixes they own; routes to other domains are added deliberately and can be sent through the inspection path where policy requires it."
+  },
+  {
+    "title": "Make Aurora DR behave like the primary, not merely exist beside it",
+    "nav": "Keep Aurora DR in configuration parity",
+    "summary": "Closing the two gaps that can make a replicated Aurora environment fail differently during recovery: secondary parameter-group drift and missing regional secret availability.",
+    "project": "tolling",
+    "projectName": "U.S. Tolling Infrastructure",
+    "layer": "Data",
+    "stack": [
+      "Amazon Aurora Global Database",
+      "AWS Secrets Manager",
+      "AWS KMS",
       "Terraform"
     ],
     "tags": [
-      "identity",
-      "sso",
-      "saml",
-      "workspaces",
-      "entra",
-      "active-directory",
-      "terraform"
+      "resilience",
+      "disaster-recovery",
+      "database",
+      "terraform",
+      "security",
+      "multi-region"
     ],
-    "url": "usecases/tolling/entra-workspaces-saml.html",
-    "problem": "Employees needed to open Amazon WorkSpaces with the same corporate identity they already use for other applications. A separate WorkSpaces login would create a second identity lifecycle, while an undocumented SAML setup would turn small differences in NameID, role claims, or directory usernames into failures that looked like generic sign-in problems. The harder requirement was the boundary behind the login screen. Entra ID should authenticate the person, AWS should validate the federation trust and authorize desktop streaming, and Active Directory should continue to own domain membership, user lookup, Windows policy, and machine identity. The credentials used for those directory operations are not the user's SAML credentials.",
-    "solution": "The solution separates the integration into two connected planes. In the user plane, Entra ID authenticates the employee and emits a SAML assertion. AWS IAM trusts the Entra SAML provider through a dedicated federation role, and that role grants only `workspaces:Stream` for the target directory. WorkSpaces uses the assertion's `NameID` to find the matching Active Directory user, then starts an assigned Personal desktop or allocates an eligible Pools session. In the machine plane, the WorkSpaces VPC reaches the corporate DNS and domain controllers through the approved network path. AD Connector uses a separately managed service account, protected by Secrets Manager and KMS, for directory operations and computer-object/domain-join work. The joined desktop receives the configured OU and GPO behavior, with optional access to corporate file services such as FSx. Terraform manages the repeatable AWS boundary: the directory, connector, federation role, scoped streaming policy, secret integration, and conditional SAML resources. Entra metadata and claims, Active Directory user attributes, and Personal/Pool provisioning remain explicit operational inputs rather than hidden assumptions in the infrastructure code."
+    "url": "usecases/tolling/aurora-multi-region-dr-parity.html",
+    "problem": "A multi-region Aurora design can report that replication is enabled while still carrying a dangerous difference between the primary and secondary. Custom cluster and DB parameter groups may exist in the primary region while secondary resources fall back to AWS defaults. Database extensions, connection settings, planner tuning, and logging could therefore change during failover. A database secret that exists only in the primary region also leaves recovery dependent on primary-region access.",
+    "solution": "Terraform makes the DR contract conditional and declarative. When global replication is enabled, an aliased secondary-region provider creates parameter groups from the same normalized JSON inputs used by the primary, attaches them to the secondary cluster and instances, replicates the encrypted Secrets Manager secret, and adds the secondary endpoint to the payload. Single-region environments do not create secondary-only resources or lookups. Provider configuration remains with the environment that calls the reusable module."
+  },
+  {
+    "title": "Turn an EKS ingress incident into a diagnosable traffic path",
+    "nav": "Trace an EKS ingress incident",
+    "summary": "A structured RCA pattern for an EKS ingress failure that separates DNS, load-balancer, target-registration, network-policy, and application causes instead of treating every 5xx as an application defect.",
+    "project": "tolling",
+    "projectName": "U.S. Tolling Infrastructure",
+    "layer": "Applications",
+    "stack": [
+      "Amazon EKS",
+      "AWS Load Balancer Controller",
+      "Application Load Balancer",
+      "Route 53",
+      "CloudWatch"
+    ],
+    "tags": [
+      "eks",
+      "kubernetes",
+      "ingress",
+      "incident-response",
+      "observability",
+      "networking"
+    ],
+    "url": "usecases/tolling/eks-ingress-incident-rca.html",
+    "problem": "An ingress incident can look like a single outage to a user while several different boundaries sit between the request and a pod. DNS may resolve the wrong endpoint, the load balancer may have unhealthy targets, a security group or network policy may block the target path, or the application may return an error after the request arrives. Without a fixed evidence order, responders change multiple layers at once and lose the original signal.",
+    "solution": "The RCA uses the request path as its diagnostic spine. Start with the hostname and listener, confirm the Application Load Balancer target group and health state, correlate the AWS Load Balancer Controller events with the Kubernetes Ingress and Service, then test the node, pod, and application path from inside the cluster. CloudWatch and Kubernetes logs preserve the evidence while a reversible routing or deployment change is evaluated separately from the investigation."
   },
   {
     "title": "A reusable CI/CD engine with safe-by-default infrastructure delivery",
@@ -77,6 +125,62 @@
     "url": "usecases/tolling/cicd-delivery-engine.html",
     "problem": "A multi-account Terraform platform needs more than a workflow that runs `terraform apply`. The delivery path must authenticate without long-lived AWS keys, show the impact of a pull request before merge, keep one service from touching another service's state, and make a production change deliberate. There is also a dependency that is easy to miss: GitHub Actions cannot assume an OIDC role that does not exist yet. The CI/CD identity boundary therefore has to be bootstrapped locally with an administrator's AWS SSO session before the hosted pipeline can deploy anything.",
     "solution": "I separated the system into a one-time identity bootstrap and a reusable delivery engine. The `00-foundation/cicd-oidc/` Terraform roots create the GitHub OIDC provider plus dedicated plan and apply roles in each target account. Once those roles exist, GitHub Actions exchanges its short-lived OIDC token for temporary AWS credentials through STS. A single central workflow engine owns authentication, provider handling, Terraform initialization, plan formatting, summaries, and safety gates. Small service caller workflows provide only the module path, state key, target account mapping, and environment list. Pull requests use read-only speculative plans; deployments are manually dispatched one module and one environment at a time."
+  },
+  {
+    "title": "Make organization CloudTrail evidence difficult to alter",
+    "nav": "Protect CloudTrail evidence",
+    "summary": "Centralizing organization-wide CloudTrail events in a separately governed archive account with encryption, restrictive bucket policy, retention controls, and alerting for changes to the trail or log destination.",
+    "project": "tolling",
+    "projectName": "U.S. Tolling Infrastructure",
+    "layer": "Foundation",
+    "stack": [
+      "AWS CloudTrail",
+      "AWS Organizations",
+      "Amazon S3",
+      "AWS KMS",
+      "S3 Object Lock",
+      "Amazon SNS"
+    ],
+    "tags": [
+      "security",
+      "cloudtrail",
+      "audit",
+      "compliance",
+      "s3",
+      "multi-account",
+      "governance"
+    ],
+    "url": "usecases/tolling/cloudtrail-tamper-protection.html",
+    "problem": "Account-local audit logs are a weak source of evidence if an operator or workload identity in that account is compromised. A malicious change could stop logging, alter the destination, or delete recent objects before an investigation begins. The useful control is therefore not merely enabling a trail; it is separating trail administration, log storage, encryption, and detection responsibilities.",
+    "solution": "An organization trail records management events across member accounts and delivers them to a dedicated archive account. The destination S3 bucket blocks public access, requires the CloudTrail service condition in its bucket policy, uses a KMS key for encryption, and applies retention protection appropriate to the evidence policy. A security account monitors CloudTrail and CloudTrail configuration events, including attempts to stop logging, change the trail, or modify the archive boundary."
+  },
+  {
+    "title": "Corporate SSO for Amazon WorkSpaces without losing the domain boundary",
+    "nav": "Federate WorkSpaces with Entra",
+    "summary": "Separating Entra authentication from Active Directory machine operations so Personal and Pool WorkSpaces can use corporate sign-in without weakening the domain boundary.",
+    "project": "tolling",
+    "projectName": "U.S. Tolling Infrastructure",
+    "layer": "Shared Services",
+    "stack": [
+      "Microsoft Entra ID",
+      "SAML 2.0",
+      "AWS IAM",
+      "Amazon WorkSpaces",
+      "AD Connector",
+      "Terraform"
+    ],
+    "tags": [
+      "identity",
+      "sso",
+      "saml",
+      "workspaces",
+      "entra",
+      "active-directory",
+      "terraform"
+    ],
+    "url": "usecases/tolling/entra-workspaces-saml.html",
+    "problem": "Employees needed to open Amazon WorkSpaces with the same corporate identity they already use for other applications. A separate WorkSpaces login would create a second identity lifecycle, while an undocumented SAML setup would turn small differences in NameID, role claims, or directory usernames into failures that looked like generic sign-in problems. The harder requirement was the boundary behind the login screen. Entra ID should authenticate the person, AWS should validate the federation trust and authorize desktop streaming, and Active Directory should continue to own domain membership, user lookup, Windows policy, and machine identity. The credentials used for those directory operations are not the user's SAML credentials.",
+    "solution": "The solution separates the integration into two connected planes. In the user plane, Entra ID authenticates the employee and emits a SAML assertion. AWS IAM trusts the Entra SAML provider through a dedicated federation role, and that role grants only `workspaces:Stream` for the target directory. WorkSpaces uses the assertion's `NameID` to find the matching Active Directory user, then starts an assigned Personal desktop or allocates an eligible Pools session. In the machine plane, the WorkSpaces VPC reaches the corporate DNS and domain controllers through the approved network path. AD Connector uses a separately managed service account, protected by Secrets Manager and KMS, for directory operations and computer-object/domain-join work. The joined desktop receives the configured OU and GPO behavior, with optional access to corporate file services such as FSx. Terraform manages the repeatable AWS boundary: the directory, connector, federation role, scoped streaming policy, secret integration, and conditional SAML resources. Entra metadata and claims, Active Directory user attributes, and Personal/Pool provisioning remain explicit operational inputs rather than hidden assumptions in the infrastructure code."
   },
   {
     "title": "Letting a SaaS webhook reach a private service, safely",
@@ -107,6 +211,32 @@
     "solution": "A layered perimeter where each stage rejects a different class of request: edge filtering at CloudFront, a Lambda authorizer that verifies the signature cryptographically, and a private VPC Link into the internal load balancer. Two of those pieces are not design preferences. CloudFront and the Lambda are both there because of specific AWS platform limits, covered below — which is also why the architecture is documented rather than just built."
   },
   {
+    "title": "One DNS model for public services and private environments",
+    "nav": "Share DNS across environments",
+    "summary": "Separating public internet resolution from private VPC resolution, then associating one centrally managed private hosted zone with shared and environment VPCs across accounts.",
+    "project": "tolling",
+    "projectName": "U.S. Tolling Infrastructure",
+    "layer": "Shared Services",
+    "stack": [
+      "Amazon Route 53",
+      "Route 53 Resolver",
+      "VPC",
+      "Transit Gateway",
+      "Terraform"
+    ],
+    "tags": [
+      "dns",
+      "route53",
+      "networking",
+      "multi-account",
+      "shared-services",
+      "terraform"
+    ],
+    "url": "usecases/tolling/route53-shared-dns.html",
+    "problem": "The tolling platform had more than one kind of DNS name to operate. Public services needed to resolve from the internet, while internal endpoints had to resolve only from approved AWS networks. Treating both as the same zone would make the security boundary unclear; giving every environment its own private zone would duplicate records and create drift. The private namespace also had to work from the Shared Services VPC and from development, staging, production, and other environment VPCs. Those VPCs do not all belong to the account that owns the DNS zone, so the design had to make the AWS cross-account association workflow explicit rather than hiding it in scripts or manual console changes.",
+    "solution": "Route 53 owns two deliberate surfaces. A public hosted zone contains records intended for internet clients. A private hosted zone contains internal records and is associated with the Shared Services VPC plus each approved environment VPC, so the same private names resolve consistently wherever the platform allows them. Terraform manages the zone definitions and same-account VPC associations in the central Shared Services account. For a VPC in another account, the zone owner first creates `aws_route53_vpc_association_authorization`; the VPC owner then creates `aws_route53_zone_association` using its own credentials. The association is therefore a two-account contract, with the zone owner deciding who is allowed and the environment owner completing its side."
+  },
+  {
     "title": "A private image API without a proxy application to operate",
     "nav": "Upload and retrieve images",
     "summary": "Removing a load balancer and a Lambda proxy from the image path, leaving API Gateway talking to S3 directly through one shared private endpoint.",
@@ -132,32 +262,6 @@
     "url": "usecases/tolling/s3-image-api.html",
     "problem": "Internal tolling services needed to upload and retrieve images in S3 over HTTP. The interface worked, but the path in front of it had accumulated layers: a load balancer, and behind it a Lambda function acting as an HTTP proxy. Both cost money on every request and added latency, and the proxy was application code — with its own error handling, timeout behaviour and deployment lifecycle — for work that amounts to handing bytes to S3. It also had to behave identically across development, staging and production, resolve through a consistent private domain in each, and keep every part of the path unreachable from the internet.",
     "solution": "API Gateway talking to S3 directly, with nothing in between. A private REST API per environment uses an AWS service integration for GET and PUT: the gateway assumes a role, signs the request, and S3 authorizes against that role. No compute sits in the transfer path. Each environment resolves its own custom domain through a single private hosted zone in the Shared Services account, pointing at one shared interface endpoint rather than one per account. It took four iterations to get there, each removing something."
-  },
-  {
-    "title": "One DNS model for public services and private environments",
-    "nav": "Share DNS across environments",
-    "summary": "Separating public internet resolution from private VPC resolution, then associating one centrally managed private hosted zone with shared and environment VPCs across accounts.",
-    "project": "tolling",
-    "projectName": "U.S. Tolling Infrastructure",
-    "layer": "Shared Services",
-    "stack": [
-      "Amazon Route 53",
-      "Route 53 Resolver",
-      "VPC",
-      "Transit Gateway",
-      "Terraform"
-    ],
-    "tags": [
-      "dns",
-      "route53",
-      "networking",
-      "multi-account",
-      "shared-services",
-      "terraform"
-    ],
-    "url": "usecases/tolling/route53-shared-dns.html",
-    "problem": "The tolling platform had more than one kind of DNS name to operate. Public services needed to resolve from the internet, while internal endpoints had to resolve only from approved AWS networks. Treating both as the same zone would make the security boundary unclear; giving every environment its own private zone would duplicate records and create drift. The private namespace also had to work from the Shared Services VPC and from development, staging, production, and other environment VPCs. Those VPCs do not all belong to the account that owns the DNS zone, so the design had to make the AWS cross-account association workflow explicit rather than hiding it in scripts or manual console changes.",
-    "solution": "Route 53 owns two deliberate surfaces. A public hosted zone contains records intended for internet clients. A private hosted zone contains internal records and is associated with the Shared Services VPC plus each approved environment VPC, so the same private names resolve consistently wherever the platform allows them. Terraform manages the zone definitions and same-account VPC associations in the central Shared Services account. For a VPC in another account, the zone owner first creates `aws_route53_vpc_association_authorization`; the VPC owner then creates `aws_route53_zone_association` using its own credentials. The association is therefore a two-account contract, with the zone owner deciding who is allowed and the environment owner completing its side."
   },
   {
     "title": "Zero-downtime database modernization and automated failover",

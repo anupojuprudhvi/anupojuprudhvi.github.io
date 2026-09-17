@@ -7,7 +7,7 @@ project: tolling
 projectName: U.S. Tolling Infrastructure
 engagement: usecases/tolling/index.html
 layer: Applications
-order: 20
+order: 80
 stack: [API Gateway HTTP API, CloudFront, AWS WAF, Lambda authorizer, VPC Link, EKS, Secrets Manager]
 tags: [integration, security, api, webhooks, waf, authentication]
 summary: A layered, authenticated path from Jira Service Management into a private service, with CloudFront and a Lambda authorizer retained because AWS platform constraints rule out the simpler alternatives.
