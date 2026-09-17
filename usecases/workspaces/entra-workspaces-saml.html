@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Corporate SSO for Amazon WorkSpaces without losing the domain boundary — Prudhvi Raj Anupoju</title>
+    <meta name="description" content="Separating Entra authentication from Active Directory machine operations so Personal and Pool WorkSpaces can use corporate sign-in without weakening the domain boundary." />
+    <link rel="canonical" href="https://anupojuprudhvi.github.io/usecases/workspaces/entra-workspaces-saml.html" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Corporate SSO for Amazon WorkSpaces without losing the domain boundary" />
+    <meta property="og:description" content="Separating Entra authentication from Active Directory machine operations so Personal and Pool WorkSpaces can use corporate sign-in without weakening the domain boundary." />
+    <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <script src="../../assets/theme.js"></script>
+    <link rel="stylesheet" href="../../assets/site.css" />
+    <link rel="stylesheet" href="../../assets/deepdive.css" />
+    <link rel="stylesheet" href="../../assets/usecase.css" />
+    <link rel="stylesheet" href="../../assets/assistant.css" />
+  </head>
+  <body class="deepdive">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="topbar">
+      <div class="wrap">
+        <a class="back" href="../../usecases/index.html">← All use cases</a>
+        <button id="themeToggle" aria-label="Switch to light theme">☼</button>
+      </div>
+    </div>
+    <main id="main">
+      <header class="hero">
+        <div class="wrap">
+          <div class="eyebrow">Secure Workspace Delivery · Identity integration</div>
+          <h1>Corporate SSO for Amazon WorkSpaces without losing the domain boundary</h1>
+          <p class="sub">Separating Entra authentication from Active Directory machine operations so Personal and Pool WorkSpaces can use corporate sign-in without weakening the domain boundary.</p>
+          <div class="meta">
+            <div><b>Project</b><br />Secure Workspace Delivery</div>
+            <div><b>Layer</b><br />Shared Services</div>
+            <div><b>Stack</b><br />Microsoft Entra ID · SAML 2.0 · AWS IAM · Amazon WorkSpaces · AD Connector · Terraform</div>
+            <div><b>Tags</b><br />identity · sso · saml · workspaces · entra · active-directory · terraform</div>
+          </div>
+        </div>
+      </header>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Identity integration</div>
+<h2>How a corporate identity becomes a usable WorkSpaces session</h2>
+<div class="problem-solution">
+<div>
+<h3>The problem</h3>
+<p>Employees needed to open Amazon WorkSpaces with the same corporate identity they already use for other applications. A separate WorkSpaces login would create a second identity lifecycle, while an undocumented SAML setup would turn small differences in NameID, role claims, or directory usernames into failures that looked like generic sign-in problems.</p>
+<p>The harder requirement was the boundary behind the login screen. Entra ID should authenticate the person, AWS should validate the federation trust and authorize desktop streaming, and Active Directory should continue to own domain membership, user lookup, Windows policy, and machine identity. The credentials used for those directory operations are not the user's SAML credentials.</p>
+</div>
+<div>
+<h3>The solution I built</h3>
+<p>The solution separates the integration into two connected planes. In the user plane, Entra ID authenticates the employee and emits a SAML assertion. AWS IAM trusts the Entra SAML provider through a dedicated federation role, and that role grants only <code>workspaces:Stream</code> for the target directory. WorkSpaces uses the assertion's <code>NameID</code> to find the matching Active Directory user, then starts an assigned Personal desktop or allocates an eligible Pools session.</p>
+<p>In the machine plane, the WorkSpaces VPC reaches the corporate DNS and domain controllers through the approved network path. AD Connector uses a separately managed service account, protected by Secrets Manager and KMS, for directory operations and computer-object/domain-join work. The joined desktop receives the configured OU and GPO behavior, with optional access to corporate file services such as FSx.</p>
+<p>Terraform manages the repeatable AWS boundary: the directory, connector, federation role, scoped streaming policy, secret integration, and conditional SAML resources. Entra metadata and claims, Active Directory user attributes, and Personal/Pool provisioning remain explicit operational inputs rather than hidden assumptions in the infrastructure code.</p>
+</div>
+</div>
+<figure class="reqflow">
+<figcaption class="reqflow-title">Request path, corporate login to desktop session</figcaption>
+<ol class="reqflow-list">
+<li class="reqflow-step">
+<span class="reqflow-n">01</span>
+<span class="reqflow-name">WorkSpaces client</span>
+<span class="reqflow-note">The employee starts a Personal desktop or requests a Pools session. The client sends the user to the configured federation endpoint rather than asking for a separate WorkSpaces password.</span>
+</li>
+<li class="reqflow-step">
+<span class="reqflow-n">02</span>
+<span class="reqflow-name">Microsoft Entra ID</span>
+<span class="reqflow-note">Entra applies its assignment, MFA, and conditional-access controls, then emits a SAML assertion. The NameID must be the user's Active Directory UPN, and the role claim must contain the expected AWS role/provider pair.</span>
+</li>
+<li class="reqflow-step">
+<span class="reqflow-n">03</span>
+<span class="reqflow-name">AWS IAM federation role</span>
+<span class="reqflow-note">AWS validates the SAML provider and assumes the dedicated federation role. Its permissions are limited to <code>workspaces:Stream</code> for the intended WorkSpaces directory, not general console administration.</span>
+</li>
+<li class="reqflow-step">
+<span class="reqflow-n">04</span>
+<span class="reqflow-name">Amazon WorkSpaces directory</span>
+<span class="reqflow-note">WorkSpaces uses the federated identity to locate the corresponding AD user. A Personal WorkSpace must already be assigned; a Pool user must already be eligible for session allocation.</span>
+</li>
+<li class="reqflow-step">
+<span class="reqflow-n">05</span>
+<span class="reqflow-name">AD Connector and domain</span>
+<span class="reqflow-note">Separately from the login assertion, AD Connector uses the protected service account for directory operations and machine enrollment. The VPC must provide DNS and routed access to the domain controllers.</span>
+</li>
+<li class="reqflow-step">
+<span class="reqflow-n">06</span>
+<span class="reqflow-name">Joined desktop session</span>
+<span class="reqflow-note">The desktop starts with the domain membership, OU/GPO behavior, Kerberos context, and optional corporate file access that the machine plane provides. SAML authenticates the person; it does not perform this join.</span>
+</li>
+</ol>
+</figure>
+
+<div class="callout"><b>What this enables:</b> Corporate users can open assigned Personal WorkSpaces or eligible Pool sessions with the identity controls they already use, while machine enrollment, Active Directory policy, and provisioning remain explicit, testable responsibilities.</div>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Why this way</div>
+<h2>SAML is the front door, not the whole building</h2>
+<p>The tempting design is to describe this as “Entra logs users into WorkSpaces.” That description is incomplete enough to cause operational failures. A SAML assertion can be valid while the desktop still cannot be found, allocated, or started.</p>
+<p><b>Authentication and machine identity are different jobs.</b> Entra proves who the person is and whether they may use the enterprise application. AD Connector and the domain service account establish the identity of the Windows machine. One must not be substituted for the other: an Entra assertion is not an AD bind credential, and an AD service account is not a user-facing SAML identity.</p>
+<p><b>The federation role is deliberately narrow.</b> Its trust policy accepts the Entra SAML provider for <code>sts:AssumeRoleWithSAML</code> and session tagging. Its permissions policy grants <code>workspaces:Stream</code> against the intended directory rather than broad AWS permissions. A user can therefore open a desktop without receiving an unrelated AWS console role.</p>
+<p><b>Provisioning is intentionally outside the login transaction.</b> Personal WorkSpaces require an assigned desktop. Pools require an available and eligible session. Creating an Entra assignment or enabling SAML does not create the AD user, provision a Personal WorkSpace, prepare a Pool, or join a machine to the domain.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<h2>What makes it hold up</h2>
+<p><b>The identity contract is exact.</b> The Entra <code>NameID</code> must match the Active Directory user's UPN exactly. The legacy <code>sAMAccountName</code> is not the SAML mapping key and does not need to be changed to fix a UPN mismatch. The role claim must also preserve the AWS-expected role ARN and SAML provider ARN format, including their ordering.</p>
+<p><b>The network path is part of authentication.</b> A user may complete Entra sign-in successfully and still fail at the WorkSpaces layer if the VPC cannot resolve the domain or reach its controllers. DNS forwarding, Transit Gateway or equivalent routing, security rules, and the required directory protocols must work before a SAML-only diagnosis is meaningful.</p>
+<p><b>Secrets are separated from federation.</b> The AD service account is stored in Secrets Manager and protected with KMS. It supports connector and domain-join operations; it is not embedded in the SAML assertion, Terraform output, or client workflow. This keeps machine enrollment credentials out of the user authentication path and makes their rotation an independent operational task.</p>
+<p><b>The failure stages remain distinguishable.</b> A federation failure points toward Entra assignment, claims, provider metadata, role trust, or AWS authorization. A successful SAML exchange followed by <code>ERROR_TYPE_ALLOCATE_RESOURCE</code> points later in the path: AD UPN mapping, Personal assignment, Pool eligibility/capacity, directory health, or desktop allocation. Treating every failure as “SAML is broken” hides the actual boundary that rejected the request.</p>
+<p><b>The model works for both delivery modes.</b> Personal WorkSpaces make the assignment check explicit: the user must have a desktop associated with the directory. Pools make allocation explicit: the user must be eligible and the pool must have a usable session. The same identity contract supports both without implying that login itself creates capacity.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<h2>Implementation notes</h2>
+<ul>
+<li><b>Entra owns the user lifecycle:</b> users, groups, enterprise-application assignment, MFA, and conditional access remain in Entra rather than being duplicated in Terraform.</li>
+<li><b>The role claim is an interface contract:</b> emit the AWS role ARN and SAML provider ARN in the exact comma-separated form AWS consumes, with no accidental whitespace or reversed ordering.</li>
+<li><b>NameID is the first mapping check:</b> compare the assertion value with the complete AD UPN, including the domain suffix. Do not begin by changing <code>sAMAccountName</code>.</li>
+<li><b>AD credentials are independent:</b> the connector service account remains required for directory operations and computer-object/domain-join work. Keep it in Secrets Manager with KMS protection and never publish its value.</li>
+<li><b>Network reachability comes first:</b> verify VPC DNS forwarding, TGW or equivalent routes, security controls, and AD Connector health before changing SAML claims.</li>
+<li><b>Metadata rotation is planned:</b> Entra federation metadata and signing-certificate changes are reviewed and applied as intentional AWS SAML provider changes.</li>
+<li><b>SAML enablement is conditional:</b> the base WorkSpaces directory can be created before federation inputs are available; missing metadata should not produce a partially configured trust relationship.</li>
+<li><b>Troubleshooting follows the path:</b> check AD Connector and domain join, then Entra assignment and claims, AWS provider/trust and <code>workspaces:Stream</code>, and finally AD UPN mapping plus Personal assignment or Pool eligibility.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Outcome</div>
+<h2>What changed</h2>
+<div class="outcomes">
+<div class="outcome"><div class="num">Two</div><div class="txt">Independent planes: user authentication and machine/domain integration</div></div>
+<div class="outcome"><div class="num">One</div><div class="txt">Corporate identity contract from Entra NameID to the AD user UPN</div></div>
+<div class="outcome"><div class="num">Zero</div><div class="txt">Assumption that SAML alone provisions users, desktops, or domain joins</div></div>
+</div>
+</div>
+</section>
+      <aside class="next-study wrap">
+        <a href="../../usecases/index.html">← Technical use cases</a>
+      </aside>
+      <div class="closing">
+        <div class="wrap">
+          <h2>Want to talk through how this would apply to your environment?</h2>
+          <p>
+            I'm happy to go deeper on any part of this — the architecture, the
+            trade-offs, or how it would adapt to a different environment.
+          </p>
+          <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
+            >anupojuprudhvi@gmail.com</a
+          >
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="wrap footer-inner">
+        <span>© 2026 Prudhvi Raj Anupoju</span
+        ><a href="../../usecases/index.html">Technical use cases ↗</a
+        ><a href="../../index.html#work">Back to overview ↗</a>
+      </div>
+    </footer>
+    <script src="../../assets/assistant.js" defer></script>
+    
+  </body>
+</html>
