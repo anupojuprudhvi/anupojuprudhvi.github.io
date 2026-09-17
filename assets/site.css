@@ -104,6 +104,32 @@ summary {
   text-transform: uppercase;
   color: var(--accent);
 }
+.type-eyebrow {
+  font:
+    600 11px/1.6 ui-monospace,
+    monospace;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  min-height: 1em;
+}
+.type-word {
+  color: var(--accent2);
+}
+.type-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 11px;
+  margin-left: 1px;
+  background: var(--accent2);
+  vertical-align: -1px;
+  animation: type-blink 0.9s steps(1) infinite;
+}
+@keyframes type-blink {
+  50% {
+    opacity: 0;
+  }
+}
 .skip-link {
   position: fixed;
   left: 20px;

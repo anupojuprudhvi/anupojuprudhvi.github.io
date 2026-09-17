@@ -50,3 +50,38 @@ if (tickerEl && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
     }, 250);
   }, 3200);
 }
+
+const typeWordEl = document.getElementById("typeWord");
+const typeLineEl = document.getElementById("typeLine");
+if (
+  typeWordEl &&
+  typeLineEl &&
+  !matchMedia("(prefers-reduced-motion: reduce)").matches
+) {
+  const roles = ["Cloud", "DevOps", "FinOps"];
+  let roleIndex = 0;
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  const typeText = async (text) => {
+    for (let i = 1; i <= text.length; i++) {
+      typeWordEl.textContent = text.slice(0, i);
+      await sleep(75);
+    }
+  };
+  const deleteText = async (text) => {
+    for (let i = text.length; i >= 0; i--) {
+      typeWordEl.textContent = text.slice(0, i);
+      await sleep(45);
+    }
+  };
+  (async function loop() {
+    while (true) {
+      const role = roles[roleIndex % roles.length];
+      await typeText(role);
+      typeLineEl.setAttribute("aria-label", `${role} platform architect`);
+      await sleep(1800);
+      await deleteText(role);
+      await sleep(350);
+      roleIndex++;
+    }
+  })();
+}
