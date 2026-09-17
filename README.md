@@ -24,39 +24,14 @@ with each other.
 
 ## Adding a use case
 
-Write one Markdown file. Everything else is generated.
+Write one Markdown source file. Everything else is generated. The complete,
+copyable front-matter and body template is in
+[`docs/use-case-template.md`](docs/use-case-template.md).
 
-```sh
+```text
 content/usecases/<project>/<slug>.md   →   usecases/<project>/<slug>.html
                                        →   assets/usecases.json
                                        →   usecases/index.html
-```
-
-```markdown
----
-title: A private image API without a proxy application to operate
-nav: Upload and retrieve images        # short label used on cards
-label: Image handling                  # shown as the section eyebrow
-project: tolling                       # folder + filter key
-projectName: U.S. Tolling Infrastructure
-layer: Applications                    # Foundation | Core Network | Applications | Data …
-order: 30                              # ordering within the project
-stack: [API Gateway, Amazon S3, IAM, Terraform]
-tags: [storage, security, api, cost]
-summary: One line for the card, the search index, and the meta description.
-problem: |
-  What was actually hard.
-solution: |
-  What I built.
-flow: [Internal service, VPC endpoint, Private REST API, IAM role, Amazon S3]
-enables: |
-  What this made possible.
----
-
-### Architecture decisions
-
-- **First decision:** why.
-- **Second decision:** why.
 ```
 
 Then:

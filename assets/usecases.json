@@ -26,7 +26,7 @@
   {
     "title": "Letting a SaaS webhook reach a private service, safely",
     "nav": "Connect JSM to private services",
-    "summary": "Four layers of authentication in front of an internal service, where two of the architectural choices were forced by AWS platform limits rather than preference.",
+    "summary": "A layered, authenticated path from Jira Service Management into a private service, with CloudFront and a Lambda authorizer retained because AWS platform constraints rule out the simpler alternatives.",
     "project": "tolling",
     "projectName": "U.S. Tolling Infrastructure",
     "layer": "Applications",
@@ -48,7 +48,7 @@
       "authentication"
     ],
     "url": "usecases/tolling/jsm-integration.html",
-    "problem": "Jira Service Management and Jira Automation needed to deliver webhook events into an internal service running on EKS. That service has no authentication logic of its own — it was built to process business logic from traffic it could already trust. So the entry point had to do all of it: be publicly reachable, because the events come from a SaaS product; verify that each request genuinely came from Atlassian and hadn't been forged or replayed; and never expose the load balancer or the pods behind it. Getting any one of those wrong makes the other two irrelevant.",
+    "problem": "Jira Service Management and Jira Automation needed to deliver webhook events into an internal service running on EKS. That service has no authentication logic of its own — it was built to process business logic from traffic it could already trust. So the entry point had to do all of it: be publicly reachable, because the events come from a SaaS product; verify the request signature and expiry; and never expose the load balancer or the pods behind it. Getting any one of those wrong makes the other two irrelevant. The design should not be read as a complete replay-prevention system: replay handling remains an application concern unless a nonce or event-id strategy is added.",
     "solution": "A layered perimeter where each stage rejects a different class of request: edge filtering at CloudFront, a Lambda authorizer that verifies the signature cryptographically, and a private VPC Link into the internal load balancer. Two of those pieces are not design preferences. CloudFront and the Lambda are both there because of specific AWS platform limits, covered below — which is also why the architecture is documented rather than just built."
   },
   {
