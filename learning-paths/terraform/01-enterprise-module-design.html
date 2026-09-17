@@ -87,7 +87,7 @@
 <div class="section-eyebrow">Structure</div>
 <h2>The canonical directory layout</h2>
 <p>For enterprise AWS delivery, organize your Terraform repositories into clear layers of responsibility:</p>
-<pre><code>terraform-root/
+<pre tabindex="0"><code>terraform-root/
 ├── modules/                         # Reusable child modules (pure blueprints, versioned)
 │   ├── vpc/
 │   │   ├── main.tf                  # VPC, subnets, route tables, flow logs
@@ -128,7 +128,7 @@
         └── 04-compute/</code></pre>
 <h3>The 5-Layer Enterprise Slicing Standard</h3>
 <p>Why slice environments into numbered layers instead of one monolithic deployment?</p>
-<div class="table-scroll">
+<div class="table-scroll" role="region" aria-label="5-Layer Enterprise Slicing Standard" tabindex="0">
 <table class="gtable">
   <thead>
     <tr>
@@ -197,13 +197,13 @@
 <p>A subtle but critical rule in enterprise Terraform is how version constraints are declared:</p>
 <h3>1. In Reusable Child Modules: Use pessimistic operators (<code>~&gt;</code>)</h3>
 <p>Child modules should allow safe backward-compatible minor updates:</p>
-<pre><code># modules/vpc/versions.tf
+<pre tabindex="0"><code># modules/vpc/versions.tf
 terraform {
   required_version = ">= 1.5.0, < 2.0.0"
 <p>required_providers { aws = { source  = "hashicorp/aws" version = "~> 5.30" # Accepts 5.30.x and 5.99.x, but rejects 6.0.0 } } }</code></pre></p>
 <h3>2. In Production Root Deployments: Strictly pin exact versions (<code>=</code>)</h3>
 <p>Production plans must be <b>100% deterministic</b>. If a provider releases a breaking change at 2 AM, your CI pipeline must not break unexpectedly:</p>
-<pre><code># environments/prod/01-networking/versions.tf
+<pre tabindex="0"><code># environments/prod/01-networking/versions.tf
 terraform {
   required_version = "= 1.8.5"
 <p>required_providers { aws = { source  = "hashicorp/aws" version = "= 5.48.0" # Strictly pinned for reproducible plans } } }</code></pre></p>

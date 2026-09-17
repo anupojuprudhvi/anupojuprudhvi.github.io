@@ -194,7 +194,10 @@ try {
   await page.goto(base);
   assert.equal(await page.locator("html").getAttribute("data-theme"), "dark");
   await page.locator("#themeToggle").click();
-  await page.locator(".case-bottom a").first().click();
+  await Promise.all([
+    page.waitForURL(/case-studies/),
+    page.locator(".case-bottom a").first().click(),
+  ]);
   assert.equal(await page.locator("html").getAttribute("data-theme"), "light");
   await page.reload();
   assert.equal(await page.locator("html").getAttribute("data-theme"), "light");

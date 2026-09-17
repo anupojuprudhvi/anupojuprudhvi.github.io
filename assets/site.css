@@ -704,8 +704,9 @@ footer {
   .navlinks {
     width: 100%;
     justify-content: space-between;
-    gap: 12px;
+    gap: 8px 10px;
     font-size: 11px;
+    flex-wrap: wrap;
   }
   .navlinks #themeToggle {
     width: 32px;

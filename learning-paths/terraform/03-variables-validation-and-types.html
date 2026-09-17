@@ -83,7 +83,7 @@
 <div class="section-eyebrow">Validation</div>
 <h2>Custom variable validation blocks</h2>
 <p>Always pair input variables with explicit types, descriptions, and custom <code>validation {}</code> blocks:</p>
-<pre><code># variables.tf
+<pre tabindex="0"><code># variables.tf
 <p>variable "environment" { type        = string description = "Target deployment environment (dev, stage, or prod)."</p>
 <p>validation { condition     = contains(["dev", "stage", "prod"], var.environment) error_message = "The environment variable must be one of: dev, stage, prod." } }</p>
 <p>variable "vpc_cidr" { type        = string description = "Base IPv4 CIDR block for the VPC."</p>
@@ -96,7 +96,7 @@
 <div class="section-eyebrow">Guardrails</div>
 <h2>Lifecycle preconditions & postconditions</h2>
 <p>While variable validation checks inputs in isolation, <code>lifecycle { precondition {} }</code> and <code>postcondition {}</code> assert architectural assumptions against real resource attributes and data sources during the plan and apply phases.</p>
-<pre><code># main.tf
+<pre tabindex="0"><code># main.tf
 <p>data "aws_ami" "ubuntu" { most_recent = true owners      = ["099720109477"] # Canonical</p>
 <p>filter { name   = "name" values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"] } }</p>
 <p>resource "aws_instance" "app" { ami           = data.aws_ami.ubuntu.id instance_type = var.instance_type</p>
@@ -110,7 +110,7 @@
 <h2>The catastrophic <code>count</code> index-shift trap</h2>
 <p>One of the most dangerous patterns in Terraform is using <code>count</code> on a list of resources instead of <code>for_each</code> with a map.</p>
 <h3>The Problem with <code>count</code>:</h3>
-<pre><code># DANGEROUS: Using count with a list
+<pre tabindex="0"><code># DANGEROUS: Using count with a list
 variable "subnets" {
   default = ["subnet-a", "subnet-b", "subnet-c"]
 }
@@ -123,7 +123,7 @@ variable "subnets" {
 </ul>
 <p><b>Result:</b> A simple removal of one unused subnet destroys all active subnets in your infrastructure!</p>
 <h3>The Production Solution: Use <code>for_each</code> with deterministic keys</h3>
-<pre><code># SAFE: Using for_each with a map
+<pre tabindex="0"><code># SAFE: Using for_each with a map
 variable "subnets" {
   type = map(object({
     cidr_block        = string

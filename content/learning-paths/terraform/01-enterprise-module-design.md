@@ -68,7 +68,7 @@ For enterprise AWS delivery, organize your Terraform repositories into clear lay
 
 Why slice environments into numbered layers instead of one monolithic deployment?
 
-<div class="table-scroll">
+<div class="table-scroll" role="region" aria-label="5-Layer Enterprise Slicing Standard" tabindex="0">
 <table class="gtable">
   <thead>
     <tr>

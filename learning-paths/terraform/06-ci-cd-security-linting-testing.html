@@ -76,7 +76,7 @@
 <h2>The three-tier verification pipeline</h2>
 <p>Never allow engineers to run <code>terraform apply</code> directly from their local laptops in production. All changes must pass through an automated, audited, and locked-down CI/CD pipeline.</p>
 <p>A production pipeline structures checks into three distinct tiers:</p>
-<pre><code>Production CI/CD Gateways:
+<pre tabindex="0"><code>Production CI/CD Gateways:
 ┌────────────────────────────────────────────────────────┐
 │  Tier 1: Fast Feedback (< 30s)                         │
 │  terraform fmt · terraform validate · tflint           │
@@ -103,7 +103,7 @@
 <div class="section-eyebrow">Tier 1</div>
 <h2>Code quality & linting with TFLint</h2>
 <p>While <code>terraform validate</code> checks basic syntax, <b>TFLint</b> analyzes provider-specific rules, invalid instance types, unreferenced variables, and naming conventions.</p>
-<pre><code># .tflint.hcl
+<pre tabindex="0"><code># .tflint.hcl
 config {
   module = true
   force  = false
@@ -112,7 +112,7 @@ config {
 <p># Enforce AWS best practices rule "aws_instance_invalid_type" { enabled = true }</p>
 <p>rule "aws_s3_bucket_name" { enabled = true }</code></pre></p>
 <p>Run in CI:</p>
-<pre><code>tflint --init
+<pre tabindex="0"><code>tflint --init
 tflint --recursive</code></pre>
 </div>
 </section>
@@ -132,7 +132,7 @@ tflint --recursive</code></pre>
 </ul>
 </details>
 <p>Run in CI:</p>
-<pre><code>checkov -d . --framework terraform --compact --quiet</code></pre>
+<pre tabindex="0"><code>checkov -d . --framework terraform --compact --quiet</code></pre>
 <p>If a developer opens a PR with an unencrypted S3 bucket or open SSH port, Checkov immediately fails the CI check and blocks the PR from merging.</p>
 </div>
 </section>
@@ -141,7 +141,7 @@ tflint --recursive</code></pre>
 <div class="section-eyebrow">Tier 3</div>
 <h2>Automated plan posting in Pull Requests</h2>
 <p>When a PR is opened, the pipeline runs <code>terraform plan</code> and posts a formatted summary as a comment on the GitHub PR:</p>
-<pre><code># Example GitHub Actions Workflow snippet
+<pre tabindex="0"><code># Example GitHub Actions Workflow snippet
 - name: Terraform Plan
   id: plan
   run: |
@@ -159,7 +159,7 @@ tflint --recursive</code></pre>
 <h2>Scheduled drift detection</h2>
 <p>Even in strictly governed environments, emergency manual changes or out-of-band updates in the AWS Console happen.</p>
 <p>Set up a scheduled cron job (e.g. every weekday at 02:00 UTC) that runs a read-only plan:</p>
-<pre><code># Run in scheduled CI
+<pre tabindex="0"><code># Run in scheduled CI
 terraform plan -detailed-exitcode</code></pre>
 <ul>
 <li><b>Exit code 0:</b> Succeeded, 0 changes (Infrastructure is 100% in sync).</li>

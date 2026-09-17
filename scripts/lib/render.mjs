@@ -477,7 +477,7 @@ export function learningPathPage(d, bodyHtml, { up, url, prev, next, track }) {
       </header>
       <article class="lp-content">
         <div class="wrap">
-          ${bodyHtml}
+          ${bodyHtml.replace(/<pre(?![^>]*tabindex)/g, '<pre tabindex="0"')}
           ${!isOverview ? `<nav class="lp-nav" aria-label="Module navigation">${nav}</nav>` : ""}
         </div>
       </article>

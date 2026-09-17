@@ -83,7 +83,7 @@
 <div class="section-eyebrow">Architecture</div>
 <h2>Secure S3 & DynamoDB backend design</h2>
 <p>An enterprise S3 state backend must be locked down with multiple layers of defense:</p>
-<pre><code># backend.tf
+<pre tabindex="0"><code># backend.tf
 terraform {
   backend "s3" {
     bucket         = "corp-terraform-state-us-east-1-prod"
@@ -110,7 +110,7 @@ terraform {
 <div class="section-eyebrow">Strategy</div>
 <h2>Layering state to control blast radius</h2>
 <p>Never deploy all infrastructure in a single state file. Partition your infrastructure into separate directories, each with its own independent <code>key</code> in the state bucket:</p>
-<pre><code>State Hierarchy & Blast Radius:
+<pre tabindex="0"><code>State Hierarchy & Blast Radius:
 ┌────────────────────────────────────────────────────────┐
 │  00-bootstrap: State S3 bucket, DynamoDB lock table    │ (Managed once)
 └──────────────────────────┬─────────────────────────────┘
@@ -138,7 +138,7 @@ terraform {
 <div class="section-eyebrow">Contracts</div>
 <h2>Avoiding the <code>terraform_remote_state</code> trap</h2>
 <p>Historically, teams shared outputs between state files using <code>data &quot;terraform_remote_state&quot;</code>:</p>
-<pre><code># ANTI-PATTERN: Tight state coupling
+<pre tabindex="0"><code># ANTI-PATTERN: Tight state coupling
 data "terraform_remote_state" "vpc" {
   backend = "s3"
   config = {
@@ -157,7 +157,7 @@ data "terraform_remote_state" "vpc" {
 </details>
 <h3>The Production Alternative: SSM Parameter Store Contracts</h3>
 <p>Publish resource identifiers to AWS Systems Manager (SSM) Parameter Store, and consume them via standard data lookups:</p>
-<pre><code># 1. In 01-networking: Publish contract
+<pre tabindex="0"><code># 1. In 01-networking: Publish contract
 resource "aws_ssm_parameter" "vpc_id" {
   name  = "/infrastructure/prod/vpc/vpc_id"
   type  = "String"
