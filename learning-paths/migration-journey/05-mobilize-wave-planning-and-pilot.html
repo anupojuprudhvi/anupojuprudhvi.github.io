@@ -75,11 +75,11 @@
 <div class="section-eyebrow">Principle</div>
 <h2>Shifting from strategy to factory engineering</h2>
 <p>Securing executive sign-off on the Directional Business Case (DBC) and qualifying for AWS MAP co-funding marks the successful conclusion of the <b>Assess</b> phase. The initiative now transitions into <b>Mobilize</b>.</p>
-<p>Where Assess answered *"Why should we migrate and what will it cost?"*, Mobilize answers *"How do we build the target platform, validate cutover runbooks, and train our engineering teams to operate it safely?"*</p>
+<p>Where Assess answered *&quot;Why should we migrate and what will it cost?&quot;*, Mobilize answers *&quot;How do we build the target platform, validate cutover runbooks, and train our engineering teams to operate it safely?&quot;*</p>
 <p>Mobilize bridges high-level architecture to industrialized execution through three critical workstreams:</p>
 <ol>
 <li><b>Landing Zone Deployment:</b> Standing up the multi-account foundation, security guardrails, and hybrid connectivity designed in Assess.</li>
-<li><b>Dependency Mapping & Wave Planning:</b> Clustering hundreds of interdependent servers into sequenced, manageable cutover waves.</li>
+<li><b>Dependency Mapping &amp; Wave Planning:</b> Clustering hundreds of interdependent servers into sequenced, manageable cutover waves.</li>
 <li><b>The Lighthouse Pilot (Wave 0):</b> Migrating a representative production workload end-to-end to validate replication pipelines, prove cutover timing, and exercise rollback procedures.</li>
 </ol>
 </div>
@@ -107,10 +107,10 @@
 <div class="wrap">
 <div class="section-eyebrow">Methodology</div>
 <h2>Dependency clustering into migration waves</h2>
-<p>Attempting to migrate an enterprise estate in one massive "big bang" weekend is an unacceptably high operational risk. Instead, workloads are sequenced into <b>discrete migration waves</b> (typically 15 to 40 servers per wave) based on four structural criteria:</p>
+<p>Attempting to migrate an enterprise estate in one massive &quot;big bang&quot; weekend is an unacceptably high operational risk. Instead, workloads are sequenced into <b>discrete migration waves</b> (typically 15 to 40 servers per wave) based on four structural criteria:</p>
 <ol>
 <li><b>Network Communication Affinity:</b> Ingesting network connection telemetry (source/destination IP traffic from hypervisors or netflow logs). Servers that exchange high-volume synchronous RPC or database queries must migrate in the <b>same wave</b> to avoid high-latency cross-datacenter application degradation.</li>
-<li><b>Business Criticality & Tiering:</b></li>
+<li><b>Business Criticality &amp; Tiering:</b></li>
 </ol>
 <ul>
 <li>Non-production (Dev/Test) environments migrate first to exercise tools with zero revenue risk.</li>
@@ -118,7 +118,7 @@
 <li>Core Tier-1 customer-facing transaction platforms migrate in later, highly refined waves.</li>
 </ul>
 <ol>
-<li><b>Change Freeze & Compliance Windows:</b> Aligning wave schedules with corporate blackout periods (e.g., month-end financial book closings or peak seasonal retail windows).</li>
+<li><b>Change Freeze &amp; Compliance Windows:</b> Aligning wave schedules with corporate blackout periods (e.g., month-end financial book closings or peak seasonal retail windows).</li>
 <li><b>Target Modernization Strategy:</b> Grouping servers utilizing the same migration tooling (e.g., block-level replication via <b>AWS Application Migration Service [MGN]</b> vs. database replication via <b>AWS Database Migration Service [DMS]</b>).</li>
 </ol>
 </div>
@@ -141,7 +141,7 @@
 <summary>Key Metrics Captured During Pilot</summary>
 <ul>
 <li><b>Actual Cutover Duration:</b> Validates whether the maintenance window can fit within scheduled downtime (e.g., proving a database switchover takes 12 minutes rather than a projected 2 hours).</li>
-<li><b>Network Latency & Performance:</b> Measuring real-world application response times across AWS subnets vs. legacy physical racks.</li>
+<li><b>Network Latency &amp; Performance:</b> Measuring real-world application response times across AWS subnets vs. legacy physical racks.</li>
 <li><b>Rollback SLA:</b> Verifying that should an unforeseen defect occur, reverting traffic back to the on-premise baseline takes less than 15 minutes.</li>
 </ul>
 </details>
@@ -154,7 +154,7 @@
 <p>The Mobilize phase concludes with formal delivery of:</p>
 <ol>
 <li><b>The Production Landing Zone:</b> Validated multi-account AWS environment with enforced security guardrails, centralized logging, and active hybrid connectivity.</li>
-<li><b>The Industrialized Migration Wave Plan:</b> Sequenced roadmap scheduling all remaining application waves through the Migrate & Modernize phase.</li>
+<li><b>The Industrialized Migration Wave Plan:</b> Sequenced roadmap scheduling all remaining application waves through the Migrate &amp; Modernize phase.</li>
 <li><b>The Validated Migration Runbook:</b> Standardized operational procedure refined during the lighthouse cutover, ready for automated factory execution.</li>
 <li><b>AWS MAP Mobilize Completion Package:</b> Submitted to AWS partner governance to release Mobilize co-funding credits and approve migration-phase incentive allocations.</li>
 </ol>

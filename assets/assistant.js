@@ -84,6 +84,14 @@
       <div id="askMessageMode" hidden>
         <div class="ask-msg-body" id="askMsgBody" aria-live="polite"></div>
         <div class="ask-msg-foot" id="askMsgFoot"></div>
+        <!-- Honeypot: real visitors never see or touch this (it's off-screen,
+             unlabeled, and no step in the guided flow points at it). A bot
+             that blindly fills every field in the DOM fills this one too,
+             and sendMessage() below drops the submission without hitting
+             the network. Name matches Web3Forms' own botcheck convention. -->
+        <input type="checkbox" id="askBotcheck" name="botcheck" tabindex="-1"
+               autocomplete="off" aria-hidden="true"
+               style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" />
       </div>
     </div>`;
 
@@ -473,6 +481,31 @@
   async function sendMessage() {
     clearMsgFoot();
     msgFoot().innerHTML = `<p class="ask-sending">Sending…</p>`;
+
+    const finishAsSent = async () => {
+      await botSay(
+        `Sent — thanks, <b>${escape(msgState.name)}</b>. Expect a reply within a business day or two. You can also reach <b>anupojuprudhvi@gmail.com</b> directly anytime.`,
+      );
+      clearMsgFoot();
+      msgFoot().innerHTML = `<div class="ask-foot-actions"><span></span><button class="ask-link-btn" id="askMsgClose" type="button">Close</button></div>`;
+      backdrop.querySelector("#askMsgClose").addEventListener("click", close);
+      msgStarted = false;
+      msgState.name = "";
+      msgState.email = "";
+      msgState.interest = "";
+      msgState.note = "";
+    };
+
+    // Honeypot: a real visitor never touches #askBotcheck (it isn't part of
+    // any step in the guided flow and sits off-screen). Something did fill
+    // it in only by scripting the DOM directly, so quietly pretend the send
+    // worked instead of hitting the network — never tip the bot off that it
+    // was caught, and never spend a real email on it.
+    if (backdrop.querySelector("#askBotcheck")?.checked) {
+      await finishAsSent();
+      return;
+    }
+
     try {
       const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
@@ -490,17 +523,7 @@
       });
       const json = await res.json().catch(() => ({}));
       if (!res.ok || json.success === false) throw new Error(json.message || "Send failed");
-      await botSay(
-        `Sent — thanks, <b>${escape(msgState.name)}</b>. Expect a reply within a business day or two. You can also reach <b>anupojuprudhvi@gmail.com</b> directly anytime.`,
-      );
-      clearMsgFoot();
-      msgFoot().innerHTML = `<div class="ask-foot-actions"><span></span><button class="ask-link-btn" id="askMsgClose" type="button">Close</button></div>`;
-      backdrop.querySelector("#askMsgClose").addEventListener("click", close);
-      msgStarted = false;
-      msgState.name = "";
-      msgState.email = "";
-      msgState.interest = "";
-      msgState.note = "";
+      await finishAsSent();
     } catch {
       await botSay(
         "Something went wrong sending that automatically. Please email me directly at <b>anupojuprudhvi@gmail.com</b> — or try again below.",

@@ -1,6 +1,63 @@
-import { esc, inline, para } from "./html.mjs";
+import { esc, inline, para, jsonLd } from "./html.mjs";
 
 export const SITE = "https://anupojuprudhvi.github.io";
+
+/* ------------------------------------------------- "Case studies" nav dropdown */
+/**
+ * Shared by every page that shows the nav (home, the library, and the
+ * learning-paths hub). Counts and sector names come straight from the
+ * case-study data — never typed by hand — so a new case study or a renamed
+ * sector can never leave the nav showing a stale number.
+ *
+ * `items` is any array of case-study-like objects carrying `.project` (id)
+ * and `.projectName` (display name) — the parsed docs in build.mjs, or the
+ * search-index entries `libraryPage` already has. `prefix` is the relative
+ * path to case-studies/ from the calling page ("" from inside it,
+ * "case-studies/" from the home page, "../case-studies/" from one level
+ * down). `current: true` marks the trigger as the active nav item, for use
+ * on the case-studies page itself.
+ */
+export function caseStudiesNavDropdown(items, { prefix = "", current = false } = {}) {
+  const sectors = [];
+  const bySector = new Map();
+  for (const item of items) {
+    let sector = bySector.get(item.project);
+    if (!sector) {
+      sector = { id: item.project, name: item.projectName, count: 0 };
+      bySector.set(item.project, sector);
+      sectors.push(sector);
+    }
+    sector.count++;
+  }
+
+  const allHref = `${prefix}index.html`;
+  const sectorLinks = sectors
+    .map(
+      (s) => `
+              <a href="${prefix}index.html?filter=${encodeURIComponent(
+                "project:" + s.id,
+              )}" role="menuitem" class="nav-dropdown-item">
+                <strong>${esc(s.name)}</strong>
+                <small>${s.count} case ${s.count === 1 ? "study" : "studies"}</small>
+              </a>`,
+    )
+    .join("");
+
+  return `<div class="nav-dropdown">
+            <a href="${allHref}" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false"${
+              current ? ` aria-current="page"` : ""
+            }
+              >Case studies <span class="nav-arrow" aria-hidden="true">▾</span></a
+            >
+            <div class="nav-dropdown-menu" role="menu">
+              <a href="${allHref}" role="menuitem" class="nav-dropdown-item">
+                <strong>All Case Studies</strong>
+                <small>${items.length} case studies · full library &amp; filters</small>
+              </a>
+              <div class="nav-dropdown-divider" role="separator"></div>${sectorLinks}
+            </div>
+          </div>`;
+}
 
 /* ------------------------------------------------------- scaffold sections */
 /**
@@ -144,8 +201,8 @@ ${enables}
       {
         "@context": "https://schema.org",
         "@type": "TechArticle",
-        "headline": ${JSON.stringify(d.title)},
-        "description": ${JSON.stringify(d.summary || "")},
+        "headline": ${jsonLd(d.title)},
+        "description": ${jsonLd(d.summary || "")},
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -162,7 +219,7 @@ ${enables}
         "url": "${SITE}/${url}",
         "image": "${SITE}/og-image.png",
         "mainEntityOfPage": "${SITE}/${url}",
-        "keywords": ${JSON.stringify((d.tags || []).concat(d.stack || []).join(", "))}
+        "keywords": ${jsonLd((d.tags || []).concat(d.stack || []).join(", "))}
       }
     </script>
     <script src="${a("assets/theme.js")}"></script>
@@ -291,34 +348,7 @@ export function libraryPage(items) {
         >
         <div class="navlinks">
           <a href="../index.html#work">Selected work</a>
-          <div class="nav-dropdown">
-            <a href="index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" aria-current="page"
-              >Case studies <span class="nav-arrow" aria-hidden="true">▾</span></a
-            >
-            <div class="nav-dropdown-menu" role="menu">
-              <a href="index.html" role="menuitem" class="nav-dropdown-item">
-                <strong>All Case Studies</strong>
-                <small>21 case studies · full library &amp; filters</small>
-              </a>
-              <div class="nav-dropdown-divider" role="separator"></div>
-              <a href="index.html?filter=project%3Atelecom" role="menuitem" class="nav-dropdown-item">
-                <strong>Telecom &amp; Secure Communications</strong>
-                <small>5 case studies</small>
-              </a>
-              <a href="index.html?filter=project%3Atolling" role="menuitem" class="nav-dropdown-item">
-                <strong>Tolling Infrastructure</strong>
-                <small>10 case studies</small>
-              </a>
-              <a href="index.html?filter=project%3Ahealthcare" role="menuitem" class="nav-dropdown-item">
-                <strong>Healthcare &amp; Cost Architecture</strong>
-                <small>1 case study</small>
-              </a>
-              <a href="index.html?filter=project%3Apartner-engagements" role="menuitem" class="nav-dropdown-item">
-                <strong>AWS APN &amp; Migration Engagements</strong>
-                <small>5 case studies</small>
-              </a>
-            </div>
-          </div>
+          ${caseStudiesNavDropdown(items, { current: true })}
           <div class="nav-dropdown">
             <a href="../learning-paths/index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false"
               >Learning paths <span class="nav-arrow" aria-hidden="true">▾</span></a
@@ -475,8 +505,8 @@ export function learningPathPage(d, bodyHtml, { up, url, prev, next, track }) {
       {
         "@context": "https://schema.org",
         "@type": "TechArticle",
-        "headline": ${JSON.stringify(d.title)},
-        "description": ${JSON.stringify(d.summary || "")},
+        "headline": ${jsonLd(d.title)},
+        "description": ${jsonLd(d.summary || "")},
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -493,7 +523,7 @@ export function learningPathPage(d, bodyHtml, { up, url, prev, next, track }) {
         "url": "${SITE}/${url}",
         "image": "${SITE}/og-image.png",
         "mainEntityOfPage": "${SITE}/${url}",
-        "keywords": ${JSON.stringify((d.tags || []).concat(d.stack || []).join(", "))}
+        "keywords": ${jsonLd((d.tags || []).concat(d.stack || []).join(", "))}
       }
     </script>
     <script src="${a("assets/theme.js")}"></script>

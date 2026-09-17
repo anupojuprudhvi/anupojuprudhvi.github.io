@@ -132,7 +132,7 @@
   transition: fill 0.2s ease;
 }
 .hub-node.center text {
-  fill: #eef5f6;
+  fill: var(--inverse-heading);
 }
 .hub-node.active rect {
   stroke: var(--accent);
@@ -264,7 +264,7 @@
 }
 pre.code {
   background: var(--inverse-bg);
-  color: #d8dee9;
+  color: var(--inverse-text);
   border-radius: 12px;
   padding: 16px 18px;
   overflow-x: auto;
@@ -274,7 +274,7 @@ pre.code {
   margin: 18px 0;
 }
 pre.code .cmt {
-  color: #8b93a3;
+  color: var(--inverse-text-muted);
 }
 .seq {
   counter-reset: step;

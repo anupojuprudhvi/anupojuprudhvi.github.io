@@ -124,7 +124,7 @@
 <ul>
 <li><b>On-Premise to AWS Service Mapping Matrix:</b> Evaluated every functional tier of the legacy architecture and established direct cloud-native mappings:</li>
 <li>*Legacy MQTT Broker Servers* ➔ <b>AWS IoT Core</b> (managed TLS termination, device shadow state, automated horizontal scaling).</li>
-<li>*Monolithic Ingestion & Worker Daemons* ➔ <b>Amazon EKS on AWS Graviton3</b> (containerized microservices, horizontal pod autoscaling, ARM64 cost efficiency).</li>
+<li>*Monolithic Ingestion &amp; Worker Daemons* ➔ <b>Amazon EKS on AWS Graviton3</b> (containerized microservices, horizontal pod autoscaling, ARM64 cost efficiency).</li>
 <li>*Raw Telemetry Buffer* ➔ <b>Amazon Kinesis Data Streams</b> (sharded, real-time event streaming buffer absorbing traffic surges).</li>
 <li>*Self-Hosted Relational Database* ➔ <b>Amazon Aurora PostgreSQL Multi-AZ</b> (managed backups, storage auto-scaling, read replica offloading).</li>
 <li>*Device Metric Time-Series* ➔ <b>Amazon DynamoDB</b> (single-digit millisecond latency at scale for device state snapshots).</li>

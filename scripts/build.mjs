@@ -27,7 +27,7 @@ import { join, relative, dirname, basename } from "node:path";
 
 import { esc } from "./lib/html.mjs";
 import { parseFrontMatter, renderBody } from "./lib/markdown.mjs";
-import { SITE, page, libraryPage, learningPathPage } from "./lib/render.mjs";
+import { SITE, page, libraryPage, learningPathPage, caseStudiesNavDropdown } from "./lib/render.mjs";
 
 const ROOT = process.cwd();
 const CONTENT = join(ROOT, "content/case-studies");
@@ -166,7 +166,7 @@ const selectedWork = projects.map((project, projectIndex) => {
   }
   return template(readFileSync(join(ROOT, `content/engagements/${project.id}.html`), "utf8"), values).trimEnd();
 }).join("\n");
-emit("index.html", template(readFileSync(join(ROOT, "content/home.html"), "utf8"), { selectedWork, engagementCount: projects.length }));
+emit("index.html", template(readFileSync(join(ROOT, "content/home.html"), "utf8"), { selectedWork, engagementCount: projects.length, caseStudiesNav: caseStudiesNavDropdown(docs, { prefix: "case-studies/" }) }));
 
 // learning paths and playbooks
 const LEARNING_PATHS_DIR = join(ROOT, "content/learning-paths");
@@ -174,7 +174,12 @@ if (existsSync(join(LEARNING_PATHS_DIR, "tracks.json"))) {
   const tracks = JSON.parse(readFileSync(join(LEARNING_PATHS_DIR, "tracks.json"), "utf8"));
   const hubSourcePath = join(LEARNING_PATHS_DIR, "index.html");
   if (existsSync(hubSourcePath)) {
-    emit("learning-paths/index.html", readFileSync(hubSourcePath, "utf8"));
+    emit(
+      "learning-paths/index.html",
+      template(readFileSync(hubSourcePath, "utf8"), {
+        caseStudiesNav: caseStudiesNavDropdown(docs, { prefix: "../case-studies/" }),
+      }),
+    );
   }
 
   for (const track of tracks) {

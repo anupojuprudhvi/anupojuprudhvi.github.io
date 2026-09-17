@@ -403,7 +403,7 @@
 }
 .ask-send:hover {
   background: var(--accent-bright);
-  color: #06231b;
+  color: var(--text-on-accent-bright);
 }
 .ask-chip-row {
   display: flex;
@@ -426,7 +426,7 @@
   color: var(--accent);
 }
 .ask-err {
-  color: #b3403a;
+  color: var(--danger);
   font-size: 11px;
   margin: 6px 2px 0;
 }

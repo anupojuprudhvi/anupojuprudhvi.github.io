@@ -44,7 +44,7 @@ outcomes:
     label: Automated marketplace checkout to active customer tenant provisioning
   - value: Multi-Cloud
     label: Reusable marketplace integration architecture across major cloud catalogs
-  - value: &lt; 5 Min
+  - value: < 5 Min
     label: Customer time-to-value from marketplace purchase to platform access
 ---
 

@@ -175,9 +175,9 @@
 <details class="implementation-notes">
 <summary>Three architectural guarantees of environment layering:</summary>
 <ul>
-<li><b>State File & Lock Isolation:</b> Running <code>terraform apply</code> in <code>04-compute</code> locks *only* the compute state file. Database and networking states remain 100% unlocked and completely immune to accidental modifications.</li>
+<li><b>State File &amp; Lock Isolation:</b> Running <code>terraform apply</code> in <code>04-compute</code> locks *only* the compute state file. Database and networking states remain 100% unlocked and completely immune to accidental modifications.</li>
 <li><b>Role-Based Access Control (RBAC):</b> In your CI/CD pipeline (e.g. GitHub Actions with AWS OIDC), application teams only assume an IAM role scoped to execute in <code>04-compute</code>. They physically cannot destroy <code>01-networking</code> or <code>03-data</code>.</li>
-<li><b>Fast Plans (< 30 seconds):</b> Because each layer contains 20-40 resources instead of 500+, <code>terraform plan</code> executes in seconds instead of timing out.</li>
+<li><b>Fast Plans (&lt; 30 seconds):</b> Because each layer contains 20-40 resources instead of 500+, <code>terraform plan</code> executes in seconds instead of timing out.</li>
 </ul>
 </details>
 <details class="implementation-notes">
@@ -227,7 +227,7 @@ terraform {
 <div class="wrap">
 <div class="section-eyebrow">Failure Modes</div>
 <h2>Anti-patterns to avoid</h2>
-<h3>Anti-Pattern 1: The "Monolithic State Monster"</h3>
+<h3>Anti-Pattern 1: The &quot;Monolithic State Monster&quot;</h3>
 <p>Putting VPC networking, Aurora clusters, IAM roles, and EKS deployments in a single <code>main.tf</code> file.</p>
 <ul>
 <li><b>Why it fails:</b> A single typo in an IAM policy risks destroying or re-planning the database. <code>terraform plan</code> takes 15 minutes to run across hundreds of resources.</li>
