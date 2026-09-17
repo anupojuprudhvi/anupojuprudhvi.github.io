@@ -470,6 +470,36 @@
     "solution": "I led the cross-region technical discovery and transformation analysis across both US and EU infrastructure environments. By normalizing inventory exports and workload telemetry, I mapped legacy render/transcode clusters to dynamic Amazon EC2 Graviton and Spot instance fleets, and architected tiered storage strategies (Amazon S3 Standard to Glacier Deep Archive) for multi-petabyte media catalogs. I authored the formal Migration Readiness Assessment (MRA) findings, established phase-wise success criteria, and presented the final financial TCO deck to C-level stakeholders."
   },
   {
+    "title": "Enterprise IT monitoring platform · VMware Tanzu to Amazon EKS MAP assessment",
+    "nav": "IT monitoring Tanzu to EKS MAP",
+    "summary": "Leading the AWS MAP Assess technical evaluation for a European IT monitoring software enterprise, transitioning on-premises VMware Tanzu Kubernetes to Amazon EKS with Karpenter and delivering executive TCO analysis.",
+    "project": "partner-engagements",
+    "projectName": "AWS APN & Migration Engagements",
+    "layer": "Architecture & Kubernetes",
+    "stack": [
+      "Amazon EKS",
+      "VMware Tanzu",
+      "Karpenter",
+      "AWS Transform",
+      "RVTools",
+      "Dell VxRail",
+      "AWS MAP"
+    ],
+    "tags": [
+      "kubernetes",
+      "eks",
+      "tanzu",
+      "vmware",
+      "migration",
+      "map-assess",
+      "karpenter",
+      "finops"
+    ],
+    "url": "case-studies/partner-engagements/it-monitoring-tanzu-to-eks-map-assessment.html",
+    "problem": "A European enterprise IT infrastructure and network monitoring software leader operated its core commercial platforms, continuous integration runner fleets, and extensive QA test farms across on-premises Dell VxRail clusters running VMware Tanzu. Facing impending hypervisor licensing price increases and substantial physical colocation datacenter lease overheads, the organization initiated an AWS Migration Acceleration Program (MAP) assessment. The initiative required deep container-level discovery, VPC CNI IP capacity planning, stateful data persistence mapping, and an audited 3-year TCO financial justification to validate a complete datacenter exit.",
+    "solution": "Serving as Lead Cloud Architect, I spearheaded the technical workload assessment and EKS target state architecture. I formulated a comprehensive 33-question evaluation matrix spanning container resource requests/limits, network policies, and pod storage drivers. I designed the target AWS architecture transitioning VMware Tanzu workloads to Amazon EKS utilizing Karpenter with AWS Graviton and Spot instances, mapped relational databases to Amazon Aurora, and authored the compute right-sizing report (projecting ≥ 25% compute savings) and official AWS MAP Customer Sign-Off package."
+  },
+  {
     "title": "Connected IoT and telemetry platform · Monolith to AWS cloud migration and service mapping",
     "nav": "Connected IoT cloud migration",
     "summary": "Modernizing a connected device platform from on-premise monolithic servers to high-throughput AWS managed services, establishing service translation matrices, ballpark estimates, and MAP Mobilize roadmaps.",
