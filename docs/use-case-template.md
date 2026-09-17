@@ -47,6 +47,32 @@ trade-offs.
 - **Decision:** Explain the constraint and the chosen approach.
 - **Operational control:** Explain how the design is monitored, rotated, or
   maintained.
+
+## Security · The boundary and control model
+
+Describe authentication, authorization, encryption, isolation, logging, secrets,
+and the relevant security limitations. Do not imply that a network path alone is
+an authorization decision.
+
+## Delivery · How the change is rolled out
+
+Explain the deployment, migration, testing, rollback, or operational handoff
+sequence. Identify what was validated and what remains a planned exercise.
+
+## Trade-offs · What this does not solve
+
+List the meaningful costs, constraints, dependencies, residual risks, and
+alternative approaches that were not selected.
+
+## Outcome · What changed
+
+State the observable result and the evidence supporting it. Do not invent
+performance, availability, savings, incident-count, RTO, or RPO metrics.
+
+## Next · Improvements worth funding
+
+Identify the next validation, automation, monitoring, resilience, or governance
+step. Use this section for improvements that are not yet complete.
 ```
 
 ## Front-matter guidance
