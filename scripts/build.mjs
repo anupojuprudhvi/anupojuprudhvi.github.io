@@ -21,7 +21,7 @@ import {
   mkdirSync,
   statSync,
 } from "node:fs";
-import { join, relative, dirname } from "node:path";
+import { join, relative, dirname, basename } from "node:path";
 
 const ROOT = process.cwd();
 const CONTENT = join(ROOT, "content/usecases");
@@ -355,7 +355,7 @@ function page(d, bodyHtml, { up, url, prev, next }) {
   const nav = [
     prev
       ? `<a href="${a(prev.url)}">← ${esc(prev.nav || prev.title)}</a>`
-      : `<a href="${a("usecases/index.html")}">← All use cases</a>`,
+      : `<a href="${a("usecases/index.html")}">← Technical use cases</a>`,
     next ? `<a href="${a(next.url)}">${esc(next.nav || next.title)} →</a>` : "",
   ]
     .filter(Boolean)
@@ -447,7 +447,7 @@ ${outcomesBlock(d)}
     <footer>
       <div class="wrap footer-inner">
         <span>© 2026 Prudhvi Raj Anupoju</span
-        ><a href="${a("usecases/index.html")}">All use cases ↗</a
+        ><a href="${a("usecases/index.html")}">Technical use cases ↗</a
         ><a href="${a("index.html")}#work">Back to overview ↗</a>
       </div>
     </footer>
@@ -492,13 +492,13 @@ function libraryPage(items) {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Use case library — Prudhvi Raj Anupoju</title>
+    <title>Technical use-case library — Prudhvi Raj Anupoju</title>
     <meta
       name="description"
       content="A searchable library of cloud architecture use cases — governance, networking, resilience, integration and cost, drawn from enterprise AWS delivery."
     />
     <link rel="canonical" href="${SITE}/usecases/" />
-    <meta property="og:title" content="Use case library — Prudhvi Raj Anupoju" />
+    <meta property="og:title" content="Technical use-case library — Prudhvi Raj Anupoju" />
     <meta
       property="og:description"
       content="A searchable library of cloud architecture use cases from enterprise AWS delivery."
@@ -521,7 +521,7 @@ function libraryPage(items) {
         >
         <div class="navlinks">
           <a href="../index.html#work">Selected work</a
-          ><a href="index.html" aria-current="page">Use cases</a
+          ><a href="index.html" aria-current="page">Technical use cases</a
           ><a href="../index.html#contact" class="nav-cta">Let's connect ↗</a
           ><button id="themeToggle" aria-label="Switch to light theme">
             ☼
@@ -532,12 +532,14 @@ function libraryPage(items) {
     <main id="main">
       <section class="uc-head">
         <div class="wrap">
-          <p class="eyebrow">Use case library</p>
-          <h1>Every problem, and how it was solved.</h1>
+          <p class="eyebrow">Technical use-case library</p>
+          <h1>How the difficult parts were solved.</h1>
           <p class="uc-lede">
             Individual engineering problems from enterprise AWS delivery —
             each one written up with the constraint, the approach, and the
-            trade-offs. Client details are anonymized; the engineering is not.
+            trade-offs. Start with the <a href="../index.html#work">project case studies</a>
+            for the business context and my role; use this library for the
+            architecture depth. Client details are anonymized; the engineering is not.
           </p>
           <div class="uc-controls">
             <label class="uc-search">
@@ -604,7 +606,7 @@ const docs = files.map((file) => {
   const { data, body } = parseFrontMatter(readFileSync(file, "utf8"), file);
   for (const req of ["title", "project", "summary"])
     if (!data[req]) throw new Error(`${file}: front matter missing "${req}"`);
-  const slug = file.split("/").pop().replace(/\.md$/, "");
+  const slug = basename(file, ".md");
   const url = `usecases/${data.project}/${slug}.html`;
   return { ...data, slug, url, file, bodyHtml: renderBody(body) };
 });
