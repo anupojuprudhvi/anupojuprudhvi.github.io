@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>One DNS model for public services and private environments — Prudhvi Raj Anupoju</title>
+    <meta name="description" content="Separating public internet resolution from private VPC resolution, then associating one centrally managed private hosted zone with shared and environment VPCs across accounts." />
+    <link rel="canonical" href="https://anupojuprudhvi.github.io/usecases/tolling/route53-shared-dns.html" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="One DNS model for public services and private environments" />
+    <meta property="og:description" content="Separating public internet resolution from private VPC resolution, then associating one centrally managed private hosted zone with shared and environment VPCs across accounts." />
+    <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <script src="../../assets/theme.js"></script>
+    <link rel="stylesheet" href="../../assets/site.css" />
+    <link rel="stylesheet" href="../../assets/deepdive.css" />
+    <link rel="stylesheet" href="../../assets/usecase.css" />
+    <link rel="stylesheet" href="../../assets/assistant.css" />
+  </head>
+  <body class="deepdive">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="topbar">
+      <div class="wrap">
+        <a class="back" href="../../usecases/index.html">← All use cases</a>
+        <button id="themeToggle" aria-label="Switch to light theme">☼</button>
+      </div>
+    </div>
+    <main id="main">
+      <header class="hero">
+        <div class="wrap">
+          <div class="eyebrow">U.S. Tolling Infrastructure · DNS architecture</div>
+          <h1>One DNS model for public services and private environments</h1>
+          <p class="sub">Separating public internet resolution from private VPC resolution, then associating one centrally managed private hosted zone with shared and environment VPCs across accounts.</p>
+          <div class="meta">
+            <div><b>Project</b><br />U.S. Tolling Infrastructure</div>
+            <div><b>Layer</b><br />Shared Services</div>
+            <div><b>Stack</b><br />Amazon Route 53 · Route 53 Resolver · VPC · Transit Gateway · Terraform</div>
+            <div><b>Tags</b><br />dns · route53 · networking · multi-account · shared-services · terraform</div>
+          </div>
+        </div>
+      </header>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">DNS architecture</div>
+<h2>How one Route 53 design serves every environment</h2>
+<div class="problem-solution">
+<div>
+<h3>The problem</h3>
+<p>The tolling platform had more than one kind of DNS name to operate. Public services needed to resolve from the internet, while internal endpoints had to resolve only from approved AWS networks. Treating both as the same zone would make the security boundary unclear; giving every environment its own private zone would duplicate records and create drift.</p>
+<p>The private namespace also had to work from the Shared Services VPC and from development, staging, production, and other environment VPCs. Those VPCs do not all belong to the account that owns the DNS zone, so the design had to make the AWS cross-account association workflow explicit rather than hiding it in scripts or manual console changes.</p>
+</div>
+<div>
+<h3>The solution I built</h3>
+<p>Route 53 owns two deliberate surfaces. A public hosted zone contains records intended for internet clients. A private hosted zone contains internal records and is associated with the Shared Services VPC plus each approved environment VPC, so the same private names resolve consistently wherever the platform allows them.</p>
+<p>Terraform manages the zone definitions and same-account VPC associations in the central Shared Services account. For a VPC in another account, the zone owner first creates <code>aws_route53_vpc_association_authorization</code>; the VPC owner then creates <code>aws_route53_zone_association</code> using its own credentials. The association is therefore a two-account contract, with the zone owner deciding who is allowed and the environment owner completing its side.</p>
+</div>
+</div>
+<figure class="reqflow">
+<figcaption class="reqflow-title">DNS query path, public or private name</figcaption>
+<ol class="reqflow-list">
+<li class="reqflow-step">
+<span class="reqflow-n">01</span>
+<span class="reqflow-name">Workload or internet client</span>
+<span class="reqflow-note">A client requests a hostname. Its network location determines whether the query can use the public DNS surface or a private VPC-associated namespace.</span>
+</li>
+<li class="reqflow-step">
+<span class="reqflow-n">02</span>
+<span class="reqflow-name">Amazon VPC DNS resolver</span>
+<span class="reqflow-note">Workloads use the VPC-provided resolver. It evaluates the VPC's Route 53 associations and resolver rules before falling back to public DNS resolution.</span>
+</li>
+<li class="reqflow-step">
+<span class="reqflow-n">03</span>
+<span class="reqflow-name">Private hosted zone</span>
+<span class="reqflow-note">For an internal name, the centrally owned private hosted zone answers only for associated VPCs. The Shared Services VPC and approved environment VPCs therefore use one controlled record set rather than separate copies.</span>
+</li>
+<li class="reqflow-step">
+<span class="reqflow-n">04</span>
+<span class="reqflow-name">Route 53 Resolver forwarding</span>
+<span class="reqflow-note">Queries for domains outside AWS, such as corporate or on-premises namespaces, can be forwarded through controlled inbound or outbound Resolver endpoints over the approved network path.</span>
+</li>
+<li class="reqflow-step">
+<span class="reqflow-n">05</span>
+<span class="reqflow-name">Public hosted zone</span>
+<span class="reqflow-note">For an internet-facing name, the public hosted zone answers through Route 53 authoritative DNS. Its records are independent of the private zone and are not a way into private workloads.</span>
+</li>
+<li class="reqflow-step">
+<span class="reqflow-n">06</span>
+<span class="reqflow-name">Target service</span>
+<span class="reqflow-note">The returned record leads to the intended public endpoint, private load balancer, interface endpoint, or other service target. DNS provides resolution; security groups, endpoint policies, IAM, and application controls still authorize access.</span>
+</li>
+</ol>
+</figure>
+
+<div class="callout"><b>What this enables:</b> A predictable DNS boundary for the whole tolling platform: public names remain internet-resolvable, private names remain limited to associated VPCs, and new environments can be onboarded through a documented Terraform association flow.</div>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Why this way</div>
+<h2>Public and private DNS solve different problems</h2>
+<p>The important choice was not simply to create a Route 53 zone. It was to make the visibility boundary part of the design. Public and private hosted zones can use the same domain name, but they answer in different contexts: public DNS is authoritative for internet queries, while a private zone is visible only inside the VPCs associated with it. The private zone is not a firewall and association does not grant network access by itself.</p>
+<p><b>Public hosted zones are for public reachability.</b> They hold records that internet clients must resolve, such as an edge endpoint. Their presence does not make a load balancer, API, or workload private resource reachable; the target's own exposure and security controls still determine whether a connection works.</p>
+<p><b>Private hosted zones are for internal naming.</b> Route 53 returns private-zone records only to queries from associated VPCs. Associating several environment VPCs with one zone gives development, staging, production, and shared services the same naming contract without asking each environment to maintain a separate copy of the records.</p>
+<p><b>Cross-account association has two owners.</b> AWS requires the account that owns the private zone to authorize a specific VPC first. The account that owns that VPC then completes the association. These are separate Terraform roots and credentials: adding an authorization without the consumer-side association does not make the zone visible, and creating the association before authorization fails.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<h2>What makes it hold up</h2>
+<p><b>The Shared Services account owns the namespace.</b> Hosted zones and their records have one accountable owner. Environment accounts consume the private namespace through explicit associations rather than creating lookalike zones.</p>
+<p><b>The association list is treated as shared state.</b> A consumer account creates its own cross-account association, so the zone module ignores externally added VPC association drift instead of trying to remove it on the next plan. Changes to same-account VPC inputs remain managed by the zone module. Production zones also need a destroy safeguard and an approved removal process because deleting a zone can affect every associated environment.</p>
+<p><b>DNS is not the authorization layer.</b> A successful lookup only returns a destination. Private routing, Transit Gateway or resolver connectivity, security groups on port 53, endpoint policies, IAM, and the target service's own controls still have to permit the resulting traffic. This separation keeps a DNS change from being mistaken for a network or application access grant.</p>
+<details class="implementation-notes">
+<summary>Implementation notes</summary>
+<ul>
+<li><b>Adding an environment:</b> register its VPC and region with the shared DNS</li>
+</ul>
+</details>
+<p>owner, apply the authorization there, then apply the consumer association in the environment account and verify resolution from that VPC.</p>
+<ul>
+<li><b>Removing an environment:</b> remove the consumer association first, review the</li>
+</ul>
+<p>impact, then remove the corresponding authorization. Do not delete the zone merely to remove one environment.</p>
+<ul>
+<li><b>Troubleshooting:</b> test from the requesting VPC, confirm the VPC is actually</li>
+</ul>
+<p>associated with the expected private zone, inspect Resolver forwarding rules, and only then investigate routes, security groups, or the target service.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Outcome</div>
+<h2>What changed</h2>
+<div class="outcomes">
+<div class="outcome"><div class="num">One</div><div class="txt">Centrally governed private namespace shared across approved VPCs</div></div>
+<div class="outcome"><div class="num">Two</div><div class="txt">Explicit hosted-zone surfaces: public internet DNS and private VPC DNS</div></div>
+<div class="outcome"><div class="num">Zero</div><div class="txt">Per-environment copies of shared private records to reconcile</div></div>
+</div>
+</div>
+</section>
+      <aside class="next-study wrap">
+        <a href="../../usecases/tolling/s3-image-api.html">← Upload and retrieve images</a>
+      </aside>
+      <div class="closing">
+        <div class="wrap">
+          <h2>Want to talk through how this would apply to your environment?</h2>
+          <p>
+            I'm happy to go deeper on any part of this — the architecture, the
+            trade-offs, or how it would adapt to a different environment.
+          </p>
+          <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
+            >anupojuprudhvi@gmail.com</a
+          >
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="wrap footer-inner">
+        <span>© 2026 Prudhvi Raj Anupoju</span
+        ><a href="../../usecases/index.html">Technical use cases ↗</a
+        ><a href="../../index.html#work">Back to overview ↗</a>
+      </div>
+    </footer>
+    <script src="../../assets/assistant.js" defer></script>
+    
+  </body>
+</html>

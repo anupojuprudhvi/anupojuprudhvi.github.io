@@ -107,6 +107,32 @@
     "solution": "API Gateway talking to S3 directly, with nothing in between. A private REST API per environment uses an AWS service integration for GET and PUT: the gateway assumes a role, signs the request, and S3 authorizes against that role. No compute sits in the transfer path. Each environment resolves its own custom domain through a single private hosted zone in the Shared Services account, pointing at one shared interface endpoint rather than one per account. It took four iterations to get there, each removing something."
   },
   {
+    "title": "One DNS model for public services and private environments",
+    "nav": "Share DNS across environments",
+    "summary": "Separating public internet resolution from private VPC resolution, then associating one centrally managed private hosted zone with shared and environment VPCs across accounts.",
+    "project": "tolling",
+    "projectName": "U.S. Tolling Infrastructure",
+    "layer": "Shared Services",
+    "stack": [
+      "Amazon Route 53",
+      "Route 53 Resolver",
+      "VPC",
+      "Transit Gateway",
+      "Terraform"
+    ],
+    "tags": [
+      "dns",
+      "route53",
+      "networking",
+      "multi-account",
+      "shared-services",
+      "terraform"
+    ],
+    "url": "usecases/tolling/route53-shared-dns.html",
+    "problem": "The tolling platform had more than one kind of DNS name to operate. Public services needed to resolve from the internet, while internal endpoints had to resolve only from approved AWS networks. Treating both as the same zone would make the security boundary unclear; giving every environment its own private zone would duplicate records and create drift. The private namespace also had to work from the Shared Services VPC and from development, staging, production, and other environment VPCs. Those VPCs do not all belong to the account that owns the DNS zone, so the design had to make the AWS cross-account association workflow explicit rather than hiding it in scripts or manual console changes.",
+    "solution": "Route 53 owns two deliberate surfaces. A public hosted zone contains records intended for internet clients. A private hosted zone contains internal records and is associated with the Shared Services VPC plus each approved environment VPC, so the same private names resolve consistently wherever the platform allows them. Terraform manages the zone definitions and same-account VPC associations in the central Shared Services account. For a VPC in another account, the zone owner first creates `aws_route53_vpc_association_authorization`; the VPC owner then creates `aws_route53_zone_association` using its own credentials. The association is therefore a two-account contract, with the zone owner deciding who is allowed and the environment owner completing its side."
+  },
+  {
     "title": "Zero-downtime database modernization and automated failover",
     "nav": "Automated failover",
     "summary": "An eight-major-version PostgreSQL migration to Aurora with CDC replication, plus a serverless failover engine that recovers in under 60 seconds and preserves hardware-bound licensing.",
