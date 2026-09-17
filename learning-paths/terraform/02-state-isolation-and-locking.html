@@ -150,7 +150,10 @@ data "terraform_remote_state" "vpc" {
     region = "us-east-1"
   }
 }
-<p>resource "aws_security_group" "app" { vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id # Tightly coupled! }</code></pre></p>
+
+resource "aws_security_group" "app" {
+  vpc_id = data.terraform_remote_state.vpc.outputs.vpc_id # Tightly coupled!
+}</code></pre>
 <details class="implementation-notes">
 <summary>Why this is an anti-pattern:</summary>
 <ul>
@@ -166,8 +169,15 @@ resource "aws_ssm_parameter" "vpc_id" {
   type  = "String"
   value = module.vpc.vpc_id
 }
-<p># 2. In 04-compute: Consume contract cleanly data "aws_ssm_parameter" "vpc_id" { name = "/infrastructure/prod/vpc/vpc_id" }</p>
-<p>resource "aws_security_group" "app" { vpc_id = data.aws_ssm_parameter.vpc_id.value }</code></pre></p>
+
+# 2. In 04-compute: Consume contract cleanly
+data "aws_ssm_parameter" "vpc_id" {
+  name = "/infrastructure/prod/vpc/vpc_id"
+}
+
+resource "aws_security_group" "app" {
+  vpc_id = data.aws_ssm_parameter.vpc_id.value
+}</code></pre>
 <p>This cleanly decouples your state files, adheres to least-privilege IAM, and creates an explicit architectural interface between infrastructure layers.</p>
 </div>
 </section>

@@ -200,13 +200,27 @@
 <pre tabindex="0"><code># modules/vpc/versions.tf
 terraform {
   required_version = ">= 1.5.0, < 2.0.0"
-<p>required_providers { aws = { source  = "hashicorp/aws" version = "~> 5.30" # Accepts 5.30.x and 5.99.x, but rejects 6.0.0 } } }</code></pre></p>
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.30" # Accepts 5.30.x and 5.99.x, but rejects 6.0.0
+    }
+  }
+}</code></pre>
 <h3>2. In Production Root Deployments: Strictly pin exact versions (<code>=</code>)</h3>
 <p>Production plans must be <b>100% deterministic</b>. If a provider releases a breaking change at 2 AM, your CI pipeline must not break unexpectedly:</p>
 <pre tabindex="0"><code># environments/prod/01-networking/versions.tf
 terraform {
   required_version = "= 1.8.5"
-<p>required_providers { aws = { source  = "hashicorp/aws" version = "= 5.48.0" # Strictly pinned for reproducible plans } } }</code></pre></p>
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "= 5.48.0" # Strictly pinned for reproducible plans
+    }
+  }
+}</code></pre>
 </div>
 </section>
 <section>

@@ -108,9 +108,21 @@ config {
   module = true
   force  = false
 }
-<p>plugin "aws" { enabled = true version = "0.30.0" source  = "github.com/terraform-linters/tflint-ruleset-aws" }</p>
-<p># Enforce AWS best practices rule "aws_instance_invalid_type" { enabled = true }</p>
-<p>rule "aws_s3_bucket_name" { enabled = true }</code></pre></p>
+
+plugin "aws" {
+  enabled = true
+  version = "0.30.0"
+  source  = "github.com/terraform-linters/tflint-ruleset-aws"
+}
+
+# Enforce AWS best practices
+rule "aws_instance_invalid_type" {
+  enabled = true
+}
+
+rule "aws_s3_bucket_name" {
+  enabled = true
+}</code></pre>
 <p>Run in CI:</p>
 <pre tabindex="0"><code>tflint --init
 tflint --recursive</code></pre>
@@ -146,9 +158,24 @@ tflint --recursive</code></pre>
   id: plan
   run: |
     terraform plan -no-color -out=tfplan 2>&1 | tee plan_output.txt
-<ul>
-<li>name: Post Plan to Pull Request uses: actions/github-script@v7 with: script: | const fs = require('fs'); const output = fs.readFileSync('plan_output.txt', 'utf8'); const comment = <code>#### Terraform Plan Summary 📋 \</code>\<code>\</code>hcl ${output.slice(-2000)} \<code>\</code>\<code> *Pushed by: @${{ github.actor }}*</code>; github.rest.issues.createComment({ issue_number: context.issue.number, owner: context.repo.owner, repo: context.repo.repo, body: comment });</code></pre></li>
-</ul>
+
+- name: Post Plan to Pull Request
+  uses: actions/github-script@v7
+  with:
+    script: |
+      const fs = require('fs');
+      const output = fs.readFileSync('plan_output.txt', 'utf8');
+      const comment = `#### Terraform Plan Summary 📋
+      \`\`\`hcl
+      ${output.slice(-2000)}
+      \`\`\`
+      *Pushed by: @${{ github.actor }}*`;
+      github.rest.issues.createComment({
+        issue_number: context.issue.number,
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        body: comment
+      });</code></pre>
 <p>Team members review the exact diff before hitting <b>Merge</b>. Once merged to <code>main</code>, a separate deployment job applies the planned artifact.</p>
 </div>
 </section>

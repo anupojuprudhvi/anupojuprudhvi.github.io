@@ -116,6 +116,11 @@ function renderSection(sec) {
   return `<section>\n<div class="wrap">\n${head}${inner}\n</div>\n</section>`;
 }
 
+const VOID_TAGS = new Set([
+  "area", "base", "br", "col", "embed", "hr", "img", "input",
+  "link", "meta", "param", "source", "track", "wbr",
+]);
+
 /** Block-level markdown inside a section. */
 function renderBlocks(text) {
   const out = [];
@@ -133,12 +138,35 @@ function renderBlocks(text) {
       continue;
     }
 
-    // raw HTML block — passes through until a blank line at zero indent
+    // Raw HTML block — passes through verbatim. Tracks the tag opened on
+    // the first line and keeps consuming lines (blank ones included, so a
+    // real-world <pre> code sample may contain blank lines) until that
+    // tag's closing tag appears. Void/self-closing elements, or a line
+    // whose tag name can't be identified, fall back to the simpler
+    // "until the next blank line" rule.
     if (/^\s*</.test(line)) {
-      const buf = [];
-      while (i < lines.length && lines[i].trim()) {
-        buf.push(lines[i]);
-        i++;
+      const tagMatch = line.match(/^\s*<([a-zA-Z][\w-]*)/);
+      const tag = tagMatch && tagMatch[1].toLowerCase();
+      const closeRe = tag && new RegExp(`</\\s*${tag}\\s*>`, "i");
+      const selfClosing =
+        !tag || VOID_TAGS.has(tag) || /\/>/.test(line) || (closeRe && closeRe.test(line));
+
+      const buf = [line];
+      i++;
+      if (selfClosing) {
+        while (i < lines.length && lines[i].trim()) {
+          buf.push(lines[i]);
+          i++;
+        }
+      } else {
+        while (i < lines.length && !closeRe.test(lines[i])) {
+          buf.push(lines[i]);
+          i++;
+        }
+        if (i < lines.length) {
+          buf.push(lines[i]); // the line with the closing tag
+          i++;
+        }
       }
       out.push(buf.join("\n"));
       continue;

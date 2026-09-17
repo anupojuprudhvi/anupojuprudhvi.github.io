@@ -94,14 +94,35 @@ terraform state mv aws_s3_bucket.logs module.logging.aws_s3_bucket.this</code></
 <p>Terraform 1.1+ introduced the <code>moved {}</code> block. When Terraform encounters a <code>moved</code> block during <code>terraform plan</code>, it updates the state file in memory without destroying or modifying the physical cloud resource.</p>
 <h3>Scenario A: Moving an existing resource into a module</h3>
 <pre tabindex="0"><code># In environments/prod/main.tf
-<p># 1. New module call replacing the old standalone resource module "storage" { source      = "../../modules/secure-s3-bucket" bucket_name = "corp-data-lake-prod" }</p>
-<p># 2. Declarative state migration record moved { from = aws_s3_bucket.data_lake to   = module.storage.aws_s3_bucket.this }</code></pre></p>
+
+# 1. New module call replacing the old standalone resource
+module "storage" {
+  source      = "../../modules/secure-s3-bucket"
+  bucket_name = "corp-data-lake-prod"
+}
+
+# 2. Declarative state migration record
+moved {
+  from = aws_s3_bucket.data_lake
+  to   = module.storage.aws_s3_bucket.this
+}</code></pre>
 <p>When you run <code>terraform plan</code>, Terraform prints: <code>aws_s3_bucket.data_lake has moved to module.storage.aws_s3_bucket.this</code> with <b>0 to add, 0 to change, 0 to destroy</b>.</p>
 <h3>Scenario B: Migrating from a single resource to <code>for_each</code></h3>
 <pre tabindex="0"><code># Before: Single resource
 # resource "aws_subnet" "public" { ... }
-<p># After: Converted to for_each map resource "aws_subnet" "public" { for_each          = var.subnets cidr_block        = each.value.cidr availability_zone = each.value.az }</p>
-<p># Preserve the original resource's state under the new map key moved { from = aws_subnet.public to   = aws_subnet.public["us-east-1a"] }</code></pre></p>
+
+# After: Converted to for_each map
+resource "aws_subnet" "public" {
+  for_each          = var.subnets
+  cidr_block        = each.value.cidr
+  availability_zone = each.value.az
+}
+
+# Preserve the original resource's state under the new map key
+moved {
+  from = aws_subnet.public
+  to   = aws_subnet.public["us-east-1a"]
+}</code></pre>
 </div>
 </section>
 <section>
@@ -111,7 +132,11 @@ terraform state mv aws_s3_bucket.logs module.logging.aws_s3_bucket.this</code></
 <p>Before Terraform 1.5, adopting unmanaged AWS resources required running <code>terraform import &lt;addr&gt; &lt;id&gt;</code>, followed by hand-writing HCL to match reality.</p>
 <p>Terraform 1.5+ allows you to import resources declaratively:</p>
 <pre tabindex="0"><code># import.tf
-<p>import { to = aws_security_group.ingress id = "sg-0123456789abcdef0" # AWS Resource ID }</code></pre></p>
+
+import {
+  to = aws_security_group.ingress
+  id = "sg-0123456789abcdef0" # AWS Resource ID
+}</code></pre>
 <p>You can even ask Terraform to write the initial HCL for you:</p>
 <pre tabindex="0"><code>terraform plan -generate-config-out=generated_sg.tf</code></pre>
 <p>Review the generated file, clean up redundant default parameters, commit it to Git, and run <code>terraform apply</code>. The resource is now under state management with zero manual CLI commands.</p>
@@ -123,8 +148,15 @@ terraform state mv aws_s3_bucket.logs module.logging.aws_s3_bucket.this</code></
 <h2>Safely detaching resources with <code>removed</code> blocks</h2>
 <p>In Terraform 1.7+, if you want to stop managing a resource in Terraform <b>without deleting the underlying infrastructure in AWS</b>, use the <code>removed {}</code> block:</p>
 <pre tabindex="0"><code># main.tf
-<p># Stop managing an Aurora cluster without destroying data removed { from = aws_rds_cluster.legacy</p>
-<p>lifecycle { destroy = false # Drops from state, leaves cluster running in AWS! } }</code></pre></p>
+
+# Stop managing an Aurora cluster without destroying data
+removed {
+  from = aws_rds_cluster.legacy
+
+  lifecycle {
+    destroy = false # Drops from state, leaves cluster running in AWS!
+  }
+}</code></pre>
 </div>
 </section>
 <section>
