@@ -10,7 +10,7 @@ export const inline = (s) =>
   s
     .replace(/`([^`]+)`/g, (_, c) => `<code>${esc(c)}</code>`)
     .replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>")
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, url) => `<a href="${esc(url)}">${text}</a>`);
 
 /** Paragraph text that may contain inline markdown but no block structure. */
 export const para = (s) =>

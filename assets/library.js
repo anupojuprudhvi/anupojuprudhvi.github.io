@@ -52,5 +52,11 @@
   );
 
   search?.addEventListener("input", apply);
+  search?.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && search.value) {
+      search.value = "";
+      apply();
+    }
+  });
   apply();
 })();

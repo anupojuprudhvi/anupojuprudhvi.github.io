@@ -263,13 +263,52 @@
     backdrop.addEventListener("click", (e) => {
       if (e.target === backdrop) close();
     });
+    const input = backdrop.querySelector("#askInput");
+    const resultsBox = backdrop.querySelector("#askResults");
+
     let t;
-    backdrop.querySelector("#askInput").addEventListener("input", (e) => {
+    input.addEventListener("input", (e) => {
       requestVersion++;
       clearTimeout(t);
       const v = e.target.value;
       t = setTimeout(() => answer(v), 120);
     });
+
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        const firstHit = backdrop.querySelector(".ask-hit");
+        if (firstHit) {
+          e.preventDefault();
+          firstHit.click();
+        }
+      } else if (e.key === "ArrowDown") {
+        const firstHit = backdrop.querySelector(".ask-hit");
+        if (firstHit) {
+          e.preventDefault();
+          firstHit.focus();
+        }
+      }
+    });
+
+    resultsBox.addEventListener("keydown", (e) => {
+      const hits = [...resultsBox.querySelectorAll(".ask-hit")];
+      const idx = hits.indexOf(document.activeElement);
+      if (idx === -1) return;
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        if (idx < hits.length - 1) {
+          hits[idx + 1].focus();
+        }
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        if (idx > 0) {
+          hits[idx - 1].focus();
+        } else {
+          input.focus();
+        }
+      }
+    });
+
     document.addEventListener("keydown", (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();

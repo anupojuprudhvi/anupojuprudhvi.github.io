@@ -17,11 +17,16 @@ document.querySelectorAll("[data-filter]").forEach((button) => {
   });
 });
 const copyButton = document.getElementById("copyEmail");
+let copyTimeout;
 copyButton?.addEventListener("click", async () => {
   const status = document.getElementById("copyStatus");
+  clearTimeout(copyTimeout);
   try {
     await navigator.clipboard.writeText("anupojuprudhvi@gmail.com");
     status.textContent = "Email address copied.";
+    copyTimeout = setTimeout(() => {
+      status.textContent = "";
+    }, 4000);
   } catch {
     status.textContent = "Please select and copy the email address above.";
   }
