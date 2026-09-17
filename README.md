@@ -1,9 +1,8 @@
 # Prudhvi Raj Anupoju — Cloud & DevOps Portfolio
 
 Static portfolio and a growing collection of cloud architecture case studies.
-The site is a plain static output that can be
-served by GitHub Pages or Vercel; `vercel.json` defines the Vercel build
-configuration. There are no runtime dependencies and no build-time dependencies
+The site is a plain static output served directly by GitHub Pages.
+There are no runtime dependencies and no build-time dependencies
 for the generator — it is plain Node.
 
 Live at: https://anupojuprudhvi.github.io/
@@ -181,12 +180,11 @@ searches is already the grounding corpus.
 
 ## Deployment
 
-The repository is deployable as static files. GitHub Pages can serve the
-committed output directly from the publishing branch, while Vercel uses the
-included `vercel.json` configuration and runs `npm run build` before serving the
-repository root. Confirm the active hosting provider and deployment status in
-that provider's dashboard; this repository does not claim a deployment was
-successful merely because the build passed.
+The repository is served directly by GitHub Pages from the `main` branch.
+Committed static files (`index.html`, `case-studies/**/*.html`, `assets/case-studies.json`,
+`sitemap.xml`, `robots.txt`, and `feed.xml`) are served globally without any
+external hosting dependencies. Check deployment status under the repository's
+GitHub Pages settings or Actions tab.
 
 ## Publish
 
