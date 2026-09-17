@@ -116,7 +116,8 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
     fs.writeFileSync(file("content/projects.json"), JSON.stringify(projects));
     succeeds();
     const labels = [...read("index.html").matchAll(/<div class="tag">(.*?)<\/div>/g)].map((match) => match[1]);
-    assert.deepEqual(labels, ["01 / Healthcare &amp; Cost Architecture", "02 / U.S. Tolling Infrastructure", "03 / Updated telecom name"]);
+    const expectedLabels = projects.map((p, i) => `${String(i + 1).padStart(2, "0")} / ${p.name.replaceAll("&", "&amp;")}`);
+    assert.deepEqual(labels, expectedLabels);
 
     // A new project needs registry metadata, its pitch, and a study, not build-code edits.
     projects.push({ id: "new-project", name: "Another project" });

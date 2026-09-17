@@ -410,8 +410,8 @@ nav.topnav,
 }
 .stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
   margin-top: 64px;
   padding: 28px 0 32px;
   border-top: 1px solid var(--line);
@@ -779,6 +779,10 @@ footer {
   .hero h1 {
     font-size: 48px;
   }
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
 }
 @media (max-width: 640px) {
   .wrap {
@@ -839,7 +843,8 @@ footer {
     min-height: 290px;
   }
   .stats {
-    gap: 16px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 16px;
     margin-top: 36px;
   }
   .stat strong {

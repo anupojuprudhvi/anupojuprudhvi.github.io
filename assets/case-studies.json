@@ -131,7 +131,7 @@
     "nav": "Standardize the cloud",
     "summary": "A four-layer landing zone, one hub-and-spoke network, and a CI/CD pipeline where an unintended apply is structurally impossible.",
     "project": "tolling",
-    "projectName": "U.S. Tolling Infrastructure",
+    "projectName": "Tolling Infrastructure",
     "layer": "Foundation",
     "stack": [
       "Terraform",
@@ -155,7 +155,7 @@
     "nav": "Connect accounts through Transit Gateway",
     "summary": "Connecting shared services, workload accounts, security inspection, and a recovery region through one governed Transit Gateway without making every VPC route to every other VPC.",
     "project": "tolling",
-    "projectName": "U.S. Tolling Infrastructure",
+    "projectName": "Tolling Infrastructure",
     "layer": "Foundation",
     "stack": [
       "AWS Transit Gateway",
@@ -180,7 +180,7 @@
     "nav": "Keep Aurora DR in configuration parity",
     "summary": "Closing the two gaps that can make a replicated Aurora environment fail differently during recovery: secondary parameter-group drift and missing regional secret availability.",
     "project": "tolling",
-    "projectName": "U.S. Tolling Infrastructure",
+    "projectName": "Tolling Infrastructure",
     "layer": "Data",
     "stack": [
       "Amazon Aurora Global Database",
@@ -205,7 +205,7 @@
     "nav": "Trace an EKS ingress incident",
     "summary": "A structured RCA pattern for an EKS ingress failure that separates DNS, load-balancer, target-registration, network-policy, and application causes instead of treating every 5xx as an application defect.",
     "project": "tolling",
-    "projectName": "U.S. Tolling Infrastructure",
+    "projectName": "Tolling Infrastructure",
     "layer": "Applications",
     "stack": [
       "Amazon EKS",
@@ -231,7 +231,7 @@
     "nav": "Build the delivery engine",
     "summary": "Bootstrapping AWS OIDC roles once with SSO, then using one reusable GitHub Actions engine for speculative plans and explicitly gated, single-environment Terraform deployments.",
     "project": "tolling",
-    "projectName": "U.S. Tolling Infrastructure",
+    "projectName": "Tolling Infrastructure",
     "layer": "Foundation",
     "stack": [
       "GitHub Actions",
@@ -258,7 +258,7 @@
     "nav": "Protect CloudTrail evidence",
     "summary": "Centralizing organization-wide CloudTrail events in a separately governed archive account with encryption, restrictive bucket policy, retention controls, and alerting for changes to the trail or log destination.",
     "project": "tolling",
-    "projectName": "U.S. Tolling Infrastructure",
+    "projectName": "Tolling Infrastructure",
     "layer": "Foundation",
     "stack": [
       "AWS CloudTrail",
@@ -286,7 +286,7 @@
     "nav": "Federate WorkSpaces with Entra",
     "summary": "Separating Entra authentication from Active Directory machine operations so Personal and Pool WorkSpaces can use corporate sign-in without weakening the domain boundary.",
     "project": "tolling",
-    "projectName": "U.S. Tolling Infrastructure",
+    "projectName": "Tolling Infrastructure",
     "layer": "Shared Services",
     "stack": [
       "Microsoft Entra ID",
@@ -314,7 +314,7 @@
     "nav": "Connect JSM to private services",
     "summary": "A layered, authenticated path from Jira Service Management into a private service, with CloudFront and a Lambda authorizer retained because AWS platform constraints rule out the simpler alternatives.",
     "project": "tolling",
-    "projectName": "U.S. Tolling Infrastructure",
+    "projectName": "Tolling Infrastructure",
     "layer": "Applications",
     "stack": [
       "API Gateway HTTP API",
@@ -342,7 +342,7 @@
     "nav": "Share DNS across environments",
     "summary": "Separating public internet resolution from private VPC resolution, then associating one centrally managed private hosted zone with shared and environment VPCs across accounts.",
     "project": "tolling",
-    "projectName": "U.S. Tolling Infrastructure",
+    "projectName": "Tolling Infrastructure",
     "layer": "Shared Services",
     "stack": [
       "Amazon Route 53",
@@ -368,7 +368,7 @@
     "nav": "Upload and retrieve images",
     "summary": "Removing a load balancer and a Lambda proxy from the image path, leaving API Gateway talking to S3 directly through one shared private endpoint.",
     "project": "tolling",
-    "projectName": "U.S. Tolling Infrastructure",
+    "projectName": "Tolling Infrastructure",
     "layer": "Applications",
     "stack": [
       "API Gateway",
