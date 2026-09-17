@@ -9,6 +9,14 @@
   const chips = [...document.querySelectorAll("[data-uc-filter]")];
 
   let active = "all";
+  // Deep-link support: nav dropdown items link here with ?filter=<value>
+  // so "Case studies" > a sector jumps straight into that filtered view.
+  try {
+    const requested = new URLSearchParams(location.search).get("filter");
+    if (requested && chips.some((c) => c.dataset.ucFilter === requested)) {
+      active = requested;
+    }
+  } catch {}
 
   const haystack = new Map(
     cards.map((c) => [c, c.textContent.toLowerCase() + " " + (c.dataset.tags || "")]),
@@ -49,6 +57,10 @@
       );
       apply();
     }),
+  );
+
+  chips.forEach((c) =>
+    c.setAttribute("aria-pressed", String(c.dataset.ucFilter === active)),
   );
 
   search?.addEventListener("input", apply);
