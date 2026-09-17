@@ -74,7 +74,7 @@
             </div>
           </div>
           <p class="filter-status" id="ucStatus" role="status">
-            7 use cases
+            8 use cases
           </p>
         </div>
       </section>
@@ -92,6 +92,12 @@
           <h3><a href="tolling/entra-workspaces-saml.html">Corporate SSO for Amazon WorkSpaces without losing the domain boundary</a></h3>
           <p>Separating Entra authentication from Active Directory machine operations so Personal and Pool WorkSpaces can use corporate sign-in without weakening the domain boundary.</p>
           <p class="uc-stack">Microsoft Entra ID · SAML 2.0 · AWS IAM · Amazon WorkSpaces · AD Connector · Terraform</p>
+        </article>
+        <article class="uc-card" data-project="tolling" data-layer="Foundation" data-tags="cicd github-actions terraform oidc security deployment governance">
+          <div class="uc-meta"><span>U.S. Tolling Infrastructure</span><span>Foundation</span></div>
+          <h3><a href="tolling/cicd-delivery-engine.html">A reusable CI/CD engine with safe-by-default infrastructure delivery</a></h3>
+          <p>Bootstrapping AWS OIDC roles once with SSO, then using one reusable GitHub Actions engine for speculative plans and explicitly gated, single-environment Terraform deployments.</p>
+          <p class="uc-stack">GitHub Actions · Terraform · AWS IAM OIDC · AWS STS · GitHub Environments</p>
         </article>
         <article class="uc-card" data-project="tolling" data-layer="Applications" data-tags="integration security api webhooks waf authentication">
           <div class="uc-meta"><span>U.S. Tolling Infrastructure</span><span>Applications</span></div>

@@ -52,6 +52,33 @@
     "solution": "The solution separates the integration into two connected planes. In the user plane, Entra ID authenticates the employee and emits a SAML assertion. AWS IAM trusts the Entra SAML provider through a dedicated federation role, and that role grants only `workspaces:Stream` for the target directory. WorkSpaces uses the assertion's `NameID` to find the matching Active Directory user, then starts an assigned Personal desktop or allocates an eligible Pools session. In the machine plane, the WorkSpaces VPC reaches the corporate DNS and domain controllers through the approved network path. AD Connector uses a separately managed service account, protected by Secrets Manager and KMS, for directory operations and computer-object/domain-join work. The joined desktop receives the configured OU and GPO behavior, with optional access to corporate file services such as FSx. Terraform manages the repeatable AWS boundary: the directory, connector, federation role, scoped streaming policy, secret integration, and conditional SAML resources. Entra metadata and claims, Active Directory user attributes, and Personal/Pool provisioning remain explicit operational inputs rather than hidden assumptions in the infrastructure code."
   },
   {
+    "title": "A reusable CI/CD engine with safe-by-default infrastructure delivery",
+    "nav": "Build the delivery engine",
+    "summary": "Bootstrapping AWS OIDC roles once with SSO, then using one reusable GitHub Actions engine for speculative plans and explicitly gated, single-environment Terraform deployments.",
+    "project": "tolling",
+    "projectName": "U.S. Tolling Infrastructure",
+    "layer": "Foundation",
+    "stack": [
+      "GitHub Actions",
+      "Terraform",
+      "AWS IAM OIDC",
+      "AWS STS",
+      "GitHub Environments"
+    ],
+    "tags": [
+      "cicd",
+      "github-actions",
+      "terraform",
+      "oidc",
+      "security",
+      "deployment",
+      "governance"
+    ],
+    "url": "usecases/tolling/cicd-delivery-engine.html",
+    "problem": "A multi-account Terraform platform needs more than a workflow that runs `terraform apply`. The delivery path must authenticate without long-lived AWS keys, show the impact of a pull request before merge, keep one service from touching another service's state, and make a production change deliberate. There is also a dependency that is easy to miss: GitHub Actions cannot assume an OIDC role that does not exist yet. The CI/CD identity boundary therefore has to be bootstrapped locally with an administrator's AWS SSO session before the hosted pipeline can deploy anything.",
+    "solution": "I separated the system into a one-time identity bootstrap and a reusable delivery engine. The `00-foundation/cicd-oidc/` Terraform roots create the GitHub OIDC provider plus dedicated plan and apply roles in each target account. Once those roles exist, GitHub Actions exchanges its short-lived OIDC token for temporary AWS credentials through STS. A single central workflow engine owns authentication, provider handling, Terraform initialization, plan formatting, summaries, and safety gates. Small service caller workflows provide only the module path, state key, target account mapping, and environment list. Pull requests use read-only speculative plans; deployments are manually dispatched one module and one environment at a time."
+  },
+  {
     "title": "Letting a SaaS webhook reach a private service, safely",
     "nav": "Connect JSM to private services",
     "summary": "A layered, authenticated path from Jira Service Management into a private service, with CloudFront and a Lambda authorizer retained because AWS platform constraints rule out the simpler alternatives.",

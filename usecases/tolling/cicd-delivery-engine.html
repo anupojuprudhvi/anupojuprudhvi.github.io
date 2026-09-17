@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A reusable CI/CD engine with safe-by-default infrastructure delivery — Prudhvi Raj Anupoju</title>
+    <meta name="description" content="Bootstrapping AWS OIDC roles once with SSO, then using one reusable GitHub Actions engine for speculative plans and explicitly gated, single-environment Terraform deployments." />
+    <link rel="canonical" href="https://anupojuprudhvi.github.io/usecases/tolling/cicd-delivery-engine.html" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="A reusable CI/CD engine with safe-by-default infrastructure delivery" />
+    <meta property="og:description" content="Bootstrapping AWS OIDC roles once with SSO, then using one reusable GitHub Actions engine for speculative plans and explicitly gated, single-environment Terraform deployments." />
+    <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <script src="../../assets/theme.js"></script>
+    <link rel="stylesheet" href="../../assets/site.css" />
+    <link rel="stylesheet" href="../../assets/deepdive.css" />
+    <link rel="stylesheet" href="../../assets/usecase.css" />
+    <link rel="stylesheet" href="../../assets/assistant.css" />
+  </head>
+  <body class="deepdive">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="topbar">
+      <div class="wrap">
+        <a class="back" href="../../usecases/index.html">← All use cases</a>
+        <button id="themeToggle" aria-label="Switch to light theme">☼</button>
+      </div>
+    </div>
+    <main id="main">
+      <header class="hero">
+        <div class="wrap">
+          <div class="eyebrow">U.S. Tolling Infrastructure · CI/CD architecture</div>
+          <h1>A reusable CI/CD engine with safe-by-default infrastructure delivery</h1>
+          <p class="sub">Bootstrapping AWS OIDC roles once with SSO, then using one reusable GitHub Actions engine for speculative plans and explicitly gated, single-environment Terraform deployments.</p>
+          <div class="meta">
+            <div><b>Project</b><br />U.S. Tolling Infrastructure</div>
+            <div><b>Layer</b><br />Foundation</div>
+            <div><b>Stack</b><br />GitHub Actions · Terraform · AWS IAM OIDC · AWS STS · GitHub Environments</div>
+            <div><b>Tags</b><br />cicd · github-actions · terraform · oidc · security · deployment · governance</div>
+          </div>
+        </div>
+      </header>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">CI/CD architecture</div>
+<h2>How Terraform changes move from pull request to environment</h2>
+<div class="problem-solution">
+<div>
+<h3>The problem</h3>
+<p>A multi-account Terraform platform needs more than a workflow that runs <code>terraform apply</code>. The delivery path must authenticate without long-lived AWS keys, show the impact of a pull request before merge, keep one service from touching another service's state, and make a production change deliberate.</p>
+<p>There is also a dependency that is easy to miss: GitHub Actions cannot assume an OIDC role that does not exist yet. The CI/CD identity boundary therefore has to be bootstrapped locally with an administrator's AWS SSO session before the hosted pipeline can deploy anything.</p>
+</div>
+<div>
+<h3>The solution I built</h3>
+<p>I separated the system into a one-time identity bootstrap and a reusable delivery engine. The <code>00-foundation/cicd-oidc/</code> Terraform roots create the GitHub OIDC provider plus dedicated plan and apply roles in each target account. Once those roles exist, GitHub Actions exchanges its short-lived OIDC token for temporary AWS credentials through STS.</p>
+<p>A single central workflow engine owns authentication, provider handling, Terraform initialization, plan formatting, summaries, and safety gates. Small service caller workflows provide only the module path, state key, target account mapping, and environment list. Pull requests use read-only speculative plans; deployments are manually dispatched one module and one environment at a time.</p>
+</div>
+</div>
+<figure class="reqflow">
+<figcaption class="reqflow-title">Delivery path, pull request to controlled apply</figcaption>
+<ol class="reqflow-list">
+<li class="reqflow-step">
+<span class="reqflow-n">01</span>
+<span class="reqflow-name">Terraform change and pull request</span>
+<span class="reqflow-note">A change is reviewed in its source module. The caller workflow identifies the module and the environments whose impact must be inspected.</span>
+</li>
+<li class="reqflow-step">
+<span class="reqflow-n">02</span>
+<span class="reqflow-name">Speculative plan</span>
+<span class="reqflow-note">GitHub Actions assumes the plan role through OIDC and runs read-only Terraform plans, including parallel environment checks where configured. The result is summarized in the workflow and posted to the pull request for review.</span>
+</li>
+<li class="reqflow-step">
+<span class="reqflow-n">03</span>
+<span class="reqflow-name">Merge to the deployment branch</span>
+<span class="reqflow-note">Merging records the reviewed source change, but does not automatically apply infrastructure. Promotion remains an operator decision rather than an implicit side effect of merging.</span>
+</li>
+<li class="reqflow-step">
+<span class="reqflow-n">04</span>
+<span class="reqflow-name">Manual workflow dispatch</span>
+<span class="reqflow-note">An operator selects one service and one target environment. The workflow defaults to plan-only mode, so an ordinary or mistaken click produces a dry run rather than a write.</span>
+</li>
+<li class="reqflow-step">
+<span class="reqflow-n">05</span>
+<span class="reqflow-name">Confirmation and environment gate</span>
+<span class="reqflow-note">A live apply requires disabling plan-only mode, typing the exact environment name, and passing the configured GitHub Environment restrictions and any reviewer approval.</span>
+</li>
+<li class="reqflow-step">
+<span class="reqflow-n">06</span>
+<span class="reqflow-name">Deterministic Terraform apply</span>
+<span class="reqflow-note">Terraform writes a saved binary plan and applies that exact plan only after the earlier checks pass. AWS CloudTrail and GitHub Actions retain the execution history.</span>
+</li>
+</ol>
+</figure>
+
+
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Why this way</div>
+<h2>Bootstrap the identity before automating delivery</h2>
+<p>The first deployment cannot be performed by the pipeline itself. The GitHub Actions runner needs an AWS IAM OIDC provider and a trusted role before it can obtain credentials, so those resources are applied once from an administrator's workstation using AWS SSO. This is a deliberate bootstrap boundary, not a gap in automation.</p>
+<p>After the bootstrap, the same <code>THEA-cicd-plan</code> and <code>THEA-cicd-apply</code> role pattern can be reused by service workflows in the accounts they target. The plan role is read-only, while the apply role is reserved for the explicitly gated deployment path. Short-lived STS credentials replace static access keys and reduce the rotation and exposure problem of storing cloud credentials in CI secrets.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<h2>The reusable workflow pattern</h2>
+<p>The delivery system has three layers:</p>
+<p>1. <b>Router:</b> one operator-facing workflow exposes the service, environment, and plan-only inputs instead of filling the Actions sidebar with bespoke deployment interfaces. 2. <b>Caller workflows:</b> small service-specific templates declare the Terraform directory, state key, environment catalog, and any build hook required by the module. A new module inherits the central controls instead of copying a large YAML file. 3. <b>Central engine:</b> one reusable workflow owns OIDC authentication, provider profile overrides, Terraform caching, formatting, locking behavior, plan output, PR comments, summaries, and apply conditions.</p>
+<p>This keeps the module boundary visible in every run. A deployment for an API module targets that module's state and selected environment; it is not a monolithic apply across networking, databases, and applications.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<h2>Safety is a job-graph property</h2>
+<p>The important controls are layered rather than dependent on an operator remembering a command-line convention:</p>
+<ul>
+<li>Pull-request jobs have no apply step and use the read-only plan role.</li>
+<li>Manual deployments default to <code>plan_only: true</code>.</li>
+<li>A live apply requires the exact target environment name as a confirmation</li>
+</ul>
+<p>string, so an environment mismatch fails before Terraform runs.</p>
+<ul>
+<li>GitHub Environments restrict deployment promotion and can require reviewers.</li>
+<li>The workflow creates a detailed Terraform plan and applies that saved binary</li>
+</ul>
+<p>plan, rather than calculating a different change between review and apply.</p>
+<ul>
+<li>The apply job is conditionally skipped unless the required checks and inputs</li>
+</ul>
+<p>all pass.</p>
+<p>The result is not “CI/CD makes production impossible to change.” It is a more useful boundary: production changes remain possible, but the unsafe path is harder than the reviewed and auditable path.</p>
+<details class="implementation-notes">
+<summary>Implementation notes</summary>
+<ul>
+<li><b>Bootstrap first:</b> apply <code>00-foundation/cicd-oidc/</code> locally with AWS SSO for</li>
+</ul>
+</details>
+<p>each account before adding that environment to a service workflow. Otherwise OIDC authentication fails because the trusted role does not exist.</p>
+<ul>
+<li><b>Promote one commit:</b> test the same commit in development, then promote it</li>
+</ul>
+<p>to staging and production rather than rebuilding different branch contents at each environment.</p>
+<ul>
+<li><b>Keep state isolated:</b> each caller supplies its own module path and state</li>
+</ul>
+<p>key. The workflow's convenience must not become permission to touch unrelated Terraform state.</p>
+<ul>
+<li><b>Handle clean runners:</b> modules that need generated artifacts, such as an</li>
+</ul>
+<p>ARM64 Lambda package, build those artifacts in a prebuild hook before Terraform plans the change.</p>
+<ul>
+<li><b>Keep full logs available:</b> large plans can exceed pull-request comment</li>
+</ul>
+<p>limits, so summaries should be concise while the Actions run remains the source for the complete execution output.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<h2>What it enables</h2>
+<p>The platform team can add delivery to another Terraform module by declaring its module-specific inputs in a small caller workflow. Authentication hardening, Terraform upgrades, plan presentation, and deployment gates remain centralized. That gives engineers a repeatable promotion path across the account hierarchy without turning every service team into a CI/CD platform maintainer.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Outcome</div>
+<h2>What changed</h2>
+<div class="outcomes">
+<div class="outcome"><div class="num">One</div><div class="txt">Central workflow engine maintained for all service callers</div></div>
+<div class="outcome"><div class="num">Under 2 minutes</div><div class="txt">Time to onboard a Terraform module with a small caller workflow</div></div>
+<div class="outcome"><div class="num">Zero</div><div class="txt">Long-lived AWS access keys required by the hosted pipeline</div></div>
+</div>
+</div>
+</section>
+      <aside class="next-study wrap">
+        <a href="../../usecases/tolling/entra-workspaces-saml.html">← Federate WorkSpaces with Entra</a>
+        <a href="../../usecases/tolling/jsm-integration.html">Connect JSM to private services →</a>
+      </aside>
+      <div class="closing">
+        <div class="wrap">
+          <h2>Want to talk through how this would apply to your environment?</h2>
+          <p>
+            I'm happy to go deeper on any part of this — the architecture, the
+            trade-offs, or how it would adapt to a different environment.
+          </p>
+          <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
+            >anupojuprudhvi@gmail.com</a
+          >
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="wrap footer-inner">
+        <span>© 2026 Prudhvi Raj Anupoju</span
+        ><a href="../../usecases/index.html">Technical use cases ↗</a
+        ><a href="../../index.html#work">Back to overview ↗</a>
+      </div>
+    </footer>
+    <script src="../../assets/assistant.js" defer></script>
+    
+  </body>
+</html>
