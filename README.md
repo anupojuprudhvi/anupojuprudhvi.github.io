@@ -76,12 +76,18 @@ Open http://127.0.0.1:4173. The site defaults to dark mode and remembers the
 visitor's theme across pages. Core content and case-study navigation remain
 available without JavaScript.
 
+The preview server listens only on localhost. It supports GET and HEAD requests,
+disables caching so edits stay visible, and returns error responses for malformed
+URLs without stopping the server. These settings apply to local preview, not
+the production hosting provider.
+
 ## Verification
 
 ```sh
-npm test        # build regression checks and Playwright suite
+npm test        # build, preview-server, and Playwright checks
 npm run check   # compare generated output with sources without writing files
 npm run test:build   # fast authoring/build regression checks
+npm run test:preview # local server request handling and file types
 npm run test:browser # rendered-site checks only
 ```
 

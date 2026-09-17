@@ -3,8 +3,9 @@
   "private": true,
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "npm run test:build && npm run test:browser",
+    "test": "npm run test:build && npm run test:preview && npm run test:browser",
     "test:build": "node --test scripts/build.test.mjs",
+    "test:preview": "node --test scripts/serve.test.mjs",
     "test:browser": "node scripts/verify.mjs",
     "preview": "node scripts/serve.mjs",
     "check": "node scripts/build.mjs --check"

@@ -31,6 +31,9 @@ jobs:
       - name: Test content authoring and generation
         run: npm run test:build
 
+      - name: Test local preview server
+        run: npm run test:preview
+
       - name: Install browser for rendered-site checks
         run: npx playwright install --with-deps chromium
 
