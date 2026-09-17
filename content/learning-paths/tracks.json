@@ -8,5 +8,15 @@
     "duration": "6 Modules · 45 min read",
     "badge": "Production Playbook",
     "stack": ["Terraform 1.5+", "AWS", "HCL", "Checkov", "TFLint", "S3 & DynamoDB"]
+  },
+  {
+    "id": "migration-journey",
+    "title": "Enterprise Cloud Migration Journey: Assess to Mobilize",
+    "eyebrow": "Migration Acceleration Program (MAP)",
+    "summary": "An authoritative architectural and financial guide for enterprise cloud migrations — comparing rapid (4–6 wk) vs. deep (3–4 mo) assessments, 3-year TCO modeling (On-Demand, 1-Yr, 3-Yr RIs/Savings Plans, Microsoft licensing), target Landing Zone design, and Mobilize wave planning.",
+    "level": "Intermediate to Executive",
+    "duration": "5 Modules · 40 min read",
+    "badge": "Delivery Playbook",
+    "stack": ["AWS MAP", "AWS Transform", "RVTools", "TCO Modeling", "Landing Zone", "Well-Architected"]
   }
 ]
