@@ -13,7 +13,7 @@
 
 .uc-head {
   padding: 72px 0 40px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--border);
 }
 .uc-head h1 {
   font-size: clamp(36px, 4.6vw, 54px);
@@ -37,16 +37,16 @@
 .uc-search input {
   width: 100%;
   max-width: 520px;
-  background: var(--card);
-  border: 1px solid var(--line);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
   border-radius: 4px;
-  color: var(--ink);
+  color: var(--text);
   font: inherit;
   font-size: 14px;
   padding: 13px 16px;
 }
 .uc-search input::placeholder {
-  color: var(--muted);
+  color: var(--text-muted);
 }
 .uc-search input:focus-visible {
   outline: 2px solid var(--accent);
@@ -64,8 +64,8 @@
   gap: 18px;
 }
 .uc-card {
-  border: 1px solid var(--line);
-  background: var(--card);
+  border: 1px solid var(--border);
+  background: var(--bg-raised);
   border-radius: 7px;
   padding: 26px;
   display: flex;
@@ -91,7 +91,7 @@
   color: var(--accent);
 }
 .uc-meta span + span {
-  color: var(--muted);
+  color: var(--text-muted);
 }
 .uc-meta span + span::before {
   content: "/ ";
@@ -118,7 +118,7 @@
 }
 .uc-card p {
   font-size: 13px;
-  color: var(--body);
+  color: var(--text-body);
 }
 .uc-stack {
   margin-top: auto;
@@ -126,11 +126,11 @@
   font:
     10px/1.7 ui-monospace,
     monospace;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 .uc-empty {
   font-size: 14px;
-  color: var(--muted);
+  color: var(--text-muted);
   padding: 40px 0;
 }
 .uc-empty a {

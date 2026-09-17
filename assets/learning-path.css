@@ -1,8 +1,8 @@
 /* Learning Paths & Technical Playbooks */
 .lp-hero {
   padding: 48px 0 36px;
-  border-bottom: 1px solid var(--line);
-  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
 }
 .lp-badge {
   display: inline-block;
@@ -23,7 +23,7 @@
 }
 .lp-hero .sub {
   font-size: 16px;
-  color: var(--body);
+  color: var(--text-body);
   max-width: 780px;
   line-height: 1.7;
 }
@@ -33,10 +33,10 @@
   gap: 20px;
   flex-wrap: wrap;
   font-size: 12.5px;
-  color: var(--muted);
+  color: var(--text-muted);
   margin-top: 24px;
   padding-top: 20px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--border);
 }
 .lp-meta-bar span {
   display: inline-flex;
@@ -49,7 +49,7 @@
 .lp-content h2 {
   font-size: 24px;
   margin: 40px 0 16px;
-  color: var(--ink);
+  color: var(--text);
   letter-spacing: -0.02em;
 }
 .lp-content h2:first-child {
@@ -58,14 +58,14 @@
 .lp-content p {
   font-size: 15.5px;
   line-height: 1.75;
-  color: var(--body);
+  color: var(--text-body);
   margin-bottom: 20px;
 }
 .lp-content ul,
 .lp-content ol {
   margin: 0 0 24px 20px;
   padding: 0;
-  color: var(--body);
+  color: var(--text-body);
   line-height: 1.75;
   font-size: 15px;
 }
@@ -73,13 +73,13 @@
   margin-bottom: 8px;
 }
 .lp-content pre {
-  background: var(--card);
-  border: 1px solid var(--line);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 20px 22px;
   overflow-x: auto;
   font: 13px/1.65 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  color: var(--ink);
+  color: var(--text);
   margin: 24px 0;
 }
 .lp-content code {
@@ -88,21 +88,21 @@
 }
 .lp-content p code,
 .lp-content li code {
-  background: var(--card);
-  border: 1px solid var(--line);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
   padding: 2px 6px;
   border-radius: 4px;
   color: var(--accent);
 }
 .lp-callout {
-  background: var(--card);
+  background: var(--bg-raised);
   border-left: 3px solid var(--accent);
   padding: 18px 22px;
   border-radius: 0 8px 8px 0;
   margin: 28px 0;
 }
 .lp-callout strong {
-  color: var(--ink);
+  color: var(--text);
   display: block;
   margin-bottom: 6px;
   font-size: 14px;
@@ -110,7 +110,7 @@
 .lp-callout p {
   margin: 0;
   font-size: 14px;
-  color: var(--body);
+  color: var(--text-body);
 }
 
 /* Chapter Navigation Footer */
@@ -120,14 +120,14 @@
   gap: 16px;
   margin-top: 48px;
   padding-top: 32px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--border);
 }
 .lp-nav-link {
   display: flex;
   flex-direction: column;
   padding: 18px 20px;
-  background: var(--card);
-  border: 1px solid var(--line);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
   border-radius: 8px;
   text-decoration: none;
   transition: border-color 0.2s ease, transform 0.2s ease;
@@ -148,7 +148,7 @@
 .lp-nav-title {
   font-size: 14px;
   font-weight: 600;
-  color: var(--ink);
+  color: var(--text);
 }
 
 /* Syllabus on Track Overview */
@@ -165,8 +165,8 @@
   grid-template-columns: 48px 1fr auto;
   align-items: center;
   gap: 20px;
-  background: var(--card);
-  border: 1px solid var(--line);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 20px 24px;
   text-decoration: none;
@@ -183,12 +183,12 @@
 .lp-module-body h3 {
   font-size: 16px;
   font-weight: 600;
-  color: var(--ink);
+  color: var(--text);
   margin-bottom: 4px;
 }
 .lp-module-body p {
   font-size: 13px;
-  color: var(--muted);
+  color: var(--text-muted);
   margin: 0;
 }
 .lp-module-action {
@@ -213,7 +213,7 @@
 /* Track Card Button in case-bottom */
 .case-bottom a.button {
   background: var(--accent);
-  color: var(--white) !important;
+  color: var(--bg) !important;
   font-size: 12.5px;
   font-weight: 650;
   padding: 8px 18px;

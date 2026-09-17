@@ -1,29 +1,31 @@
 :root {
   color-scheme: dark;
-  --white: #0b1218;
-  --card: #111d26;
-  --ink: #eef5f6;
-  --body: #b8c8d1;
-  --muted: #92a7b4;
-  --line: #2a3b46;
+  --bg: #0b1218;
+  --bg-raised: #111d26;
+  --text: #eef5f6;
+  --text-body: #b8c8d1;
+  --text-muted: #92a7b4;
+  --border: #2a3b46;
   --accent: #81e4c1;
   --accent-bright: #81e4c1;
   --accent-soft: #19392f;
-  --charcoal: #0a151c;
+  --accent2: #f2b155;
+  --inverse-bg: #0a151c;
   --maxw: 1160px;
 }
 :root[data-theme="light"] {
   color-scheme: light;
-  --white: #f8faf9;
-  --card: #fff;
-  --ink: #142c36;
-  --body: #425b68;
-  --muted: #526c78;
-  --line: #d3dfdf;
+  --bg: #f8faf9;
+  --bg-raised: #fff;
+  --text: #142c36;
+  --text-body: #425b68;
+  --text-muted: #526c78;
+  --border: #d3dfdf;
   --accent: #176b53;
   --accent-bright: #81e4c1;
   --accent-soft: #e1f3ea;
-  --charcoal: #0a151c;
+  --accent2: #7a4a0f;
+  --inverse-bg: #0a151c;
 }
 * {
   box-sizing: border-box;
@@ -34,8 +36,8 @@ html {
 }
 body {
   margin: 0;
-  background: var(--white);
-  color: var(--body);
+  background: var(--bg);
+  color: var(--text-body);
   font:
     16px/1.7 "Inter",
     system-ui,
@@ -58,7 +60,7 @@ pre {
 h1,
 h2,
 h3 {
-  color: var(--ink);
+  color: var(--text);
   line-height: 1.15;
   letter-spacing: -0.035em;
 }
@@ -86,7 +88,7 @@ summary {
 }
 ::selection {
   background: var(--accent);
-  color: var(--white);
+  color: var(--bg);
 }
 .wrap {
   max-width: var(--maxw);
@@ -107,7 +109,7 @@ summary {
   left: 20px;
   top: -100px;
   background: var(--accent);
-  color: var(--white);
+  color: var(--bg);
   padding: 12px;
   z-index: 100;
 }
@@ -119,8 +121,8 @@ nav.topnav,
   position: sticky;
   top: 0;
   z-index: 20;
-  background: var(--white);
-  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
 }
 .nav-inner,
 .topbar .wrap {
@@ -131,7 +133,7 @@ nav.topnav,
   gap: 24px;
 }
 .brand {
-  color: var(--ink);
+  color: var(--text);
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -165,8 +167,8 @@ nav.topnav,
   display: grid;
   place-items: center;
   background: transparent;
-  border: 1px solid var(--line);
-  color: var(--ink);
+  border: 1px solid var(--border);
+  color: var(--text);
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -220,8 +222,8 @@ nav.topnav,
   left: 50%;
   transform: translateX(-50%);
   min-width: 250px;
-  background: var(--card);
-  border: 1px solid var(--line);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 6px;
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
@@ -252,7 +254,7 @@ nav.topnav,
   padding: 8px 12px;
   border-radius: 6px;
   text-decoration: none;
-  color: var(--ink);
+  color: var(--text);
   transition: background 0.15s ease, color 0.15s ease;
 }
 .nav-dropdown-item:hover,
@@ -263,11 +265,11 @@ nav.topnav,
 .nav-dropdown-item strong {
   font-size: 12px;
   font-weight: 600;
-  color: var(--ink);
+  color: var(--text);
 }
 .nav-dropdown-item small {
   font-size: 10px;
-  color: var(--muted);
+  color: var(--text-muted);
   line-height: 1.4;
 }
 .nav-dropdown-item:hover strong,
@@ -276,7 +278,7 @@ nav.topnav,
 }
 .nav-dropdown-divider {
   height: 1px;
-  background: var(--line);
+  background: var(--border);
   margin: 4px 6px;
 }
 .hero {
@@ -308,7 +310,7 @@ nav.topnav,
 .hero-intro {
   margin-top: 18px;
   font-size: 12px;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 .actions {
   display: flex;
@@ -323,7 +325,7 @@ nav.topnav,
   justify-content: center;
   gap: 24px;
   background: var(--accent);
-  color: var(--white);
+  color: var(--bg);
   border: 1px solid var(--accent);
   padding: 12px 20px;
   font-size: 13px;
@@ -334,7 +336,7 @@ nav.topnav,
 .text-link {
   font-size: 13px;
   text-decoration: none;
-  color: var(--ink);
+  color: var(--text);
 }
 .text-link:hover {
   text-decoration: underline;
@@ -343,13 +345,13 @@ nav.topnav,
   position: relative;
   background:
     radial-gradient(ellipse at center, #17372e55, transparent 70%),
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
   background-size:
     auto,
     32px 32px,
     32px 32px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 24px;
   min-height: 350px;
@@ -361,12 +363,12 @@ nav.topnav,
   font:
     10px ui-monospace,
     monospace;
-  color: var(--muted);
+  color: var(--text-muted);
   letter-spacing: 0.1em;
 }
 .arch-core {
   position: relative;
-  background: var(--white);
+  background: var(--bg);
   border: 1px solid var(--accent);
   padding: 25px 16px;
   text-align: center;
@@ -376,7 +378,7 @@ nav.topnav,
 .arch-core strong {
   font-size: 19px;
   font-weight: 550;
-  color: var(--ink);
+  color: var(--text);
 }
 .arch-core small {
   display: block;
@@ -399,11 +401,11 @@ nav.topnav,
   gap: 10px;
 }
 .arch-services span {
-  border: 1px solid var(--line);
-  background: var(--card);
+  border: 1px solid var(--border);
+  background: var(--bg-raised);
   padding: 16px 4px;
   text-align: center;
-  color: var(--ink);
+  color: var(--text);
   font-size: 11px;
 }
 .arch-footer {
@@ -414,7 +416,7 @@ nav.topnav,
   font:
     10px ui-monospace,
     monospace;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 .dot {
   width: 6px;
@@ -429,23 +431,23 @@ nav.topnav,
   gap: 28px;
   margin-top: 64px;
   padding: 28px 0 32px;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 .stat strong {
   display: block;
-  color: var(--ink);
+  color: var(--accent2);
   font-size: 30px;
   font-weight: 550;
   letter-spacing: -0.045em;
 }
 .stat span {
   font-size: 11px;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 section {
   padding: 86px 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--border);
 }
 .section-head {
   display: flex;
@@ -462,7 +464,7 @@ section {
 .section-head > p {
   font-size: 13px;
   max-width: 330px;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 .filters {
   display: flex;
@@ -472,8 +474,8 @@ section {
 }
 .filter {
   background: transparent;
-  color: var(--body);
-  border: 1px solid var(--line);
+  color: var(--text-body);
+  border: 1px solid var(--border);
   border-radius: 4px;
   padding: 8px 15px;
   font-size: 12px;
@@ -488,19 +490,19 @@ section {
 }
 .filter-status {
   font-size: 11px;
-  color: var(--muted);
+  color: var(--text-muted);
   margin-bottom: 24px;
 }
 .case {
-  border: 1px solid var(--line);
-  background: var(--card);
+  border: 1px solid var(--border);
+  background: var(--bg-raised);
   border-radius: 7px;
   margin-bottom: 20px;
   overflow: hidden;
   transition: border-color 0.2s;
 }
 .case:hover {
-  border-color: var(--muted);
+  border-color: var(--text-muted);
 }
 .case[hidden] {
   display: none;
@@ -541,11 +543,11 @@ section {
   font:
     10px/1.7 ui-monospace,
     monospace;
-  color: var(--muted);
+  color: var(--text-muted);
   margin-top: 22px;
 }
 .case-result {
-  border-left: 1px solid var(--line);
+  border-left: 1px solid var(--border);
   padding-left: 28px;
   display: flex;
   flex-direction: column;
@@ -564,12 +566,12 @@ section {
 }
 .case-result small {
   font-size: 10px;
-  color: var(--muted);
+  color: var(--text-muted);
   margin-top: 12px;
 }
 .case-bottom {
   padding: 16px 32px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--border);
   display: flex;
   gap: 20px;
   justify-content: space-between;
@@ -589,7 +591,7 @@ section {
 }
 .case summary {
   cursor: pointer;
-  color: var(--ink);
+  color: var(--text);
   width: fit-content;
 }
 .case details ul {
@@ -601,13 +603,13 @@ section {
   margin-bottom: 10px;
 }
 .case details b {
-  color: var(--ink);
+  color: var(--text);
 }
 .case-bottom span {
   font:
     10px ui-monospace,
     monospace;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 .capabilities {
   display: grid;
@@ -615,7 +617,7 @@ section {
   gap: 24px;
 }
 .capability {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--border);
   padding-top: 20px;
 }
 .capability .index {
@@ -632,7 +634,7 @@ section {
 }
 .capability p {
   font-size: 12px;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 .background-grid {
   display: grid;
@@ -649,7 +651,7 @@ section {
 }
 .role {
   padding: 0 0 24px 22px;
-  border-left: 1px solid var(--line);
+  border-left: 1px solid var(--border);
   position: relative;
 }
 .role:before {
@@ -680,11 +682,11 @@ section {
 }
 .role p {
   font-size: 12px;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 .aside {
   font-size: 12px;
-  color: var(--muted);
+  color: var(--text-muted);
   margin-top: 28px;
 }
 .credentials {
@@ -694,7 +696,7 @@ section {
 }
 .cred {
   padding: 22px 0;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--border);
 }
 .cred h3 {
   font-size: 14px;
@@ -705,7 +707,7 @@ section {
 .cred p {
   font-size: 11px;
   margin-top: 5px;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 .closing {
   padding: 90px 0;
@@ -750,7 +752,7 @@ section {
 }
 footer {
   padding: 25px 0;
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 10px;
 }
 .footer-inner {
@@ -901,7 +903,7 @@ footer {
   }
   .case-result {
     border-left: 0;
-    border-top: 1px solid var(--line);
+    border-top: 1px solid var(--border);
     padding: 18px 0 0;
   }
   .case-result strong {

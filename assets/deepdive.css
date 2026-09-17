@@ -6,10 +6,10 @@
   margin: 24px 0;
 }
 .layer {
-  border: 1px solid var(--line);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 16px 18px;
-  background: var(--card);
+  background: var(--bg-raised);
 }
 .layer .lhead {
   display: flex;
@@ -37,15 +37,15 @@
 }
 .chip {
   font-size: 12.5px;
-  background: var(--white);
-  border: 1px solid var(--line);
+  background: var(--bg);
+  border: 1px solid var(--border);
   border-radius: 999px;
   padding: 5px 12px;
-  color: var(--body);
+  color: var(--text-body);
 }
 .layer-arrow {
   text-align: center;
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 13px;
   margin: -2px 0;
 }
@@ -53,8 +53,8 @@
   width: 100%;
   border-collapse: collapse;
   margin: 24px 0;
-  background: var(--card);
-  border: 1px solid var(--line);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
   font-size: 13px;
 }
 .platform-table caption {
@@ -71,13 +71,13 @@
 .platform-table th,
 .platform-table td {
   padding: 16px 18px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--border);
   text-align: left;
   vertical-align: top;
 }
 .platform-table thead th {
-  color: var(--ink);
-  background: var(--white);
+  color: var(--text);
+  background: var(--bg);
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -88,16 +88,16 @@
 }
 .platform-table tbody th {
   width: 24%;
-  color: var(--ink);
+  color: var(--text);
   font-size: 14px;
   line-height: 1.45;
 }
 .platform-table tbody td:nth-child(2) {
   width: 27%;
-  color: var(--body);
+  color: var(--text-body);
 }
 .platform-table tbody td:last-child {
-  color: var(--muted);
+  color: var(--text-muted);
   line-height: 1.65;
 }
 .table-num {
@@ -114,21 +114,21 @@
   height: auto;
 }
 .hub-node rect {
-  fill: var(--card);
-  stroke: var(--line);
+  fill: var(--bg-raised);
+  stroke: var(--border);
   stroke-width: 1.5;
   transition:
     stroke 0.2s ease,
     fill 0.2s ease;
 }
 .hub-node.center rect {
-  fill: var(--charcoal);
+  fill: var(--inverse-bg);
   stroke: var(--accent);
 }
 .hub-node text {
   font-family: system-ui, sans-serif;
   font-size: 11.5px;
-  fill: var(--ink);
+  fill: var(--text);
   transition: fill 0.2s ease;
 }
 .hub-node.center text {
@@ -140,13 +140,13 @@
   fill: var(--accent-soft);
 }
 .hub-node.active text {
-  fill: var(--ink);
+  fill: var(--text);
 }
 .hub-node.danger rect {
   stroke-dasharray: 4, 3;
 }
 .hub-line {
-  stroke: var(--line);
+  stroke: var(--border);
   stroke-width: 1.5;
   fill: none;
   transition:
@@ -164,7 +164,7 @@
 .hub-caption {
   text-align: center;
   font-size: 13px;
-  color: var(--muted);
+  color: var(--text-muted);
   margin-top: 8px;
   min-height: 60px;
 }
@@ -210,16 +210,16 @@
   margin: 22px 0;
 }
 .compare .cbox {
-  border: 1px solid var(--line);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 16px 18px;
-  background: var(--card);
+  background: var(--bg-raised);
 }
 .compare .cbox .clbl {
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--text-muted);
   font-weight: 700;
   margin-bottom: 6px;
 }
@@ -245,13 +245,13 @@
   font-size: 11.5px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--text-muted);
   padding: 8px 12px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--border);
 }
 .gtable td {
   padding: 12px 12px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--border);
   vertical-align: top;
 }
 .gtable tr:last-child td {
@@ -263,7 +263,7 @@
   font-weight: 600;
 }
 pre.code {
-  background: var(--charcoal);
+  background: var(--inverse-bg);
   color: #d8dee9;
   border-radius: 12px;
   padding: 16px 18px;
@@ -283,7 +283,7 @@ pre.code .cmt {
 .seq-item {
   position: relative;
   padding: 0 0 22px 34px;
-  border-left: 2px solid var(--line);
+  border-left: 2px solid var(--border);
 }
 .seq-item:last-child {
   border-left-color: transparent;
@@ -298,7 +298,7 @@ pre.code .cmt {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: var(--charcoal);
+  background: var(--inverse-bg);
   color: var(--accent-bright);
   font-family: ui-monospace, monospace;
   font-size: 11.5px;
@@ -313,7 +313,7 @@ pre.code .cmt {
 .seq-item p {
   font-size: 14px;
   margin-bottom: 0;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 .outcomes {
   display: grid;
@@ -322,25 +322,25 @@ pre.code .cmt {
   margin: 22px 0;
 }
 .outcome {
-  border: 1px solid var(--line);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 18px;
-  background: var(--card);
+  background: var(--bg-raised);
 }
 .outcome .num {
   font-family: inherit;
   font-size: 26px;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--accent2);
 }
 .outcome .txt {
   font-size: 13px;
-  color: var(--muted);
+  color: var(--text-muted);
   margin-top: 4px;
 }
 .hub-line.public {
   stroke-dasharray: 4, 4;
-  stroke: var(--muted);
+  stroke: var(--text-muted);
 }
 .hub-line.public.active {
   stroke: var(--accent);
@@ -354,12 +354,12 @@ pre.code .cmt {
   gap: 18px;
   justify-content: center;
   font-size: 12px;
-  color: var(--muted);
+  color: var(--text-muted);
   margin-bottom: 14px;
 }
 .hub-groupbox {
   fill: none;
-  stroke: var(--line);
+  stroke: var(--border);
   stroke-width: 1.5;
   stroke-dasharray: 3, 4;
 }
@@ -368,14 +368,14 @@ pre.code .cmt {
   font-size: 10.5px;
   font-weight: 700;
   letter-spacing: 0.08em;
-  fill: var(--muted);
+  fill: var(--text-muted);
   text-anchor: middle;
 }
 .lg-dot {
   display: inline-block;
   width: 16px;
   height: 0;
-  border-top: 2px solid var(--muted);
+  border-top: 2px solid var(--text-muted);
   vertical-align: middle;
   margin-right: 5px;
 }
@@ -394,7 +394,7 @@ pre.code .cmt {
 }
 .deepdive .hero {
   padding: 64px 0 48px;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--border);
 }
 .deepdive .hero h1 {
   font-size: clamp(34px, 4.5vw, 52px);
@@ -413,12 +413,12 @@ pre.code .cmt {
   gap: 22px 36px;
   margin-top: 32px;
   font-size: 12px;
-  color: var(--muted);
+  color: var(--text-muted);
   padding-top: 24px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--border);
 }
 .deepdive .meta b {
-  color: var(--ink);
+  color: var(--text);
 }
 .deepdive section {
   padding: 48px 0;
@@ -439,7 +439,7 @@ pre.code .cmt {
   margin-bottom: 10px;
 }
 .deepdive b {
-  color: var(--ink);
+  color: var(--text);
 }
 .deepdive code {
   font:
@@ -449,7 +449,7 @@ pre.code .cmt {
 }
 .deepdive .callout {
   border-left: 2px solid var(--accent);
-  background: var(--card);
+  background: var(--bg-raised);
   padding: 20px 24px;
   font-size: 14px;
   margin: 24px 0;
@@ -467,7 +467,7 @@ pre.code .cmt {
 .deepdive .cta {
   display: inline-block;
   background: var(--accent);
-  color: var(--white);
+  color: var(--bg);
   border-radius: 4px;
   padding: 12px 20px;
   font-size: 13px;
@@ -516,8 +516,8 @@ pre.code .cmt {
   flex-direction: column;
   gap: 12px;
   padding: 22px;
-  background: var(--card);
-  border: 1px solid var(--line);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
   border-radius: 8px;
   text-decoration: none;
 }
@@ -529,11 +529,11 @@ pre.code .cmt {
   color: var(--accent);
 }
 .case-study-links strong {
-  color: var(--ink);
+  color: var(--text);
   line-height: 1.4;
 }
 .case-study-links small {
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 12px;
 }
 .problem-solution {
@@ -560,8 +560,8 @@ pre.code .cmt {
 .integration-flow li {
   flex: 1 1 130px;
   padding: 14px;
-  border: 1px solid var(--line);
-  background: var(--card);
+  border: 1px solid var(--border);
+  background: var(--bg-raised);
   border-radius: 6px;
   font-size: 12px;
 }
