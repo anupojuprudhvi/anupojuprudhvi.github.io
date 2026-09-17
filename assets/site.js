@@ -31,3 +31,22 @@ copyButton?.addEventListener("click", async () => {
     status.textContent = "Please select and copy the email address above.";
   }
 });
+
+const tickerEl = document.getElementById("closingTicker");
+if (tickerEl && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const phrases = [
+    "10+ years in production cloud architecture",
+    "$2.5M+ TCO & licensing savings modeled",
+    "1,000+ workloads profiled & migrated",
+    "multi-region failover, by design",
+  ];
+  let tickerIndex = 0;
+  setInterval(() => {
+    tickerIndex = (tickerIndex + 1) % phrases.length;
+    tickerEl.style.opacity = "0";
+    setTimeout(() => {
+      tickerEl.textContent = phrases[tickerIndex];
+      tickerEl.style.opacity = "1";
+    }, 250);
+  }, 3200);
+}

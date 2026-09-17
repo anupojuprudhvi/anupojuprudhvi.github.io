@@ -719,6 +719,54 @@ section {
   gap: 48px;
   align-items: center;
 }
+.ticker-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 14px;
+  font-size: 12px;
+  height: 16px;
+}
+.ticker-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent2);
+  flex-shrink: 0;
+  animation: ticker-blip 2.4s ease-in-out infinite;
+}
+@keyframes ticker-blip {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.ticker-text {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: var(--accent2);
+  font-weight: 550;
+  transition: opacity 0.25s ease;
+}
+.ticker-text::after {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 12px;
+  margin-left: 2px;
+  background: var(--accent2);
+  vertical-align: -2px;
+  animation: ticker-caret 0.9s steps(1) infinite;
+}
+@keyframes ticker-caret {
+  50% {
+    opacity: 0;
+  }
+}
 .closing h2 {
   font-size: clamp(30px, 4vw, 45px);
   font-weight: 550;
