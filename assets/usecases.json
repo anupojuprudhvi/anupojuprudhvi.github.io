@@ -24,6 +24,34 @@
     "solution": ""
   },
   {
+    "title": "Corporate SSO for Amazon WorkSpaces without losing the domain boundary",
+    "nav": "Federate WorkSpaces with Entra",
+    "summary": "Separating Entra authentication from Active Directory machine operations so Personal and Pool WorkSpaces can use corporate sign-in without weakening the domain boundary.",
+    "project": "tolling",
+    "projectName": "U.S. Tolling Infrastructure",
+    "layer": "Shared Services",
+    "stack": [
+      "Microsoft Entra ID",
+      "SAML 2.0",
+      "AWS IAM",
+      "Amazon WorkSpaces",
+      "AD Connector",
+      "Terraform"
+    ],
+    "tags": [
+      "identity",
+      "sso",
+      "saml",
+      "workspaces",
+      "entra",
+      "active-directory",
+      "terraform"
+    ],
+    "url": "usecases/tolling/entra-workspaces-saml.html",
+    "problem": "Employees needed to open Amazon WorkSpaces with the same corporate identity they already use for other applications. A separate WorkSpaces login would create a second identity lifecycle, while an undocumented SAML setup would turn small differences in NameID, role claims, or directory usernames into failures that looked like generic sign-in problems. The harder requirement was the boundary behind the login screen. Entra ID should authenticate the person, AWS should validate the federation trust and authorize desktop streaming, and Active Directory should continue to own domain membership, user lookup, Windows policy, and machine identity. The credentials used for those directory operations are not the user's SAML credentials.",
+    "solution": "The solution separates the integration into two connected planes. In the user plane, Entra ID authenticates the employee and emits a SAML assertion. AWS IAM trusts the Entra SAML provider through a dedicated federation role, and that role grants only `workspaces:Stream` for the target directory. WorkSpaces uses the assertion's `NameID` to find the matching Active Directory user, then starts an assigned Personal desktop or allocates an eligible Pools session. In the machine plane, the WorkSpaces VPC reaches the corporate DNS and domain controllers through the approved network path. AD Connector uses a separately managed service account, protected by Secrets Manager and KMS, for directory operations and computer-object/domain-join work. The joined desktop receives the configured OU and GPO behavior, with optional access to corporate file services such as FSx. Terraform manages the repeatable AWS boundary: the directory, connector, federation role, scoped streaming policy, secret integration, and conditional SAML resources. Entra metadata and claims, Active Directory user attributes, and Personal/Pool provisioning remain explicit operational inputs rather than hidden assumptions in the infrastructure code."
+  },
+  {
     "title": "Letting a SaaS webhook reach a private service, safely",
     "nav": "Connect JSM to private services",
     "summary": "A layered, authenticated path from Jira Service Management into a private service, with CloudFront and a Lambda authorizer retained because AWS platform constraints rule out the simpler alternatives.",
@@ -77,34 +105,6 @@
     "url": "usecases/tolling/s3-image-api.html",
     "problem": "Internal tolling services needed to upload and retrieve images in S3 over HTTP. The interface worked, but the path in front of it had accumulated layers: a load balancer, and behind it a Lambda function acting as an HTTP proxy. Both cost money on every request and added latency, and the proxy was application code — with its own error handling, timeout behaviour and deployment lifecycle — for work that amounts to handing bytes to S3. It also had to behave identically across development, staging and production, resolve through a consistent private domain in each, and keep every part of the path unreachable from the internet.",
     "solution": "API Gateway talking to S3 directly, with nothing in between. A private REST API per environment uses an AWS service integration for GET and PUT: the gateway assumes a role, signs the request, and S3 authorizes against that role. No compute sits in the transfer path. Each environment resolves its own custom domain through a single private hosted zone in the Shared Services account, pointing at one shared interface endpoint rather than one per account. It took four iterations to get there, each removing something."
-  },
-  {
-    "title": "Corporate SSO for Amazon WorkSpaces without losing the domain boundary",
-    "nav": "Federate WorkSpaces with Entra",
-    "summary": "Separating Entra authentication from Active Directory machine operations so Personal and Pool WorkSpaces can use corporate sign-in without weakening the domain boundary.",
-    "project": "workspaces",
-    "projectName": "Secure Workspace Delivery",
-    "layer": "Shared Services",
-    "stack": [
-      "Microsoft Entra ID",
-      "SAML 2.0",
-      "AWS IAM",
-      "Amazon WorkSpaces",
-      "AD Connector",
-      "Terraform"
-    ],
-    "tags": [
-      "identity",
-      "sso",
-      "saml",
-      "workspaces",
-      "entra",
-      "active-directory",
-      "terraform"
-    ],
-    "url": "usecases/workspaces/entra-workspaces-saml.html",
-    "problem": "Employees needed to open Amazon WorkSpaces with the same corporate identity they already use for other applications. A separate WorkSpaces login would create a second identity lifecycle, while an undocumented SAML setup would turn small differences in NameID, role claims, or directory usernames into failures that looked like generic sign-in problems. The harder requirement was the boundary behind the login screen. Entra ID should authenticate the person, AWS should validate the federation trust and authorize desktop streaming, and Active Directory should continue to own domain membership, user lookup, Windows policy, and machine identity. The credentials used for those directory operations are not the user's SAML credentials.",
-    "solution": "The solution separates the integration into two connected planes. In the user plane, Entra ID authenticates the employee and emits a SAML assertion. AWS IAM trusts the Entra SAML provider through a dedicated federation role, and that role grants only `workspaces:Stream` for the target directory. WorkSpaces uses the assertion's `NameID` to find the matching Active Directory user, then starts an assigned Personal desktop or allocates an eligible Pools session. In the machine plane, the WorkSpaces VPC reaches the corporate DNS and domain controllers through the approved network path. AD Connector uses a separately managed service account, protected by Secrets Manager and KMS, for directory operations and computer-object/domain-join work. The joined desktop receives the configured OU and GPO behavior, with optional access to corporate file services such as FSx. Terraform manages the repeatable AWS boundary: the directory, connector, federation role, scoped streaming policy, secret integration, and conditional SAML resources. Entra metadata and claims, Active Directory user attributes, and Personal/Pool provisioning remain explicit operational inputs rather than hidden assumptions in the infrastructure code."
   },
   {
     "title": "Zero-downtime database modernization and automated failover",

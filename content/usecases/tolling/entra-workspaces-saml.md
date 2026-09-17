@@ -3,9 +3,9 @@ title: Corporate SSO for Amazon WorkSpaces without losing the domain boundary
 nav: Federate WorkSpaces with Entra
 label: Identity integration
 heading: How a corporate identity becomes a usable WorkSpaces session
-project: workspaces
-projectName: Secure Workspace Delivery
-engagement: usecases/workspaces/index.html
+project: tolling
+projectName: U.S. Tolling Infrastructure
+engagement: usecases/tolling/index.html
 layer: Shared Services
 order: 10
 stack: [Microsoft Entra ID, SAML 2.0, AWS IAM, Amazon WorkSpaces, AD Connector, Terraform]

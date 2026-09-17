@@ -65,12 +65,11 @@
             <div class="filters" role="group" aria-label="Filter use cases">
               <button class="filter" data-uc-filter="all" aria-pressed="true">All</button>
               <button class="filter" data-uc-filter="project:tolling" aria-pressed="false">U.S. Tolling Infrastructure</button>
-              <button class="filter" data-uc-filter="project:workspaces" aria-pressed="false">Secure Workspace Delivery</button>
               <button class="filter" data-uc-filter="project:telecom" aria-pressed="false">Telecom &amp; Secure Communications</button>
               <button class="filter" data-uc-filter="project:healthcare" aria-pressed="false">Healthcare &amp; Cost Architecture</button>
               <button class="filter" data-uc-filter="layer:Foundation" aria-pressed="false">Foundation</button>
-              <button class="filter" data-uc-filter="layer:Applications" aria-pressed="false">Applications</button>
               <button class="filter" data-uc-filter="layer:Shared Services" aria-pressed="false">Shared Services</button>
+              <button class="filter" data-uc-filter="layer:Applications" aria-pressed="false">Applications</button>
               <button class="filter" data-uc-filter="layer:Data" aria-pressed="false">Data</button>
             </div>
           </div>
@@ -88,6 +87,12 @@
           <p>A four-layer landing zone, one hub-and-spoke network, and a CI/CD pipeline where an unintended apply is structurally impossible.</p>
           <p class="uc-stack">Terraform · AWS Organizations · Transit Gateway · GitHub Actions</p>
         </article>
+        <article class="uc-card" data-project="tolling" data-layer="Shared Services" data-tags="identity sso saml workspaces entra active-directory terraform">
+          <div class="uc-meta"><span>U.S. Tolling Infrastructure</span><span>Shared Services</span></div>
+          <h3><a href="tolling/entra-workspaces-saml.html">Corporate SSO for Amazon WorkSpaces without losing the domain boundary</a></h3>
+          <p>Separating Entra authentication from Active Directory machine operations so Personal and Pool WorkSpaces can use corporate sign-in without weakening the domain boundary.</p>
+          <p class="uc-stack">Microsoft Entra ID · SAML 2.0 · AWS IAM · Amazon WorkSpaces · AD Connector · Terraform</p>
+        </article>
         <article class="uc-card" data-project="tolling" data-layer="Applications" data-tags="integration security api webhooks waf authentication">
           <div class="uc-meta"><span>U.S. Tolling Infrastructure</span><span>Applications</span></div>
           <h3><a href="tolling/jsm-integration.html">Letting a SaaS webhook reach a private service, safely</a></h3>
@@ -99,12 +104,6 @@
           <h3><a href="tolling/s3-image-api.html">A private image API without a proxy application to operate</a></h3>
           <p>Removing a load balancer and a Lambda proxy from the image path, leaving API Gateway talking to S3 directly through one shared private endpoint.</p>
           <p class="uc-stack">API Gateway · Amazon S3 · Route 53 · VPC endpoints · IAM · Terraform</p>
-        </article>
-        <article class="uc-card" data-project="workspaces" data-layer="Shared Services" data-tags="identity sso saml workspaces entra active-directory terraform">
-          <div class="uc-meta"><span>Secure Workspace Delivery</span><span>Shared Services</span></div>
-          <h3><a href="workspaces/entra-workspaces-saml.html">Corporate SSO for Amazon WorkSpaces without losing the domain boundary</a></h3>
-          <p>Separating Entra authentication from Active Directory machine operations so Personal and Pool WorkSpaces can use corporate sign-in without weakening the domain boundary.</p>
-          <p class="uc-stack">Microsoft Entra ID · SAML 2.0 · AWS IAM · Amazon WorkSpaces · AD Connector · Terraform</p>
         </article>
         <article class="uc-card" data-project="telecom" data-layer="Data" data-tags="resilience migration database failover encryption">
           <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Data</span></div>
