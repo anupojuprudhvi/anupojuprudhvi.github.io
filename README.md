@@ -1,9 +1,10 @@
 # Prudhvi Raj Anupoju — Cloud & DevOps Portfolio
 
 Static portfolio, engagement case studies, and a growing library of individual
-cloud architecture use cases. Hosted directly on GitHub Pages; no runtime
-dependencies and no build-time dependencies either — the generator is plain
-Node with nothing to install.
+cloud architecture use cases. The site is a plain static output that can be
+served by GitHub Pages or Vercel; `vercel.json` defines the Vercel build
+configuration. There are no runtime dependencies and no build-time dependencies
+for the generator — it is plain Node.
 
 Live at: https://anupojuprudhvi.github.io/
 
@@ -110,9 +111,9 @@ The scripts use installed Chrome or Edge on Windows. Elsewhere, run
 `npx playwright install chromium` first, or set `BROWSER_PATH` to a browser
 executable.
 
-CI runs `.github/workflows/build-check.yml` on every push, which regenerates
-the site and fails if the committed output no longer matches `content/` — i.e.
-if a use case was edited without running `npm run build`.
+CI runs `.github/workflows/build-check.yml` on every push and pull request. It
+regenerates the site and fails if the committed output no longer matches the
+source — for example, if a use case was edited without running `npm run build`.
 
 ## Editing
 
@@ -140,6 +141,15 @@ says so — every result is text I wrote, linked to the page it came from, with 
 direct email fallback when nothing matches. If a hosted model is added later,
 only the `answer()` function in `assets/assistant.js` changes; the index it
 searches is already the grounding corpus.
+
+## Deployment
+
+The repository is deployable as static files. GitHub Pages can serve the
+committed output directly from the publishing branch, while Vercel uses the
+included `vercel.json` configuration and runs `npm run build` before serving the
+repository root. Confirm the active hosting provider and deployment status in
+that provider's dashboard; this repository does not claim a deployment was
+successful merely because the build passed.
 
 ## Publish
 
