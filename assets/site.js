@@ -96,25 +96,31 @@ if (traceBtn) {
     document.getElementById("archSvc1"),
     document.getElementById("archSvc2"),
   ];
-  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, reduceMotion ? 0 : ms));
+  // Timing below is real reading time, not animation time: the moving dot
+  // and pulse glow already switch off under prefers-reduced-motion via the
+  // site's global animation kill-switch, so this delay doesn't shrink too.
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   const DEFAULT_CAPTION = caption.innerHTML;
   const steps = [
     {
       node: "core",
       text: "Every request starts inside the <b>governed foundation</b> — security boundaries, network segmentation, and automation applied before anything ships.",
+      hold: 3200,
     },
     {
       node: 0,
       text: "<b>Resilient systems</b>: automated failover and health checks are the default, not bolted on after an outage.",
+      hold: 2700,
     },
     {
       node: 1,
       text: "<b>Scalable platforms</b>: capacity that right-sizes to real load instead of a fixed, over-provisioned ceiling.",
+      hold: 2700,
     },
     {
       node: 2,
       text: "<b>Cost-aware operations</b>: spend stays visible and attributable, not discovered at the end of the month.",
+      hold: 2700,
     },
   ];
 
@@ -137,17 +143,18 @@ if (traceBtn) {
         branch.classList.remove("flowing");
         void branch.offsetWidth;
         branch.classList.add("flowing");
-        await sleep(650);
+        await sleep(500);
         core.classList.remove("pulse");
+        await sleep(step.hold - 500);
       } else {
         services[step.node].classList.add("active");
-        await sleep(150);
+        await sleep(200);
         services[step.node].classList.remove("active");
         services[step.node].classList.add("visited");
-        await sleep(500);
+        await sleep(step.hold - 200);
       }
     }
-    await sleep(900);
+    await sleep(1400);
     caption.innerHTML = DEFAULT_CAPTION;
     clearVisited();
     playing = false;
@@ -171,7 +178,7 @@ if (statsRow && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
           minimumFractionDigits: decimals,
           maximumFractionDigits: decimals,
         })}${suffix}`;
-      const dur = 1500;
+      const dur = 2400;
       const t0 = performance.now();
       const frame = (now) => {
         const p = Math.min((now - t0) / dur, 1);
@@ -193,7 +200,7 @@ if (statsRow && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
         }
       });
     },
-    { threshold: 0.5 },
+    { threshold: 0.2 },
   );
   io.observe(statsRow);
 }
