@@ -83,6 +83,11 @@ step. Use this section for improvements that are not yet complete.
 - `flow` entries can be strings or objects with `step`, `note`, and optional
   `aside: "true"`.
 - `outcomes` and `scripts` are optional. Diagram scripts belong in `assets/`.
+- Optional `heroTitle` and `intro` preserve a longer on-page introduction while
+  `title` and `summary` drive metadata and library cards. `role`, `scope`, and
+  `closingText` customize the shared page without duplicating its HTML shell.
+- Set `scaffold: false` when the body already explains the problem and solution;
+  those front-matter fields will still be available to search.
 - Keep claims specific and supportable. State security boundaries, AWS service
   constraints, operational ownership, and known limitations where relevant.
 

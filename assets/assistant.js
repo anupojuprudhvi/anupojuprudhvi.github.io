@@ -21,9 +21,20 @@
     if (index) return Promise.resolve(index);
     if (!loading)
       loading = fetch(base + "case-studies.json")
-        .then((r) => (r.ok ? r.json() : []))
-        .then((d) => (index = d))
-        .catch(() => (index = []));
+        .then((r) => {
+          if (!r.ok) throw new Error("Search index unavailable");
+          return r.json();
+        })
+        .then((data) => {
+          if (!Array.isArray(data) || data.some((item) =>
+            !item || typeof item.title !== "string" || typeof item.projectName !== "string" ||
+            typeof item.url !== "string" || !/^case-studies\/[a-z0-9-]+\/[a-z0-9-]+\.html$/.test(item.url) ||
+            ["nav", "summary", "problem", "solution", "layer"].some((key) => item[key] !== undefined && typeof item[key] !== "string") ||
+            ["stack", "tags"].some((key) => item[key] !== undefined && (!Array.isArray(item[key]) || item[key].some((value) => typeof value !== "string")))
+          )) throw new Error("Invalid search index");
+          return (index = data);
+        })
+        .finally(() => { loading = null; });
     return loading;
   };
 
@@ -143,20 +154,45 @@
       .join("");
   }
 
+  let requestVersion = 0;
   async function answer(query) {
-    const data = await load();
-    const terms = norm(query).split(/\s+/).filter(Boolean);
-    if (!terms.length) {
-      render(data.slice(0, 6), []);
-      return;
+    const version = ++requestVersion;
+    const box = backdrop.querySelector("#askResults");
+    box.setAttribute("aria-busy", "true");
+    try {
+      const data = await load();
+      if (version !== requestVersion) return;
+      buildChips();
+      const terms = norm(query).split(/\s+/).filter(Boolean);
+      if (!terms.length) {
+        render(data.slice(0, 6), []);
+        return;
+      }
+      const hits = data
+        .map((item) => ({ item, s: score(item, terms) }))
+        .filter((h) => h.s > 0)
+        .sort((a, b) => b.s - a.s)
+        .slice(0, 8)
+        .map((h) => h.item);
+      render(hits, terms);
+    } catch {
+      if (version !== requestVersion) return;
+      const message = document.createElement("p");
+      message.className = "ask-empty";
+      message.textContent = "Search couldn't load. Please try again, or use the email link below.";
+      const retry = document.createElement("button");
+      retry.type = "button";
+      retry.className = "ask-retry";
+      retry.textContent = "Retry search";
+      retry.addEventListener("click", () => {
+        const input = backdrop.querySelector("#askInput");
+        input.focus();
+        answer(input.value);
+      });
+      box.replaceChildren(message, retry);
+    } finally {
+      if (version === requestVersion) box.setAttribute("aria-busy", "false");
     }
-    const hits = data
-      .map((item) => ({ item, s: score(item, terms) }))
-      .filter((h) => h.s > 0)
-      .sort((a, b) => b.s - a.s)
-      .slice(0, 8)
-      .map((h) => h.item);
-    render(hits, terms);
   }
 
   /* -------------------------------------------------------------- wire */
@@ -165,12 +201,13 @@
   function open() {
     lastFocus = document.activeElement;
     backdrop.hidden = false;
-    load().then(buildChips).then(() => answer(""));
+    answer(backdrop.querySelector("#askInput").value);
     backdrop.querySelector("#askInput").focus();
     document.addEventListener("keydown", onKeydown, true);
   }
 
   function close() {
+    requestVersion++;
     backdrop.hidden = true;
     document.removeEventListener("keydown", onKeydown, true);
     lastFocus?.focus();
@@ -202,14 +239,13 @@
     const wrap = backdrop.querySelector("#askChips");
     if (wrap.dataset.built) return;
     const picks = (index || []).slice(0, 4);
-    wrap.innerHTML = picks
-      .map(
-        (p) =>
-          `<button type="button" data-q="${escape(p.nav || p.title)}">${escape(
-            p.nav || p.title,
-          )}</button>`,
-      )
-      .join("");
+    wrap.replaceChildren(...picks.map((item) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.dataset.q = item.nav || item.title;
+      button.textContent = item.nav || item.title;
+      return button;
+    }));
     wrap.dataset.built = "1";
     wrap.querySelectorAll("button").forEach((b) =>
       b.addEventListener("click", () => {
@@ -229,6 +265,7 @@
     });
     let t;
     backdrop.querySelector("#askInput").addEventListener("input", (e) => {
+      requestVersion++;
       clearTimeout(t);
       const v = e.target.value;
       t = setTimeout(() => answer(v), 120);

@@ -27,7 +27,7 @@ import { join, relative, dirname, basename } from "node:path";
 
 import { esc } from "./lib/html.mjs";
 import { parseFrontMatter, renderBody } from "./lib/markdown.mjs";
-import { SITE, page, libraryPage } from "./lib/render.mjs";
+import { page, libraryPage } from "./lib/render.mjs";
 
 const ROOT = process.cwd();
 const CONTENT = join(ROOT, "content/case-studies");
@@ -93,7 +93,8 @@ const docs = files.map((file) => {
   const project = projectMap.get(data.project);
   if (!project || basename(dirname(file)) !== data.project || !/^[a-z0-9-]+$/.test(slug))
     throw new Error(`${file}: invalid project, folder, or slug`);
-  if (data.layout && data.layout !== "document") throw new Error(`${file}: unknown layout`);
+  if (data.layout) throw new Error(`${file}: all case studies use the shared layout; put sections in the body and scripts in assets/`);
+  if (data.scaffold !== undefined && !["true", "false"].includes(data.scaffold)) throw new Error(`${file}: scaffold must be true or false`);
   for (const key of ["projectName", "engagement"])
     if (Object.hasOwn(data, key)) throw new Error(`${file}: ${key} is derived from content/projects.json`);
   if (data.order !== undefined && !Number.isFinite(Number(data.order))) throw new Error(`${file}: order must be a number`);
@@ -101,7 +102,7 @@ const docs = files.map((file) => {
     if (data[key] !== undefined && !Array.isArray(data[key])) throw new Error(`${file}: ${key} must be a list`);
   const url = `case-studies/${data.project}/${slug}.html`;
   return { ...data, projectName: project.name, slug, url, file,
-    bodyHtml: data.layout === "document" ? body : renderBody(body) };
+    bodyHtml: renderBody(body) };
 });
 
 docs.sort(
@@ -116,10 +117,7 @@ docs.forEach((d, idx) => {
   const next = docs[idx + 1]?.project === d.project ? docs[idx + 1] : null;
   const depth = d.url.split("/").length - 1;
   const up = "../".repeat(depth);
-  emit(d.url, d.layout === "document"
-    ? template(d.bodyHtml, { title: esc(d.title), summary: esc(d.summary),
-      projectName: esc(d.projectName), canonicalUrl: esc(`${SITE}/${d.url}`) })
-    : page(d, d.bodyHtml, { up, url: d.url, prev, next }));
+  emit(d.url, page(d, d.bodyHtml, { up, url: d.url, prev, next }));
   written++;
   console.log("  page  ", d.url);
 });
@@ -142,10 +140,10 @@ const index = docs.map((d) => ({
 emit("assets/case-studies.json", JSON.stringify(index, null, 2) + "\n");
 emit("case-studies/index.html", libraryPage(index));
 
-const selectedWork = projects.map((project) => {
+const selectedWork = projects.map((project, projectIndex) => {
   const studies = docs.filter((d) => d.project === project.id);
   const engagementUrl = `case-studies/${project.id}/index.html`;
-  const values = { projectName: esc(project.name), engagementUrl: esc(engagementUrl) };
+  const values = { projectName: esc(project.name), engagementUrl: esc(engagementUrl), projectNumber: String(projectIndex + 1).padStart(2, "0") };
   const caseStudyLinks = studies.map((d, idx) => `            <a href="${esc(basename(d.url))}"><span>${String(idx + 1).padStart(2, "0")} / ${esc(d.label || d.layer || "Case study")}</span><strong>${esc(d.nav || d.title)}</strong><small>${esc(d.summary)} →</small></a>`).join("\n");
   if (project.customOverview) {
     emit(engagementUrl, template(readFileSync(join(ROOT, `content/overviews/${project.id}.html`), "utf8"), {

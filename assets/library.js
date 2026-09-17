@@ -16,7 +16,9 @@
 
   function matchesFilter(card) {
     if (active === "all") return true;
-    const [kind, value] = active.split(":");
+    const separator = active.indexOf(":");
+    const kind = active.slice(0, separator);
+    const value = active.slice(separator + 1);
     if (kind === "project") return card.dataset.project === value;
     if (kind === "layer") return card.dataset.layer === value;
     return true;

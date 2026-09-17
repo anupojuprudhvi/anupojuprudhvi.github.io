@@ -33,6 +33,14 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
     assert.match(read("case-studies/index.html"), /data-uc-filter="layer:A new layer"/);
     assert.match(read("case-studies/telecom/second-study.html"), /Second &amp; new study/);
     assert.match(read("case-studies/telecom/second-study.html"), /zero-downtime-database-modernization-and-failover.html/);
+    const originalStudy = read("case-studies/telecom/zero-downtime-database-modernization-and-failover.html");
+    assert.match(originalStudy, /second-study.html/, "existing stories must inherit generated next-study navigation");
+    assert.match(originalStudy, /property="og:title"/);
+    assert.match(originalStudy, /name="twitter:card"/);
+    assert.match(originalStudy, /assets\/failover-diagram.js/);
+    const clinicalStudy = read("case-studies/healthcare/clinical-platform-modernization-and-cost-optimization.html");
+    assert.match(clinicalStudy, /property="og:title"/);
+    assert.match(clinicalStudy, /assets\/cache-diagram.js/);
 
     // A rename must replace derived links and remove only obsolete generated pages.
     fs.writeFileSync(file("case-studies/telecom/manual.html"), "A file the generator does not own.");
@@ -50,6 +58,12 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
     for (const output of ["index.html", "case-studies/telecom/index.html", "case-studies/telecom/renamed-study.html", "assets/case-studies.json"])
       assert.match(read(output), /Updated telecom name/);
     succeeds("--check");
+
+    projects.reverse();
+    fs.writeFileSync(file("content/projects.json"), JSON.stringify(projects));
+    succeeds();
+    const labels = [...read("index.html").matchAll(/<div class="tag">(.*?)<\/div>/g)].map((match) => match[1]);
+    assert.deepEqual(labels, ["01 / Healthcare &amp; Cost Architecture", "02 / U.S. Tolling Infrastructure", "03 / Updated telecom name"]);
 
     // A new project needs registry metadata, its pitch, and a study, not build-code edits.
     projects.push({ id: "new-project", name: "Another project" });

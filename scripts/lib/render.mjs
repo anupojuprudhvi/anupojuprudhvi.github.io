@@ -34,6 +34,7 @@ ${items}
 }
 
 function scaffold(d) {
+  if (d.scaffold === "false") return "";
   if (!d.problem || !d.solution) return "";
   return `<div class="problem-solution">
 <div>
@@ -77,6 +78,8 @@ export function page(d, bodyHtml, { up, url, prev, next }) {
 
   const metaBits = [
     d.projectName && `<div><b>Project</b><br />${esc(d.projectName)}</div>`,
+    d.role && `<div><b>My role</b><br />${esc(d.role)}</div>`,
+    d.scope && `<div><b>Scope</b><br />${esc(d.scope)}</div>`,
     d.layer && `<div><b>Layer</b><br />${esc(d.layer)}</div>`,
     Array.isArray(d.stack) && d.stack.length
       ? `<div><b>Stack</b><br />${d.stack.map(esc).join(" · ")}</div>`
@@ -154,8 +157,8 @@ ${enables}
           <div class="eyebrow">${esc(d.projectName || "")}${
             d.label ? " · " + esc(d.label) : ""
           }</div>
-          <h1>${inline(d.title)}</h1>
-          ${d.summary ? `<p class="sub">${inline(d.summary)}</p>` : ""}
+          <h1>${inline(d.heroTitle || d.title)}</h1>
+          ${d.intro || d.summary ? `<p class="sub">${inline(d.intro || d.summary)}</p>` : ""}
           <div class="meta">
             ${metaBits}
           </div>
@@ -171,8 +174,7 @@ ${outcomesBlock(d)}
         <div class="wrap">
           <h2>Want to talk through how this would apply to your environment?</h2>
           <p>
-            I'm happy to go deeper on any part of this — the architecture, the
-            trade-offs, or how it would adapt to a different environment.
+            ${d.closingText ? esc(d.closingText) : "I'm happy to go deeper on any part of this — the architecture, the\n            trade-offs, or how it would adapt to a different environment."}
           </p>
           <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
             >anupojuprudhvi@gmail.com</a
@@ -330,4 +332,3 @@ ${cards}
 </html>
 `;
 }
-

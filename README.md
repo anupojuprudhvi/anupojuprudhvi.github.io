@@ -59,9 +59,10 @@ Telecom, healthcare, and tolling remain separate project folders. Add a case
 study to the appropriate folder; its project list, library entry, layer filter,
 and search entry update automatically. No homepage or index edits are needed.
 
-The existing telecom and healthcare stories use `layout: document` to retain
-their custom HTML and diagrams inside the Markdown source. Their metadata lives
-in the same file. New studies should use the shared default layout.
+All case studies use the shared page layout. Custom HTML sections and SVG
+diagrams stay in Markdown; diagram behavior lives in `assets/` and is loaded
+through the `scripts` field. Titles, introductions, role, and scope can be
+customized through front matter without copying the page shell.
 
 ## Local preview
 

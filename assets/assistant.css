@@ -124,7 +124,8 @@
   gap: 7px;
   padding: 0 22px 14px;
 }
-.ask-chips button {
+.ask-chips button,
+.ask-retry {
   border: 1px solid var(--line);
   background: transparent;
   color: var(--body);
@@ -132,7 +133,8 @@
   padding: 6px 13px;
   font-size: 11.5px;
 }
-.ask-chips button:hover {
+.ask-chips button:hover,
+.ask-retry:hover {
   border-color: var(--accent);
   color: var(--accent);
 }

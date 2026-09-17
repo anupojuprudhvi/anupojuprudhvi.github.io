@@ -5,68 +5,46 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Zero-downtime database modernization and automated failover — Prudhvi Raj Anupoju</title>
-    <meta
-      name="description"
-      content="An eight-major-version PostgreSQL migration to Aurora with CDC replication, plus a serverless failover engine that recovers in under 60 seconds and preserves hardware-bound licensing."
-    />
+    <meta name="description" content="An eight-major-version PostgreSQL migration to Aurora with CDC replication, plus a serverless failover engine that recovers in under 60 seconds and preserves hardware-bound licensing." />
+    <link rel="canonical" href="https://anupojuprudhvi.github.io/case-studies/telecom/zero-downtime-database-modernization-and-failover.html" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Zero-downtime database modernization and automated failover" />
+    <meta property="og:description" content="An eight-major-version PostgreSQL migration to Aurora with CDC replication, plus a serverless failover engine that recovers in under 60 seconds and preserves hardware-bound licensing." />
+    <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
-    <link
-      rel="canonical"
-      href="https://anupojuprudhvi.github.io/case-studies/telecom/zero-downtime-database-modernization-and-failover.html"
-    />
     <script src="../../assets/theme.js"></script>
     <link rel="stylesheet" href="../../assets/site.css" />
     <link rel="stylesheet" href="../../assets/deepdive.css" />
+    <link rel="stylesheet" href="../../assets/case-study.css" />
     <link rel="stylesheet" href="../../assets/assistant.css" />
   </head>
   <body class="deepdive">
     <a class="skip-link" href="#main">Skip to content</a>
-
     <div class="topbar">
       <div class="wrap">
-        <a class="back" href="../index.html">← All case studies</a>
-        <button
-          id="themeToggle"
-          aria-label="Toggle dark mode"
-          title="Toggle theme"
-        >
-          ◐
-        </button>
+        <a class="back" href="../../case-studies/index.html">← All case studies</a>
+        <button id="themeToggle" aria-label="Switch to light theme">☼</button>
       </div>
     </div>
-
     <main id="main">
       <header class="hero">
         <div class="wrap">
-          <div class="eyebrow">
-            Deep Dive · Telecom &amp; Secure Communications Engagement
-          </div>
+          <div class="eyebrow">Telecom &amp; Secure Communications</div>
           <h1>Modernizing a secure telecom platform without downtime</h1>
-          <p class="sub">
-            A secure mobile-communications platform used by financial
-            institutions and healthcare organizations, handling large volumes of
-            sensitive call and message data every day. It ran on a legacy
-            on-premise database with manual, hardware-dependent failover and no
-            room for an extended maintenance window. This is how I moved it to
-            the cloud without breaking any of that.
-          </p>
+          <p class="sub">A secure mobile-communications platform used by financial institutions and healthcare organizations, handling large volumes of sensitive call and message data every day. It ran on a legacy on-premise database with manual, hardware-dependent failover and no room for an extended maintenance window. This is how I moved it to the cloud without breaking any of that.</p>
           <div class="meta">
-            <div>
-              <b>My role</b><br />Database modernization &amp; high-availability
-              architecture
-            </div>
-            <div>
-              <b>Scope</b><br />Primary + DR region, zero-downtime cutover
-            </div>
-            <div>
-              <b>Stack</b><br />Aurora PostgreSQL · AWS DMS · Lambda · DynamoDB
-              · Terraform
-            </div>
+            <div><b>Project</b><br />Telecom &amp; Secure Communications</div>
+            <div><b>My role</b><br />Database modernization &amp; high-availability architecture</div>
+            <div><b>Scope</b><br />Primary + DR region, zero-downtime cutover</div>
+            <div><b>Layer</b><br />Data</div>
+            <div><b>Stack</b><br />Aurora PostgreSQL · AWS DMS · Lambda · DynamoDB · Terraform</div>
+            <div><b>Tags</b><br />resilience · migration · database · failover · encryption</div>
           </div>
         </div>
       </header>
 
-      <section>
+<section>
         <div class="wrap">
           <div class="section-eyebrow">The problem</div>
           <h2>
@@ -590,19 +568,13 @@
       </section>
 
       <aside class="next-study wrap">
-        <span class="eyebrow">Continue exploring</span
-        ><a href="../tolling/index.html"
-          >Explore U.S. tolling infrastructure →</a
-        >
+        <a href="../../case-studies/index.html">← Case studies</a>
       </aside>
       <div class="closing">
         <div class="wrap">
-          <h2>
-            Want to talk through how this would apply to your environment?
-          </h2>
+          <h2>Want to talk through how this would apply to your environment?</h2>
           <p>
-            I'm happy to go deeper on any part of this — the CDC migration
-            strategy, the failover engine's design, or the encryption approach.
+            I'm happy to go deeper on any part of this — the CDC migration strategy, the failover engine's design, or the encryption approach.
           </p>
           <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
             >anupojuprudhvi@gmail.com</a
@@ -613,137 +585,11 @@
     <footer>
       <div class="wrap footer-inner">
         <span>© 2026 Prudhvi Raj Anupoju</span
-        ><a href="../../index.html#work">All selected work ↗</a>
+        ><a href="../../case-studies/index.html">Case studies ↗</a
+        ><a href="../../index.html#work">Back to overview ↗</a>
       </div>
     </footer>
-
-    <script>
-      (function () {
-        "use strict";
-        /* Failover sequence animation */
-        var reduceMotion =
-          window.matchMedia &&
-          window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        var DEFAULT_CAPTION =
-          "Click <b>Play failover sequence</b> to step through what happens in the seconds after a node stops responding.";
-        var steps = [
-          {
-            line: "fl-0",
-            from: { x: 100, y: 95 },
-            to: { x: 255, y: 95 },
-            nodes: ["fn-0", "fn-1"],
-            caption:
-              "A CloudWatch alarm detects a lost heartbeat and invokes the failover Lambda.",
-          },
-          {
-            line: "fl-1",
-            from: { x: 255, y: 95 },
-            to: { x: 410, y: 95 },
-            nodes: ["fn-1", "fn-2"],
-            caption:
-              "Before touching anything, the Lambda acquires a conditional lock in <b>DynamoDB</b> — if another invocation already holds it, this one backs off instead of racing it, which is what prevents split-brain.",
-          },
-          {
-            line: "fl-2",
-            from: { x: 410, y: 95 },
-            to: { x: 565, y: 95 },
-            nodes: ["fn-2", "fn-3"],
-            caption:
-              "The <b>license-pinned network interface</b> is detached from the failed node and reattached to the standby, carrying its MAC address and static IP with it.",
-          },
-          {
-            line: "fl-3",
-            from: { x: 565, y: 95 },
-            to: { x: 670, y: 95 },
-            nodes: ["fn-3", "fn-4"],
-            caption:
-              "Services on the standby are promoted and health-checked. Only once they pass is the failed node forcibly <b>fenced</b> — stopped at the API level so it can never write again — then restarted as the new warm standby.",
-          },
-        ];
-        var playBtn = document.getElementById("failoverPlayBtn");
-        var pulse = document.getElementById("failoverPulse");
-        var caption = document.getElementById("failoverCaption");
-        var playing = false;
-
-        function reset() {
-          document.querySelectorAll(".hub-line").forEach(function (l) {
-            l.classList.remove("active");
-          });
-          document.querySelectorAll(".hub-node").forEach(function (n) {
-            n.classList.remove("active");
-          });
-          pulse.style.opacity = 0;
-        }
-
-        function animatePulse(fromX, fromY, toX, toY, duration, cb) {
-          pulse.setAttribute("cx", fromX);
-          pulse.setAttribute("cy", fromY);
-          if (reduceMotion) {
-            pulse.setAttribute("cx", toX);
-            pulse.setAttribute("cy", toY);
-            cb();
-            return;
-          }
-          var t0 = null;
-          pulse.style.opacity = 1;
-          function frame(ts) {
-            if (!t0) t0 = ts;
-            var p = Math.min((ts - t0) / duration, 1);
-            pulse.setAttribute("cx", fromX + (toX - fromX) * p);
-            pulse.setAttribute("cy", fromY + (toY - fromY) * p);
-            if (p < 1) {
-              requestAnimationFrame(frame);
-            } else {
-              cb();
-            }
-          }
-          requestAnimationFrame(frame);
-        }
-
-        function play() {
-          if (playing) return;
-          playing = true;
-          reset();
-          var i = 0;
-          function nextStep() {
-            if (i >= steps.length) {
-              playing = false;
-              reset();
-              caption.innerHTML = DEFAULT_CAPTION;
-              return;
-            }
-            var s = steps[i];
-            document.getElementById(s.line).classList.add("active");
-            s.nodes.forEach(function (id) {
-              document.getElementById(id).classList.add("active");
-            });
-            caption.innerHTML = s.caption;
-            animatePulse(
-              s.from.x,
-              s.from.y,
-              s.to.x,
-              s.to.y,
-              reduceMotion ? 1 : 600,
-              function () {
-                setTimeout(
-                  function () {
-                    document.getElementById(s.line).classList.remove("active");
-                    s.nodes.forEach(function (id) {
-                      document.getElementById(id).classList.remove("active");
-                    });
-                    i++;
-                    nextStep();
-                  },
-                  reduceMotion ? 250 : 550,
-                );
-              },
-            );
-          }
-          nextStep();
-        }
-        playBtn.addEventListener("click", play);
-      })();
-    </script>
     <script src="../../assets/assistant.js" defer></script>
+    <script src="../../assets/failover-diagram.js" defer></script>
   </body>
 </html>
