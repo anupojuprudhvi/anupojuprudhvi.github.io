@@ -9,6 +9,7 @@ stack: [Kafka, PostgreSQL, Linux, SSH ETL, CloudWatch]
 tags: [incident-response, cdr, ingestion, observability, recovery]
 summary: Tracing missing call records through consumer output and SSH transfer, then replacing process-only checks with data-flow monitoring.
 scaffold: false
+closingText: I'm happy to discuss this root-cause analysis in detail — the silent failure modes, detection gaps, or how data-flow reconciliation prevents masked incidents.
 problem: Billing records stopped arriving even though the consumer processes appeared healthy.
 solution: Trace records across each pipeline boundary, repair parsing and transfer failures, and validate recovery through downstream data checks.
 ---

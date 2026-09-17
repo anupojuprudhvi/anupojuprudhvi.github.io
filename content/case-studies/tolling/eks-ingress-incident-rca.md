@@ -47,6 +47,7 @@ outcomes:
     label: Repeatable incident timeline shared by platform and application teams
   - value: No invented
     label: Availability or incident-count claim without source evidence
+closingText: I'm happy to talk through this incident diagnostic tree in depth — the evidence sequence, controller failure modes, or how we turned the post-mortem into automated alert guards.
 ---
 
 ## Architecture · The decisions that mattered

@@ -10,6 +10,7 @@ tags: [failover, licensing, eni, recovery, orchestration]
 summary: Bringing recovery orchestration, service validation, and hardware-bound licensing into one failover workflow, with an explicit same-AZ boundary.
 scaffold: false
 scripts: [failover-diagram.js]
+closingText: Want to drill into the failure modes? I'm happy to walk through the recovery runbook, DynamoDB lease coordination limits, or how we validated automated failover times.
 problem: Manual recovery and licenses tied to network identity made instance replacement a service-level problem rather than a simple infrastructure action.
 solution: Coordinate recovery through an external orchestrator and retain licensed identity on a persistent secondary network interface.
 ---

@@ -32,6 +32,7 @@ outcomes:
     label: Declarative parameter source shared by primary and secondary regions
   - value: 0
     label: Secondary-only resources created for single-region environments
+closingText: I'm happy to walk through how we validated this recovery design — testing parameter drift detection, failover runbook execution, or regional secret failover.
 ---
 
 ## Architecture · The decisions that mattered
