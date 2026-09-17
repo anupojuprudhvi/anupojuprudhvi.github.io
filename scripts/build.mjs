@@ -186,6 +186,28 @@ ${[...canonicalUrls].sort().map((url) => `  <url><loc>${esc(url)}</loc></url>`).
 </urlset>
 `);
 emit("robots.txt", `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
+emit("feed.xml", `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Prudhvi Raj Anupoju — Cloud Platform Architecture Case Studies</title>
+    <link>${SITE}/case-studies/</link>
+    <description>Enterprise cloud architecture case studies covering governance, resilience, integration, and cost optimization.</description>
+    <language>en</language>
+    <atom:link href="${SITE}/feed.xml" rel="self" type="application/rss+xml"/>
+${docs
+  .map(
+    (d) => `    <item>
+      <title>${esc(d.title)}</title>
+      <link>${SITE}/${d.url}</link>
+      <guid>${SITE}/${d.url}</guid>
+      <description>${esc(d.summary || "")}</description>
+      <category>${esc(d.layer || d.projectName)}</category>
+    </item>`,
+  )
+  .join("\n")}
+  </channel>
+</rss>
+`);
 
 // Validate and render everything before touching outputs. Never delete unknown HTML.
 let stale = false;

@@ -52,6 +52,7 @@ test("preview handles invalid requests without interrupting normal browsing", as
       ["/assets/site.css", "text/css"],
       ["/assets/theme.js", "text/javascript"],
       ["/sitemap.xml", "application/xml"],
+      ["/feed.xml", "application/xml"],
       ["/robots.txt", "text/plain"],
     ]) {
       const response = await request(pathname);

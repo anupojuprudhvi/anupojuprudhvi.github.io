@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Prudhvi Raj Anupoju — Cloud Platform Architecture Case Studies</title>
+    <link>https://anupojuprudhvi.github.io/case-studies/</link>
+    <description>Enterprise cloud architecture case studies covering governance, resilience, integration, and cost optimization.</description>
+    <language>en</language>
+    <atom:link href="https://anupojuprudhvi.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Modernizing a legacy telecom database with a controlled cutover</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/telecom/aurora-global-database-modernization.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/telecom/aurora-global-database-modernization.html</guid>
+      <description>Combining schema and client compatibility work, continuous replication, and local connection pooling to move a legacy telecom database tier to Aurora.</description>
+      <category>Data</category>
+    </item>
+    <item>
+      <title>Automating telecom failover while preserving licensed identity</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/telecom/serverless-ha-failover-engine.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/telecom/serverless-ha-failover-engine.html</guid>
+      <description>Bringing recovery orchestration, service validation, and hardware-bound licensing into one failover workflow, with an explicit same-AZ boundary.</description>
+      <category>Resilience</category>
+    </item>
+    <item>
+      <title>Moving legacy telecom key management to AWS KMS</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/telecom/in-memory-column-encryption-kms.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/telecom/in-memory-column-encryption-kms.html</guid>
+      <description>Adapting an existing local encryption service to AWS KMS while preserving its application integration and making the key-handling boundaries explicit.</description>
+      <category>Security</category>
+    </item>
+    <item>
+      <title>Making telecom node provisioning repeatable</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/telecom/platform-automation-engine-v1-to-v10.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/telecom/platform-automation-engine-v1-to-v10.html</guid>
+      <description>Turning manual host configuration and recurring migration defects into a provisioning workflow with explicit configuration, service reconciliation, and smoke tests.</description>
+      <category>Platform</category>
+    </item>
+    <item>
+      <title>Diagnosing a silent call-record ingestion failure</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/telecom/cdr-ingestion-pipeline-incident-rca.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/telecom/cdr-ingestion-pipeline-incident-rca.html</guid>
+      <description>Tracing missing call records through consumer output and SSH transfer, then replacing process-only checks with data-flow monitoring.</description>
+      <category>Operations</category>
+    </item>
+    <item>
+      <title>One governed cloud foundation under 40+ independently-run accounts</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/tolling/cloud-foundation.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/tolling/cloud-foundation.html</guid>
+      <description>A four-layer landing zone, one hub-and-spoke network, and a CI/CD pipeline where an unintended apply is structurally impossible.</description>
+      <category>Foundation</category>
+    </item>
+    <item>
+      <title>A Transit Gateway hub that keeps account routing deliberate</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/tolling/transit-gateway-hub-and-spoke.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/tolling/transit-gateway-hub-and-spoke.html</guid>
+      <description>Connecting shared services, workload accounts, security inspection, and a recovery region through one governed Transit Gateway without making every VPC route to every other VPC.</description>
+      <category>Foundation</category>
+    </item>
+    <item>
+      <title>Make Aurora DR behave like the primary, not merely exist beside it</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/tolling/aurora-multi-region-dr-parity.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/tolling/aurora-multi-region-dr-parity.html</guid>
+      <description>Closing the two gaps that can make a replicated Aurora environment fail differently during recovery: secondary parameter-group drift and missing regional secret availability.</description>
+      <category>Data</category>
+    </item>
+    <item>
+      <title>Turn an EKS ingress incident into a diagnosable traffic path</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/tolling/eks-ingress-incident-rca.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/tolling/eks-ingress-incident-rca.html</guid>
+      <description>A structured RCA pattern for an EKS ingress failure that separates DNS, load-balancer, target-registration, network-policy, and application causes instead of treating every 5xx as an application defect.</description>
+      <category>Applications</category>
+    </item>
+    <item>
+      <title>A reusable CI/CD engine with safe-by-default infrastructure delivery</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/tolling/cicd-delivery-engine.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/tolling/cicd-delivery-engine.html</guid>
+      <description>Bootstrapping AWS OIDC roles once with SSO, then using one reusable GitHub Actions engine for speculative plans and explicitly gated, single-environment Terraform deployments.</description>
+      <category>Foundation</category>
+    </item>
+    <item>
+      <title>Make organization CloudTrail evidence difficult to alter</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/tolling/cloudtrail-tamper-protection.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/tolling/cloudtrail-tamper-protection.html</guid>
+      <description>Centralizing organization-wide CloudTrail events in a separately governed archive account with encryption, restrictive bucket policy, retention controls, and alerting for changes to the trail or log destination.</description>
+      <category>Foundation</category>
+    </item>
+    <item>
+      <title>Corporate SSO for Amazon WorkSpaces without losing the domain boundary</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/tolling/entra-workspaces-saml.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/tolling/entra-workspaces-saml.html</guid>
+      <description>Separating Entra authentication from Active Directory machine operations so Personal and Pool WorkSpaces can use corporate sign-in without weakening the domain boundary.</description>
+      <category>Shared Services</category>
+    </item>
+    <item>
+      <title>Letting a SaaS webhook reach a private service, safely</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/tolling/jsm-integration.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/tolling/jsm-integration.html</guid>
+      <description>A layered, authenticated path from Jira Service Management into a private service, with CloudFront and a Lambda authorizer retained because AWS platform constraints rule out the simpler alternatives.</description>
+      <category>Applications</category>
+    </item>
+    <item>
+      <title>One DNS model for public services and private environments</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/tolling/route53-shared-dns.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/tolling/route53-shared-dns.html</guid>
+      <description>Separating public internet resolution from private VPC resolution, then associating one centrally managed private hosted zone with shared and environment VPCs across accounts.</description>
+      <category>Shared Services</category>
+    </item>
+    <item>
+      <title>A private image API without a proxy application to operate</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/tolling/s3-image-api.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/tolling/s3-image-api.html</guid>
+      <description>Removing a load balancer and a Lambda proxy from the image path, leaving API Gateway talking to S3 directly through one shared private endpoint.</description>
+      <category>Applications</category>
+    </item>
+    <item>
+      <title>Clinical platform modernization and cost architecture</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/healthcare/clinical-platform-modernization-and-cost-optimization.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/healthcare/clinical-platform-modernization-and-cost-optimization.html</guid>
+      <description>Decomposing an on-premise clinical monolith into containerized services, and taking reporting load off the live database with a decoupled analytics pipeline.</description>
+      <category>Applications</category>
+    </item>
+  </channel>
+</rss>

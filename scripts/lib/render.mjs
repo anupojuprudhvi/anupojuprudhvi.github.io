@@ -135,8 +135,36 @@ ${enables}
     <meta property="og:title" content="${esc(d.title)}" />
     <meta property="og:description" content="${esc(d.summary || "")}" />
     <meta property="og:image" content="${SITE}/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies" href="${SITE}/feed.xml" />
     <link rel="icon" href="${a("assets/favicon.svg")}" type="image/svg+xml" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": ${JSON.stringify(d.title)},
+        "description": ${JSON.stringify(d.summary || "")},
+        "author": {
+          "@type": "Person",
+          "name": "Prudhvi Raj Anupoju",
+          "url": "${SITE}/",
+          "sameAs": [
+            "https://www.linkedin.com/in/prudhvi-raj-anupoju/",
+            "https://github.com/anupojuprudhvi"
+          ]
+        },
+        "publisher": {
+          "@type": "Person",
+          "name": "Prudhvi Raj Anupoju"
+        },
+        "url": "${SITE}/${url}",
+        "image": "${SITE}/og-image.png",
+        "mainEntityOfPage": "${SITE}/${url}",
+        "keywords": ${JSON.stringify((d.tags || []).concat(d.stack || []).join(", "))}
+      }
+    </script>
     <script src="${a("assets/theme.js")}"></script>
     <link rel="stylesheet" href="${a("assets/site.css")}" />
     <link rel="stylesheet" href="${a("assets/deepdive.css")}" />
@@ -242,7 +270,10 @@ export function libraryPage(items) {
       content="A searchable collection of cloud architecture case studies from enterprise AWS delivery."
     />
     <meta property="og:image" content="${SITE}/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies" href="${SITE}/feed.xml" />
     <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
     <script src="../assets/theme.js"></script>
     <link rel="stylesheet" href="../assets/site.css" />

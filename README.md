@@ -149,7 +149,7 @@ written. HTML in content is trusted repository-authored markup, not user input.
 
 Generated files are committed so GitHub Pages can serve the branch directly:
 `index.html`, `case-studies/**/*.html`, `assets/case-studies.json`, `sitemap.xml`,
-and `robots.txt`.
+`robots.txt`, and `feed.xml`.
 Do not edit these files directly. Only current case-study URLs are published;
 legacy redirects are not generated.
 Renaming a published study changes its URL: update any editorial cross-links
