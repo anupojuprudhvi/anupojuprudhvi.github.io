@@ -80,7 +80,7 @@
 <p>So the entry point had to do all of it: be publicly reachable, because the events come from a SaaS product; verify the request signature and expiry; and never expose the load balancer or the pods behind it. Getting any one of those wrong makes the other two irrelevant. The design should not be read as a complete replay-prevention system: replay handling remains an application concern unless a nonce or event-id strategy is added.</p>
 </div>
 <div>
-<h3>The solution I built</h3>
+<h3>The architectural solution</h3>
 <p>A layered perimeter where each stage rejects a different class of request: edge filtering at CloudFront, a Lambda authorizer that verifies the signature cryptographically, and a private VPC Link into the internal load balancer.</p>
 <p>Two of those pieces are not design preferences. CloudFront and the Lambda are both there because of specific AWS platform limits, covered below — which is also why the architecture is documented rather than just built.</p>
 </div>
@@ -127,7 +127,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Why this way</div>
-<h2>Two choices AWS made for me</h2>
+<h2>Two architectural constraints shaped by AWS</h2>
 <p>The interesting part of this design is how little of it was preference. Two components exist because the obvious approach is not available on this platform, and it is worth being explicit about which is which.</p>
 <p><b>CloudFront is not there as a CDN.</b> AWS WAF cannot be associated with an HTTP API — it attaches only to CloudFront, an Application Load Balancer, a REST API, or AppSync. Putting WAF in front of an HTTP API therefore means putting CloudFront in front of it. That makes CloudFront a mandatory part of the security model, not an optimisation, and anyone later "simplifying" it away removes the WAF layer entirely and publishes the API Gateway URL with no IP filtering at all.</p>
 <p><b>The Lambda authorizer is not there for convenience.</b> Jira signs its webhooks with symmetric HMAC-SHA256. API Gateway's native JWT authorizer only supports asymmetric algorithms paired with OIDC discovery, and WAF can match strings and patterns but cannot compute an HMAC against a secret. Nothing built in can verify these signatures, so verification has to run somewhere — and running it at the boundary keeps it out of the backend service.</p>

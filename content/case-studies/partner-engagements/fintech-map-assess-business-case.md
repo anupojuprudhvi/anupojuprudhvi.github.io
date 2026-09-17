@@ -19,9 +19,9 @@ problem: |
   existing third-party SAML integration blocked access to AWS Transform workspaces,
   and strict financial compliance demanded a zero-agent discovery methodology.
 solution: |
-  I designed and executed a dual-path discovery architecture utilizing automated RVTools
+  Designed and executed a dual-path discovery architecture utilizing automated RVTools
   exports alongside an agentless AWS Transform OVA collector deployed directly into
-  the private VMware vCenter cluster. To resolve the authentication deadlock, I engineered
+  the private VMware vCenter cluster. To resolve the authentication deadlock, engineered
   an identity bridge configuring the enterprise IdP for AWS IAM Identity Center
   via SAML and SCIM sync, allowing coexistence with legacy access. The ingested telemetry
   was evaluated in AWS Transform to produce a 3-year Directional Business Case (DBC),
@@ -61,7 +61,7 @@ The discovery process had to answer three critical questions:
 ### Implementation notes
 
 - **Dual-path discovery selection:** Implemented Path 1 (rapid point-in-time inventory extraction via RVTools `.xlsx` parsing) for immediate sizing sanity checks, coupled with Path 2 (agentless collector OVA deployed in vCenter) to record multi-day workload utilization cycles.
-- **Identity Center integration:** AWS Transform requires IAM Identity Center. The existing direct third-party-to-IAM SAML role federation did not support Transform workspaces. I configured the enterprise IdP in IAM Identity Center via SAML + SCIM, enabling both setups to coexist without interrupting active developer access.
+- **Identity Center integration:** AWS Transform requires IAM Identity Center. The existing direct third-party-to-IAM SAML role federation did not support Transform workspaces. The enterprise IdP was configured in IAM Identity Center via SAML + SCIM, enabling both setups to coexist without interrupting active developer access.
 - **Licensing strategy analysis:** Compared Microsoft Windows Server and SQL Server Bring-Your-Own-License (BYOL) against AWS License-Included pricing, identifying optimal instance types (e.g. AWS Graviton vs x86 for database tiers) to minimize core-licensing liabilities.
 
 ## Architecture · 7Rs portfolio analysis and target state design

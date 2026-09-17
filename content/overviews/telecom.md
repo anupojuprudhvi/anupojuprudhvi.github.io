@@ -9,7 +9,7 @@ scope: Application and persistent service nodes, primary and recovery regions
 
 The platform handled sensitive call and messaging data, but its database, recovery procedures, and software licensing had grown around an on-premises environment. Moving the virtual machines alone would have carried those constraints into the cloud.
 
-My contribution focused on modernizing the database, automating recovery, preserving the licensed network identity, adapting key management, and making node provisioning repeatable. The detailed case studies below explain the decisions and boundaries of each part of that work.
+The architectural contribution focused on modernizing the database, automating recovery, preserving the licensed network identity, adapting key management, and making node provisioning repeatable. The detailed case studies below explain the decisions and boundaries of each part of that work.
 
 ## Solution · Separate the decisions, coordinate the cutover
 

@@ -80,7 +80,7 @@
 <p>It also had to behave identically across development, staging and production, resolve through a consistent private domain in each, and keep every part of the path unreachable from the internet.</p>
 </div>
 <div>
-<h3>The solution I built</h3>
+<h3>The architectural solution</h3>
 <p>API Gateway talking to S3 directly, with nothing in between. A private REST API per environment uses an AWS service integration for GET and PUT: the gateway assumes a role, signs the request, and S3 authorizes against that role. No compute sits in the transfer path.</p>
 <p>Each environment resolves its own custom domain through a single private hosted zone in the Shared Services account, pointing at one shared interface endpoint rather than one per account. It took four iterations to get there, each removing something.</p>
 </div>

@@ -79,7 +79,7 @@
 <p>A multi-region Aurora design can report that replication is enabled while still carrying a dangerous difference between the primary and secondary. Custom cluster and DB parameter groups may exist in the primary region while secondary resources fall back to AWS defaults. Database extensions, connection settings, planner tuning, and logging could therefore change during failover. A database secret that exists only in the primary region also leaves recovery dependent on primary-region access.</p>
 </div>
 <div>
-<h3>The solution I built</h3>
+<h3>The architectural solution</h3>
 <p>Terraform makes the DR contract conditional and declarative. When global replication is enabled, an aliased secondary-region provider creates parameter groups from the same normalized JSON inputs used by the primary, attaches them to the secondary cluster and instances, replicates the encrypted Secrets Manager secret, and adds the secondary endpoint to the payload. Single-region environments do not create secondary-only resources or lookups. Provider configuration remains with the environment that calls the reusable module.</p>
 </div>
 </div>

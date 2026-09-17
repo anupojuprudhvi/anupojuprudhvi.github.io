@@ -45,7 +45,7 @@ outcomes:
           <div class="section-eyebrow">Architecture</div>
           <h2>A four-layer landing zone, deployed bottom-up</h2>
           <p>
-            I organized the entire platform into four dependency-ordered
+            The entire platform was organized into four dependency-ordered
             Terraform layers, each one only allowed to depend on the layer
             beneath it. That constraint is what keeps the blast radius of any
             single change small and the deployment order unambiguous.
@@ -378,9 +378,9 @@ outcomes:
           <h2>Designing so a mistake literally cannot ship</h2>
           <p>
             Terraform changes are safe to review but dangerous to run carelessly
-            against 40+ live accounts, so I built the pipeline to make an
+            against 40+ live accounts, so the deployment pipeline was engineered to make an
             unintended <code>apply</code> structurally impossible rather than
-            relying on people remembering to be careful. Every module inherits
+            relying on manual vigilance. Every module inherits
             one shared pipeline engine instead of copy-pasted YAML, and every
             run is confined to exactly one module and one environment.
           </p>

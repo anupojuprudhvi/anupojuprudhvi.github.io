@@ -20,7 +20,7 @@ Call Detail Records (CDRs) stopped reaching the reporting database while voice a
 
 ## Solution · Trace one record through the pipeline
 
-I investigated the path from queue messages to consumer output, file transfer, and database ingestion. The investigation identified two failures: consumer parsing produced empty batch files, and an SSH host-key mismatch blocked scheduled transfers after node replacement.
+Investigated the end-to-end telemetry path from queue messages to consumer output, file transfer, and database ingestion. The investigation identified two distinct failures: consumer parsing produced empty batch files, and an SSH host-key mismatch blocked scheduled transfers after node replacement.
 
 ## Architecture · Health must be checked across the boundaries
 

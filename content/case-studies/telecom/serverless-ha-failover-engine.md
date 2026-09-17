@@ -21,7 +21,7 @@ Legacy recovery depended on hardware-oriented fencing and operator intervention.
 
 ## Solution · Treat recovery and licensing as the same workflow
 
-I designed a Lambda-based recovery workflow triggered by CloudWatch alarms. DynamoDB conditional writes coordinated orchestration attempts, while Systems Manager handled host-side network and service operations. A persistent secondary Elastic Network Interface (ENI) carried the identity registered with the software vendor.
+A serverless Lambda recovery workflow was engineered to trigger from CloudWatch alarms. DynamoDB conditional writes coordinated orchestration attempts, while Systems Manager handled host-side network and service operations. A persistent secondary Elastic Network Interface (ENI) carried the identity registered with the software vendor.
 
 The ENI approach preserved identity when that interface moved to a replacement host; it did not require assigning a custom MAC address or imply that ordinary instance reboots change interface identity.
 

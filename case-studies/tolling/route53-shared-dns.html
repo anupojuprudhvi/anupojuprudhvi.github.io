@@ -80,7 +80,7 @@
 <p>The private namespace also had to work from the Shared Services VPC and from development, staging, production, and other environment VPCs. Those VPCs do not all belong to the account that owns the DNS zone, so the design had to make the AWS cross-account association workflow explicit rather than hiding it in scripts or manual console changes.</p>
 </div>
 <div>
-<h3>The solution I built</h3>
+<h3>The architectural solution</h3>
 <p>Route 53 owns two deliberate surfaces. A public hosted zone contains records intended for internet clients. A private hosted zone contains internal records and is associated with the Shared Services VPC plus each approved environment VPC, so the same private names resolve consistently wherever the platform allows them.</p>
 <p>Terraform manages the zone definitions and same-account VPC associations in the central Shared Services account. For a VPC in another account, the zone owner first creates <code>aws_route53_vpc_association_authorization</code>; the VPC owner then creates <code>aws_route53_zone_association</code> using its own credentials. The association is therefore a two-account contract, with the zone owner deciding who is allowed and the environment owner completing its side.</p>
 </div>

@@ -79,8 +79,8 @@
 <p>An institutional digital asset and accounting platform running on-premises in VMware required a comprehensive evaluation for migration to AWS under the Migration Acceleration Program (MAP). To unlock executive sponsorship and AWS MAP co-funding, the engineering and finance leadership required empirical utilization baselines, right-sized EC2 compute recommendations, licensing optimization models, and a formal 6-pillar Migration Readiness Assessment (MRA). Furthermore, the client's existing third-party SAML integration blocked access to AWS Transform workspaces, and strict financial compliance demanded a zero-agent discovery methodology.</p>
 </div>
 <div>
-<h3>The solution I built</h3>
-<p>I designed and executed a dual-path discovery architecture utilizing automated RVTools exports alongside an agentless AWS Transform OVA collector deployed directly into the private VMware vCenter cluster. To resolve the authentication deadlock, I engineered an identity bridge configuring the enterprise IdP for AWS IAM Identity Center via SAML and SCIM sync, allowing coexistence with legacy access. The ingested telemetry was evaluated in AWS Transform to produce a 3-year Directional Business Case (DBC), licensing comparison (BYOL vs. License Included), and a phased 7Rs workload migration roadmap.</p>
+<h3>The architectural solution</h3>
+<p>Designed and executed a dual-path discovery architecture utilizing automated RVTools exports alongside an agentless AWS Transform OVA collector deployed directly into the private VMware vCenter cluster. To resolve the authentication deadlock, engineered an identity bridge configuring the enterprise IdP for AWS IAM Identity Center via SAML and SCIM sync, allowing coexistence with legacy access. The ingested telemetry was evaluated in AWS Transform to produce a 3-year Directional Business Case (DBC), licensing comparison (BYOL vs. License Included), and a phased 7Rs workload migration roadmap.</p>
 </div>
 </div>
 <figure class="reqflow">
@@ -122,7 +122,7 @@
 <summary>Implementation notes</summary>
 <ul>
 <li><b>Dual-path discovery selection:</b> Implemented Path 1 (rapid point-in-time inventory extraction via RVTools <code>.xlsx</code> parsing) for immediate sizing sanity checks, coupled with Path 2 (agentless collector OVA deployed in vCenter) to record multi-day workload utilization cycles.</li>
-<li><b>Identity Center integration:</b> AWS Transform requires IAM Identity Center. The existing direct third-party-to-IAM SAML role federation did not support Transform workspaces. I configured the enterprise IdP in IAM Identity Center via SAML + SCIM, enabling both setups to coexist without interrupting active developer access.</li>
+<li><b>Identity Center integration:</b> AWS Transform requires IAM Identity Center. The existing direct third-party-to-IAM SAML role federation did not support Transform workspaces. The enterprise IdP was configured in IAM Identity Center via SAML + SCIM, enabling both setups to coexist without interrupting active developer access.</li>
 <li><b>Licensing strategy analysis:</b> Compared Microsoft Windows Server and SQL Server Bring-Your-Own-License (BYOL) against AWS License-Included pricing, identifying optimal instance types (e.g. AWS Graviton vs x86 for database tiers) to minimize core-licensing liabilities.</li>
 </ul>
 </details>

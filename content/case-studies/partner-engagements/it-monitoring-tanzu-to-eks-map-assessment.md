@@ -19,10 +19,10 @@ problem: |
   stateful data persistence mapping, and an audited 3-year TCO financial justification to validate
   a complete datacenter exit.
 solution: |
-  Serving as Lead Cloud Architect, I spearheaded the technical workload assessment and EKS
-  target state architecture. I formulated a comprehensive 33-question evaluation matrix spanning
-  container resource requests/limits, network policies, and pod storage drivers. I designed the
-  target AWS architecture transitioning VMware Tanzu workloads to Amazon EKS utilizing Karpenter
+  Serving as Lead Cloud Architect, spearheaded the technical workload assessment and EKS
+  target state architecture. Formulated a comprehensive 33-question evaluation matrix spanning
+  container resource requests/limits, network policies, and pod storage drivers. Architected the
+  target AWS platform transitioning VMware Tanzu workloads to Amazon EKS utilizing Karpenter
   with AWS Graviton and Spot instances, mapped relational databases to Amazon Aurora, and authored
   the compute right-sizing report (projecting ≥ 25% compute savings) and official AWS MAP Customer
   Sign-Off package.
@@ -53,11 +53,11 @@ outcomes:
 
 Enterprise software providers maintaining on-premises hyperconverged infrastructure face severe economic and operational pressure: escalating virtualization licensing fees, physical hardware maintenance cycles (Dell servers, Fiber Channel SANs), and inflexible compute capacity that limits continuous integration (CI) testing throughput.
 
-As Lead Cloud Architect for this AWS Migration Acceleration Program (MAP) Assess engagement, my responsibility was to lead the technical discovery of the client's on-premises environment across their European headquarters and colocation datacenters, and architect a modern, cost-optimized target state on AWS centered on **Amazon EKS**.
+As Lead Cloud Architect for this AWS Migration Acceleration Program (MAP) Assess engagement, the mission was to lead the technical discovery of the client's on-premises environment across their European headquarters and colocation datacenters, and architect a modern, cost-optimized target state on AWS centered on **Amazon EKS**.
 
 ### Implementation notes
 
-- **Kubernetes assessment framework:** To address gaps in standard hypervisor discovery, I developed an in-depth Kubernetes assessment questionnaire spanning 33 architectural dimensions, covering pod resource `requests` and `limits`, ingress controllers, network policy enforcement, and Prometheus metrics retention.
+- **Kubernetes assessment framework:** To address gaps in standard hypervisor discovery, an in-depth Kubernetes assessment questionnaire was established spanning 33 architectural dimensions, covering pod resource `requests` and `limits`, ingress controllers, network policy enforcement, and Prometheus metrics retention.
 - **VPC CNI IP capacity planning:** Evaluated AWS VPC CNI behavior where secondary private IPs are assigned directly to pods. Architected secondary CIDR blocks (`100.64.0.0/16`) for pod networking to prevent private IPv4 address exhaustion in production subnets.
 - **Dynamic autoscaling with Karpenter:** Modeled replacing static on-premise Dell VxRail worker nodes with Amazon EKS using **Karpenter**. By combining Graviton (ARM64) for baseline microservices with auto-scaling EC2 Spot instances for ephemeral GitLab CI runners and QA probe test farms, the architecture projected over 25% compute cost savings.
 - **Persistent storage replatforming:** Analyzed stateful container workloads backed by Fiber Channel SAN and NFS shares. Defined clear replatforming pathways: moving transactional relational databases to **Amazon Aurora PostgreSQL**, shared developer file storage to **Amazon EFS** and **FSx for Windows**, and backup repositories to **AWS Backup** with automated S3 lifecycle tiering.

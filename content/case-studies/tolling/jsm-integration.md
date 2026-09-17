@@ -49,7 +49,7 @@ enables: |
   and no authentication code required in the backend service.
 ---
 
-## Why this way · Two choices AWS made for me
+## Why this way · Two architectural constraints shaped by AWS
 
 The interesting part of this design is how little of it was preference. Two
 components exist because the obvious approach is not available on this

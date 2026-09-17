@@ -79,8 +79,8 @@
 <p>A multi-account platform needs private connectivity between approved workloads, shared services, inspection controls, and recovery environments. A collection of VPC peering links would grow as accounts were added and would make route ownership and inspection paths difficult to review. The network also needed to preserve separation between environments instead of turning connectivity into implicit trust.</p>
 </div>
 <div>
-<h3>The solution I built</h3>
-<p>I used a Transit Gateway as the regional routing hub and shared it with approved accounts through AWS RAM. VPC attachments and route tables are owned by Terraform, with separate routing domains for workload, shared-service, inspection, and recovery paths. Spoke VPCs advertise only the prefixes they own; routes to other domains are added deliberately and can be sent through the inspection path where policy requires it.</p>
+<h3>The architectural solution</h3>
+<p>A Transit Gateway served as the regional routing hub, shared with approved accounts through AWS RAM. VPC attachments and route tables are owned by Terraform, with separate routing domains for workload, shared-service, inspection, and recovery paths. Spoke VPCs advertise only the prefixes they own; routes to other domains are added deliberately and can be sent through the inspection path where policy requires it.</p>
 </div>
 </div>
 <figure class="reqflow">

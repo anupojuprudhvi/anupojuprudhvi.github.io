@@ -21,7 +21,7 @@ Two acceptance failures made this concrete: administrative API calls timed out a
 
 ## Solution · Make application readiness part of provisioning
 
-I developed a configuration workflow that read environment-specific inputs and applied the required host settings. It covered shared storage, database pool configuration, service setup, web and mail settings, and registry reconciliation. As defects were diagnosed, their checks were incorporated into provisioning and environment handoff.
+A centralized configuration workflow read environment-specific inputs and applied the required host settings. It covered shared storage, database pool configuration, service setup, web and mail settings, and registry reconciliation. As defects were diagnosed, their validation checks were incorporated directly into automated provisioning and environment handoff.
 
 ## Architecture · Separate shared steps from node responsibilities
 

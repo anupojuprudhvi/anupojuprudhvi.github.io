@@ -17,7 +17,7 @@ problem: |
   preserve separation between environments instead of turning connectivity into
   implicit trust.
 solution: |
-  I used a Transit Gateway as the regional routing hub and shared it with
+  A Transit Gateway served as the regional routing hub, shared with
   approved accounts through AWS RAM. VPC attachments and route tables are owned
   by Terraform, with separate routing domains for workload, shared-service,
   inspection, and recovery paths. Spoke VPCs advertise only the prefixes they

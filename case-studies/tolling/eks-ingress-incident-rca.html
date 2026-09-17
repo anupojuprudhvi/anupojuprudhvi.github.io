@@ -79,7 +79,7 @@
 <p>An ingress incident can look like a single outage to a user while several different boundaries sit between the request and a pod. DNS may resolve the wrong endpoint, the load balancer may have unhealthy targets, a security group or network policy may block the target path, or the application may return an error after the request arrives. Without a fixed evidence order, responders change multiple layers at once and lose the original signal.</p>
 </div>
 <div>
-<h3>The solution I built</h3>
+<h3>The architectural solution</h3>
 <p>The RCA uses the request path as its diagnostic spine. Start with the hostname and listener, confirm the Application Load Balancer target group and health state, correlate the AWS Load Balancer Controller events with the Kubernetes Ingress and Service, then test the node, pod, and application path from inside the cluster. CloudWatch and Kubernetes logs preserve the evidence while a reversible routing or deployment change is evaluated separately from the investigation.</p>
 </div>
 </div>

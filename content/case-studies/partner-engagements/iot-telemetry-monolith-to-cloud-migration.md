@@ -19,11 +19,11 @@ problem: |
   Well-Architected target blueprint, mapping legacy server daemons to managed cloud services,
   and establishing defensible infrastructure cost estimates.
 solution: |
-  I designed the target cloud architecture and authored the comprehensive Service Mapping
+  Designed the target cloud architecture and authored the comprehensive Service Mapping
   Matrix translating monolithic components to scalable AWS managed equivalents:
   migrating self-hosted MQTT to AWS IoT Core, background processing to Amazon EKS on
   AWS Graviton, telemetry streaming to Amazon Kinesis, and operational persistence to
-  Amazon Aurora and Amazon DynamoDB. I formulated the 3-year capacity cost models,
+  Amazon Aurora and Amazon DynamoDB. Formulated the 3-year capacity cost models,
   authored the MAP Assessment Final Report, and established the technical governance
   and cadence framework for the Mobilize phase.
 flowLabel: Monolith-to-cloud service translation pipeline

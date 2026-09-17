@@ -20,7 +20,7 @@ problem: |
   to be bootstrapped locally with an administrator's AWS SSO session before the
   hosted pipeline can deploy anything.
 solution: |
-  I separated the system into a one-time identity bootstrap and a reusable
+  The delivery architecture was separated into a one-time identity bootstrap and a reusable
   delivery engine. The `00-foundation/cicd-oidc/` Terraform roots create the
   GitHub OIDC provider plus dedicated plan and apply roles in each target
   account. Once those roles exist, GitHub Actions exchanges its short-lived OIDC

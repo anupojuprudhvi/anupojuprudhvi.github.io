@@ -80,8 +80,8 @@
 <p>There is also a dependency that is easy to miss: GitHub Actions cannot assume an OIDC role that does not exist yet. The CI/CD identity boundary therefore has to be bootstrapped locally with an administrator's AWS SSO session before the hosted pipeline can deploy anything.</p>
 </div>
 <div>
-<h3>The solution I built</h3>
-<p>I separated the system into a one-time identity bootstrap and a reusable delivery engine. The <code>00-foundation/cicd-oidc/</code> Terraform roots create the GitHub OIDC provider plus dedicated plan and apply roles in each target account. Once those roles exist, GitHub Actions exchanges its short-lived OIDC token for temporary AWS credentials through STS.</p>
+<h3>The architectural solution</h3>
+<p>The delivery architecture was separated into a one-time identity bootstrap and a reusable delivery engine. The <code>00-foundation/cicd-oidc/</code> Terraform roots create the GitHub OIDC provider plus dedicated plan and apply roles in each target account. Once those roles exist, GitHub Actions exchanges its short-lived OIDC token for temporary AWS credentials through STS.</p>
 <p>A single central workflow engine owns authentication, provider handling, Terraform initialization, plan formatting, summaries, and safety gates. Small service caller workflows provide only the module path, state key, target account mapping, and environment list. Pull requests use read-only speculative plans; deployments are manually dispatched one module and one environment at a time.</p>
 </div>
 </div>

@@ -9,7 +9,7 @@ tags: [finops, modernization, kubernetes, caching, analytics]
 problem: An on-premise clinical platform past the scaling limits of fixed hardware, where heavy reporting queries competed with real-time device ingestion on the same database.
 solution: Containerized microservices on managed Kubernetes, an in-memory caching layer, and a streaming analytics pipeline so dashboards never touch the operational database.
 heroTitle: Modernizing legacy clinical systems and cutting structural cost
-intro: An on-premise clinical platform — collecting and routing patient biometric data from connected medical devices to care teams — had hit the scaling and reliability limits of running as a single monolith on fixed hardware. This is how I decomposed it into managed, containerized services and brought the same cost discipline to several other engagements alongside it.
+intro: An on-premise clinical platform — collecting and routing patient biometric data from connected medical devices to care teams — had hit the scaling and reliability limits of running as a single monolith on fixed hardware. This case study details how it was decomposed into managed, containerized services, alongside structural cost-reduction patterns applied across multiple engagements.
 role: Application modernization & cost-aware infrastructure design
 scope: Clinical monolith decomposition + cross-engagement cost work
 closingText: I'm happy to go deeper on any part of this — the service decomposition, the analytics decoupling, or the cost-modeling approach.
@@ -60,11 +60,10 @@ scripts: [cache-diagram.js]
             Decomposing the monolith into managed, independently-scaled services
           </h2>
           <p>
-            I re-architected the application as a set of containerized
+            The application was re-architected into a set of containerized
             microservices running on managed Kubernetes, with a deliberate split
-            between the two things clinical software actually does: handling
-            live device and portal traffic, and running analytics on the history
-            of that data.
+            between the two primary workload profiles: handling live device and
+            portal traffic, and running analytics on the history of that data.
           </p>
 
           <div class="layers">
@@ -123,7 +122,7 @@ scripts: [cache-diagram.js]
           <h2>Taking reporting traffic off the live database entirely</h2>
           <p>
             Rather than scaling the operational database up to absorb both live
-            writes and heavy analytical reads, I decoupled the two: vitals
+            writes and heavy analytical reads, the architecture decoupled the two: vitals
             stream out of the application tier into a purpose-built real-time
             analytics pipeline, and clinical dashboards query that pipeline
             instead of the production database.
@@ -228,8 +227,8 @@ scripts: [cache-diagram.js]
           <p>
             This pattern — right-sizing compute instead of running static,
             always-on fleets — wasn't unique to one platform. Across several
-            client engagements during the same period, I applied a consistent
-            set of cost levers:
+            client engagements during the same period, a consistent
+            set of cost levers was applied:
           </p>
           <div
             class="table-scroll"

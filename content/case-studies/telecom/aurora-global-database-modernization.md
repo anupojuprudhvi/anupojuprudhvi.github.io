@@ -19,7 +19,7 @@ The telecom platform depended on an older PostgreSQL environment, legacy schema 
 
 ## Solution · Prepare the database while the existing platform keeps serving traffic
 
-I separated schema remediation, native client compatibility, data replication, and application cutover. AWS DMS handled the baseline transfer and change synchronization described in the migration workflow. Local PgBouncer instances provided a controlled connection path to Aurora, instead of allowing application concurrency to translate directly into backend connection growth.
+The migration strategy decoupled schema remediation, native client compatibility, data replication, and application cutover. AWS DMS handled the baseline transfer and change synchronization described in the migration workflow. Local PgBouncer instances provided a controlled connection path to Aurora, instead of allowing application concurrency to translate directly into backend connection growth.
 
 ## Architecture · Separate data movement from application switchover
 

@@ -80,7 +80,7 @@
 <p>The harder requirement was the boundary behind the login screen. Entra ID should authenticate the person, AWS should validate the federation trust and authorize desktop streaming, and Active Directory should continue to own domain membership, user lookup, Windows policy, and machine identity. The credentials used for those directory operations are not the user's SAML credentials.</p>
 </div>
 <div>
-<h3>The solution I built</h3>
+<h3>The architectural solution</h3>
 <p>The solution separates the integration into two connected planes. In the user plane, Entra ID authenticates the employee and emits a SAML assertion. AWS IAM trusts the Entra SAML provider through a dedicated federation role, and that role grants only <code>workspaces:Stream</code> for the target directory. WorkSpaces uses the assertion's <code>NameID</code> to find the matching Active Directory user, then starts an assigned Personal desktop or allocates an eligible Pools session.</p>
 <p>In the machine plane, the WorkSpaces VPC reaches the corporate DNS and domain controllers through the approved network path. AD Connector uses a separately managed service account, protected by Secrets Manager and KMS, for directory operations and computer-object/domain-join work. The joined desktop receives the configured OU and GPO behavior, with optional access to corporate file services such as FSx.</p>
 <p>Terraform manages the repeatable AWS boundary: the directory, connector, federation role, scoped streaming policy, secret integration, and conditional SAML resources. Entra metadata and claims, Active Directory user attributes, and Personal/Pool provisioning remain explicit operational inputs rather than hidden assumptions in the infrastructure code.</p>

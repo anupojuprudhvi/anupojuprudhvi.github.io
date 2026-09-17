@@ -42,7 +42,7 @@ function scaffold(d) {
 ${para(d.problem)}
 </div>
 <div>
-<h3>The solution I built</h3>
+<h3>The architectural solution</h3>
 ${para(d.solution)}
 </div>
 </div>
@@ -78,7 +78,7 @@ export function page(d, bodyHtml, { up, url, prev, next }) {
 
   const metaBits = [
     d.projectName && `<div><b>Project</b><br />${esc(d.projectName)}</div>`,
-    d.role && `<div><b>My role</b><br />${esc(d.role)}</div>`,
+    d.role && `<div><b>Role</b><br />${esc(d.role)}</div>`,
     d.scope && `<div><b>Scope</b><br />${esc(d.scope)}</div>`,
     d.layer && `<div><b>Layer</b><br />${esc(d.layer)}</div>`,
     Array.isArray(d.stack) && d.stack.length
@@ -291,9 +291,28 @@ export function libraryPage(items) {
         >
         <div class="navlinks">
           <a href="../index.html#work">Selected work</a
-          ><a href="index.html" aria-current="page">Case studies</a
-          ><a href="../learning-paths/index.html">Learning paths</a
-          ><a href="../index.html#contact" class="nav-cta">Let's connect ↗</a
+          ><a href="index.html" aria-current="page">Case studies</a>
+          <div class="nav-dropdown">
+            <a href="../learning-paths/index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false"
+              >Learning paths <span class="nav-arrow" aria-hidden="true">▾</span></a
+            >
+            <div class="nav-dropdown-menu" role="menu">
+              <a href="../learning-paths/index.html" role="menuitem" class="nav-dropdown-item">
+                <strong>All Learning Paths</strong>
+                <small>Curriculum overview &amp; tracks</small>
+              </a>
+              <div class="nav-dropdown-divider" role="separator"></div>
+              <a href="../learning-paths/terraform/index.html" role="menuitem" class="nav-dropdown-item">
+                <strong>Terraform for Enterprise</strong>
+                <small>6 Modules · Modules, State &amp; CI/CD</small>
+              </a>
+              <a href="../learning-paths/migration-journey/index.html" role="menuitem" class="nav-dropdown-item">
+                <strong>Cloud Migration Journey</strong>
+                <small>6 Modules · Assess, Mobilize &amp; Modernize</small>
+              </a>
+            </div>
+          </div>
+          <a href="../index.html#contact" class="nav-cta">Let's connect ↗</a
           ><button id="themeToggle" aria-label="Switch to light theme">
             ☼
           </button>
@@ -308,7 +327,7 @@ export function libraryPage(items) {
           <p class="uc-lede">
             Project case studies from enterprise AWS delivery — each one written
             up with the context, constraint, approach, and trade-offs. Start with
-            a project overview for the business context and my role, then open
+            a project overview for the business context and architecture scope, then open
             the linked technical detail for the architecture depth. Client details
             are anonymized; the engineering is not.
           </p>

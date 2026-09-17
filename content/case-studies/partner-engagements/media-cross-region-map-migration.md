@@ -19,11 +19,11 @@ problem: |
   over 600 virtual and physical servers, analyzing transcode utilization peaks,
   and establishing a defensible multi-year Total Cost of Ownership (TCO) model.
 solution: |
-  I led the cross-region technical discovery and transformation analysis across both US
+  Led the cross-region technical discovery and transformation analysis across both US
   and EU infrastructure environments. By normalizing inventory exports and workload
-  telemetry, I mapped legacy render/transcode clusters to dynamic Amazon EC2 Graviton and
+  telemetry, mapped legacy render/transcode clusters to dynamic Amazon EC2 Graviton and
   Spot instance fleets, and architected tiered storage strategies (Amazon S3 Standard to
-  Glacier Deep Archive) for multi-petabyte media catalogs. I authored the formal
+  Glacier Deep Archive) for multi-petabyte media catalogs. Authored the formal
   Migration Readiness Assessment (MRA) findings, established phase-wise success criteria,
   and presented the final financial TCO deck to C-level stakeholders.
 flowLabel: Multi-region assessment and cloud sizing pipeline
@@ -63,7 +63,7 @@ Under the AWS Migration Acceleration Program (MAP) Assess phase, the discovery i
 
 ## Readiness · The 6-Pillar Cloud Adoption Framework (CAF)
 
-To prepare the organization for cross-border migration execution, I facilitated Migration Readiness Assessment (MRA) workshops evaluating organizational capabilities:
+To prepare the organization for cross-border migration execution, Migration Readiness Assessment (MRA) workshops were conducted evaluating organizational capabilities:
 - **Platform:** Standardizing on Terraform Infrastructure as Code and AWS Organizations across continental business units.
 - **Security:** Implementing cross-account IAM Identity Center access and centralized CloudTrail logging across US and EU target accounts.
 - **Operations:** Transitioning from manual host configuration to automated golden AMI baking (HashiCorp Packer) and CI/CD deployment pipelines.

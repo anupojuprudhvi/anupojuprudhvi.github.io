@@ -19,7 +19,7 @@ The platform already encrypted sensitive subscriber data through a local C-based
 
 ## Solution · Isolate the provider change
 
-I adapted the key-unwrapping integration to AWS KMS while retaining the existing local service and application-facing contract. This was a targeted change to the provider integration, not a claim that no code changed or that the existing cryptographic design had been independently certified.
+The key-unwrapping integration was adapted to AWS KMS while retaining the existing local service and application-facing contract. This was a targeted change to the provider integration, not a claim that no code changed or that the existing cryptographic design had been independently certified.
 
 ## Architecture · Distinguish the wrapping key from the data key
 

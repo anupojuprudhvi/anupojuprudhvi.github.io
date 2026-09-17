@@ -19,9 +19,9 @@ problem: |
   integration blueprint, webhook subscription receivers, licensing entitlement
   workflows, and a rigorous post-onboarding operational compliance checklist.
 solution: |
-  I authored the Architecture Initiation Blueprint and engineered the marketplace
+  Authored the Architecture Initiation Blueprint and engineered the marketplace
   integration architecture connecting Cloud Marketplace procurement APIs to the SaaS
-  platform's tenant management engine. I designed the automated onboarding workflows,
+  platform's tenant management engine. Designed the automated onboarding workflows,
   formulated the Product Setup Matrix and Post-Onboarding Verification Checklist,
   and established automated tests validating procurement webhooks, account activation
   redirects, and usage metering telemetry.

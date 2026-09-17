@@ -79,7 +79,7 @@
 <p>Account-local audit logs are a weak source of evidence if an operator or workload identity in that account is compromised. A malicious change could stop logging, alter the destination, or delete recent objects before an investigation begins. The useful control is therefore not merely enabling a trail; it is separating trail administration, log storage, encryption, and detection responsibilities.</p>
 </div>
 <div>
-<h3>The solution I built</h3>
+<h3>The architectural solution</h3>
 <p>An organization trail records management events across member accounts and delivers them to a dedicated archive account. The destination S3 bucket blocks public access, requires the CloudTrail service condition in its bucket policy, uses a KMS key for encryption, and applies retention protection appropriate to the evidence policy. A security account monitors CloudTrail and CloudTrail configuration events, including attempts to stop logging, change the trail, or modify the archive boundary.</p>
 </div>
 </div>
