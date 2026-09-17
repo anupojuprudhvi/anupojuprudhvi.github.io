@@ -129,7 +129,7 @@
 <div class="section-eyebrow">Why this way</div>
 <h2>Bootstrap the identity before automating delivery</h2>
 <p>The first deployment cannot be performed by the pipeline itself. The GitHub Actions runner needs an AWS IAM OIDC provider and a trusted role before it can obtain credentials, so those resources are applied once from an administrator's workstation using AWS SSO. This is a deliberate bootstrap boundary, not a gap in automation.</p>
-<p>After the bootstrap, the same <code>THEA-cicd-plan</code> and <code>THEA-cicd-apply</code> role pattern can be reused by service workflows in the accounts they target. The plan role is read-only, while the apply role is reserved for the explicitly gated deployment path. Short-lived STS credentials replace static access keys and reduce the rotation and exposure problem of storing cloud credentials in CI secrets.</p>
+<p>After the bootstrap, the same <code>toll-cicd-plan</code> and <code>toll-cicd-apply</code> role pattern can be reused by service workflows in the accounts they target. The plan role is read-only, while the apply role is reserved for the explicitly gated deployment path. Short-lived STS credentials replace static access keys and reduce the rotation and exposure problem of storing cloud credentials in CI secrets.</p>
 </div>
 </section>
 <section>

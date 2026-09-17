@@ -23,7 +23,7 @@ The engagements followed the structured AWS MAP methodology, establishing empiri
 
 Discovery requires high fidelity with zero operational disturbance to running production environments. Depending on client security boundaries, discovery was executed via **AWS Transform Agentless Collector OVA appliances** deployed directly into VMware vCenter clusters, or automated ingestion and normalization of deep RVTools exports.
 
-Where client identity systems presented friction — such as existing JumpCloud SAML configurations blocking AWS Transform workspace access — I engineered coexistence architectures bridging JumpCloud with **AWS IAM Identity Center (SAML + SCIM)** without disrupting existing developer workflows.
+Where enterprise identity systems presented friction — such as legacy SAML configurations blocking assessment workspace access — I engineered coexistence architectures bridging the enterprise SAML IdP with **AWS IAM Identity Center (SAML + SCIM)** without disrupting existing developer workflows.
 
 ### Implementation notes
 

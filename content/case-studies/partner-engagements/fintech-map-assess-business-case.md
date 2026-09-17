@@ -6,9 +6,9 @@ heading: Automating VMware discovery and modeling 3-year cloud TCO for digital a
 project: partner-engagements
 layer: Strategy & Discovery
 order: 10
-stack: [AWS Transform, VMware vCenter, RVTools, AWS IAM Identity Center, JumpCloud SAML, AWS CAF]
+stack: [AWS Transform, VMware vCenter, RVTools, AWS IAM Identity Center, Enterprise SAML IdP, AWS CAF]
 tags: [migration, map-assess, tco, vmware, identity-center, finops, enterprise]
-summary: Executing an agentless VMware inventory discovery, resolving a JumpCloud-to-Identity Center SAML blocker, and delivering an executive Directional Business Case (DBC) for an institutional financial data platform.
+summary: Executing an agentless VMware inventory discovery, resolving a third-party IdP-to-Identity Center SAML blocker, and delivering an executive Directional Business Case (DBC) for an institutional financial data platform.
 problem: |
   An institutional digital asset and accounting platform running on-premises in
   VMware required a comprehensive evaluation for migration to AWS under the
@@ -16,13 +16,13 @@ problem: |
   co-funding, the engineering and finance leadership required empirical utilization
   baselines, right-sized EC2 compute recommendations, licensing optimization models,
   and a formal 6-pillar Migration Readiness Assessment (MRA). Furthermore, the client's
-  existing JumpCloud SAML integration blocked access to AWS Transform workspaces,
+  existing third-party SAML integration blocked access to AWS Transform workspaces,
   and strict financial compliance demanded a zero-agent discovery methodology.
 solution: |
   I designed and executed a dual-path discovery architecture utilizing automated RVTools
   exports alongside an agentless AWS Transform OVA collector deployed directly into
   the private VMware vCenter cluster. To resolve the authentication deadlock, I engineered
-  an identity bridge configuring JumpCloud as an external IdP for AWS IAM Identity Center
+  an identity bridge configuring the enterprise IdP for AWS IAM Identity Center
   via SAML and SCIM sync, allowing coexistence with legacy access. The ingested telemetry
   was evaluated in AWS Transform to produce a 3-year Directional Business Case (DBC),
   licensing comparison (BYOL vs. License Included), and a phased 7Rs workload migration roadmap.
@@ -33,7 +33,7 @@ flow:
   - step: Agentless discovery appliance
     note: AWS Transform OVA collector runs within the private hypervisor network, streaming hourly hardware metrics and SQL metadata without installing OS agents.
   - step: Identity Center SAML bridge
-    note: JumpCloud federates with AWS IAM Identity Center via SAML 2.0 and automated SCIM user provisioning, satisfying AWS Transform workspace access requirements.
+    note: Enterprise IdP federates with AWS IAM Identity Center via SAML 2.0 and automated SCIM user provisioning, satisfying AWS Transform workspace access requirements.
   - step: Business case & TCO engine
     note: AWS Transform normalizes server specs, models 3-year Reserved Instances, evaluates BYOL vs License-Included licensing, and outputs executive reports.
 enables: |
@@ -61,7 +61,7 @@ The discovery process had to answer three critical questions:
 ### Implementation notes
 
 - **Dual-path discovery selection:** Implemented Path 1 (rapid point-in-time inventory extraction via RVTools `.xlsx` parsing) for immediate sizing sanity checks, coupled with Path 2 (agentless collector OVA deployed in vCenter) to record multi-day workload utilization cycles.
-- **Identity Center integration:** AWS Transform requires IAM Identity Center. The existing direct JumpCloud-to-IAM SAML role federation did not support Transform workspaces. I configured JumpCloud as an external IdP in IAM Identity Center via SAML + SCIM, enabling both setups to coexist without interrupting active developer access.
+- **Identity Center integration:** AWS Transform requires IAM Identity Center. The existing direct third-party-to-IAM SAML role federation did not support Transform workspaces. I configured the enterprise IdP in IAM Identity Center via SAML + SCIM, enabling both setups to coexist without interrupting active developer access.
 - **Licensing strategy analysis:** Compared Microsoft Windows Server and SQL Server Bring-Your-Own-License (BYOL) against AWS License-Included pricing, identifying optimal instance types (e.g. AWS Graviton vs x86 for database tiers) to minimize core-licensing liabilities.
 
 ## Architecture · 7Rs portfolio analysis and target state design

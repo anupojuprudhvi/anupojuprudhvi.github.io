@@ -417,7 +417,7 @@
   {
     "title": "Institutional digital asset platform · AWS MAP assess and directional business case",
     "nav": "Digital asset platform MAP assess",
-    "summary": "Executing an agentless VMware inventory discovery, resolving a JumpCloud-to-Identity Center SAML blocker, and delivering an executive Directional Business Case (DBC) for an institutional financial data platform.",
+    "summary": "Executing an agentless VMware inventory discovery, resolving a third-party IdP-to-Identity Center SAML blocker, and delivering an executive Directional Business Case (DBC) for an institutional financial data platform.",
     "project": "partner-engagements",
     "projectName": "AWS APN & Migration Engagements",
     "layer": "Strategy & Discovery",
@@ -426,7 +426,7 @@
       "VMware vCenter",
       "RVTools",
       "AWS IAM Identity Center",
-      "JumpCloud SAML",
+      "Enterprise SAML IdP",
       "AWS CAF"
     ],
     "tags": [
@@ -439,8 +439,8 @@
       "enterprise"
     ],
     "url": "case-studies/partner-engagements/fintech-map-assess-business-case.html",
-    "problem": "An institutional digital asset and accounting platform running on-premises in VMware required a comprehensive evaluation for migration to AWS under the Migration Acceleration Program (MAP). To unlock executive sponsorship and AWS MAP co-funding, the engineering and finance leadership required empirical utilization baselines, right-sized EC2 compute recommendations, licensing optimization models, and a formal 6-pillar Migration Readiness Assessment (MRA). Furthermore, the client's existing JumpCloud SAML integration blocked access to AWS Transform workspaces, and strict financial compliance demanded a zero-agent discovery methodology.",
-    "solution": "I designed and executed a dual-path discovery architecture utilizing automated RVTools exports alongside an agentless AWS Transform OVA collector deployed directly into the private VMware vCenter cluster. To resolve the authentication deadlock, I engineered an identity bridge configuring JumpCloud as an external IdP for AWS IAM Identity Center via SAML and SCIM sync, allowing coexistence with legacy access. The ingested telemetry was evaluated in AWS Transform to produce a 3-year Directional Business Case (DBC), licensing comparison (BYOL vs. License Included), and a phased 7Rs workload migration roadmap."
+    "problem": "An institutional digital asset and accounting platform running on-premises in VMware required a comprehensive evaluation for migration to AWS under the Migration Acceleration Program (MAP). To unlock executive sponsorship and AWS MAP co-funding, the engineering and finance leadership required empirical utilization baselines, right-sized EC2 compute recommendations, licensing optimization models, and a formal 6-pillar Migration Readiness Assessment (MRA). Furthermore, the client's existing third-party SAML integration blocked access to AWS Transform workspaces, and strict financial compliance demanded a zero-agent discovery methodology.",
+    "solution": "I designed and executed a dual-path discovery architecture utilizing automated RVTools exports alongside an agentless AWS Transform OVA collector deployed directly into the private VMware vCenter cluster. To resolve the authentication deadlock, I engineered an identity bridge configuring the enterprise IdP for AWS IAM Identity Center via SAML and SCIM sync, allowing coexistence with legacy access. The ingested telemetry was evaluated in AWS Transform to produce a 3-year Directional Business Case (DBC), licensing comparison (BYOL vs. License Included), and a phased 7Rs workload migration roadmap."
   },
   {
     "title": "Global media and localization platform · Cross-region MAP migration assessment",

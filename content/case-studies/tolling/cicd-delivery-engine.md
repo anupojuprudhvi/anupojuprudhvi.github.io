@@ -63,7 +63,7 @@ obtain credentials, so those resources are applied once from an administrator's
 workstation using AWS SSO. This is a deliberate bootstrap boundary, not a gap in
 automation.
 
-After the bootstrap, the same `THEA-cicd-plan` and `THEA-cicd-apply` role pattern
+After the bootstrap, the same `toll-cicd-plan` and `toll-cicd-apply` role pattern
 can be reused by service workflows in the accounts they target. The plan role is
 read-only, while the apply role is reserved for the explicitly gated deployment
 path. Short-lived STS credentials replace static access keys and reduce the
