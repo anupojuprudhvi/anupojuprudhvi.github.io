@@ -42,7 +42,7 @@
   const launcher = document.createElement("button");
   launcher.className = "ask-launcher";
   launcher.type = "button";
-  launcher.innerHTML = `Ask about my work <kbd>${
+  launcher.innerHTML = `Ask or message me <kbd>${
     navigator.platform.toLowerCase().includes("mac") ? "⌘" : "Ctrl"
   } K</kbd>`;
   launcher.setAttribute("aria-haspopup", "dialog");
@@ -54,23 +54,36 @@
     <div class="ask-panel" role="dialog" aria-modal="true" aria-labelledby="askTitle">
       <button class="ask-close" type="button" aria-label="Close">×</button>
       <div class="ask-head">
-        <h2 id="askTitle">Ask about my work</h2>
+        <h2 id="askTitle">Ask or message me</h2>
         <p class="ask-note">
-          Searches my written case notes — not an AI. Every result links to the
-          page it came from.
+          Search my written case notes, or switch to <b>Message</b> to reach me
+          directly — not an AI either way. Search results link to the page
+          they came from.
         </p>
       </div>
-      <div class="ask-field">
-        <label class="visually-hidden" for="askInput">Search my work</label>
-        <input id="askInput" type="search" autocomplete="off"
-               placeholder="e.g. private S3 uploads, failover, cost savings…" />
+      <div class="ask-tabs" role="tablist">
+        <button class="ask-tab active" id="askTabSearch" role="tab"
+                aria-selected="true" type="button">Search my work</button>
+        <button class="ask-tab" id="askTabMessage" role="tab"
+                aria-selected="false" type="button">Message <kbd>M</kbd></button>
       </div>
-      <div class="ask-chips" id="askChips"></div>
-      <div class="ask-results" id="askResults" role="region"
-           aria-live="polite" aria-label="Search results"></div>
-      <div class="ask-foot">
-        <span>Can't find it? Happy to answer directly.</span>
-        <a href="mailto:anupojuprudhvi@gmail.com">Email me ↗</a>
+      <div id="askSearchMode">
+        <div class="ask-field">
+          <label class="visually-hidden" for="askInput">Search my work</label>
+          <input id="askInput" type="search" autocomplete="off"
+                 placeholder="e.g. private S3 uploads, failover, cost savings…" />
+        </div>
+        <div class="ask-chips" id="askChips"></div>
+        <div class="ask-results" id="askResults" role="region"
+             aria-live="polite" aria-label="Search results"></div>
+        <div class="ask-foot">
+          <span>Can't find it? Happy to answer directly.</span>
+          <button class="ask-link" id="askSwitchToMessage" type="button">Message me directly →</button>
+        </div>
+      </div>
+      <div id="askMessageMode" hidden>
+        <div class="ask-msg-body" id="askMsgBody" aria-live="polite"></div>
+        <div class="ask-msg-foot" id="askMsgFoot"></div>
       </div>
     </div>`;
 
@@ -137,8 +150,7 @@
     const box = backdrop.querySelector("#askResults");
     if (!items.length) {
       box.innerHTML = `<p class="ask-empty">No match in my written work for that.
-        Ask me directly and I'll answer properly —
-        <a href="mailto:anupojuprudhvi@gmail.com">anupojuprudhvi@gmail.com</a></p>`;
+        <button type="button" class="ask-link ask-empty-switch">Message me directly →</button></p>`;
       return;
     }
     box.innerHTML = items
@@ -201,6 +213,7 @@
   function open() {
     lastFocus = document.activeElement;
     backdrop.hidden = false;
+    setMode("search");
     answer(backdrop.querySelector("#askInput").value);
     backdrop.querySelector("#askInput").focus();
     document.addEventListener("keydown", onKeydown, true);
@@ -217,6 +230,15 @@
     if (e.key === "Escape") {
       e.preventDefault();
       close();
+      return;
+    }
+    if (
+      e.key.toLowerCase() === "m" &&
+      !e.metaKey && !e.ctrlKey && !e.altKey &&
+      !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)
+    ) {
+      e.preventDefault();
+      setMode("message");
       return;
     }
     if (e.key !== "Tab") return;
@@ -257,11 +279,275 @@
     );
   }
 
+  /* ------------------------------------------------------------ message */
+  // Get a free access key at https://web3forms.com (just an email address,
+  // no password) and drop it in below — it's meant to live in client-side
+  // code, it isn't a secret. Until it's swapped in, Send fails gracefully
+  // and points the visitor at the mailto fallback instead of pretending to
+  // succeed.
+  const CONTACT_ACCESS_KEY = "63a534f2-c4b0-4ce1-8cda-73659ad20411";
+
+  const msgBody = () => backdrop.querySelector("#askMsgBody");
+  const msgFoot = () => backdrop.querySelector("#askMsgFoot");
+  const msgState = { name: "", email: "", interest: "", note: "" };
+  let msgStarted = false;
+
+  function addBotMessage(html) {
+    const el = document.createElement("div");
+    el.className = "ask-msg bot";
+    el.innerHTML = html;
+    msgBody().appendChild(el);
+    msgBody().scrollTop = msgBody().scrollHeight;
+  }
+  function addUserMessage(text) {
+    const el = document.createElement("div");
+    el.className = "ask-msg user";
+    el.textContent = text;
+    msgBody().appendChild(el);
+    msgBody().scrollTop = msgBody().scrollHeight;
+  }
+  async function botSay(html) {
+    const t = document.createElement("div");
+    t.className = "ask-typing";
+    t.innerHTML = "<span></span><span></span><span></span>";
+    msgBody().appendChild(t);
+    msgBody().scrollTop = msgBody().scrollHeight;
+    await new Promise((r) => setTimeout(r, 550));
+    t.remove();
+    addBotMessage(html);
+  }
+  function clearMsgFoot() {
+    msgFoot().innerHTML = "";
+  }
+
+  async function startMessage(carryQuery) {
+    if (msgStarted) return;
+    msgStarted = true;
+    if (carryQuery) {
+      msgState.note = `Was searching for: "${carryQuery}"`;
+      await botSay(
+        `No luck finding "<b>${escape(carryQuery)}</b>" in my written work — happy to answer directly instead. Mind sharing a few details?`,
+      );
+    } else {
+      await botSay(
+        "Hey — I'm not an AI, just the fastest way to reach Prudhvi directly. Mind sharing a few details?",
+      );
+    }
+    askName();
+  }
+
+  function askName() {
+    clearMsgFoot();
+    msgFoot().innerHTML = `
+      <div class="ask-field-row">
+        <input type="text" id="askMsgName" placeholder="Your name" autocomplete="name" />
+        <button class="ask-send" id="askMsgNameNext" type="button">Next</button>
+      </div>
+      <p class="ask-err" id="askMsgNameErr" hidden>Mind sharing your name first?</p>`;
+    const input = backdrop.querySelector("#askMsgName");
+    const err = backdrop.querySelector("#askMsgNameErr");
+    const submit = () => {
+      const v = input.value.trim();
+      if (!v) {
+        err.hidden = false;
+        input.focus();
+        return;
+      }
+      msgState.name = v;
+      addUserMessage(v);
+      clearMsgFoot();
+      askEmail();
+    };
+    backdrop.querySelector("#askMsgNameNext").addEventListener("click", submit);
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") submit();
+    });
+    input.focus();
+  }
+
+  async function askEmail() {
+    await botSay(
+      `Nice to meet you, <b>${escape(msgState.name)}</b>. What's the best email to reach you at?`,
+    );
+    msgFoot().innerHTML = `
+      <div class="ask-field-row">
+        <input type="email" id="askMsgEmail" placeholder="you@company.com" autocomplete="email" />
+        <button class="ask-send" id="askMsgEmailNext" type="button">Next</button>
+      </div>
+      <p class="ask-err" id="askMsgEmailErr" hidden>That doesn't look like a valid email.</p>`;
+    const input = backdrop.querySelector("#askMsgEmail");
+    const err = backdrop.querySelector("#askMsgEmailErr");
+    const valid = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    const submit = () => {
+      const v = input.value.trim();
+      if (!valid(v)) {
+        err.hidden = false;
+        input.focus();
+        return;
+      }
+      msgState.email = v;
+      addUserMessage(v);
+      clearMsgFoot();
+      askInterest();
+    };
+    backdrop.querySelector("#askMsgEmailNext").addEventListener("click", submit);
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") submit();
+    });
+    input.focus();
+  }
+
+  async function askInterest() {
+    await botSay("What are you looking for?");
+    msgFoot().innerHTML = `
+      <div class="ask-chip-row" id="askInterestChips">
+        <button class="ask-chip" data-v="Advisory engagement">Advisory engagement</button>
+        <button class="ask-chip" data-v="Consulting / contract">Consulting / contract</button>
+        <button class="ask-chip" data-v="Full-time hire">Full-time hire</button>
+        <button class="ask-chip" data-v="Just saying hi">Just saying hi</button>
+      </div>`;
+    backdrop.querySelectorAll("#askInterestChips .ask-chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        msgState.interest = chip.dataset.v;
+        addUserMessage(chip.dataset.v);
+        clearMsgFoot();
+        askNote();
+      });
+    });
+  }
+
+  async function askNote() {
+    await botSay(
+      "Anything specific I should mention to Prudhvi before he replies? (optional)",
+    );
+    msgFoot().innerHTML = `
+      <div class="ask-field-row">
+        <textarea id="askMsgNote" rows="2" placeholder="e.g. migrating a legacy platform, timeline is Q1..."></textarea>
+      </div>
+      <div class="ask-foot-actions">
+        <button class="ask-link-btn" id="askMsgSkip" type="button">Skip</button>
+        <button class="ask-send" id="askMsgNoteNext" type="button">Continue</button>
+      </div>`;
+    const input = backdrop.querySelector("#askMsgNote");
+    backdrop.querySelector("#askMsgSkip").addEventListener("click", () => {
+      showRecap();
+    });
+    backdrop.querySelector("#askMsgNoteNext").addEventListener("click", () => {
+      const v = input.value.trim();
+      if (v) {
+        msgState.note = v;
+        addUserMessage(v);
+      }
+      showRecap();
+    });
+    input.focus();
+  }
+
+  async function showRecap() {
+    clearMsgFoot();
+    await botSay(`
+      Here's what I've got — sending this straight to Prudhvi's inbox:
+      <dl class="ask-recap">
+        <dt>Name</dt><dd>${escape(msgState.name)}</dd>
+        <dt>Email</dt><dd>${escape(msgState.email)}</dd>
+        <dt>Looking for</dt><dd>${escape(msgState.interest)}</dd>
+        ${msgState.note ? `<dt>Note</dt><dd>${escape(msgState.note)}</dd>` : ""}
+      </dl>`);
+    msgFoot().innerHTML = `
+      <div class="ask-foot-actions">
+        <button class="ask-link-btn" id="askMsgRestart" type="button">← Start over</button>
+        <button class="ask-send" id="askMsgSend" type="button">Send →</button>
+      </div>`;
+    backdrop.querySelector("#askMsgRestart").addEventListener("click", () => {
+      msgBody().innerHTML = "";
+      msgState.name = "";
+      msgState.email = "";
+      msgState.interest = "";
+      msgState.note = "";
+      msgStarted = false;
+      startMessage();
+    });
+    backdrop.querySelector("#askMsgSend").addEventListener("click", sendMessage);
+  }
+
+  async function sendMessage() {
+    clearMsgFoot();
+    msgFoot().innerHTML = `<p class="ask-sending">Sending…</p>`;
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: CONTACT_ACCESS_KEY,
+          name: msgState.name,
+          email: msgState.email,
+          subject: `Portfolio contact — ${msgState.interest}`,
+          message: `Looking for: ${msgState.interest}${
+            msgState.note ? `\n\nNote: ${msgState.note}` : ""
+          }`,
+          botcheck: false,
+        }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok || json.success === false) throw new Error(json.message || "Send failed");
+      await botSay(
+        `Sent — thanks, <b>${escape(msgState.name)}</b>. Expect a reply within a business day or two. You can also reach <b>anupojuprudhvi@gmail.com</b> directly anytime.`,
+      );
+      clearMsgFoot();
+      msgFoot().innerHTML = `<div class="ask-foot-actions"><span></span><button class="ask-link-btn" id="askMsgClose" type="button">Close</button></div>`;
+      backdrop.querySelector("#askMsgClose").addEventListener("click", close);
+      msgStarted = false;
+      msgState.name = "";
+      msgState.email = "";
+      msgState.interest = "";
+      msgState.note = "";
+    } catch {
+      await botSay(
+        "Something went wrong sending that automatically. Please email me directly at <b>anupojuprudhvi@gmail.com</b> — or try again below.",
+      );
+      clearMsgFoot();
+      msgFoot().innerHTML = `
+        <div class="ask-foot-actions">
+          <a class="ask-link-btn" href="mailto:anupojuprudhvi@gmail.com">Email instead</a>
+          <button class="ask-send" id="askMsgRetry" type="button">Try again</button>
+        </div>`;
+      backdrop.querySelector("#askMsgRetry").addEventListener("click", () => {
+        clearMsgFoot();
+        msgFoot().innerHTML = `<div class="ask-foot-actions"><span></span><button class="ask-send" id="askMsgSend2" type="button">Send →</button></div>`;
+        backdrop.querySelector("#askMsgSend2").addEventListener("click", sendMessage);
+      });
+    }
+  }
+
+  function setMode(mode, carryQuery) {
+    const search = mode === "search";
+    const tabSearch = backdrop.querySelector("#askTabSearch");
+    const tabMessage = backdrop.querySelector("#askTabMessage");
+    tabSearch.classList.toggle("active", search);
+    tabMessage.classList.toggle("active", !search);
+    tabSearch.setAttribute("aria-selected", String(search));
+    tabMessage.setAttribute("aria-selected", String(!search));
+    backdrop.querySelector("#askSearchMode").hidden = !search;
+    backdrop.querySelector("#askMessageMode").hidden = search;
+    backdrop.querySelector(".ask-note").hidden = !search;
+    if (!search) startMessage(carryQuery);
+  }
+
   function wire() {
     launcher.addEventListener("click", open);
     backdrop.querySelector(".ask-close").addEventListener("click", close);
     backdrop.addEventListener("click", (e) => {
       if (e.target === backdrop) close();
+    });
+    backdrop.querySelector("#askTabSearch").addEventListener("click", () => setMode("search"));
+    backdrop.querySelector("#askTabMessage").addEventListener("click", () => setMode("message"));
+    backdrop.querySelector("#askSwitchToMessage").addEventListener("click", () => {
+      setMode("message", backdrop.querySelector("#askInput").value.trim());
+    });
+    backdrop.querySelector("#askResults").addEventListener("click", (e) => {
+      if (e.target.closest(".ask-empty-switch")) {
+        setMode("message", backdrop.querySelector("#askInput").value.trim());
+      }
     });
     const input = backdrop.querySelector("#askInput");
     const resultsBox = backdrop.querySelector("#askResults");
