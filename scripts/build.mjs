@@ -27,7 +27,7 @@ import { join, relative, dirname, basename } from "node:path";
 
 import { esc } from "./lib/html.mjs";
 import { parseFrontMatter, renderBody } from "./lib/markdown.mjs";
-import { page, libraryPage } from "./lib/render.mjs";
+import { SITE, page, libraryPage } from "./lib/render.mjs";
 
 const ROOT = process.cwd();
 const CONTENT = join(ROOT, "content/case-studies");
@@ -158,6 +158,25 @@ const selectedWork = projects.map((project, projectIndex) => {
   return template(readFileSync(join(ROOT, `content/engagements/${project.id}.html`), "utf8"), values).trimEnd();
 }).join("\n");
 emit("index.html", template(readFileSync(join(ROOT, "content/home.html"), "utf8"), { selectedWork, engagementCount: projects.length }));
+
+// Derive discovery files from the actual page canonicals, including custom overviews.
+const canonicalUrls = new Set();
+for (const [url, html] of outputs) {
+  if (!url.endsWith(".html")) continue;
+  const matches = [...html.matchAll(/<link\s+rel="canonical"\s+href="([^"]+)"\s*\/?>/g)];
+  if (matches.length !== 1) throw new Error(`${url}: expected exactly one canonical URL`);
+  const canonical = matches[0][1];
+  const allowed = [`${SITE}/${url}`, `${SITE}/${url.replace(/index\.html$/, "")}`];
+  if (!allowed.includes(canonical) || canonicalUrls.has(canonical))
+    throw new Error(`${url}: invalid or duplicate canonical URL: ${canonical}`);
+  canonicalUrls.add(canonical);
+}
+emit("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${[...canonicalUrls].sort().map((url) => `  <url><loc>${esc(url)}</loc></url>`).join("\n")}
+</urlset>
+`);
+emit("robots.txt", `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 
 // Validate and render everything before touching outputs. Never delete unknown HTML.
 let stale = false;

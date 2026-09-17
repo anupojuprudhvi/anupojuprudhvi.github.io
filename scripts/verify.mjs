@@ -31,6 +31,36 @@ try {
       .filter((p) => p.endsWith(".html"))
       .map((p) => "case-studies/" + p.replaceAll("\\", "/")),
   ];
+  const discoveryContext = await browser.newContext();
+  try {
+    const response = await discoveryContext.request.get(`${base}/sitemap.xml`);
+    assert.equal(response.status(), 200);
+    assert.match(response.headers()["content-type"], /application\/xml/);
+    const inspector = await discoveryContext.newPage();
+    const sitemap = await inspector.evaluate((xml) => {
+      const document = new DOMParser().parseFromString(xml, "application/xml");
+      return {
+        valid: !document.querySelector("parsererror"),
+        namespace: document.documentElement.namespaceURI,
+        locations: [...document.querySelectorAll("url > loc")].map((node) => node.textContent),
+      };
+    }, await response.text());
+    assert.equal(sitemap.valid, true, "sitemap must be valid XML");
+    assert.equal(sitemap.namespace, "http://www.sitemaps.org/schemas/sitemap/0.9");
+    const canonicals = pages.map((file) => fs.readFileSync(path.join(root, file), "utf8").match(/rel="canonical"\s+href="([^"]+)"/)[1]);
+    assert.deepEqual(sitemap.locations, [...canonicals].sort());
+    for (const location of sitemap.locations) {
+      const local = new URL(location).pathname;
+      assert.equal((await discoveryContext.request.get(`${base}${local}`)).status(), 200, location);
+    }
+    const robots = await discoveryContext.request.get(`${base}/robots.txt`);
+    assert.equal(robots.status(), 200);
+    assert.match(robots.headers()["content-type"], /text\/plain/);
+    assert((await robots.text()).includes(`Sitemap: ${new URL("/sitemap.xml", canonicals[0]).href}`));
+    console.log("PASS: sitemap XML, complete canonical URL coverage, reachable pages, and robots.txt discovery.");
+  } finally {
+    await discoveryContext.close();
+  }
   for (const file of pages) {
     for (const theme of ["dark", "light"]) {
       const context = await browser.newContext({

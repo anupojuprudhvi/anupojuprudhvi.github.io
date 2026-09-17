@@ -135,7 +135,8 @@ Unknown slots and invalid project references fail the build before outputs are
 written. HTML in content is trusted repository-authored markup, not user input.
 
 Generated files are committed so GitHub Pages can serve the branch directly:
-`index.html`, `case-studies/**/*.html`, and `assets/case-studies.json`.
+`index.html`, `case-studies/**/*.html`, `assets/case-studies.json`, `sitemap.xml`,
+and `robots.txt`.
 Do not edit these files directly. Only current case-study URLs are published;
 legacy redirects are not generated.
 Renaming a published study changes its URL: update any editorial cross-links
@@ -144,6 +145,11 @@ and arrange a redirect if the old slug needs to remain public.
 The build removes obsolete HTML only when it carries the generated-file marker.
 It leaves unknown, manually created HTML alone. `npm run check` detects stale,
 missing, or obsolete generated files even when the working tree has other edits.
+
+The sitemap uses each generated page's canonical URL and updates automatically
+when studies or projects are added, renamed, or removed. `robots.txt` allows
+crawling and points to the sitemap. No separate URL list needs maintaining.
+These files help discovery; they do not guarantee search-engine indexing.
 
 The social preview source is `assets/og-template.html`. Run
 `node scripts/render-social.mjs` to regenerate `og-image.png`.
