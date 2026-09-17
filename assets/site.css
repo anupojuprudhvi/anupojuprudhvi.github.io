@@ -386,11 +386,35 @@ nav.topnav,
   justify-content: center;
 }
 .arch-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   font:
     10px ui-monospace,
     monospace;
   color: var(--text-muted);
   letter-spacing: 0.1em;
+}
+.trace-btn {
+  font:
+    600 10px ui-monospace,
+    monospace;
+  letter-spacing: 0.04em;
+  border: 1px solid var(--border);
+  background: var(--bg-raised);
+  color: var(--accent);
+  border-radius: 999px;
+  padding: 5px 11px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.trace-btn:hover {
+  border-color: var(--accent);
+}
+.trace-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 .arch-core {
   position: relative;
@@ -400,6 +424,13 @@ nav.topnav,
   text-align: center;
   margin: 28px 36px 0;
   box-shadow: 0 0 35px #81e4c10c;
+  transition:
+    box-shadow 0.4s ease,
+    border-color 0.4s ease;
+}
+.arch-core.pulse {
+  box-shadow: 0 0 0 4px var(--accent-soft);
+  border-color: var(--accent-bright);
 }
 .arch-core strong {
   font-size: 19px;
@@ -420,6 +451,33 @@ nav.topnav,
   width: 1px;
   background: var(--accent);
   margin: auto;
+  position: relative;
+  overflow: visible;
+}
+.arch-branch::after {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: -7px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent2);
+  opacity: 0;
+}
+.arch-branch.flowing::after {
+  opacity: 1;
+  animation: branch-drop 0.5s ease forwards;
+}
+@keyframes branch-drop {
+  from {
+    top: -7px;
+    opacity: 1;
+  }
+  to {
+    top: 100%;
+    opacity: 0;
+  }
 }
 .arch-services {
   display: grid;
@@ -433,6 +491,18 @@ nav.topnav,
   text-align: center;
   color: var(--text);
   font-size: 11px;
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease,
+    transform 0.3s ease;
+}
+.arch-services span.visited {
+  border-color: var(--accent2);
+  background: color-mix(in srgb, var(--accent2) 10%, var(--bg-raised));
+}
+.arch-services span.active {
+  border-color: var(--accent2);
+  transform: translateY(-2px);
 }
 .arch-footer {
   display: flex;
@@ -450,6 +520,18 @@ nav.topnav,
   background: var(--accent);
   border-radius: 50%;
   display: inline-block;
+}
+.trace-caption {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border);
+  font-size: 11.5px;
+  color: var(--text-muted);
+  min-height: 32px;
+}
+.trace-caption b {
+  color: var(--accent2);
+  font-weight: 600;
 }
 .stats {
   display: grid;

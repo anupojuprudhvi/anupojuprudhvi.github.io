@@ -85,3 +85,115 @@ if (
     }
   })();
 }
+
+const traceBtn = document.getElementById("traceBtn");
+if (traceBtn) {
+  const core = document.getElementById("archCore");
+  const branch = document.getElementById("archBranch");
+  const caption = document.getElementById("traceCaption");
+  const services = [
+    document.getElementById("archSvc0"),
+    document.getElementById("archSvc1"),
+    document.getElementById("archSvc2"),
+  ];
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, reduceMotion ? 0 : ms));
+  const DEFAULT_CAPTION = caption.innerHTML;
+  const steps = [
+    {
+      node: "core",
+      text: "Every request starts inside the <b>governed foundation</b> — security boundaries, network segmentation, and automation applied before anything ships.",
+    },
+    {
+      node: 0,
+      text: "<b>Resilient systems</b>: automated failover and health checks are the default, not bolted on after an outage.",
+    },
+    {
+      node: 1,
+      text: "<b>Scalable platforms</b>: capacity that right-sizes to real load instead of a fixed, over-provisioned ceiling.",
+    },
+    {
+      node: 2,
+      text: "<b>Cost-aware operations</b>: spend stays visible and attributable, not discovered at the end of the month.",
+    },
+  ];
+
+  function clearVisited() {
+    services.forEach((s) => s.classList.remove("active", "visited"));
+    core.classList.remove("pulse");
+    branch.classList.remove("flowing");
+  }
+
+  let playing = false;
+  async function play() {
+    if (playing) return;
+    playing = true;
+    traceBtn.disabled = true;
+    clearVisited();
+    for (const step of steps) {
+      caption.innerHTML = step.text;
+      if (step.node === "core") {
+        core.classList.add("pulse");
+        branch.classList.remove("flowing");
+        void branch.offsetWidth;
+        branch.classList.add("flowing");
+        await sleep(650);
+        core.classList.remove("pulse");
+      } else {
+        services[step.node].classList.add("active");
+        await sleep(150);
+        services[step.node].classList.remove("active");
+        services[step.node].classList.add("visited");
+        await sleep(500);
+      }
+    }
+    await sleep(900);
+    caption.innerHTML = DEFAULT_CAPTION;
+    clearVisited();
+    playing = false;
+    traceBtn.disabled = false;
+  }
+  traceBtn.addEventListener("click", play);
+}
+
+const statsRow = document.getElementById("statsRow");
+if (statsRow && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const statEls = [...statsRow.querySelectorAll("strong[data-target]")];
+  const animateStats = () => {
+    statEls.forEach((el) => {
+      const target = parseFloat(el.dataset.target);
+      const decimals = parseInt(el.dataset.decimals || "0", 10);
+      const prefix = el.dataset.prefix || "";
+      const suffix = el.dataset.suffix || "";
+      const step = target >= 500 ? 10 : target >= 50 ? 1 : Math.pow(10, -decimals);
+      const format = (n) =>
+        `${prefix}${n.toLocaleString(undefined, {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals,
+        })}${suffix}`;
+      const dur = 1500;
+      const t0 = performance.now();
+      const frame = (now) => {
+        const p = Math.min((now - t0) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 2);
+        const raw = target * eased;
+        const val = p < 1 ? Math.round(raw / step) * step : target;
+        el.textContent = format(val);
+        if (p < 1) requestAnimationFrame(frame);
+      };
+      requestAnimationFrame(frame);
+    });
+  };
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          animateStats();
+          io.disconnect();
+        }
+      });
+    },
+    { threshold: 0.5 },
+  );
+  io.observe(statsRow);
+}

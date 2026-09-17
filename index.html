@@ -149,42 +149,47 @@
                 >
               </div>
             </div>
-            <div
-              class="architecture"
-              role="img"
-              aria-label="Cloud architecture principles: a governed foundation supporting resilient systems, scalable platforms, and cost-aware operations."
-            >
-              <div class="arch-label">ARCHITECTURE / BY DESIGN</div>
-              <div class="arch-core">
+            <div class="architecture">
+              <div class="arch-label">
+                <span>ARCHITECTURE / BY DESIGN</span>
+                <button class="trace-btn" id="traceBtn" type="button">
+                  ▶ Trace a request
+                </button>
+              </div>
+              <div class="arch-core" id="archCore">
                 <strong>A governed foundation</strong
                 ><small>SECURITY · NETWORKING · AUTOMATION</small>
               </div>
-              <div class="arch-branch"></div>
+              <div class="arch-branch" id="archBranch"></div>
               <div class="arch-services">
-                <span>Resilient<br />systems</span
-                ><span>Scalable<br />platforms</span
-                ><span>Cost-aware<br />operations</span>
+                <span id="archSvc0">Resilient<br />systems</span
+                ><span id="archSvc1">Scalable<br />platforms</span
+                ><span id="archSvc2">Cost-aware<br />operations</span>
               </div>
               <div class="arch-footer">
                 <span class="dot"></span>Built for the realities of production
               </div>
+              <div class="trace-caption" id="traceCaption" aria-live="polite">
+                Click <b>Trace a request</b> to see how the foundation shapes
+                everything built on it.
+              </div>
             </div>
           </div>
-          <div class="stats">
+          <div class="stats" id="statsRow">
             <div class="stat">
-              <strong>10+ years</strong>
+              <strong data-target="10" data-suffix="+ years">10+ years</strong>
               <span>Enterprise cloud &amp; platform architecture</span>
             </div>
             <div class="stat">
-              <strong>$2.5M+</strong>
+              <strong data-prefix="$" data-target="2.5" data-decimals="1" data-suffix="M+">$2.5M+</strong>
               <span>Projected cloud TCO &amp; licensing savings</span>
             </div>
             <div class="stat">
-              <strong>1,000+</strong>
+              <strong data-target="1000" data-suffix="+">1,000+</strong>
               <span>Workloads profiled, migrated &amp; modernized</span>
             </div>
             <div class="stat">
-              <strong>5 Sectors</strong>
+              <strong data-target="5" data-suffix=" Sectors">5 Sectors</strong>
               <span>Telecom, Tolling, Healthcare, FinTech &amp; AdTech</span>
             </div>
           </div>
