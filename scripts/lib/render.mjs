@@ -193,7 +193,7 @@ ${enables}
         </div>
       </header>
 ${leadSection}
-${rest}
+${rest.replace(/<pre(?![^>]*tabindex)/g, '<pre tabindex="0"')}
 ${outcomesBlock(d)}
       <aside class="next-study wrap">
         ${nav}

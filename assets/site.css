@@ -50,6 +50,11 @@ h3,
 p {
   margin: 0;
 }
+pre {
+  margin: 16px 0;
+  max-width: 100%;
+  overflow-x: auto;
+}
 h1,
 h2,
 h3 {

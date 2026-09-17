@@ -64,20 +64,17 @@ As Lead Cloud Architect for this AWS Migration Acceleration Program (MAP) Assess
 
 ## Architecture · Current state vs. target Amazon EKS platform
 
-```text
-CURRENT ON-PREMISES STATE (VxRail)            TARGET AWS ARCHITECTURE
-─────────────────────────────────            ──────────────────────────────────────
+The target state architecture transitioned physical hyperconverged hardware and self-managed Kubernetes into managed cloud-native AWS primitives:
 
-[ Dell VxRail ESXi Cluster ]                 [ Amazon EKS Cluster (Multi-AZ) ]
-  ├── VMware Tanzu Kubernetes                  ├── Karpenter Just-in-Time Provisioner
-  ├── Static GitLab Runner Fleet               ├── Graviton3 (ARM64) Managed Nodes
-  └── Internal QA Testing Farm                 └── Auto-Scaling EC2 Spot Runner Fleet
-                                                              │
-[ Physical Fiber Channel SAN ]        ──▶     [ Cloud-Native Storage Tiers ]
-  ├── Self-Managed Relational DBs              ├── Amazon Aurora Multi-AZ
-  ├── NFS File Shares                          ├── Amazon EFS / FSx for Windows
-  └── Veeam Backup Repositories                └── AWS Backup + S3 Glacier Archive
-```
+- **Compute & Orchestration:**
+  - *Current State:* VMware Tanzu Kubernetes running across 4 Dell VxRail ESXi physical hosts with static CI runner fleets.
+  - *Target State:* Amazon EKS (Multi-AZ) with Karpenter just-in-time node provisioning, leveraging AWS Graviton3 (ARM64) for baseline microservices and auto-scaling EC2 Spot instances for ephemeral CI/CD runners.
+- **Relational Databases & Persistent Storage:**
+  - *Current State:* Self-managed PostgreSQL and BI reporting databases residing on physical Fiber Channel SAN arrays.
+  - *Target State:* Amazon Aurora PostgreSQL Multi-AZ with automated storage autoscaling and cross-AZ read replica offloading.
+- **Shared File Storage & Backup Repositories:**
+  - *Current State:* On-premises Windows SMB shares and Veeam NFS backup storage targets.
+  - *Target State:* Amazon FSx for Windows File Server, Amazon EFS, and AWS Backup with automated lifecycle transitions to Amazon S3 Glacier Deep Archive.
 
 ## FinOps & TCO · Quantifying VMware cost avoidance and datacenter exit
 
