@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import assert from "node:assert/strict";
 import { serve, root } from "./serve.mjs";
+const artifacts = path.join(root, "artifacts");
 const server = serve(0);
 await new Promise((resolve) => server.once("listening", resolve));
 const base = `http://127.0.0.1:${server.address().port}`;
@@ -13,20 +14,21 @@ const candidates = [
   "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
 ];
 const executablePath = candidates.find((p) => p && fs.existsSync(p));
-const browser = await chromium.launch({
-  headless: true,
-  ...(executablePath ? { executablePath } : {}),
-});
-fs.mkdirSync("artifacts", { recursive: true });
-const pages = [
-  "index.html",
-  ...fs
-    .readdirSync("usecases", { recursive: true })
-    .filter((p) => p.endsWith(".html"))
-    .map((p) => "usecases/" + p.replaceAll("\\", "/")),
-];
+let browser;
 const errors = [];
 try {
+  browser = await chromium.launch({
+    headless: true,
+    ...(executablePath ? { executablePath } : {}),
+  });
+  fs.mkdirSync(artifacts, { recursive: true });
+  const pages = [
+    "index.html",
+    ...fs
+      .readdirSync(path.join(root, "usecases"), { recursive: true })
+      .filter((p) => p.endsWith(".html"))
+      .map((p) => "usecases/" + p.replaceAll("\\", "/")),
+  ];
   for (const file of pages) {
     for (const theme of ["dark", "light"]) {
       const context = await browser.newContext({
@@ -55,9 +57,12 @@ try {
         errors.push(
           `${file} ${theme} ${v.id}: ${v.nodes.map((n) => n.target.join(" ")).join("; ")}`,
         );
-      const slug = file === "index.html" ? "home" : file.split("/")[1];
+      const slug = file
+        .replace(/\.html$/, "")
+        .replaceAll("/", "-")
+        .replaceAll("\\", "-");
       await page.screenshot({
-        path: `artifacts/${slug}-${theme}-desktop.png`,
+        path: path.join(artifacts, `${slug}-${theme}-desktop.png`),
         fullPage: true,
       });
       for (const width of [320, 360, 390, 768, 1440]) {
@@ -68,7 +73,7 @@ try {
         assert.equal(overflow, false, `${file} ${theme} overflow at ${width}`);
         if (width === 390)
           await page.screenshot({
-            path: `artifacts/${slug}-${theme}-mobile.png`,
+            path: path.join(artifacts, `${slug}-${theme}-mobile.png`),
             fullPage: true,
           });
       }
@@ -157,6 +162,6 @@ try {
     "PASS: theme persistence, JavaScript-disabled content, no browser errors.",
   );
 } finally {
-  await browser.close();
+  if (browser) await browser.close();
   server.close();
 }

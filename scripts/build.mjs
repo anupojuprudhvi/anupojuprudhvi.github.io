@@ -19,6 +19,7 @@ import {
   readFileSync,
   writeFileSync,
   mkdirSync,
+  unlinkSync,
   statSync,
 } from "node:fs";
 import { join, relative, dirname, basename } from "node:path";
@@ -41,6 +42,16 @@ function walk(dir) {
     const p = join(dir, name);
     if (statSync(p).isDirectory()) out.push(...walk(p));
     else if (name.endsWith(".md")) out.push(p);
+  }
+  return out;
+}
+
+function walkHtml(dir) {
+  const out = [];
+  for (const name of readdirSync(dir)) {
+    const p = join(dir, name);
+    if (statSync(p).isDirectory()) out.push(...walkHtml(p));
+    else if (name.endsWith(".html")) out.push(p);
   }
   return out;
 }
@@ -617,6 +628,34 @@ docs.sort(
     Number(a.order || 0) - Number(b.order || 0),
 );
 
+// Remove generated detail pages whose Markdown source was deleted or renamed.
+// Library indexes and hand-written engagement pages are intentionally retained.
+const extraIndexPath = join(CONTENT, "../extra-index.json");
+let extra = [];
+try {
+  extra = JSON.parse(readFileSync(extraIndexPath, "utf8"));
+  console.log("  extra  ", extra.length, "hand-written pages indexed");
+} catch {
+  /* optional */
+}
+
+mkdirSync(join(ROOT, "usecases"), { recursive: true });
+const retainedHtml = new Set([
+  join(ROOT, "usecases/index.html"),
+  ...docs.map((d) => join(ROOT, d.url)),
+  ...extra.map((d) => join(ROOT, d.url)),
+]);
+if (readdirSync(join(ROOT, "usecases"), { withFileTypes: true }).length) {
+  for (const file of walkHtml(join(ROOT, "usecases"))) {
+    // Project index pages are hand-written engagement pages, even when they
+    // are not included in the search index.
+    if (basename(file) !== "index.html" && !retainedHtml.has(file)) {
+      unlinkSync(file);
+      console.log("  remove ", relative(ROOT, file));
+    }
+  }
+}
+
 let written = 0;
 docs.forEach((d, idx) => {
   const prev = docs[idx - 1]?.project === d.project ? docs[idx - 1] : null;
@@ -629,16 +668,6 @@ docs.forEach((d, idx) => {
   written++;
   console.log("  page  ", d.url);
 });
-
-// Hand-written pages that aren't generated from content/ but should still be
-// findable in the library and the assistant.
-let extra = [];
-try {
-  extra = JSON.parse(readFileSync(join(CONTENT, "../extra-index.json"), "utf8"));
-  console.log("  extra  ", extra.length, "hand-written pages indexed");
-} catch {
-  /* optional */
-}
 
 // search index — the single source of truth for the library and assistant
 const index = docs.map((d) => ({
@@ -662,7 +691,6 @@ writeFileSync(
 );
 console.log("  index  assets/usecases.json", `(${fullIndex.length} entries)`);
 
-mkdirSync(join(ROOT, "usecases"), { recursive: true });
 writeFileSync(join(ROOT, "usecases/index.html"), libraryPage(fullIndex));
 console.log("  page   usecases/index.html");
 
