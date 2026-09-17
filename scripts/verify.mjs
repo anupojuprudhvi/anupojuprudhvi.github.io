@@ -30,6 +30,12 @@ try {
       .readdirSync(path.join(root, "case-studies"), { recursive: true })
       .filter((p) => p.endsWith(".html"))
       .map((p) => "case-studies/" + p.replaceAll("\\", "/")),
+    ...(fs.existsSync(path.join(root, "learning-paths"))
+      ? fs
+          .readdirSync(path.join(root, "learning-paths"), { recursive: true })
+          .filter((p) => p.endsWith(".html"))
+          .map((p) => "learning-paths/" + p.replaceAll("\\", "/"))
+      : []),
   ];
   const discoveryContext = await browser.newContext();
   try {

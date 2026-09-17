@@ -1,0 +1,12 @@
+[
+  {
+    "id": "terraform",
+    "title": "Terraform for Enterprise Production",
+    "eyebrow": "Infrastructure as Code",
+    "summary": "An authoritative engineering playbook on building, scaling, and governing Terraform in enterprise AWS environments — from module contracts and state isolation to zero-downtime refactoring and automated security guardrails.",
+    "level": "Intermediate to Advanced",
+    "duration": "6 Modules · 45 min read",
+    "badge": "Production Playbook",
+    "stack": ["Terraform 1.5+", "AWS", "HCL", "Checkov", "TFLint", "S3 & DynamoDB"]
+  }
+]

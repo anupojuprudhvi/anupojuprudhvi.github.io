@@ -17,6 +17,9 @@ The published HTML is generated. Edit the files under `content/`, then run
 - **Reference** — `case-studies/index.html`, the searchable case-study library.
   This is the depth: one page per technical case study, filterable by project,
   layer, and technology.
+- **Playbooks & Learning Paths** — `learning-paths/index.html` and track modules under
+  `learning-paths/<track>/`. This is hands-on production engineering: curriculum-based
+  technical playbooks (starting with Terraform for Enterprise Production).
 
 Every case study comes from one Markdown file. The build uses those files for
 the detail pages, project lists, library, and `assets/case-studies.json`. The
@@ -111,6 +114,8 @@ and browser suites. It fails if a case study was edited without rebuilding.
 | Change | Source |
 | --- | --- |
 | Add or update a case study | `content/case-studies/<project>/<slug>.md` |
+| Add or update a learning path module | `content/learning-paths/<track>/<slug>.md` |
+| Learning path track metadata | `content/learning-paths/tracks.json` |
 | Project name and display order | `content/projects.json` |
 | Homepage introduction, career, credentials, contact | `content/home.html` |
 | A project's selected-work pitch | `content/engagements/<project>.html` |
@@ -147,8 +152,8 @@ Unknown slots and invalid project references fail the build before outputs are
 written. HTML in content is trusted repository-authored markup, not user input.
 
 Generated files are committed so GitHub Pages can serve the branch directly:
-`index.html`, `case-studies/**/*.html`, `assets/case-studies.json`, `sitemap.xml`,
-`robots.txt`, and `feed.xml`.
+`index.html`, `case-studies/**/*.html`, `learning-paths/**/*.html`, `assets/case-studies.json`,
+`sitemap.xml`, `robots.txt`, and `feed.xml`.
 Do not edit these files directly. Only current case-study URLs are published;
 legacy redirects are not generated.
 Renaming a published study changes its URL: update any editorial cross-links
@@ -181,9 +186,9 @@ searches is already the grounding corpus.
 ## Deployment
 
 The repository is served directly by GitHub Pages from the `main` branch.
-Committed static files (`index.html`, `case-studies/**/*.html`, `assets/case-studies.json`,
-`sitemap.xml`, `robots.txt`, and `feed.xml`) are served globally without any
-external hosting dependencies. Check deployment status under the repository's
+Committed static files (`index.html`, `case-studies/**/*.html`, `learning-paths/**/*.html`,
+`assets/case-studies.json`, `sitemap.xml`, `robots.txt`, and `feed.xml`) are served globally
+without any external hosting dependencies. Check deployment status under the repository's
 GitHub Pages settings or Actions tab.
 
 ## Publish

@@ -21,4 +21,12 @@
   <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/route53-shared-dns.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/s3-image-api.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/transit-gateway-hub-and-spoke.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/terraform/01-enterprise-module-design.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/terraform/02-state-isolation-and-locking.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/terraform/03-variables-validation-and-types.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/terraform/04-secrets-and-sensitive-values.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/terraform/05-refactoring-with-moved-blocks.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/terraform/06-ci-cd-security-linting-testing.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/terraform/index.html</loc></url>
 </urlset>

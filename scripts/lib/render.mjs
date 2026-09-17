@@ -213,6 +213,7 @@ ${outcomesBlock(d)}
     <footer>
       <div class="wrap footer-inner">
         <span>© 2026 Prudhvi Raj Anupoju</span
+        ><a href="${a("learning-paths/index.html")}">Learning paths ↗</a
         ><a href="${a("case-studies/index.html")}">Case studies ↗</a
         ><a href="${a("index.html")}#work">Back to overview ↗</a>
       </div>
@@ -291,6 +292,7 @@ export function libraryPage(items) {
         <div class="navlinks">
           <a href="../index.html#work">Selected work</a
           ><a href="index.html" aria-current="page">Case studies</a
+          ><a href="../learning-paths/index.html">Learning paths</a
           ><a href="../index.html#contact" class="nav-cta">Let's connect ↗</a
           ><button id="themeToggle" aria-label="Switch to light theme">
             ☼
@@ -354,6 +356,7 @@ ${cards}
     <footer>
       <div class="wrap footer-inner">
         <span>© 2026 Prudhvi Raj Anupoju</span
+        ><a href="../learning-paths/index.html">Learning paths ↗</a
         ><a href="../index.html#work">Selected work ↗</a>
       </div>
     </footer>
@@ -363,3 +366,144 @@ ${cards}
 </html>
 `;
 }
+
+/* --------------------------------------------------------- learning path page */
+export function learningPathPage(d, bodyHtml, { up, url, prev, next, track }) {
+  const a = (p) => `${up}${p}`;
+  const isOverview = !d.module;
+
+  const breadcrumb = isOverview
+    ? `<a href="${a("learning-paths/index.html")}">← All learning paths</a>`
+    : `<a href="${a(`learning-paths/${track.id}/index.html`)}">← ${esc(track.title)}</a>`;
+
+  const nav = [
+    prev
+      ? `<a class="lp-nav-link prev" href="${a(prev.url)}">
+          <span class="lp-nav-label">← Module ${String(prev.module).padStart(2, "0")}</span>
+          <span class="lp-nav-title">${esc(prev.title)}</span>
+        </a>`
+      : `<a class="lp-nav-link prev" href="${a(`learning-paths/${track.id}/index.html`)}">
+          <span class="lp-nav-label">← Curriculum</span>
+          <span class="lp-nav-title">Track Overview</span>
+        </a>`,
+    next
+      ? `<a class="lp-nav-link next" href="${a(next.url)}">
+          <span class="lp-nav-label">Module ${String(next.module).padStart(2, "0")} →</span>
+          <span class="lp-nav-title">${esc(next.title)}</span>
+        </a>`
+      : `<a class="lp-nav-link next" href="${a("learning-paths/index.html")}">
+          <span class="lp-nav-label">Track Complete →</span>
+          <span class="lp-nav-title">All Learning Paths</span>
+        </a>`,
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  const metaBits = [
+    d.module && `<span><b>Module:</b> ${String(d.module).padStart(2, "0")} of ${String(d.totalModules || 6).padStart(2, "0")}</span>`,
+    d.level && `<span><b>Level:</b> ${esc(d.level)}</span>`,
+    d.readingTime && `<span><b>Time:</b> ${esc(d.readingTime)}</span>`,
+    d.duration && `<span><b>Duration:</b> ${esc(d.duration)}</span>`,
+  ]
+    .filter(Boolean)
+    .join("\n            ");
+
+  return `<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>${esc(d.title)} — Prudhvi Raj Anupoju</title>
+    <meta name="description" content="${esc(d.summary || "")}" />
+    <link rel="canonical" href="${SITE}/${url}" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="${esc(d.title)} — Prudhvi Raj Anupoju" />
+    <meta property="og:description" content="${esc(d.summary || "")}" />
+    <meta property="og:image" content="${SITE}/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies" href="${SITE}/feed.xml" />
+    <link rel="icon" href="${a("assets/favicon.svg")}" type="image/svg+xml" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": ${JSON.stringify(d.title)},
+        "description": ${JSON.stringify(d.summary || "")},
+        "author": {
+          "@type": "Person",
+          "name": "Prudhvi Raj Anupoju",
+          "url": "${SITE}/",
+          "sameAs": [
+            "https://www.linkedin.com/in/prudhvi-raj-anupoju/",
+            "https://github.com/anupojuprudhvi"
+          ]
+        },
+        "publisher": {
+          "@type": "Person",
+          "name": "Prudhvi Raj Anupoju"
+        },
+        "url": "${SITE}/${url}",
+        "image": "${SITE}/og-image.png",
+        "mainEntityOfPage": "${SITE}/${url}",
+        "keywords": ${JSON.stringify((d.tags || []).concat(d.stack || []).join(", "))}
+      }
+    </script>
+    <script src="${a("assets/theme.js")}"></script>
+    <link rel="stylesheet" href="${a("assets/site.css")}" />
+    <link rel="stylesheet" href="${a("assets/deepdive.css")}" />
+    <link rel="stylesheet" href="${a("assets/learning-path.css")}" />
+    <link rel="stylesheet" href="${a("assets/assistant.css")}" />
+  </head>
+  <body class="deepdive">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="topbar">
+      <div class="wrap">
+        <div class="back">${breadcrumb}</div>
+        <button id="themeToggle" aria-label="Switch to light theme">☼</button>
+      </div>
+    </div>
+    <main id="main">
+      <header class="lp-hero">
+        <div class="wrap">
+          <span class="lp-badge">${esc(d.level || track.badge || "Production Playbook")}</span>
+          <h1>${esc(d.title)}</h1>
+          ${d.summary ? `<p class="sub">${inline(d.summary)}</p>` : ""}
+          <div class="lp-meta-bar">
+            ${metaBits}
+          </div>
+        </div>
+      </header>
+      <article class="lp-content">
+        <div class="wrap">
+          ${bodyHtml}
+          ${!isOverview ? `<nav class="lp-nav" aria-label="Module navigation">${nav}</nav>` : ""}
+        </div>
+      </article>
+      <div class="closing">
+        <div class="wrap">
+          <h2>Want to discuss enterprise Terraform architecture?</h2>
+          <p>
+            I'm happy to dive deeper into any of these patterns — module abstraction trade-offs, state migration runbooks, or CI/CD security scanning.
+          </p>
+          <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
+            >anupojuprudhvi@gmail.com</a
+          >
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="wrap footer-inner">
+        <span>© 2026 Prudhvi Raj Anupoju</span>
+        <a href="${a("learning-paths/index.html")}">Learning paths ↗</a>
+        <a href="${a("case-studies/index.html")}">Case studies ↗</a>
+        <a href="${a("index.html")}#work">Selected work ↗</a>
+      </div>
+    </footer>
+    <script src="${a("assets/assistant.js")}" defer></script>
+  </body>
+</html>
+`;
+}
+

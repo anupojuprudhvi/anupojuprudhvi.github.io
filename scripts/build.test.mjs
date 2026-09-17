@@ -40,10 +40,28 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
     assert.match(run().stderr, /overview requires title and summary/);
     fs.writeFileSync(file(overviewSource), overview);
     succeeds();
-    assert.equal(locations.length, initialIndex.length + initialProjects.length + 2);
+    let initialLearningPathPages = 0;
+    if (fs.existsSync(file("content/learning-paths/tracks.json"))) {
+      const tracks = JSON.parse(read("content/learning-paths/tracks.json"));
+      if (fs.existsSync(file("content/learning-paths/index.html"))) initialLearningPathPages += 1;
+      for (const track of tracks) {
+        const trackDir = file(`content/learning-paths/${track.id}`);
+        if (fs.existsSync(trackDir)) {
+          const trackFiles = fs.readdirSync(trackDir).filter((f) => f.endsWith(".md"));
+          initialLearningPathPages += trackFiles.length;
+        }
+      }
+    }
+    assert.equal(locations.length, initialIndex.length + initialProjects.length + 2 + initialLearningPathPages);
     assert.equal(new Set(locations).size, locations.length);
     assert(locations.includes("https://anupojuprudhvi.github.io/"));
     assert(locations.includes("https://anupojuprudhvi.github.io/case-studies/"));
+    if (initialLearningPathPages > 0) {
+      assert(locations.includes("https://anupojuprudhvi.github.io/learning-paths/"));
+      assert(locations.includes("https://anupojuprudhvi.github.io/learning-paths/terraform/index.html"));
+      assert(locations.includes("https://anupojuprudhvi.github.io/learning-paths/terraform/01-enterprise-module-design.html"));
+      assert.match(read("learning-paths/terraform/01-enterprise-module-design.html"), /Enterprise Repository &amp; Module Layout/);
+    }
     assert.match(read("robots.txt"), /Sitemap: https:\/\/anupojuprudhvi.github.io\/sitemap.xml/);
     fs.writeFileSync(file("sitemap.xml"), "stale sitemap");
     assert.equal(run("--check").status, 1);
@@ -114,6 +132,14 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
     assert.equal(fs.existsSync(file("case-studies/telecom/renamed-study.html")), false);
     assert.doesNotMatch(read("case-studies/telecom/index.html"), /renamed-study/);
     assert.doesNotMatch(read("sitemap.xml"), /renamed-study/);
+
+    const testModule = "content/learning-paths/terraform/99-temporary-module.md";
+    fs.writeFileSync(file(testModule), "---\ntitle: Temporary Module\ntrack: terraform\nmodule: 99\nsummary: Temporary module test.\n---\n\n## Content\n\nTemporary.\n");
+    succeeds();
+    assert.equal(fs.existsSync(file("learning-paths/terraform/99-temporary-module.html")), true);
+    fs.unlinkSync(file(testModule));
+    succeeds();
+    assert.equal(fs.existsSync(file("learning-paths/terraform/99-temporary-module.html")), false);
 
     const homeSource = read("content/home.html");
     fs.writeFileSync(file("content/home.html"), homeSource.replace('rel="canonical"', 'rel="alternate"'));

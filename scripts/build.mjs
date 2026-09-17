@@ -27,7 +27,7 @@ import { join, relative, dirname, basename } from "node:path";
 
 import { esc } from "./lib/html.mjs";
 import { parseFrontMatter, renderBody } from "./lib/markdown.mjs";
-import { SITE, page, libraryPage } from "./lib/render.mjs";
+import { SITE, page, libraryPage, learningPathPage } from "./lib/render.mjs";
 
 const ROOT = process.cwd();
 const CONTENT = join(ROOT, "content/case-studies");
@@ -168,6 +168,65 @@ const selectedWork = projects.map((project, projectIndex) => {
 }).join("\n");
 emit("index.html", template(readFileSync(join(ROOT, "content/home.html"), "utf8"), { selectedWork, engagementCount: projects.length }));
 
+// learning paths and playbooks
+const LEARNING_PATHS_DIR = join(ROOT, "content/learning-paths");
+if (existsSync(join(LEARNING_PATHS_DIR, "tracks.json"))) {
+  const tracks = JSON.parse(readFileSync(join(LEARNING_PATHS_DIR, "tracks.json"), "utf8"));
+  const hubSourcePath = join(LEARNING_PATHS_DIR, "index.html");
+  if (existsSync(hubSourcePath)) {
+    emit("learning-paths/index.html", readFileSync(hubSourcePath, "utf8"));
+  }
+
+  for (const track of tracks) {
+    const trackDir = join(LEARNING_PATHS_DIR, track.id);
+    if (!existsSync(trackDir)) continue;
+
+    const trackFiles = walk(trackDir).sort();
+    const moduleFiles = trackFiles.filter((f) => basename(f) !== "index.md");
+    const overviewFile = trackFiles.find((f) => basename(f) === "index.md");
+
+    const modules = moduleFiles.map((file) => {
+      const { data, body } = parseFrontMatter(readFileSync(file, "utf8").replaceAll("\r\n", "\n"), file);
+      const slug = basename(file, ".md");
+      const url = `learning-paths/${track.id}/${slug}.html`;
+      return {
+        ...data,
+        slug,
+        url,
+        file,
+        bodyHtml: renderBody(body),
+        module: Number(data.module || data.order || 0),
+        totalModules: data.totalModules || moduleFiles.length,
+      };
+    });
+
+    modules.sort((a, b) => a.module - b.module || a.slug.localeCompare(b.slug));
+
+    modules.forEach((mod, idx) => {
+      const prev = modules[idx - 1] || null;
+      const next = modules[idx + 1] || null;
+      emit(mod.url, learningPathPage(mod, mod.bodyHtml, { up: "../../", url: mod.url, prev, next, track }));
+      written++;
+      console.log("  playbook", mod.url);
+    });
+
+    if (overviewFile) {
+      const { data, body } = parseFrontMatter(readFileSync(overviewFile, "utf8").replaceAll("\r\n", "\n"), overviewFile);
+      const overviewUrl = `learning-paths/${track.id}/index.html`;
+      emit(
+        overviewUrl,
+        learningPathPage(
+          { ...data, totalModules: modules.length },
+          renderBody(body),
+          { up: "../../", url: overviewUrl, track }
+        )
+      );
+      written++;
+      console.log("  track   ", overviewUrl);
+    }
+  }
+}
+
 // Derive discovery files from the actual page canonicals, including custom overviews.
 const canonicalUrls = new Set();
 for (const [url, html] of outputs) {
@@ -226,12 +285,14 @@ for (const [url, source] of outputs) {
     writeFileSync(file, output);
   }
 }
-for (const file of walkHtml(join(ROOT, "case-studies"))) {
-  const url = relative(ROOT, file).replaceAll("\\", "/");
-  if (!outputs.has(url) && readFileSync(file, "utf8").includes(GENERATED.trim())) {
-    if (checkOnly) { console.error(`Obsolete generated output: ${url}`); stale = true; }
-    else { unlinkSync(file); console.log("  remove ", url); }
+for (const dir of ["case-studies", "learning-paths"]) {
+  for (const file of walkHtml(join(ROOT, dir))) {
+    const url = relative(ROOT, file).replaceAll("\\", "/");
+    if (!outputs.has(url) && readFileSync(file, "utf8").includes(GENERATED.trim())) {
+      if (checkOnly) { console.error(`Obsolete generated output: ${url}`); stale = true; }
+      else { unlinkSync(file); console.log("  remove ", url); }
+    }
   }
 }
 if (stale) process.exitCode = 1;
-console.log(`\n${checkOnly ? "Checked" : "Built"} ${written} case-study pages, homepage, overviews, library, and search index.`);
+console.log(`\n${checkOnly ? "Checked" : "Built"} ${written} pages, homepage, overviews, playbooks, library, and search index.`);
