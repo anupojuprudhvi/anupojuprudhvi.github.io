@@ -25,9 +25,9 @@ try {
   const pages = [
     "index.html",
     ...fs
-      .readdirSync(path.join(root, "usecases"), { recursive: true })
+      .readdirSync(path.join(root, "case-studies"), { recursive: true })
       .filter((p) => p.endsWith(".html"))
-      .map((p) => "usecases/" + p.replaceAll("\\", "/")),
+      .map((p) => "case-studies/" + p.replaceAll("\\", "/")),
   ];
   for (const file of pages) {
     for (const theme of ["dark", "light"]) {
@@ -104,16 +104,14 @@ try {
         theme === "dark" ? "light" : "dark",
       );
       if (file === "index.html") {
-        for (const [filter, count] of [
-          ["governance", 1],
-          ["resilience", 2],
-          ["platform", 1],
-          ["finops", 2],
-          ["all", 3],
-        ]) {
+        const tags = await page.locator(".case").evaluateAll((cards) => cards.map((card) => card.dataset.tags.split(/\s+/)));
+        const filters = await page.locator("[data-filter]").evaluateAll((buttons) => buttons.map((button) => button.dataset.filter));
+        for (const filter of filters) {
+          const count = tags.filter((values) => filter === "all" || values.includes(filter)).length;
           await page.locator(`[data-filter="${filter}"]`).click();
           assert.equal(await page.locator(".case:visible").count(), count);
         }
+        await page.locator('[data-filter="all"]').click();
         await page.locator("summary").first().focus();
         await page.keyboard.press("Enter");
         assert(
@@ -125,13 +123,27 @@ try {
           await page.evaluate(() => navigator.clipboard.readText()),
           "anupojuprudhvi@gmail.com",
         );
-      } else {
+      } else if (await page.locator('button[id$="PlayBtn"]').count()) {
         await page.locator('button[id$="PlayBtn"]').click();
         assert(
           (await page.locator(".hub-node.active").count()) > 0,
           "Diagram must activate",
         );
         await page.waitForTimeout(2600);
+      }
+      if (file === "case-studies/index.html") {
+        const index = JSON.parse(fs.readFileSync(path.join(root, "assets/case-studies.json"), "utf8"));
+        assert.equal(await page.locator(".uc-card").count(), index.length);
+        for (const project of new Set(index.map((item) => item.project))) {
+          await page.locator(`[data-uc-filter="project:${project}"]`).click();
+          assert.equal(await page.locator(".uc-card:visible").count(), index.filter((item) => item.project === project).length);
+        }
+        await page.locator('[data-uc-filter="all"]').click();
+        await page.locator("#ucSearch").fill("no-matching-case-study-xyz");
+        assert.equal(await page.locator(".uc-card:visible").count(), 0);
+        assert.equal(await page.locator("#ucEmpty").isVisible(), true);
+        await page.locator("#ucSearch").fill("");
+        assert.equal(await page.locator(".uc-card:visible").count(), index.length);
       }
       await context.close();
       console.log(
@@ -155,7 +167,15 @@ try {
   });
   const plain = await nojs.newPage();
   await plain.goto(base);
-  assert.equal(await plain.locator(".case:visible").count(), 3);
+  const projects = JSON.parse(fs.readFileSync(path.join(root, "content/projects.json"), "utf8"));
+  assert.equal(await plain.locator(".case:visible").count(), projects.length);
+  const index = JSON.parse(fs.readFileSync(path.join(root, "assets/case-studies.json"), "utf8"));
+  for (const project of new Set(index.map((item) => item.project))) {
+    await plain.goto(`${base}/case-studies/${project}/index.html`);
+    assert.equal(await plain.locator(".case-study-links a").count(), index.filter((item) => item.project === project).length);
+  }
+  await plain.goto(`${base}/case-studies/index.html`);
+  assert.equal(await plain.locator(".uc-card:visible").count(), index.length);
   await nojs.close();
   assert.deepEqual(errors, []);
   console.log(

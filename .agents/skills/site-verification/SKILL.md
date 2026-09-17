@@ -29,10 +29,9 @@ npm run build
 git diff --check
 ```
 
-Run `npm run check` from a clean checkout or after confirming that its reported
-diff contains only expected generated output. This repository's check script
-uses `git diff --exit-code`, so an intentionally modified working tree causes
-it to fail by design.
+Run `npm run check` to compare rendered output with the source without changing
+files. It reports stale, missing, and obsolete generated files independently of
+unrelated working-tree edits.
 
 ### 3. Run browser verification
 
@@ -73,7 +72,7 @@ For changed pages, verify:
 ### 5. Review the final output
 
 - Inspect the final diff as rendered output, not only as source code.
-- Confirm generated HTML and `assets/usecases.json` agree with source content.
+- Confirm generated HTML and `assets/case-studies.json` agree with source content.
 - Confirm no screenshots, browser artifacts, logs, or temporary files are added
   accidentally.
 - Confirm deployment wording reflects verification that actually occurred.

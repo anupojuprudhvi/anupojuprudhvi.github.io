@@ -505,13 +505,13 @@ pre.code .cmt {
 .deepdive .seq {
   padding-left: 12px;
 }
-.usecase-links {
+.case-study-links {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
   margin-top: 24px;
 }
-.usecase-links a {
+.case-study-links a {
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -521,18 +521,18 @@ pre.code .cmt {
   border-radius: 8px;
   text-decoration: none;
 }
-.usecase-links a:hover {
+.case-study-links a:hover {
   border-color: var(--accent);
 }
-.usecase-links span {
+.case-study-links span {
   font-size: 11px;
   color: var(--accent);
 }
-.usecase-links strong {
+.case-study-links strong {
   color: var(--ink);
   line-height: 1.4;
 }
-.usecase-links small {
+.case-study-links small {
   color: var(--muted);
   font-size: 12px;
 }
@@ -581,7 +581,7 @@ pre.code .cmt {
   margin-top: 18px;
 }
 @media (max-width: 640px) {
-  .usecase-links,
+  .case-study-links,
   .problem-solution {
     grid-template-columns: 1fr;
   }

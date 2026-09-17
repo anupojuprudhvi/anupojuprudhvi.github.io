@@ -25,8 +25,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build and verify generated output
+      - name: Verify generated output matches source
         run: npm run check
+
+      - name: Test content authoring and generation
+        run: npm run test:build
+
+      - name: Install browser for rendered-site checks
+        run: npx playwright install --with-deps chromium
+
+      - name: Verify rendered site
+        run: npm run test:browser
 
       - name: Check patch formatting
         run: git diff --check

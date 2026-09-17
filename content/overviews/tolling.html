@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{projectName}} — Prudhvi Raj Anupoju</title>
+    <meta
+      name="description"
+      content="A shared AWS landing zone across 40+ accounts for U.S. tolling projects, plus the service-management and image-handling integrations built on top of it."
+    />
+    <link
+      rel="canonical"
+      href="https://anupojuprudhvi.github.io/case-studies/tolling/"
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:title"
+      content="{{projectName}} — Prudhvi Raj Anupoju"
+    />
+    <meta
+      property="og:description"
+      content="One shared cloud foundation across 40+ AWS accounts, and the purpose-built tolling integrations on top of it."
+    />
+    <meta
+      property="og:image"
+      content="https://anupojuprudhvi.github.io/og-image.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <script src="../../assets/theme.js"></script>
+    <link rel="stylesheet" href="../../assets/site.css" />
+    <link rel="stylesheet" href="../../assets/deepdive.css" />
+    <link rel="stylesheet" href="../../assets/assistant.css" />
+  </head>
+  <body class="deepdive">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <div class="topbar">
+      <div class="wrap">
+        <a class="back" href="../../index.html#work">← Back to overview</a>
+        <button id="themeToggle" aria-label="Switch to light theme">☼</button>
+      </div>
+    </div>
+
+    <main id="main">
+      <header class="hero">
+        <div class="wrap">
+          <div class="eyebrow">Engagement · {{projectName}}</div>
+          <h1>
+            A shared cloud foundation. Purpose-built tolling integrations.
+          </h1>
+          <p class="sub">
+            Multiple U.S. tolling projects relied on independently built AWS
+            environments to support toll collection and roadside infrastructure.
+            Each had its own operational and compliance requirements. I designed
+            a shared, layered landing zone across 40+ accounts to standardize
+            networking, security, and provisioning. On that foundation, I built
+            API integrations for service-management workflows and image
+            handling.
+          </p>
+          <div class="meta">
+            <div>
+              <b>My role</b><br />Lead architect — landing zone, networking, and
+              CI/CD
+            </div>
+            <div><b>Scope</b><br />40+ AWS accounts, primary + DR region</div>
+            <div>
+              <b>Stack</b><br />Terraform · AWS Organizations · Transit Gateway ·
+              API Gateway · Amazon S3 · EKS
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="case-study-overview" aria-labelledby="case-studies-heading">
+        <div class="wrap">
+          <div class="section-eyebrow">Case study details</div>
+          <h2 id="case-studies-heading">
+            One project story. {{caseStudyCount}} architecture decisions.
+          </h2>
+          <p>
+            This project case study explains the context, my role, and the
+            outcome. The linked technical case studies show how the platform was
+            designed in practice — the constraint, the approach, and the
+            trade-offs behind each decision.
+          </p>
+          <div class="case-study-links">
+{{caseStudyLinks}}
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="wrap">
+          <div class="section-eyebrow">Why it was needed</div>
+          <h2>Every account was its own island</h2>
+          <p>
+            Before this work, each tolling project's AWS environment had been
+            built independently — its own network design, its own security
+            posture, its own way of provisioning a new environment. That meant
+            no consistent audit trail across the platform, security tooling
+            rolled out unevenly, and a new environment taking weeks of manual
+            configuration to stand up. For teams operating tolling
+            infrastructure, that inconsistency is itself a risk.
+          </p>
+          <p>
+            The brief was to design a single governance model that every account
+            — present and future — would inherit automatically, without slowing
+            engineering teams down or requiring them to understand the
+            underlying plumbing. The foundation case study covers how that was
+            built; the integration case studies show what it then made possible.
+          </p>
+          <div class="outcomes">
+            <div class="outcome">
+              <div class="num">40+</div>
+              <div class="txt">
+                AWS accounts under one consistent governance and security model
+              </div>
+            </div>
+            <div class="outcome">
+              <div class="num">Weeks to hours</div>
+              <div class="txt">
+                Time to provision a fully governed new environment
+              </div>
+            </div>
+            <div class="outcome">
+              <div class="num">Zero</div>
+              <div class="txt">
+                Accidental production applies since the pipeline redesign
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="wrap">
+          <div class="section-eyebrow">Platform surface</div>
+          <h2>Every AWS service this platform runs on</h2>
+          <p>
+            The case studies above are the parts written up in detail. This
+            is the whole surface — everything the four-layer landing zone
+            provisions and everything the workloads on top of it depend on.
+          </p>
+
+          <div class="table-scroll">
+            <table class="platform-table">
+              <caption>
+                Platform capabilities organized by architectural layer
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Layer</th>
+                  <th scope="col">Platform responsibility</th>
+                  <th scope="col">Services and capabilities</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row"><span class="table-num">01</span> Governance &amp; identity</th>
+                  <td>Account structure, policy guardrails, and workforce federation</td>
+                  <td>AWS Organizations · Service Control Policies · IAM · IAM OIDC federation · IAM SAML federation</td>
+                </tr>
+                <tr>
+                  <th scope="row"><span class="table-num">02</span> Security &amp; compliance</th>
+                  <td>Audit, detection, configuration compliance, secrets, and edge protection</td>
+                  <td>CloudTrail · AWS Config · GuardDuty · Security Hub · KMS · AWS WAF · Secrets Manager · Certificate Manager</td>
+                </tr>
+                <tr>
+                  <th scope="row"><span class="table-num">03</span> Networking &amp; content delivery</th>
+                  <td>Multi-account connectivity, routing, private access, traffic distribution, and delivery</td>
+                  <td>Amazon VPC · Transit Gateway · Site-to-Site VPN · VPC interface &amp; gateway endpoints · Route 53 public &amp; private zones · Route 53 Resolver · CloudFront · Application Load Balancer · Network Load Balancer · NAT Gateway · VPC Flow Logs</td>
+                </tr>
+                <tr>
+                  <th scope="row"><span class="table-num">04</span> Compute &amp; containers</th>
+                  <td>Application runtimes, container orchestration, scaling, and image delivery</td>
+                  <td>Amazon EC2 · Amazon EKS on Graviton · Amazon ECS · AWS Lambda · EC2 Auto Scaling · Amazon ECR · EC2 Instance Connect</td>
+                </tr>
+                <tr>
+                  <th scope="row"><span class="table-num">05</span> Data &amp; storage</th>
+                  <td>Object, file, relational, cache, synchronization, and backup services</td>
+                  <td>Amazon S3 · Amazon EFS · Aurora PostgreSQL &amp; MySQL, global · Amazon RDS · ElastiCache for Redis · AWS DataSync · AWS Backup</td>
+                </tr>
+                <tr>
+                  <th scope="row"><span class="table-num">06</span> Integration &amp; messaging</th>
+                  <td>APIs, private service integration, asynchronous messaging, transfer, and communications</td>
+                  <td>API Gateway REST &amp; HTTP APIs · API Gateway VPC Link · Amazon SNS · Amazon SQS · Amazon MQ · AWS Transfer Family (SFTP) · Amazon SES · Amazon Connect</td>
+                </tr>
+                <tr>
+                  <th scope="row"><span class="table-num">07</span> Operations &amp; analytics</th>
+                  <td>Observability, fleet operations, and platform reporting</td>
+                  <td>Amazon CloudWatch · AWS Systems Manager · Amazon QuickSight</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout">
+            <b>Breadth isn't the point on its own.</b> Each of these exists
+            because a layer beneath it needed something specific, and each was
+            provisioned through the same modular Terraform structure rather than
+            added by hand. Endpoint protection and vulnerability scanning were
+            rolled out across the fleet through Systems Manager on that same
+            pattern.
+          </div>
+        </div>
+      </section>
+
+      <aside class="next-study wrap">
+        <a href="../index.html">← All case studies</a
+        ><a
+          href="../healthcare/clinical-platform-modernization-and-cost-optimization.html"
+          >Explore clinical platform modernization →</a
+        >
+      </aside>
+
+      <div class="closing">
+        <div class="wrap">
+          <h2>
+            Want to talk through how this would apply to your environment?
+          </h2>
+          <p>
+            I'm happy to go deeper on any part of this — the networking model,
+            the pipeline design, or how it'd adapt to a different compliance
+            environment.
+          </p>
+          <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
+            >anupojuprudhvi@gmail.com</a
+          >
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="wrap footer-inner">
+        <span>© 2026 Prudhvi Raj Anupoju</span
+        ><a href="../index.html">All case studies ↗</a
+        ><a href="../../index.html#work">All selected work ↗</a>
+      </div>
+    </footer>
+
+    <script src="../../assets/assistant.js" defer></script>
+  </body>
+</html>

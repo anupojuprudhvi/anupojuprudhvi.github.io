@@ -10,28 +10,30 @@ Live at: https://anupojuprudhvi.github.io/
 
 ## How the site is put together
 
-There are two layers, on purpose:
+The published HTML is generated. Edit the files under `content/`, then run
+`npm run build`. There are two kinds of content:
 
-- **Narrative** — `index.html` and the engagement pages under `usecases/`.
+- **Narrative** — `index.html` and the engagement pages under `case-studies/`.
   This is the pitch: who I am, three engagements, why they mattered.
-- **Reference** — `usecases/index.html`, the searchable case-study library.
+- **Reference** — `case-studies/index.html`, the searchable case-study library.
   This is the depth: one page per technical case study, filterable by project,
   layer, and technology.
 
-The library, the search index, and the "Ask about my work" panel are all driven
-by a single generated file, `assets/usecases.json`, so they can never disagree
-with each other.
+Every case study comes from one Markdown file. The build uses those files for
+the detail pages, project lists, library, and `assets/case-studies.json`. The
+"Ask about my work" panel searches that generated index.
 
 ## Adding a case study
 
 Write one Markdown source file. Everything else is generated. The complete,
 copyable front-matter and body template is in
-[`docs/use-case-template.md`](docs/use-case-template.md).
+[`docs/case-study-template.md`](docs/case-study-template.md).
 
 ```text
-content/usecases/<project>/<slug>.md   →   usecases/<project>/<slug>.html
-                                       →   assets/usecases.json
-                                       →   usecases/index.html
+content/case-studies/<project>/<slug>.md   →   case-studies/<project>/<slug>.html
+                                       →   case-studies/<project>/index.html
+                                       →   assets/case-studies.json
+                                       →   case-studies/index.html
 ```
 
 Then:
@@ -53,9 +55,13 @@ Front matter drives the page scaffold. The body is a small Markdown subset:
 To attach a diagram script, drop it in `assets/` and reference it:
 `scripts: [tgw-diagram.js]`.
 
-Pages that are hand-written rather than generated (the telecom and healthcare
-case studies) are listed in `content/extra-index.json` so they still appear in
-the library and in search.
+Telecom, healthcare, and tolling remain separate project folders. Add a case
+study to the appropriate folder; its project list, library entry, layer filter,
+and search entry update automatically. No homepage or index edits are needed.
+
+The existing telecom and healthcare stories use `layout: document` to retain
+their custom HTML and diagrams inside the Markdown source. Their metadata lives
+in the same file. New studies should use the shared default layout.
 
 ## Local preview
 
@@ -72,10 +78,14 @@ available without JavaScript.
 ## Verification
 
 ```sh
-npm test        # Playwright suite
-npm run check   # rebuild and fail if committed output is stale
+npm test        # build regression checks and Playwright suite
+npm run check   # compare generated output with sources without writing files
+npm run test:build   # fast authoring/build regression checks
+npm run test:browser # rendered-site checks only
 ```
 
+The build tests exercise additions, renames, new layers, shared project names,
+stale output detection, and safe cleanup in a temporary copy.
 The Playwright suite checks pages in dark and light themes at 320, 360, 390,
 768, and 1440px; local links and anchors; filters; keyboard details expansion;
 email copying; diagrams; theme persistence; JavaScript-disabled content;
@@ -86,24 +96,56 @@ The scripts use installed Chrome or Edge on Windows. Elsewhere, run
 `npx playwright install chromium` first, or set `BROWSER_PATH` to a browser
 executable.
 
-CI runs `.github/workflows/build-check.yml` on every push and pull request. It
-regenerates the site and fails if the committed output no longer matches the
-source — for example, if a case study was edited without running `npm run build`.
+CI runs `.github/workflows/build-check.yml` on every push to main and pull request.
+It compares the committed output with the source, then runs the build regression
+and browser suites. It fails if a case study was edited without rebuilding.
 
-## Editing
+## Where to edit
 
-- `content/usecases/`: case-study source. **Start here.**
-- `content/extra-index.json`: hand-written pages to include in the library.
-- `index.html`: introduction, selected work, expertise, career, credentials, contact.
-- `usecases/tolling/index.html`, `usecases/telecom/…`, `usecases/healthcare/…`: engagement narratives.
-- `scripts/build.mjs`: the generator.
-- `assets/site.css`, `assets/deepdive.css`, `assets/library.css`, `assets/assistant.css`: themes, layout, components.
-- `assets/theme.js`, `assets/site.js`, `assets/library.js`, `assets/assistant.js`: theme persistence, homepage interactions, library filtering, search panel.
-- `assets/og-template.html`: social preview source. Run `node scripts/render-social.mjs` to regenerate `og-image.png`.
+| Change | Source |
+| --- | --- |
+| Add or update a case study | `content/case-studies/<project>/<slug>.md` |
+| Project name and display order | `content/projects.json` |
+| Homepage introduction, career, credentials, contact | `content/home.html` |
+| A project's selected-work pitch | `content/engagements/<project>.html` |
+| Tolling's longer overview narrative | `content/overviews/tolling.html` |
+| Shared detail/library layout | `scripts/lib/render.mjs` |
+| Markdown parsing | `scripts/lib/markdown.mjs` |
+| Build orchestration and output checking | `scripts/build.mjs` |
+| Styles and browser behavior | `assets/` |
 
-Generated files (`usecases/*/**.html` under generated projects, `usecases/index.html`,
-`assets/usecases.json`) are committed so GitHub Pages can serve them directly
-from the branch. Don't hand-edit them — edit the Markdown and rebuild.
+Homepage pitches are short editorial summaries of an engagement, not copies of
+its case-study inventory. Change a pitch only when that engagement's story
+changes. The build fills in project names and links from the project registry.
+
+To add a **layer**, set `layer:` in a case study's front matter. Layers can be
+shared across projects and their library filters are generated automatically.
+
+To add a **project**, add an entry with a unique `id` and `name` to
+`content/projects.json`, create `content/engagements/<id>.html` using an existing
+pitch as a starting point, and add Markdown files under
+`content/case-studies/<id>/`. The build creates its overview automatically.
+Set `customOverview: true` only if it needs a longer narrative, and create
+`content/overviews/<id>.html` using the tolling overview as a guide.
+
+Templates use named slots such as `{{projectName}}`, `{{engagementUrl}}`,
+`{{selectedWork}}`, `{{caseStudyLinks}}`, and `{{caseStudyCount}}`.
+Unknown slots and invalid project references fail the build before outputs are
+written. HTML in content is trusted repository-authored markup, not user input.
+
+Generated files are committed so GitHub Pages can serve the branch directly:
+`index.html`, `case-studies/**/*.html`, and `assets/case-studies.json`.
+Do not edit these files directly. Only current case-study URLs are published;
+legacy redirects are not generated.
+Renaming a published study changes its URL: update any editorial cross-links
+and arrange a redirect if the old slug needs to remain public.
+
+The build removes obsolete HTML only when it carries the generated-file marker.
+It leaves unknown, manually created HTML alone. `npm run check` detects stale,
+missing, or obsolete generated files even when the working tree has other edits.
+
+The social preview source is `assets/og-template.html`. Run
+`node scripts/render-social.mjs` to regenerate `og-image.png`.
 
 Project outcomes and credentials are based on the existing portfolio content.
 The $300K+ figure describes annual savings identified across several
@@ -111,7 +153,7 @@ engagements, not savings attributable only to the clinical platform.
 
 ## About "Ask about my work"
 
-The panel searches `assets/usecases.json` in the browser. It is not an AI and
+The panel searches `assets/case-studies.json` in the browser. It is not an AI and
 says so — every result is text I wrote, linked to the page it came from, with a
 direct email fallback when nothing matches. If a hosted model is added later,
 only the `answer()` function in `assets/assistant.js` changes; the index it

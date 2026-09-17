@@ -1,0 +1,65 @@
+          <article class="case" data-tags="governance platform">
+            <div class="case-grid">
+              <div>
+                <div class="tag">02 / {{projectName}}</div>
+                <h3>
+                  <a href="{{engagementUrl}}"
+                    >U.S. tolling platforms.<br />One cloud foundation.</a
+                  >
+                </h3>
+                <p class="ctx">
+                  Fragmented environments supporting toll collection and
+                  roadside infrastructure across U.S. tolling projects. I
+                  architected a shared AWS landing zone with consistent
+                  networking, security guardrails, and automated provisioning,
+                  alongside JSM webhook and private S3 image APIs.
+                </p>
+                <p class="case-stack">
+                  AWS Organizations · Transit Gateway · API Gateway · S3 ·
+                  Route 53 · Terraform
+                </p>
+              </div>
+              <div class="case-result">
+                <strong>Weeks → hours</strong>
+                <p>New environment provisioning</p>
+                <small>40+ AWS accounts under one governance model</small>
+              </div>
+            </div>
+            <details>
+              <summary>My contribution</summary>
+              <ul>
+                <li>
+                  <b>Architected the landing zone:</b> a modular, tiered
+                  Terraform structure separating foundation, networking, shared
+                  services, and applications.
+                </li>
+                <li>
+                  <b>Centralized the network design:</b> a hub-and-spoke model
+                  that replaced fragmented, per-account networking with one
+                  consistent pattern.
+                </li>
+                <li>
+                  <b>Reduced provisioning time:</b> automated environment setup
+                  that previously took weeks of manual configuration.
+                </li>
+                <li>
+                  <b>Simplified security oversight:</b> centralized logging and
+                  monitoring across all accounts for a single, consistent audit
+                  trail.
+                </li>
+                <li>
+                  <b>Centralized DNS across accounts:</b> shared public and
+                  private Route 53 zones with Resolver forwarding, using an
+                  explicit authorization-then-association workflow for consumer
+                  VPCs.
+                </li>
+              </ul>
+            </details>
+            <div class="case-bottom">
+              <a
+                href="{{engagementUrl}}"
+                >Explore case studies
+                <span aria-hidden="true">↗</span></a
+              ><span>TECHNICAL CASE STUDY</span>
+            </div>
+          </article>

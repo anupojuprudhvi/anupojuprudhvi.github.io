@@ -3,9 +3,11 @@
   "private": true,
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "node scripts/verify.mjs",
+    "test": "npm run test:build && npm run test:browser",
+    "test:build": "node --test scripts/build.test.mjs",
+    "test:browser": "node scripts/verify.mjs",
     "preview": "node scripts/serve.mjs",
-    "check": "npm run build && git diff --exit-code --stat"
+    "check": "node scripts/build.mjs --check"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",

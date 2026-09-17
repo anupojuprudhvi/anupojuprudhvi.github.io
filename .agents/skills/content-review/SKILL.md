@@ -57,7 +57,7 @@ this skill focuses only on content-specific review.
 ### 5. Validate the change
 
 - Rebuild generated pages with `npm run build` when source content changes.
-- Review the generated HTML and `assets/usecases.json` for stale, duplicated, or
+- Review the generated HTML and `assets/case-studies.json` for stale, duplicated, or
   contradictory text.
 - Search the repository for the changed claim or metric and check related copies.
 - Run `git diff --check` and the relevant site-verification checks.

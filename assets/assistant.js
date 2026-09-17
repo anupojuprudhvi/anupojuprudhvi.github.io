@@ -1,6 +1,6 @@
 /**
- * "Ask about my work" — searches assets/usecases.json, which the build
- * generates from content/usecases/**.  Deliberately not an AI: it returns
+ * "Ask about my work" — searches assets/case-studies.json, which the build
+ * generates from content/case-studies/**.  Deliberately not an AI: it returns
  * what was actually written, with a link to the source page.
  *
  * If a hosted model is added later, only `answer()` needs to change — the
@@ -20,7 +20,7 @@
   const load = () => {
     if (index) return Promise.resolve(index);
     if (!loading)
-      loading = fetch(base + "usecases.json")
+      loading = fetch(base + "case-studies.json")
         .then((r) => (r.ok ? r.json() : []))
         .then((d) => (index = d))
         .catch(() => (index = []));
