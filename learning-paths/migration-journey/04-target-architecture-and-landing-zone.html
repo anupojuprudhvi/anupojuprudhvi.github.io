@@ -75,7 +75,11 @@
 <div class="section-eyebrow">Principle</div>
 <h2>The target foundation must precede workload migration</h2>
 <p>Before moving application servers, an enterprise must establish its <b>target operational foundation</b>. Migrating into an ad-hoc, single-account AWS setup creates unmanageable security risks, routing bottlenecks, and sprawl that takes years to untangle.</p>
-<p>The target state architecture blueprint delivers two essential components: 1. <b>The Multi-Account Landing Zone:</b> A governed, secure multi-account environment provisioned via AWS Control Tower or Infrastructure as Code (Terraform/CDK). 2. <b>The 7Rs Portfolio Categorization:</b> A structured decision framework assigning every discovered workload to an explicit migration strategy.</p>
+<p>The target state architecture blueprint delivers two essential components:</p>
+<ol>
+<li><b>The Multi-Account Landing Zone:</b> A governed, secure multi-account environment provisioned via AWS Control Tower or Infrastructure as Code (Terraform/CDK).</li>
+<li><b>The 7Rs Portfolio Categorization:</b> A structured decision framework assigning every discovered workload to an explicit migration strategy.</li>
+</ol>
 </div>
 </section>
 <section>
@@ -112,36 +116,50 @@
 <div class="section-eyebrow">Methodology</div>
 <h2>The 7Rs workload migration framework</h2>
 <p>Every server, service, and database identified during discovery is classified across the <b>7Rs migration strategies</b>:</p>
-<p>1. <b>Rehost (Lift & Shift):</b></p>
+<ol>
+<li><b>Rehost (Lift & Shift):</b></li>
+</ol>
 <ul>
 <li>*Pattern:* Block-level replication of running servers directly into Amazon EC2 using <b>AWS Application Migration Service (MGN)</b>.</li>
 <li>*When to use:* Strict cutover timelines (e.g., immediate datacenter evacuation) or commercial off-the-shelf (COTS) software where application source code cannot be modified.</li>
 </ul>
-<p>2. <b>Replatform (Lift & Reshape):</b></p>
+<ol>
+<li><b>Replatform (Lift & Reshape):</b></li>
+</ol>
 <ul>
 <li>*Pattern:* Moving compute or data tiers to managed cloud equivalents without altering core application code.</li>
 <li>*When to use:* Replacing self-managed VM databases with <b>Amazon RDS / Aurora</b>, migrating file servers to <b>Amazon EFS / FSx</b>, or containerizing applications on <b>Amazon EKS / ECS</b>.</li>
 </ul>
-<p>3. <b>Refactor / Rearchitect (Cloud Native):</b></p>
+<ol>
+<li><b>Refactor / Rearchitect (Cloud Native):</b></li>
+</ol>
 <ul>
 <li>*Pattern:* Rewriting monolithic application layers into decoupled microservices, event-driven architectures (Amazon EventBridge, AWS Lambda), or distributed NoSQL databases (Amazon DynamoDB).</li>
 <li>*When to use:* Workloads requiring extreme scalability, high continuous development velocity, or high licensing cost reduction.</li>
 </ul>
-<p>4. <b>Repurchase (Drop & Shop):</b></p>
+<ol>
+<li><b>Repurchase (Drop & Shop):</b></li>
+</ol>
 <ul>
 <li>*Pattern:* Retiring custom on-premises applications in favor of modern cloud SaaS platforms (e.g., migrating legacy on-prem email or ticketing to SaaS).</li>
 </ul>
-<p>5. <b>Retain (Keep On-Premises):</b></p>
+<ol>
+<li><b>Retain (Keep On-Premises):</b></li>
+</ol>
 <ul>
 <li>*Pattern:* Leaving workloads in the on-premises datacenter temporarily.</li>
 <li>*When to use:* Systems tied to legacy mainframe hardware, active regulatory data sovereignty blockers, or applications with high cross-rack latency dependencies that cannot be separated.</li>
 </ul>
-<p>6. <b>Retire (Decommission):</b></p>
+<ol>
+<li><b>Retire (Decommission):</b></li>
+</ol>
 <ul>
 <li>*Pattern:* Turning off servers permanently.</li>
 <li>*When to use:* In almost every enterprise assessment, <b>10% to 20% of discovered VMs are orphaned test environments, unowned dev boxes, or abandoned projects</b>. Identifying and retiring these servers delivers immediate cost elimination with zero migration effort.</li>
 </ul>
-<p>7. <b>Relocate (Hypervisor Mobility):</b></p>
+<ol>
+<li><b>Relocate (Hypervisor Mobility):</b></li>
+</ol>
 <ul>
 <li>*Pattern:* Relocating virtual machine workloads to VMware Cloud on AWS (VMC) without modifying configuration or operational tooling.</li>
 </ul>

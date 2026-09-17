@@ -136,7 +136,11 @@
 <div class="wrap">
 <h2>The reusable workflow pattern</h2>
 <p>The delivery system has three layers:</p>
-<p>1. <b>Router:</b> one operator-facing workflow exposes the service, environment, and plan-only inputs instead of filling the Actions sidebar with bespoke deployment interfaces. 2. <b>Caller workflows:</b> small service-specific templates declare the Terraform directory, state key, environment catalog, and any build hook required by the module. A new module inherits the central controls instead of copying a large YAML file. 3. <b>Central engine:</b> one reusable workflow owns OIDC authentication, provider profile overrides, Terraform caching, formatting, locking behavior, plan output, PR comments, summaries, and apply conditions.</p>
+<ol>
+<li><b>Router:</b> one operator-facing workflow exposes the service, environment, and plan-only inputs instead of filling the Actions sidebar with bespoke deployment interfaces.</li>
+<li><b>Caller workflows:</b> small service-specific templates declare the Terraform directory, state key, environment catalog, and any build hook required by the module. A new module inherits the central controls instead of copying a large YAML file.</li>
+<li><b>Central engine:</b> one reusable workflow owns OIDC authentication, provider profile overrides, Terraform caching, formatting, locking behavior, plan output, PR comments, summaries, and apply conditions.</li>
+</ol>
 <p>This keeps the module boundary visible in every run. A deployment for an API module targets that module's state and selected environment; it is not a monolithic apply across networking, databases, and applications.</p>
 </div>
 </section>
@@ -147,18 +151,11 @@
 <ul>
 <li>Pull-request jobs have no apply step and use the read-only plan role.</li>
 <li>Manual deployments default to <code>plan_only: true</code>.</li>
-<li>A live apply requires the exact target environment name as a confirmation</li>
-</ul>
-<p>string, so an environment mismatch fails before Terraform runs.</p>
-<ul>
+<li>A live apply requires the exact target environment name as a confirmation string, so an environment mismatch fails before Terraform runs.</li>
 <li>GitHub Environments restrict deployment promotion and can require reviewers.</li>
-<li>The workflow creates a detailed Terraform plan and applies that saved binary</li>
+<li>The workflow creates a detailed Terraform plan and applies that saved binary plan, rather than calculating a different change between review and apply.</li>
+<li>The apply job is conditionally skipped unless the required checks and inputs all pass.</li>
 </ul>
-<p>plan, rather than calculating a different change between review and apply.</p>
-<ul>
-<li>The apply job is conditionally skipped unless the required checks and inputs</li>
-</ul>
-<p>all pass.</p>
 <p>The result is not “CI/CD makes production impossible to change.” It is a more useful boundary: production changes remain possible, but the unsafe path is harder than the reviewed and auditable path.</p>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
@@ -168,21 +165,11 @@
 </details>
 <p>each account before adding that environment to a service workflow. Otherwise OIDC authentication fails because the trusted role does not exist.</p>
 <ul>
-<li><b>Promote one commit:</b> test the same commit in development, then promote it</li>
+<li><b>Promote one commit:</b> test the same commit in development, then promote it to staging and production rather than rebuilding different branch contents at each environment.</li>
+<li><b>Keep state isolated:</b> each caller supplies its own module path and state key. The workflow's convenience must not become permission to touch unrelated Terraform state.</li>
+<li><b>Handle clean runners:</b> modules that need generated artifacts, such as an ARM64 Lambda package, build those artifacts in a prebuild hook before Terraform plans the change.</li>
+<li><b>Keep full logs available:</b> large plans can exceed pull-request comment limits, so summaries should be concise while the Actions run remains the source for the complete execution output.</li>
 </ul>
-<p>to staging and production rather than rebuilding different branch contents at each environment.</p>
-<ul>
-<li><b>Keep state isolated:</b> each caller supplies its own module path and state</li>
-</ul>
-<p>key. The workflow's convenience must not become permission to touch unrelated Terraform state.</p>
-<ul>
-<li><b>Handle clean runners:</b> modules that need generated artifacts, such as an</li>
-</ul>
-<p>ARM64 Lambda package, build those artifacts in a prebuild hook before Terraform plans the change.</p>
-<ul>
-<li><b>Keep full logs available:</b> large plans can exceed pull-request comment</li>
-</ul>
-<p>limits, so summaries should be concise while the Actions run remains the source for the complete execution output.</p>
 </div>
 </section>
 <section>

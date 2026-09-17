@@ -148,13 +148,9 @@
 </details>
 <p>owner, apply the authorization there, then apply the consumer association in the environment account and verify resolution from that VPC.</p>
 <ul>
-<li><b>Removing an environment:</b> remove the consumer association first, review the</li>
+<li><b>Removing an environment:</b> remove the consumer association first, review the impact, then remove the corresponding authorization. Do not delete the zone merely to remove one environment.</li>
+<li><b>Troubleshooting:</b> test from the requesting VPC, confirm the VPC is actually associated with the expected private zone, inspect Resolver forwarding rules, and only then investigate routes, security groups, or the target service.</li>
 </ul>
-<p>impact, then remove the corresponding authorization. Do not delete the zone merely to remove one environment.</p>
-<ul>
-<li><b>Troubleshooting:</b> test from the requesting VPC, confirm the VPC is actually</li>
-</ul>
-<p>associated with the expected private zone, inspect Resolver forwarding rules, and only then investigate routes, security groups, or the target service.</p>
 </div>
 </section>
 <section>

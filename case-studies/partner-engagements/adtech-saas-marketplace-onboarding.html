@@ -117,7 +117,12 @@
 <div class="section-eyebrow">Architecture</div>
 <h2>Engineering automated cloud marketplace integration</h2>
 <p>For enterprise B2B SaaS companies, cloud marketplaces represent the fastest-growing commercial channel. Enterprise buyers increasingly mandate purchasing software through cloud marketplaces to draw down their pre-committed cloud spend commitments (EDP / Commitments).</p>
-<p>However, listing an enterprise SaaS product on a cloud marketplace requires substantial infrastructure and API integration: 1. <b>Procurement Gateway:</b> Handling the buyer checkout redirect, extracting authorization tokens, and validating cloud buyer identity. 2. <b>Subscription Lifecycle Webhooks:</b> Ingesting asynchronous events from the cloud provider (Subscription Created, Plan Upgraded, Suspended, or Cancelled) and synchronizing platform entitlements in real time. 3. <b>Usage Metering Pipeline:</b> Ingesting and submitting granular dimension usage metrics (e.g. ad impressions processed, monthly active seats) to the cloud marketplace metering service for accurate consolidated billing.</p>
+<p>However, listing an enterprise SaaS product on a cloud marketplace requires substantial infrastructure and API integration:</p>
+<ol>
+<li><b>Procurement Gateway:</b> Handling the buyer checkout redirect, extracting authorization tokens, and validating cloud buyer identity.</li>
+<li><b>Subscription Lifecycle Webhooks:</b> Ingesting asynchronous events from the cloud provider (Subscription Created, Plan Upgraded, Suspended, or Cancelled) and synchronizing platform entitlements in real time.</li>
+<li><b>Usage Metering Pipeline:</b> Ingesting and submitting granular dimension usage metrics (e.g. ad impressions processed, monthly active seats) to the cloud marketplace metering service for accurate consolidated billing.</li>
+</ol>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
 <ul>

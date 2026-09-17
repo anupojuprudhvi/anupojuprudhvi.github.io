@@ -75,7 +75,10 @@
 <div class="section-eyebrow">Principle</div>
 <h2>State is your single point of truth and vulnerability</h2>
 <p>Terraform state files map your declarative code to real-world cloud resources, track metadata, and cache resource attributes. In production, an improperly governed state file introduces two severe risks:</p>
-<p>1. <b>State Corruption / Concurrency Race:</b> Two CI jobs or engineers applying changes concurrently can overwrite each other's state, leading to orphaned resources or silent cloud drift. 2. <b>Catastrophic Blast Radius:</b> Storing all infrastructure in one massive state file means an error anywhere risks downtime everywhere.</p>
+<ol>
+<li><b>State Corruption / Concurrency Race:</b> Two CI jobs or engineers applying changes concurrently can overwrite each other's state, leading to orphaned resources or silent cloud drift.</li>
+<li><b>Catastrophic Blast Radius:</b> Storing all infrastructure in one massive state file means an error anywhere risks downtime everywhere.</li>
+</ol>
 </div>
 </section>
 <section>

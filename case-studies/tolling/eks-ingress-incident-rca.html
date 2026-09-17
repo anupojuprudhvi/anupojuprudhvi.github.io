@@ -130,13 +130,9 @@
 </details>
 <p>response headers, and timestamp before investigating pods.</p>
 <ul>
-<li><b>Compare desired and observed state:</b> Inspect the Ingress, Service,</li>
+<li><b>Compare desired and observed state:</b> Inspect the Ingress, Service, EndpointSlices, controller events, target registrations, and target health as a single chain.</li>
+<li><b>Separate mitigation from cause:</b> A rollback, target drain, or temporary route change may restore service, but it is recorded separately from the evidence that identifies the fault.</li>
 </ul>
-<p>EndpointSlices, controller events, target registrations, and target health as a single chain.</p>
-<ul>
-<li><b>Separate mitigation from cause:</b> A rollback, target drain, or temporary</li>
-</ul>
-<p>route change may restore service, but it is recorded separately from the evidence that identifies the fault.</p>
 </div>
 </section>
 <section>
@@ -158,14 +154,10 @@
 <div class="section-eyebrow">Trade-offs</div>
 <h2>What this does not solve</h2>
 <ul>
-<li>A structured RCA reduces investigation ambiguity but cannot prevent every bad</li>
-</ul>
-<p>deployment or cloud-provider failure.</p>
-<ul>
+<li>A structured RCA reduces investigation ambiguity but cannot prevent every bad deployment or cloud-provider failure.</li>
 <li>Health checks prove a particular probe path, not every user journey.</li>
-<li>Centralized logs improve correlation but require retention, access control, and</li>
+<li>Centralized logs improve correlation but require retention, access control, and cost management.</li>
 </ul>
-<p>cost management.</p>
 </div>
 </section>
 <section>

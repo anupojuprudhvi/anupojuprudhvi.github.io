@@ -76,7 +76,12 @@
 <h2>Shifting from strategy to factory engineering</h2>
 <p>Securing executive sign-off on the Directional Business Case (DBC) and qualifying for AWS MAP co-funding marks the successful conclusion of the <b>Assess</b> phase. The initiative now transitions into <b>Mobilize</b>.</p>
 <p>Where Assess answered *"Why should we migrate and what will it cost?"*, Mobilize answers *"How do we build the target platform, validate cutover runbooks, and train our engineering teams to operate it safely?"*</p>
-<p>Mobilize bridges high-level architecture to industrialized execution through three critical workstreams: 1. <b>Landing Zone Deployment:</b> Standing up the multi-account foundation, security guardrails, and hybrid connectivity designed in Assess. 2. <b>Dependency Mapping & Wave Planning:</b> Clustering hundreds of interdependent servers into sequenced, manageable cutover waves. 3. <b>The Lighthouse Pilot (Wave 0):</b> Migrating a representative production workload end-to-end to validate replication pipelines, prove cutover timing, and exercise rollback procedures.</p>
+<p>Mobilize bridges high-level architecture to industrialized execution through three critical workstreams:</p>
+<ol>
+<li><b>Landing Zone Deployment:</b> Standing up the multi-account foundation, security guardrails, and hybrid connectivity designed in Assess.</li>
+<li><b>Dependency Mapping & Wave Planning:</b> Clustering hundreds of interdependent servers into sequenced, manageable cutover waves.</li>
+<li><b>The Lighthouse Pilot (Wave 0):</b> Migrating a representative production workload end-to-end to validate replication pipelines, prove cutover timing, and exercise rollback procedures.</li>
+</ol>
 </div>
 </section>
 <section>
@@ -103,13 +108,19 @@
 <div class="section-eyebrow">Methodology</div>
 <h2>Dependency clustering into migration waves</h2>
 <p>Attempting to migrate an enterprise estate in one massive "big bang" weekend is an unacceptably high operational risk. Instead, workloads are sequenced into <b>discrete migration waves</b> (typically 15 to 40 servers per wave) based on four structural criteria:</p>
-<p>1. <b>Network Communication Affinity:</b> Ingesting network connection telemetry (source/destination IP traffic from hypervisors or netflow logs). Servers that exchange high-volume synchronous RPC or database queries must migrate in the <b>same wave</b> to avoid high-latency cross-datacenter application degradation. 2. <b>Business Criticality & Tiering:</b></p>
+<ol>
+<li><b>Network Communication Affinity:</b> Ingesting network connection telemetry (source/destination IP traffic from hypervisors or netflow logs). Servers that exchange high-volume synchronous RPC or database queries must migrate in the <b>same wave</b> to avoid high-latency cross-datacenter application degradation.</li>
+<li><b>Business Criticality & Tiering:</b></li>
+</ol>
 <ul>
 <li>Non-production (Dev/Test) environments migrate first to exercise tools with zero revenue risk.</li>
 <li>Internal Tier-2 corporate tooling (reporting, staging utilities) migrate next.</li>
 <li>Core Tier-1 customer-facing transaction platforms migrate in later, highly refined waves.</li>
 </ul>
-<p>3. <b>Change Freeze & Compliance Windows:</b> Aligning wave schedules with corporate blackout periods (e.g., month-end financial book closings or peak seasonal retail windows). 4. <b>Target Modernization Strategy:</b> Grouping servers utilizing the same migration tooling (e.g., block-level replication via <b>AWS Application Migration Service [MGN]</b> vs. database replication via <b>AWS Database Migration Service [DMS]</b>).</p>
+<ol>
+<li><b>Change Freeze & Compliance Windows:</b> Aligning wave schedules with corporate blackout periods (e.g., month-end financial book closings or peak seasonal retail windows).</li>
+<li><b>Target Modernization Strategy:</b> Grouping servers utilizing the same migration tooling (e.g., block-level replication via <b>AWS Application Migration Service [MGN]</b> vs. database replication via <b>AWS Database Migration Service [DMS]</b>).</li>
+</ol>
 </div>
 </section>
 <section>
@@ -140,7 +151,13 @@
 <div class="wrap">
 <div class="section-eyebrow">Outcome</div>
 <h2>Passing the Mobilize gate to begin Migration Factory</h2>
-<p>The Mobilize phase concludes with formal delivery of: 1. <b>The Production Landing Zone:</b> Validated multi-account AWS environment with enforced security guardrails, centralized logging, and active hybrid connectivity. 2. <b>The Industrialized Migration Wave Plan:</b> Sequenced roadmap scheduling all remaining application waves through the Migrate & Modernize phase. 3. <b>The Validated Migration Runbook:</b> Standardized operational procedure refined during the lighthouse cutover, ready for automated factory execution. 4. <b>AWS MAP Mobilize Completion Package:</b> Submitted to AWS partner governance to release Mobilize co-funding credits and approve migration-phase incentive allocations.</p>
+<p>The Mobilize phase concludes with formal delivery of:</p>
+<ol>
+<li><b>The Production Landing Zone:</b> Validated multi-account AWS environment with enforced security guardrails, centralized logging, and active hybrid connectivity.</li>
+<li><b>The Industrialized Migration Wave Plan:</b> Sequenced roadmap scheduling all remaining application waves through the Migrate & Modernize phase.</li>
+<li><b>The Validated Migration Runbook:</b> Standardized operational procedure refined during the lighthouse cutover, ready for automated factory execution.</li>
+<li><b>AWS MAP Mobilize Completion Package:</b> Submitted to AWS partner governance to release Mobilize co-funding credits and approve migration-phase incentive allocations.</li>
+</ol>
 <p>With the platform built, runbooks proven, and internal teams enabled, the organization is fully equipped to execute high-velocity, repeatable workload migrations with confidence.</p>
 </div>
 </section>

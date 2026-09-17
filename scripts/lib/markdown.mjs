@@ -123,6 +123,7 @@ function renderBlocks(text) {
   let i = 0;
 
   const isList = (l) => /^\s*-\s+/.test(l);
+  const isOrderedList = (l) => /^\s*\d+\.\s+/.test(l);
 
   while (i < lines.length) {
     const line = lines[i];
@@ -170,21 +171,40 @@ function renderBlocks(text) {
       continue;
     }
 
-    // plain list
-    if (isList(line)) {
+    // plain and ordered lists ("- ", "1. ") — a soft-wrapped line with no
+    // marker of its own continues the previous item, matching how authors
+    // wrap prose elsewhere in these files.
+    if (isList(line) || isOrderedList(line)) {
+      const ordered = isOrderedList(line);
+      const marker = ordered ? isOrderedList : isList;
+      const otherMarker = ordered ? isList : isOrderedList;
+      const stripRe = ordered ? /^\s*\d+\.\s+/ : /^\s*-\s+/;
       const items = [];
-      while (i < lines.length && (isList(lines[i]) || !lines[i].trim())) {
-        if (isList(lines[i]))
-          items.push(lines[i].replace(/^\s*-\s+/, "").trim());
-        else if (!lines[i].trim() && items.length) {
+      while (i < lines.length) {
+        if (marker(lines[i])) {
+          items.push(lines[i].replace(stripRe, "").trim());
+          i++;
+        } else if (!lines[i].trim()) {
           // blank line ends the list unless the next line continues it
           let k = i + 1;
           while (k < lines.length && !lines[k].trim()) k++;
-          if (!(k < lines.length && isList(lines[k]))) break;
+          if (k < lines.length && marker(lines[k])) { i++; continue; }
+          break;
+        } else if (
+          items.length &&
+          !otherMarker(lines[i]) &&
+          !/^#{2,3}\s/.test(lines[i]) &&
+          !/^\s*</.test(lines[i])
+        ) {
+          // continuation of the current item's wrapped text
+          items[items.length - 1] += " " + lines[i].trim();
+          i++;
+        } else {
+          break;
         }
-        i++;
       }
-      out.push(`<ul>\n${items.map((t) => `<li>${inline(t)}</li>`).join("\n")}\n</ul>`);
+      const tag = ordered ? "ol" : "ul";
+      out.push(`<${tag}>\n${items.map((t) => `<li>${inline(t)}</li>`).join("\n")}\n</${tag}>`);
       continue;
     }
 
@@ -194,6 +214,7 @@ function renderBlocks(text) {
       i < lines.length &&
       lines[i].trim() &&
       !isList(lines[i]) &&
+      !isOrderedList(lines[i]) &&
       !/^#{2,3}\s/.test(lines[i]) &&
       !/^\s*</.test(lines[i])
     ) {

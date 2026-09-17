@@ -131,7 +131,11 @@ terraform state mv aws_s3_bucket.logs module.logging.aws_s3_bucket.this</code></
 <div class="wrap">
 <div class="section-eyebrow">Checklist</div>
 <h2>The Zero-Downtime Refactoring Protocol</h2>
-<p>1. <b>Never delete code before declaring <code>moved</code>:</b> Add the new module or resource structure alongside the <code>moved {}</code> block in the same commit. 2. <b>Review the plan diff religiously:</b> Verify that <code>terraform plan</code> outputs <code>Plan: 0 to add, 0 to change, 0 to destroy</code>. If the plan shows <code>Destroy</code>, stop immediately — your <code>from</code> or <code>to</code> path is misaligned. 3. <b>Leave <code>moved</code> blocks in place:</b> Keep <code>moved</code> blocks committed for at least 1-2 release cycles so all team members and feature branches migrate their state cleanly before removing the block.</p>
+<ol>
+<li><b>Never delete code before declaring <code>moved</code>:</b> Add the new module or resource structure alongside the <code>moved {}</code> block in the same commit.</li>
+<li><b>Review the plan diff religiously:</b> Verify that <code>terraform plan</code> outputs <code>Plan: 0 to add, 0 to change, 0 to destroy</code>. If the plan shows <code>Destroy</code>, stop immediately — your <code>from</code> or <code>to</code> path is misaligned.</li>
+<li><b>Leave <code>moved</code> blocks in place:</b> Keep <code>moved</code> blocks committed for at least 1-2 release cycles so all team members and feature branches migrate their state cleanly before removing the block.</li>
+</ol>
 </div>
 </section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/terraform/04-secrets-and-sensitive-values.html">

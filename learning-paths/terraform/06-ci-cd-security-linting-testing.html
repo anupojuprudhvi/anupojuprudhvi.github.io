@@ -147,9 +147,8 @@ tflint --recursive</code></pre>
   run: |
     terraform plan -no-color -out=tfplan 2>&1 | tee plan_output.txt
 <ul>
-<li>name: Post Plan to Pull Request</li>
+<li>name: Post Plan to Pull Request uses: actions/github-script@v7 with: script: | const fs = require('fs'); const output = fs.readFileSync('plan_output.txt', 'utf8'); const comment = <code>#### Terraform Plan Summary 📋 \</code>\<code>\</code>hcl ${output.slice(-2000)} \<code>\</code>\<code> *Pushed by: @${{ github.actor }}*</code>; github.rest.issues.createComment({ issue_number: context.issue.number, owner: context.repo.owner, repo: context.repo.repo, body: comment });</code></pre></li>
 </ul>
-<p>uses: actions/github-script@v7 with: script: | const fs = require('fs'); const output = fs.readFileSync('plan_output.txt', 'utf8'); const comment = <code>#### Terraform Plan Summary 📋 \</code>\<code>\</code>hcl ${output.slice(-2000)} \<code>\</code>\<code> *Pushed by: @${{ github.actor }}*</code>; github.rest.issues.createComment({ issue_number: context.issue.number, owner: context.repo.owner, repo: context.repo.repo, body: comment });</code></pre></p>
 <p>Team members review the exact diff before hitting <b>Merge</b>. Once merged to <code>main</code>, a separate deployment job applies the planned artifact.</p>
 </div>
 </section>

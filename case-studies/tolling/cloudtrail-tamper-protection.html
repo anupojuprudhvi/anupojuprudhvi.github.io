@@ -125,13 +125,9 @@
 </details>
 <p>expected service conditions and organization context. Deny public access and require encrypted delivery.</p>
 <ul>
-<li><b>Protect the key:</b> KMS key policy ownership is separate from workload roles;</li>
+<li><b>Protect the key:</b> KMS key policy ownership is separate from workload roles; key use and administrative actions are logged and reviewed.</li>
+<li><b>Watch the controls themselves:</b> Alerts cover <code>StopLogging</code>, trail deletion or modification, destination changes, bucket-policy changes, KMS-key changes, and unusual access to the archive.</li>
 </ul>
-<p>key use and administrative actions are logged and reviewed.</p>
-<ul>
-<li><b>Watch the controls themselves:</b> Alerts cover <code>StopLogging</code>, trail deletion or</li>
-</ul>
-<p>modification, destination changes, bucket-policy changes, KMS-key changes, and unusual access to the archive.</p>
 </div>
 </section>
 <section>
@@ -153,17 +149,10 @@
 <div class="section-eyebrow">Trade-offs</div>
 <h2>What this does not solve</h2>
 <ul>
-<li>CloudTrail is not a packet capture or an application audit log; important data</li>
+<li>CloudTrail is not a packet capture or an application audit log; important data events and application events require separate decisions.</li>
+<li>Retention protection can complicate legal deletion, cost management, and incident cleanup, so the policy needs an accountable owner.</li>
+<li>Alerts are not prevention. The security team still needs triage, escalation, and recovery procedures.</li>
 </ul>
-<p>events and application events require separate decisions.</p>
-<ul>
-<li>Retention protection can complicate legal deletion, cost management, and</li>
-</ul>
-<p>incident cleanup, so the policy needs an accountable owner.</p>
-<ul>
-<li>Alerts are not prevention. The security team still needs triage, escalation,</li>
-</ul>
-<p>and recovery procedures.</p>
 </div>
 </section>
 <section>

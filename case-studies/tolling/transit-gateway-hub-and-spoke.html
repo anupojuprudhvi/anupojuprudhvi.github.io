@@ -125,13 +125,9 @@
 </details>
 <p>with approved accounts through AWS RAM. Workload accounts consume an attachment contract rather than creating independent hubs.</p>
 <ul>
-<li><b>Route isolation:</b> Separate Transit Gateway route tables represent the</li>
+<li><b>Route isolation:</b> Separate Transit Gateway route tables represent the platform's routing domains. A new propagation or static route is treated as an access decision and reviewed accordingly.</li>
+<li><b>Return paths:</b> Every allowed destination is checked in both directions. A one-way route is not treated as working connectivity.</li>
 </ul>
-<p>platform's routing domains. A new propagation or static route is treated as an access decision and reviewed accordingly.</p>
-<ul>
-<li><b>Return paths:</b> Every allowed destination is checked in both directions. A</li>
-</ul>
-<p>one-way route is not treated as working connectivity.</p>
 </div>
 </section>
 <section>
@@ -153,17 +149,10 @@
 <div class="section-eyebrow">Trade-offs</div>
 <h2>What this does not solve</h2>
 <ul>
-<li>A centralized hub introduces a shared routing dependency and requires clear</li>
+<li>A centralized hub introduces a shared routing dependency and requires clear ownership, monitoring, and change control.</li>
+<li>Transit Gateway does not replace DNS, security groups, firewall policy, or application authorization.</li>
+<li>Cross-region recovery paths need their own routing, data replication, and failover validation; an attachment alone is not a recovery plan.</li>
 </ul>
-<p>ownership, monitoring, and change control.</p>
-<ul>
-<li>Transit Gateway does not replace DNS, security groups, firewall policy, or</li>
-</ul>
-<p>application authorization.</p>
-<ul>
-<li>Cross-region recovery paths need their own routing, data replication, and</li>
-</ul>
-<p>failover validation; an attachment alone is not a recovery plan.</p>
 </div>
 </section>
 <section>

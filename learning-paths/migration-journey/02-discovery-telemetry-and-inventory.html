@@ -84,13 +84,17 @@
 <div class="section-eyebrow">Tooling</div>
 <h2>The dual-path discovery architecture</h2>
 <p>Modern discovery leverages two complementary data collection mechanisms:</p>
-<p>1. <b>Point-in-Time Hypervisor Snapshots (RVTools):</b></p>
+<ol>
+<li><b>Point-in-Time Hypervisor Snapshots (RVTools):</b></li>
+</ol>
 <ul>
 <li><b>How it works:</b> A read-only vSphere client utility connects to vCenter and exports an <code>.xlsx</code> multi-sheet workbook containing hardware configuration for every VM: provisioned vCPUs, memory, disk datastores, OS labels, and power states.</li>
 <li><b>Best for:</b> Immediate sanity checks within 48 hours, sizing baseline estimates, and inventory reconciliation against CMDB records.</li>
 <li><b>Limitation:</b> Does not capture continuous time-series utilization metrics or network dependency flows.</li>
 </ul>
-<p>2. <b>Continuous Telemetry Collectors (AWS Transform Agentless OVA):</b></p>
+<ol>
+<li><b>Continuous Telemetry Collectors (AWS Transform Agentless OVA):</b></li>
+</ol>
 <ul>
 <li><b>How it works:</b> An Open Virtual Appliance (OVA) virtual machine deployed directly inside the private VMware cluster. It queries the vCenter API using a read-only service account every 15–60 minutes.</li>
 <li><b>Best for:</b> Capturing 24/7 time-series performance metrics: 95th and 99th percentile CPU utilization, active memory consumption, disk IOPS, and network throughput.</li>
