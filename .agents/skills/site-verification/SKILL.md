@@ -13,7 +13,7 @@ production-readiness skill first; this skill defines the site-focused checks.
 
 ### 1. Identify affected pages
 
-- Determine whether the change affects the homepage, library, generated use-case
+- Determine whether the change affects the homepage, library, generated case-study
   pages, hand-written engagement pages, shared assets, or all pages.
 - Confirm the source/generated relationship before editing.
 - Run `npm run build` after changing Markdown, JSON content, templates, or the

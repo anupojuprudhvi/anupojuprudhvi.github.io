@@ -1,4 +1,4 @@
-/* Use-case library: filter chips + free-text search over the rendered cards. */
+/* Case-study library: filter chips + free-text search over the rendered cards. */
 (() => {
   const grid = document.getElementById("ucGrid");
   if (!grid) return;
@@ -33,7 +33,7 @@
       card.hidden = !ok;
       if (ok) shown++;
     }
-    status.textContent = `${shown} use case${shown === 1 ? "" : "s"}${
+    status.textContent = `${shown} case stud${shown === 1 ? "y" : "ies"}${
       q ? ` matching “${q}”` : ""
     }`;
     if (empty) empty.hidden = shown !== 0;

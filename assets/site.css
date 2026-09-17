@@ -418,6 +418,13 @@ section {
   max-width: 600px;
   margin-bottom: 15px;
 }
+.case h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+.case h3 a:hover {
+  color: var(--accent);
+}
 .case .ctx {
   font-size: 13px;
   max-width: 610px;

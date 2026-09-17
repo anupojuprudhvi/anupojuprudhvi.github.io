@@ -1,5 +1,5 @@
 /**
- * Static generator for the use-case library.
+ * Static generator for the case-study library.
  *
  *   content/usecases/<project>/<slug>.md   →  usecases/<project>/<slug>.html
  *                                          →  assets/usecases.json   (search index)
@@ -366,7 +366,7 @@ function page(d, bodyHtml, { up, url, prev, next }) {
   const nav = [
     prev
       ? `<a href="${a(prev.url)}">← ${esc(prev.nav || prev.title)}</a>`
-      : `<a href="${a("usecases/index.html")}">← Technical use cases</a>`,
+      : `<a href="${a("usecases/index.html")}">← Case studies</a>`,
     next ? `<a href="${a(next.url)}">${esc(next.nav || next.title)} →</a>` : "",
   ]
     .filter(Boolean)
@@ -383,7 +383,7 @@ function page(d, bodyHtml, { up, url, prev, next }) {
     scaf || enables
       ? `<section>
 <div class="wrap">
-<div class="section-eyebrow">${esc(d.label || "Use case")}</div>
+<div class="section-eyebrow">${esc(d.label || "Case study")}</div>
 <h2>${esc(d.heading || "How it works")}</h2>
 ${scaf}
 ${bodyHtml && !bodyHtml.trimStart().startsWith("<section") ? bodyHtml : ""}
@@ -419,7 +419,7 @@ ${enables}
     <a class="skip-link" href="#main">Skip to content</a>
     <div class="topbar">
       <div class="wrap">
-        <a class="back" href="${a("usecases/index.html")}">← All use cases</a>
+        <a class="back" href="${a("usecases/index.html")}">← All case studies</a>
         <button id="themeToggle" aria-label="Switch to light theme">☼</button>
       </div>
     </div>
@@ -458,7 +458,7 @@ ${outcomesBlock(d)}
     <footer>
       <div class="wrap footer-inner">
         <span>© 2026 Prudhvi Raj Anupoju</span
-        ><a href="${a("usecases/index.html")}">Technical use cases ↗</a
+        ><a href="${a("usecases/index.html")}">Case studies ↗</a
         ><a href="${a("index.html")}#work">Back to overview ↗</a>
       </div>
     </footer>
@@ -503,16 +503,16 @@ function libraryPage(items) {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Technical use-case library — Prudhvi Raj Anupoju</title>
+    <title>Case studies — Prudhvi Raj Anupoju</title>
     <meta
       name="description"
-      content="A searchable library of cloud architecture use cases — governance, networking, resilience, integration and cost, drawn from enterprise AWS delivery."
+      content="A searchable collection of cloud architecture case studies — governance, networking, resilience, integration and cost, drawn from enterprise AWS delivery."
     />
     <link rel="canonical" href="${SITE}/usecases/" />
-    <meta property="og:title" content="Technical use-case library — Prudhvi Raj Anupoju" />
+    <meta property="og:title" content="Case studies — Prudhvi Raj Anupoju" />
     <meta
       property="og:description"
-      content="A searchable library of cloud architecture use cases from enterprise AWS delivery."
+      content="A searchable collection of cloud architecture case studies from enterprise AWS delivery."
     />
     <meta property="og:image" content="${SITE}/og-image.png" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -532,7 +532,7 @@ function libraryPage(items) {
         >
         <div class="navlinks">
           <a href="../index.html#work">Selected work</a
-          ><a href="index.html" aria-current="page">Technical use cases</a
+          ><a href="index.html" aria-current="page">Case studies</a
           ><a href="../index.html#contact" class="nav-cta">Let's connect ↗</a
           ><button id="themeToggle" aria-label="Switch to light theme">
             ☼
@@ -543,18 +543,18 @@ function libraryPage(items) {
     <main id="main">
       <section class="uc-head">
         <div class="wrap">
-          <p class="eyebrow">Technical use-case library</p>
+          <p class="eyebrow">Case study library</p>
           <h1>How the difficult parts were solved.</h1>
           <p class="uc-lede">
-            Individual engineering problems from enterprise AWS delivery —
-            each one written up with the constraint, the approach, and the
-            trade-offs. Start with the <a href="../index.html#work">project case studies</a>
-            for the business context and my role; use this library for the
-            architecture depth. Client details are anonymized; the engineering is not.
+            Project case studies from enterprise AWS delivery — each one written
+            up with the context, constraint, approach, and trade-offs. Start with
+            a project overview for the business context and my role, then open
+            the linked technical detail for the architecture depth. Client details
+            are anonymized; the engineering is not.
           </p>
           <div class="uc-controls">
             <label class="uc-search">
-              <span class="visually-hidden">Search use cases</span>
+                <span class="visually-hidden">Search case studies</span>
               <input
                 type="search"
                 id="ucSearch"
@@ -562,7 +562,7 @@ function libraryPage(items) {
                 autocomplete="off"
               />
             </label>
-            <div class="filters" role="group" aria-label="Filter use cases">
+            <div class="filters" role="group" aria-label="Filter case studies">
               ${filterBtn("all", "All", true)}
               ${projects
                 .map((p) =>
@@ -578,7 +578,7 @@ function libraryPage(items) {
             </div>
           </div>
           <p class="filter-status" id="ucStatus" role="status">
-            ${items.length} use cases
+            ${items.length} case studies
           </p>
         </div>
       </section>
@@ -694,4 +694,4 @@ console.log("  index  assets/usecases.json", `(${fullIndex.length} entries)`);
 writeFileSync(join(ROOT, "usecases/index.html"), libraryPage(fullIndex));
 console.log("  page   usecases/index.html");
 
-console.log(`\nBuilt ${written} use-case pages + library + index.`);
+  console.log(`\nBuilt ${written} case-study pages + library + index.`);

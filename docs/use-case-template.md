@@ -1,4 +1,4 @@
-# Technical use-case template
+# Technical case-study template
 
 Copy this file to `content/usecases/<project>/<slug>.md`, replace the example
 values, and remove any fields that do not apply. Do not edit the generated HTML

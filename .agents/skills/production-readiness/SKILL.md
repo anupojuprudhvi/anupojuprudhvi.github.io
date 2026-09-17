@@ -61,7 +61,7 @@ npm run check
 npm test
 ```
 
-Inspect the rendered pages at `/`, `/usecases/`, and any changed deep-dive URL.
+Inspect the rendered pages at `/`, `/usecases/`, and any changed case-study URL.
 Check local links, anchors, page titles, descriptions, canonical paths, images,
 keyboard navigation, dark/light themes, and mobile layouts.
 

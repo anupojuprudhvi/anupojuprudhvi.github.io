@@ -1,7 +1,7 @@
 # Prudhvi Raj Anupoju — Cloud & DevOps Portfolio
 
-Static portfolio, engagement case studies, and a growing library of individual
-cloud architecture use cases. The site is a plain static output that can be
+Static portfolio and a growing collection of cloud architecture case studies.
+The site is a plain static output that can be
 served by GitHub Pages or Vercel; `vercel.json` defines the Vercel build
 configuration. There are no runtime dependencies and no build-time dependencies
 for the generator — it is plain Node.
@@ -14,15 +14,15 @@ There are two layers, on purpose:
 
 - **Narrative** — `index.html` and the engagement pages under `usecases/`.
   This is the pitch: who I am, three engagements, why they mattered.
-- **Reference** — `usecases/index.html`, the searchable use-case library.
-  This is the depth: one page per engineering problem, filterable by project,
+- **Reference** — `usecases/index.html`, the searchable case-study library.
+  This is the depth: one page per technical case study, filterable by project,
   layer, and technology.
 
 The library, the search index, and the "Ask about my work" panel are all driven
 by a single generated file, `assets/usecases.json`, so they can never disagree
 with each other.
 
-## Adding a use case
+## Adding a case study
 
 Write one Markdown source file. Everything else is generated. The complete,
 copyable front-matter and body template is in
@@ -46,7 +46,7 @@ Front matter drives the page scaffold. The body is a small Markdown subset:
 - `### Heading` immediately followed by a list becomes a collapsible
   "architecture decisions" block.
 - `**bold**`, `` `code` ``, `[links](url)` and plain lists work as expected.
-- Raw HTML passes straight through, so a use case that needs a custom SVG
+- Raw HTML passes straight through, so a case study that needs a custom SVG
   diagram or table just includes it. A body that begins with `<section>` is
   emitted verbatim — that is how the richer case studies are written.
 
@@ -88,11 +88,11 @@ executable.
 
 CI runs `.github/workflows/build-check.yml` on every push and pull request. It
 regenerates the site and fails if the committed output no longer matches the
-source — for example, if a use case was edited without running `npm run build`.
+source — for example, if a case study was edited without running `npm run build`.
 
 ## Editing
 
-- `content/usecases/`: use-case source. **Start here.**
+- `content/usecases/`: case-study source. **Start here.**
 - `content/extra-index.json`: hand-written pages to include in the library.
 - `index.html`: introduction, selected work, expertise, career, credentials, contact.
 - `usecases/tolling/index.html`, `usecases/telecom/…`, `usecases/healthcare/…`: engagement narratives.

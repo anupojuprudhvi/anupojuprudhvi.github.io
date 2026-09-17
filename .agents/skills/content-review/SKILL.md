@@ -6,7 +6,7 @@ description: Review portfolio narratives, case studies, metrics, credentials, an
 # Content Review Skill
 
 Use this skill when adding or changing homepage copy, engagement narratives,
-use cases, credentials, outcomes, client descriptions, metadata, or search-index
+  case studies, credentials, outcomes, client descriptions, metadata, or search-index
 content. Follow the root `AGENTS.md` and the production-readiness skill first;
 this skill focuses only on content-specific review.
 

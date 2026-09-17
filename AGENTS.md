@@ -37,7 +37,7 @@ that preserve the site's existing visual language and static-site architecture.
 - Prefer reusable templates, shared CSS classes, data-driven content, and
   small focused functions over duplicated markup or page-specific hacks.
 - Keep content in the appropriate source file. Keep navigation and labels
-  consistent across the homepage, library, deep dives, metadata, and footer.
+  consistent across the homepage, library, case studies, metadata, and footer.
 - Avoid speculative abstractions. Reuse an existing pattern when it fits;
   introduce a new abstraction only when it removes real duplication or
   prevents a known class of defects.
@@ -71,11 +71,11 @@ Before describing a change as production-ready, verify as applicable:
 - Write for customers first: explain the problem, contribution, decision,
   outcome, and evidence without unnecessary jargon.
 - Use the shared case-study narrative format for new or substantially revised
-  technical use cases: **Problem**, **Solution**, **Architecture**,
+  technical case studies: **Problem**, **Solution**, **Architecture**,
   **Implementation notes**, **Security**, **Delivery**, **Trade-offs**,
   **Outcome**, and **Next steps**. Keep the section names recognizable so the
   case-study library remains consistent and easy to scan.
-- Separate customer-facing case-study narrative from technical deep dives.
+- Separate customer-facing case-study narrative from implementation details.
 - Never invent outcomes, savings, account counts, client names, architectures,
   certifications, or responsibilities. Preserve qualifiers such as “identified”
   versus “realized” savings.
