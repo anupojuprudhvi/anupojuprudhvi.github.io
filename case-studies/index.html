@@ -69,13 +69,18 @@
               <button class="filter" data-uc-filter="project:tolling" aria-pressed="false">U.S. Tolling Infrastructure</button>
               <button class="filter" data-uc-filter="project:healthcare" aria-pressed="false">Healthcare &amp; Cost Architecture</button>
               <button class="filter" data-uc-filter="layer:Data" aria-pressed="false">Data</button>
+              <button class="filter" data-uc-filter="layer:Resilience" aria-pressed="false">Resilience</button>
               <button class="filter" data-uc-filter="layer:Foundation" aria-pressed="false">Foundation</button>
+              <button class="filter" data-uc-filter="layer:Security" aria-pressed="false">Security</button>
+              <button class="filter" data-uc-filter="layer:Storage" aria-pressed="false">Storage</button>
+              <button class="filter" data-uc-filter="layer:Platform" aria-pressed="false">Platform</button>
+              <button class="filter" data-uc-filter="layer:Operations" aria-pressed="false">Operations</button>
               <button class="filter" data-uc-filter="layer:Applications" aria-pressed="false">Applications</button>
               <button class="filter" data-uc-filter="layer:Shared Services" aria-pressed="false">Shared Services</button>
             </div>
           </div>
           <p class="filter-status" id="ucStatus" role="status">
-            12 case studies
+            22 case studies
           </p>
         </div>
       </section>
@@ -87,6 +92,66 @@
           <h3><a href="telecom/zero-downtime-database-modernization-and-failover.html">Zero-downtime database modernization and automated failover</a></h3>
           <p>An eight-major-version PostgreSQL migration to Aurora with CDC replication, plus a serverless failover engine that recovers in under 60 seconds and preserves hardware-bound licensing.</p>
           <p class="uc-stack">Aurora PostgreSQL · AWS DMS · Lambda · DynamoDB · Terraform</p>
+        </article>
+        <article class="uc-card" data-project="telecom" data-layer="Data" data-tags="database migration cdc aurora dms postgresql">
+          <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Data</span></div>
+          <h3><a href="telecom/aurora-global-database-modernization.html">Modernizing legacy PostgreSQL to Aurora Global Database with zero data loss</a></h3>
+          <p>Migrating an active telecom database tier eight major versions forward to Aurora PostgreSQL Global Database using continuous CDC replication, DDL schema refactoring, and custom C adapter recompilation.</p>
+          <p class="uc-stack">Amazon Aurora Global Database · AWS DMS · PostgreSQL 17 · C Extension APIs · Terraform</p>
+        </article>
+        <article class="uc-card" data-project="telecom" data-layer="Resilience" data-tags="high-availability failover lambda dynamodb split-brain stonith ssm">
+          <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Resilience</span></div>
+          <h3><a href="telecom/serverless-ha-failover-engine.html">Sub-minute automated VIP failover via a serverless recovery engine</a></h3>
+          <p>Replacing fragile on-premise hardware STONITH scripts with an automated Python Lambda engine and DynamoDB distributed locking to recover virtual IP and services in under 60 seconds with zero split-brain risk.</p>
+          <p class="uc-stack">AWS Lambda · Amazon DynamoDB · Amazon CloudWatch · AWS Systems Manager · Amazon EC2</p>
+        </article>
+        <article class="uc-card" data-project="telecom" data-layer="Foundation" data-tags="networking eni licensing mac-pinning telecom ec2 terraform">
+          <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Foundation</span></div>
+          <h3><a href="telecom/secondary-eni-telecom-licensing.html">Preserving hardware-locked telecom licenses in ephemeral cloud infrastructure</a></h3>
+          <p>Preserving node-locked PBX telephony licenses across cloud failovers and node rebuilds by pinning MAC addresses to persistent secondary ENIs with dynamic index attachment.</p>
+          <p class="uc-stack">AWS Elastic Network Interface · Amazon EC2 · AWS Systems Manager · Terraform · Linux Policy Routing</p>
+        </article>
+        <article class="uc-card" data-project="telecom" data-layer="Security" data-tags="security compliance gdpr soc2 encryption kms c-language">
+          <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Security</span></div>
+          <h3><a href="telecom/in-memory-column-encryption-kms.html">In-memory column encryption and seamless AWS KMS modernization</a></h3>
+          <p>Protecting 13 sensitive PII fields with an in-memory Linux daemon and shared-memory key caching, replacing legacy on-premise key vaults with AWS KMS Decrypt with zero application rewrite.</p>
+          <p class="uc-stack">AWS KMS · Linux Shared Memory · C Language · PostgreSQL · systemd · OpenSSL</p>
+        </article>
+        <article class="uc-card" data-project="telecom" data-layer="Foundation" data-tags="networking multi-region disaster-recovery transit-gateway terraform dual-vpc">
+          <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Foundation</span></div>
+          <h3><a href="telecom/multi-region-active-standby-transit-network.html">Active-standby multi-region disaster recovery network mesh</a></h3>
+          <p>Deploying an active-standby multi-region topology across Frankfurt and Paris spanning dual VPCs, 24 subnets, Transit Gateway inter-region peering, and S3 native state locking.</p>
+          <p class="uc-stack">AWS Transit Gateway · VPC · AWS Backup · Terraform · S3 Native State Locking</p>
+        </article>
+        <article class="uc-card" data-project="telecom" data-layer="Storage" data-tags="storage efs nfs datasync cost-optimization lifecycle telecom">
+          <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Storage</span></div>
+          <h3><a href="telecom/media-storage-nfs-to-multiaz-efs.html">Zero-downtime media storage migration from on-prem NFS to Multi-AZ EFS</a></h3>
+          <p>Migrating millions of voicemail recordings from a single on-premise NFS appliance to Multi-AZ AWS EFS via AWS DataSync, implementing POSIX directory access points and 90-day Infrequent Access policies that cut storage costs by 85%.</p>
+          <p class="uc-stack">Amazon EFS · AWS DataSync · AWS KMS · Terraform · Linux POSIX ACLs</p>
+        </article>
+        <article class="uc-card" data-project="telecom" data-layer="Data" data-tags="database pgbouncer performance connection-pooling aurora postgresql">
+          <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Data</span></div>
+          <h3><a href="telecom/pgbouncer-connection-pooling-and-cpu-stabilization.html">Eliminating Aurora CPU thrashing and connection starvation with PgBouncer</a></h3>
+          <p>Eliminating connection starvation and Aurora CPU thrashing during call routing spikes by deploying local loopback PgBouncer transaction pooling across four distinct database services.</p>
+          <p class="uc-stack">PgBouncer · Amazon Aurora PostgreSQL · Linux · Systemd · Terraform</p>
+        </article>
+        <article class="uc-card" data-project="telecom" data-layer="Platform" data-tags="automation devops platform-engineering bash sysadmin onboarding">
+          <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Platform</span></div>
+          <h3><a href="telecom/platform-automation-engine-v1-to-v10.html">Standardizing node provisioning via an automated configuration engine</a></h3>
+          <p>Evolving post-configuration automation across ten script iterations into an idempotent configuration engine that provisions application servers and persistent database nodes in under 8 minutes.</p>
+          <p class="uc-stack">Bash Shell · AWS Systems Manager · Systemd · Apache Passenger · Postfix · Linux</p>
+        </article>
+        <article class="uc-card" data-project="telecom" data-layer="Operations" data-tags="incident-response rca post-mortem cdr etl kafka postgresql">
+          <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Operations</span></div>
+          <h3><a href="telecom/cdr-ingestion-pipeline-incident-rca.html">SRE post-mortem: diagnosing a silent call detail record ingestion failure</a></h3>
+          <p>Diagnosing a silent telecommunications call detail record ingestion failure across application message consumers, zero-byte batch files, and persistent database ETL scripts.</p>
+          <p class="uc-stack">Apache Kafka · PostgreSQL · Python · Bash · SSH ETL · Linux Systemd</p>
+        </article>
+        <article class="uc-card" data-project="telecom" data-layer="Operations" data-tags="incident-response rca api timeout pgbouncer service-discovery telecom">
+          <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Operations</span></div>
+          <h3><a href="telecom/api-timeout-and-service-discovery-rca.html">SRE post-mortem: resolving 60-second API timeouts and onboarding discovery failures</a></h3>
+          <p>Resolving 60-second execution expired API failures and misleading &quot;Organization not found&quot; mobile onboarding bugs by correcting connection pool database routing and missing SIP address discovery mappings.</p>
+          <p class="uc-stack">REST APIs · PgBouncer · PostgreSQL · SIP Discovery · Microservices</p>
         </article>
         <article class="uc-card" data-project="tolling" data-layer="Foundation" data-tags="governance networking terraform cicd multi-account">
           <div class="uc-meta"><span>U.S. Tolling Infrastructure</span><span>Foundation</span></div>

@@ -4,6 +4,8 @@ nav: Automated failover
 summary: An eight-major-version PostgreSQL migration to Aurora with CDC replication, plus a serverless failover engine that recovers in under 60 seconds and preserves hardware-bound licensing.
 project: telecom
 layer: Data
+order: 5
+label: Overview
 stack: [Aurora PostgreSQL, AWS DMS, Lambda, DynamoDB, Terraform]
 tags: [resilience, migration, database, failover, encryption]
 problem: A secure communications platform on a legacy database eight major versions behind, with manual hardware-dependent failover and licences bound to a physical MAC address.

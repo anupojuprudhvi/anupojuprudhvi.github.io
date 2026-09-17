@@ -4,7 +4,17 @@
   <url><loc>https://anupojuprudhvi.github.io/case-studies/</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/healthcare/clinical-platform-modernization-and-cost-optimization.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/healthcare/index.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/telecom/api-timeout-and-service-discovery-rca.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/telecom/aurora-global-database-modernization.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/telecom/cdr-ingestion-pipeline-incident-rca.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/telecom/in-memory-column-encryption-kms.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/telecom/index.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/telecom/media-storage-nfs-to-multiaz-efs.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/telecom/multi-region-active-standby-transit-network.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/telecom/pgbouncer-connection-pooling-and-cpu-stabilization.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/telecom/platform-automation-engine-v1-to-v10.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/telecom/secondary-eni-telecom-licensing.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/telecom/serverless-ha-failover-engine.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/telecom/zero-downtime-database-modernization-and-failover.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/aurora-multi-region-dr-parity.html</loc></url>
