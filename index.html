@@ -97,10 +97,28 @@
           Anupoju</a
         >
         <div class="navlinks">
-          <a href="#work">Selected work</a><a href="case-studies/index.html">Case studies</a
-          ><a href="learning-paths/index.html">Learning paths</a
-          ><a href="#why-me">Why me?</a
-          ><a href="#background">About</a
+          <a href="#work">Selected work</a><a href="case-studies/index.html">Case studies</a>
+          <div class="nav-dropdown">
+            <a href="learning-paths/index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false"
+              >Learning paths <span class="nav-arrow" aria-hidden="true">▾</span></a
+            >
+            <div class="nav-dropdown-menu" role="menu">
+              <a href="learning-paths/index.html" role="menuitem" class="nav-dropdown-item">
+                <strong>All Learning Paths</strong>
+                <small>Curriculum overview &amp; tracks</small>
+              </a>
+              <div class="nav-dropdown-divider" role="separator"></div>
+              <a href="learning-paths/terraform/index.html" role="menuitem" class="nav-dropdown-item">
+                <strong>Terraform for Enterprise</strong>
+                <small>6 Modules · Modules, State &amp; CI/CD</small>
+              </a>
+              <a href="learning-paths/migration-journey/index.html" role="menuitem" class="nav-dropdown-item">
+                <strong>Cloud Migration Journey</strong>
+                <small>6 Modules · Assess, Mobilize &amp; Modernize</small>
+              </a>
+            </div>
+          </div>
+          <a href="#why-me">Why me?</a><a href="#background">About</a
           ><a href="#contact" class="nav-cta">Let’s connect ↗</a
           ><button id="themeToggle" aria-label="Switch to light theme">
             ☼

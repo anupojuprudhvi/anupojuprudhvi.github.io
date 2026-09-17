@@ -3,7 +3,7 @@ title: Discovery Telemetry · RVTools, AWS Transform & Sizing
 track: migration-journey
 order: 2
 module: 2
-totalModules: 5
+totalModules: 6
 summary: Extracting hypervisor inventory, continuous utilization percentiles, and applying right-sizing algorithms to avoid naive 1:1 lift-and-shift over-provisioning.
 level: Technical Discovery
 readingTime: 8 min read

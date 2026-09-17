@@ -3,7 +3,7 @@ title: Financial Engineering · 3-Year TCO & Licensing
 track: migration-journey
 order: 3
 module: 3
-totalModules: 5
+totalModules: 6
 summary: Modeling On-Demand vs. 1-Yr/3-Yr Savings Plans, Microsoft Windows and SQL Server BYOL vs. License-Included scenarios, and passing MAP milestone audits.
 level: Financial Architecture
 readingTime: 9 min read

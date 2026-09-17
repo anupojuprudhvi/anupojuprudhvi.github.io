@@ -3,7 +3,7 @@ title: The Mobilize Phase · Wave Planning & Lighthouse Pilot
 track: migration-journey
 order: 5
 module: 5
-totalModules: 5
+totalModules: 6
 summary: Partnering with enterprise engineering teams, clustering dependency graphs into migration waves, executing a lighthouse pilot cutover, and team enablement.
 level: Migration Engineering
 readingTime: 9 min read

@@ -176,6 +176,94 @@ nav.topnav,
 .nav-cta {
   color: var(--accent);
 }
+/* Navigation dropdown */
+.nav-dropdown {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.nav-dropdown-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: none;
+}
+.nav-dropdown-trigger:hover,
+.nav-dropdown:focus-within .nav-dropdown-trigger {
+  color: var(--accent);
+}
+.nav-arrow {
+  font-size: 8px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+  display: inline-block;
+  opacity: 0.7;
+}
+.nav-dropdown:hover .nav-arrow,
+.nav-dropdown:focus-within .nav-arrow {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+.nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 250px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 100;
+}
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown:focus-within .nav-dropdown-menu {
+  display: flex;
+}
+.nav-dropdown-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.nav-dropdown-item:hover,
+.nav-dropdown-item:focus {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.nav-dropdown-item strong {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.nav-dropdown-item small {
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.nav-dropdown-item:hover strong,
+.nav-dropdown-item:focus strong {
+  color: var(--accent);
+}
+.nav-dropdown-divider {
+  height: 1px;
+  background: var(--line);
+  margin: 4px 6px;
+}
 .hero {
   padding: 86px 0 0;
   position: relative;
@@ -717,6 +805,19 @@ footer {
     width: 32px;
     height: 32px;
     font-size: 18px;
+  }
+  .nav-dropdown {
+    position: static;
+  }
+  .nav-dropdown-menu {
+    left: 16px;
+    right: 16px;
+    top: calc(100% + 4px);
+    transform: none;
+    min-width: auto;
+    width: auto;
+    max-width: calc(100vw - 32px);
+    box-sizing: border-box;
   }
   .hero {
     padding-top: 45px;

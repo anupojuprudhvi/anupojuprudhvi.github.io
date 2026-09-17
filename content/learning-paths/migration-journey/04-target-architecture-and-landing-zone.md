@@ -3,7 +3,7 @@ title: Target State Blueprint · Landing Zone & 7Rs Roadmap
 track: migration-journey
 order: 4
 module: 4
-totalModules: 5
+totalModules: 6
 summary: Architecting multi-account AWS Organizations, IAM Identity Center federation, Transit Gateway networking, and classifying workloads into 7Rs pathways.
 level: Solution Architecture
 readingTime: 8 min read

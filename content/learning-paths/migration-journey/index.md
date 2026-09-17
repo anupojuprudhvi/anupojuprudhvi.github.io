@@ -1,25 +1,45 @@
 ---
-title: Enterprise Cloud Migration · Assess to Mobilize
+title: Enterprise Cloud Migration · Assess, Mobilize & Modernize
 track: migration-journey
-summary: An authoritative architectural and financial guide for enterprise cloud migrations — comparing rapid (4–6 wk) vs. deep (3–4 mo) assessments, 3-year TCO modeling (On-Demand, 1-Yr, 3-Yr RIs/Savings Plans, Microsoft licensing), target Landing Zone design, and Mobilize wave planning.
+summary: An authoritative architectural and financial guide for enterprise cloud migrations — comparing rapid (4–6 wk) vs. deep (3–4 mo) assessments, 3-year TCO modeling (On-Demand, 1-Yr, 3-Yr RIs/Savings Plans, Microsoft licensing), target Landing Zone design, Mobilize wave planning, and in-flight modernization.
 level: Intermediate to Executive
-duration: 5 Modules · 40 min read
-stack: [AWS MAP, AWS Transform, RVTools, TCO Modeling, Landing Zone, Well-Architected]
+duration: 6 Modules · 50 min read
+stack: [AWS MAP, AWS Transform, RVTools, TCO Modeling, Landing Zone, Well-Architected, Amazon EKS]
 ---
 
-## Overview · The enterprise migration journey
+## Overview · The enterprise migration & modernization journey
 
-Cloud migration at enterprise scale is rarely just an engineering initiative — it is a joint financial, operational, and architectural transformation. Organizations migrating legacy VMware estates, bare-metal datacenters, or colocation facilities to AWS must navigate rigid governance hurdles, executive financial justification, and strict risk mitigation before moving a single production workload.
+Cloud migration at enterprise scale is rarely just an infrastructure project — it is a joint financial, operational, and architectural transformation. Organizations migrating legacy VMware estates, bare-metal datacenters, or colocation facilities to AWS must navigate rigid governance hurdles, executive financial justification, and strict risk mitigation before moving a single production workload.
 
-The **AWS Migration Acceleration Program (MAP)** provides a structured, phased methodology to de-risk this transition:
+The **AWS Migration Acceleration Program (MAP)** provides a structured, phased methodology to de-risk this transition across three distinct stages:
 
 1. **Assess Phase:** Quantifying the technical estate, evaluating organizational readiness across the 6 Cloud Adoption Framework (CAF) pillars, and authoring a defensible 3–5 year Directional Business Case (DBC) that unlocks AWS co-funding grants.
 2. **Mobilize Phase:** Bridging the business case to hands-on engineering — building the secure Multi-Account Landing Zone, mapping cross-application dependencies, refining 7Rs modernization strategies, and executing a lighthouse migration pilot.
-3. **Migrate & Modernize Phase:** Industrialized factory execution across sequenced migration waves, retiring legacy datacenter leases and unlocking cloud agility.
+3. **Migrate & Modernize Phase:** Industrialized factory execution across sequenced migration waves, retiring legacy datacenter leases while executing in-flight modernization (containers on EKS, managed Aurora databases, serverless integration).
 
-This learning path breaks down the critical first two phases — **Assess** and **Mobilize** — providing practitioners, architects, and technology leaders with actionable decision matrices, discovery methodologies, financial modeling frameworks, and engineering blueprints.
+## Rigorous Deliverables · Milestone outputs per phase
 
-## Curriculum · The 5 delivery modules
+A successful enterprise engagement is measured by the quality, auditability, and rigor of its milestone deliverables:
+
+### 1. MAP Assess Phase Deliverables
+- **Migration Readiness Assessment (MRA):** An audited evaluation across the 6 AWS CAF pillars (Business, People, Governance, Platform, Security, Operations), delivering the organizational readiness scorecard, capability gap analysis, and executive risk mitigation matrix.
+- **Total Cost of Ownership (TCO) & Financial Model:** A comprehensive 3-year financial model contrasting current on-premises run costs against AWS On-Demand, 1-Year Savings Plans, and 3-Year Savings Plans (All/Partial Upfront), complete with Microsoft Windows Server and SQL Server licensing optimization (BYOL vs. License-Included).
+- **Target State Architecture Blueprint:** A Well-Architected technical layout detailing the multi-account Landing Zone, Transit Gateway network topology, hybrid connectivity (Direct Connect / VPN), security guardrails, and the 7Rs Workload Placement Matrix.
+- **Directional Business Case (DBC):** The executive C-level justification document providing cash-flow projections, ROI timelines, payback periods, and qualifying the program for AWS MAP co-funding credits.
+
+### 2. MAP Mobilize Phase Deliverables
+- **Production-Ready Landing Zone:** A fully automated multi-account AWS environment provisioned via Infrastructure as Code (Terraform/Control Tower), complete with IAM Identity Center federation, SCP guardrails, and centralized logging.
+- **Migration Wave Plan & Dependency Matrix:** Network communication dependency graphs clustered into discrete, risk-managed cutover waves aligned with corporate release cycles.
+- **Validated Cutover Runbooks & Rollback Playbooks:** Detailed minute-by-minute operational runbooks with verified RTO/RPO recovery time objectives and zero-data-loss rollback mechanisms.
+- **Wave 0 Lighthouse Pilot Package:** Production cutover execution report validating replication throughput, real-world downtime windows, and application performance benchmarks.
+- **Skills Enablement & CCoE Operating Charter:** Cloud Center of Excellence governance structure, RACI operational boundaries, and training curriculum for internal engineering squads.
+
+### 3. Migrate & Modernize Phase Deliverables
+- **Industrialized Migration Factory Pipelines:** High-velocity replication workflows utilizing AWS Application Migration Service (MGN) and AWS Database Migration Service (DMS).
+- **Modernization Blueprints:** Cloud-native target architectures containerizing workloads onto Amazon EKS with Karpenter, replatforming databases to Amazon Aurora PostgreSQL, and serverless messaging.
+- **MAP Customer Sign-Off & Decommissioning Package:** Audited milestone completion packages submitted to AWS partner governance to release financial incentive credits, accompanied by official datacenter asset decommissioning certificates.
+
+## Curriculum · The 6 delivery modules
 
 <ul class="lp-syllabus">
   <li>
@@ -68,6 +88,16 @@ This learning path breaks down the critical first two phases — **Assess** and 
       <div class="lp-module-body">
         <h3>The Mobilize Phase — Engineering Alignment, Wave Planning &amp; Lighthouse Pilot</h3>
         <p>Partnering with enterprise engineering teams, clustering dependency graphs into migration waves, executing a lighthouse pilot cutover, and team enablement.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="06-migrate-and-modernize-strategies.html">
+      <span class="lp-module-num">06</span>
+      <div class="lp-module-body">
+        <h3>Migrate &amp; Modernize — In-Flight vs. Sequential Factory</h3>
+        <p>Deciding between sequential 2-step lift-and-shift vs. in-flight modernization during Mobilize, architecting cloud-native target platforms, and executing the migration factory.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>
