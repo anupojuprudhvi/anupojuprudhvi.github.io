@@ -22,6 +22,24 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
     const locations = [...sitemap.matchAll(/<loc>(.*?)<\/loc>/g)].map((match) => match[1]);
     const initialIndex = JSON.parse(read("assets/case-studies.json"));
     const initialProjects = JSON.parse(read("content/projects.json"));
+    // Markdown overviews use the shared layout and derive links from the project.
+    const overviewSource = "content/overviews/telecom.md";
+    const overview = read(overviewSource);
+    fs.writeFileSync(file(overviewSource), overview.replace(/title: .*/, "title: Updated overview") + "\n## Additional context\n\nOverview body marker.\n");
+    succeeds();
+    assert.match(read("case-studies/telecom/index.html"), /Updated overview/);
+    assert.match(read("case-studies/telecom/index.html"), /Overview body marker/);
+    for (const entry of initialIndex.filter((item) => item.project === "telecom"))
+      assert(read("case-studies/telecom/index.html").includes(path.basename(entry.url)));
+    const beforeAmbiguousOverview = read("case-studies/telecom/index.html");
+    fs.writeFileSync(file("content/overviews/telecom.html"), "Duplicate overview");
+    assert.match(run().stderr, /exactly one HTML or Markdown overview/);
+    assert.equal(read("case-studies/telecom/index.html"), beforeAmbiguousOverview);
+    fs.unlinkSync(file("content/overviews/telecom.html"));
+    fs.writeFileSync(file(overviewSource), overview.replace(/summary: .*/, ""));
+    assert.match(run().stderr, /overview requires title and summary/);
+    fs.writeFileSync(file(overviewSource), overview);
+    succeeds();
     assert.equal(locations.length, initialIndex.length + initialProjects.length + 2);
     assert.equal(new Set(locations).size, locations.length);
     assert(locations.includes("https://anupojuprudhvi.github.io/"));
@@ -39,20 +57,20 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
     succeeds();
 
     const source = "content/case-studies/telecom/second-study.md";
-    fs.writeFileSync(file(source), "---\ntitle: Second & new study\nproject: telecom\nsummary: A new study.\nlayer: A new layer\norder: 20\n---\n\n## Architecture\n\nA test narrative.\n");
+    fs.writeFileSync(file(source), "---\ntitle: Second & new study\nproject: telecom\nsummary: A new study.\nlayer: A new layer\norder: 15\n---\n\n## Architecture\n\nA test narrative.\n");
     succeeds();
     const index = JSON.parse(read("assets/case-studies.json"));
-    assert.equal(index.filter((item) => item.project === "telecom").length, 2);
+    assert.equal(index.filter((item) => item.project === "telecom").length, initialIndex.filter((item) => item.project === "telecom").length + 1);
     assert.match(read("sitemap.xml"), /\/telecom\/second-study.html<\/loc>/);
     assert.match(read("case-studies/telecom/index.html"), /second-study.html/);
     assert.match(read("case-studies/index.html"), /data-uc-filter="layer:A new layer"/);
     assert.match(read("case-studies/telecom/second-study.html"), /Second &amp; new study/);
-    assert.match(read("case-studies/telecom/second-study.html"), /zero-downtime-database-modernization-and-failover.html/);
-    const originalStudy = read("case-studies/telecom/zero-downtime-database-modernization-and-failover.html");
+    assert.match(read("case-studies/telecom/second-study.html"), /aurora-global-database-modernization.html/);
+    const originalStudy = read("case-studies/telecom/aurora-global-database-modernization.html");
     assert.match(originalStudy, /second-study.html/, "existing stories must inherit generated next-study navigation");
     assert.match(originalStudy, /property="og:title"/);
     assert.match(originalStudy, /name="twitter:card"/);
-    assert.match(originalStudy, /assets\/failover-diagram.js/);
+    assert.match(read("case-studies/telecom/serverless-ha-failover-engine.html"), /assets\/failover-diagram.js/);
     const clinicalStudy = read("case-studies/healthcare/clinical-platform-modernization-and-cost-optimization.html");
     assert.match(clinicalStudy, /property="og:title"/);
     assert.match(clinicalStudy, /assets\/cache-diagram.js/);

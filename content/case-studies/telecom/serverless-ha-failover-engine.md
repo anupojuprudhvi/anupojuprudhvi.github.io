@@ -1,67 +1,156 @@
 ---
-title: Sub-minute automated VIP failover via a serverless recovery engine
-nav: Sub-minute automated failover
+title: Automating telecom failover while preserving licensed identity
+nav: Failover and licensing continuity
 label: High availability
-heading: Replacing hardware STONITH scripts with a serverless Lambda orchestrator and DynamoDB locking
 project: telecom
 layer: Resilience
 order: 20
-stack: [AWS Lambda, Amazon DynamoDB, Amazon CloudWatch, AWS Systems Manager, Amazon EC2]
-tags: [high-availability, failover, lambda, dynamodb, split-brain, stonith, ssm]
-summary: Replacing fragile on-premise hardware STONITH scripts with an automated Python Lambda engine and DynamoDB distributed locking to recover virtual IP and services in under 60 seconds with zero split-brain risk.
-problem: |
-  High availability in the legacy on-premises datacenter relied on a short IPMI STONITH ("Shoot The Other Node In The Head") script and manual sysadmin triage. Transient network partitions frequently caused both cluster nodes to believe the partner had died, resulting in split-brain events where both hosts attempted to claim the Virtual IP and write data concurrently. When hard failures occurred, manual investigation and service recovery typically took 45+ minutes, violating telecom availability agreements and dropping customer calls.
-solution: |
-  I designed an automated serverless high-availability engine: a modular Python AWS Lambda function triggered by CloudWatch alarms on node heartbeat failures. The engine eliminates split-brain risk using an Amazon DynamoDB lock table with atomic conditional writes and 120-second expiring leases. When an unhealthy primary is detected, Lambda acquires the lock, detaches the Virtual IP secondary ENI, attaches it to the warm standby instance, invokes AWS Systems Manager (SSM) to bring up the interface and restart local daemons, fences the degraded node via the EC2 API, and performs final ownership validation before clearing alarms.
-flowLabel: Automated 8-step serverless failover sequence
-flow:
-  - step: Alarm trigger & distributed lock
-    note: CloudWatch detects node heartbeat failure; Lambda attempts an atomic conditional write in DynamoDB (attribute_not_exists or expired TTL) to prevent concurrent executions.
-  - step: Virtual IP interface migration
-    note: Detaches the secondary Virtual IP network interface from the degraded primary instance and re-attaches it to the warm standby host.
-  - step: SSM network binding & daemon recovery
-    note: Executes SSM Run Command on standby node to run ifup on the secondary interface, rebind local routing, and restart connection pools and telephony services.
-  - step: Service verification & node fencing
-    note: Validates loopback application sockets, calls ec2.stop_instances to hard-fence the dead primary, verifies VIP ownership, and resets CloudWatch alarm triggers.
-enables: |
-  The telecom platform recovers from hardware failures, operating system lockups, and process degradation automatically in under 45 seconds without manual intervention and without risking database split-brain.
-outcomes:
-  - value: < 45s
-    label: Verified automated failover recovery time, beating the 60-second operational SLA
-  - value: 0
-    label: Split-brain incidents across all failure injection and chaos engineering drills
-  - value: 100%
-    label: Automated fencing coverage replacing fragile IPMI hardware power cycling
+stack: [AWS Lambda, DynamoDB, CloudWatch, Systems Manager, EC2, Elastic Network Interfaces]
+tags: [failover, licensing, eni, recovery, orchestration]
+summary: Bringing recovery orchestration, service validation, and hardware-bound licensing into one failover workflow, with an explicit same-AZ boundary.
+scaffold: false
+scripts: [failover-diagram.js]
+problem: Manual recovery and licenses tied to network identity made instance replacement a service-level problem rather than a simple infrastructure action.
+solution: Coordinate recovery through an external orchestrator and retain licensed identity on a persistent secondary network interface.
 ---
 
-## Architecture · The decisions that mattered
+## Problem · A replacement host was not enough to restore service
 
-The core architectural decision was to move the failover orchestrator outside the failure domain of the nodes it manages. In-cluster clustering frameworks (such as Pacemaker or Corosync) depend on cluster quorum and network heartbeats between participating hosts. In cloud environments, network blips between Availability Zones can partition in-cluster software, triggering false-positive STONITH power cuts.
+Legacy recovery depended on hardware-oriented fencing and operator intervention. The telecom software also used a node-locked license tied to a MAC address and private IP. A newly provisioned host could therefore be healthy while its call-processing software remained unable to start with the expected licensed identity.
+
+## Solution · Treat recovery and licensing as the same workflow
+
+I designed a Lambda-based recovery workflow triggered by CloudWatch alarms. DynamoDB conditional writes coordinated orchestration attempts, while Systems Manager handled host-side network and service operations. A persistent secondary Elastic Network Interface (ENI) carried the identity registered with the software vendor.
+
+The ENI approach preserved identity when that interface moved to a replacement host; it did not require assigning a custom MAC address or imply that ordinary instance reboots change interface identity.
+
+## Architecture · Separate orchestration from the hosts being recovered
+
+The orchestrator ran outside the two service nodes. Its responsibilities included acquiring a lease, moving the designated interface, requesting service changes, checking readiness and ownership, and handling the degraded host. These are distinct controls: a coordination lock does not itself fence a node or prove that only one node can accept writes.
+
+<div class="hubwrap">
+            <div class="diagram-top">
+              <h3 style="font-size: 15.5px">
+                Walk through an automated failover
+              </h3>
+              <button id="failoverPlayBtn">▶ Play failover sequence</button>
+            </div>
+            <div
+              class="diagram-scroll"
+              role="region"
+              aria-label="Architecture diagram"
+              tabindex="0"
+            >
+              <svg
+                role="img"
+                aria-label="Architecture flow diagram; the following walkthrough explains the sequence"
+                class="hub-svg"
+                viewBox="0 0 720 190"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path class="hub-line" id="fl-0" d="M100,95 L215,95" />
+                <path class="hub-line" id="fl-1" d="M255,95 L370,95" />
+                <path class="hub-line" id="fl-2" d="M410,95 L525,95" />
+                <path class="hub-line" id="fl-3" d="M565,95 L680,95" />
+                <circle
+                  class="hub-pulse"
+                  id="failoverPulse"
+                  r="6"
+                  cx="100"
+                  cy="95"
+                />
+
+                <g class="hub-node" id="fn-0">
+                  <rect x="20" y="65" width="160" height="60" rx="10" />
+                  <text x="100" y="90" text-anchor="middle" font-weight="600">
+                    Alarm fires
+                  </text>
+                  <text x="100" y="106" text-anchor="middle" opacity=".7">
+                    Heartbeat lost
+                  </text>
+                </g>
+                <g class="hub-node center" id="fn-1">
+                  <rect x="175" y="65" width="160" height="60" rx="10" />
+                  <text x="255" y="86" text-anchor="middle" font-weight="600">
+                    Acquire lock
+                  </text>
+                  <text x="255" y="102" text-anchor="middle" opacity=".75">
+                    DynamoDB lease
+                  </text>
+                </g>
+                <g class="hub-node" id="fn-2">
+                  <rect x="330" y="65" width="160" height="60" rx="10" />
+                  <text x="410" y="86" text-anchor="middle" font-weight="600">
+                    Move VIP interface
+                  </text>
+                  <text x="410" y="102" text-anchor="middle" opacity=".7">
+                    License-pinned ENI
+                  </text>
+                </g>
+                <g class="hub-node" id="fn-3">
+                  <rect x="485" y="65" width="160" height="60" rx="10" />
+                  <text x="565" y="86" text-anchor="middle" font-weight="600">
+                    Promote &amp; validate
+                  </text>
+                  <text x="565" y="102" text-anchor="middle" opacity=".7">
+                    Health checks pass
+                  </text>
+                </g>
+                <g class="hub-node danger" id="fn-4">
+                  <rect x="640" y="65" width="60" height="60" rx="10" />
+                  <text
+                    x="670"
+                    y="86"
+                    text-anchor="middle"
+                    font-weight="600"
+                    font-size="10"
+                  >
+                    Fence
+                  </text>
+                  <text
+                    x="670"
+                    y="100"
+                    text-anchor="middle"
+                    opacity=".7"
+                    font-size="9.5"
+                  >
+                    old node
+                  </text>
+                </g>
+              </svg>
+            </div>
+            <div class="hub-caption" id="failoverCaption" aria-live="polite">
+              Click <b>Play failover sequence</b> to step through the documented recovery components.
+            </div>
+          </div>
+
+The walkthrough illustrates the documented components. A safe recovery procedure must establish what prevents the previous owner from serving traffic or writing during promotion, including when an API call fails or a lease expires. The diagram is not proof of those guarantees.
 
 ### Implementation notes
 
-- **External serverless locking:** Rather than running an in-VPC consensus cluster that could itself be degraded by network partitions, the failover engine uses a dedicated Amazon DynamoDB table. Lambda uses atomic conditional expressions (`attribute_not_exists(LockKey) OR ExpiresAt < :now`) with a 120-second lease time, guaranteeing that exactly one orchestrator invocation can hold the failover token.
-- **8-step deterministic execution pipeline:** The Python Lambda script implements strict sequential steps with discrete error handling:
-  1. Detaches the Virtual IP secondary ENI from the primary instance and attaches it to the standby.
-  2. Dispatches SSM Run Command to run `ifup` and re-route the virtual interface on the standby host.
-  3. Restarts local connection pools, call routing daemons, and background workers.
-  4. Probes local ports to verify service readiness before accepting traffic.
-  5. Invokes `ec2.stop_instances` on the degraded primary to prevent rogue writes.
-  6. Configures the degraded node to recover in warm standby mode once rebooted.
-  7. Toggles CloudWatch alarm actions to suppress alarm loops during transitions.
-  8. Confirms that the target instance holds the active network interface before completing.
-- **SSM priority tuning under chaos conditions:** High-load chaos testing uncovered an edge case where heavy disk I/O during instance boot delayed the systems manager agent daemon by up to 25 seconds. The solution elevated the process scheduling priority of the agent (`nice -n -10`) and implemented exponential backoff polling in Lambda, ensuring completion within 38 to 45 seconds.
+- **Persistent licensed interface:** Terraform managed the secondary ENI independently from the instance. Its existing MAC address and private IP were registered for the vendor license. The management interface remained separate from the service identity.
+- **Attachment and routing:** Automation selected an available attachment index, configured host-side networking, and checked service binding. Multiple interfaces required explicit routing so replies used the intended path.
+- **Recovery checks:** Systems Manager commands brought up host dependencies and restarted relevant services. Readiness probes and final interface-ownership checks supplied evidence that infrastructure changes had reached the application layer.
+- **Lease handling:** Conditional acquisition limited competing orchestration attempts. Lease expiry, delayed commands, retries, and ownership-checked release are failure cases that need explicit validation; a time-to-live field alone is not a recovery safety argument.
 
-### Security controls
+## Security · Constrain the recovery mechanism
 
-- **Granular IAM execution role:** The Lambda execution role restricts permissions to the specific persistent instances, the designated VIP network interface ARN, and the specific DynamoDB lock table.
-- **Strict command execution logging:** Every systems manager document invocation is logged with stdout/stderr capture to CloudWatch Logs, providing an auditable trace of all commands executed on persistent nodes during failover.
-- **Strongly consistent reads:** DynamoDB lock lookups enforce `ConsistentRead = True` to prevent stale read windows from enabling split-brain execution.
+Recovery permissions should be scoped to the managed instances, interface, command documents, and lock resources where the AWS actions support resource-level restrictions. Command execution and orchestration logs provide an audit trail. The licensed interface still needs the appropriate service security groups and host permissions.
 
-## Delivery · How the change is rolled out
+## Delivery · Exercise more than a clean instance stop
 
-The failover engine was validated through automated chaos testing in staging before production cutover. Failure modes were induced intentionally: abruptly killing database daemons, unbinding network interfaces, triggering CPU saturation, and executing hard power stops via AWS CLI. CloudWatch alarm transitions were monitored to verify that the Lambda function executed within the 60-second window, successfully transferred the VIP, and fenced the failed host without human intervention.
+The source implementation describes staging exercises covering service failures, interface disruption, resource pressure, and stopped instances. Those exercises tested interface transfer and service recovery. Recorded timing should identify the failure mode, detection delay, start/end events, and retry behavior before being used as an availability commitment.
 
-## Trade-offs · What this does not solve
+## Trade-offs · Same-AZ recovery is not regional disaster recovery
 
-The failover engine orchestrates recovery between stateful database and application nodes within an active region. It does not replace cross-region disaster recovery, which is governed by Aurora Global Database storage replication and Transit Gateway peering. Additionally, during the 40-second cutover window, in-flight TCP connections to the failing instance drop and rely on client application retry logic to reconnect to the newly promoted VIP.
+An ENI can attach only to an instance in the same Availability Zone. This workflow therefore cannot carry the same interface across an AZ or regional failure. Recovery elsewhere requires a separate network identity and a vendor-approved licensing approach. See the [AWS interface attachment constraints](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/network-interface-attachments.html).
+
+Existing connections may drop during recovery and need client retry behavior. This design coordinates host-level recovery; it does not replace Aurora recovery or a complete regional failover plan.
+
+## Outcome · Recovery included the application's licensed identity
+
+The work combined host recovery with interface movement and application checks, addressing a dependency that a generic instance replacement would miss. The portfolio does not claim zero split-brain risk or a universal sub-minute recovery time; those depend on failure conditions and retained test evidence.
+
+## Next steps · Document failure boundaries and recovery evidence
+
+Capture lease-expiry tests, partially completed interface moves, unavailable Systems Manager agents, and failed fencing calls. Verify the promotion/fencing sequence and record the recovery timeline for each scenario, including the point at which clients can successfully use the service.

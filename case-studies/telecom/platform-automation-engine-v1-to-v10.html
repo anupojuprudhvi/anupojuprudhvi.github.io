@@ -4,12 +4,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Standardizing node provisioning via an automated configuration engine — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="Evolving post-configuration automation across ten script iterations into an idempotent configuration engine that provisions application servers and persistent database nodes in under 8 minutes." />
+    <title>Making telecom node provisioning repeatable — Prudhvi Raj Anupoju</title>
+    <meta name="description" content="Turning manual host configuration and recurring migration defects into a provisioning workflow with explicit configuration, service reconciliation, and smoke tests." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/case-studies/telecom/platform-automation-engine-v1-to-v10.html" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="Standardizing node provisioning via an automated configuration engine" />
-    <meta property="og:description" content="Evolving post-configuration automation across ten script iterations into an idempotent configuration engine that provisions application servers and persistent database nodes in under 8 minutes." />
+    <meta property="og:title" content="Making telecom node provisioning repeatable" />
+    <meta property="og:description" content="Turning manual host configuration and recurring migration defects into a provisioning workflow with explicit configuration, service reconciliation, and smoke tests." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
@@ -31,118 +31,87 @@
       <header class="hero">
         <div class="wrap">
           <div class="eyebrow">Telecom &amp; Secure Communications · Platform engineering</div>
-          <h1>Standardizing node provisioning via an automated configuration engine</h1>
-          <p class="sub">Evolving post-configuration automation across ten script iterations into an idempotent configuration engine that provisions application servers and persistent database nodes in under 8 minutes.</p>
+          <h1>Making telecom node provisioning repeatable</h1>
+          <p class="sub">Turning manual host configuration and recurring migration defects into a provisioning workflow with explicit configuration, service reconciliation, and smoke tests.</p>
           <div class="meta">
             <div><b>Project</b><br />Telecom &amp; Secure Communications</div>
             <div><b>Layer</b><br />Platform</div>
-            <div><b>Stack</b><br />Bash Shell · AWS Systems Manager · Systemd · Apache Passenger · Postfix · Linux</div>
-            <div><b>Tags</b><br />automation · devops · platform-engineering · bash · sysadmin · onboarding</div>
+            <div><b>Stack</b><br />Bash · AWS Systems Manager · systemd · Linux · Postfix</div>
+            <div><b>Tags</b><br />automation · provisioning · configuration · service-discovery · deployment</div>
           </div>
         </div>
       </header>
+
 <section>
 <div class="wrap">
-<div class="section-eyebrow">Platform engineering</div>
-<h2>Eliminating configuration drift across telecommunications application tiers</h2>
-<div class="problem-solution">
-<div>
-<h3>The problem</h3>
-<p>Early staging, QA, and disaster-recovery cloud deployments suffered from severe configuration drift. System administrators executed hundreds of manual shell commands to configure EFS mount points, set hostnames, populate application database configurations, bind web application virtual hosts, configure mail relays, and register devices with the central service registry. Onboarding a single persistent database node or application server took several hours of manual effort, frequently resulting in subtle configuration discrepancies and deployment failures.</p>
+<div class="section-eyebrow">Problem</div>
+<h2>Infrastructure could be ready while the application was not</h2>
+<p>A provisioned instance still needed storage mounts, database settings, service registration, web configuration, and mail routing. Manual commands across environments left subtle differences that were difficult to distinguish from application defects.</p>
+<p>Two acceptance failures made this concrete: administrative API calls timed out against obsolete endpoints, and mobile onboarding reported an organization error after authentication had actually succeeded.</p>
 </div>
-<div>
-<h3>The solution I built</h3>
-<p>I iteratively engineered a comprehensive post-configuration automation pipeline across ten progressive versions. The resulting production engine is an idempotent, modular shell pipeline executing via AWS Systems Manager or EC2 user-data. The engine ingests an external environment configuration file, automatically templates application configurations, mounts EFS endpoints, provisions local connection pools, generates web application virtual hosts, updates mail routing, and executes automated service registry reconciliation in under eight minutes.</p>
-</div>
-</div>
-<figure class="reqflow">
-<figcaption class="reqflow-title">Automated node provisioning and configuration flow</figcaption>
-<ol class="reqflow-list">
-<li class="reqflow-step">
-<span class="reqflow-n">01</span>
-<span class="reqflow-name">Config ingestion &amp; environment validation</span>
-<span class="reqflow-note">Reads the environment configuration file, validates node role (Application vs. Database), checks mandatory parameters, and converts line endings.</span>
-</li>
-<li class="reqflow-step">
-<span class="reqflow-n">02</span>
-<span class="reqflow-name">EFS mount &amp; filesystem wiring</span>
-<span class="reqflow-note">Replaces legacy mounting tools, mounts AWS EFS DNS targets into /etc/fstab, and establishes structured media and mail store directories.</span>
-</li>
-<li class="reqflow-step">
-<span class="reqflow-n">03</span>
-<span class="reqflow-name">Application &amp; database configuration templating</span>
-<span class="reqflow-note">Rewrites application database configurations, high-availability parameters, and connection pool files with active Aurora endpoints and credentials.</span>
-</li>
-<li class="reqflow-step">
-<span class="reqflow-n">04</span>
-<span class="reqflow-name">Web, mail &amp; service reconciliation</span>
-<span class="reqflow-note">Reconfigures web server virtual hosts, updates Postfix mail routing, and executes host registry cleanup and re-registration.</span>
-</li>
-</ol>
-</figure>
-
-<div class="callout"><b>What this enables:</b> New telecommunications environments (QA, Staging, DR, Prod) can be spun up, rebuilt, or scaled horizontally from raw base AMIs in minutes with guaranteed configuration parity.</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Solution</div>
+<h2>Make application readiness part of provisioning</h2>
+<p>I developed a configuration workflow that read environment-specific inputs and applied the required host settings. It covered shared storage, database pool configuration, service setup, web and mail settings, and registry reconciliation. As defects were diagnosed, their checks were incorporated into provisioning and environment handoff.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>The decisions that mattered</h2>
-<p>The critical design decision was to evolve the onboarding automation through progressive, real-world operational feedback rather than attempting an all-or-nothing rewrite. Shell automation in telecommunications environments must interface with legacy services, custom daemons, and C libraries that do not conform to modern cloud configuration management patterns. Developing modular scripts that could be tested and refined across ten distinct iterations created a battle-tested automation pipeline.</p>
+<h2>Separate shared steps from node responsibilities</h2>
+<p>Application nodes and persistent service nodes had different configuration needs. The workflow selected steps for the node role while using a shared approach to input validation, backups, permissions, and logging. Systems Manager or instance bootstrapping provided the execution path.</p>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
 <ul>
-<li><b>Progressive script evolution:</b></li>
-<li>*Phase 1:* Focused on automating basic operating system dependencies, user permissions, and initial AWS EFS mount wiring.</li>
-<li>*Phase 2:* Integrated database bootstrapping scripts, SQL migrations, and baseline connection pool configuration.</li>
-<li>*Phase 3:* Introduced robust error trapping, network retry loops for EFS and DNS readiness, structured CloudWatch logging, and backup directory generation.</li>
-<li>*Phase 4:* Delivered the production unified engine, integrating secondary network interface attachments, in-memory encryption daemon setup, service registry reconciliation, web server SSL virtual hosts, and mail routing.</li>
-<li><b>Robust error-tolerant design (<code>set -uo pipefail</code>):</b> Instead of using fragile <code>set -e</code> flags that abort an entire server setup upon minor non-critical warnings, the script uses <code>set -uo pipefail</code> paired with fine-grained error-catching functions. Every file edit creates an automated timestamped backup prior to modification.</li>
-<li><b>Automated service registry reconciliation:</b> A frequent source of deployment failure in telecom platforms was stale device registration in the central service provisioner. The script automates host cleanup and registration synchronization:</li>
+<li><b>Safe changes and reruns:</b> Configuration edits were backed up and handled through focused operations. Rerun safety must be checked per operation, particularly registrations, appended files, database seed records, and actions that restart services; a shell flag does not establish idempotency.</li>
+<li><b>Endpoint reconciliation:</b> API calls stalled because service configuration still referred to legacy hosts, alongside missing pool routing. Locator updates and pool configuration were brought into the deployment workflow rather than left as manual post-cutover corrections.</li>
+<li><b>Discovery validation:</b> Mobile onboarding authenticated successfully but then failed to find the required service mapping. Missing fallback records led to a misleading organization error. Provisioning checks were extended to include service discovery, rather than treating successful authentication as proof that onboarding was complete.</li>
+<li><b>Readiness checks:</b> Storage access, pool mappings, service endpoints, and registration state were checked before handing an environment over. These checks connected host configuration to actual application behavior.</li>
 </ul>
 </details>
-<p>``<code>bash # Remove stale host associations from registry sed -i &quot;/$OLD_HOSTNAME/d&quot; /etc/telecom/sysinfo # Execute node registry reconciliation utility /usr/local/bin/node_registry_util -clean -host &quot;$CURRENT_HOSTNAME&quot; -ip &quot;$PRIMARY_IP&quot; </code>``</p>
-<ul>
-<li><b>Web and mail server configuration:</b> The script dynamically generates virtual host configurations for the administrative web portal, updates SSL certificate and key paths, binds web listeners, and updates mail routing configurations with approved relay domains and hostnames.</li>
-</ul>
-<details class="implementation-notes">
-<summary>Security controls</summary>
-<ul>
-<li><b>Automated file backup and permission enforcement:</b> Every modified configuration file is backed up before edits; sensitive files (such as authentication mappings, license keys, and database configs) are explicitly set to <code>0600</code> or <code>0640</code> permissions owned by authorized service groups.</li>
-<li><b>Credential segregation via external config:</b> The script never hardcodes database passwords or API keys; all secrets are sourced from a secured configuration file restricted to root access.</li>
-<li><b>Audit logging:</b> All script operations are logged to local system logs and forwarded to CloudWatch Logs for compliance audit tracking.</li>
-</ul>
-</details>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Security</div>
+<h2>Keep configuration automation accountable</h2>
+<p>Credential inputs were kept outside the scripts and protected through restricted access. Configuration files needed appropriate ownership and permissions, and logs needed to avoid exposing secrets. Reconciliation of service mappings must also respect tenant and regional boundaries; a fallback that makes one test pass is not automatically the correct mapping for every subscriber.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Delivery</div>
-<h2>How the change is rolled out</h2>
-<p>The automation engine was bundled into deployment artifacts and distributed via AWS Systems Manager. For new instance launches, EC2 user-data downloads the script bundle from an encrypted S3 bucket, pulls environment-specific variables from AWS Systems Manager Parameter Store, and executes the onboarding pipeline. Server onboarding progress is tracked via CloudWatch Logs, alerting administrators upon completion.</p>
+<h2>Feed diagnosed defects back into the workflow</h2>
+<p>The automation was packaged for host provisioning and run through Systems Manager or bootstrapping. The API and onboarding fixes were incorporated into endpoint updates, seed-data checks, and smoke tests so the same omissions could be detected before acceptance testing.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Trade-offs</div>
-<h2>What this does not solve</h2>
-<p>While the shell engine provides total automation for single-node bootstrapping and configuration reconciliation, it is not a declarative configuration state manager like Ansible or Puppet. If an operator manually modifies a configuration file after the script has completed, the script must be re-run to bring the host back into compliance.</p>
+<h2>A provisioning script is not continuous drift management</h2>
+<p>This workflow reduced repeated manual setup, but did not continuously enforce state after an operator changed a host. Safe reruns, explicit error handling, and post-run validation remained necessary. Backup files also need a tested restore procedure to be useful for rollback.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Outcome</div>
-<h2>What changed</h2>
-<div class="outcomes">
-<div class="outcome"><div class="num">&lt; 8m</div><div class="txt">Complete node onboarding and configuration time, down from several hours of manual sysadmin effort</div></div>
-<div class="outcome"><div class="num">10</div><div class="txt">Progressive script versions evolved to reach production-grade idempotency and reliability</div></div>
-<div class="outcome"><div class="num">100%</div><div class="txt">First-pass deployment success rate across multi-region staging and production environments</div></div>
-</div>
+<h2>Troubleshooting became a repeatable delivery control</h2>
+<p>The contribution was a common provisioning path and better readiness checks across environments. Script-version counts are development history rather than an outcome. A provisioning-time reduction or first-pass success rate should be published only with the node scope, number of runs, and timing boundaries recorded.</p>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Next steps</div>
+<h2>Test reruns and interrupted provisioning</h2>
+<p>Build a role-by-environment test matrix covering a clean node, an already configured node, an interrupted run, and a dependency outage. Include rollback, secret-redaction checks, and tenant-specific service discovery before using successful completion as a release gate.</p>
+</div>
+</section>
+
       <aside class="next-study wrap">
-        <a href="../../case-studies/telecom/pgbouncer-connection-pooling-and-cpu-stabilization.html">← Connection pooling with PgBouncer</a>
-        <a href="../../case-studies/telecom/cdr-ingestion-pipeline-incident-rca.html">SRE RCA: CDR ingestion failure →</a>
+        <a href="../../case-studies/telecom/in-memory-column-encryption-kms.html">← Key-management migration</a>
+        <a href="../../case-studies/telecom/cdr-ingestion-pipeline-incident-rca.html">Incident: silent CDR ingestion failure →</a>
       </aside>
       <div class="closing">
         <div class="wrap">

@@ -4,12 +4,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Telecom &amp; Secure Communications — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="Explore the case studies from this engagement, including the problems, architecture decisions, and outcomes." />
+    <title>Modernizing a telecom platform around its legacy constraints — Prudhvi Raj Anupoju</title>
+    <meta name="description" content="An engagement spanning database migration, automated recovery, hardware-bound licensing, key management, and repeatable cloud delivery." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/case-studies/telecom/index.html" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="Telecom &amp; Secure Communications" />
-    <meta property="og:description" content="Explore the case studies from this engagement, including the problems, architecture decisions, and outcomes." />
+    <meta property="og:title" content="Modernizing a telecom platform around its legacy constraints" />
+    <meta property="og:description" content="An engagement spanning database migration, automated recovery, hardware-bound licensing, key management, and repeatable cloud delivery." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
@@ -31,25 +31,96 @@
       <header class="hero">
         <div class="wrap">
           <div class="eyebrow">Telecom &amp; Secure Communications</div>
-          <h1>Telecom & Secure Communications</h1>
-          <p class="sub">Explore the case studies from this engagement, including the problems, architecture decisions, and outcomes.</p>
+          <h1>Modernizing a telecom platform around its legacy constraints</h1>
+          <p class="sub">An engagement spanning database migration, automated recovery, hardware-bound licensing, key management, and repeatable cloud delivery.</p>
           <div class="meta">
             <div><b>Project</b><br />Telecom &amp; Secure Communications</div>
+            <div><b>My role</b><br />Database modernization, high-availability architecture, and platform delivery</div>
+            <div><b>Scope</b><br />Application and persistent service nodes, primary and recovery regions</div>
           </div>
         </div>
       </header>
 
-<section><div class="wrap"><h2>Case studies</h2><div class="case-study-links">            <a href="zero-downtime-database-modernization-and-failover.html"><span>01 / Overview</span><strong>Automated failover</strong><small>An eight-major-version PostgreSQL migration to Aurora with CDC replication, plus a serverless failover engine that recovers in under 60 seconds and preserves hardware-bound licensing. →</small></a>
-            <a href="aurora-global-database-modernization.html"><span>02 / Database modernization</span><strong>Modernize legacy PostgreSQL to Aurora</strong><small>Migrating an active telecom database tier eight major versions forward to Aurora PostgreSQL Global Database using continuous CDC replication, DDL schema refactoring, and custom C adapter recompilation. →</small></a>
-            <a href="serverless-ha-failover-engine.html"><span>03 / High availability</span><strong>Sub-minute automated failover</strong><small>Replacing fragile on-premise hardware STONITH scripts with an automated Python Lambda engine and DynamoDB distributed locking to recover virtual IP and services in under 60 seconds with zero split-brain risk. →</small></a>
-            <a href="secondary-eni-telecom-licensing.html"><span>04 / Network architecture</span><strong>Preserve node-locked licenses via ENI</strong><small>Preserving node-locked PBX telephony licenses across cloud failovers and node rebuilds by pinning MAC addresses to persistent secondary ENIs with dynamic index attachment. →</small></a>
-            <a href="in-memory-column-encryption-kms.html"><span>05 / Security &amp; compliance</span><strong>In-memory encryption with AWS KMS</strong><small>Protecting 13 sensitive PII fields with an in-memory Linux daemon and shared-memory key caching, replacing legacy on-premise key vaults with AWS KMS Decrypt with zero application rewrite. →</small></a>
-            <a href="multi-region-active-standby-transit-network.html"><span>06 / Disaster recovery</span><strong>Multi-region DR network mesh</strong><small>Deploying an active-standby multi-region topology across Frankfurt and Paris spanning dual VPCs, 24 subnets, Transit Gateway inter-region peering, and S3 native state locking. →</small></a>
-            <a href="media-storage-nfs-to-multiaz-efs.html"><span>07 / Storage architecture</span><strong>Migrate on-prem NFS to Multi-AZ EFS</strong><small>Migrating millions of voicemail recordings from a single on-premise NFS appliance to Multi-AZ AWS EFS via AWS DataSync, implementing POSIX directory access points and 90-day Infrequent Access policies that cut storage costs by 85%. →</small></a>
-            <a href="pgbouncer-connection-pooling-and-cpu-stabilization.html"><span>08 / Database performance</span><strong>Connection pooling with PgBouncer</strong><small>Eliminating connection starvation and Aurora CPU thrashing during call routing spikes by deploying local loopback PgBouncer transaction pooling across four distinct database services. →</small></a>
-            <a href="platform-automation-engine-v1-to-v10.html"><span>09 / Platform engineering</span><strong>Platform automation engine</strong><small>Evolving post-configuration automation across ten script iterations into an idempotent configuration engine that provisions application servers and persistent database nodes in under 8 minutes. →</small></a>
-            <a href="cdr-ingestion-pipeline-incident-rca.html"><span>10 / Incident response</span><strong>SRE RCA: CDR ingestion failure</strong><small>Diagnosing a silent telecommunications call detail record ingestion failure across application message consumers, zero-byte batch files, and persistent database ETL scripts. →</small></a>
-            <a href="api-timeout-and-service-discovery-rca.html"><span>11 / Incident response</span><strong>SRE RCA: API timeout &amp; service discovery</strong><small>Resolving 60-second execution expired API failures and misleading &quot;Organization not found&quot; mobile onboarding bugs by correcting connection pool database routing and missing SIP address discovery mappings. →</small></a></div></div></section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Problem</div>
+<h2>A cloud migration with dependencies that could not simply be replaced</h2>
+<p>The platform handled sensitive call and messaging data, but its database, recovery procedures, and software licensing had grown around an on-premises environment. Moving the virtual machines alone would have carried those constraints into the cloud.</p>
+<p>My contribution focused on modernizing the database, automating recovery, preserving the licensed network identity, adapting key management, and making node provisioning repeatable. The detailed case studies below explain the decisions and boundaries of each part of that work.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Solution</div>
+<h2>Separate the decisions, coordinate the cutover</h2>
+<p>Database migration used baseline transfer and change-data capture (CDC) while schema and client compatibility were addressed. The final cutover included a brief pause in writes, replication catch-up, validation, and endpoint changes. That is a controlled cutover; it should not be read as a claim that every request continued without interruption.</p>
+<p>Recovery automation brought together health alarms, orchestration, service checks, and a persistent network interface for licensed services. Provisioning automation then made the required host configuration reproducible across environments.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Architecture</div>
+<h2>Distinct responsibilities for compute, data, and recovery</h2>
+<p>Application nodes handled call-processing services. Persistent service nodes hosted dependencies such as connection pools, the key service, and licensed interfaces, while Aurora hosted the relational data. Keeping these roles explicit helped separate replaceable compute from state and identity that had to survive replacement.</p>
+<p>The regional network design separated application and hub VPC responsibilities and used Transit Gateway connectivity between the primary and recovery regions. Database and file replication addressed separate recovery needs. Network reachability alone does not establish an application recovery time: promotion, endpoint routing, service readiness, and client reconnection still need to be exercised together.</p>
+<details class="implementation-notes">
+<summary>Implementation notes</summary>
+<ul>
+<li><b>Regional delivery:</b> Terraform components were applied in dependency order across networking, keys, transit connectivity, databases, storage, and compute. State locking coordinated infrastructure changes; it was a delivery control rather than a disaster-recovery outcome.</li>
+<li><b>Shared media storage:</b> AWS DataSync moved historical audio from on-premises NFS to EFS, followed by incremental synchronization. Final synchronization and mount changes were coordinated with a write restriction on the old export, then recording and playback were checked.</li>
+<li><b>Storage isolation and retention:</b> EFS access points separated application paths, encrypted mounts protected transport, and lifecycle tiering moved infrequently accessed media into a lower-cost storage class. A tier price comparison is not a measured reduction in the total storage bill.</li>
+</ul>
+</details>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Security</div>
+<h2>Protect data and constrain operational access</h2>
+<p>The work included private database placement, encrypted transport, scoped automation permissions, and a migration of the existing key-unwrapping integration to AWS KMS. These controls address specific risks; they do not, by themselves, establish regulatory compliance or an audit result.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Delivery</div>
+<h2>Validate the whole service, not just running processes</h2>
+<p>The delivery process combined environment provisioning, database checks, application smoke tests, and recovery exercises. The CDR incident reinforced why a running process is not sufficient evidence of a healthy service: records must reach their destination, and reconciliation must account for missing or duplicated events.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Trade-offs</div>
+<h2>Legacy compatibility still shapes the cloud design</h2>
+<p>Preserving licensed network identity limits where an interface can move. Retaining the existing crypto integration avoids a broad application rewrite but carries forward key-lifecycle and query-compatibility questions. Shared file storage and the batch ingestion path also retain operational dependencies that require monitoring.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Outcome</div>
+<h2>A coordinated modernization and recovery approach</h2>
+<p>The engagement replaced several manual or hardware-dependent procedures with cloud-based delivery and recovery workflows. The strongest evidence in these stories is the constraint addressed, the implementation decision, and the validation described. Precise timing, savings, and success-rate claims need a defined measurement window and supporting records before being presented as benchmarks.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Case studies</div>
+<h2>Four engineering stories and one incident write-up</h2>
+<div class="case-study-links">
+            <a href="aurora-global-database-modernization.html"><span>01 / Database modernization</span><strong>Database migration and connection pooling</strong><small>Combining schema and client compatibility work, continuous replication, and local connection pooling to move a legacy telecom database tier to Aurora. →</small></a>
+            <a href="serverless-ha-failover-engine.html"><span>02 / High availability</span><strong>Failover and licensing continuity</strong><small>Bringing recovery orchestration, service validation, and hardware-bound licensing into one failover workflow, with an explicit same-AZ boundary. →</small></a>
+            <a href="in-memory-column-encryption-kms.html"><span>03 / Security modernization</span><strong>Key-management migration</strong><small>Adapting an existing local encryption service to AWS KMS while preserving its application integration and making the key-handling boundaries explicit. →</small></a>
+            <a href="platform-automation-engine-v1-to-v10.html"><span>04 / Platform engineering</span><strong>Repeatable platform delivery</strong><small>Turning manual host configuration and recurring migration defects into a provisioning workflow with explicit configuration, service reconciliation, and smoke tests. →</small></a>
+            <a href="cdr-ingestion-pipeline-incident-rca.html"><span>05 / Incident write-up</span><strong>Incident: silent CDR ingestion failure</strong><small>Tracing missing call records through consumer output and SSH transfer, then replacing process-only checks with data-flow monitoring. →</small></a>
+</div>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Next steps</div>
+<h2>Make recovery and performance evidence repeatable</h2>
+<p>The next priorities are a complete regional recovery exercise, repeatable database load measurements, key-lifecycle review, and retained validation records. These would establish the limits of the design more clearly than component counts or blanket availability claims.</p>
+</div>
+</section>
 
       <aside class="next-study wrap">
         <a href="../../case-studies/index.html">← Case studies</a>

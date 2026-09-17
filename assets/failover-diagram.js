@@ -5,7 +5,7 @@
     window.matchMedia &&
     window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var DEFAULT_CAPTION =
-    "Click <b>Play failover sequence</b> to step through what happens in the seconds after a node stops responding.";
+    "Click <b>Play failover sequence</b> to step through the documented recovery components.";
   var steps = [
     {
       line: "fl-0",
@@ -21,7 +21,7 @@
       to: { x: 410, y: 95 },
       nodes: ["fn-1", "fn-2"],
       caption:
-        "Before touching anything, the Lambda acquires a conditional lock in <b>DynamoDB</b> — if another invocation already holds it, this one backs off instead of racing it, which is what prevents split-brain.",
+        "The Lambda acquires a conditional lease in <b>DynamoDB</b> to coordinate recovery attempts. A lease alone does not fence the old node or prevent competing writers.",
     },
     {
       line: "fl-2",
@@ -29,7 +29,7 @@
       to: { x: 565, y: 95 },
       nodes: ["fn-2", "fn-3"],
       caption:
-        "The <b>license-pinned network interface</b> is detached from the failed node and reattached to the standby, carrying its MAC address and static IP with it.",
+        "The <b>license-pinned network interface</b> is detached from the failed node and reattached to the standby in the same Availability Zone, carrying its MAC address and static IP with it.",
     },
     {
       line: "fl-3",
@@ -37,7 +37,7 @@
       to: { x: 670, y: 95 },
       nodes: ["fn-3", "fn-4"],
       caption:
-        "Services on the standby are promoted and health-checked. Only once they pass is the failed node forcibly <b>fenced</b> — stopped at the API level so it can never write again — then restarted as the new warm standby.",
+        "The documented sequence promotes and checks services before stopping the degraded host. This ordering needs explicit safety validation: the old owner must be unable to serve or write during promotion, including when commands fail.",
     },
   ];
   var playBtn = document.getElementById("failoverPlayBtn");

@@ -4,12 +4,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Modernizing legacy PostgreSQL to Aurora Global Database with zero data loss — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="Migrating an active telecom database tier eight major versions forward to Aurora PostgreSQL Global Database using continuous CDC replication, DDL schema refactoring, and custom C adapter recompilation." />
+    <title>Modernizing a legacy telecom database with a controlled cutover — Prudhvi Raj Anupoju</title>
+    <meta name="description" content="Combining schema and client compatibility work, continuous replication, and local connection pooling to move a legacy telecom database tier to Aurora." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/case-studies/telecom/aurora-global-database-modernization.html" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="Modernizing legacy PostgreSQL to Aurora Global Database with zero data loss" />
-    <meta property="og:description" content="Migrating an active telecom database tier eight major versions forward to Aurora PostgreSQL Global Database using continuous CDC replication, DDL schema refactoring, and custom C adapter recompilation." />
+    <meta property="og:title" content="Modernizing a legacy telecom database with a controlled cutover" />
+    <meta property="og:description" content="Combining schema and client compatibility work, continuous replication, and local connection pooling to move a legacy telecom database tier to Aurora." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
@@ -31,112 +31,89 @@
       <header class="hero">
         <div class="wrap">
           <div class="eyebrow">Telecom &amp; Secure Communications · Database modernization</div>
-          <h1>Modernizing legacy PostgreSQL to Aurora Global Database with zero data loss</h1>
-          <p class="sub">Migrating an active telecom database tier eight major versions forward to Aurora PostgreSQL Global Database using continuous CDC replication, DDL schema refactoring, and custom C adapter recompilation.</p>
+          <h1>Modernizing a legacy telecom database with a controlled cutover</h1>
+          <p class="sub">Combining schema and client compatibility work, continuous replication, and local connection pooling to move a legacy telecom database tier to Aurora.</p>
           <div class="meta">
             <div><b>Project</b><br />Telecom &amp; Secure Communications</div>
             <div><b>Layer</b><br />Data</div>
-            <div><b>Stack</b><br />Amazon Aurora Global Database · AWS DMS · PostgreSQL 17 · C Extension APIs · Terraform</div>
-            <div><b>Tags</b><br />database · migration · cdc · aurora · dms · postgresql</div>
+            <div><b>Stack</b><br />Aurora PostgreSQL · AWS DMS · PgBouncer · C client libraries · Terraform</div>
+            <div><b>Tags</b><br />database · migration · cdc · aurora · pgbouncer · performance</div>
           </div>
         </div>
       </header>
+
 <section>
 <div class="wrap">
-<div class="section-eyebrow">Database modernization</div>
-<h2>Bridging an eight-major-version leap with CDC replication and adapter recompilation</h2>
-<div class="problem-solution">
-<div>
-<h3>The problem</h3>
-<p>The core telecom call detail records, billing data, and real-time subscriber state ran on an aging, unsupported PostgreSQL 8.x cluster in an on-premises datacenter. Bridging eight major versions directly to modern cloud-native Aurora PostgreSQL exposed severe incompatibilities: removed procedural language syntax, dropped legacy implicit casts, changes to internal PostgreSQL memory management headers (<code>palloc</code>/<code>pfree</code>), and database connection exhaustion during call routing bursts. Taking an extended multi-hour maintenance window to dump and reload terabytes of data was impossible under strict telecommunications availability SLAs.</p>
+<div class="section-eyebrow">Problem</div>
+<h2>Compatibility and connection pressure had to be addressed together</h2>
+<p>The telecom platform depended on an older PostgreSQL environment, legacy schema behavior, and native client code. Call processing, messaging, account management, and reporting also competed for database connections. A database move had to preserve those application paths while avoiding an extended offline copy.</p>
 </div>
-<div>
-<h3>The solution I built</h3>
-<p>I designed a zero-downtime database modernization pipeline that separated schema remediation, continuous replication, and client-side adapter compatibility. DDL schemas were extracted and refactored to comply with modern ANSI standards, and custom C adapter libraries were recompiled with updated linker flags against modern client libraries. AWS Database Migration Service (DMS) performed a full-load transfer followed by continuous Change Data Capture (CDC) over an encrypted Site-to-Site VPN hub connected to AWS Transit Gateway. The database architecture was cleanly decoupled into five purpose-built logical databases fronted by local connection pooling to guarantee stability.</p>
-</div>
-</div>
-<figure class="reqflow">
-<figcaption class="reqflow-title">Zero-downtime database modernization pipeline</figcaption>
-<ol class="reqflow-list">
-<li class="reqflow-step">
-<span class="reqflow-n">01</span>
-<span class="reqflow-name">Schema and DDL modernization</span>
-<span class="reqflow-note">Procedural triggers, outdated datatypes, and implicit typecasts were refactored to modern PL/pgSQL; custom C adapter code was recompiled against modern headers.</span>
-</li>
-<li class="reqflow-step">
-<span class="reqflow-n">02</span>
-<span class="reqflow-name">Multi-database isolation</span>
-<span class="reqflow-note">Provisioned five distinct logical databases for call reporting, queue processing, core state, identity management, and messaging to decouple disparate workloads.</span>
-</li>
-<li class="reqflow-step">
-<span class="reqflow-n">03</span>
-<span class="reqflow-name">Baseline data transfer &amp; CDC sync</span>
-<span class="reqflow-note">AWS DMS completed the initial baseline table transfer followed by continuous change synchronization over an encrypted VPN transit path with sub-second replication latency.</span>
-</li>
-<li class="reqflow-step">
-<span class="reqflow-n">04</span>
-<span class="reqflow-name">Connection-pooled cutover</span>
-<span class="reqflow-note">Switched microservice endpoints to local connection pool instances on loopback port 6432, redirected write traffic to Aurora, and validated zero data loss.</span>
-</li>
-</ol>
-</figure>
-
-<div class="callout"><b>What this enables:</b> The telecommunications platform gains enterprise-grade horizontal read scalability, cross-region storage replication across primary and disaster-recovery regions, automated backup vaults, and 40% faster query execution without requiring maintenance downtime for data cutover.</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Solution</div>
+<h2>Prepare the database while the existing platform keeps serving traffic</h2>
+<p>I separated schema remediation, native client compatibility, data replication, and application cutover. AWS DMS handled the baseline transfer and change synchronization described in the migration workflow. Local PgBouncer instances provided a controlled connection path to Aurora, instead of allowing application concurrency to translate directly into backend connection growth.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>The decisions that mattered</h2>
-<p>The central design choice was to treat database modernization as a continuous replication and schema-adaptation workflow rather than an offline migration. Moving across eight major versions means that internal database catalog representations, trigger syntaxes, and client connection protocols have evolved significantly. The architecture separated the storage tier leap from the application cutover by maintaining continuous data parity.</p>
+<h2>Separate data movement from application switchover</h2>
+<p>Logical databases separated workload responsibilities, including core state, queue processing, messaging, and call reporting. Schema and client changes were validated before switching the application endpoints. Keeping replication running during preparation reduced the amount of data that needed to catch up at cutover.</p>
+<p>Migration tooling depends on the source engine version and its supported replication path. A verified source inventory and compatibility checks are prerequisites for repeating this approach.</p>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
 <ul>
-<li><b>Multi-database logical isolation:</b> Instead of running all services against a single monolithic database instance, the platform codified dedicated logical databases for call reporting, queue processing, core application state, user management, and messaging dispatch using automated initialization pipelines.</li>
-<li><b>C adapter recompilation and linker patching:</b> Application services relied on a native C extension library for high-speed database communication. The build pipeline failed on modern operating systems because legacy Makefiles hardcoded library paths without referencing the modern database client library location. Updating the build configuration to link modern client libraries restored native compilation and packaging.</li>
-<li><b>Schema refactoring & PL/pgSQL compatibility functions:</b> Legacy implicit casts were replaced with explicit casting, and obsolete functions were refactored into safe, idempotent PL/pgSQL compatibility wrappers that run natively inside the modern database engine without behavioral drift.</li>
-<li><b>Continuous CDC over Transit Gateway:</b> AWS Database Migration Service tasks established continuous replication between the legacy on-premises database and the target Aurora PostgreSQL cluster. Table validation tasks confirmed row-count parity and cryptographic checksums prior to DNS endpoint switching.</li>
+<li><b>Schema and native clients:</b> Deprecated syntax, implicit casts, and compatibility functions were reviewed alongside C client build settings and library paths. These were application-compatibility changes, not merely infrastructure provisioning.</li>
+<li><b>Local connection pooling:</b> PgBouncer sat on the persistent service nodes. Application settings were updated to use the pool endpoint rather than an absent local PostgreSQL listener. Separate workload mappings and pool limits reduced competition between batch processing and interactive requests.</li>
+<li><b>Proxy trade-off:</b> Local pools fitted the existing host and client integration, but their configuration, credentials, and recovery became part of node operations. This choice should be evaluated against a managed proxy for each workload.</li>
+<li><b>Validation:</b> The migration workflow included row-count and checksum comparisons, sequence checks, and application smoke tests. A successful copy alone was not sufficient evidence that call ingestion, messaging, and authentication still worked.</li>
 </ul>
 </details>
-<details class="implementation-notes">
-<summary>Security controls</summary>
-<ul>
-<li><b>Encrypted migration transport:</b> Replication traffic between the on-premises enterprise datacenter and the cloud VPC traversed an IPsec VPN tunnel terminating directly on an AWS Transit Gateway attachment.</li>
-<li><b>KMS Customer Managed Key encryption:</b> The database cluster volume is encrypted at rest using an AWS KMS Customer Managed Key (CMK) configured with automated annual key rotation.</li>
-<li><b>Strict private subnet placement:</b> Database writer and reader instances reside strictly in dedicated private database subnets across three Availability Zones with zero internet gateway ingress paths.</li>
-</ul>
-</details>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Security</div>
+<h2>Protect the migration path and pool credentials</h2>
+<p>Migration traffic used the private VPN/transit path. Aurora was placed in private subnets with encryption at rest. Pool authentication files required restricted ownership and permissions; database transport used TLS. Certificate and hostname verification must be checked explicitly rather than inferred from an encryption setting.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Delivery</div>
-<h2>How the change is rolled out</h2>
-<p>The migration was rolled out using an environment-by-environment progression: Dev, QA, Staging, and Production. In each environment, the database initialization script verified database existence, created missing schemas, and applied refactored DDL scripts before launching DMS synchronization.</p>
-<p>During the scheduled maintenance window, write traffic on the legacy database was paused, DMS change-capture queues were drained until replication lag reached zero, and microservice configuration files were repointed to the local connection pool. Smoke testing verified call record ingestion, SMS delivery, and user authentication before opening traffic.</p>
+<h2>Pause writes, reconcile, then change endpoints</h2>
+<p>Schema and configuration changes progressed through non-production environments before production cutover. During the final window, writes to the old database were briefly paused, remaining changes were applied, data checks were completed, and application endpoints were switched through the connection pool. Smoke tests then exercised the business paths before normal traffic resumed.</p>
+<p>This describes a migration with a brief write pause. It does not claim uninterrupted writes or establish a universal zero-downtime result.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Trade-offs</div>
-<h2>What this does not solve</h2>
-<p>Continuous CDC replication requires primary keys or unique indexes on replicated tables. Legacy tables lacking explicit unique keys required adding synthetic surrogate keys before replication could track row-level deletes accurately. Additionally, while Aurora Global Database provides storage-level replication to the secondary region, failover between regions requires an explicit switchover operation orchestrated through DNS routing or failover automation.</p>
+<h2>Pooling changes the connection contract</h2>
+<p>Transaction pooling requires a review of session state, temporary objects, prepared statements, and other connection-specific behavior. Per-pool limits also need to be evaluated across all nodes and database/user combinations; a limit on one host is not a cluster-wide cap.</p>
+<p>Replication validation and a rollback decision are separate concerns. Once applications write to the new target, switching back requires a plan for those new writes rather than simply restoring the previous endpoint.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Outcome</div>
-<h2>What changed</h2>
-<div class="outcomes">
-<div class="outcome"><div class="num">8+</div><div class="txt">Major PostgreSQL engine versions bridged in a single zero-downtime migration</div></div>
-<div class="outcome"><div class="num">0</div><div class="txt">Data loss across terabytes of call logs, billing tables, and active messaging records</div></div>
-<div class="outcome"><div class="num">40%</div><div class="txt">Faster average query execution during morning peak call-routing spikes</div></div>
-</div>
+<h2>Migration and connection management became one delivery workflow</h2>
+<p>The platform moved to Aurora with compatibility work and connection pooling incorporated into deployment. Data validation and application checks supported the cutover. Performance improvements require comparable workload measurements before they can be quantified.</p>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Next steps</div>
+<h2>Establish a repeatable performance baseline</h2>
+<p>Retain a source/version inventory, cutover validation report, and rollback criteria. Compare pool wait time, connection counts, query latency, CPU, and error rates under the same workload before publishing performance improvements.</p>
+</div>
+</section>
+
       <aside class="next-study wrap">
-        <a href="../../case-studies/telecom/zero-downtime-database-modernization-and-failover.html">← Automated failover</a>
-        <a href="../../case-studies/telecom/serverless-ha-failover-engine.html">Sub-minute automated failover →</a>
+        <a href="../../case-studies/index.html">← Case studies</a>
+        <a href="../../case-studies/telecom/serverless-ha-failover-engine.html">Failover and licensing continuity →</a>
       </aside>
       <div class="closing">
         <div class="wrap">

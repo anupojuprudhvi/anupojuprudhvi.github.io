@@ -1,7 +1,8 @@
 [
   {
     "id": "telecom",
-    "name": "Telecom & Secure Communications"
+    "name": "Telecom & Secure Communications",
+    "customOverview": true
   },
   {
     "id": "tolling",

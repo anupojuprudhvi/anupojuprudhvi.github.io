@@ -4,12 +4,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>In-memory column encryption and seamless AWS KMS modernization — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="Protecting 13 sensitive PII fields with an in-memory Linux daemon and shared-memory key caching, replacing legacy on-premise key vaults with AWS KMS Decrypt with zero application rewrite." />
+    <title>Moving legacy telecom key management to AWS KMS — Prudhvi Raj Anupoju</title>
+    <meta name="description" content="Adapting an existing local encryption service to AWS KMS while preserving its application integration and making the key-handling boundaries explicit." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/case-studies/telecom/in-memory-column-encryption-kms.html" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="In-memory column encryption and seamless AWS KMS modernization" />
-    <meta property="og:description" content="Protecting 13 sensitive PII fields with an in-memory Linux daemon and shared-memory key caching, replacing legacy on-premise key vaults with AWS KMS Decrypt with zero application rewrite." />
+    <meta property="og:title" content="Moving legacy telecom key management to AWS KMS" />
+    <meta property="og:description" content="Adapting an existing local encryption service to AWS KMS while preserving its application integration and making the key-handling boundaries explicit." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
@@ -30,115 +30,88 @@
     <main id="main">
       <header class="hero">
         <div class="wrap">
-          <div class="eyebrow">Telecom &amp; Secure Communications · Security &amp; compliance</div>
-          <h1>In-memory column encryption and seamless AWS KMS modernization</h1>
-          <p class="sub">Protecting 13 sensitive PII fields with an in-memory Linux daemon and shared-memory key caching, replacing legacy on-premise key vaults with AWS KMS Decrypt with zero application rewrite.</p>
+          <div class="eyebrow">Telecom &amp; Secure Communications · Security modernization</div>
+          <h1>Moving legacy telecom key management to AWS KMS</h1>
+          <p class="sub">Adapting an existing local encryption service to AWS KMS while preserving its application integration and making the key-handling boundaries explicit.</p>
           <div class="meta">
             <div><b>Project</b><br />Telecom &amp; Secure Communications</div>
             <div><b>Layer</b><br />Security</div>
-            <div><b>Stack</b><br />AWS KMS · Linux Shared Memory · C Language · PostgreSQL · systemd · OpenSSL</div>
-            <div><b>Tags</b><br />security · compliance · gdpr · soc2 · encryption · kms · c-language</div>
+            <div><b>Stack</b><br />AWS KMS · C · Linux shared memory · systemd · PostgreSQL</div>
+            <div><b>Tags</b><br />security · encryption · kms · legacy-modernization · key-management</div>
           </div>
         </div>
       </header>
+
 <section>
 <div class="wrap">
-<div class="section-eyebrow">Security &amp; compliance</div>
-<h2>Protecting 13 PII fields with shared-memory key caching and zero app rewrite</h2>
-<div class="problem-solution">
-<div>
-<h3>The problem</h3>
-<p>European telecommunications data protection mandates (GDPR) and SOC2 Type II compliance required that thirteen sensitive subscriber fields (calling and called phone numbers, SMS bodies, MMS file locations, employee IDs, and email addresses) be encrypted end-to-end before reaching persistent storage. Storage-level encryption (AWS KMS on EBS or RDS) was legally insufficient because any database administrator account could inspect plaintext values. Furthermore, the legacy on-premises platform relied on a custom in-memory C daemon coupled to a legacy proprietary key vault; completely refactoring the encryption architecture across hundreds of application services would have delayed cloud migration by months.</p>
+<div class="section-eyebrow">Problem</div>
+<h2>Replacing the key provider without replacing every caller</h2>
+<p>The platform already encrypted sensitive subscriber data through a local C-based service. That service depended on an on-premises key provider. Moving the database and applications into AWS also required a workable key-management integration, but changing every application's encryption interface would have widened the migration considerably.</p>
 </div>
-<div>
-<h3>The solution I built</h3>
-<p>I preserved the application-to-database crypto architecture while modernizing the key unwrapping provider to AWS KMS. A local Linux systemd daemon manages 256-bit symmetric Data Encryption Keys (DEKs) in protected shared memory (<code>/dev/shm</code>), allowing high-throughput microservices to encrypt and decrypt fields with sub-microsecond in-memory performance. In the C crypto service, the unwrapping logic was adapted to replace legacy provider unwrap calls with native AWS KMS <code>Decrypt</code> APIs. Data is stored in Aurora as AES-256-CBC deterministic ciphertext (<code>{key_index}${base64}</code>), and custom PostgreSQL functions enable transparent account matching in SQL queries.</p>
-</div>
-</div>
-<figure class="reqflow">
-<figcaption class="reqflow-title">In-memory key unwrap and encryption flow</figcaption>
-<ol class="reqflow-list">
-<li class="reqflow-step">
-<span class="reqflow-n">01</span>
-<span class="reqflow-name">Secure boot &amp; KMS key unwrapping</span>
-<span class="reqflow-note">The in-memory daemon initializes, reads encrypted key envelopes from the database, and calls AWS KMS Decrypt to unwrap Data Encryption Keys into memory.</span>
-</li>
-<li class="reqflow-step">
-<span class="reqflow-n">02</span>
-<span class="reqflow-name">Shared memory DEK publication</span>
-<span class="reqflow-note">Plaintext DEKs are published to a restricted Linux shared memory segment (/dev/shm) with atomic version swapping, allowing lockless reads by local microservices.</span>
-</li>
-<li class="reqflow-step">
-<span class="reqflow-n">03</span>
-<span class="reqflow-name">Application-layer column encryption</span>
-<span class="reqflow-note">Applications encrypt the 13 PII fields using AES-256-CBC with unique 128-bit Initialization Vectors, formatting output as {key_index}${base64_ciphertext}.</span>
-</li>
-<li class="reqflow-step">
-<span class="reqflow-n">04</span>
-<span class="reqflow-name">SQL query &amp; database persistence</span>
-<span class="reqflow-note">Encrypted ciphertext is written to Aurora; custom PostgreSQL match functions perform query evaluations directly on encrypted columns.</span>
-</li>
-</ol>
-</figure>
-
-<div class="callout"><b>What this enables:</b> The telecom platform achieves 100% regulatory compliance for customer data protection and passes external SOC2 audits without adding network latency to real-time call and message processing.</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Solution</div>
+<h2>Isolate the provider change</h2>
+<p>I adapted the key-unwrapping integration to AWS KMS while retaining the existing local service and application-facing contract. This was a targeted change to the provider integration, not a claim that no code changed or that the existing cryptographic design had been independently certified.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>The decisions that mattered</h2>
-<p>The critical design decision was to keep cryptographic key material in volatile shared memory while delegating envelope protection to AWS KMS. Calling a cloud KMS API over the network for every single phone number or SMS query in a telecommunications system would introduce unacceptable latency and incur millions of API requests per day. Publishing unwrapped Data Encryption Keys into local Linux shared memory (<code>/dev/shm</code>) achieves both strict compliance and wire-speed performance.</p>
+<h2>Distinguish the wrapping key from the data key</h2>
+<p>The design uses a local service to make data-encryption keys available to authorized application processes. KMS protects the wrapped key material and authorizes unwrapping. The plaintext data key returned to the host must then be protected by that host and its processes; it is distinct from the KMS key itself. This is the boundary described by <a href="https://docs.aws.amazon.com/kms/latest/developerguide/kms-cryptography.html">AWS envelope encryption</a>.</p>
+<p>Keeping a local integration avoids a KMS request for each field operation, but extends the responsibility for plaintext key lifetime and access to the application environment.</p>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
 <ul>
-<li><b>Surgical C code adaptation:</b> The unwrap provider swap was achieved by isolating the key-unwrapping routine without altering the operational footprint or database schemas:</li>
+<li><b>Provider integration:</b> The key-unwrapping routine was adapted to call KMS. Existing key identifiers and caller interfaces were retained as part of compatibility work.</li>
+<li><b>Local key access:</b> The service used Linux shared memory for local access. File permissions and service identity are part of this boundary; shared memory is not, by itself, a guarantee that keys cannot be exposed.</li>
+<li><b>Compatibility checks:</b> Validation covered the service's ability to obtain usable key material and work with the existing data path. The exact ciphertext format, IV generation, integrity protection, and query-matching behavior require a separate implementation review.</li>
 </ul>
 </details>
-<p>``<code>c if (data[i+4]) { // label present =&gt; provider unwrap if (kms_decrypt(target, data[i+2], data[i+4])) { /* AWS KMS success path */ } } else { // existing local-decrypt path (unchanged) } </code>`` The database schema for key index tracking and application rekey utilities remained completely unchanged.</p>
-<ul>
-<li><b>Shared memory architecture & atomic version swap:</b> The encryption daemon runs as a hardened systemd service on persistent nodes. It maps a dedicated POSIX shared memory block accessible only by the application service group. During rekeying operations, the service populates a new memory segment and performs an atomic pointer swap, ensuring application workers never observe partial or torn keys.</li>
-<li><b>In-database match functions:</b> Performing SQL lookups on encrypted columns without exposing plaintext keys to the database engine required custom PostgreSQL functions. Compatibility functions were deployed into the application database, enabling services to match hashed account numbers and phone numbers transparently without returning decrypted values to disk.</li>
-<li><b>Auditable verification pipeline:</b> To satisfy regulatory auditors, automated verification scripts executed end-to-end checks against production benchmark records and performed regular expression scans across raw database backups to confirm zero plaintext leaks.</li>
-</ul>
-<details class="implementation-notes">
-<summary>Security controls</summary>
-<ul>
-<li><b>Database isolation from encryption keys:</b> The database engine stores and retrieves ciphertext strings exclusively; it never possesses access to the KMS Customer Managed Key or plaintext DEKs.</li>
-<li><b>POSIX permission boundaries on <code>/dev/shm</code>:</b> The shared memory file descriptor is created with strict <code>0600</code> permissions owned by the application service user and locked into RAM using <code>mlock()</code>, preventing keys from being swapped to disk.</li>
-<li><b>KMS Customer Managed Key policy:</b> The AWS KMS key policy restricts decryption privileges strictly to the IAM role assumed by persistent database EC2 instances.</li>
-</ul>
-</details>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Security</div>
+<h2>Key lifecycle remains part of the application design</h2>
+<p>Permissions to unwrap keys should be limited to the required workload roles, with access logging and a documented response to loss of KMS access. Host access, process privileges, memory dumps, swap behavior, and key cleanup affect the plaintext-key boundary.</p>
+<p>Database encryption at rest and application field encryption address different access paths. Neither this provider migration nor a plaintext-pattern scan establishes regulatory compliance or an audit outcome.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Delivery</div>
-<h2>How the change is rolled out</h2>
-<p>The migration from the legacy key provider to AWS KMS was delivered in two phases. Phase one deployed the updated daemon with AWS KMS decryption capabilities alongside the existing database codings table. Re-encryption utilities generated new key sets wrapped under AWS KMS Customer Managed Keys. Phase two ran the automated verification suite against staging database snapshots, scanning tables and dump files with regular expressions matching telephone numbers and email formats to ensure 100% ciphertext compliance before production sign-off.</p>
+<h2>Validate old and new data paths before cutover</h2>
+<p>The migration used staging validation around the updated daemon and wrapped key material. Checks included reading existing data and exercising the new provider path. Scanning database exports can help detect obvious plaintext exposure, but it does not prove cryptographic correctness, authorization boundaries, or complete protection of sensitive fields.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Trade-offs</div>
-<h2>What this does not solve</h2>
-<p>Deterministic column encryption allows equality lookups (<code>WHERE phone = :encrypted_val</code>) but does not support range queries (<code>&lt;</code> or <code>&gt;</code>) or full-text wildcards on encrypted fields. Searching within message bodies requires client-side decryption or indexing via dedicated search clusters (such as OpenSearch) where access control is governed at the cluster level.</p>
+<h2>Compatibility preserves both behavior and constraints</h2>
+<p>Retaining the local crypto interface reduced the scope of caller changes. It also retained responsibility for key caching, rotation, historical-data access, and the application's encrypted-query design. This case study deliberately does not present an unverified cipher mode or equality-search construction as a recommended design.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Outcome</div>
-<h2>What changed</h2>
-<div class="outcomes">
-<div class="outcome"><div class="num">13</div><div class="txt">Sensitive subscriber PII fields protected end-to-end with AES-256-CBC encryption</div></div>
-<div class="outcome"><div class="num">0</div><div class="txt">Application-layer rewrites required to transition key unwrapping to AWS KMS</div></div>
-<div class="outcome"><div class="num">30+</div><div class="txt">Consecutive days of continuous, uninterrupted daemon uptime validated in staging</div></div>
-</div>
+<h2>A narrower migration boundary</h2>
+<p>The key provider was modernized through a focused integration change while preserving the application's local service contract. The meaningful outcome is that separation of responsibilities; no latency benchmark, blanket compliance claim, or assertion that the database can never access plaintext keys is made here.</p>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Next steps</div>
+<h2>Complete the cryptographic design review</h2>
+<p>Document the actual cipher and integrity mechanism, IV construction, query path, key owners, cache lifetime, and rotation/revocation behavior. Validate restart and provider-outage behavior, then retain the test evidence before publishing stronger security or performance claims.</p>
+</div>
+</section>
+
       <aside class="next-study wrap">
-        <a href="../../case-studies/telecom/secondary-eni-telecom-licensing.html">← Preserve node-locked licenses via ENI</a>
-        <a href="../../case-studies/telecom/multi-region-active-standby-transit-network.html">Multi-region DR network mesh →</a>
+        <a href="../../case-studies/telecom/serverless-ha-failover-engine.html">← Failover and licensing continuity</a>
+        <a href="../../case-studies/telecom/platform-automation-engine-v1-to-v10.html">Repeatable platform delivery →</a>
       </aside>
       <div class="closing">
         <div class="wrap">

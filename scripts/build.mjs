@@ -146,9 +146,18 @@ const selectedWork = projects.map((project, projectIndex) => {
   const values = { projectName: esc(project.name), engagementUrl: esc(engagementUrl), projectNumber: String(projectIndex + 1).padStart(2, "0") };
   const caseStudyLinks = studies.map((d, idx) => `            <a href="${esc(basename(d.url))}"><span>${String(idx + 1).padStart(2, "0")} / ${esc(d.label || d.layer || "Case study")}</span><strong>${esc(d.nav || d.title)}</strong><small>${esc(d.summary)} →</small></a>`).join("\n");
   if (project.customOverview) {
-    emit(engagementUrl, template(readFileSync(join(ROOT, `content/overviews/${project.id}.html`), "utf8"), {
-      ...values, caseStudyLinks, caseStudyCount: studies.length,
-    }));
+    const overviewBase = join(ROOT, `content/overviews/${project.id}`);
+    const sources = [".html", ".md"].filter((extension) => existsSync(overviewBase + extension));
+    if (sources.length !== 1) throw new Error(`${project.id}: provide exactly one HTML or Markdown overview`);
+    const source = readFileSync(overviewBase + sources[0], "utf8").replaceAll("\r\n", "\n");
+    const slots = { ...values, caseStudyLinks, caseStudyCount: studies.length };
+    if (sources[0] === ".md") {
+      const { data, body } = parseFrontMatter(source, overviewBase + ".md");
+      if (!data.title || !data.summary) throw new Error(`${project.id}: overview requires title and summary`);
+      emit(engagementUrl, page({ ...data, projectName: project.name }, template(renderBody(body), slots), { up: "../../", url: engagementUrl }));
+    } else {
+      emit(engagementUrl, template(source, slots));
+    }
   } else {
     emit(engagementUrl, page({ title: project.name, projectName: project.name,
       summary: "Explore the case studies from this engagement, including the problems, architecture decisions, and outcomes." },

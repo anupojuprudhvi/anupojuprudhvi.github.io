@@ -133,7 +133,14 @@ To add a **project**, add an entry with a unique `id` and `name` to
 pitch as a starting point, and add Markdown files under
 `content/case-studies/<id>/`. The build creates its overview automatically.
 Set `customOverview: true` only if it needs a longer narrative, and create
-`content/overviews/<id>.html` using the tolling overview as a guide.
+either `content/overviews/<id>.html` (tolling) or `content/overviews/<id>.md`
+(telecom). Markdown overviews require `title` and `summary` front matter and use
+the shared page layout. Include `{{caseStudyLinks}}` in a raw HTML container to
+list the project’s entries automatically. Provide exactly one overview source.
+
+Telecom has four main case studies and one incident write-up. Supporting networking
+and storage work lives in its overview; the consolidation and evidence gaps are
+recorded in [the telecom editorial notes](docs/telecom-content-review.md).
 
 Templates use named slots such as `{{projectName}}`, `{{engagementUrl}}`,
 `{{selectedWork}}`, `{{caseStudyLinks}}`, and `{{caseStudyCount}}`.

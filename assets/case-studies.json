@@ -1,41 +1,16 @@
 [
   {
-    "title": "Zero-downtime database modernization and automated failover",
-    "nav": "Automated failover",
-    "summary": "An eight-major-version PostgreSQL migration to Aurora with CDC replication, plus a serverless failover engine that recovers in under 60 seconds and preserves hardware-bound licensing.",
+    "title": "Modernizing a legacy telecom database with a controlled cutover",
+    "nav": "Database migration and connection pooling",
+    "summary": "Combining schema and client compatibility work, continuous replication, and local connection pooling to move a legacy telecom database tier to Aurora.",
     "project": "telecom",
     "projectName": "Telecom & Secure Communications",
     "layer": "Data",
     "stack": [
       "Aurora PostgreSQL",
       "AWS DMS",
-      "Lambda",
-      "DynamoDB",
-      "Terraform"
-    ],
-    "tags": [
-      "resilience",
-      "migration",
-      "database",
-      "failover",
-      "encryption"
-    ],
-    "url": "case-studies/telecom/zero-downtime-database-modernization-and-failover.html",
-    "problem": "A secure communications platform on a legacy database eight major versions behind, with manual hardware-dependent failover and licences bound to a physical MAC address.",
-    "solution": "Phased CDC migration to Aurora, a serverless failover engine using a DynamoDB lock to prevent split-brain, and a portable network interface that carries the licensed identity across failover."
-  },
-  {
-    "title": "Modernizing legacy PostgreSQL to Aurora Global Database with zero data loss",
-    "nav": "Modernize legacy PostgreSQL to Aurora",
-    "summary": "Migrating an active telecom database tier eight major versions forward to Aurora PostgreSQL Global Database using continuous CDC replication, DDL schema refactoring, and custom C adapter recompilation.",
-    "project": "telecom",
-    "projectName": "Telecom & Secure Communications",
-    "layer": "Data",
-    "stack": [
-      "Amazon Aurora Global Database",
-      "AWS DMS",
-      "PostgreSQL 17",
-      "C Extension APIs",
+      "PgBouncer",
+      "C client libraries",
       "Terraform"
     ],
     "tags": [
@@ -43,255 +18,113 @@
       "migration",
       "cdc",
       "aurora",
-      "dms",
-      "postgresql"
+      "pgbouncer",
+      "performance"
     ],
     "url": "case-studies/telecom/aurora-global-database-modernization.html",
-    "problem": "The core telecom call detail records, billing data, and real-time subscriber state ran on an aging, unsupported PostgreSQL 8.x cluster in an on-premises datacenter. Bridging eight major versions directly to modern cloud-native Aurora PostgreSQL exposed severe incompatibilities: removed procedural language syntax, dropped legacy implicit casts, changes to internal PostgreSQL memory management headers (`palloc`/`pfree`), and database connection exhaustion during call routing bursts. Taking an extended multi-hour maintenance window to dump and reload terabytes of data was impossible under strict telecommunications availability SLAs.",
-    "solution": "I designed a zero-downtime database modernization pipeline that separated schema remediation, continuous replication, and client-side adapter compatibility. DDL schemas were extracted and refactored to comply with modern ANSI standards, and custom C adapter libraries were recompiled with updated linker flags against modern client libraries. AWS Database Migration Service (DMS) performed a full-load transfer followed by continuous Change Data Capture (CDC) over an encrypted Site-to-Site VPN hub connected to AWS Transit Gateway. The database architecture was cleanly decoupled into five purpose-built logical databases fronted by local connection pooling to guarantee stability."
+    "problem": "Legacy database compatibility and bursts of client connections complicated a telecom migration with a limited cutover window.",
+    "solution": "Separate schema remediation, replication, connection pooling, and application cutover, with validation before write traffic moves."
   },
   {
-    "title": "Sub-minute automated VIP failover via a serverless recovery engine",
-    "nav": "Sub-minute automated failover",
-    "summary": "Replacing fragile on-premise hardware STONITH scripts with an automated Python Lambda engine and DynamoDB distributed locking to recover virtual IP and services in under 60 seconds with zero split-brain risk.",
+    "title": "Automating telecom failover while preserving licensed identity",
+    "nav": "Failover and licensing continuity",
+    "summary": "Bringing recovery orchestration, service validation, and hardware-bound licensing into one failover workflow, with an explicit same-AZ boundary.",
     "project": "telecom",
     "projectName": "Telecom & Secure Communications",
     "layer": "Resilience",
     "stack": [
       "AWS Lambda",
-      "Amazon DynamoDB",
-      "Amazon CloudWatch",
-      "AWS Systems Manager",
-      "Amazon EC2"
+      "DynamoDB",
+      "CloudWatch",
+      "Systems Manager",
+      "EC2",
+      "Elastic Network Interfaces"
     ],
     "tags": [
-      "high-availability",
       "failover",
-      "lambda",
-      "dynamodb",
-      "split-brain",
-      "stonith",
-      "ssm"
+      "licensing",
+      "eni",
+      "recovery",
+      "orchestration"
     ],
     "url": "case-studies/telecom/serverless-ha-failover-engine.html",
-    "problem": "High availability in the legacy on-premises datacenter relied on a short IPMI STONITH (\"Shoot The Other Node In The Head\") script and manual sysadmin triage. Transient network partitions frequently caused both cluster nodes to believe the partner had died, resulting in split-brain events where both hosts attempted to claim the Virtual IP and write data concurrently. When hard failures occurred, manual investigation and service recovery typically took 45+ minutes, violating telecom availability agreements and dropping customer calls.",
-    "solution": "I designed an automated serverless high-availability engine: a modular Python AWS Lambda function triggered by CloudWatch alarms on node heartbeat failures. The engine eliminates split-brain risk using an Amazon DynamoDB lock table with atomic conditional writes and 120-second expiring leases. When an unhealthy primary is detected, Lambda acquires the lock, detaches the Virtual IP secondary ENI, attaches it to the warm standby instance, invokes AWS Systems Manager (SSM) to bring up the interface and restart local daemons, fences the degraded node via the EC2 API, and performs final ownership validation before clearing alarms."
+    "problem": "Manual recovery and licenses tied to network identity made instance replacement a service-level problem rather than a simple infrastructure action.",
+    "solution": "Coordinate recovery through an external orchestrator and retain licensed identity on a persistent secondary network interface."
   },
   {
-    "title": "Preserving hardware-locked telecom licenses in ephemeral cloud infrastructure",
-    "nav": "Preserve node-locked licenses via ENI",
-    "summary": "Preserving node-locked PBX telephony licenses across cloud failovers and node rebuilds by pinning MAC addresses to persistent secondary ENIs with dynamic index attachment.",
-    "project": "telecom",
-    "projectName": "Telecom & Secure Communications",
-    "layer": "Foundation",
-    "stack": [
-      "AWS Elastic Network Interface",
-      "Amazon EC2",
-      "AWS Systems Manager",
-      "Terraform",
-      "Linux Policy Routing"
-    ],
-    "tags": [
-      "networking",
-      "eni",
-      "licensing",
-      "mac-pinning",
-      "telecom",
-      "ec2",
-      "terraform"
-    ],
-    "url": "case-studies/telecom/secondary-eni-telecom-licensing.html",
-    "problem": "Proprietary telecom telephony software, voice switches, and PBX daemons enforced node-locked licenses cryptographically tied to the server's physical MAC address and static private IP address. In standard AWS environments, when an EC2 instance is replaced, rebooted across hosts, or autoscaled, AWS provisions a new virtual network adapter with a randomized MAC address. This randomized hardware change immediately invalidated the vendor software license on instance launch, halting call processing and requiring manual vendor re-licensing tickets that took hours to resolve.",
-    "solution": "I designed a decoupled dual-network interface architecture implemented in Terraform and automated via shell tooling. The primary interface (`eth0`) remains ephemeral for management, SSH, and CloudWatch metrics, while the licensed telecom identity is housed on an independent, persistent Elastic Network Interface (`eth1`). The secondary ENI carries the registered vendor MAC address and static IP. When an instance fails or is replaced, automation scripts detach the secondary ENI and reattach it to the replacement node, preserving the exact hardware identity without triggering license invalidation."
-  },
-  {
-    "title": "In-memory column encryption and seamless AWS KMS modernization",
-    "nav": "In-memory encryption with AWS KMS",
-    "summary": "Protecting 13 sensitive PII fields with an in-memory Linux daemon and shared-memory key caching, replacing legacy on-premise key vaults with AWS KMS Decrypt with zero application rewrite.",
+    "title": "Moving legacy telecom key management to AWS KMS",
+    "nav": "Key-management migration",
+    "summary": "Adapting an existing local encryption service to AWS KMS while preserving its application integration and making the key-handling boundaries explicit.",
     "project": "telecom",
     "projectName": "Telecom & Secure Communications",
     "layer": "Security",
     "stack": [
       "AWS KMS",
-      "Linux Shared Memory",
-      "C Language",
-      "PostgreSQL",
+      "C",
+      "Linux shared memory",
       "systemd",
-      "OpenSSL"
+      "PostgreSQL"
     ],
     "tags": [
       "security",
-      "compliance",
-      "gdpr",
-      "soc2",
       "encryption",
       "kms",
-      "c-language"
+      "legacy-modernization",
+      "key-management"
     ],
     "url": "case-studies/telecom/in-memory-column-encryption-kms.html",
-    "problem": "European telecommunications data protection mandates (GDPR) and SOC2 Type II compliance required that thirteen sensitive subscriber fields (calling and called phone numbers, SMS bodies, MMS file locations, employee IDs, and email addresses) be encrypted end-to-end before reaching persistent storage. Storage-level encryption (AWS KMS on EBS or RDS) was legally insufficient because any database administrator account could inspect plaintext values. Furthermore, the legacy on-premises platform relied on a custom in-memory C daemon coupled to a legacy proprietary key vault; completely refactoring the encryption architecture across hundreds of application services would have delayed cloud migration by months.",
-    "solution": "I preserved the application-to-database crypto architecture while modernizing the key unwrapping provider to AWS KMS. A local Linux systemd daemon manages 256-bit symmetric Data Encryption Keys (DEKs) in protected shared memory (`/dev/shm`), allowing high-throughput microservices to encrypt and decrypt fields with sub-microsecond in-memory performance. In the C crypto service, the unwrapping logic was adapted to replace legacy provider unwrap calls with native AWS KMS `Decrypt` APIs. Data is stored in Aurora as AES-256-CBC deterministic ciphertext (`{key_index}${base64}`), and custom PostgreSQL functions enable transparent account matching in SQL queries."
+    "problem": "The platform's field-encryption service depended on a legacy key provider, coupling database modernization to a separate security integration.",
+    "solution": "Change the key-unwrapping provider while preserving the caller contract, and validate compatibility with existing encrypted data."
   },
   {
-    "title": "Active-standby multi-region disaster recovery network mesh",
-    "nav": "Multi-region DR network mesh",
-    "summary": "Deploying an active-standby multi-region topology across Frankfurt and Paris spanning dual VPCs, 24 subnets, Transit Gateway inter-region peering, and S3 native state locking.",
-    "project": "telecom",
-    "projectName": "Telecom & Secure Communications",
-    "layer": "Foundation",
-    "stack": [
-      "AWS Transit Gateway",
-      "VPC",
-      "AWS Backup",
-      "Terraform",
-      "S3 Native State Locking"
-    ],
-    "tags": [
-      "networking",
-      "multi-region",
-      "disaster-recovery",
-      "transit-gateway",
-      "terraform",
-      "dual-vpc"
-    ],
-    "url": "case-studies/telecom/multi-region-active-standby-transit-network.html",
-    "problem": "Telecommunications carrier agreements required the core platform to survive the catastrophic failure of an entire AWS cloud region with an RPO under one second and an RTO under fifteen minutes. Operating across regions with separate application, database, and administrative networks created severe routing complexity. Managing dozens of point-to-point VPC peering connections between primary (`eu-central-1`) and secondary (`eu-west-3`) regions would produce an unmaintainable mesh prone to routing loops, asymmetric return paths, and state lock contention during concurrent Terraform deployments.",
-    "solution": "I architected an active-standby multi-region cloud topology codified into twelve modular Terraform components. Each region deploys a dual-VPC architecture: an Application VPC for compute workloads and a Network Hub VPC for Transit Gateways, NAT Gateways, and bastion jump hosts. The primary region in Frankfurt connects to the disaster-recovery region in Paris through an encrypted AWS Transit Gateway inter-region peering attachment. Cross-region data resilience is anchored by Aurora Global Database storage replication and automated AWS Backup vaults, with Terraform state concurrency protected by S3 native state locking (`use_lockfile = true`)."
-  },
-  {
-    "title": "Zero-downtime media storage migration from on-prem NFS to Multi-AZ EFS",
-    "nav": "Migrate on-prem NFS to Multi-AZ EFS",
-    "summary": "Migrating millions of voicemail recordings from a single on-premise NFS appliance to Multi-AZ AWS EFS via AWS DataSync, implementing POSIX directory access points and 90-day Infrequent Access policies that cut storage costs by 85%.",
-    "project": "telecom",
-    "projectName": "Telecom & Secure Communications",
-    "layer": "Storage",
-    "stack": [
-      "Amazon EFS",
-      "AWS DataSync",
-      "AWS KMS",
-      "Terraform",
-      "Linux POSIX ACLs"
-    ],
-    "tags": [
-      "storage",
-      "efs",
-      "nfs",
-      "datasync",
-      "cost-optimization",
-      "lifecycle",
-      "telecom"
-    ],
-    "url": "case-studies/telecom/media-storage-nfs-to-multiaz-efs.html",
-    "problem": "Millions of customer voicemail messages, call audio files, and MMS attachments resided on a single on-premises Network File System (NFS) appliance in an enterprise datacenter. This appliance represented a critical single point of failure: an unrecoverable hardware or filesystem failure would immediately halt media recording and playback across the entire customer base. Furthermore, as voicemail and call audio accumulated over years, cold audio files consumed expensive high-performance on-premises disk storage without any automated lifecycle tiering.",
-    "solution": "I orchestrated a zero-downtime storage modernization from on-premises NFS to AWS Elastic File System (EFS) replicated across three Availability Zones in Frankfurt with cross-region replication to Paris. AWS DataSync agents executed over an encrypted Site-to-Site VPN tunnel to perform baseline bulk replication followed by hourly incremental delta syncs. EFS directory Access Points with POSIX user/group controls (`0750`) isolated media files between application servers and background workers. A 90-day Infrequent Access (IA) lifecycle policy was applied, automatically tiering older audio to lower-cost storage."
-  },
-  {
-    "title": "Eliminating Aurora CPU thrashing and connection starvation with PgBouncer",
-    "nav": "Connection pooling with PgBouncer",
-    "summary": "Eliminating connection starvation and Aurora CPU thrashing during call routing spikes by deploying local loopback PgBouncer transaction pooling across four distinct database services.",
-    "project": "telecom",
-    "projectName": "Telecom & Secure Communications",
-    "layer": "Data",
-    "stack": [
-      "PgBouncer",
-      "Amazon Aurora PostgreSQL",
-      "Linux",
-      "Systemd",
-      "Terraform"
-    ],
-    "tags": [
-      "database",
-      "pgbouncer",
-      "performance",
-      "connection-pooling",
-      "aurora",
-      "postgresql"
-    ],
-    "url": "case-studies/telecom/pgbouncer-connection-pooling-and-cpu-stabilization.html",
-    "problem": "Because the telecommunications platform coordinates concurrent voice calls, SMS dispatchers, user authentication, and asynchronous CDR consumers, client microservices opened thousands of concurrent database connections. PostgreSQL's process-per-connection architecture meant that each client connection spawned a separate backend server process. During peak morning traffic, connections spiked to over 2,000, causing severe context-switching overhead, memory exhaustion, and CPU thrashing on the Aurora cluster. Database queries timed out, and applications suffered fatal connection drops (`ERROR: pgbouncer cannot connect to server`).",
-    "solution": "I designed and deployed a local loopback connection-pooling tier using PgBouncer directly on persistent database nodes listening on port `6432`. Rather than introducing external network hops or hourly vCPU fees with managed proxies, local PgBouncer instances multiplex thousands of short-lived client transactions over a tightly controlled backend pool of 50 connections with a reserve burst capacity of 10. The pool configuration cleanly decoupled four distinct database services (`pgsql`, `pgsql-ltq`, `pgsql-sms`, and `pgsql-cdr`) with independent pool limits, protecting Aurora from connection storms."
-  },
-  {
-    "title": "Standardizing node provisioning via an automated configuration engine",
-    "nav": "Platform automation engine",
-    "summary": "Evolving post-configuration automation across ten script iterations into an idempotent configuration engine that provisions application servers and persistent database nodes in under 8 minutes.",
+    "title": "Making telecom node provisioning repeatable",
+    "nav": "Repeatable platform delivery",
+    "summary": "Turning manual host configuration and recurring migration defects into a provisioning workflow with explicit configuration, service reconciliation, and smoke tests.",
     "project": "telecom",
     "projectName": "Telecom & Secure Communications",
     "layer": "Platform",
     "stack": [
-      "Bash Shell",
+      "Bash",
       "AWS Systems Manager",
-      "Systemd",
-      "Apache Passenger",
-      "Postfix",
-      "Linux"
+      "systemd",
+      "Linux",
+      "Postfix"
     ],
     "tags": [
       "automation",
-      "devops",
-      "platform-engineering",
-      "bash",
-      "sysadmin",
-      "onboarding"
+      "provisioning",
+      "configuration",
+      "service-discovery",
+      "deployment"
     ],
     "url": "case-studies/telecom/platform-automation-engine-v1-to-v10.html",
-    "problem": "Early staging, QA, and disaster-recovery cloud deployments suffered from severe configuration drift. System administrators executed hundreds of manual shell commands to configure EFS mount points, set hostnames, populate application database configurations, bind web application virtual hosts, configure mail relays, and register devices with the central service registry. Onboarding a single persistent database node or application server took several hours of manual effort, frequently resulting in subtle configuration discrepancies and deployment failures.",
-    "solution": "I iteratively engineered a comprehensive post-configuration automation pipeline across ten progressive versions. The resulting production engine is an idempotent, modular shell pipeline executing via AWS Systems Manager or EC2 user-data. The engine ingests an external environment configuration file, automatically templates application configurations, mounts EFS endpoints, provisions local connection pools, generates web application virtual hosts, updates mail routing, and executes automated service registry reconciliation in under eight minutes."
+    "problem": "Manual configuration across application and persistent service nodes produced drift and repeated environment acceptance failures.",
+    "solution": "Automate host setup and incorporate the routing and service-discovery checks learned from migration troubleshooting."
   },
   {
-    "title": "SRE post-mortem: diagnosing a silent call detail record ingestion failure",
-    "nav": "SRE RCA: CDR ingestion failure",
-    "summary": "Diagnosing a silent telecommunications call detail record ingestion failure across application message consumers, zero-byte batch files, and persistent database ETL scripts.",
+    "title": "Diagnosing a silent call-record ingestion failure",
+    "nav": "Incident: silent CDR ingestion failure",
+    "summary": "Tracing missing call records through consumer output and SSH transfer, then replacing process-only checks with data-flow monitoring.",
     "project": "telecom",
     "projectName": "Telecom & Secure Communications",
     "layer": "Operations",
     "stack": [
-      "Apache Kafka",
+      "Kafka",
       "PostgreSQL",
-      "Python",
-      "Bash",
+      "Linux",
       "SSH ETL",
-      "Linux Systemd"
+      "CloudWatch"
     ],
     "tags": [
       "incident-response",
-      "rca",
-      "post-mortem",
       "cdr",
-      "etl",
-      "kafka",
-      "postgresql"
+      "ingestion",
+      "observability",
+      "recovery"
     ],
     "url": "case-studies/telecom/cdr-ingestion-pipeline-incident-rca.html",
-    "problem": "Following a cloud maintenance upgrade, business billing dashboards reported that Call Detail Records (CDRs) had completely ceased populating the reporting database. Application voice and SMS traffic was active, and message queue consumers on application servers reported running systemd states. However, all billing database tables contained zero rows for multiple hours. Because background services were superficially reporting \"active\" status, standard process health checks did not trigger alerts, masking a silent data ingestion failure.",
-    "solution": "I led the incident response and root-cause analysis across the distributed data pipeline. By tracing data lineage from the message queue through local disk buffers to the database ETL layer, I discovered a compounding two-point failure: the consumer daemon was throwing unhandled payload parsing exceptions that caused it to emit 0-byte batch files, while on the persistent database node, host key mismatches caused scheduled SSH ETL sync scripts to fail silently. I engineered a multi-layered fix that patched payload parsing, restored SSH key exchange pairs, and implemented end-to-end data-flow monitoring."
-  },
-  {
-    "title": "SRE post-mortem: resolving 60-second API timeouts and onboarding discovery failures",
-    "nav": "SRE RCA: API timeout & service discovery",
-    "summary": "Resolving 60-second execution expired API failures and misleading \"Organization not found\" mobile onboarding bugs by correcting connection pool database routing and missing SIP address discovery mappings.",
-    "project": "telecom",
-    "projectName": "Telecom & Secure Communications",
-    "layer": "Operations",
-    "stack": [
-      "REST APIs",
-      "PgBouncer",
-      "PostgreSQL",
-      "SIP Discovery",
-      "Microservices"
-    ],
-    "tags": [
-      "incident-response",
-      "rca",
-      "api",
-      "timeout",
-      "pgbouncer",
-      "service-discovery",
-      "telecom"
-    ],
-    "url": "case-studies/telecom/api-timeout-and-service-discovery-rca.html",
-    "problem": "Following migration to the new cloud staging environments, two critical service defects blocked platform acceptance testing: first, core administrative API calls consistently hung for exactly 60 seconds before aborting with `500 execution expired`. Second, mobile enterprise subscribers attempting self-onboarding via QR codes were rejected with an ambiguous \"Organization not found\" error, despite valid account credentials and an existing organization record in the database.",
-    "solution": "I performed deep-dive root-cause analysis tracing application logs, network sockets, and SQL query patterns. For the API timeouts, I discovered that the API gateway was querying legacy pre-cloud host addresses in the database configuration tables because the connection pool lacked proper database routing and the backend API route was unexposed. For the onboarding defect, audit traces revealed user authentication was actually succeeding, but backend SIP/ELK service discovery was failing with an internal lookup error because default range fallback mappings were missing from the service discovery table. I corrected the database routing, exposed the API endpoint, and seeded the missing discovery mappings."
+    "problem": "Billing records stopped arriving even though the consumer processes appeared healthy.",
+    "solution": "Trace records across each pipeline boundary, repair parsing and transfer failures, and validate recovery through downstream data checks."
   },
   {
     "title": "One governed cloud foundation under 40+ independently-run accounts",
