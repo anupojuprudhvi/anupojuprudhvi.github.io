@@ -175,6 +175,14 @@ nav.topnav,
   font-weight: 650;
   letter-spacing: -0.01em;
 }
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .brand {
+    background: linear-gradient(95deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
 .navlinks {
   display: flex;
   align-items: center;
