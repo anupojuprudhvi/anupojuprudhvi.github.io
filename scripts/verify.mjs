@@ -67,128 +67,152 @@ try {
   } finally {
     await discoveryContext.close();
   }
-  for (const file of pages) {
-    for (const theme of ["dark", "light"]) {
-      const context = await browser.newContext({
-        viewport: { width: 1440, height: 1000 },
-        reducedMotion: "reduce",
-      });
-      await context.addInitScript(
-        (theme) => localStorage.setItem("theme", theme),
-        theme,
+  // Each (file, theme) pair below is fully independent -- its own browser
+  // context, its own page, its own screenshot filenames -- so a pool of
+  // workers can run them concurrently instead of one at a time. That's the
+  // single biggest lever on this script's wall-clock time: it scales with
+  // page count x 2 themes, and grows every time a new case study or
+  // learning-path page is added. `errors` is a plain array pushed to from
+  // multiple in-flight checks; JS's single-threaded event loop makes that
+  // safe without any locking, and order doesn't matter since it's only
+  // ever asserted to be empty at the end.
+  async function checkPage(file, theme) {
+    const context = await browser.newContext({
+      viewport: { width: 1440, height: 1000 },
+      reducedMotion: "reduce",
+    });
+    await context.addInitScript(
+      (theme) => localStorage.setItem("theme", theme),
+      theme,
+    );
+    const page = await context.newPage();
+    page.on("pageerror", (e) => errors.push(`${file}: ${e.message}`));
+    page.on("response", (r) => {
+      if (r.status() >= 400) errors.push(`${r.status()} ${r.url()}`);
+    });
+    await page.goto(`${base}/${file}`);
+    assert.equal(await page.locator("h1").count(), 1);
+    assert.equal(
+      await page.locator("html").getAttribute("data-theme"),
+      theme,
+    );
+    const audit = await new AxeBuilder({ page })
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+      .analyze();
+    for (const v of audit.violations)
+      errors.push(
+        `${file} ${theme} ${v.id}: ${v.nodes.map((n) => n.target.join(" ")).join("; ")}`,
       );
-      const page = await context.newPage();
-      page.on("pageerror", (e) => errors.push(`${file}: ${e.message}`));
-      page.on("response", (r) => {
-        if (r.status() >= 400) errors.push(`${r.status()} ${r.url()}`);
-      });
-      await page.goto(`${base}/${file}`);
-      assert.equal(await page.locator("h1").count(), 1);
-      assert.equal(
-        await page.locator("html").getAttribute("data-theme"),
-        theme,
+    const slug = file
+      .replace(/\.html$/, "")
+      .replaceAll("/", "-")
+      .replaceAll("\\", "-");
+    await page.screenshot({
+      path: path.join(artifacts, `${slug}-${theme}-desktop.png`),
+      fullPage: true,
+    });
+    for (const width of [320, 360, 390, 768, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      const overflow = await page.evaluate(
+        () => document.documentElement.scrollWidth > innerWidth,
       );
-      const audit = await new AxeBuilder({ page })
-        .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
-        .analyze();
-      for (const v of audit.violations)
-        errors.push(
-          `${file} ${theme} ${v.id}: ${v.nodes.map((n) => n.target.join(" ")).join("; ")}`,
-        );
-      const slug = file
-        .replace(/\.html$/, "")
-        .replaceAll("/", "-")
-        .replaceAll("\\", "-");
-      await page.screenshot({
-        path: path.join(artifacts, `${slug}-${theme}-desktop.png`),
-        fullPage: true,
-      });
-      for (const width of [320, 360, 390, 768, 1440]) {
-        await page.setViewportSize({ width, height: 900 });
-        const overflow = await page.evaluate(
-          () => document.documentElement.scrollWidth > innerWidth,
-        );
-        assert.equal(overflow, false, `${file} ${theme} overflow at ${width}`);
-        if (width === 390)
-          await page.screenshot({
-            path: path.join(artifacts, `${slug}-${theme}-mobile.png`),
-            fullPage: true,
-          });
-      }
-      const links = await page
-        .locator("a[href]")
-        .evaluateAll((els) => els.map((el) => el.getAttribute("href")));
-      for (const link of links.filter(
-        (h) => !h.startsWith("http") && !h.startsWith("mailto:"),
-      )) {
-        const url = new URL(link, `${base}/${file}`);
-        const local = path.join(root, decodeURIComponent(url.pathname));
-        assert(fs.existsSync(local), `Missing link: ${file} -> ${link}`);
-        if (url.hash)
-          assert(
-            fs
-              .readFileSync(local, "utf8")
-              .includes(`id="${url.hash.slice(1)}"`),
-            `Missing anchor ${link}`,
-          );
-      }
-      await page
-        .getByRole("button", {
-          name: `Switch to ${theme === "dark" ? "light" : "dark"} theme`,
-        })
-        .click();
-      assert.equal(
-        await page.locator("html").getAttribute("data-theme"),
-        theme === "dark" ? "light" : "dark",
-      );
-      if (file === "index.html") {
-        const tags = await page.locator(".case").evaluateAll((cards) => cards.map((card) => card.dataset.tags.split(/\s+/)));
-        const filters = await page.locator("[data-filter]").evaluateAll((buttons) => buttons.map((button) => button.dataset.filter));
-        for (const filter of filters) {
-          const count = tags.filter((values) => filter === "all" || values.includes(filter)).length;
-          await page.locator(`[data-filter="${filter}"]`).click();
-          assert.equal(await page.locator(".case:visible").count(), count);
-        }
-        await page.locator('[data-filter="all"]').click();
-        await page.locator("summary").first().focus();
-        await page.keyboard.press("Enter");
+      assert.equal(overflow, false, `${file} ${theme} overflow at ${width}`);
+      if (width === 390)
+        await page.screenshot({
+          path: path.join(artifacts, `${slug}-${theme}-mobile.png`),
+          fullPage: true,
+        });
+    }
+    const links = await page
+      .locator("a[href]")
+      .evaluateAll((els) => els.map((el) => el.getAttribute("href")));
+    for (const link of links.filter(
+      (h) => !h.startsWith("http") && !h.startsWith("mailto:"),
+    )) {
+      const url = new URL(link, `${base}/${file}`);
+      const local = path.join(root, decodeURIComponent(url.pathname));
+      assert(fs.existsSync(local), `Missing link: ${file} -> ${link}`);
+      if (url.hash)
         assert(
-          (await page.locator("details").first().getAttribute("open")) !== null,
+          fs
+            .readFileSync(local, "utf8")
+            .includes(`id="${url.hash.slice(1)}"`),
+          `Missing anchor ${link}`,
         );
-        await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-        await page.getByRole("button", { name: "Copy email address" }).click();
-        assert.equal(
-          await page.evaluate(() => navigator.clipboard.readText()),
-          "anupojuprudhvi@gmail.com",
-        );
-      } else if (await page.locator('button[id$="PlayBtn"]').count()) {
-        await page.locator('button[id$="PlayBtn"]').click();
-        assert(
-          (await page.locator(".hub-node.active").count()) > 0,
-          "Diagram must activate",
-        );
-        await page.waitForTimeout(2600);
+    }
+    await page
+      .getByRole("button", {
+        name: `Switch to ${theme === "dark" ? "light" : "dark"} theme`,
+      })
+      .click();
+    assert.equal(
+      await page.locator("html").getAttribute("data-theme"),
+      theme === "dark" ? "light" : "dark",
+    );
+    if (file === "index.html") {
+      const tags = await page.locator(".case").evaluateAll((cards) => cards.map((card) => card.dataset.tags.split(/\s+/)));
+      const filters = await page.locator("[data-filter]").evaluateAll((buttons) => buttons.map((button) => button.dataset.filter));
+      for (const filter of filters) {
+        const count = tags.filter((values) => filter === "all" || values.includes(filter)).length;
+        await page.locator(`[data-filter="${filter}"]`).click();
+        assert.equal(await page.locator(".case:visible").count(), count);
       }
-      if (file === "case-studies/index.html") {
-        const index = JSON.parse(fs.readFileSync(path.join(root, "assets/case-studies.json"), "utf8"));
-        assert.equal(await page.locator(".uc-card").count(), index.length);
-        for (const project of new Set(index.map((item) => item.project))) {
-          await page.locator(`[data-uc-filter="project:${project}"]`).click();
-          assert.equal(await page.locator(".uc-card:visible").count(), index.filter((item) => item.project === project).length);
-        }
-        await page.locator('[data-uc-filter="all"]').click();
-        await page.locator("#ucSearch").fill("no-matching-case-study-xyz");
-        assert.equal(await page.locator(".uc-card:visible").count(), 0);
-        assert.equal(await page.locator("#ucEmpty").isVisible(), true);
-        await page.locator("#ucSearch").fill("");
-        assert.equal(await page.locator(".uc-card:visible").count(), index.length);
-      }
-      await context.close();
-      console.log(
-        `PASS ${slug}: ${theme}, 5 viewports, links, accessibility, interactions`,
+      await page.locator('[data-filter="all"]').click();
+      await page.locator("summary").first().focus();
+      await page.keyboard.press("Enter");
+      assert(
+        (await page.locator("details").first().getAttribute("open")) !== null,
       );
+      await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+      await page.getByRole("button", { name: "Copy email address" }).click();
+      assert.equal(
+        await page.evaluate(() => navigator.clipboard.readText()),
+        "anupojuprudhvi@gmail.com",
+      );
+    } else if (await page.locator('button[id$="PlayBtn"]').count()) {
+      await page.locator('button[id$="PlayBtn"]').click();
+      assert(
+        (await page.locator(".hub-node.active").count()) > 0,
+        "Diagram must activate",
+      );
+      await page.waitForTimeout(2600);
+    }
+    if (file === "case-studies/index.html") {
+      const index = JSON.parse(fs.readFileSync(path.join(root, "assets/case-studies.json"), "utf8"));
+      assert.equal(await page.locator(".uc-card").count(), index.length);
+      for (const project of new Set(index.map((item) => item.project))) {
+        await page.locator(`[data-uc-filter="project:${project}"]`).click();
+        assert.equal(await page.locator(".uc-card:visible").count(), index.filter((item) => item.project === project).length);
+      }
+      await page.locator('[data-uc-filter="all"]').click();
+      await page.locator("#ucSearch").fill("no-matching-case-study-xyz");
+      assert.equal(await page.locator(".uc-card:visible").count(), 0);
+      assert.equal(await page.locator("#ucEmpty").isVisible(), true);
+      await page.locator("#ucSearch").fill("");
+      assert.equal(await page.locator(".uc-card:visible").count(), index.length);
+    }
+    await context.close();
+    console.log(
+      `PASS ${slug}: ${theme}, 5 viewports, links, accessibility, interactions`,
+    );
+  }
+
+  // A small worker pool: each worker pulls the next (file, theme) pair off
+  // a shared cursor until none remain. This caps how many browser contexts
+  // (and CPU-heavy axe scans) run at once, rather than firing all of them
+  // at once and risking resource contention on a small CI runner.
+  const pairs = pages.flatMap((file) => ["dark", "light"].map((theme) => [file, theme]));
+  const CONCURRENCY = Number(process.env.VERIFY_CONCURRENCY) || 4;
+  let cursor = 0;
+  async function worker() {
+    while (cursor < pairs.length) {
+      const [file, theme] = pairs[cursor++];
+      await checkPage(file, theme);
     }
   }
+  await Promise.all(
+    Array.from({ length: Math.min(CONCURRENCY, pairs.length) }, worker),
+  );
   const context = await browser.newContext();
   const page = await context.newPage();
   await page.goto(base);
