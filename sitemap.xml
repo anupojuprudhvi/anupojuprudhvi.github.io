@@ -2,6 +2,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://anupojuprudhvi.github.io/</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/hybrid-object-storage-platform.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/index.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/mail-disaster-recovery-automation.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/oracle-rac-cluster-on-aws.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/healthcare/clinical-platform-modernization-and-cost-optimization.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/healthcare/hl7-device-interoperability-engine.html</loc></url>

@@ -103,7 +103,7 @@
             <div class="nav-dropdown-menu" role="menu">
               <a href="case-studies/index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>All Case Studies</strong>
-                <small>25 case studies · full library &amp; filters</small>
+                <small>28 case studies · full library &amp; filters</small>
               </a>
               <div class="nav-dropdown-divider" role="separator"></div>
               <a href="case-studies/index.html?filter=project%3Atelecom" role="menuitem" class="nav-dropdown-item">
@@ -121,6 +121,10 @@
               <a href="case-studies/index.html?filter=project%3Apartner-engagements" role="menuitem" class="nav-dropdown-item">
                 <strong>AWS APN &amp; Migration Engagements</strong>
                 <small>5 case studies</small>
+              </a>
+              <a href="case-studies/index.html?filter=project%3Aenterprise-infrastructure" role="menuitem" class="nav-dropdown-item">
+                <strong>Enterprise Hybrid Cloud Infrastructure</strong>
+                <small>3 case studies</small>
               </a>
             </div>
           </div>
@@ -219,8 +223,8 @@
               <span>Workloads profiled, migrated &amp; modernized</span>
             </div>
             <div class="stat">
-              <strong data-target="5" data-suffix=" Sectors">5 Sectors</strong>
-              <span>Telecom, Tolling, Healthcare, FinTech &amp; AdTech</span>
+              <strong data-target="6" data-suffix=" Sectors">6 Sectors</strong>
+              <span>Telecom, Tolling, Healthcare, FinTech, AdTech &amp; Education</span>
             </div>
           </div>
         </div>
@@ -259,7 +263,7 @@
             </button>
           </div>
           <p class="filter-status" id="filterStatus" role="status">
-            4 engagements shown
+            5 engagements shown
           </p>
           <article class="case" data-tags="resilience finops">
             <div class="case-grid">
@@ -491,6 +495,63 @@
             <div class="case-bottom">
               <a
                 href="case-studies/partner-engagements/index.html"
+                >Explore the architecture <span aria-hidden="true">↗</span></a
+              ><span>TECHNICAL CASE STUDY</span>
+            </div>
+          </article>
+          <article class="case" data-tags="database high-availability hybrid-cloud">
+            <div class="case-grid">
+              <div>
+                <div class="tag">05 / Enterprise Hybrid Cloud Infrastructure</div>
+                <h3>
+                  21 nodes, no shared SAN,<br />zero downtime at peak load.
+                </h3>
+                <p class="ctx">
+                  Architected a 21+ node active-active Oracle RAC cluster on AWS using
+                  software-defined clustered storage to work around AWS's lack of native
+                  shared-SAN block storage, plus a hybrid object storage platform and
+                  automated disaster recovery spanning AWS, on-prem VMware, and OpenStack.
+                </p>
+                <p class="case-stack">
+                  Oracle RAC · FlashGrid · AWS EC2/EBS · MinIO · Zimbra
+                </p>
+              </div>
+              <div class="case-result">
+                <strong>&lt;3 min</strong>
+                <p>Automated mail failover, down from 4+ hours manual recovery</p>
+                <small>21+ node RAC cluster with zero downtime at peak concurrency</small>
+              </div>
+            </div>
+            <details>
+              <summary>Architectural contribution</summary>
+              <ul>
+                <li>
+                  <b>Engineered a 21+ node Oracle RAC cluster on AWS:</b> used
+                  software-defined clustered storage to emulate shared-SAN semantics
+                  across independently-attached EBS volumes, tuning ASM diskgroups and
+                  kernel I/O settings for sub-2ms latency under peak concurrency.
+                </li>
+                <li>
+                  <b>Automated end-to-end disaster recovery for enterprise mail:</b> built
+                  a single script handling elastic IP reassociation, EBS volume
+                  reattachment, and service recovery, cutting RTO from 4+ hours to under
+                  3 minutes.
+                </li>
+                <li>
+                  <b>Unified storage across three infrastructure environments:</b>
+                  deployed a distributed S3-compatible object storage platform reachable
+                  from AWS, an on-prem VMware data center, and OpenStack behind one API.
+                </li>
+                <li>
+                  <b>Cut recurring storage costs by 40%:</b> automated lifecycle tiering
+                  from hot object storage to AWS S3 Glacier while meeting multi-year
+                  audit retention requirements.
+                </li>
+              </ul>
+            </details>
+            <div class="case-bottom">
+              <a
+                href="case-studies/enterprise-infrastructure/index.html"
                 >Explore the architecture <span aria-hidden="true">↗</span></a
               ><span>TECHNICAL CASE STUDY</span>
             </div>

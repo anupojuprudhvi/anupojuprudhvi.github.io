@@ -647,5 +647,82 @@
     "url": "case-studies/partner-engagements/adtech-saas-marketplace-onboarding.html",
     "problem": "An enterprise AdTech software provider required multi-cloud commercialization channels to allow corporate clients to procure its analytics and audience optimization platform directly against their cloud enterprise discount commitments (such as Google Cloud and AWS Marketplace). The existing platform lacked automated subscription lifecycle endpoints, requiring manual sales engineering intervention to provision accounts and reconcile invoices. Launching on enterprise cloud marketplaces required an automated integration blueprint, webhook subscription receivers, licensing entitlement workflows, and a rigorous post-onboarding operational compliance checklist.",
     "solution": "Authored the Architecture Initiation Blueprint and engineered the marketplace integration architecture connecting Cloud Marketplace procurement APIs to the SaaS platform's tenant management engine. Designed the automated onboarding workflows, formulated the Product Setup Matrix and Post-Onboarding Verification Checklist, and established automated tests validating procurement webhooks, account activation redirects, and usage metering telemetry."
+  },
+  {
+    "title": "21-node Oracle RAC cluster on AWS without shared-SAN storage",
+    "nav": "Oracle RAC on AWS",
+    "summary": "A 21+ node Oracle RAC cluster running active-active database failover on AWS, built around software-defined clustered storage to work around AWS's lack of native shared-SAN block storage.",
+    "project": "enterprise-infrastructure",
+    "projectName": "Enterprise Hybrid Cloud Infrastructure",
+    "layer": "Data",
+    "stack": [
+      "Oracle RAC",
+      "FlashGrid",
+      "AWS EC2",
+      "AWS EBS",
+      "AWS DMS",
+      "CentOS"
+    ],
+    "tags": [
+      "database",
+      "high-availability",
+      "oracle",
+      "clustering",
+      "aws"
+    ],
+    "url": "case-studies/enterprise-infrastructure/oracle-rac-cluster-on-aws.html",
+    "problem": "A large education-services platform ran mission-critical academic and financial operations — registrations, fee processing, and examination results — on a database tier that had to absorb extreme, predictable concurrency spikes (an exam-results release could multiply load by an order of magnitude in minutes) without downtime or throttling. Oracle RAC is the standard answer for active-active database high availability, but RAC has traditionally required shared-SAN block storage that AWS doesn't provide natively — EBS volumes attach to one instance at a time.",
+    "solution": "A 21+ node active-active Oracle RAC cluster on AWS EC2, using a software-defined clustered storage layer (FlashGrid) to emulate shared-SAN semantics across independently-attached EBS volumes, with tuned ASM diskgroups, provisioned-IOPS storage, and kernel-level I/O tuning to hit sub-2ms latency under load."
+  },
+  {
+    "title": "Distributed S3-compatible storage spanning AWS, on-prem VMware, and OpenStack",
+    "nav": "Hybrid object storage",
+    "summary": "A self-hosted distributed object storage layer unifying backups, ERP media, and mail archives across a public cloud, an on-prem data center, and a private OpenStack cloud behind one S3 API.",
+    "project": "enterprise-infrastructure",
+    "projectName": "Enterprise Hybrid Cloud Infrastructure",
+    "layer": "Platform",
+    "stack": [
+      "MinIO",
+      "Docker Compose",
+      "Nginx",
+      "Restic",
+      "AWS S3 Glacier",
+      "Python",
+      "Boto3"
+    ],
+    "tags": [
+      "storage",
+      "hybrid-cloud",
+      "backups",
+      "cost-optimization"
+    ],
+    "url": "case-studies/enterprise-infrastructure/hybrid-object-storage-platform.html",
+    "problem": "The organization's footprint was genuinely hybrid, not hybrid-in-name — production compute in AWS, enterprise virtualization in an on-prem data center running VMware, and a private OpenStack cloud, each with its own block storage and no shared way to store unstructured data: ERP file attachments, database dumps, and system backups. Every environment's storage was siloed, expensive to scale, and reachable only through whatever tooling that specific platform supported — there was no common access pattern across all three.",
+    "solution": "A distributed, S3-compatible object storage platform (MinIO) deployed behind an Nginx TLS reverse proxy, reachable via the same S3 API from all three environments, with automated Restic-encrypted backup pipelines and AWS S3 Glacier lifecycle tiering for long-term retention."
+  },
+  {
+    "title": "Automated sub-3-minute failover for enterprise mail infrastructure",
+    "nav": "Mail disaster recovery",
+    "summary": "An automated EC2 failover system for a single-instance enterprise mail platform, cutting recovery time from 4+ hours of manual recovery to under 3 minutes, paired with tiered S3 backups and DNS-authenticated delivery.",
+    "project": "enterprise-infrastructure",
+    "projectName": "Enterprise Hybrid Cloud Infrastructure",
+    "layer": "Resilience",
+    "stack": [
+      "Zimbra",
+      "AWS EC2",
+      "AWS EBS",
+      "AWS S3",
+      "Bash",
+      "SPF/DKIM/DMARC"
+    ],
+    "tags": [
+      "disaster-recovery",
+      "availability",
+      "email",
+      "automation"
+    ],
+    "url": "case-studies/enterprise-infrastructure/mail-disaster-recovery-automation.html",
+    "problem": "Enterprise email ran as a single EC2-hosted instance handling a high volume of daily communications across administrative offices, campuses, and external partners — a real single point of failure. Recovering from an instance impairment meant a manual sequence of reassigning the elastic IP, locating and reattaching the data volume, remounting it, and restarting services by hand, which took four to eight hours end to end. On top of that, missing email-authentication records meant a meaningful share of outbound mail was being flagged as spam before it ever reached recipients.",
+    "solution": "A single Bash script that automates the entire failover sequence end to end — instance metadata lookup, elastic IP reassociation, EBS volume attachment with a polling wait loop, filesystem mount (including NVMe device-mapping for newer instance types), and a service restart — plus a tiered S3 backup pipeline and full SPF/DKIM/DMARC DNS hardening."
   }
 ]

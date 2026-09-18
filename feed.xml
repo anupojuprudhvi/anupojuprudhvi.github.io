@@ -181,5 +181,26 @@
       <description>An automated cloud marketplace integration for an AdTech SaaS platform — buyer procurement flows, billing telemetry, and post-onboarding verification.</description>
       <category>Architecture &amp; Delivery</category>
     </item>
+    <item>
+      <title>21-node Oracle RAC cluster on AWS without shared-SAN storage</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/oracle-rac-cluster-on-aws.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/oracle-rac-cluster-on-aws.html</guid>
+      <description>A 21+ node Oracle RAC cluster running active-active database failover on AWS, built around software-defined clustered storage to work around AWS's lack of native shared-SAN block storage.</description>
+      <category>Data</category>
+    </item>
+    <item>
+      <title>Distributed S3-compatible storage spanning AWS, on-prem VMware, and OpenStack</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/hybrid-object-storage-platform.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/hybrid-object-storage-platform.html</guid>
+      <description>A self-hosted distributed object storage layer unifying backups, ERP media, and mail archives across a public cloud, an on-prem data center, and a private OpenStack cloud behind one S3 API.</description>
+      <category>Platform</category>
+    </item>
+    <item>
+      <title>Automated sub-3-minute failover for enterprise mail infrastructure</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/mail-disaster-recovery-automation.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/mail-disaster-recovery-automation.html</guid>
+      <description>An automated EC2 failover system for a single-instance enterprise mail platform, cutting recovery time from 4+ hours of manual recovery to under 3 minutes, paired with tiered S3 backups and DNS-authenticated delivery.</description>
+      <category>Resilience</category>
+    </item>
   </channel>
 </rss>

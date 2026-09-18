@@ -40,7 +40,7 @@
             <div class="nav-dropdown-menu" role="menu">
               <a href="index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>All Case Studies</strong>
-                <small>25 case studies · full library &amp; filters</small>
+                <small>28 case studies · full library &amp; filters</small>
               </a>
               <div class="nav-dropdown-divider" role="separator"></div>
               <a href="index.html?filter=project%3Atelecom" role="menuitem" class="nav-dropdown-item">
@@ -58,6 +58,10 @@
               <a href="index.html?filter=project%3Apartner-engagements" role="menuitem" class="nav-dropdown-item">
                 <strong>AWS APN &amp; Migration Engagements</strong>
                 <small>5 case studies</small>
+              </a>
+              <a href="index.html?filter=project%3Aenterprise-infrastructure" role="menuitem" class="nav-dropdown-item">
+                <strong>Enterprise Hybrid Cloud Infrastructure</strong>
+                <small>3 case studies</small>
               </a>
             </div>
           </div>
@@ -120,6 +124,7 @@
               <button class="filter" data-uc-filter="project:tolling" aria-pressed="false">Tolling Infrastructure</button>
               <button class="filter" data-uc-filter="project:healthcare" aria-pressed="false">Healthcare &amp; Cost Architecture</button>
               <button class="filter" data-uc-filter="project:partner-engagements" aria-pressed="false">AWS APN &amp; Migration Engagements</button>
+              <button class="filter" data-uc-filter="project:enterprise-infrastructure" aria-pressed="false">Enterprise Hybrid Cloud Infrastructure</button>
               <button class="filter" data-uc-filter="layer:Data" aria-pressed="false">Data</button>
               <button class="filter" data-uc-filter="layer:Resilience" aria-pressed="false">Resilience</button>
               <button class="filter" data-uc-filter="layer:Security" aria-pressed="false">Security</button>
@@ -140,7 +145,7 @@
             </div>
           </div>
           <p class="filter-status" id="ucStatus" role="status">
-            25 case studies
+            28 case studies
           </p>
         </div>
       </section>
@@ -296,6 +301,24 @@
           <h3><a href="partner-engagements/adtech-saas-marketplace-onboarding.html">Enterprise AdTech SaaS · Cloud marketplace onboarding</a></h3>
           <p>An automated cloud marketplace integration for an AdTech SaaS platform — buyer procurement flows, billing telemetry, and post-onboarding verification.</p>
           <p class="uc-stack">Google Cloud Marketplace · AWS · SaaS Integration · Webhooks · API Gateway · Cloud Functions</p>
+        </article>
+        <article class="uc-card" data-project="enterprise-infrastructure" data-layer="Data" data-tags="database high-availability oracle clustering aws">
+          <div class="uc-meta"><span>Enterprise Hybrid Cloud Infrastructure</span><span>Data</span></div>
+          <h3><a href="enterprise-infrastructure/oracle-rac-cluster-on-aws.html">21-node Oracle RAC cluster on AWS without shared-SAN storage</a></h3>
+          <p>A 21+ node Oracle RAC cluster running active-active database failover on AWS, built around software-defined clustered storage to work around AWS's lack of native shared-SAN block storage.</p>
+          <p class="uc-stack">Oracle RAC · FlashGrid · AWS EC2 · AWS EBS · AWS DMS · CentOS</p>
+        </article>
+        <article class="uc-card" data-project="enterprise-infrastructure" data-layer="Platform" data-tags="storage hybrid-cloud backups cost-optimization">
+          <div class="uc-meta"><span>Enterprise Hybrid Cloud Infrastructure</span><span>Platform</span></div>
+          <h3><a href="enterprise-infrastructure/hybrid-object-storage-platform.html">Distributed S3-compatible storage spanning AWS, on-prem VMware, and OpenStack</a></h3>
+          <p>A self-hosted distributed object storage layer unifying backups, ERP media, and mail archives across a public cloud, an on-prem data center, and a private OpenStack cloud behind one S3 API.</p>
+          <p class="uc-stack">MinIO · Docker Compose · Nginx · Restic · AWS S3 Glacier · Python · Boto3</p>
+        </article>
+        <article class="uc-card" data-project="enterprise-infrastructure" data-layer="Resilience" data-tags="disaster-recovery availability email automation">
+          <div class="uc-meta"><span>Enterprise Hybrid Cloud Infrastructure</span><span>Resilience</span></div>
+          <h3><a href="enterprise-infrastructure/mail-disaster-recovery-automation.html">Automated sub-3-minute failover for enterprise mail infrastructure</a></h3>
+          <p>An automated EC2 failover system for a single-instance enterprise mail platform, cutting recovery time from 4+ hours of manual recovery to under 3 minutes, paired with tiered S3 backups and DNS-authenticated delivery.</p>
+          <p class="uc-stack">Zimbra · AWS EC2 · AWS EBS · AWS S3 · Bash · SPF/DKIM/DMARC</p>
         </article>
           </div>
           <p class="uc-empty" id="ucEmpty" hidden>

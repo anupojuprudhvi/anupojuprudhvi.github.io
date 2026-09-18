@@ -17,5 +17,9 @@
     "id": "partner-engagements",
     "name": "AWS APN & Migration Engagements",
     "customOverview": true
+  },
+  {
+    "id": "enterprise-infrastructure",
+    "name": "Enterprise Hybrid Cloud Infrastructure"
   }
 ]
