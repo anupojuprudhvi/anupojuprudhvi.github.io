@@ -21,5 +21,9 @@
   {
     "id": "enterprise-infrastructure",
     "name": "Enterprise Hybrid Cloud Infrastructure"
+  },
+  {
+    "id": "independent-products",
+    "name": "Independent Products & AI-Assisted Engineering"
   }
 ]

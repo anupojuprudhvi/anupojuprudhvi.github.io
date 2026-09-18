@@ -103,7 +103,7 @@
             <div class="nav-dropdown-menu" role="menu">
               <a href="case-studies/index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>All Case Studies</strong>
-                <small>28 case studies · full library &amp; filters</small>
+                <small>29 case studies · full library &amp; filters</small>
               </a>
               <div class="nav-dropdown-divider" role="separator"></div>
               <a href="case-studies/index.html?filter=project%3Atelecom" role="menuitem" class="nav-dropdown-item">
@@ -125,6 +125,10 @@
               <a href="case-studies/index.html?filter=project%3Aenterprise-infrastructure" role="menuitem" class="nav-dropdown-item">
                 <strong>Enterprise Hybrid Cloud Infrastructure</strong>
                 <small>3 case studies</small>
+              </a>
+              <a href="case-studies/index.html?filter=project%3Aindependent-products" role="menuitem" class="nav-dropdown-item">
+                <strong>Independent Products &amp; AI-Assisted Engineering</strong>
+                <small>1 case study</small>
               </a>
             </div>
           </div>
@@ -263,7 +267,7 @@
             </button>
           </div>
           <p class="filter-status" id="filterStatus" role="status">
-            5 engagements shown
+            6 engagements shown
           </p>
           <article class="case" data-tags="resilience finops">
             <div class="case-grid">
@@ -552,6 +556,67 @@
             <div class="case-bottom">
               <a
                 href="case-studies/enterprise-infrastructure/index.html"
+                >Explore the architecture <span aria-hidden="true">↗</span></a
+              ><span>TECHNICAL CASE STUDY</span>
+            </div>
+          </article>
+          <article class="case" data-tags="security performance ai-assisted-engineering">
+            <div class="case-grid">
+              <div>
+                <div class="tag">06 / Independent Products &amp; AI-Assisted Engineering</div>
+                <h3>
+                  Solo-built, security-audited,<br />93% lighter — run through a written AI-agent protocol.
+                </h3>
+                <p class="ctx">
+                  Took a solo-built PDF SaaS product from a serverless
+                  deployment that didn't actually run to a security-audited,
+                  production app — rebuilt the rendering engine on WebAssembly,
+                  migrated the database, and closed nine real security findings,
+                  all built and operated solo through a formalized AI-agent
+                  engineering workflow.
+                </p>
+                <p class="case-stack">
+                  Node.js · Vercel Serverless · Supabase · Stripe · mupdf WASM · Terraform
+                </p>
+              </div>
+              <div class="case-result">
+                <strong>93%</strong>
+                <p>Lighter first-load payload (1.47MB down to ~106KB)</p>
+                <small>9 security findings closed, including a payment-integrity bypass</small>
+              </div>
+            </div>
+            <details>
+              <summary>Architectural contribution</summary>
+              <ul>
+                <li>
+                  <b>Rebuilt the PDF rendering engine on WebAssembly:</b>
+                  replaced a native-binary canvas library and an untraceable
+                  worker dependency with a pure-WASM engine that runs
+                  identically on a laptop and in a serverless function.
+                </li>
+                <li>
+                  <b>Migrated the database to managed Postgres with RLS:</b>
+                  moved off a file-based SQLite store that couldn't survive a
+                  serverless runtime's read-only, ephemeral filesystem.
+                </li>
+                <li>
+                  <b>Ran a self-directed security audit and fixed 9 findings:</b>
+                  including a critical Stripe webhook bypass that let an
+                  unsigned request mint paid credits for free, plus a forgeable
+                  default session secret and a double-spend race condition.
+                </li>
+                <li>
+                  <b>Directed AI coding agents against a written operating
+                  protocol:</b> a mandatory explain-propose-implement sequence,
+                  a 28-issue root-cause tracker, and a 10-suite automated test
+                  gate — the discipline that made it possible to build and
+                  operate this alone without cutting corners.
+                </li>
+              </ul>
+            </details>
+            <div class="case-bottom">
+              <a
+                href="case-studies/independent-products/index.html"
                 >Explore the architecture <span aria-hidden="true">↗</span></a
               ><span>TECHNICAL CASE STUDY</span>
             </div>

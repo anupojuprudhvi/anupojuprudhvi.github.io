@@ -724,5 +724,31 @@
     "url": "case-studies/enterprise-infrastructure/mail-disaster-recovery-automation.html",
     "problem": "Enterprise email ran as a single EC2-hosted instance handling a high volume of daily communications across administrative offices, campuses, and external partners — a real single point of failure. Recovering from an instance impairment meant a manual sequence of reassigning the elastic IP, locating and reattaching the data volume, remounting it, and restarting services by hand, which took four to eight hours end to end. On top of that, missing email-authentication records meant a meaningful share of outbound mail was being flagged as spam before it ever reached recipients.",
     "solution": "A single Bash script that automates the entire failover sequence end to end — instance metadata lookup, elastic IP reassociation, EBS volume attachment with a polling wait loop, filesystem mount (including NVMe device-mapping for newer instance types), and a service restart — plus a tiered S3 backup pipeline and full SPF/DKIM/DMARC DNS hardening."
+  },
+  {
+    "title": "Hardening a solo SaaS product, end to end, with AI-agent-assisted engineering",
+    "nav": "Solo SaaS hardening",
+    "summary": "Taking a solo-built PDF SaaS product from a serverless deployment that didn't actually run to a security-audited, ~93% lighter production app — built and operated solo using a formalized AI-agent engineering workflow.",
+    "project": "independent-products",
+    "projectName": "Independent Products & AI-Assisted Engineering",
+    "layer": "Product engineering",
+    "stack": [
+      "Node.js",
+      "Vercel Serverless",
+      "Supabase",
+      "Stripe",
+      "mupdf WASM",
+      "Terraform"
+    ],
+    "tags": [
+      "saas",
+      "security",
+      "performance",
+      "serverless",
+      "ai-assisted-engineering"
+    ],
+    "url": "case-studies/independent-products/solo-saas-hardening-ai-agentic-engineering.html",
+    "problem": "A solo-built PDF compression and conversion SaaS product launched on Vercel's serverless platform, but the architecture it launched with was built around assumptions serverless doesn't support: a native-binary PDF rendering library that can't load its system dependencies in a Lambda-style runtime, a worker file `pdf.js` needs that the deployment bundler couldn't trace and include, and a file-based SQLite database on a filesystem that's read-only and wiped between invocations. On top of that, the app handled real payments through Stripe and had never had a dedicated security pass.",
+    "solution": "A systematic, documented engineering pass — one person, working through a formalized AI-agent-assisted workflow — that replaced the native-binary rendering stack with a pure WebAssembly engine, migrated the database to managed Postgres, ran a full security audit that found and fixed nine real findings including a critical payment-integrity bug, and cut the app's first-load payload by roughly 93%."
   }
 ]

@@ -202,5 +202,12 @@
       <description>An automated EC2 failover system for a single-instance enterprise mail platform, cutting recovery time from 4+ hours of manual recovery to under 3 minutes, paired with tiered S3 backups and DNS-authenticated delivery.</description>
       <category>Resilience</category>
     </item>
+    <item>
+      <title>Hardening a solo SaaS product, end to end, with AI-agent-assisted engineering</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/independent-products/solo-saas-hardening-ai-agentic-engineering.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/independent-products/solo-saas-hardening-ai-agentic-engineering.html</guid>
+      <description>Taking a solo-built PDF SaaS product from a serverless deployment that didn't actually run to a security-audited, ~93% lighter production app — built and operated solo using a formalized AI-agent engineering workflow.</description>
+      <category>Product engineering</category>
+    </item>
   </channel>
 </rss>

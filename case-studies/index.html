@@ -40,7 +40,7 @@
             <div class="nav-dropdown-menu" role="menu">
               <a href="index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>All Case Studies</strong>
-                <small>28 case studies · full library &amp; filters</small>
+                <small>29 case studies · full library &amp; filters</small>
               </a>
               <div class="nav-dropdown-divider" role="separator"></div>
               <a href="index.html?filter=project%3Atelecom" role="menuitem" class="nav-dropdown-item">
@@ -62,6 +62,10 @@
               <a href="index.html?filter=project%3Aenterprise-infrastructure" role="menuitem" class="nav-dropdown-item">
                 <strong>Enterprise Hybrid Cloud Infrastructure</strong>
                 <small>3 case studies</small>
+              </a>
+              <a href="index.html?filter=project%3Aindependent-products" role="menuitem" class="nav-dropdown-item">
+                <strong>Independent Products &amp; AI-Assisted Engineering</strong>
+                <small>1 case study</small>
               </a>
             </div>
           </div>
@@ -125,6 +129,7 @@
               <button class="filter" data-uc-filter="project:healthcare" aria-pressed="false">Healthcare &amp; Cost Architecture</button>
               <button class="filter" data-uc-filter="project:partner-engagements" aria-pressed="false">AWS APN &amp; Migration Engagements</button>
               <button class="filter" data-uc-filter="project:enterprise-infrastructure" aria-pressed="false">Enterprise Hybrid Cloud Infrastructure</button>
+              <button class="filter" data-uc-filter="project:independent-products" aria-pressed="false">Independent Products &amp; AI-Assisted Engineering</button>
               <button class="filter" data-uc-filter="layer:Data" aria-pressed="false">Data</button>
               <button class="filter" data-uc-filter="layer:Resilience" aria-pressed="false">Resilience</button>
               <button class="filter" data-uc-filter="layer:Security" aria-pressed="false">Security</button>
@@ -142,10 +147,11 @@
               <button class="filter" data-uc-filter="layer:Architecture &amp; Kubernetes" aria-pressed="false">Architecture &amp; Kubernetes</button>
               <button class="filter" data-uc-filter="layer:Architecture &amp; Services" aria-pressed="false">Architecture &amp; Services</button>
               <button class="filter" data-uc-filter="layer:Architecture &amp; Delivery" aria-pressed="false">Architecture &amp; Delivery</button>
+              <button class="filter" data-uc-filter="layer:Product engineering" aria-pressed="false">Product engineering</button>
             </div>
           </div>
           <p class="filter-status" id="ucStatus" role="status">
-            28 case studies
+            29 case studies
           </p>
         </div>
       </section>
@@ -319,6 +325,12 @@
           <h3><a href="enterprise-infrastructure/mail-disaster-recovery-automation.html">Automated sub-3-minute failover for enterprise mail infrastructure</a></h3>
           <p>An automated EC2 failover system for a single-instance enterprise mail platform, cutting recovery time from 4+ hours of manual recovery to under 3 minutes, paired with tiered S3 backups and DNS-authenticated delivery.</p>
           <p class="uc-stack">Zimbra · AWS EC2 · AWS EBS · AWS S3 · Bash · SPF/DKIM/DMARC</p>
+        </article>
+        <article class="uc-card" data-project="independent-products" data-layer="Product engineering" data-tags="saas security performance serverless ai-assisted-engineering">
+          <div class="uc-meta"><span>Independent Products &amp; AI-Assisted Engineering</span><span>Product engineering</span></div>
+          <h3><a href="independent-products/solo-saas-hardening-ai-agentic-engineering.html">Hardening a solo SaaS product, end to end, with AI-agent-assisted engineering</a></h3>
+          <p>Taking a solo-built PDF SaaS product from a serverless deployment that didn't actually run to a security-audited, ~93% lighter production app — built and operated solo using a formalized AI-agent engineering workflow.</p>
+          <p class="uc-stack">Node.js · Vercel Serverless · Supabase · Stripe · mupdf WASM · Terraform</p>
         </article>
           </div>
           <p class="uc-empty" id="ucEmpty" hidden>
