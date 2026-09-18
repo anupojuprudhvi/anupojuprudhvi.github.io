@@ -89,7 +89,7 @@ Under the AWS Migration Acceleration Program (MAP) Assess phase, the objective w
 (Operational State)           (Long-Term Fleet Analytics)
 ```
 
-By decoupling the ingestion gateway (AWS IoT Core) from stream processing (Kinesis) and persistent state (Aurora/DynamoDB), the target architecture guaranteed that an unexpected spike in connected device events would never degrade web portal response times or drop incoming telemetry packets.
+By decoupling the ingestion gateway (AWS IoT Core) from stream processing (Kinesis) and persistent state (Aurora/DynamoDB), the target architecture was designed so that a spike in connected device events would not degrade web portal response times or cause dropped telemetry packets.
 
 ## Outcome · The MAP Assessment final report and mobilize roadmap
 
