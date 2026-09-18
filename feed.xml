@@ -119,6 +119,34 @@
       <category>Applications</category>
     </item>
     <item>
+      <title>HL7 device-interoperability engine for remote patient monitoring</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/healthcare/hl7-device-interoperability-engine.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/healthcare/hl7-device-interoperability-engine.html</guid>
+      <description>A dedicated integration tier that translates proprietary medical-IoT telemetry into standardized HL7 and JSON messages for downstream clinical systems and a partner hospital network.</description>
+      <category>Integration</category>
+    </item>
+    <item>
+      <title>Decoupled real-time analytics for clinical telemetry</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/healthcare/real-time-clinical-analytics-pipeline.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/healthcare/real-time-clinical-analytics-pipeline.html</guid>
+      <description>Streaming physiological telemetry into a distributed real-time OLAP store so care teams can query months of patient vitals without ever touching the operational database.</description>
+      <category>Data engineering</category>
+    </item>
+    <item>
+      <title>Zero-public-ingress network architecture for a HIPAA platform</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/healthcare/zero-public-ingress-network-security.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/healthcare/zero-public-ingress-network-security.html</guid>
+      <description>A network design where no compute or database resource carries a public IP address, engineering access is mutual-TLS VPN only, and the CDN layer is tuned specifically for clinical single-page apps.</description>
+      <category>Network &amp; security</category>
+    </item>
+    <item>
+      <title>CI/CD delivery pipeline for a regulated healthcare platform</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.html</guid>
+      <description>A GitFlow-to-Kubernetes delivery pipeline with per-branch promotion gates, headless container-registry authentication, and a deployment lead time cut from hours to minutes.</description>
+      <category>Delivery engineering</category>
+    </item>
+    <item>
       <title>Institutional digital asset platform · AWS MAP assess and directional business case</title>
       <link>https://anupojuprudhvi.github.io/case-studies/partner-engagements/fintech-map-assess-business-case.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/partner-engagements/fintech-map-assess-business-case.html</guid>

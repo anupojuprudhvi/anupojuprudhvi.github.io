@@ -136,7 +136,20 @@
 </ul>
 <h3>What the Lighthouse Pilot Proves</h3>
 <p>The pilot is a comprehensive rehearsal that tests every operational boundary:</p>
-<p>``<code> [ Pre-Cutover Preparation ] ├── Continuous block-level replication established via AWS MGN └── Relational data synchronization established via AWS DMS / native replication │ [ The Cutover Maintenance Window ] ├── Step 1: Drain active application traffic and pause background queue processing ├── Step 2: Final incremental storage synchronization (flushing dirty disk blocks) ├── Step 3: EC2 instance launch in target VPC with automated post-launch scripts ├── Step 4: Internal DNS / Route 53 record updates pointing to the new cloud endpoint └── Step 5: QA validation test suite execution (smoke tests, synthetic transactions) │ [ Decision Gate: Commit or Rollback ] ├── Success ──► Point public traffic to AWS; release maintenance window └── Abort   ──► Revert DNS back to on-premises IP; zero data loss rollback </code>``</p>
+<pre tabindex="0" class="code"><code>[ Pre-Cutover Preparation ]
+  ├── Continuous block-level replication established via AWS MGN
+  └── Relational data synchronization established via AWS DMS / native replication
+          │
+[ The Cutover Maintenance Window ]
+  ├── Step 1: Drain active application traffic and pause background queue processing
+  ├── Step 2: Final incremental storage synchronization (flushing dirty disk blocks)
+  ├── Step 3: EC2 instance launch in target VPC with automated post-launch scripts
+  ├── Step 4: Internal DNS / Route 53 record updates pointing to the new cloud endpoint
+  └── Step 5: QA validation test suite execution (smoke tests, synthetic transactions)
+          │
+[ Decision Gate: Commit or Rollback ]
+  ├── Success ──► Point public traffic to AWS; release maintenance window
+  └── Abort   ──► Revert DNS back to on-premises IP; zero data loss rollback</code></pre>
 <details class="implementation-notes">
 <summary>Key Metrics Captured During Pilot</summary>
 <ul>
@@ -173,9 +186,9 @@
       </article>
       <div class="closing">
         <div class="wrap">
-          <h2>Want to discuss enterprise Terraform architecture?</h2>
+          <h2>Want to discuss an enterprise migration or TCO model?</h2>
           <p>
-            I'm happy to dive deeper into any of these patterns — module abstraction trade-offs, state migration runbooks, or CI/CD security scanning.
+            I'm happy to dive deeper into any of these patterns — assessment scoping, financial modeling, or Mobilize wave sequencing.
           </p>
           <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
             >anupojuprudhvi@gmail.com</a

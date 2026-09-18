@@ -2,8 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://anupojuprudhvi.github.io/</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/healthcare/clinical-platform-modernization-and-cost-optimization.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/healthcare/hl7-device-interoperability-engine.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/healthcare/index.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/healthcare/real-time-clinical-analytics-pipeline.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/healthcare/zero-public-ingress-network-security.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/partner-engagements/adtech-saas-marketplace-onboarding.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/partner-engagements/fintech-map-assess-business-case.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/partner-engagements/index.html</loc></url>
@@ -28,6 +32,11 @@
   <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/s3-image-api.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/transit-gateway-hub-and-spoke.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/01-dual-ingress-architecture.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/02-multi-environment-clusters-and-rbac.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/03-container-delivery-to-eks.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/04-day-2-operations-and-incident-triage.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/index.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/migration-journey/01-assessment-paths-rapid-vs-deep.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/migration-journey/02-discovery-telemetry-and-inventory.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/migration-journey/03-financial-engineering-tco-and-licensing.html</loc></url>

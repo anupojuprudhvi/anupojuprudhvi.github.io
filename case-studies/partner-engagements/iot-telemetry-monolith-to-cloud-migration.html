@@ -138,7 +138,22 @@
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
 <h2>Decoupled telemetry ingestion and processing</h2>
-<p>``<code>text [ Connected IoT Hardware Units ] │ (Mutual TLS / MQTT) ▼ [ AWS IoT Core ] │ (IoT Rule Action) ▼ [ Amazon Kinesis Data Streams ] │ ┌───────┴────────────────────────┐ ▼                                ▼ [ EKS Microservices ]         [ S3 Data Lake ] (Stream Processing / Alerts)  (Raw Telemetry Parquet) │                                │ ▼                                ▼ [ Aurora / DynamoDB ]         [ Amazon Athena / QuickSight ] (Operational State)           (Long-Term Fleet Analytics) </code>``</p>
+<pre tabindex="0" class="code"><code class="language-text">[ Connected IoT Hardware Units ]
+             │ (Mutual TLS / MQTT)
+             ▼
+      [ AWS IoT Core ]
+             │ (IoT Rule Action)
+             ▼
+[ Amazon Kinesis Data Streams ]
+             │
+     ┌───────┴────────────────────────┐
+     ▼                                ▼
+[ EKS Microservices ]         [ S3 Data Lake ]
+(Stream Processing / Alerts)  (Raw Telemetry Parquet)
+     │                                │
+     ▼                                ▼
+[ Aurora / DynamoDB ]         [ Amazon Athena / QuickSight ]
+(Operational State)           (Long-Term Fleet Analytics)</code></pre>
 <p>By decoupling the ingestion gateway (AWS IoT Core) from stream processing (Kinesis) and persistent state (Aurora/DynamoDB), the target architecture was designed so that a spike in connected device events would not degrade web portal response times or cause dropped telemetry packets.</p>
 </div>
 </section>

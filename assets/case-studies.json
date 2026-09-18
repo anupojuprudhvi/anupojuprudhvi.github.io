@@ -415,6 +415,100 @@
     "solution": "Containerized microservices on managed Kubernetes, an in-memory caching layer, and a streaming analytics pipeline so dashboards never touch the operational database."
   },
   {
+    "title": "HL7 device-interoperability engine for remote patient monitoring",
+    "nav": "HL7 device interoperability",
+    "summary": "A dedicated integration tier that translates proprietary medical-IoT telemetry into standardized HL7 and JSON messages for downstream clinical systems and a partner hospital network.",
+    "project": "healthcare",
+    "projectName": "Healthcare & Cost Architecture",
+    "layer": "Integration",
+    "stack": [
+      "NextGen Mirth Connect",
+      "Nginx",
+      "MySQL",
+      "HL7 v2.5.1",
+      "TLS 1.2+"
+    ],
+    "tags": [
+      "interoperability",
+      "hl7",
+      "healthcare-iot",
+      "integration-engineering"
+    ],
+    "url": "case-studies/healthcare/hl7-device-interoperability-engine.html",
+    "problem": "Connected medical devices from a third-party device vendor — blood pressure cuffs, glucometers, pulse oximeters, and smart scales — each transmitted physiological telemetry in a proprietary, device-specific format. Neither the clinical microservices platform nor the hospital partner network it fed could ingest that traffic directly, and every new device family risked becoming a one-off, hand-built parser.",
+    "solution": "A dedicated interoperability host running NextGen Mirth Connect as the single translation point: every device family's proprietary payload is normalized into HL7 v2.5.1 and JSON before it reaches either the internal microservices platform or the external hospital partner feed, so neither side ever has to know the other's format."
+  },
+  {
+    "title": "Decoupled real-time analytics for clinical telemetry",
+    "nav": "Real-time clinical analytics",
+    "summary": "Streaming physiological telemetry into a distributed real-time OLAP store so care teams can query months of patient vitals without ever touching the operational database.",
+    "project": "healthcare",
+    "projectName": "Healthcare & Cost Architecture",
+    "layer": "Data engineering",
+    "stack": [
+      "Apache NiFi",
+      "Apache Pinot",
+      "Tableau Server",
+      "mTLS"
+    ],
+    "tags": [
+      "data-engineering",
+      "real-time-analytics",
+      "olap",
+      "streaming"
+    ],
+    "url": "case-studies/healthcare/real-time-clinical-analytics-pipeline.html",
+    "problem": "Care coordinators needed to query months of patient vital-sign history — blood pressure, pulse, glucose, oxygen saturation — for trend review and triage, but the only place that history lived was the same operational database handling live, high-frequency device writes. Every heavy reporting query competed directly with real-time telemetry ingestion for the same resources.",
+    "solution": "A dedicated streaming pipeline that moves vitals out of the write path entirely: a flow-management layer ingests, validates, and enriches telemetry in flight, a distributed real-time OLAP datastore indexes it for low-latency aggregation, and clinical dashboards query that store instead of the operational database, so reporting load never reaches the system of record."
+  },
+  {
+    "title": "Zero-public-ingress network architecture for a HIPAA platform",
+    "nav": "Zero-public-ingress security",
+    "summary": "A network design where no compute or database resource carries a public IP address, engineering access is mutual-TLS VPN only, and the CDN layer is tuned specifically for clinical single-page apps.",
+    "project": "healthcare",
+    "projectName": "Healthcare & Cost Architecture",
+    "layer": "Network & security",
+    "stack": [
+      "AWS Client VPN",
+      "AWS CloudFront",
+      "AWS WAF",
+      "AWS KMS"
+    ],
+    "tags": [
+      "security",
+      "hipaa",
+      "networking",
+      "vpn",
+      "cdn"
+    ],
+    "url": "case-studies/healthcare/zero-public-ingress-network-security.html",
+    "problem": "As a platform handling Protected Health Information (PHI) under HIPAA, every application server, Kubernetes worker node, analytics engine, and database needed to be reachable by engineers for operations and by patients/clinicians for the product itself — without either path creating a direct public attack surface into the environments actually holding patient data.",
+    "solution": "A network design with two entirely separate front doors: patient- and clinician-facing traffic reaches the platform only through a CDN and web application firewall in front of the public application tier, while engineering and administrative access to every private subnet goes through mutual-TLS VPN endpoints scoped per environment — and no compute or database resource in either path carries a public IPv4 address."
+  },
+  {
+    "title": "CI/CD delivery pipeline for a regulated healthcare platform",
+    "nav": "Regulated CI/CD delivery",
+    "summary": "A GitFlow-to-Kubernetes delivery pipeline with per-branch promotion gates, headless container-registry authentication, and a deployment lead time cut from hours to minutes.",
+    "project": "healthcare",
+    "projectName": "Healthcare & Cost Architecture",
+    "layer": "Delivery engineering",
+    "stack": [
+      "Jenkins",
+      "Bitbucket",
+      "AWS ECR",
+      "Amazon EKS"
+    ],
+    "tags": [
+      "ci-cd",
+      "devops",
+      "jenkins",
+      "delivery-engineering"
+    ],
+    "url": "case-studies/healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.html",
+    "problem": "Every microservice needed a repeatable path from a developer's commit to a running container in the right environment, with enough process around it to satisfy change control for a HIPAA platform — without that process turning into a manual runbook that only one or two engineers knew how to execute correctly under pressure.",
+    "solution": "A GitFlow branching model where the branch itself determines the target environment, driving Jenkins declarative pipelines that compile, test, containerize, and promote each service through Development, QA, Staging, and Production with an explicit approval gate before anything reaches a live clinical environment."
+  },
+  {
     "title": "Institutional digital asset platform · AWS MAP assess and directional business case",
     "nav": "Digital asset platform MAP assess",
     "summary": "Executing an agentless VMware inventory discovery, resolving a third-party IdP-to-Identity Center SAML blocker, and delivering an executive Directional Business Case (DBC) for an institutional financial data platform.",

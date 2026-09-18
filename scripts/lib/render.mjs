@@ -364,6 +364,10 @@ export function libraryPage(items) {
                 <strong>Cloud Migration Journey</strong>
                 <small>6 Modules · Assess, Mobilize &amp; Modernize</small>
               </a>
+              <a href="../learning-paths/kubernetes-operations/index.html" role="menuitem" class="nav-dropdown-item">
+                <strong>Kubernetes Ingress &amp; Operations on EKS</strong>
+                <small>4 Modules · Ingress, RBAC &amp; Day-2 Ops</small>
+              </a>
             </div>
           </div>
           <a href="../index.html#contact" class="nav-cta">Let's connect ↗</a
@@ -556,9 +560,9 @@ export function learningPathPage(d, bodyHtml, { up, url, prev, next, track }) {
       </article>
       <div class="closing">
         <div class="wrap">
-          <h2>Want to discuss enterprise Terraform architecture?</h2>
+          <h2>${esc(track.closingQuestion || `Want to discuss ${track.title}?`)}</h2>
           <p>
-            I'm happy to dive deeper into any of these patterns — module abstraction trade-offs, state migration runbooks, or CI/CD security scanning.
+            ${esc(track.closingBody || "I'm happy to dive deeper into any of these patterns.")}
           </p>
           <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
             >anupojuprudhvi@gmail.com</a

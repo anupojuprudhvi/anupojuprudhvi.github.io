@@ -40,7 +40,7 @@
             <div class="nav-dropdown-menu" role="menu">
               <a href="index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>All Case Studies</strong>
-                <small>21 case studies · full library &amp; filters</small>
+                <small>25 case studies · full library &amp; filters</small>
               </a>
               <div class="nav-dropdown-divider" role="separator"></div>
               <a href="index.html?filter=project%3Atelecom" role="menuitem" class="nav-dropdown-item">
@@ -53,7 +53,7 @@
               </a>
               <a href="index.html?filter=project%3Ahealthcare" role="menuitem" class="nav-dropdown-item">
                 <strong>Healthcare &amp; Cost Architecture</strong>
-                <small>1 case study</small>
+                <small>5 case studies</small>
               </a>
               <a href="index.html?filter=project%3Apartner-engagements" role="menuitem" class="nav-dropdown-item">
                 <strong>AWS APN &amp; Migration Engagements</strong>
@@ -78,6 +78,10 @@
               <a href="../learning-paths/migration-journey/index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>Cloud Migration Journey</strong>
                 <small>6 Modules · Assess, Mobilize &amp; Modernize</small>
+              </a>
+              <a href="../learning-paths/kubernetes-operations/index.html" role="menuitem" class="nav-dropdown-item">
+                <strong>Kubernetes Ingress &amp; Operations on EKS</strong>
+                <small>4 Modules · Ingress, RBAC &amp; Day-2 Ops</small>
               </a>
             </div>
           </div>
@@ -124,6 +128,10 @@
               <button class="filter" data-uc-filter="layer:Foundation" aria-pressed="false">Foundation</button>
               <button class="filter" data-uc-filter="layer:Applications" aria-pressed="false">Applications</button>
               <button class="filter" data-uc-filter="layer:Shared Services" aria-pressed="false">Shared Services</button>
+              <button class="filter" data-uc-filter="layer:Integration" aria-pressed="false">Integration</button>
+              <button class="filter" data-uc-filter="layer:Data engineering" aria-pressed="false">Data engineering</button>
+              <button class="filter" data-uc-filter="layer:Network &amp; security" aria-pressed="false">Network &amp; security</button>
+              <button class="filter" data-uc-filter="layer:Delivery engineering" aria-pressed="false">Delivery engineering</button>
               <button class="filter" data-uc-filter="layer:Strategy &amp; Discovery" aria-pressed="false">Strategy &amp; Discovery</button>
               <button class="filter" data-uc-filter="layer:Strategy &amp; Infrastructure" aria-pressed="false">Strategy &amp; Infrastructure</button>
               <button class="filter" data-uc-filter="layer:Architecture &amp; Kubernetes" aria-pressed="false">Architecture &amp; Kubernetes</button>
@@ -132,7 +140,7 @@
             </div>
           </div>
           <p class="filter-status" id="ucStatus" role="status">
-            21 case studies
+            25 case studies
           </p>
         </div>
       </section>
@@ -234,6 +242,30 @@
           <h3><a href="healthcare/clinical-platform-modernization-and-cost-optimization.html">Clinical platform modernization and cost architecture</a></h3>
           <p>Decomposing an on-premise clinical monolith into containerized services, and taking reporting load off the live database with a decoupled analytics pipeline.</p>
           <p class="uc-stack">Amazon EKS · RDS · ElastiCache · CloudFront</p>
+        </article>
+        <article class="uc-card" data-project="healthcare" data-layer="Integration" data-tags="interoperability hl7 healthcare-iot integration-engineering">
+          <div class="uc-meta"><span>Healthcare &amp; Cost Architecture</span><span>Integration</span></div>
+          <h3><a href="healthcare/hl7-device-interoperability-engine.html">HL7 device-interoperability engine for remote patient monitoring</a></h3>
+          <p>A dedicated integration tier that translates proprietary medical-IoT telemetry into standardized HL7 and JSON messages for downstream clinical systems and a partner hospital network.</p>
+          <p class="uc-stack">NextGen Mirth Connect · Nginx · MySQL · HL7 v2.5.1 · TLS 1.2+</p>
+        </article>
+        <article class="uc-card" data-project="healthcare" data-layer="Data engineering" data-tags="data-engineering real-time-analytics olap streaming">
+          <div class="uc-meta"><span>Healthcare &amp; Cost Architecture</span><span>Data engineering</span></div>
+          <h3><a href="healthcare/real-time-clinical-analytics-pipeline.html">Decoupled real-time analytics for clinical telemetry</a></h3>
+          <p>Streaming physiological telemetry into a distributed real-time OLAP store so care teams can query months of patient vitals without ever touching the operational database.</p>
+          <p class="uc-stack">Apache NiFi · Apache Pinot · Tableau Server · mTLS</p>
+        </article>
+        <article class="uc-card" data-project="healthcare" data-layer="Network &amp; security" data-tags="security hipaa networking vpn cdn">
+          <div class="uc-meta"><span>Healthcare &amp; Cost Architecture</span><span>Network &amp; security</span></div>
+          <h3><a href="healthcare/zero-public-ingress-network-security.html">Zero-public-ingress network architecture for a HIPAA platform</a></h3>
+          <p>A network design where no compute or database resource carries a public IP address, engineering access is mutual-TLS VPN only, and the CDN layer is tuned specifically for clinical single-page apps.</p>
+          <p class="uc-stack">AWS Client VPN · AWS CloudFront · AWS WAF · AWS KMS</p>
+        </article>
+        <article class="uc-card" data-project="healthcare" data-layer="Delivery engineering" data-tags="ci-cd devops jenkins delivery-engineering">
+          <div class="uc-meta"><span>Healthcare &amp; Cost Architecture</span><span>Delivery engineering</span></div>
+          <h3><a href="healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.html">CI/CD delivery pipeline for a regulated healthcare platform</a></h3>
+          <p>A GitFlow-to-Kubernetes delivery pipeline with per-branch promotion gates, headless container-registry authentication, and a deployment lead time cut from hours to minutes.</p>
+          <p class="uc-stack">Jenkins · Bitbucket · AWS ECR · Amazon EKS</p>
         </article>
         <article class="uc-card" data-project="partner-engagements" data-layer="Strategy &amp; Discovery" data-tags="migration map-assess tco vmware identity-center finops enterprise">
           <div class="uc-meta"><span>AWS APN &amp; Migration Engagements</span><span>Strategy &amp; Discovery</span></div>

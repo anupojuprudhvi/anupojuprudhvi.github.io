@@ -7,7 +7,9 @@
     "level": "Intermediate to Advanced",
     "duration": "6 Modules · 45 min read",
     "badge": "Production Playbook",
-    "stack": ["Terraform 1.5+", "AWS", "HCL", "Checkov", "TFLint", "S3 & DynamoDB"]
+    "stack": ["Terraform 1.5+", "AWS", "HCL", "Checkov", "TFLint", "S3 & DynamoDB"],
+    "closingQuestion": "Want to discuss enterprise Terraform architecture?",
+    "closingBody": "I'm happy to dive deeper into any of these patterns — module abstraction trade-offs, state migration runbooks, or CI/CD security scanning."
   },
   {
     "id": "migration-journey",
@@ -17,6 +19,20 @@
     "level": "Intermediate to Executive",
     "duration": "6 Modules · 50 min read",
     "badge": "Delivery Playbook",
-    "stack": ["AWS MAP", "AWS Transform", "RVTools", "TCO Modeling", "Landing Zone", "Well-Architected", "Amazon EKS"]
+    "stack": ["AWS MAP", "AWS Transform", "RVTools", "TCO Modeling", "Landing Zone", "Well-Architected", "Amazon EKS"],
+    "closingQuestion": "Want to discuss an enterprise migration or TCO model?",
+    "closingBody": "I'm happy to dive deeper into any of these patterns — assessment scoping, financial modeling, or Mobilize wave sequencing."
+  },
+  {
+    "id": "kubernetes-operations",
+    "title": "Kubernetes Ingress & Operations on Amazon EKS",
+    "eyebrow": "Container Platform Engineering",
+    "summary": "A hands-on operations playbook for running multi-environment Amazon EKS in production — dual ingress architecture and its real cost mechanics, IAM/RBAC across clusters, headless container delivery, and day-2 incident triage.",
+    "level": "Intermediate to Advanced",
+    "duration": "4 Modules · 30 min read",
+    "badge": "Operations Playbook",
+    "stack": ["Amazon EKS", "Kubernetes", "AWS Load Balancer Controller", "Nginx Ingress", "AWS ECR"],
+    "closingQuestion": "Want to discuss EKS ingress design or cluster operations?",
+    "closingBody": "I'm happy to dive deeper into any of these patterns — the ingress cost mechanics, RBAC design, or incident-triage workflow."
   }
 ]

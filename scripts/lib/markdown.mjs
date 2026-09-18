@@ -138,6 +138,26 @@ function renderBlocks(text) {
       continue;
     }
 
+    // Fenced code block ("```" ... "```", optional language after the
+    // opening fence) — kept verbatim as <pre><code>. Must run before the
+    // raw-HTML and paragraph branches below: a fence doesn't start with
+    // "<", so it would otherwise fall through into the paragraph branch,
+    // which joins lines with spaces and silently destroys any ASCII-art
+    // diagram or preformatted listing inside it.
+    const fence = line.match(/^\s*```(\S*)\s*$/);
+    if (fence) {
+      const buf = [];
+      i++;
+      while (i < lines.length && !/^\s*```\s*$/.test(lines[i])) {
+        buf.push(lines[i]);
+        i++;
+      }
+      if (i < lines.length) i++; // consume the closing fence
+      const lang = fence[1] ? ` class="language-${esc(fence[1])}"` : "";
+      out.push(`<pre class="code"><code${lang}>${esc(buf.join("\n"))}</code></pre>`);
+      continue;
+    }
+
     // Raw HTML block — passes through verbatim. Tracks the tag opened on
     // the first line and keeps consuming lines (blank ones included, so a
     // real-world <pre> code sample may contain blank lines) until that

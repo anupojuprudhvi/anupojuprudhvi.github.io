@@ -138,7 +138,20 @@
 <div class="wrap">
 <div class="section-eyebrow">Workflow</div>
 <h2>The customer onboarding and verification journey</h2>
-<p>``<code>text [ Enterprise Buyer ] │ (Procures via Cloud Marketplace) ▼ [ Marketplace API Gateway ] │ (Redirect with Procurement Token) ▼ [ SaaS Platform Landing Page ] │ (Token Exchange &amp; Account Form) ▼ [ Tenant Provisioning Engine ] ──▶ [ Cloud Marketplace Pub/Sub ] │                                    │ ├────────────────────────────────────┘ (Subscription Event: ACTIVE) ▼ [ Workspace Provisioned ] ──▶ [ Metering Worker ] ──▶ [ Usage Billing API ] </code>``</p>
+<pre tabindex="0" class="code"><code class="language-text">[ Enterprise Buyer ]
+         │ (Procures via Cloud Marketplace)
+         ▼
+[ Marketplace API Gateway ]
+         │ (Redirect with Procurement Token)
+         ▼
+[ SaaS Platform Landing Page ]
+         │ (Token Exchange &amp; Account Form)
+         ▼
+[ Tenant Provisioning Engine ] ──▶ [ Cloud Marketplace Pub/Sub ]
+         │                                    │
+         ├────────────────────────────────────┘ (Subscription Event: ACTIVE)
+         ▼
+[ Workspace Provisioned ] ──▶ [ Metering Worker ] ──▶ [ Usage Billing API ]</code></pre>
 </div>
 </section>
 <section>
