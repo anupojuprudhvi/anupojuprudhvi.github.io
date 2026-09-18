@@ -342,10 +342,7 @@ export function libraryPage(items) {
     <a class="skip-link" href="#main">Skip to content</a>
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
-        <a class="brand" href="../index.html"
-          ><span class="monogram" aria-hidden="true">PA</span>Prudhvi Raj
-          Anupoju</a
-        >
+        <a class="brand" href="../index.html">Prudhvi Raj Anupoju</a>
         <div class="navlinks">
           <a href="../index.html#work">Selected work</a>
           ${caseStudiesNavDropdown(items, { current: true })}
