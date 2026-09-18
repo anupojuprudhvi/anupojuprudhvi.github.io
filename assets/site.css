@@ -344,6 +344,26 @@ nav.topnav,
   margin-top: 18px;
   font-size: 12px;
   color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent);
+  flex-shrink: 0;
+}
+.hero-name-link {
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+}
+.hero-name-link:hover {
+  color: var(--accent);
+  text-decoration: underline;
 }
 .actions {
   display: flex;
@@ -1025,6 +1045,10 @@ footer {
   }
   .hero-intro {
     font-size: 11px;
+  }
+  .hero-avatar {
+    width: 36px;
+    height: 36px;
   }
   .architecture {
     min-height: 290px;
