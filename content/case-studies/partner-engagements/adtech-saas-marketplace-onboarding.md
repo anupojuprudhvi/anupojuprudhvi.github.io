@@ -1,5 +1,5 @@
 ---
-title: Enterprise AdTech SaaS · Cloud marketplace onboarding and commercialization architecture
+title: Enterprise AdTech SaaS · Cloud marketplace onboarding
 nav: AdTech SaaS marketplace onboarding
 label: Marketplace architecture
 heading: Engineering cloud marketplace integration, automated onboarding, and multi-cloud commercialization
@@ -8,7 +8,7 @@ layer: Architecture & Delivery
 order: 40
 stack: [Google Cloud Marketplace, AWS, SaaS Integration, Webhooks, API Gateway, Cloud Functions]
 tags: [marketplace, saas, multi-cloud, adtech, commercialization, integration]
-summary: Designing and executing an automated cloud marketplace integration architecture for an enterprise AdTech SaaS platform, establishing buyer procurement flows, billing telemetry, and post-onboarding operational verification.
+summary: An automated cloud marketplace integration for an AdTech SaaS platform — buyer procurement flows, billing telemetry, and post-onboarding verification.
 problem: |
   An enterprise AdTech software provider required multi-cloud commercialization channels
   to allow corporate clients to procure its analytics and audience optimization platform

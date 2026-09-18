@@ -1,5 +1,5 @@
 ---
-title: Institutional digital asset platform · AWS MAP assess and directional business case
+title: Institutional digital asset platform · AWS MAP business case
 nav: Digital asset platform MAP assess
 label: Migration assessment
 heading: Automating VMware discovery and modeling 3-year cloud TCO for digital asset accounting
@@ -8,7 +8,7 @@ layer: Strategy & Discovery
 order: 10
 stack: [AWS Transform, VMware vCenter, RVTools, AWS IAM Identity Center, Enterprise SAML IdP, AWS CAF]
 tags: [migration, map-assess, tco, vmware, identity-center, finops, enterprise]
-summary: Executing an agentless VMware inventory discovery, resolving a third-party IdP-to-Identity Center SAML blocker, and delivering an executive Directional Business Case (DBC) for an institutional financial data platform.
+summary: An agentless VMware discovery, a third-party IdP-to-Identity Center SAML fix, and a Directional Business Case for an institutional financial platform.
 problem: |
   An institutional digital asset and accounting platform running on-premises in
   VMware required a comprehensive evaluation for migration to AWS under the

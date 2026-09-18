@@ -1,5 +1,5 @@
 ---
-title: Automating telecom failover while preserving licensed identity
+title: Automating telecom failover, preserving licensed identity
 nav: Failover and licensing continuity
 label: High availability
 project: telecom

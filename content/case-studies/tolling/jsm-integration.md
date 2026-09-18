@@ -8,7 +8,7 @@ layer: Applications
 order: 80
 stack: [API Gateway HTTP API, CloudFront, AWS WAF, Lambda authorizer, VPC Link, EKS, Secrets Manager]
 tags: [integration, security, api, webhooks, waf, authentication]
-summary: A layered, authenticated path from Jira Service Management into a private service, with CloudFront and a Lambda authorizer retained because AWS platform constraints rule out the simpler alternatives.
+summary: A layered, authenticated path from Jira Service Management into a private service, using CloudFront and a Lambda authorizer because simpler options don't work.
 problem: |
   Jira Service Management and Jira Automation needed to deliver webhook events
   into an internal service running on EKS. That service has no authentication

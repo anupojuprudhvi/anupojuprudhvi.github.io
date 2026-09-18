@@ -1,5 +1,5 @@
 ---
-title: Corporate SSO for Amazon WorkSpaces without losing the domain boundary
+title: Corporate SSO for Amazon WorkSpaces, without losing AD
 nav: Federate WorkSpaces with Entra
 label: Identity integration
 heading: How a corporate identity becomes a usable WorkSpaces session
@@ -8,7 +8,7 @@ layer: Shared Services
 order: 70
 stack: [Microsoft Entra ID, SAML 2.0, AWS IAM, Amazon WorkSpaces, AD Connector, Terraform]
 tags: [identity, sso, saml, workspaces, entra, active-directory, terraform]
-summary: Separating Entra authentication from Active Directory machine operations so Personal and Pool WorkSpaces can use corporate sign-in without weakening the domain boundary.
+summary: Separating Entra authentication from AD machine operations so Personal and Pool WorkSpaces get corporate sign-in without weakening the domain boundary.
 problem: |
   Employees needed to open Amazon WorkSpaces with the same corporate identity they
   already use for other applications. A separate WorkSpaces login would create a

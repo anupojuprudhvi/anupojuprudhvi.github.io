@@ -1,7 +1,7 @@
 ---
-title: HL7 device-interoperability engine for remote patient monitoring
+title: HL7 device-interoperability engine for remote monitoring
 nav: HL7 device interoperability
-summary: A dedicated integration tier that translates proprietary medical-IoT telemetry into standardized HL7 and JSON messages for downstream clinical systems and a partner hospital network.
+summary: A dedicated integration tier translating proprietary medical-IoT telemetry into standardized HL7 and JSON for clinical systems and a partner hospital network.
 project: healthcare
 layer: Integration
 order: 10

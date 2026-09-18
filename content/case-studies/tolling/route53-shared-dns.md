@@ -8,7 +8,7 @@ layer: Shared Services
 order: 90
 stack: [Amazon Route 53, Route 53 Resolver, VPC, Transit Gateway, Terraform]
 tags: [dns, route53, networking, multi-account, shared-services, terraform]
-summary: Separating public internet resolution from private VPC resolution, then associating one centrally managed private hosted zone with shared and environment VPCs across accounts.
+summary: Separating public internet resolution from private VPC resolution, then associating one centrally managed hosted zone with shared and environment VPCs.
 problem: |
   The tolling platform had more than one kind of DNS name to operate. Public
   services needed to resolve from the internet, while internal endpoints had to

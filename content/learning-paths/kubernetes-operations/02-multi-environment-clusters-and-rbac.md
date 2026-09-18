@@ -4,7 +4,7 @@ track: kubernetes-operations
 order: 2
 module: 2
 totalModules: 4
-summary: Isolating Dev, QA, Staging, and Production as genuinely separate clusters, and mapping IAM identities to Kubernetes RBAC through aws-auth without a shared superuser credential.
+summary: Isolating Dev, QA, Staging, and Production as separate clusters, and mapping IAM identities to Kubernetes RBAC via aws-auth, without a shared superuser.
 level: Access Control
 readingTime: 7 min read
 stack: [Amazon EKS, AWS IAM, Kubernetes RBAC, aws-auth]

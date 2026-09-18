@@ -1,7 +1,7 @@
 ---
-title: Zero-public-ingress network architecture for a HIPAA platform
+title: Zero-public-ingress network architecture for HIPAA
 nav: Zero-public-ingress security
-summary: A network design where no compute or database resource carries a public IP address, engineering access is mutual-TLS VPN only, and the CDN layer is tuned specifically for clinical single-page apps.
+summary: A network design where no compute or database resource has a public IP, engineering access is mutual-TLS VPN only, and the CDN is tuned for clinical apps.
 project: healthcare
 layer: Network & security
 order: 30

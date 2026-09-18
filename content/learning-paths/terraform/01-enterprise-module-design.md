@@ -4,7 +4,7 @@ track: terraform
 order: 1
 module: 1
 totalModules: 6
-summary: The canonical enterprise pattern for structuring Terraform codebases — separating reusable child modules from root deployment environments and establishing strict version pinning.
+summary: The enterprise pattern for structuring Terraform codebases — separating reusable child modules from root deployment environments, with strict version pinning.
 level: Core Architecture
 readingTime: 8 min read
 stack: [Terraform, HCL, AWS]

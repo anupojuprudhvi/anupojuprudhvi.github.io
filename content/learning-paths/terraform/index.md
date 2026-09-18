@@ -1,7 +1,7 @@
 ---
 title: Terraform for Enterprise Production
 track: terraform
-summary: A comprehensive architectural playbook on building, scaling, and governing Terraform in enterprise AWS environments — from modular design and remote state isolation to zero-downtime refactoring and automated security guardrails.
+summary: A playbook for building, scaling, and governing Terraform in enterprise AWS — modular design, remote state isolation, and security guardrails.
 level: Intermediate to Advanced
 duration: 6 Modules · 45 min read
 stack: [Terraform 1.5+, AWS, HCL, Checkov, TFLint, S3 & DynamoDB]

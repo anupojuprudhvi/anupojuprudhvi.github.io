@@ -1,5 +1,5 @@
 ---
-title: One governed cloud foundation under 40+ independently-run accounts
+title: One governed cloud foundation under 40+ accounts
 nav: Standardize the cloud
 label: Foundation
 project: tolling

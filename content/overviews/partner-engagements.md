@@ -1,6 +1,6 @@
 ---
-title: Accelerating enterprise migrations through structured assessment and cloud strategy
-summary: Architectural advisory and migration delivery across AWS Partner Network (APN) engagements, covering agentless discovery, TCO business cases, and target landing zones.
+title: Enterprise migration assessments and cloud strategy
+summary: Architectural advisory and migration delivery across AWS Partner Network engagements — agentless discovery, TCO business cases, and target landing zones.
 role: APN Cloud Migration Architect & Technical Lead
 scope: Enterprise VMware estates, multi-region discovery, AWS Transform business cases, and target architecture design
 ---

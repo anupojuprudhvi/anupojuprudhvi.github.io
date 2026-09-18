@@ -1,5 +1,5 @@
 ---
-title: Global media and localization platform · Cross-region MAP migration assessment
+title: Global media platform · Cross-region MAP migration
 nav: Global media MAP assessment
 label: Cross-region discovery
 heading: Profiling distributed US and EU data center estates for media supply-chain cloud migration
@@ -8,7 +8,7 @@ layer: Strategy & Infrastructure
 order: 20
 stack: [AWS Application Discovery, AWS MAP, Excel Analytics, Multi-Region Profiling, TCO Modeling]
 tags: [migration, map, media, cross-region, tco, storage, finops]
-summary: Inventory profiling and cloud transformation strategy across multi-region US and EU on-premises data centers, sizing high-capacity media storage, compute clusters, and localized workflows under AWS MAP.
+summary: Inventory profiling and cloud transformation across US and EU data centers, sizing high-capacity media storage, compute, and localized workflows under AWS MAP.
 problem: |
   A global media localization, subtitling, and dubbing enterprise operated multi-petabyte
   media processing pipelines distributed across physical data centers in North America

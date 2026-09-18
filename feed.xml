@@ -7,14 +7,14 @@
     <language>en</language>
     <atom:link href="https://anupojuprudhvi.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
-      <title>Modernizing a legacy telecom database with a controlled cutover</title>
+      <title>Modernizing a telecom database with a controlled cutover</title>
       <link>https://anupojuprudhvi.github.io/case-studies/telecom/aurora-global-database-modernization.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/telecom/aurora-global-database-modernization.html</guid>
       <description>Combining schema and client compatibility work, continuous replication, and local connection pooling to move a legacy telecom database tier to Aurora.</description>
       <category>Data</category>
     </item>
     <item>
-      <title>Automating telecom failover while preserving licensed identity</title>
+      <title>Automating telecom failover, preserving licensed identity</title>
       <link>https://anupojuprudhvi.github.io/case-studies/telecom/serverless-ha-failover-engine.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/telecom/serverless-ha-failover-engine.html</guid>
       <description>Bringing recovery orchestration, service validation, and hardware-bound licensing into one failover workflow, with an explicit same-AZ boundary.</description>
@@ -31,7 +31,7 @@
       <title>Making telecom node provisioning repeatable</title>
       <link>https://anupojuprudhvi.github.io/case-studies/telecom/platform-automation-engine-v1-to-v10.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/telecom/platform-automation-engine-v1-to-v10.html</guid>
-      <description>Turning manual host configuration and recurring migration defects into a provisioning workflow with explicit configuration, service reconciliation, and smoke tests.</description>
+      <description>Turning manual host configuration and recurring migration defects into a provisioning workflow with explicit config, service reconciliation, and smoke tests.</description>
       <category>Platform</category>
     </item>
     <item>
@@ -42,7 +42,7 @@
       <category>Operations</category>
     </item>
     <item>
-      <title>One governed cloud foundation under 40+ independently-run accounts</title>
+      <title>One governed cloud foundation under 40+ accounts</title>
       <link>https://anupojuprudhvi.github.io/case-studies/tolling/cloud-foundation.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/tolling/cloud-foundation.html</guid>
       <description>A four-layer landing zone, one hub-and-spoke network, and a CI/CD pipeline where an unintended apply is structurally impossible.</description>
@@ -52,56 +52,56 @@
       <title>A Transit Gateway hub that keeps account routing deliberate</title>
       <link>https://anupojuprudhvi.github.io/case-studies/tolling/transit-gateway-hub-and-spoke.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/tolling/transit-gateway-hub-and-spoke.html</guid>
-      <description>Connecting shared services, workload accounts, security inspection, and a recovery region through one governed Transit Gateway without making every VPC route to every other VPC.</description>
+      <description>Connecting shared services, workload accounts, security inspection, and a recovery region through one governed Transit Gateway, not a full mesh of VPC routes.</description>
       <category>Foundation</category>
     </item>
     <item>
-      <title>Make Aurora DR behave like the primary, not merely exist beside it</title>
+      <title>Make Aurora DR behave like the primary, not exist beside it</title>
       <link>https://anupojuprudhvi.github.io/case-studies/tolling/aurora-multi-region-dr-parity.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/tolling/aurora-multi-region-dr-parity.html</guid>
-      <description>Closing the two gaps that can make a replicated Aurora environment fail differently during recovery: secondary parameter-group drift and missing regional secret availability.</description>
+      <description>Closing the two gaps that can make a replicated Aurora environment fail differently in recovery: secondary parameter-group drift and missing regional secrets.</description>
       <category>Data</category>
     </item>
     <item>
       <title>Turn an EKS ingress incident into a diagnosable traffic path</title>
       <link>https://anupojuprudhvi.github.io/case-studies/tolling/eks-ingress-incident-rca.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/tolling/eks-ingress-incident-rca.html</guid>
-      <description>A structured RCA pattern for an EKS ingress failure that separates DNS, load-balancer, target-registration, network-policy, and application causes instead of treating every 5xx as an application defect.</description>
+      <description>A structured RCA pattern for an EKS ingress failure that separates DNS, load-balancer, routing, network-policy, and application causes, not just &quot;5xx.&quot;</description>
       <category>Applications</category>
     </item>
     <item>
-      <title>A reusable CI/CD engine with safe-by-default infrastructure delivery</title>
+      <title>A reusable CI/CD engine with safe-by-default delivery</title>
       <link>https://anupojuprudhvi.github.io/case-studies/tolling/cicd-delivery-engine.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/tolling/cicd-delivery-engine.html</guid>
-      <description>Bootstrapping AWS OIDC roles once with SSO, then using one reusable GitHub Actions engine for speculative plans and explicitly gated, single-environment Terraform deployments.</description>
+      <description>Bootstrapping AWS OIDC roles once with SSO, then reusing one GitHub Actions engine for speculative plans and gated, single-environment Terraform deploys.</description>
       <category>Foundation</category>
     </item>
     <item>
       <title>Make organization CloudTrail evidence difficult to alter</title>
       <link>https://anupojuprudhvi.github.io/case-studies/tolling/cloudtrail-tamper-protection.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/tolling/cloudtrail-tamper-protection.html</guid>
-      <description>Centralizing organization-wide CloudTrail events in a separately governed archive account with encryption, restrictive bucket policy, retention controls, and alerting for changes to the trail or log destination.</description>
+      <description>Centralizing CloudTrail events in a separately governed archive account, with encryption, a restrictive bucket policy, retention controls, and change alerting.</description>
       <category>Foundation</category>
     </item>
     <item>
-      <title>Corporate SSO for Amazon WorkSpaces without losing the domain boundary</title>
+      <title>Corporate SSO for Amazon WorkSpaces, without losing AD</title>
       <link>https://anupojuprudhvi.github.io/case-studies/tolling/entra-workspaces-saml.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/tolling/entra-workspaces-saml.html</guid>
-      <description>Separating Entra authentication from Active Directory machine operations so Personal and Pool WorkSpaces can use corporate sign-in without weakening the domain boundary.</description>
+      <description>Separating Entra authentication from AD machine operations so Personal and Pool WorkSpaces get corporate sign-in without weakening the domain boundary.</description>
       <category>Shared Services</category>
     </item>
     <item>
       <title>Letting a SaaS webhook reach a private service, safely</title>
       <link>https://anupojuprudhvi.github.io/case-studies/tolling/jsm-integration.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/tolling/jsm-integration.html</guid>
-      <description>A layered, authenticated path from Jira Service Management into a private service, with CloudFront and a Lambda authorizer retained because AWS platform constraints rule out the simpler alternatives.</description>
+      <description>A layered, authenticated path from Jira Service Management into a private service, using CloudFront and a Lambda authorizer because simpler options don't work.</description>
       <category>Applications</category>
     </item>
     <item>
       <title>One DNS model for public services and private environments</title>
       <link>https://anupojuprudhvi.github.io/case-studies/tolling/route53-shared-dns.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/tolling/route53-shared-dns.html</guid>
-      <description>Separating public internet resolution from private VPC resolution, then associating one centrally managed private hosted zone with shared and environment VPCs across accounts.</description>
+      <description>Separating public internet resolution from private VPC resolution, then associating one centrally managed hosted zone with shared and environment VPCs.</description>
       <category>Shared Services</category>
     </item>
     <item>
@@ -119,66 +119,66 @@
       <category>Applications</category>
     </item>
     <item>
-      <title>HL7 device-interoperability engine for remote patient monitoring</title>
+      <title>HL7 device-interoperability engine for remote monitoring</title>
       <link>https://anupojuprudhvi.github.io/case-studies/healthcare/hl7-device-interoperability-engine.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/healthcare/hl7-device-interoperability-engine.html</guid>
-      <description>A dedicated integration tier that translates proprietary medical-IoT telemetry into standardized HL7 and JSON messages for downstream clinical systems and a partner hospital network.</description>
+      <description>A dedicated integration tier translating proprietary medical-IoT telemetry into standardized HL7 and JSON for clinical systems and a partner hospital network.</description>
       <category>Integration</category>
     </item>
     <item>
       <title>Decoupled real-time analytics for clinical telemetry</title>
       <link>https://anupojuprudhvi.github.io/case-studies/healthcare/real-time-clinical-analytics-pipeline.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/healthcare/real-time-clinical-analytics-pipeline.html</guid>
-      <description>Streaming physiological telemetry into a distributed real-time OLAP store so care teams can query months of patient vitals without ever touching the operational database.</description>
+      <description>Streaming physiological telemetry into a real-time OLAP store so care teams can query months of patient vitals without touching the operational database.</description>
       <category>Data engineering</category>
     </item>
     <item>
-      <title>Zero-public-ingress network architecture for a HIPAA platform</title>
+      <title>Zero-public-ingress network architecture for HIPAA</title>
       <link>https://anupojuprudhvi.github.io/case-studies/healthcare/zero-public-ingress-network-security.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/healthcare/zero-public-ingress-network-security.html</guid>
-      <description>A network design where no compute or database resource carries a public IP address, engineering access is mutual-TLS VPN only, and the CDN layer is tuned specifically for clinical single-page apps.</description>
+      <description>A network design where no compute or database resource has a public IP, engineering access is mutual-TLS VPN only, and the CDN is tuned for clinical apps.</description>
       <category>Network &amp; security</category>
     </item>
     <item>
       <title>CI/CD delivery pipeline for a regulated healthcare platform</title>
       <link>https://anupojuprudhvi.github.io/case-studies/healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.html</guid>
-      <description>A GitFlow-to-Kubernetes delivery pipeline with per-branch promotion gates, headless container-registry authentication, and a deployment lead time cut from hours to minutes.</description>
+      <description>A GitFlow-to-Kubernetes pipeline with per-branch promotion gates, headless registry authentication, and deployment lead time cut from hours to minutes.</description>
       <category>Delivery engineering</category>
     </item>
     <item>
-      <title>Institutional digital asset platform · AWS MAP assess and directional business case</title>
+      <title>Institutional digital asset platform · AWS MAP business case</title>
       <link>https://anupojuprudhvi.github.io/case-studies/partner-engagements/fintech-map-assess-business-case.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/partner-engagements/fintech-map-assess-business-case.html</guid>
-      <description>Executing an agentless VMware inventory discovery, resolving a third-party IdP-to-Identity Center SAML blocker, and delivering an executive Directional Business Case (DBC) for an institutional financial data platform.</description>
+      <description>An agentless VMware discovery, a third-party IdP-to-Identity Center SAML fix, and a Directional Business Case for an institutional financial platform.</description>
       <category>Strategy &amp; Discovery</category>
     </item>
     <item>
-      <title>Global media and localization platform · Cross-region MAP migration assessment</title>
+      <title>Global media platform · Cross-region MAP migration</title>
       <link>https://anupojuprudhvi.github.io/case-studies/partner-engagements/media-cross-region-map-migration.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/partner-engagements/media-cross-region-map-migration.html</guid>
-      <description>Inventory profiling and cloud transformation strategy across multi-region US and EU on-premises data centers, sizing high-capacity media storage, compute clusters, and localized workflows under AWS MAP.</description>
+      <description>Inventory profiling and cloud transformation across US and EU data centers, sizing high-capacity media storage, compute, and localized workflows under AWS MAP.</description>
       <category>Strategy &amp; Infrastructure</category>
     </item>
     <item>
-      <title>Enterprise IT monitoring platform · VMware Tanzu to Amazon EKS MAP assessment</title>
+      <title>Enterprise IT monitoring · VMware Tanzu to EKS assessment</title>
       <link>https://anupojuprudhvi.github.io/case-studies/partner-engagements/it-monitoring-tanzu-to-eks-map-assessment.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/partner-engagements/it-monitoring-tanzu-to-eks-map-assessment.html</guid>
-      <description>Leading the AWS MAP Assess technical evaluation for a European IT monitoring software enterprise, transitioning on-premises VMware Tanzu Kubernetes to Amazon EKS with Karpenter and delivering executive TCO analysis.</description>
+      <description>An AWS MAP Assess evaluation for a European IT monitoring enterprise, transitioning VMware Tanzu Kubernetes to Amazon EKS with Karpenter and a TCO analysis.</description>
       <category>Architecture &amp; Kubernetes</category>
     </item>
     <item>
-      <title>Connected IoT and telemetry platform · Monolith to AWS cloud migration and service mapping</title>
+      <title>Connected IoT platform · Monolith to AWS cloud migration</title>
       <link>https://anupojuprudhvi.github.io/case-studies/partner-engagements/iot-telemetry-monolith-to-cloud-migration.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/partner-engagements/iot-telemetry-monolith-to-cloud-migration.html</guid>
-      <description>Modernizing a connected device platform from on-premise monolithic servers to high-throughput AWS managed services, establishing service translation matrices, ballpark estimates, and MAP Mobilize roadmaps.</description>
+      <description>Modernizing a connected device platform from on-premise servers to AWS managed services — service translation matrices, estimates, and MAP Mobilize roadmaps.</description>
       <category>Architecture &amp; Services</category>
     </item>
     <item>
-      <title>Enterprise AdTech SaaS · Cloud marketplace onboarding and commercialization architecture</title>
+      <title>Enterprise AdTech SaaS · Cloud marketplace onboarding</title>
       <link>https://anupojuprudhvi.github.io/case-studies/partner-engagements/adtech-saas-marketplace-onboarding.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/partner-engagements/adtech-saas-marketplace-onboarding.html</guid>
-      <description>Designing and executing an automated cloud marketplace integration architecture for an enterprise AdTech SaaS platform, establishing buyer procurement flows, billing telemetry, and post-onboarding operational verification.</description>
+      <description>An automated cloud marketplace integration for an AdTech SaaS platform — buyer procurement flows, billing telemetry, and post-onboarding verification.</description>
       <category>Architecture &amp; Delivery</category>
     </item>
   </channel>

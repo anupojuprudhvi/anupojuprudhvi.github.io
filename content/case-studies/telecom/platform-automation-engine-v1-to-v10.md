@@ -7,7 +7,7 @@ layer: Platform
 order: 40
 stack: [Bash, AWS Systems Manager, systemd, Linux, Postfix]
 tags: [automation, provisioning, configuration, service-discovery, deployment]
-summary: Turning manual host configuration and recurring migration defects into a provisioning workflow with explicit configuration, service reconciliation, and smoke tests.
+summary: Turning manual host configuration and recurring migration defects into a provisioning workflow with explicit config, service reconciliation, and smoke tests.
 scaffold: false
 problem: Manual configuration across application and persistent service nodes produced drift and repeated environment acceptance failures.
 solution: Automate host setup and incorporate the routing and service-discovery checks learned from migration troubleshooting.

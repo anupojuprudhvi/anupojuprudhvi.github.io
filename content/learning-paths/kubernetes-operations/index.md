@@ -1,7 +1,7 @@
 ---
 title: Kubernetes Ingress & Operations on Amazon EKS
 track: kubernetes-operations
-summary: A hands-on operations playbook for running multi-environment Amazon EKS in production — dual ingress architecture and its real cost mechanics, IAM/RBAC across clusters, headless container delivery, and day-2 incident triage.
+summary: A hands-on playbook for running EKS in production — dual ingress cost mechanics, IAM/RBAC across clusters, and day-2 incident triage.
 level: Intermediate to Advanced
 duration: 4 Modules · 30 min read
 stack: [Amazon EKS, Kubernetes, AWS Load Balancer Controller, Nginx Ingress, AWS ECR]

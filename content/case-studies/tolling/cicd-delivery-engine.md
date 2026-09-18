@@ -1,5 +1,5 @@
 ---
-title: A reusable CI/CD engine with safe-by-default infrastructure delivery
+title: A reusable CI/CD engine with safe-by-default delivery
 nav: Build the delivery engine
 label: CI/CD architecture
 heading: How Terraform changes move from pull request to environment
@@ -8,7 +8,7 @@ layer: Foundation
 order: 50
 stack: [GitHub Actions, Terraform, AWS IAM OIDC, AWS STS, GitHub Environments]
 tags: [cicd, github-actions, terraform, oidc, security, deployment, governance]
-summary: Bootstrapping AWS OIDC roles once with SSO, then using one reusable GitHub Actions engine for speculative plans and explicitly gated, single-environment Terraform deployments.
+summary: Bootstrapping AWS OIDC roles once with SSO, then reusing one GitHub Actions engine for speculative plans and gated, single-environment Terraform deploys.
 problem: |
   A multi-account Terraform platform needs more than a workflow that runs
   `terraform apply`. The delivery path must authenticate without long-lived AWS

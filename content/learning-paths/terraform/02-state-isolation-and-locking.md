@@ -4,7 +4,7 @@ track: terraform
 order: 2
 module: 2
 totalModules: 6
-summary: Architecting secure remote state backends with S3 and DynamoDB, reducing blast radius through state layering, and replacing brittle remote_state dependencies with decoupled parameter contracts.
+summary: Architecting remote state backends with S3 and DynamoDB, reducing blast radius via state layering, and replacing remote_state with parameter contracts.
 level: Core Architecture
 readingTime: 8 min read
 stack: [Terraform, AWS S3, DynamoDB, AWS KMS, IAM]

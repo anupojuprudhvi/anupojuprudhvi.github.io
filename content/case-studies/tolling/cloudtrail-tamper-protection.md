@@ -8,7 +8,7 @@ layer: Foundation
 order: 60
 stack: [AWS CloudTrail, AWS Organizations, Amazon S3, AWS KMS, S3 Object Lock, Amazon SNS]
 tags: [security, cloudtrail, audit, compliance, s3, multi-account, governance]
-summary: Centralizing organization-wide CloudTrail events in a separately governed archive account with encryption, restrictive bucket policy, retention controls, and alerting for changes to the trail or log destination.
+summary: Centralizing CloudTrail events in a separately governed archive account, with encryption, a restrictive bucket policy, retention controls, and change alerting.
 problem: |
   Account-local audit logs are a weak source of evidence if an operator or
   workload identity in that account is compromised. A malicious change could

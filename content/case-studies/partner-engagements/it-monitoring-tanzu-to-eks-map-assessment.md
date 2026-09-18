@@ -1,5 +1,5 @@
 ---
-title: Enterprise IT monitoring platform · VMware Tanzu to Amazon EKS MAP assessment
+title: Enterprise IT monitoring · VMware Tanzu to EKS assessment
 nav: IT monitoring Tanzu to EKS MAP
 label: Kubernetes modernization
 heading: Assessing VMware Tanzu workloads, Dell VxRail footprints, and architecting Amazon EKS target states
@@ -8,7 +8,7 @@ layer: Architecture & Kubernetes
 order: 25
 stack: [Amazon EKS, VMware Tanzu, Karpenter, AWS Transform, RVTools, Dell VxRail, AWS MAP]
 tags: [kubernetes, eks, tanzu, vmware, migration, map-assess, karpenter, finops]
-summary: Leading the AWS MAP Assess technical evaluation for a European IT monitoring software enterprise, transitioning on-premises VMware Tanzu Kubernetes to Amazon EKS with Karpenter and delivering executive TCO analysis.
+summary: An AWS MAP Assess evaluation for a European IT monitoring enterprise, transitioning VMware Tanzu Kubernetes to Amazon EKS with Karpenter and a TCO analysis.
 problem: |
   A European enterprise IT infrastructure and network monitoring software leader operated
   its core commercial platforms, continuous integration runner fleets, and extensive QA test

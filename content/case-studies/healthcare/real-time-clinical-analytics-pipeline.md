@@ -1,7 +1,7 @@
 ---
 title: Decoupled real-time analytics for clinical telemetry
 nav: Real-time clinical analytics
-summary: Streaming physiological telemetry into a distributed real-time OLAP store so care teams can query months of patient vitals without ever touching the operational database.
+summary: Streaming physiological telemetry into a real-time OLAP store so care teams can query months of patient vitals without touching the operational database.
 project: healthcare
 layer: Data engineering
 order: 20

@@ -1,5 +1,5 @@
 ---
-title: Connected IoT and telemetry platform · Monolith to AWS cloud migration and service mapping
+title: Connected IoT platform · Monolith to AWS cloud migration
 nav: Connected IoT cloud migration
 label: Target architecture
 heading: Translating monolithic telemetry backends into managed AWS cloud architectures
@@ -8,7 +8,7 @@ layer: Architecture & Services
 order: 30
 stack: [AWS IoT Core, Amazon EKS, Amazon Kinesis, Aurora PostgreSQL, DynamoDB, AWS MAP]
 tags: [iot, telemetry, monolith-to-microservices, architecture, eks, kinesis, map]
-summary: Modernizing a connected device platform from on-premise monolithic servers to high-throughput AWS managed services, establishing service translation matrices, ballpark estimates, and MAP Mobilize roadmaps.
+summary: Modernizing a connected device platform from on-premise servers to AWS managed services — service translation matrices, estimates, and MAP Mobilize roadmaps.
 problem: |
   A connected smart consumer IoT platform transmitting continuous streams of biometric
   and environmental telemetry from millions of deployed hardware units was constrained

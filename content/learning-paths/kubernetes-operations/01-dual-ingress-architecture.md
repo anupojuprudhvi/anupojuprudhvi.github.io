@@ -4,7 +4,7 @@ track: kubernetes-operations
 order: 1
 module: 1
 totalModules: 4
-summary: When to route API traffic through a shared AWS ALB versus an internal Nginx Ingress controller, and why grouping services onto one load balancer is a real, measurable saving rather than a micro-optimization.
+summary: When to route traffic through a shared ALB versus an internal Nginx Ingress, and why grouping services onto one load balancer is a real, measurable saving.
 level: Core Architecture
 readingTime: 8 min read
 stack: [Amazon EKS, AWS Load Balancer Controller, Nginx Ingress, AWS VPC CNI]

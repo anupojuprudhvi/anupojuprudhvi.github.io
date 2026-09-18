@@ -8,7 +8,7 @@ layer: Applications
 order: 40
 stack: [Amazon EKS, AWS Load Balancer Controller, Application Load Balancer, Route 53, CloudWatch]
 tags: [eks, kubernetes, ingress, incident-response, observability, networking]
-summary: A structured RCA pattern for an EKS ingress failure that separates DNS, load-balancer, target-registration, network-policy, and application causes instead of treating every 5xx as an application defect.
+summary: A structured RCA pattern for an EKS ingress failure that separates DNS, load-balancer, routing, network-policy, and application causes, not just "5xx."
 problem: |
   An ingress incident can look like a single outage to a user while several
   different boundaries sit between the request and a pod. DNS may resolve the

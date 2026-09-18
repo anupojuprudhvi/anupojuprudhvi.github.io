@@ -1,5 +1,5 @@
 ---
-title: Make Aurora DR behave like the primary, not merely exist beside it
+title: Make Aurora DR behave like the primary, not exist beside it
 nav: Keep Aurora DR in configuration parity
 label: Data resilience
 heading: Closing the configuration gaps in a multi-region Aurora design
@@ -8,7 +8,7 @@ layer: Data
 order: 30
 stack: [Amazon Aurora Global Database, AWS Secrets Manager, AWS KMS, Terraform]
 tags: [resilience, disaster-recovery, database, terraform, security, multi-region]
-summary: Closing the two gaps that can make a replicated Aurora environment fail differently during recovery: secondary parameter-group drift and missing regional secret availability.
+summary: Closing the two gaps that can make a replicated Aurora environment fail differently in recovery: secondary parameter-group drift and missing regional secrets.
 problem: |
   A multi-region Aurora design can report that replication is enabled while still carrying a dangerous difference between the primary and secondary. Custom cluster and DB parameter groups may exist in the primary region while secondary resources fall back to AWS defaults. Database extensions, connection settings, planner tuning, and logging could therefore change during failover. A database secret that exists only in the primary region also leaves recovery dependent on primary-region access.
 solution: |

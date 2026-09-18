@@ -1,5 +1,5 @@
 ---
-title: Modernizing a legacy telecom database with a controlled cutover
+title: Modernizing a telecom database with a controlled cutover
 nav: Database migration and connection pooling
 label: Database modernization
 project: telecom

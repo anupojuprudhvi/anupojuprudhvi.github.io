@@ -4,7 +4,7 @@ track: terraform
 order: 5
 module: 5
 totalModules: 6
-summary: Safely evolving production infrastructure without outages — using declarative moved blocks, modern import blocks, and removed blocks to refactor state with zero downtime.
+summary: Safely evolving production infrastructure without outages, using moved, import, and removed blocks to refactor Terraform state with zero downtime.
 level: Advanced Refactoring
 readingTime: 8 min read
 stack: [Terraform 1.5+, HCL, AWS]

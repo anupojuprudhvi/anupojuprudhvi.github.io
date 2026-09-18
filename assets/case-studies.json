@@ -1,6 +1,6 @@
 [
   {
-    "title": "Modernizing a legacy telecom database with a controlled cutover",
+    "title": "Modernizing a telecom database with a controlled cutover",
     "nav": "Database migration and connection pooling",
     "summary": "Combining schema and client compatibility work, continuous replication, and local connection pooling to move a legacy telecom database tier to Aurora.",
     "project": "telecom",
@@ -26,7 +26,7 @@
     "solution": "Separate schema remediation, replication, connection pooling, and application cutover, with validation before write traffic moves."
   },
   {
-    "title": "Automating telecom failover while preserving licensed identity",
+    "title": "Automating telecom failover, preserving licensed identity",
     "nav": "Failover and licensing continuity",
     "summary": "Bringing recovery orchestration, service validation, and hardware-bound licensing into one failover workflow, with an explicit same-AZ boundary.",
     "project": "telecom",
@@ -79,7 +79,7 @@
   {
     "title": "Making telecom node provisioning repeatable",
     "nav": "Repeatable platform delivery",
-    "summary": "Turning manual host configuration and recurring migration defects into a provisioning workflow with explicit configuration, service reconciliation, and smoke tests.",
+    "summary": "Turning manual host configuration and recurring migration defects into a provisioning workflow with explicit config, service reconciliation, and smoke tests.",
     "project": "telecom",
     "projectName": "Telecom & Secure Communications",
     "layer": "Platform",
@@ -127,7 +127,7 @@
     "solution": "Trace records across each pipeline boundary, repair parsing and transfer failures, and validate recovery through downstream data checks."
   },
   {
-    "title": "One governed cloud foundation under 40+ independently-run accounts",
+    "title": "One governed cloud foundation under 40+ accounts",
     "nav": "Standardize the cloud",
     "summary": "A four-layer landing zone, one hub-and-spoke network, and a CI/CD pipeline where an unintended apply is structurally impossible.",
     "project": "tolling",
@@ -153,7 +153,7 @@
   {
     "title": "A Transit Gateway hub that keeps account routing deliberate",
     "nav": "Connect accounts through Transit Gateway",
-    "summary": "Connecting shared services, workload accounts, security inspection, and a recovery region through one governed Transit Gateway without making every VPC route to every other VPC.",
+    "summary": "Connecting shared services, workload accounts, security inspection, and a recovery region through one governed Transit Gateway, not a full mesh of VPC routes.",
     "project": "tolling",
     "projectName": "Tolling Infrastructure",
     "layer": "Foundation",
@@ -176,9 +176,9 @@
     "solution": "A Transit Gateway served as the regional routing hub, shared with approved accounts through AWS RAM. VPC attachments and route tables are owned by Terraform, with separate routing domains for workload, shared-service, inspection, and recovery paths. Spoke VPCs advertise only the prefixes they own; routes to other domains are added deliberately and can be sent through the inspection path where policy requires it."
   },
   {
-    "title": "Make Aurora DR behave like the primary, not merely exist beside it",
+    "title": "Make Aurora DR behave like the primary, not exist beside it",
     "nav": "Keep Aurora DR in configuration parity",
-    "summary": "Closing the two gaps that can make a replicated Aurora environment fail differently during recovery: secondary parameter-group drift and missing regional secret availability.",
+    "summary": "Closing the two gaps that can make a replicated Aurora environment fail differently in recovery: secondary parameter-group drift and missing regional secrets.",
     "project": "tolling",
     "projectName": "Tolling Infrastructure",
     "layer": "Data",
@@ -203,7 +203,7 @@
   {
     "title": "Turn an EKS ingress incident into a diagnosable traffic path",
     "nav": "Trace an EKS ingress incident",
-    "summary": "A structured RCA pattern for an EKS ingress failure that separates DNS, load-balancer, target-registration, network-policy, and application causes instead of treating every 5xx as an application defect.",
+    "summary": "A structured RCA pattern for an EKS ingress failure that separates DNS, load-balancer, routing, network-policy, and application causes, not just \"5xx.\"",
     "project": "tolling",
     "projectName": "Tolling Infrastructure",
     "layer": "Applications",
@@ -227,9 +227,9 @@
     "solution": "The RCA uses the request path as its diagnostic spine. Start with the hostname and listener, confirm the Application Load Balancer target group and health state, correlate the AWS Load Balancer Controller events with the Kubernetes Ingress and Service, then test the node, pod, and application path from inside the cluster. CloudWatch and Kubernetes logs preserve the evidence while a reversible routing or deployment change is evaluated separately from the investigation."
   },
   {
-    "title": "A reusable CI/CD engine with safe-by-default infrastructure delivery",
+    "title": "A reusable CI/CD engine with safe-by-default delivery",
     "nav": "Build the delivery engine",
-    "summary": "Bootstrapping AWS OIDC roles once with SSO, then using one reusable GitHub Actions engine for speculative plans and explicitly gated, single-environment Terraform deployments.",
+    "summary": "Bootstrapping AWS OIDC roles once with SSO, then reusing one GitHub Actions engine for speculative plans and gated, single-environment Terraform deploys.",
     "project": "tolling",
     "projectName": "Tolling Infrastructure",
     "layer": "Foundation",
@@ -256,7 +256,7 @@
   {
     "title": "Make organization CloudTrail evidence difficult to alter",
     "nav": "Protect CloudTrail evidence",
-    "summary": "Centralizing organization-wide CloudTrail events in a separately governed archive account with encryption, restrictive bucket policy, retention controls, and alerting for changes to the trail or log destination.",
+    "summary": "Centralizing CloudTrail events in a separately governed archive account, with encryption, a restrictive bucket policy, retention controls, and change alerting.",
     "project": "tolling",
     "projectName": "Tolling Infrastructure",
     "layer": "Foundation",
@@ -282,9 +282,9 @@
     "solution": "An organization trail records management events across member accounts and delivers them to a dedicated archive account. The destination S3 bucket blocks public access, requires the CloudTrail service condition in its bucket policy, uses a KMS key for encryption, and applies retention protection appropriate to the evidence policy. A security account monitors CloudTrail and CloudTrail configuration events, including attempts to stop logging, change the trail, or modify the archive boundary."
   },
   {
-    "title": "Corporate SSO for Amazon WorkSpaces without losing the domain boundary",
+    "title": "Corporate SSO for Amazon WorkSpaces, without losing AD",
     "nav": "Federate WorkSpaces with Entra",
-    "summary": "Separating Entra authentication from Active Directory machine operations so Personal and Pool WorkSpaces can use corporate sign-in without weakening the domain boundary.",
+    "summary": "Separating Entra authentication from AD machine operations so Personal and Pool WorkSpaces get corporate sign-in without weakening the domain boundary.",
     "project": "tolling",
     "projectName": "Tolling Infrastructure",
     "layer": "Shared Services",
@@ -312,7 +312,7 @@
   {
     "title": "Letting a SaaS webhook reach a private service, safely",
     "nav": "Connect JSM to private services",
-    "summary": "A layered, authenticated path from Jira Service Management into a private service, with CloudFront and a Lambda authorizer retained because AWS platform constraints rule out the simpler alternatives.",
+    "summary": "A layered, authenticated path from Jira Service Management into a private service, using CloudFront and a Lambda authorizer because simpler options don't work.",
     "project": "tolling",
     "projectName": "Tolling Infrastructure",
     "layer": "Applications",
@@ -340,7 +340,7 @@
   {
     "title": "One DNS model for public services and private environments",
     "nav": "Share DNS across environments",
-    "summary": "Separating public internet resolution from private VPC resolution, then associating one centrally managed private hosted zone with shared and environment VPCs across accounts.",
+    "summary": "Separating public internet resolution from private VPC resolution, then associating one centrally managed hosted zone with shared and environment VPCs.",
     "project": "tolling",
     "projectName": "Tolling Infrastructure",
     "layer": "Shared Services",
@@ -415,9 +415,9 @@
     "solution": "Containerized microservices on managed Kubernetes, an in-memory caching layer, and a streaming analytics pipeline so dashboards never touch the operational database."
   },
   {
-    "title": "HL7 device-interoperability engine for remote patient monitoring",
+    "title": "HL7 device-interoperability engine for remote monitoring",
     "nav": "HL7 device interoperability",
-    "summary": "A dedicated integration tier that translates proprietary medical-IoT telemetry into standardized HL7 and JSON messages for downstream clinical systems and a partner hospital network.",
+    "summary": "A dedicated integration tier translating proprietary medical-IoT telemetry into standardized HL7 and JSON for clinical systems and a partner hospital network.",
     "project": "healthcare",
     "projectName": "Healthcare & Cost Architecture",
     "layer": "Integration",
@@ -441,7 +441,7 @@
   {
     "title": "Decoupled real-time analytics for clinical telemetry",
     "nav": "Real-time clinical analytics",
-    "summary": "Streaming physiological telemetry into a distributed real-time OLAP store so care teams can query months of patient vitals without ever touching the operational database.",
+    "summary": "Streaming physiological telemetry into a real-time OLAP store so care teams can query months of patient vitals without touching the operational database.",
     "project": "healthcare",
     "projectName": "Healthcare & Cost Architecture",
     "layer": "Data engineering",
@@ -462,9 +462,9 @@
     "solution": "A dedicated streaming pipeline that moves vitals out of the write path entirely: a flow-management layer ingests, validates, and enriches telemetry in flight, a distributed real-time OLAP datastore indexes it for low-latency aggregation, and clinical dashboards query that store instead of the operational database, so reporting load never reaches the system of record."
   },
   {
-    "title": "Zero-public-ingress network architecture for a HIPAA platform",
+    "title": "Zero-public-ingress network architecture for HIPAA",
     "nav": "Zero-public-ingress security",
-    "summary": "A network design where no compute or database resource carries a public IP address, engineering access is mutual-TLS VPN only, and the CDN layer is tuned specifically for clinical single-page apps.",
+    "summary": "A network design where no compute or database resource has a public IP, engineering access is mutual-TLS VPN only, and the CDN is tuned for clinical apps.",
     "project": "healthcare",
     "projectName": "Healthcare & Cost Architecture",
     "layer": "Network & security",
@@ -488,7 +488,7 @@
   {
     "title": "CI/CD delivery pipeline for a regulated healthcare platform",
     "nav": "Regulated CI/CD delivery",
-    "summary": "A GitFlow-to-Kubernetes delivery pipeline with per-branch promotion gates, headless container-registry authentication, and a deployment lead time cut from hours to minutes.",
+    "summary": "A GitFlow-to-Kubernetes pipeline with per-branch promotion gates, headless registry authentication, and deployment lead time cut from hours to minutes.",
     "project": "healthcare",
     "projectName": "Healthcare & Cost Architecture",
     "layer": "Delivery engineering",
@@ -509,9 +509,9 @@
     "solution": "A GitFlow branching model where the branch itself determines the target environment, driving Jenkins declarative pipelines that compile, test, containerize, and promote each service through Development, QA, Staging, and Production with an explicit approval gate before anything reaches a live clinical environment."
   },
   {
-    "title": "Institutional digital asset platform · AWS MAP assess and directional business case",
+    "title": "Institutional digital asset platform · AWS MAP business case",
     "nav": "Digital asset platform MAP assess",
-    "summary": "Executing an agentless VMware inventory discovery, resolving a third-party IdP-to-Identity Center SAML blocker, and delivering an executive Directional Business Case (DBC) for an institutional financial data platform.",
+    "summary": "An agentless VMware discovery, a third-party IdP-to-Identity Center SAML fix, and a Directional Business Case for an institutional financial platform.",
     "project": "partner-engagements",
     "projectName": "AWS APN & Migration Engagements",
     "layer": "Strategy & Discovery",
@@ -537,9 +537,9 @@
     "solution": "Designed and executed a dual-path discovery architecture utilizing automated RVTools exports alongside an agentless AWS Transform OVA collector deployed directly into the private VMware vCenter cluster. To resolve the authentication deadlock, engineered an identity bridge configuring the enterprise IdP for AWS IAM Identity Center via SAML and SCIM sync, allowing coexistence with legacy access. The ingested telemetry was evaluated in AWS Transform to produce a 3-year Directional Business Case (DBC), licensing comparison (BYOL vs. License Included), and a phased 7Rs workload migration roadmap."
   },
   {
-    "title": "Global media and localization platform · Cross-region MAP migration assessment",
+    "title": "Global media platform · Cross-region MAP migration",
     "nav": "Global media MAP assessment",
-    "summary": "Inventory profiling and cloud transformation strategy across multi-region US and EU on-premises data centers, sizing high-capacity media storage, compute clusters, and localized workflows under AWS MAP.",
+    "summary": "Inventory profiling and cloud transformation across US and EU data centers, sizing high-capacity media storage, compute, and localized workflows under AWS MAP.",
     "project": "partner-engagements",
     "projectName": "AWS APN & Migration Engagements",
     "layer": "Strategy & Infrastructure",
@@ -564,9 +564,9 @@
     "solution": "Led the cross-region technical discovery and transformation analysis across both US and EU infrastructure environments. By normalizing inventory exports and workload telemetry, mapped legacy render/transcode clusters to dynamic Amazon EC2 Graviton and Spot instance fleets, and architected tiered storage strategies (Amazon S3 Standard to Glacier Deep Archive) for multi-petabyte media catalogs. Authored the formal Migration Readiness Assessment (MRA) findings, established phase-wise success criteria, and presented the final financial TCO deck to C-level stakeholders."
   },
   {
-    "title": "Enterprise IT monitoring platform · VMware Tanzu to Amazon EKS MAP assessment",
+    "title": "Enterprise IT monitoring · VMware Tanzu to EKS assessment",
     "nav": "IT monitoring Tanzu to EKS MAP",
-    "summary": "Leading the AWS MAP Assess technical evaluation for a European IT monitoring software enterprise, transitioning on-premises VMware Tanzu Kubernetes to Amazon EKS with Karpenter and delivering executive TCO analysis.",
+    "summary": "An AWS MAP Assess evaluation for a European IT monitoring enterprise, transitioning VMware Tanzu Kubernetes to Amazon EKS with Karpenter and a TCO analysis.",
     "project": "partner-engagements",
     "projectName": "AWS APN & Migration Engagements",
     "layer": "Architecture & Kubernetes",
@@ -594,9 +594,9 @@
     "solution": "Serving as Lead Cloud Architect, spearheaded the technical workload assessment and EKS target state architecture. Formulated a comprehensive 33-question evaluation matrix spanning container resource requests/limits, network policies, and pod storage drivers. Architected the target AWS platform transitioning VMware Tanzu workloads to Amazon EKS utilizing Karpenter with AWS Graviton and Spot instances, mapped relational databases to Amazon Aurora, and authored the compute right-sizing report (projecting ≥ 25% compute savings) and official AWS MAP Customer Sign-Off package."
   },
   {
-    "title": "Connected IoT and telemetry platform · Monolith to AWS cloud migration and service mapping",
+    "title": "Connected IoT platform · Monolith to AWS cloud migration",
     "nav": "Connected IoT cloud migration",
-    "summary": "Modernizing a connected device platform from on-premise monolithic servers to high-throughput AWS managed services, establishing service translation matrices, ballpark estimates, and MAP Mobilize roadmaps.",
+    "summary": "Modernizing a connected device platform from on-premise servers to AWS managed services — service translation matrices, estimates, and MAP Mobilize roadmaps.",
     "project": "partner-engagements",
     "projectName": "AWS APN & Migration Engagements",
     "layer": "Architecture & Services",
@@ -622,9 +622,9 @@
     "solution": "Designed the target cloud architecture and authored the comprehensive Service Mapping Matrix translating monolithic components to scalable AWS managed equivalents: migrating self-hosted MQTT to AWS IoT Core, background processing to Amazon EKS on AWS Graviton, telemetry streaming to Amazon Kinesis, and operational persistence to Amazon Aurora and Amazon DynamoDB. Formulated the 3-year capacity cost models, authored the MAP Assessment Final Report, and established the technical governance and cadence framework for the Mobilize phase."
   },
   {
-    "title": "Enterprise AdTech SaaS · Cloud marketplace onboarding and commercialization architecture",
+    "title": "Enterprise AdTech SaaS · Cloud marketplace onboarding",
     "nav": "AdTech SaaS marketplace onboarding",
-    "summary": "Designing and executing an automated cloud marketplace integration architecture for an enterprise AdTech SaaS platform, establishing buyer procurement flows, billing telemetry, and post-onboarding operational verification.",
+    "summary": "An automated cloud marketplace integration for an AdTech SaaS platform — buyer procurement flows, billing telemetry, and post-onboarding verification.",
     "project": "partner-engagements",
     "projectName": "AWS APN & Migration Engagements",
     "layer": "Architecture & Delivery",

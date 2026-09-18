@@ -8,7 +8,7 @@ layer: Foundation
 order: 20
 stack: [AWS Transit Gateway, AWS RAM, VPC, Terraform, AWS Network Firewall]
 tags: [networking, transit-gateway, multi-account, segmentation, terraform]
-summary: Connecting shared services, workload accounts, security inspection, and a recovery region through one governed Transit Gateway without making every VPC route to every other VPC.
+summary: Connecting shared services, workload accounts, security inspection, and a recovery region through one governed Transit Gateway, not a full mesh of VPC routes.
 problem: |
   A multi-account platform needs private connectivity between approved workloads,
   shared services, inspection controls, and recovery environments. A collection

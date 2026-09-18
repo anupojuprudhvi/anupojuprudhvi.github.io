@@ -4,7 +4,7 @@ track: kubernetes-operations
 order: 4
 module: 4
 totalModules: 4
-summary: Switching cluster context safely, verifying a rollout actually succeeded rather than assuming it did, and a repeatable sequence for triaging a stuck or failing deployment.
+summary: Switching cluster context safely, verifying a rollout actually succeeded instead of assuming it did, and a repeatable sequence for triaging a stuck deployment.
 level: Operations
 readingTime: 8 min read
 stack: [Amazon EKS, kubectl, Kubernetes]

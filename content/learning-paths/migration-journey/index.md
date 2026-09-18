@@ -1,7 +1,7 @@
 ---
 title: Enterprise Cloud Migration · Assess, Mobilize & Modernize
 track: migration-journey
-summary: An authoritative architectural and financial guide for enterprise cloud migrations — comparing rapid (4–6 wk) vs. deep (3–4 mo) assessments, 3-year TCO modeling (On-Demand, 1-Yr, 3-Yr RIs/Savings Plans, Microsoft licensing), target Landing Zone design, Mobilize wave planning, and in-flight modernization.
+summary: A guide to enterprise cloud migrations — rapid vs. deep assessments, 3-year TCO modeling, Landing Zone design, and Mobilize wave planning.
 level: Intermediate to Executive
 duration: 6 Modules · 50 min read
 stack: [AWS MAP, AWS Transform, RVTools, TCO Modeling, Landing Zone, Well-Architected, Amazon EKS]

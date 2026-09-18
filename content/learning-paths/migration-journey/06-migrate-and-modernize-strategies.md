@@ -4,7 +4,7 @@ track: migration-journey
 order: 6
 module: 6
 totalModules: 6
-summary: Deciding between sequential 2-step lift-and-shift vs. in-flight modernization during Mobilize, architecting cloud-native target platforms, and executing the migration factory.
+summary: Deciding between sequential lift-and-shift and in-flight modernization during Mobilize, architecting cloud-native targets, and running the migration factory.
 level: Modernization Architecture
 readingTime: 9 min read
 stack: [AWS MAP, Amazon EKS, Amazon Aurora, Karpenter, AWS MGN, Refactoring]
