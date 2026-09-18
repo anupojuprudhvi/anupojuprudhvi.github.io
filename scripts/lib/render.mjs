@@ -272,6 +272,7 @@ ${outcomesBlock(d)}
         <span>© 2026 Prudhvi Raj Anupoju</span
         ><a href="${a("learning-paths/index.html")}">Learning paths ↗</a
         ><a href="${a("case-studies/index.html")}">Case studies ↗</a
+        ><a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a
         ><a href="${a("index.html")}#work">Back to overview ↗</a>
       </div>
     </footer>
@@ -434,6 +435,7 @@ ${cards}
       <div class="wrap footer-inner">
         <span>© 2026 Prudhvi Raj Anupoju</span
         ><a href="../learning-paths/index.html">Learning paths ↗</a
+        ><a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a
         ><a href="../index.html#work">Selected work ↗</a>
       </div>
     </footer>
@@ -575,6 +577,7 @@ export function learningPathPage(d, bodyHtml, { up, url, prev, next, track }) {
         <span>© 2026 Prudhvi Raj Anupoju</span>
         <a href="${a("learning-paths/index.html")}">Learning paths ↗</a>
         <a href="${a("case-studies/index.html")}">Case studies ↗</a>
+        <a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a>
         <a href="${a("index.html")}#work">Selected work ↗</a>
       </div>
     </footer>
