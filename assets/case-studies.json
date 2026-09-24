@@ -726,6 +726,36 @@
     "solution": "A single Bash script that automates the entire failover sequence end to end — instance metadata lookup, elastic IP reassociation, EBS volume attachment with a polling wait loop, filesystem mount (including NVMe device-mapping for newer instance types), and a service restart — plus a tiered S3 backup pipeline and full SPF/DKIM/DMARC DNS hardening."
   },
   {
+    "title": "NexusCore AI — Autonomous Enterprise Workforce & Identity Operating System",
+    "nav": "NexusCore AI Enterprise OS",
+    "summary": "Unifying IAM, Joiner-Mover-Leaver (JML) lifecycle automation, attendance tracking, and deterministic policy intelligence into a sovereign, distributed platform — eliminating the $1,400/emp identity fragmentation tax with sub-5s de-provisioning.",
+    "project": "independent-products",
+    "projectName": "Independent Products & AI-Assisted Engineering",
+    "layer": "Enterprise Platform & Distributed Systems",
+    "stack": [
+      "FastAPI",
+      "Next.js 15",
+      "Temporal SDK",
+      "PostgreSQL 16",
+      "Amazon EKS",
+      "ArgoCD GitOps",
+      "External Secrets",
+      "Terraform"
+    ],
+    "tags": [
+      "identity-governance",
+      "distributed-systems",
+      "agentic-ai",
+      "temporal",
+      "security",
+      "finops",
+      "kubernetes"
+    ],
+    "url": "case-studies/independent-products/nexuscore-ai-workforce-operating-system.html",
+    "problem": "Modern enterprises run an average of 42 disparate SaaS apps per employee across disconnected HRIS, IAM, and cloud silos, incurring a $1,400/employee annual hidden tax from orphaned licenses, 7.2-day onboarding drag, and endless IT tickets. De-provisioning failures leave critical security gaps and SEC Rule 106 compliance exposure, while static PDF handbooks buried in SharePoint cause constant HR interruptions.",
+    "solution": "Architected and delivered NexusCore AI, a decoupled multi-repo platform powered by an immutable PostgreSQL Identity Graph, Temporal durable execution state machines for sub-5 second JML provisioning with automatic compensation rollbacks, SHA-256 tamper-evident audit chaining, and a deterministic Policy RAG engine with verifiable PDF page citations."
+  },
+  {
     "title": "Hardening a solo SaaS product, end to end, with AI-agent-assisted engineering",
     "nav": "Solo SaaS hardening",
     "summary": "Taking a solo-built PDF SaaS product from a serverless deployment that didn't actually run to a security-audited, ~93% lighter production app — built and operated solo using a formalized AI-agent engineering workflow.",

@@ -24,6 +24,7 @@
   },
   {
     "id": "independent-products",
-    "name": "Independent Products & AI-Assisted Engineering"
+    "name": "Independent Products & AI-Assisted Engineering",
+    "customOverview": true
   }
 ]
