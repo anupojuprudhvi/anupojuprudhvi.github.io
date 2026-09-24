@@ -204,3 +204,80 @@ if (statsRow && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
   );
   io.observe(statsRow);
 }
+
+// Floating "Recent Case Studies" toast widget
+(() => {
+  const toast = document.getElementById("recentToast");
+  if (!toast) return;
+
+  const STORAGE_KEY = "recent_case_studies_dismissed";
+  const COLLAPSED_KEY = "recent_case_studies_collapsed";
+
+  // If dismissed earlier in this session, remove immediately
+  try {
+    if (sessionStorage.getItem(STORAGE_KEY) === "true") {
+      toast.remove();
+      return;
+    }
+  } catch (_) {
+    // Graceful fallback if storage is restricted
+  }
+
+  const toggleBtn = document.getElementById("recentToastToggle");
+  const closeBtn = document.getElementById("recentToastClose");
+  const content = document.getElementById("recentToastContent");
+
+  function setCollapsed(collapsed) {
+    if (collapsed) {
+      toast.classList.add("is-collapsed");
+      toggleBtn?.setAttribute("aria-expanded", "false");
+      if (content) content.hidden = true;
+      try {
+        sessionStorage.setItem(COLLAPSED_KEY, "true");
+      } catch (_) {}
+    } else {
+      toast.classList.remove("is-collapsed");
+      toggleBtn?.setAttribute("aria-expanded", "true");
+      if (content) content.hidden = false;
+      try {
+        sessionStorage.removeItem(COLLAPSED_KEY);
+      } catch (_) {}
+    }
+  }
+
+  // Restore collapsed state if set
+  try {
+    if (sessionStorage.getItem(COLLAPSED_KEY) === "true") {
+      setCollapsed(true);
+    }
+  } catch (_) {}
+
+  toggleBtn?.addEventListener("click", () => {
+    const isCurrentlyCollapsed = toast.classList.contains("is-collapsed");
+    setCollapsed(!isCurrentlyCollapsed);
+  });
+
+  closeBtn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toast.classList.add("is-hidden");
+    try {
+      sessionStorage.setItem(STORAGE_KEY, "true");
+    } catch (_) {}
+    setTimeout(() => {
+      toast.remove();
+    }, 320);
+  });
+
+  // Escape key handler when focused inside widget
+  toast.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      if (!toast.classList.contains("is-collapsed")) {
+        setCollapsed(true);
+        toggleBtn?.focus();
+      } else {
+        closeBtn?.click();
+      }
+    }
+  });
+})();
+
