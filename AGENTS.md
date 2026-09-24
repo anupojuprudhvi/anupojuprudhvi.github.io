@@ -81,8 +81,8 @@ Before describing a change as production-ready, verify as applicable:
   versus “realized” savings.
 - Use the least sensitive detail necessary. Generalize client-sensitive names,
   identifiers, network ranges, credentials, and operational data.
-- **Client anonymity and confidential data**: Never publish client company names
-  (e.g., Neology, partner clients), proprietary client project names, internal AWS
+- **Client anonymity and confidential data**: Never publish client company, authority, or agency names
+  (e.g., Neology, SRTA, THEA, CTRMA, PRD, Lukka, Bespin, or any other partner/agency clients), proprietary client project names, internal AWS
   account numbers, or client infrastructure identifiers. Use anonymized, industry-level
   framing (e.g., "Electronic tolling systems", "Telecom platform", "Regulated healthcare provider").
 - **Recent case studies showcase**: When publishing a new case study that should be
