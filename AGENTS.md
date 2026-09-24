@@ -81,6 +81,14 @@ Before describing a change as production-ready, verify as applicable:
   versus “realized” savings.
 - Use the least sensitive detail necessary. Generalize client-sensitive names,
   identifiers, network ranges, credentials, and operational data.
+- **Client anonymity and confidential data**: Never publish client company names
+  (e.g., Neology, partner clients), proprietary client project names, internal AWS
+  account numbers, or client infrastructure identifiers. Use anonymized, industry-level
+  framing (e.g., "Electronic tolling systems", "Telecom platform", "Regulated healthcare provider").
+- **Recent case studies showcase**: When publishing a new case study that should be
+  featured on the homepage floating toast widget, update `content/recent-case-studies.json`
+  to place the new study at the top, maintaining strictly the 3 most recent entries.
+  The generator automatically limits to the top 3 and renders the component dynamically.
 - Keep terminology consistent: use “authentication” for proving identity and
   “authorization” for permissions.
 

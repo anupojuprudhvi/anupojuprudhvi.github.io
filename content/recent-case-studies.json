@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "nexuscore-ai-workforce-operating-system",
+    "project": "independent-products",
+    "tag": "Autonomous AI Platform",
+    "badge": "Latest",
+    "title": "NexusCore AI: Autonomous Workforce OS",
+    "desc": "Multi-agent topology, zero-trust sandbox execution & real-time FinOps spend guardrails."
+  },
+  {
+    "slug": "s3-large-scale-bucket-migration",
+    "project": "tolling",
+    "tag": "AWS Cloud Infrastructure",
+    "badge": "8h → 54m",
+    "title": "Tolling S3 Migration: 1.48M Objects",
+    "desc": "High-concurrency migration of 225 GB across 1.48M small objects using in-region EC2 + s5cmd with $0 compute overhead."
+  },
+  {
+    "slug": "solo-saas-hardening-ai-agentic-engineering",
+    "project": "independent-products",
+    "tag": "AI-Agentic Engineering",
+    "badge": "10 Suites",
+    "title": "Solo SaaS Hardening: AI Protocols",
+    "desc": "Disciplined verification protocol with 10 automated test suites and strict pre-push checklists for agentic autonomy."
+  }
+]

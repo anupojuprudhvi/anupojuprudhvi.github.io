@@ -59,6 +59,55 @@ export function caseStudiesNavDropdown(items, { prefix = "", current = false } =
           </div>`;
 }
 
+/* ------------------------------------------------- "3 Recent Case Studies" toast */
+export function recentCaseStudiesToast(recentItems, { prefix = "" } = {}) {
+  const items = (recentItems || []).slice(0, 3);
+  if (!items.length) return "";
+
+  const listItems = items
+    .map(
+      (item) => `            <li class="recent-toast-item">
+              <a href="${prefix}${esc(item.url)}" class="recent-toast-link">
+                <div class="recent-toast-item-header">
+                  <span class="recent-toast-tag">${esc(item.tag || item.layer || item.projectName || "Production System")}</span>
+                  <span class="recent-toast-badge-time">${esc(item.badge || "Latest")}</span>
+                </div>
+                <strong class="recent-toast-item-title">${esc(item.title)}</strong>
+                <p class="recent-toast-item-desc">${esc(item.desc || item.summary || "")}</p>
+                <span class="recent-toast-item-cta">View case study <span aria-hidden="true">→</span></span>
+              </a>
+            </li>`,
+    )
+    .join("\n");
+
+  return `    <!-- Floating "3 Recent Case Studies" Toast Card -->
+    <aside class="recent-toast" id="recentToast" aria-label="Recent Case Studies Showcase">
+      <div class="recent-toast-card">
+        <div class="recent-toast-header" id="recentToastHeader">
+          <button class="recent-toast-pill-btn" id="recentToastToggle" type="button" aria-expanded="true" aria-controls="recentToastContent" aria-label="Toggle recent case studies popup">
+            <span class="recent-toast-indicator" aria-hidden="true">
+              <span class="recent-toast-pulse"></span>
+            </span>
+            <span class="recent-toast-title">✨ 3 Recent Case Studies</span>
+            <span class="recent-toast-arrow" id="recentToastArrow" aria-hidden="true">▾</span>
+          </button>
+          <button class="recent-toast-close" id="recentToastClose" type="button" aria-label="Dismiss recent case studies popup">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="recent-toast-content" id="recentToastContent">
+          <p class="recent-toast-eyebrow">NEW &amp; FEATURED ARCHITECTURE</p>
+          <ul class="recent-toast-list">
+${listItems}
+          </ul>
+          <div class="recent-toast-foot">
+            <a href="${prefix}case-studies/index.html" class="recent-toast-all-link">Browse all case studies &amp; filters <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+    </aside>`;
+}
+
 /* ------------------------------------------------------- scaffold sections */
 /**
  * The request path. Each step may be a bare string, or an object with a

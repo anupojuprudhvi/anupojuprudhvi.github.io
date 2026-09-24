@@ -441,63 +441,6 @@
         ><a href="#top">Back to top ↑</a>
       </div>
     </footer>
-    <!-- Floating "3 Recent Case Studies" Toast Card -->
-    <aside class="recent-toast" id="recentToast" aria-label="Recent Case Studies Showcase">
-      <div class="recent-toast-card">
-        <div class="recent-toast-header" id="recentToastHeader">
-          <button class="recent-toast-pill-btn" id="recentToastToggle" type="button" aria-expanded="true" aria-controls="recentToastContent" aria-label="Toggle recent case studies popup">
-            <span class="recent-toast-indicator" aria-hidden="true">
-              <span class="recent-toast-pulse"></span>
-            </span>
-            <span class="recent-toast-title">✨ 3 Recent Case Studies</span>
-            <span class="recent-toast-arrow" id="recentToastArrow" aria-hidden="true">▾</span>
-          </button>
-          <button class="recent-toast-close" id="recentToastClose" type="button" aria-label="Dismiss recent case studies popup">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="recent-toast-content" id="recentToastContent">
-          <p class="recent-toast-eyebrow">NEW &amp; FEATURED ARCHITECTURE</p>
-          <ul class="recent-toast-list">
-            <li class="recent-toast-item">
-              <a href="case-studies/independent-products/nexuscore-ai-workforce-operating-system.html" class="recent-toast-link">
-                <div class="recent-toast-item-header">
-                  <span class="recent-toast-tag">Autonomous AI Platform</span>
-                  <span class="recent-toast-badge-time">Latest</span>
-                </div>
-                <strong class="recent-toast-item-title">NexusCore AI: Autonomous Workforce OS</strong>
-                <p class="recent-toast-item-desc">Multi-agent topology, zero-trust sandbox execution &amp; real-time FinOps spend guardrails.</p>
-                <span class="recent-toast-item-cta">View case study <span aria-hidden="true">→</span></span>
-              </a>
-            </li>
-            <li class="recent-toast-item">
-              <a href="case-studies/tolling/s3-large-scale-bucket-migration.html" class="recent-toast-link">
-                <div class="recent-toast-item-header">
-                  <span class="recent-toast-tag">AWS Cloud Infrastructure</span>
-                  <span class="recent-toast-badge-metric">8h → 54m</span>
-                </div>
-                <strong class="recent-toast-item-title">Tolling S3 Migration: 1.48M Objects</strong>
-                <p class="recent-toast-item-desc">High-concurrency migration of 225 GB across 1.48M small objects using in-region EC2 + s5cmd with $0 compute overhead.</p>
-                <span class="recent-toast-item-cta">View case study <span aria-hidden="true">→</span></span>
-              </a>
-            </li>
-            <li class="recent-toast-item">
-              <a href="case-studies/independent-products/solo-saas-hardening-ai-agentic-engineering.html" class="recent-toast-link">
-                <div class="recent-toast-item-header">
-                  <span class="recent-toast-tag">AI-Agentic Engineering</span>
-                  <span class="recent-toast-badge-metric">10 Suites</span>
-                </div>
-                <strong class="recent-toast-item-title">Solo SaaS Hardening: AI Protocols</strong>
-                <p class="recent-toast-item-desc">Disciplined verification protocol with 10 automated test suites and strict pre-push checklists for agentic autonomy.</p>
-                <span class="recent-toast-item-cta">View case study <span aria-hidden="true">→</span></span>
-              </a>
-            </li>
-          </ul>
-          <div class="recent-toast-foot">
-            <a href="case-studies/index.html" class="recent-toast-all-link">Browse all case studies &amp; filters <span aria-hidden="true">→</span></a>
-          </div>
-        </div>
-      </div>
-    </aside>
+    {{recentCaseStudiesToast}}
   </body>
 </html>

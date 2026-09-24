@@ -27,7 +27,7 @@ import { join, relative, dirname, basename } from "node:path";
 
 import { esc } from "./lib/html.mjs";
 import { parseFrontMatter, renderBody } from "./lib/markdown.mjs";
-import { SITE, page, libraryPage, learningPathPage, caseStudiesNavDropdown } from "./lib/render.mjs";
+import { SITE, page, libraryPage, learningPathPage, caseStudiesNavDropdown, recentCaseStudiesToast } from "./lib/render.mjs";
 
 const ROOT = process.cwd();
 const CONTENT = join(ROOT, "content/case-studies");
@@ -166,7 +166,51 @@ const selectedWork = projects.map((project, projectIndex) => {
   }
   return template(readFileSync(join(ROOT, `content/engagements/${project.id}.html`), "utf8"), values).trimEnd();
 }).join("\n");
-emit("index.html", template(readFileSync(join(ROOT, "content/home.html"), "utf8"), { selectedWork, engagementCount: projects.length, caseStudiesNav: caseStudiesNavDropdown(docs, { prefix: "case-studies/" }) }));
+
+// resolve the latest 3 case studies for the homepage toast
+const RECENT_FILE = join(ROOT, "content/recent-case-studies.json");
+let recentDocs = [];
+if (existsSync(RECENT_FILE)) {
+  const recentConfig = JSON.parse(readFileSync(RECENT_FILE, "utf8"));
+  recentDocs = recentConfig
+    .map((cfg) => {
+      const match = docs.find((d) => d.slug === cfg.slug && d.project === cfg.project);
+      if (!match) return null;
+      return {
+        ...match,
+        title: cfg.title || match.nav || match.title,
+        desc: cfg.desc || match.summary,
+        tag: cfg.tag || match.layer || match.projectName,
+        badge: cfg.badge || "Latest",
+        url: match.url,
+      };
+    })
+    .filter(Boolean)
+    .slice(0, 3);
+}
+
+if (recentDocs.length < 3) {
+  const existingSlugs = new Set(recentDocs.map((r) => r.slug));
+  const fallback = docs.filter((d) => !existingSlugs.has(d.slug)).slice(0, 3 - recentDocs.length);
+  recentDocs.push(...fallback.map((d) => ({
+    ...d,
+    title: d.nav || d.title,
+    desc: d.summary,
+    tag: d.layer || d.projectName,
+    badge: "Recent",
+    url: d.url,
+  })));
+}
+
+emit(
+  "index.html",
+  template(readFileSync(join(ROOT, "content/home.html"), "utf8"), {
+    selectedWork,
+    engagementCount: projects.length,
+    caseStudiesNav: caseStudiesNavDropdown(docs, { prefix: "case-studies/" }),
+    recentCaseStudiesToast: recentCaseStudiesToast(recentDocs),
+  }),
+);
 
 // learning paths and playbooks
 const LEARNING_PATHS_DIR = join(ROOT, "content/learning-paths");
