@@ -27,7 +27,7 @@ import { join, relative, dirname, basename } from "node:path";
 
 import { esc } from "./lib/html.mjs";
 import { parseFrontMatter, renderBody } from "./lib/markdown.mjs";
-import { SITE, page, libraryPage, learningPathPage, caseStudiesNavDropdown, recentCaseStudiesToast } from "./lib/render.mjs";
+import { SITE, page, libraryPage, learningPathPage, caseStudiesNavDropdown, learningPathsNavDropdown, siteTopNav, recentCaseStudiesToast } from "./lib/render.mjs";
 
 const ROOT = process.cwd();
 const CONTENT = join(ROOT, "content/case-studies");
@@ -117,7 +117,7 @@ docs.forEach((d, idx) => {
   const next = docs[idx + 1]?.project === d.project ? docs[idx + 1] : null;
   const depth = d.url.split("/").length - 1;
   const up = "../".repeat(depth);
-  emit(d.url, page(d, d.bodyHtml, { up, url: d.url, prev, next }));
+  emit(d.url, page(d, d.bodyHtml, { up, url: d.url, prev, next, docs }));
   written++;
   console.log("  page  ", d.url);
 });
@@ -150,11 +150,16 @@ const selectedWork = projects.map((project, projectIndex) => {
     const sources = [".html", ".md"].filter((extension) => existsSync(overviewBase + extension));
     if (sources.length !== 1) throw new Error(`${project.id}: provide exactly one HTML or Markdown overview`);
     const source = readFileSync(overviewBase + sources[0], "utf8").replaceAll("\r\n", "\n");
-    const slots = { ...values, caseStudyLinks, caseStudyCount: studies.length };
+    const slots = {
+      ...values,
+      caseStudyLinks,
+      caseStudyCount: studies.length,
+      siteNav: siteTopNav({ docs, up: "../../", active: "case-studies" }),
+    };
     if (sources[0] === ".md") {
       const { data, body } = parseFrontMatter(source, overviewBase + ".md");
       if (!data.title || !data.summary) throw new Error(`${project.id}: overview requires title and summary`);
-      emit(engagementUrl, page({ ...data, projectName: project.name }, template(renderBody(body), slots), { up: "../../", url: engagementUrl }));
+      emit(engagementUrl, page({ ...data, projectName: project.name }, template(renderBody(body), slots), { up: "../../", url: engagementUrl, docs }));
     } else {
       emit(engagementUrl, template(source, slots));
     }
@@ -162,7 +167,7 @@ const selectedWork = projects.map((project, projectIndex) => {
     emit(engagementUrl, page({ title: project.name, projectName: project.name,
       summary: "Explore the case studies from this engagement, including the problems, architecture decisions, and outcomes." },
       `<section><div class="wrap"><h2>Case studies</h2><div class="case-study-links">${caseStudyLinks}</div></div></section>`,
-      { up: "../../", url: engagementUrl }));
+      { up: "../../", url: engagementUrl, docs }));
   }
   return template(readFileSync(join(ROOT, `content/engagements/${project.id}.html`), "utf8"), values).trimEnd();
 }).join("\n");
@@ -254,7 +259,7 @@ if (existsSync(join(LEARNING_PATHS_DIR, "tracks.json"))) {
     modules.forEach((mod, idx) => {
       const prev = modules[idx - 1] || null;
       const next = modules[idx + 1] || null;
-      emit(mod.url, learningPathPage(mod, mod.bodyHtml, { up: "../../", url: mod.url, prev, next, track }));
+      emit(mod.url, learningPathPage(mod, mod.bodyHtml, { up: "../../", url: mod.url, prev, next, track, docs }));
       written++;
       console.log("  playbook", mod.url);
     });
@@ -267,7 +272,7 @@ if (existsSync(join(LEARNING_PATHS_DIR, "tracks.json"))) {
         learningPathPage(
           { ...data, totalModules: modules.length },
           renderBody(body),
-          { up: "../../", url: overviewUrl, track }
+          { up: "../../", url: overviewUrl, track, docs }
         )
       );
       written++;

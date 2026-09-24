@@ -388,12 +388,15 @@ pre.code .cmt {
 .deepdive {
   --maxw: 920px;
 }
+.deepdive .topnav .wrap {
+  max-width: 1160px;
+}
 .deepdive .back {
   font-size: 13px;
   text-decoration: none;
 }
 .deepdive .hero {
-  padding: 64px 0 48px;
+  padding: 36px 0 48px;
   border-bottom: 1px solid var(--border);
 }
 .deepdive .hero h1 {

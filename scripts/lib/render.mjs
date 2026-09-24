@@ -17,10 +17,10 @@ export const SITE = "https://anupojuprudhvi.github.io";
  * down). `current: true` marks the trigger as the active nav item, for use
  * on the case-studies page itself.
  */
-export function caseStudiesNavDropdown(items, { prefix = "", current = false } = {}) {
+export function caseStudiesNavDropdown(items = [], { prefix = "", current = false } = {}) {
   const sectors = [];
   const bySector = new Map();
-  for (const item of items) {
+  for (const item of (items || [])) {
     let sector = bySector.get(item.project);
     if (!sector) {
       sector = { id: item.project, name: item.projectName, count: 0 };
@@ -52,11 +52,63 @@ export function caseStudiesNavDropdown(items, { prefix = "", current = false } =
             <div class="nav-dropdown-menu" role="menu">
               <a href="${allHref}" role="menuitem" class="nav-dropdown-item">
                 <strong>All Case Studies</strong>
-                <small>${items.length} case studies · full library &amp; filters</small>
+                <small>${(items || []).length} case studies · full library &amp; filters</small>
               </a>
               <div class="nav-dropdown-divider" role="separator"></div>${sectorLinks}
             </div>
           </div>`;
+}
+
+/* ------------------------------------------------- "Learning paths" nav dropdown */
+export function learningPathsNavDropdown({ prefix = "", current = false } = {}) {
+  const allHref = `${prefix}index.html`;
+  return `<div class="nav-dropdown">
+            <a href="${allHref}" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false"${
+              current ? ` aria-current="page"` : ""
+            }
+              >Learning paths <span class="nav-arrow" aria-hidden="true">▾</span></a
+            >
+            <div class="nav-dropdown-menu" role="menu">
+              <a href="${allHref}" role="menuitem" class="nav-dropdown-item">
+                <strong>All Learning Paths</strong>
+                <small>Curriculum overview &amp; tracks</small>
+              </a>
+              <div class="nav-dropdown-divider" role="separator"></div>
+              <a href="${prefix}terraform/index.html" role="menuitem" class="nav-dropdown-item">
+                <strong>Terraform for Enterprise</strong>
+                <small>6 Modules · Modules, State &amp; CI/CD</small>
+              </a>
+              <a href="${prefix}migration-journey/index.html" role="menuitem" class="nav-dropdown-item">
+                <strong>Cloud Migration Journey</strong>
+                <small>6 Modules · Assess, Mobilize &amp; Modernize</small>
+              </a>
+              <a href="${prefix}kubernetes-operations/index.html" role="menuitem" class="nav-dropdown-item">
+                <strong>Kubernetes Ingress &amp; Operations on EKS</strong>
+                <small>4 Modules · Ingress, RBAC &amp; Day-2 Ops</small>
+              </a>
+            </div>
+          </div>`;
+}
+
+/* ------------------------------------------------- Unified Site Top Navigation */
+export function siteTopNav({
+  docs = [],
+  up = "",
+  active = "", // "case-studies" | "learning-paths" | "work"
+} = {}) {
+  const a = (p) => `${up}${p}`;
+  return `    <nav class="topnav" aria-label="Main navigation">
+      <div class="wrap nav-inner">
+        <a class="brand" href="${a("index.html")}">Prudhvi Raj Anupoju</a>
+        <div class="navlinks">
+          <a href="${a("index.html")}#work"${active === "work" ? ` aria-current="page"` : ""}>Selected work</a>
+          ${caseStudiesNavDropdown(docs, { prefix: a("case-studies/"), current: active === "case-studies" })}
+          ${learningPathsNavDropdown({ prefix: a("learning-paths/"), current: active === "learning-paths" })}
+          <a href="${a("index.html")}#contact" class="nav-cta">Let's connect ↗</a>
+          <button id="themeToggle" aria-label="Switch to light theme">☼</button>
+        </div>
+      </div>
+    </nav>`;
 }
 
 /* ------------------------------------------------- "3 Recent Case Studies" launcher & modal */
@@ -179,7 +231,7 @@ ${d.outcomes
 }
 
 /* ------------------------------------------------------------- page shell */
-export function page(d, bodyHtml, { up, url, prev, next }) {
+export function page(d, bodyHtml, { up, url, prev, next, docs = [] } = {}) {
   const a = (p) => `${up}${p}`;
   const scripts = (d.scripts || [])
     .map((s) => `<script src="${a("assets/" + s)}" defer></script>`)
@@ -282,13 +334,13 @@ ${enables}
   </head>
   <body class="deepdive">
     <a class="skip-link" href="#main">Skip to content</a>
-    <div class="topbar">
-      <div class="wrap">
-        <a class="back" href="${a("case-studies/index.html")}">← All case studies</a>
-        <button id="themeToggle" aria-label="Switch to light theme">☼</button>
-      </div>
-    </div>
+${siteTopNav({ docs, up, active: "case-studies" })}
     <main id="main">
+      <nav class="breadcrumb-bar" aria-label="Breadcrumb">
+        <div class="wrap">
+          <a class="back-link back" href="${a("case-studies/index.html")}">← All case studies</a>
+        </div>
+      </nav>
       <header class="hero">
         <div class="wrap">
           <div class="eyebrow">${esc(d.projectName || "")}${
@@ -393,43 +445,7 @@ export function libraryPage(items) {
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <nav class="topnav" aria-label="Main navigation">
-      <div class="wrap nav-inner">
-        <a class="brand" href="../index.html">Prudhvi Raj Anupoju</a>
-        <div class="navlinks">
-          <a href="../index.html#work">Selected work</a>
-          ${caseStudiesNavDropdown(items, { current: true })}
-          <div class="nav-dropdown">
-            <a href="../learning-paths/index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false"
-              >Learning paths <span class="nav-arrow" aria-hidden="true">▾</span></a
-            >
-            <div class="nav-dropdown-menu" role="menu">
-              <a href="../learning-paths/index.html" role="menuitem" class="nav-dropdown-item">
-                <strong>All Learning Paths</strong>
-                <small>Curriculum overview &amp; tracks</small>
-              </a>
-              <div class="nav-dropdown-divider" role="separator"></div>
-              <a href="../learning-paths/terraform/index.html" role="menuitem" class="nav-dropdown-item">
-                <strong>Terraform for Enterprise</strong>
-                <small>6 Modules · Modules, State &amp; CI/CD</small>
-              </a>
-              <a href="../learning-paths/migration-journey/index.html" role="menuitem" class="nav-dropdown-item">
-                <strong>Cloud Migration Journey</strong>
-                <small>6 Modules · Assess, Mobilize &amp; Modernize</small>
-              </a>
-              <a href="../learning-paths/kubernetes-operations/index.html" role="menuitem" class="nav-dropdown-item">
-                <strong>Kubernetes Ingress &amp; Operations on EKS</strong>
-                <small>4 Modules · Ingress, RBAC &amp; Day-2 Ops</small>
-              </a>
-            </div>
-          </div>
-          <a href="../index.html#contact" class="nav-cta">Let's connect ↗</a
-          ><button id="themeToggle" aria-label="Switch to light theme">
-            ☼
-          </button>
-        </div>
-      </div>
-    </nav>
+${siteTopNav({ docs: items, up: "../", active: "case-studies" })}
     <main id="main">
       <section class="uc-head">
         <div class="wrap">
@@ -499,13 +515,13 @@ ${cards}
 }
 
 /* --------------------------------------------------------- learning path page */
-export function learningPathPage(d, bodyHtml, { up, url, prev, next, track }) {
+export function learningPathPage(d, bodyHtml, { up, url, prev, next, track, docs = [] } = {}) {
   const a = (p) => `${up}${p}`;
   const isOverview = !d.module;
 
   const breadcrumb = isOverview
-    ? `<a href="${a("learning-paths/index.html")}">← All learning paths</a>`
-    : `<a href="${a(`learning-paths/${track.id}/index.html`)}">← ${esc(track.title)}</a>`;
+    ? `<a class="back-link back" href="${a("learning-paths/index.html")}">← All learning paths</a>`
+    : `<a class="back-link back" href="${a(`learning-paths/${track.id}/index.html`)}">← ${esc(track.title)}</a>`;
 
   const nav = [
     prev
@@ -589,13 +605,13 @@ export function learningPathPage(d, bodyHtml, { up, url, prev, next, track }) {
   </head>
   <body class="deepdive">
     <a class="skip-link" href="#main">Skip to content</a>
-    <div class="topbar">
-      <div class="wrap">
-        <div class="back">${breadcrumb}</div>
-        <button id="themeToggle" aria-label="Switch to light theme">☼</button>
-      </div>
-    </div>
+${siteTopNav({ docs, up, active: "learning-paths" })}
     <main id="main">
+      <nav class="breadcrumb-bar" aria-label="Breadcrumb">
+        <div class="wrap">
+          <div class="back">${breadcrumb}</div>
+        </div>
+      </nav>
       <header class="lp-hero">
         <div class="wrap">
           <span class="lp-badge">${esc(d.level || track.badge || "Production Playbook")}</span>

@@ -196,6 +196,33 @@ nav.topnav,
 .back:hover {
   color: var(--accent);
 }
+/* Breadcrumb contextual navigation */
+.breadcrumb-bar {
+  padding: 20px 0 0;
+  font-size: 13px;
+}
+.breadcrumb-bar .wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.breadcrumb-bar a,
+.breadcrumb-bar .back-link,
+.breadcrumb-bar .back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 13px;
+  transition: color 0.15s ease;
+}
+.breadcrumb-bar a:hover,
+.breadcrumb-bar .back-link:hover,
+.breadcrumb-bar .back:hover {
+  color: var(--accent);
+}
 #themeToggle {
   display: grid;
   place-items: center;
@@ -1132,6 +1159,14 @@ footer {
   .topbar .wrap {
     min-height: 66px;
   }
+  .breadcrumb-bar {
+    padding: 14px 0 0;
+  }
+  .breadcrumb-bar a,
+  .breadcrumb-bar .back-link,
+  .breadcrumb-bar .back {
+    font-size: 12px;
+  }
   .back {
     font-size: 12px;
   }
@@ -1283,7 +1318,7 @@ footer {
 }
 
 .recent-head {
-  padding: 22px 24px 16px;
+  padding: 20px 22px 14px;
   border-bottom: 1px solid var(--border);
   position: relative;
 }
@@ -1315,22 +1350,21 @@ footer {
 
 .recent-close {
   position: absolute;
-  top: 16px;
-  right: 18px;
+  top: 14px;
+  right: 16px;
   background: transparent;
   border: 0;
   color: var(--text-muted);
-  font-size: 22px;
+  font-size: 20px;
   line-height: 1;
-  padding: 6px 8px;
-  border-radius: 6px;
+  padding: 6px;
   cursor: pointer;
-  transition: color 0.15s ease, background 0.15s ease;
+  z-index: 20;
+  transition: color 0.15s ease;
 }
 
 .recent-close:hover {
   color: var(--accent);
-  background: var(--accent-soft);
 }
 
 .recent-body {
