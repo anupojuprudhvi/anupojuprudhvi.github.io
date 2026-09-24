@@ -402,6 +402,7 @@
       "AWS CLI",
       "s5cmd",
       "Amazon EC2",
+      "AWS Data Pipeline",
       "Bash"
     ],
     "tags": [
