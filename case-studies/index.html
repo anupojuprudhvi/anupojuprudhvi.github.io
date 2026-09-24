@@ -40,7 +40,7 @@
             <div class="nav-dropdown-menu" role="menu">
               <a href="index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>All Case Studies</strong>
-                <small>30 case studies · full library &amp; filters</small>
+                <small>31 case studies · full library &amp; filters</small>
               </a>
               <div class="nav-dropdown-divider" role="separator"></div>
               <a href="index.html?filter=project%3Atelecom" role="menuitem" class="nav-dropdown-item">
@@ -49,7 +49,7 @@
               </a>
               <a href="index.html?filter=project%3Atolling" role="menuitem" class="nav-dropdown-item">
                 <strong>Tolling Infrastructure</strong>
-                <small>10 case studies</small>
+                <small>11 case studies</small>
               </a>
               <a href="index.html?filter=project%3Ahealthcare" role="menuitem" class="nav-dropdown-item">
                 <strong>Healthcare &amp; Cost Architecture</strong>
@@ -152,7 +152,7 @@
             </div>
           </div>
           <p class="filter-status" id="ucStatus" role="status">
-            30 case studies
+            31 case studies
           </p>
         </div>
       </section>
@@ -248,6 +248,12 @@
           <h3><a href="tolling/s3-image-api.html">A private image API without a proxy application to operate</a></h3>
           <p>Removing a load balancer and a Lambda proxy from the image path, leaving API Gateway talking to S3 directly through one shared private endpoint.</p>
           <p class="uc-stack">API Gateway · Amazon S3 · Route 53 · VPC endpoints · IAM · Terraform</p>
+        </article>
+        <article class="uc-card" data-project="tolling" data-layer="Operations" data-tags="s3 migration performance storage concurrency cost aws">
+          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Operations</span></div>
+          <h3><a href="tolling/s3-large-scale-bucket-migration.html">Moving 1.48 million S3 objects in 54 minutes instead of 8+ hours</a></h3>
+          <p>Moving 225 GB of data across 1.48 million small objects between same-region S3 buckets, cutting transfer time from 8+ hours to 54 minutes using high-concurrency tooling on existing in-region compute.</p>
+          <p class="uc-stack">Amazon S3 · AWS CLI · s5cmd · Amazon EC2 · Bash</p>
         </article>
         <article class="uc-card" data-project="healthcare" data-layer="Applications" data-tags="finops modernization kubernetes caching analytics">
           <div class="uc-meta"><span>Healthcare &amp; Cost Architecture</span><span>Applications</span></div>

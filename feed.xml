@@ -112,6 +112,13 @@
       <category>Applications</category>
     </item>
     <item>
+      <title>Moving 1.48 million S3 objects in 54 minutes instead of 8+ hours</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/tolling/s3-large-scale-bucket-migration.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/tolling/s3-large-scale-bucket-migration.html</guid>
+      <description>Moving 225 GB of data across 1.48 million small objects between same-region S3 buckets, cutting transfer time from 8+ hours to 54 minutes using high-concurrency tooling on existing in-region compute.</description>
+      <category>Operations</category>
+    </item>
+    <item>
       <title>Clinical platform modernization and cost architecture</title>
       <link>https://anupojuprudhvi.github.io/case-studies/healthcare/clinical-platform-modernization-and-cost-optimization.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/healthcare/clinical-platform-modernization-and-cost-optimization.html</guid>

@@ -84,7 +84,7 @@
         <div class="wrap">
           <div class="section-eyebrow">Case study details</div>
           <h2 id="case-studies-heading">
-            One project story. 10 architecture decisions.
+            One project story. 11 architecture decisions.
           </h2>
           <p>
             This project case study explains the context, architecture scope, and the
@@ -103,6 +103,7 @@
             <a href="jsm-integration.html"><span>08 / Service integration</span><strong>Connect JSM to private services</strong><small>A layered, authenticated path from Jira Service Management into a private service, using CloudFront and a Lambda authorizer because simpler options don't work. →</small></a>
             <a href="route53-shared-dns.html"><span>09 / DNS architecture</span><strong>Share DNS across environments</strong><small>Separating public internet resolution from private VPC resolution, then associating one centrally managed hosted zone with shared and environment VPCs. →</small></a>
             <a href="s3-image-api.html"><span>10 / Image handling</span><strong>Upload and retrieve images</strong><small>Removing a load balancer and a Lambda proxy from the image path, leaving API Gateway talking to S3 directly through one shared private endpoint. →</small></a>
+            <a href="s3-large-scale-bucket-migration.html"><span>11 / Storage operations</span><strong>S3 migration at scale</strong><small>Moving 225 GB of data across 1.48 million small objects between same-region S3 buckets, cutting transfer time from 8+ hours to 54 minutes using high-concurrency tooling on existing in-region compute. →</small></a>
           </div>
         </div>
       </section>

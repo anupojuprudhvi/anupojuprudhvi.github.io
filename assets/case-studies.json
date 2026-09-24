@@ -391,6 +391,33 @@
     "solution": "API Gateway talking to S3 directly, with nothing in between. A private REST API per environment uses an AWS service integration for GET and PUT: the gateway assumes a role, signs the request, and S3 authorizes against that role. No compute sits in the transfer path. Each environment resolves its own custom domain through a single private hosted zone in the Shared Services account, pointing at one shared interface endpoint rather than one per account. It took four iterations to get there, each removing something."
   },
   {
+    "title": "Moving 1.48 million S3 objects in 54 minutes instead of 8+ hours",
+    "nav": "S3 migration at scale",
+    "summary": "Moving 225 GB of data across 1.48 million small objects between same-region S3 buckets, cutting transfer time from 8+ hours to 54 minutes using high-concurrency tooling on existing in-region compute.",
+    "project": "tolling",
+    "projectName": "Tolling Infrastructure",
+    "layer": "Operations",
+    "stack": [
+      "Amazon S3",
+      "AWS CLI",
+      "s5cmd",
+      "Amazon EC2",
+      "Bash"
+    ],
+    "tags": [
+      "s3",
+      "migration",
+      "performance",
+      "storage",
+      "concurrency",
+      "cost",
+      "aws"
+    ],
+    "url": "case-studies/tolling/s3-large-scale-bucket-migration.html",
+    "problem": "A bucket reorganization required moving 225 GB of data between two S3 buckets. While 225 GB is modest in total bytes, the payload comprised 1.48 million small objects. Standard `aws s3 sync` projected over 8 hours to complete because S3 request overhead and Python CLI concurrency limits bottlenecked on API metadata transactions rather than network bandwidth.",
+    "solution": "Rather than spinning up expensive one-off migration infrastructure or accepting an 8-hour window, the transfer was orchestrated directly from an existing EC2 instance in `us-east-1` (the same region as both buckets) using `s5cmd`, a Go-based parallel S3 client, tuned to 128 concurrent workers. The entire migration completed in 54 minutes with zero errors, validated by full object count and MD5 checksum parity before source deprecation."
+  },
+  {
     "title": "Clinical platform modernization and cost architecture",
     "nav": "Cut database read load",
     "summary": "Decomposing an on-premise clinical monolith into containerized services, and taking reporting load off the live database with a decoupled analytics pipeline.",
