@@ -205,79 +205,50 @@ if (statsRow && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
   io.observe(statsRow);
 }
 
-// Floating "Recent Case Studies" toast widget
+// Floating "3 Recent Case Studies" launcher & modal dialog
 (() => {
-  const toast = document.getElementById("recentToast");
-  if (!toast) return;
+  const launcher = document.getElementById("recentLauncher");
+  const backdrop = document.getElementById("recentBackdrop");
+  if (!launcher || !backdrop) return;
 
-  const STORAGE_KEY = "recent_case_studies_dismissed";
-  const COLLAPSED_KEY = "recent_case_studies_collapsed";
+  const closeBtn = document.getElementById("recentClose");
 
-  // If dismissed earlier in this session, remove immediately
-  try {
-    if (sessionStorage.getItem(STORAGE_KEY) === "true") {
-      toast.remove();
-      return;
-    }
-  } catch (_) {
-    // Graceful fallback if storage is restricted
+  function open() {
+    backdrop.hidden = false;
+    launcher.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+    closeBtn?.focus();
   }
 
-  const toggleBtn = document.getElementById("recentToastToggle");
-  const closeBtn = document.getElementById("recentToastClose");
-  const content = document.getElementById("recentToastContent");
-
-  function setCollapsed(collapsed) {
-    if (collapsed) {
-      toast.classList.add("is-collapsed");
-      toggleBtn?.setAttribute("aria-expanded", "false");
-      if (content) content.hidden = true;
-      try {
-        sessionStorage.setItem(COLLAPSED_KEY, "true");
-      } catch (_) {}
-    } else {
-      toast.classList.remove("is-collapsed");
-      toggleBtn?.setAttribute("aria-expanded", "true");
-      if (content) content.hidden = false;
-      try {
-        sessionStorage.removeItem(COLLAPSED_KEY);
-      } catch (_) {}
-    }
+  function close() {
+    backdrop.hidden = true;
+    launcher.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+    launcher.focus();
   }
 
-  // Restore collapsed state if set
-  try {
-    if (sessionStorage.getItem(COLLAPSED_KEY) === "true") {
-      setCollapsed(true);
-    }
-  } catch (_) {}
+  launcher.addEventListener("click", open);
+  closeBtn?.addEventListener("click", close);
 
-  toggleBtn?.addEventListener("click", () => {
-    const isCurrentlyCollapsed = toast.classList.contains("is-collapsed");
-    setCollapsed(!isCurrentlyCollapsed);
+  backdrop.addEventListener("click", (e) => {
+    if (e.target === backdrop) close();
   });
 
-  closeBtn?.addEventListener("click", (e) => {
-    e.stopPropagation();
-    toast.classList.add("is-hidden");
-    try {
-      sessionStorage.setItem(STORAGE_KEY, "true");
-    } catch (_) {}
-    setTimeout(() => {
-      toast.remove();
-    }, 320);
-  });
-
-  // Escape key handler when focused inside widget
-  toast.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      if (!toast.classList.contains("is-collapsed")) {
-        setCollapsed(true);
-        toggleBtn?.focus();
+  // Keyboard shortcut: Pressing 'r' or 'R' toggles the modal (when not typing in an input)
+  document.addEventListener("keydown", (e) => {
+    const tag = document.activeElement?.tagName?.toLowerCase();
+    const isTyping = tag === "input" || tag === "textarea" || document.activeElement?.isContentEditable;
+    if (e.key === "Escape" && !backdrop.hidden) {
+      e.preventDefault();
+      close();
+    } else if ((e.key === "r" || e.key === "R") && !e.ctrlKey && !e.metaKey && !e.altKey && !isTyping) {
+      if (backdrop.hidden) {
+        open();
       } else {
-        closeBtn?.click();
+        close();
       }
     }
   });
 })();
+
 

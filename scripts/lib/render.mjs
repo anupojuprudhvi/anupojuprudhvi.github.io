@@ -59,53 +59,56 @@ export function caseStudiesNavDropdown(items, { prefix = "", current = false } =
           </div>`;
 }
 
-/* ------------------------------------------------- "3 Recent Case Studies" toast */
+/* ------------------------------------------------- "3 Recent Case Studies" launcher & modal */
 export function recentCaseStudiesToast(recentItems, { prefix = "" } = {}) {
   const items = (recentItems || []).slice(0, 3);
   if (!items.length) return "";
 
   const listItems = items
     .map(
-      (item) => `            <li class="recent-toast-item">
-              <a href="${prefix}${esc(item.url)}" class="recent-toast-link">
-                <div class="recent-toast-item-header">
-                  <span class="recent-toast-tag">${esc(item.tag || item.layer || item.projectName || "Production System")}</span>
-                  <span class="recent-toast-badge-time">${esc(item.badge || "Latest")}</span>
+      (item) => `            <li class="recent-card-item">
+              <a href="${prefix}${esc(item.url)}" class="recent-card-link">
+                <div class="recent-card-meta">
+                  <span class="recent-card-tag">${esc(item.tag || item.layer || item.projectName || "Production System")}</span>
+                  <span class="recent-card-badge">${esc(item.badge || "Latest")}</span>
                 </div>
-                <strong class="recent-toast-item-title">${esc(item.title)}</strong>
-                <p class="recent-toast-item-desc">${esc(item.desc || item.summary || "")}</p>
-                <span class="recent-toast-item-cta">View case study <span aria-hidden="true">→</span></span>
+                <strong class="recent-card-title">${esc(item.title)}</strong>
+                <p class="recent-card-desc">${esc(item.desc || item.summary || "")}</p>
+                <span class="recent-card-cta">Explore case study <span aria-hidden="true">→</span></span>
               </a>
             </li>`,
     )
     .join("\n");
 
-  return `    <!-- Floating "3 Recent Case Studies" Toast Card -->
-    <aside class="recent-toast" id="recentToast" aria-label="Recent Case Studies Showcase">
-      <div class="recent-toast-card">
-        <div class="recent-toast-header" id="recentToastHeader">
-          <button class="recent-toast-pill-btn" id="recentToastToggle" type="button" aria-expanded="true" aria-controls="recentToastContent" aria-label="Toggle recent case studies popup">
-            <span class="recent-toast-indicator" aria-hidden="true">
-              <span class="recent-toast-pulse"></span>
-            </span>
-            <span class="recent-toast-title">✨ 3 Recent Case Studies</span>
-            <span class="recent-toast-arrow" id="recentToastArrow" aria-hidden="true">▾</span>
-          </button>
-          <button class="recent-toast-close" id="recentToastClose" type="button" aria-label="Dismiss recent case studies popup">
-            <span aria-hidden="true">&times;</span>
-          </button>
+  return `    <!-- Floating "3 Recent Case Studies" Launcher (Bottom-Left) -->
+    <button class="recent-launcher" id="recentLauncher" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="recentModal">
+      <span class="recent-launcher-dot" aria-hidden="true"><span class="recent-dot-pulse"></span></span>
+      <span>3 Recent Case Studies</span>
+      <kbd>R</kbd>
+    </button>
+
+    <!-- Recent Case Studies Modal Backdrop & Dialog Panel -->
+    <div class="recent-backdrop" id="recentBackdrop" hidden>
+      <div class="recent-panel" id="recentModal" role="dialog" aria-modal="true" aria-labelledby="recentTitle">
+        <button class="recent-close" id="recentClose" type="button" aria-label="Close">×</button>
+        <div class="recent-head">
+          <div class="recent-badge">✨ NEW &amp; FEATURED ARCHITECTURE</div>
+          <h2 id="recentTitle">3 Recent Case Studies</h2>
+          <p class="recent-note">
+            Flagship enterprise platforms, high-concurrency S3 migration tooling, and deterministic AI protocols engineered for real production constraints.
+          </p>
         </div>
-        <div class="recent-toast-content" id="recentToastContent">
-          <p class="recent-toast-eyebrow">NEW &amp; FEATURED ARCHITECTURE</p>
-          <ul class="recent-toast-list">
+        <div class="recent-body">
+          <ul class="recent-list">
 ${listItems}
           </ul>
-          <div class="recent-toast-foot">
-            <a href="${prefix}case-studies/index.html" class="recent-toast-all-link">Browse all case studies &amp; filters <span aria-hidden="true">→</span></a>
-          </div>
+        </div>
+        <div class="recent-foot">
+          <span>Looking for a specific engagement?</span>
+          <a href="${prefix}case-studies/index.html" class="recent-all-link">Browse all case studies &amp; filters →</a>
         </div>
       </div>
-    </aside>`;
+    </div>`;
 }
 
 /* ------------------------------------------------------- scaffold sections */
