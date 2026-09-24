@@ -177,7 +177,7 @@ At the core of NexusCore AI is a resilient distributed state engine powered by T
 ### Workflow capabilities
 
 - **Sub-5 second Leaver de-provisioning:** Offboarding is executed with a single click. The saga simultaneously invalidates active JWT session tokens, revokes access across all connected SaaS applications, deallocates hardware assets, and registers an immutable timestamped event in the audit trail.
-- **Sub-Team Access Profiles:** Organization Admins configure curated tool bundles for specialized sub-teams (e.g., Engineering $\to$ SecOps, DevOps, Tier-2 Support). During onboarding, HR can inspect a pre-flight checklist and fine-tune individual tool access prior to triggering the provisioning saga.
+- **Sub-Team Access Profiles:** Organization Admins configure curated tool bundles for specialized sub-teams (e.g., Engineering → SecOps, DevOps, Tier-2 Support). During onboarding, HR can inspect a pre-flight checklist and fine-tune individual tool access prior to triggering the provisioning saga.
 - **Miller-Column organization hierarchy:** Interactive cascading org charts maintain a formal "Reports To" parent-child relationship persisted in the Identity Graph. Built-in graph validation prevents circular hierarchy deadlocks (e.g., User A reporting to User B while User B reports to User A).
 - **Live execution Gantt observability:** An interactive sliding drawer provides real-time visibility into Temporal workflow execution histories, activity runtimes, retry attempts, and structured JSON payloads for rapid audit verification.
 
