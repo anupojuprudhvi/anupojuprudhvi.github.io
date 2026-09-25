@@ -11,7 +11,7 @@ nav: Short navigation label
 label: Architecture area
 heading: How the problem was solved
 project: project-folder
-layer: Applications
+layer: Applications & integration
 order: 10
 stack: [AWS service, Terraform]
 tags: [security, networking]
@@ -78,7 +78,7 @@ step. Use this section for improvements that are not yet complete.
 - `title`, `project`, and `summary` are required by the generator.
 - `project` determines the generated directory and must match the folder name.
 - Project names and overview URLs come from `content/projects.json`; do not
-  repeat them here. A new `layer` value automatically adds a library filter.
+  repeat them here. `layer` must be one of the capabilities in `LAYER_ORDER` (scripts/lib/render.mjs).
 - `order` controls ordering within a project; use gaps such as 10, 20, and 30.
 - `flow` entries can be strings or objects with `step`, `note`, and optional
   `aside: "true"`.

@@ -4,7 +4,7 @@ nav: Digital asset platform MAP assess
 label: Migration assessment
 heading: Automating VMware discovery and modeling 3-year cloud TCO for digital asset accounting
 project: partner-engagements
-layer: Strategy & Discovery
+layer: Migration & strategy
 order: 10
 stack: [AWS Transform, VMware vCenter, RVTools, AWS IAM Identity Center, Enterprise SAML IdP, AWS CAF]
 tags: [migration, map-assess, tco, vmware, identity-center, finops, enterprise]

@@ -3,7 +3,7 @@ title: Diagnosing a silent call-record ingestion failure
 nav: Incident: silent CDR ingestion failure
 label: Incident write-up
 project: telecom
-layer: Operations
+layer: Operations & incidents
 order: 50
 stack: [Kafka, PostgreSQL, Linux, SSH ETL, CloudWatch]
 tags: [incident-response, cdr, ingestion, observability, recovery]

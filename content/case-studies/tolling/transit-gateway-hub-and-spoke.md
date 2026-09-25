@@ -4,7 +4,7 @@ nav: Connect accounts through Transit Gateway
 label: Network architecture
 heading: How the hub-and-spoke network makes cross-account paths explicit
 project: tolling
-layer: Foundation
+layer: Networking & security
 order: 20
 stack: [AWS Transit Gateway, AWS RAM, VPC, Terraform, AWS Network Firewall]
 tags: [networking, transit-gateway, multi-account, segmentation, terraform]

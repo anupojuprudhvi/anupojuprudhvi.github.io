@@ -129,8 +129,12 @@ Homepage pitches are short editorial summaries of an engagement, not copies of
 its case-study inventory. Change a pitch only when that engagement's story
 changes. The build fills in project names and links from the project registry.
 
-To add a **layer**, set `layer:` in a case study's front matter. Layers can be
-shared across projects and their library filters are generated automatically.
+Every case study sets `layer:` to one capability from `LAYER_ORDER` in
+`scripts/lib/render.mjs` (Foundation & governance, Networking & security, Data &
+storage, Resilience & DR, Platform & delivery, Applications & integration,
+Operations & incidents, Migration & strategy, Product engineering). The library's
+Capability filters are generated from it, and the build fails on an unknown value
+so the filter list can't sprawl.
 
 To add a **project**, add an entry with a unique `id` and `name` to
 `content/projects.json`, create `content/engagements/<id>.html` using an existing
@@ -168,8 +172,11 @@ when studies or projects are added, renamed, or removed. `robots.txt` allows
 crawling and points to the sitemap. No separate URL list needs maintaining.
 These files help discovery; they do not guarantee search-engine indexing.
 
-The social preview source is `assets/og-template.html`. Run
-`node scripts/render-social.mjs` to regenerate `og-image.png`.
+Social preview images: `assets/og-template.html` is the site-wide default
+(`og-image.png`), and `assets/og-page.html` renders one image per case study and
+project overview into `assets/og/`. Run `npm run social` after adding or renaming
+a case study (add `-- --default` to also regenerate `og-image.png`), then
+`npm run build`; pages fall back to `og-image.png` until their image exists.
 
 Project outcomes and credentials are based on the existing portfolio content.
 The $300K+ figure describes annual savings identified across several

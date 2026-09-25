@@ -317,7 +317,7 @@ pre.code .cmt {
 }
 .outcomes {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 16px;
   margin: 22px 0;
 }
@@ -505,6 +505,70 @@ pre.code .cmt {
 .deepdive pre.code {
   max-width: 100%;
 }
+/* "Key results" strip directly under a case-study hero */
+.deepdive section.key-results {
+  padding-top: 8px;
+  padding-bottom: 36px;
+}
+.deepdive .key-results h2.section-eyebrow {
+  font: 600 11px/1.6 ui-monospace, monospace;
+  letter-spacing: 0.14em;
+  margin: 0;
+}
+.key-results .outcomes {
+  margin: 14px 0 0;
+}
+/* Markdown pipe tables (scripts/lib/markdown.mjs) */
+.table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  margin: 22px 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-raised);
+}
+.md-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+.md-table th,
+.md-table td {
+  padding: 12px 16px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+}
+.md-table thead th {
+  background: var(--bg);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.md-table tbody td:first-child {
+  color: var(--text);
+  font-weight: 600;
+}
+.md-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+/* Wide ASCII diagrams: keep the monospace layout, but tell phone readers
+   the block scrolls rather than letting the right side vanish silently. */
+.wide-block {
+  margin: 18px 0;
+}
+.wide-block pre.code {
+  margin: 0;
+}
+.scroll-hint {
+  display: none;
+  margin-top: 8px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
 .deepdive .seq {
   padding-left: 12px;
 }
@@ -603,6 +667,56 @@ pre.code .cmt {
   .outcomes,
   .compare {
     grid-template-columns: 1fr;
+  }
+  .scroll-hint {
+    display: block;
+  }
+  .deepdive pre.code {
+    font-size: 11px;
+  }
+  /* Tables become stacked label/value cards instead of a squeezed grid. */
+  .table-wrap {
+    border: 0;
+    background: transparent;
+    overflow: visible;
+  }
+  .md-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  .md-table,
+  .md-table tbody,
+  .md-table tr,
+  .md-table td {
+    display: block;
+    width: 100%;
+  }
+  .md-table tr {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--bg-raised);
+    padding: 6px 0;
+    margin-bottom: 12px;
+  }
+  .md-table td {
+    border-bottom: 0;
+    padding: 6px 16px;
+  }
+  .md-table td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 10.5px;
+    font-weight: 650;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 2px;
+  }
+  .md-table tbody tr:last-child td {
+    border-bottom: 0;
   }
   .compare .carrow {
     transform: rotate(90deg);

@@ -4,7 +4,7 @@ nav: Global media MAP assessment
 label: Cross-region discovery
 heading: Profiling distributed US and EU data center estates for media supply-chain cloud migration
 project: partner-engagements
-layer: Strategy & Infrastructure
+layer: Migration & strategy
 order: 20
 stack: [AWS Application Discovery, AWS MAP, Excel Analytics, Multi-Region Profiling, TCO Modeling]
 tags: [migration, map, media, cross-region, tco, storage, finops]

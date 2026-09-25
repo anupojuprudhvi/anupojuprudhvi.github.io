@@ -2,38 +2,38 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://anupojuprudhvi.github.io/</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/hybrid-object-storage-platform.html</loc></url>
-  <url><loc>https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/index.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/mail-disaster-recovery-automation.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/oracle-rac-cluster-on-aws.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/healthcare/</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/healthcare/clinical-platform-modernization-and-cost-optimization.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/healthcare/hl7-device-interoperability-engine.html</loc></url>
-  <url><loc>https://anupojuprudhvi.github.io/case-studies/healthcare/index.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/healthcare/real-time-clinical-analytics-pipeline.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/healthcare/zero-public-ingress-network-security.html</loc></url>
-  <url><loc>https://anupojuprudhvi.github.io/case-studies/independent-products/index.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/independent-products/</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/independent-products/nexuscore-ai-workforce-operating-system.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/independent-products/solo-saas-hardening-ai-agentic-engineering.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/partner-engagements/</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/partner-engagements/adtech-saas-marketplace-onboarding.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/partner-engagements/fintech-map-assess-business-case.html</loc></url>
-  <url><loc>https://anupojuprudhvi.github.io/case-studies/partner-engagements/index.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/partner-engagements/iot-telemetry-monolith-to-cloud-migration.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/partner-engagements/it-monitoring-tanzu-to-eks-map-assessment.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/partner-engagements/media-cross-region-map-migration.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/telecom/</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/telecom/aurora-global-database-modernization.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/telecom/cdr-ingestion-pipeline-incident-rca.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/telecom/in-memory-column-encryption-kms.html</loc></url>
-  <url><loc>https://anupojuprudhvi.github.io/case-studies/telecom/index.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/telecom/platform-automation-engine-v1-to-v10.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/telecom/serverless-ha-failover-engine.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/aurora-multi-region-dr-parity.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/cicd-delivery-engine.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/cloud-foundation.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/cloudtrail-tamper-protection.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/eks-ingress-incident-rca.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/entra-workspaces-saml.html</loc></url>
-  <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/index.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/jsm-integration.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/route53-shared-dns.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/s3-image-api.html</loc></url>
@@ -59,4 +59,5 @@
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/terraform/05-refactoring-with-moved-blocks.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/terraform/06-ci-cd-security-linting-testing.html</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/terraform/index.html</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/privacy.html</loc></url>
 </urlset>

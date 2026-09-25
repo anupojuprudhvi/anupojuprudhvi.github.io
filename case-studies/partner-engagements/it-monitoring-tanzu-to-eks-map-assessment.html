@@ -4,18 +4,23 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Enterprise IT monitoring · VMware Tanzu to EKS assessment — Prudhvi Raj Anupoju</title>
     <meta name="description" content="An AWS MAP Assess evaluation for a European IT monitoring enterprise, transitioning VMware Tanzu Kubernetes to Amazon EKS with Karpenter and a TCO analysis." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/case-studies/partner-engagements/it-monitoring-tanzu-to-eks-map-assessment.html" />
     <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://anupojuprudhvi.github.io/case-studies/partner-engagements/it-monitoring-tanzu-to-eks-map-assessment.html" />
     <meta property="og:title" content="Enterprise IT monitoring · VMware Tanzu to EKS assessment" />
     <meta property="og:description" content="An AWS MAP Assess evaluation for a European IT monitoring enterprise, transitioning VMware Tanzu Kubernetes to Amazon EKS with Karpenter and a TCO analysis." />
-    <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta property="og:image" content="https://anupojuprudhvi.github.io/assets/og/partner-engagements/it-monitoring-tanzu-to-eks-map-assessment.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://anupojuprudhvi.github.io/assets/og/partner-engagements/it-monitoring-tanzu-to-eks-map-assessment.jpg" />
     <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies" href="https://anupojuprudhvi.github.io/feed.xml" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Case studies","item":"https://anupojuprudhvi.github.io/case-studies/"},{"@type":"ListItem","position":3,"name":"AWS APN & Migration Engagements","item":"https://anupojuprudhvi.github.io/case-studies/partner-engagements/"},{"@type":"ListItem","position":4,"name":"IT monitoring Tanzu to EKS MAP","item":"https://anupojuprudhvi.github.io/case-studies/partner-engagements/it-monitoring-tanzu-to-eks-map-assessment.html"}]}</script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -36,7 +41,7 @@
           "name": "Prudhvi Raj Anupoju"
         },
         "url": "https://anupojuprudhvi.github.io/case-studies/partner-engagements/it-monitoring-tanzu-to-eks-map-assessment.html",
-        "image": "https://anupojuprudhvi.github.io/og-image.png",
+        "image": "https://anupojuprudhvi.github.io/assets/og/partner-engagements/it-monitoring-tanzu-to-eks-map-assessment.jpg",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/case-studies/partner-engagements/it-monitoring-tanzu-to-eks-map-assessment.html",
         "keywords": "kubernetes, eks, tanzu, vmware, migration, map-assess, karpenter, finops, Amazon EKS, VMware Tanzu, Karpenter, AWS Transform, RVTools, Dell VxRail, AWS MAP"
       }
@@ -52,7 +57,7 @@
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
         <a class="brand" href="../../index.html">Prudhvi Raj Anupoju</a>
-        <div class="navlinks">
+        <div class="navlinks" id="siteNavLinks">
           <a href="../../index.html#work">Selected work</a>
           <div class="nav-dropdown">
             <a href="../../case-studies/index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" aria-current="page"
@@ -115,8 +120,11 @@
             </div>
           </div>
           <a href="../../index.html#contact" class="nav-cta">Let's connect ↗</a>
-          <button id="themeToggle" aria-label="Switch to light theme">☼</button>
         </div>
+        <button id="themeToggle" type="button" aria-label="Switch to light theme">☼</button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNavLinks" aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
       </div>
     </nav>
     <main id="main">
@@ -132,12 +140,23 @@
           <p class="sub">An AWS MAP Assess evaluation for a European IT monitoring enterprise, transitioning VMware Tanzu Kubernetes to Amazon EKS with Karpenter and a TCO analysis.</p>
           <div class="meta">
             <div><b>Project</b><br />AWS APN &amp; Migration Engagements</div>
-            <div><b>Layer</b><br />Architecture &amp; Kubernetes</div>
+            <div><b>Capability</b><br />Migration &amp; strategy</div>
             <div><b>Stack</b><br />Amazon EKS · VMware Tanzu · Karpenter · AWS Transform · RVTools · Dell VxRail · AWS MAP</div>
             <div><b>Tags</b><br />kubernetes · eks · tanzu · vmware · migration · map-assess · karpenter · finops</div>
+            <div><b>Reading time</b><br />3 min</div>
           </div>
         </div>
       </header>
+<section class="key-results" aria-labelledby="keyResultsTitle">
+<div class="wrap">
+<h2 class="section-eyebrow" id="keyResultsTitle">Key results</h2>
+<div class="outcomes">
+<div class="outcome"><div class="num">≥ 25%</div><div class="txt">Projected compute cost reduction via EKS right-sizing and Karpenter</div></div>
+<div class="outcome"><div class="num">100%</div><div class="txt">VMware Tanzu workloads mapped to cloud-native Amazon EKS</div></div>
+<div class="outcome"><div class="num">Official</div><div class="txt">AWS MAP Customer Sign-Off package validated and delivered</div></div>
+</div>
+</div>
+</section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Kubernetes modernization</div>
@@ -235,27 +254,16 @@
 <p>The assessment concluded with the formal delivery of the <b>Amazon EKS Target Architecture Blueprint</b>, the <b>Compute Right-Sizing &amp; Savings Plans Report</b>, and the <b>AWS MAP Customer Sign-Off Template</b>. The deliverables received executive approval from client leadership and AWS partner governance, clearing the gateway to begin the MAP Mobilize phase.</p>
 </div>
 </section>
-<section>
-<div class="wrap">
-<div class="section-eyebrow">Outcome</div>
-<h2>What changed</h2>
-<div class="outcomes">
-<div class="outcome"><div class="num">≥ 25%</div><div class="txt">Projected compute cost reduction via EKS right-sizing and Karpenter</div></div>
-<div class="outcome"><div class="num">100%</div><div class="txt">VMware Tanzu workloads mapped to cloud-native Amazon EKS</div></div>
-<div class="outcome"><div class="num">Official</div><div class="txt">AWS MAP Customer Sign-Off package validated and delivered</div></div>
-</div>
-</div>
-</section>
       <aside class="next-study wrap">
         <a href="../../case-studies/partner-engagements/media-cross-region-map-migration.html">← Global media MAP assessment</a>
         <a href="../../case-studies/partner-engagements/iot-telemetry-monolith-to-cloud-migration.html">Connected IoT cloud migration →</a>
       </aside>
       <div class="closing">
         <div class="wrap">
-          <h2>Want to talk through how this would apply to your environment?</h2>
+          <h2>Questions about this case study?</h2>
           <p>
-            I'm happy to go deeper on any part of this — the architecture, the
-            trade-offs, or how it would adapt to a different environment.
+            Happy to go deeper on any part of this — the architecture, the
+            trade-offs, or the decisions behind it.
           </p>
           <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
             >anupojuprudhvi@gmail.com</a
@@ -269,7 +277,8 @@
         ><a href="../../learning-paths/index.html">Learning paths ↗</a
         ><a href="../../case-studies/index.html">Case studies ↗</a
         ><a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a
-        ><a href="../../index.html#work">Back to overview ↗</a>
+        ><a href="../../index.html#work">Back to overview ↗</a
+        ><a href="../../privacy.html">Privacy</a>
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>

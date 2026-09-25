@@ -4,18 +4,23 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Automated sub-3-minute failover for enterprise mail infrastructure — Prudhvi Raj Anupoju</title>
     <meta name="description" content="An automated EC2 failover system for a single-instance enterprise mail platform, cutting recovery time from 4+ hours of manual recovery to under 3 minutes, paired with tiered S3 backups and DNS-authenticated delivery." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/mail-disaster-recovery-automation.html" />
     <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/mail-disaster-recovery-automation.html" />
     <meta property="og:title" content="Automated sub-3-minute failover for enterprise mail infrastructure" />
     <meta property="og:description" content="An automated EC2 failover system for a single-instance enterprise mail platform, cutting recovery time from 4+ hours of manual recovery to under 3 minutes, paired with tiered S3 backups and DNS-authenticated delivery." />
-    <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta property="og:image" content="https://anupojuprudhvi.github.io/assets/og/enterprise-infrastructure/mail-disaster-recovery-automation.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://anupojuprudhvi.github.io/assets/og/enterprise-infrastructure/mail-disaster-recovery-automation.jpg" />
     <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies" href="https://anupojuprudhvi.github.io/feed.xml" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Case studies","item":"https://anupojuprudhvi.github.io/case-studies/"},{"@type":"ListItem","position":3,"name":"Enterprise Hybrid Cloud Infrastructure","item":"https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/"},{"@type":"ListItem","position":4,"name":"Mail disaster recovery","item":"https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/mail-disaster-recovery-automation.html"}]}</script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -36,7 +41,7 @@
           "name": "Prudhvi Raj Anupoju"
         },
         "url": "https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/mail-disaster-recovery-automation.html",
-        "image": "https://anupojuprudhvi.github.io/og-image.png",
+        "image": "https://anupojuprudhvi.github.io/assets/og/enterprise-infrastructure/mail-disaster-recovery-automation.jpg",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/mail-disaster-recovery-automation.html",
         "keywords": "disaster-recovery, availability, email, automation, Zimbra, AWS EC2, AWS EBS, AWS S3, Bash, SPF/DKIM/DMARC"
       }
@@ -52,7 +57,7 @@
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
         <a class="brand" href="../../index.html">Prudhvi Raj Anupoju</a>
-        <div class="navlinks">
+        <div class="navlinks" id="siteNavLinks">
           <a href="../../index.html#work">Selected work</a>
           <div class="nav-dropdown">
             <a href="../../case-studies/index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" aria-current="page"
@@ -115,8 +120,11 @@
             </div>
           </div>
           <a href="../../index.html#contact" class="nav-cta">Let's connect ↗</a>
-          <button id="themeToggle" aria-label="Switch to light theme">☼</button>
         </div>
+        <button id="themeToggle" type="button" aria-label="Switch to light theme">☼</button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNavLinks" aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
       </div>
     </nav>
     <main id="main">
@@ -134,12 +142,23 @@
             <div><b>Project</b><br />Enterprise Hybrid Cloud Infrastructure</div>
             <div><b>Role</b><br />Lead infrastructure &amp; disaster recovery architect</div>
             <div><b>Scope</b><br />Automated failover scripting, tiered backup design, and email-authentication (SPF/DKIM/DMARC) hardening</div>
-            <div><b>Layer</b><br />Resilience</div>
+            <div><b>Capability</b><br />Resilience &amp; DR</div>
             <div><b>Stack</b><br />Zimbra · AWS EC2 · AWS EBS · AWS S3 · Bash · SPF/DKIM/DMARC</div>
             <div><b>Tags</b><br />disaster-recovery · availability · email · automation</div>
+            <div><b>Reading time</b><br />4 min</div>
           </div>
         </div>
       </header>
+<section class="key-results" aria-labelledby="keyResultsTitle">
+<div class="wrap">
+<h2 class="section-eyebrow" id="keyResultsTitle">Key results</h2>
+<div class="outcomes">
+<div class="outcome"><div class="num">&lt;3 min</div><div class="txt">Automated recovery time, down from 4+ hours of manual recovery</div></div>
+<div class="outcome"><div class="num">99.8%</div><div class="txt">Email deliverability rate after SPF/DKIM/DMARC hardening, up from 82%</div></div>
+<div class="outcome"><div class="num">7-day</div><div class="txt">Rolling local retention enforced alongside tiered full/incremental S3 uploads</div></div>
+</div>
+</div>
+</section>
 
 <section>
 <div class="wrap">
@@ -153,7 +172,7 @@
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
 <h2>One script replaces the entire manual sequence</h2>
-<pre tabindex="0" class="code"><code class="language-text">                [ External mail gateways / Internet ]
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">                [ External mail gateways / Internet ]
                                 │
                      [ Elastic IP — reassociated ]
                                 │
@@ -167,7 +186,7 @@
                                 │
                     [ Nightly / weekly sync ]
                                 ▼
-                      [ AWS S3 backup target ]</code></pre>
+                      [ AWS S3 backup target ]</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
 <ul>
@@ -178,25 +197,14 @@
 <li><b>Deliverability was a DNS problem as much as an infrastructure one.</b> Publishing 2048-bit DKIM keys, a strict SPF record, and a DMARC policy requiring authentication on all outbound mail took the deliverability rate from 82% to 99.8% — the infrastructure automation solved availability, this solved whether the mail actually arrived once it was sent.</li>
 </ul>
 </details>
-<pre tabindex="0" class="code"><code class="language-bash"># Automated failover — run on the replacement instance
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-bash"># Automated failover — run on the replacement instance
 ./ec2_zimbra_failover.sh
 
 # What it does, in sequence: detects the private IP, reassociates the
 # elastic IP, attaches (or confirms) the data volume, mounts it — with
-# NVMe fallback — and restarts mail services with a health check.</code></pre>
+# NVMe fallback — and restarts mail services with a health check.</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <h3>Trade-offs</h3>
 <p>This is a single-instance failover pattern automated end to end, not a true multi-AZ active-active mail deployment — the mail platform is still down for the seconds-to-minutes the script takes to run, just not for hours. Building genuine multi-AZ high availability into an already-established mail deployment would have meant a much larger migration project than was in scope here; automating the existing recovery path to the point where it reliably runs in under three minutes was the trade that fit the actual constraint, and the same &quot;detect, reassociate, remount, verify&quot; pattern generalizes cleanly to any other stateful EC2 service that doesn't have built-in HA.</p>
-</div>
-</section>
-<section>
-<div class="wrap">
-<div class="section-eyebrow">Outcome</div>
-<h2>What changed</h2>
-<div class="outcomes">
-<div class="outcome"><div class="num">&lt;3 min</div><div class="txt">Automated recovery time, down from 4+ hours of manual recovery</div></div>
-<div class="outcome"><div class="num">99.8%</div><div class="txt">Email deliverability rate after SPF/DKIM/DMARC hardening, up from 82%</div></div>
-<div class="outcome"><div class="num">7-day</div><div class="txt">Rolling local retention enforced alongside tiered full/incremental S3 uploads</div></div>
-</div>
 </div>
 </section>
       <aside class="next-study wrap">
@@ -204,7 +212,7 @@
       </aside>
       <div class="closing">
         <div class="wrap">
-          <h2>Want to talk through how this would apply to your environment?</h2>
+          <h2>Questions about this case study?</h2>
           <p>
             Happy to go deeper on the failover script's polling logic, the tiered backup retention design, or the DNS-authentication setup.
           </p>
@@ -220,7 +228,8 @@
         ><a href="../../learning-paths/index.html">Learning paths ↗</a
         ><a href="../../case-studies/index.html">Case studies ↗</a
         ><a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a
-        ><a href="../../index.html#work">Back to overview ↗</a>
+        ><a href="../../index.html#work">Back to overview ↗</a
+        ><a href="../../privacy.html">Privacy</a>
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>

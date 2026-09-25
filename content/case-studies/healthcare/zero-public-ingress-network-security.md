@@ -3,7 +3,7 @@ title: Zero-public-ingress network architecture for HIPAA
 nav: Zero-public-ingress security
 summary: A network design where no compute or database resource has a public IP, engineering access is mutual-TLS VPN only, and the CDN is tuned for clinical apps.
 project: healthcare
-layer: Network & security
+layer: Networking & security
 order: 30
 stack: [AWS Client VPN, AWS CloudFront, AWS WAF, AWS KMS]
 tags: [security, hipaa, networking, vpn, cdn]

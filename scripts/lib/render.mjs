@@ -2,6 +2,16 @@ import { esc, inline, para, jsonLd } from "./html.mjs";
 
 export const SITE = "https://anupojuprudhvi.github.io";
 
+/**
+ * Security policy for every page. GitHub Pages can't send custom response
+ * headers, so the Content-Security-Policy is delivered as a <meta> tag: scripts
+ * only from this site (no inline or third-party JavaScript), and the only
+ * outbound connection is the contact form's Web3Forms endpoint. Inline styles
+ * stay allowed for the small style attributes some diagrams use.
+ */
+export const HEAD_SECURITY = `<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />`;
+
 /* ------------------------------------------------- "Case studies" nav dropdown */
 /**
  * Shared by every page that shows the nav (home, the library, and the
@@ -91,76 +101,79 @@ export function learningPathsNavDropdown({ prefix = "", current = false } = {}) 
 }
 
 /* ------------------------------------------------- Unified Site Top Navigation */
+/**
+ * One navigation bar for every page. `home: true` swaps in the homepage's
+ * in-page anchors (Why me?, About). On small screens the links collapse
+ * behind a Menu button (wired in assets/theme.js); without JavaScript the
+ * links simply stay visible, so navigation never depends on scripts.
+ */
 export function siteTopNav({
   docs = [],
   up = "",
   active = "", // "case-studies" | "learning-paths" | "work"
+  home = false,
 } = {}) {
   const a = (p) => `${up}${p}`;
+  const page = home ? "" : a("index.html");
+  const homeAnchors = home
+    ? `
+          <a href="#why-me">Why me?</a>
+          <a href="#background">About</a>`
+    : "";
   return `    <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
-        <a class="brand" href="${a("index.html")}">Prudhvi Raj Anupoju</a>
-        <div class="navlinks">
-          <a href="${a("index.html")}#work"${active === "work" ? ` aria-current="page"` : ""}>Selected work</a>
+        <a class="brand" href="${home ? "#top" : a("index.html")}">Prudhvi Raj Anupoju</a>
+        <div class="navlinks" id="siteNavLinks">
+          <a href="${page}#work"${active === "work" ? ` aria-current="page"` : ""}>Selected work</a>
           ${caseStudiesNavDropdown(docs, { prefix: a("case-studies/"), current: active === "case-studies" })}
-          ${learningPathsNavDropdown({ prefix: a("learning-paths/"), current: active === "learning-paths" })}
-          <a href="${a("index.html")}#contact" class="nav-cta">Let's connect ↗</a>
-          <button id="themeToggle" aria-label="Switch to light theme">☼</button>
+          ${learningPathsNavDropdown({ prefix: a("learning-paths/"), current: active === "learning-paths" })}${homeAnchors}
+          <a href="${page}#contact" class="nav-cta">Let's connect ↗</a>
         </div>
+        <button id="themeToggle" type="button" aria-label="Switch to light theme">☼</button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNavLinks" aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
       </div>
     </nav>`;
 }
 
-/* ------------------------------------------------- "3 Recent Case Studies" launcher & modal */
-export function recentCaseStudiesToast(recentItems, { prefix = "" } = {}) {
+/* ------------------------------------------------- "Latest case studies" strip */
+/**
+ * The three most recent case studies, shown inline on the homepage right
+ * under the hero stats. It used to be a floating launcher + modal, but two
+ * floating buttons collided on phones and covered content on desktop, so the
+ * list now lives in the page flow where it is always visible and needs no JS.
+ * Source of truth: content/recent-case-studies.json (see build.mjs).
+ */
+export function latestCaseStudies(recentItems, { prefix = "" } = {}) {
   const items = (recentItems || []).slice(0, 3);
   if (!items.length) return "";
-
-  const listItems = items
+  const cards = items
     .map(
       (item) => `            <li class="recent-card-item">
               <a href="${prefix}${esc(item.url)}" class="recent-card-link">
-                <div class="recent-card-meta">
-                  <span class="recent-card-tag">${esc(item.tag || item.layer || item.projectName || "Production System")}</span>
+                <span class="recent-card-meta">
+                  <span class="recent-card-tag">${esc(item.tag || item.layer || item.projectName || "Case study")}</span>
                   <span class="recent-card-badge">${esc(item.badge || "Latest")}</span>
-                </div>
+                </span>
                 <strong class="recent-card-title">${esc(item.title)}</strong>
-                <p class="recent-card-desc">${esc(item.desc || item.summary || "")}</p>
-                <span class="recent-card-cta">Explore case study <span aria-hidden="true">→</span></span>
+                <span class="recent-card-desc">${esc(item.desc || item.summary || "")}</span>
+                <span class="recent-card-cta">Read the case study <span aria-hidden="true">→</span></span>
               </a>
             </li>`,
     )
     .join("\n");
-
-  return `    <!-- Floating "3 Recent Case Studies" Launcher (Bottom-Left) -->
-    <button class="recent-launcher" id="recentLauncher" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="recentModal">
-      <span class="recent-launcher-dot" aria-hidden="true"><span class="recent-dot-pulse"></span></span>
-      <span>3 Recent Case Studies</span>
-      <kbd>R</kbd>
-    </button>
-
-    <!-- Recent Case Studies Modal Backdrop & Dialog Panel -->
-    <div class="recent-backdrop" id="recentBackdrop" hidden>
-      <div class="recent-panel" id="recentModal" role="dialog" aria-modal="true" aria-labelledby="recentTitle">
-        <button class="recent-close" id="recentClose" type="button" aria-label="Close">×</button>
-        <div class="recent-head">
-          <div class="recent-badge">✨ NEW &amp; FEATURED ARCHITECTURE</div>
-          <h2 id="recentTitle">3 Recent Case Studies</h2>
-          <p class="recent-note">
-            Flagship enterprise platforms, high-concurrency S3 migration tooling, and deterministic AI protocols engineered for real production constraints.
-          </p>
-        </div>
-        <div class="recent-body">
+  return `      <section class="latest" aria-labelledby="latestTitle">
+        <div class="wrap">
+          <div class="latest-head">
+            <h2 id="latestTitle">Latest case studies</h2>
+            <a href="${prefix}case-studies/index.html" class="recent-all-link">Browse all case studies →</a>
+          </div>
           <ul class="recent-list">
-${listItems}
+${cards}
           </ul>
         </div>
-        <div class="recent-foot">
-          <span>Looking for a specific engagement?</span>
-          <a href="${prefix}case-studies/index.html" class="recent-all-link">Browse all case studies &amp; filters →</a>
-        </div>
-      </div>
-    </div>`;
+      </section>`;
 }
 
 /* ------------------------------------------------------- scaffold sections */
@@ -210,12 +223,12 @@ ${para(d.solution)}
 ${flowBlock(d)}`;
 }
 
-function outcomesBlock(d) {
+/** Headline results, shown right under the hero so skimmers see them first. */
+function keyResults(d) {
   if (!Array.isArray(d.outcomes) || !d.outcomes.length) return "";
-  return `<section>
+  return `<section class="key-results" aria-labelledby="keyResultsTitle">
 <div class="wrap">
-<div class="section-eyebrow">Outcome</div>
-<h2>What changed</h2>
+<h2 class="section-eyebrow" id="keyResultsTitle">Key results</h2>
 <div class="outcomes">
 ${d.outcomes
   .map(
@@ -230,6 +243,30 @@ ${d.outcomes
 </section>`;
 }
 
+/** Rough reading time at ~220 words per minute, from the rendered text. */
+function readingMinutes(...html) {
+  const words = html
+    .join(" ")
+    .replace(/<[^>]+>/g, " ")
+    .split(/\s+/)
+    .filter(Boolean).length;
+  return Math.max(1, Math.round(words / 220));
+}
+
+/** schema.org BreadcrumbList for search results ("Home › Case studies › …"). */
+function breadcrumbLd(crumbs) {
+  return JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: crumbs.map(([name, url], i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name,
+      item: url,
+    })),
+  }).replace(/</g, "\\u003c");
+}
+
 /* ------------------------------------------------------------- page shell */
 export function page(d, bodyHtml, { up, url, prev, next, docs = [] } = {}) {
   const a = (p) => `${up}${p}`;
@@ -237,17 +274,33 @@ export function page(d, bodyHtml, { up, url, prev, next, docs = [] } = {}) {
     .map((s) => `<script src="${a("assets/" + s)}" defer></script>`)
     .join("\n    ");
 
+  const isStudy = Boolean(d.slug);
+  const canonicalPath = url.replace(/index\.html$/, "");
+  const canonical = `${SITE}/${canonicalPath}`;
+  const ogImage = `${SITE}/${d.ogImage || "og-image.png"}`;
+  const projectUrl = `${SITE}/case-studies/${d.project}/`;
+  const crumbs = [
+    ["Home", `${SITE}/`],
+    ["Case studies", `${SITE}/case-studies/`],
+    ...(d.project && isStudy ? [[d.projectName, projectUrl]] : []),
+    [isStudy ? d.nav || d.title : d.title, canonical],
+  ];
+  const minutes = isStudy
+    ? readingMinutes(bodyHtml, d.problem || "", d.solution || "", d.intro || "")
+    : 0;
+
   const metaBits = [
-    d.projectName && `<div><b>Project</b><br />${esc(d.projectName)}</div>`,
+    isStudy && d.projectName && `<div><b>Project</b><br />${esc(d.projectName)}</div>`,
     d.role && `<div><b>Role</b><br />${esc(d.role)}</div>`,
     d.scope && `<div><b>Scope</b><br />${esc(d.scope)}</div>`,
-    d.layer && `<div><b>Layer</b><br />${esc(d.layer)}</div>`,
+    d.layer && `<div><b>Capability</b><br />${esc(d.layer)}</div>`,
     Array.isArray(d.stack) && d.stack.length
       ? `<div><b>Stack</b><br />${d.stack.map(esc).join(" · ")}</div>`
       : "",
     Array.isArray(d.tags) && d.tags.length
       ? `<div><b>Tags</b><br />${d.tags.map(esc).join(" · ")}</div>`
       : "",
+    minutes ? `<div><b>Reading time</b><br />${minutes} min</div>` : "",
   ]
     .filter(Boolean)
     .join("\n            ");
@@ -289,18 +342,22 @@ ${enables}
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    ${HEAD_SECURITY}
     <title>${esc(d.title)} — Prudhvi Raj Anupoju</title>
     <meta name="description" content="${esc(d.summary || "")}" />
-    <link rel="canonical" href="${SITE}/${url}" />
+    <link rel="canonical" href="${canonical}" />
     <meta property="og:type" content="article" />
+    <meta property="og:url" content="${canonical}" />
     <meta property="og:title" content="${esc(d.title)}" />
     <meta property="og:description" content="${esc(d.summary || "")}" />
-    <meta property="og:image" content="${SITE}/og-image.png" />
+    <meta property="og:image" content="${ogImage}" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="${ogImage}" />
     <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies" href="${SITE}/feed.xml" />
     <link rel="icon" href="${a("assets/favicon.svg")}" type="image/svg+xml" />
+    <script type="application/ld+json">${breadcrumbLd(crumbs)}</script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -320,9 +377,9 @@ ${enables}
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju"
         },
-        "url": "${SITE}/${url}",
-        "image": "${SITE}/og-image.png",
-        "mainEntityOfPage": "${SITE}/${url}",
+        "url": "${canonical}",
+        "image": "${ogImage}",
+        "mainEntityOfPage": "${canonical}",
         "keywords": ${jsonLd((d.tags || []).concat(d.stack || []).join(", "))}
       }
     </script>
@@ -347,23 +404,23 @@ ${siteTopNav({ docs, up, active: "case-studies" })}
             d.label ? " · " + esc(d.label) : ""
           }</div>
           <h1>${inline(d.heroTitle || d.title)}</h1>
-          ${d.intro || d.summary ? `<p class="sub">${inline(d.intro || d.summary)}</p>` : ""}
+          ${d.intro || d.summary ? `<p class="sub">${inline(d.intro || d.summary)}</p>` : ""}${metaBits ? `
           <div class="meta">
             ${metaBits}
-          </div>
+          </div>` : ""}
         </div>
       </header>
+${keyResults(d)}
 ${leadSection}
 ${rest.replace(/<pre(?![^>]*tabindex)/g, '<pre tabindex="0"')}
-${outcomesBlock(d)}
       <aside class="next-study wrap">
         ${nav}
       </aside>
       <div class="closing">
         <div class="wrap">
-          <h2>Want to talk through how this would apply to your environment?</h2>
+          <h2>${isStudy ? "Questions about this case study?" : "Questions about this work?"}</h2>
           <p>
-            ${d.closingText ? esc(d.closingText) : "I'm happy to go deeper on any part of this — the architecture, the\n            trade-offs, or how it would adapt to a different environment."}
+            ${d.closingText ? esc(d.closingText) : "Happy to go deeper on any part of this — the architecture, the\n            trade-offs, or the decisions behind it."}
           </p>
           <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
             >anupojuprudhvi@gmail.com</a
@@ -377,7 +434,8 @@ ${outcomesBlock(d)}
         ><a href="${a("learning-paths/index.html")}">Learning paths ↗</a
         ><a href="${a("case-studies/index.html")}">Case studies ↗</a
         ><a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a
-        ><a href="${a("index.html")}#work">Back to overview ↗</a>
+        ><a href="${a("index.html")}#work">Back to overview ↗</a
+        ><a href="${a("privacy.html")}">Privacy</a>
       </div>
     </footer>
     <script src="${a("assets/assistant.js")}" defer></script>
@@ -388,9 +446,25 @@ ${outcomesBlock(d)}
 }
 
 /* --------------------------------------------------------- library page */
+/** The capability taxonomy used by every case study's `layer:` field. */
+export const LAYER_ORDER = [
+  "Foundation & governance",
+  "Networking & security",
+  "Data & storage",
+  "Resilience & DR",
+  "Platform & delivery",
+  "Applications & integration",
+  "Operations & incidents",
+  "Migration & strategy",
+  "Product engineering",
+];
+
 export function libraryPage(items) {
   const projects = [...new Set(items.map((i) => i.projectName))];
-  const layers = [...new Set(items.map((i) => i.layer).filter(Boolean))];
+  // Capability filters in a fixed, meaningful order; any unknown layer is
+  // appended so a new value is never silently hidden.
+  const found = new Set(items.map((i) => i.layer).filter(Boolean));
+  const layers = [...LAYER_ORDER.filter((l) => found.has(l)), ...[...found].filter((l) => !LAYER_ORDER.includes(l))];
 
   const cards = items
     .map(
@@ -411,16 +485,19 @@ export function libraryPage(items) {
     )
     .join("\n");
 
-  const filterBtn = (val, text, pressed = false) =>
+  // The count is visual only; the button's accessible name stays the label
+  // (the live status line announces how many studies are shown).
+  const filterBtn = (val, text, pressed = false, count) =>
     `<button class="filter" data-uc-filter="${esc(val)}" aria-pressed="${pressed}">${esc(
       text,
-    )}</button>`;
+    )}${count ? ` <span class="filter-count" aria-hidden="true">${count}</span>` : ""}</button>`;
 
   return `<!doctype html>
 <html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    ${HEAD_SECURITY}
     <title>Case studies — Prudhvi Raj Anupoju</title>
     <meta
       name="description"
@@ -438,6 +515,15 @@ export function libraryPage(items) {
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies" href="${SITE}/feed.xml" />
     <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+    <script type="application/ld+json">${JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      name: "Case studies — Prudhvi Raj Anupoju",
+      url: `${SITE}/case-studies/`,
+      author: { "@type": "Person", name: "Prudhvi Raj Anupoju", url: `${SITE}/` },
+      hasPart: items.map((i) => ({ "@type": "TechArticle", headline: i.title, url: `${SITE}/${i.url}` })),
+    }).replace(/</g, "\\u003c")}</script>
+    <script type="application/ld+json">${breadcrumbLd([["Home", `${SITE}/`], ["Case studies", `${SITE}/case-studies/`]])}</script>
     <script src="../assets/theme.js"></script>
     <link rel="stylesheet" href="../assets/site.css" />
     <link rel="stylesheet" href="../assets/library.css" />
@@ -468,19 +554,25 @@ ${siteTopNav({ docs: items, up: "../", active: "case-studies" })}
                 autocomplete="off"
               />
             </label>
-            <div class="filters" role="group" aria-label="Filter case studies">
-              ${filterBtn("all", "All", true)}
-              ${projects
-                .map((p) =>
-                  filterBtn(
-                    "project:" + items.find((i) => i.projectName === p).project,
-                    p,
-                  ),
-                )
-                .join("\n              ")}
-              ${layers
-                .map((l) => filterBtn("layer:" + l, l))
-                .join("\n              ")}
+            <div class="filter-groups">
+              <div class="filters" role="group" aria-labelledby="filterIndustry">
+                <span class="filter-label" id="filterIndustry">Industry</span>
+                ${filterBtn("all", "All", true)}
+                ${projects
+                  .map((p) =>
+                    filterBtn(
+                      "project:" + items.find((i) => i.projectName === p).project,
+                      p,
+                    ),
+                  )
+                  .join("\n                ")}
+              </div>
+              <div class="filters" role="group" aria-labelledby="filterCapability">
+                <span class="filter-label" id="filterCapability">Capability</span>
+                ${layers
+                  .map((l) => filterBtn("layer:" + l, l, false, items.filter((i) => i.layer === l).length))
+                  .join("\n                ")}
+              </div>
             </div>
           </div>
           <p class="filter-status" id="ucStatus" role="status">
@@ -488,13 +580,14 @@ ${siteTopNav({ docs: items, up: "../", active: "case-studies" })}
           </p>
         </div>
       </section>
-      <section class="uc-list">
+      <section class="uc-list" aria-labelledby="ucListTitle">
         <div class="wrap">
+          <h2 class="visually-hidden" id="ucListTitle">Case studies</h2>
           <div class="uc-grid" id="ucGrid">
 ${cards}
           </div>
           <p class="uc-empty" id="ucEmpty" hidden>
-            Nothing matched that. <a href="mailto:anupojuprudhvi@gmail.com">Ask me directly ↗</a>
+            Nothing matched that. Try a different term, or <a href="index.html">clear the filters</a>.
           </p>
         </div>
       </section>
@@ -504,7 +597,8 @@ ${cards}
         <span>© 2026 Prudhvi Raj Anupoju</span
         ><a href="../learning-paths/index.html">Learning paths ↗</a
         ><a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a
-        ><a href="../index.html#work">Selected work ↗</a>
+        ><a href="../index.html#work">Selected work ↗</a
+        ><a href="../privacy.html">Privacy</a>
       </div>
     </footer>
     <script src="../assets/library.js" defer></script>
@@ -560,6 +654,7 @@ export function learningPathPage(d, bodyHtml, { up, url, prev, next, track, docs
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    ${HEAD_SECURITY}
     <title>${esc(d.title)} — Prudhvi Raj Anupoju</title>
     <meta name="description" content="${esc(d.summary || "")}" />
     <link rel="canonical" href="${SITE}/${url}" />
@@ -647,6 +742,7 @@ ${siteTopNav({ docs, up, active: "learning-paths" })}
         <a href="${a("case-studies/index.html")}">Case studies ↗</a>
         <a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a>
         <a href="${a("index.html")}#work">Selected work ↗</a>
+        <a href="${a("privacy.html")}">Privacy</a>
       </div>
     </footer>
     <script src="${a("assets/assistant.js")}" defer></script>

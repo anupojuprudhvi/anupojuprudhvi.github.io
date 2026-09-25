@@ -27,7 +27,7 @@ import { join, relative, dirname, basename } from "node:path";
 
 import { esc } from "./lib/html.mjs";
 import { parseFrontMatter, renderBody } from "./lib/markdown.mjs";
-import { SITE, page, libraryPage, learningPathPage, caseStudiesNavDropdown, learningPathsNavDropdown, siteTopNav, recentCaseStudiesToast } from "./lib/render.mjs";
+import { SITE, HEAD_SECURITY, page, libraryPage, learningPathPage, caseStudiesNavDropdown, learningPathsNavDropdown, siteTopNav, latestCaseStudies, LAYER_ORDER } from "./lib/render.mjs";
 
 const ROOT = process.cwd();
 const CONTENT = join(ROOT, "content/case-studies");
@@ -71,6 +71,12 @@ function walkHtml(dir) {
   return out;
 }
 
+/** Per-page social preview (made by scripts/render-social.mjs), if present. */
+function socialImage(project, slug) {
+  const file = `assets/og/${project}/${slug}.jpg`;
+  return existsSync(join(ROOT, file)) ? file : "og-image.png";
+}
+
 /* ---------------------------------------------------------------- build */
 const files = walk(CONTENT).sort();
 const projects = JSON.parse(readFileSync(join(ROOT, "content/projects.json"), "utf8"));
@@ -98,10 +104,13 @@ const docs = files.map((file) => {
   for (const key of ["projectName", "engagement"])
     if (Object.hasOwn(data, key)) throw new Error(`${file}: ${key} is derived from content/projects.json`);
   if (data.order !== undefined && !Number.isFinite(Number(data.order))) throw new Error(`${file}: order must be a number`);
+  if (data.layer && !LAYER_ORDER.includes(data.layer))
+    throw new Error(`${file}: layer "${data.layer}" must be one of: ${LAYER_ORDER.join(", ")}`);
   for (const key of ["stack", "tags", "scripts", "outcomes", "flow"])
     if (data[key] !== undefined && !Array.isArray(data[key])) throw new Error(`${file}: ${key} must be a list`);
   const url = `case-studies/${data.project}/${slug}.html`;
   return { ...data, projectName: project.name, slug, url, file,
+    ogImage: socialImage(data.project, slug),
     bodyHtml: renderBody(body) };
 });
 
@@ -143,7 +152,8 @@ emit("case-studies/index.html", libraryPage(index));
 const selectedWork = projects.map((project, projectIndex) => {
   const studies = docs.filter((d) => d.project === project.id);
   const engagementUrl = `case-studies/${project.id}/index.html`;
-  const values = { projectName: esc(project.name), engagementUrl: esc(engagementUrl), projectNumber: String(projectIndex + 1).padStart(2, "0") };
+  const values = { projectName: esc(project.name), engagementUrl: esc(engagementUrl), projectNumber: String(projectIndex + 1).padStart(2, "0"),
+    caseStudyLabel: `${studies.length} case ${studies.length === 1 ? "study" : "studies"}` };
   const caseStudyLinks = studies.map((d, idx) => `            <a href="${esc(basename(d.url))}"><span>${String(idx + 1).padStart(2, "0")} / ${esc(d.label || d.layer || "Case study")}</span><strong>${esc(d.nav || d.title)}</strong><small>${esc(d.summary)} →</small></a>`).join("\n");
   if (project.customOverview) {
     const overviewBase = join(ROOT, `content/overviews/${project.id}`);
@@ -154,25 +164,29 @@ const selectedWork = projects.map((project, projectIndex) => {
       ...values,
       caseStudyLinks,
       caseStudyCount: studies.length,
+      ogImage: socialImage(project.id, "index"),
+      headSecurity: HEAD_SECURITY,
       siteNav: siteTopNav({ docs, up: "../../", active: "case-studies" }),
     };
     if (sources[0] === ".md") {
       const { data, body } = parseFrontMatter(source, overviewBase + ".md");
       if (!data.title || !data.summary) throw new Error(`${project.id}: overview requires title and summary`);
-      emit(engagementUrl, page({ ...data, projectName: project.name }, template(renderBody(body), slots), { up: "../../", url: engagementUrl, docs }));
+      emit(engagementUrl, page({ ...data, projectName: project.name, ogImage: slots.ogImage }, template(renderBody(body), slots), { up: "../../", url: engagementUrl, docs }));
     } else {
       emit(engagementUrl, template(source, slots));
     }
   } else {
     emit(engagementUrl, page({ title: project.name, projectName: project.name,
-      summary: "Explore the case studies from this engagement, including the problems, architecture decisions, and outcomes." },
+      // Prefer a hand-written summary in projects.json; otherwise describe the studies themselves.
+      summary: project.summary || `${studies.length} case ${studies.length === 1 ? "study" : "studies"}: ${studies.map((d) => d.nav || d.title).join(", ")}.`,
+      intro: project.intro, ogImage: socialImage(project.id, "index") },
       `<section><div class="wrap"><h2>Case studies</h2><div class="case-study-links">${caseStudyLinks}</div></div></section>`,
       { up: "../../", url: engagementUrl, docs }));
   }
   return template(readFileSync(join(ROOT, `content/engagements/${project.id}.html`), "utf8"), values).trimEnd();
 }).join("\n");
 
-// resolve the latest 3 case studies for the homepage toast
+// resolve the latest 3 case studies for the homepage "Latest case studies" strip
 const RECENT_FILE = join(ROOT, "content/recent-case-studies.json");
 let recentDocs = [];
 if (existsSync(RECENT_FILE)) {
@@ -212,10 +226,21 @@ emit(
   template(readFileSync(join(ROOT, "content/home.html"), "utf8"), {
     selectedWork,
     engagementCount: projects.length,
-    caseStudiesNav: caseStudiesNavDropdown(docs, { prefix: "case-studies/" }),
-    recentCaseStudiesToast: recentCaseStudiesToast(recentDocs),
+    siteNav: siteTopNav({ docs, home: true }),
+    headSecurity: HEAD_SECURITY,
+    latestCaseStudies: latestCaseStudies(recentDocs),
   }),
 );
+
+// Branded 404 page (GitHub Pages serves /404.html for any missing URL).
+emit("404.html", template(readFileSync(join(ROOT, "content/404.html"), "utf8"), {
+  siteNav: siteTopNav({ docs, up: "/" }),
+  headSecurity: HEAD_SECURITY,
+}));
+emit("privacy.html", template(readFileSync(join(ROOT, "content/privacy.html"), "utf8"), {
+  siteNav: siteTopNav({ docs }),
+  headSecurity: HEAD_SECURITY,
+}));
 
 // learning paths and playbooks
 const LEARNING_PATHS_DIR = join(ROOT, "content/learning-paths");
@@ -226,7 +251,8 @@ if (existsSync(join(LEARNING_PATHS_DIR, "tracks.json"))) {
     emit(
       "learning-paths/index.html",
       template(readFileSync(hubSourcePath, "utf8"), {
-        caseStudiesNav: caseStudiesNavDropdown(docs, { prefix: "../case-studies/" }),
+        siteNav: siteTopNav({ docs, up: "../", active: "learning-paths" }),
+        headSecurity: HEAD_SECURITY,
       }),
     );
   }
@@ -284,7 +310,7 @@ if (existsSync(join(LEARNING_PATHS_DIR, "tracks.json"))) {
 // Derive discovery files from the actual page canonicals, including custom overviews.
 const canonicalUrls = new Set();
 for (const [url, html] of outputs) {
-  if (!url.endsWith(".html")) continue;
+  if (!url.endsWith(".html") || url === "404.html") continue;
   const matches = [...html.matchAll(/<link\s+rel="canonical"\s+href="([^"]+)"\s*\/?>/g)];
   if (matches.length !== 1) throw new Error(`${url}: expected exactly one canonical URL`);
   const canonical = matches[0][1];

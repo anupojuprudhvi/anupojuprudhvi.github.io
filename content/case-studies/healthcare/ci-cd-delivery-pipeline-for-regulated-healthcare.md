@@ -3,7 +3,7 @@ title: CI/CD delivery pipeline for a regulated healthcare platform
 nav: Regulated CI/CD delivery
 summary: A GitFlow-to-Kubernetes pipeline with per-branch promotion gates, headless registry authentication, and deployment lead time cut from hours to minutes.
 project: healthcare
-layer: Delivery engineering
+layer: Platform & delivery
 order: 40
 stack: [Jenkins, Bitbucket, AWS ECR, Amazon EKS]
 tags: [ci-cd, devops, jenkins, delivery-engineering]

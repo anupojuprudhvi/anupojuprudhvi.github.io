@@ -1,9 +1,9 @@
 ---
 title: NexusCore AI — Autonomous Enterprise Workforce & Identity Operating System
 nav: NexusCore AI Enterprise OS
-summary: Unifying IAM, Joiner-Mover-Leaver (JML) lifecycle automation, attendance tracking, and deterministic policy intelligence into a sovereign, distributed platform — eliminating the $1,400/emp identity fragmentation tax with sub-5s de-provisioning.
+summary: Unifying IAM, Joiner-Mover-Leaver (JML) lifecycle automation, attendance tracking, and deterministic policy intelligence into a sovereign, distributed platform — targeting the modelled ~$1,400/employee cost of identity fragmentation, with sub-5s de-provisioning.
 project: independent-products
-layer: Enterprise Platform & Distributed Systems
+layer: Product engineering
 order: 5
 stack: [FastAPI, Next.js 15, Temporal SDK, PostgreSQL 16, Amazon EKS, ArgoCD GitOps, External Secrets, Terraform]
 tags: [identity-governance, distributed-systems, agentic-ai, temporal, security, finops, kubernetes]
@@ -15,16 +15,16 @@ heroTitle: Autonomous workforce & identity governance, powered by durable distri
 intro: Modern enterprises bleed hundreds of thousands of dollars annually in bloated SaaS seat licenses, manual IT helpdesk tickets, and onboarding drag because HRIS, cloud infrastructure, and identity providers operate in isolated silos. NexusCore AI unifies identity governance, Joiner-Mover-Leaver (JML) lifecycle automation, attendance telemetry, and handbook policy retrieval into a single sovereign platform — backed by Temporal state machines, sub-5-second SaaS de-provisioning, and strict multi-tenant isolation.
 role: Enterprise Platform Architect & Systems Engineer
 scope: Monorepo-to-polyrepo microservices architecture, Temporal distributed state machines, deterministic Policy RAG engine, multi-tenant isolation, and Kubernetes GitOps
-closingText: Interested in discussing how an autonomous workforce and identity operating system eliminates SaaS sprawl, slashes onboarding time to seconds, and ensures ironclad audit compliance?
+closingText: Happy to go deeper on the Temporal saga design, the policy-retrieval engine, or the multi-tenant isolation model.
 outcomes:
   - value: 66.7%
-    label: Net TCO budget reduction ($240,000/yr net recurring savings for a 500-employee enterprise with a 3.8-month payback)
+    label: Modelled net TCO reduction ($240,000/yr for a 500-employee company, 3.8-month payback) — a projection, not a measured result
   - value: <5s
     label: Automated Joiner-Mover-Leaver provisioning and 100% session de-provisioning with zero ghost credentials
   - value: 509
     label: Passing automated tests (340 API, 36 Worker, 17 AI, 80 Web Unit, 36 Browser E2E) across 5 continuous test suites
   - value: 89%
-    label: IT helpdesk ticket deflection via self-service manager queues, sub-team access profiles, and grounded policy AI
+    label: Modelled IT helpdesk ticket deflection via self-service manager queues, sub-team access profiles, and grounded policy AI
 scaffold: false
 ---
 
@@ -35,29 +35,17 @@ Modern enterprises run an average of 42 disparate SaaS applications per knowledg
 1. **Identity Sprawl & Zombie Licenses:** When employees change departments or leave, their cloud and SaaS access remains active for weeks. 12% to 18% of paid enterprise SaaS seats remain assigned to departed or moved staff, bleeding recurring software licensing budgets.
 2. **Onboarding Productivity Drag:** New engineers and knowledge workers wait an average of 7.2 business days to receive full access to their department-specific tools, repositories, and cloud environments, resulting in substantial lost productivity.
 3. **IT Helpdesk Overhead:** IT teams spend hundreds of hours manually processing repetitive Joiner, Mover, and Leaver (JML) tickets, resetting passwords, and chasing managers for routine leave and timesheet signoffs.
-4. **Compliance Exposure & SEC Rule 106 Liability:** Orphaned credentials and privilege creep create dangerous attack surfaces. Under SEC Rule 106, public and regulated companies face mandatory 4-day material cybersecurity incident disclosure rules. Manual spreadsheets and unversioned scripts fail external SOC 2 Type II and SOX audits.
+4. **Compliance Exposure & SEC Cybersecurity Disclosure:** Orphaned credentials and privilege creep create dangerous attack surfaces. Under the SEC's 2023 cybersecurity rules, public companies must disclose material incidents within four business days (Form 8-K Item 1.05) and describe their cyber-risk management (Regulation S-K Item 106). Manual spreadsheets and unversioned scripts fail external SOC 2 Type II and SOX audits.
 
-```text
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                    THE $1,400 / EMPLOYEE HIDDEN ANNUAL TAX                     │
-├──────────────────────┬────────────────────────────────────┬─────────────────────┤
-│ Cost Driver          │ Enterprise Reality                 │ Annual Cost / Emp   │
-├──────────────────────┼────────────────────────────────────┼─────────────────────┤
-│ Zombie SaaS Seats    │ 12-18% of licenses remain assigned │ $420 / employee     │
-│                      │ to departed staff or unused roles  │                     │
-├──────────────────────┼────────────────────────────────────┼─────────────────────┤
-│ IT Ticket Overhead   │ 4.5 JML/access tickets per employee│ $380 / employee     │
-│                      │ per year ($85 fully burdened cost) │                     │
-├──────────────────────┼────────────────────────────────────┼─────────────────────┤
-│ Onboarding Drag      │ 7.2 business days until full new   │ $450 / employee     │
-│                      │ hire engineering productivity      │ (salary waste)      │
-├──────────────────────┼────────────────────────────────────┼─────────────────────┤
-│ Compliance Exposure  │ Audit prep, external sampling,     │ $150 / employee     │
-│                      │ and manual spreadsheet evidence    │                     │
-├──────────────────────┼────────────────────────────────────┼─────────────────────┤
-│ TOTAL HIDDEN TAX     │ Bleeding balance sheets annually   │ $1,400 / emp / yr   │
-└──────────────────────┴────────────────────────────────────┴─────────────────────┘
-```
+**The $1,400 / Employee Hidden Annual Tax**
+
+| Cost Driver | Enterprise Reality | Annual Cost / Emp |
+| --- | --- | --- |
+| Zombie SaaS Seats | 12-18% of licenses remain assigned to departed staff or unused roles | $420 / employee |
+| IT Ticket Overhead | 4.5 JML/access tickets per employee per year ($85 fully burdened cost) | $380 / employee |
+| Onboarding Drag | 7.2 business days until full new hire engineering productivity | $450 / employee (salary waste) |
+| Compliance Exposure | Audit prep, external sampling, and manual spreadsheet evidence | $150 / employee |
+| TOTAL HIDDEN TAX | Bleeding balance sheets annually | $1,400 / emp / yr |
 
 ## Architecture · Decoupled microservices, durable sagas, and GitOps delivery
 
@@ -111,29 +99,14 @@ NexusCore AI is architected as a high-availability, sovereign operating system. 
 
 NexusCore AI is purpose-built to eliminate the compromises of legacy point solutions, fragmented identity tools, and fragile homegrown scripts.
 
-```text
-┌──────────────────┬──────────────────────┬──────────────────────┬──────────────────────┐
-│ Capability       │ NexusCore AI         │ Okta + Okta IGA      │ Workday / BambooHR   │
-├──────────────────┼──────────────────────┼──────────────────────┼──────────────────────┤
-│ Monthly Cost     │ $14 / user / month   │ $35 - $50 / user / mo│ $10 - $20 / user / mo│
-│                  │ (All-inclusive)      │ (Heavy add-on fees)  │ (HR only, no IAM)    │
-├──────────────────┼──────────────────────┼──────────────────────┼──────────────────────┤
-│ State Rollback   │ Guaranteed Temporal  │ No rollback guarantee│ N/A (Cannot touch    │
-│ Guarantee        │ compensating sagas   │ (Leaves ghost state) │ cloud infrastructure)│
-├──────────────────┼──────────────────────┼──────────────────────┼──────────────────────┤
-│ JML Deprovision  │ Sub-5 seconds        │ Multi-minute batch   │ Manual ticket to     │
-│ Speed            │ (Atomic revocation)  │ or manual triggers   │ IT engineering team  │
-├──────────────────┼──────────────────────┼──────────────────────┼──────────────────────┤
-│ Policy Intel     │ Grounded RAG with    │ None                 │ Static PDF files     │
-│ (Employee Wiki)  │ PDF page citations   │                      │ buried in drive      │
-├──────────────────┼──────────────────────┼──────────────────────┼──────────────────────┤
-│ Deployment       │ 14 days (or BYOC     │ 3 - 6 months         │ 6 - 12 months        │
-│ Timeline         │ Helm in private VPC) │ enterprise rollout   │ systems integration  │
-├──────────────────┼──────────────────────┼──────────────────────┼──────────────────────┤
-│ Sub-Team Tool    │ Granular profiles    │ Coarse group rules   │ Department title     │
-│ Bundling         │ (SecOps, DevOps, L2) │ (Broad assignments)  │ only (No SaaS maps)  │
-└──────────────────┴──────────────────────┴──────────────────────┴──────────────────────┘
-```
+| Capability | NexusCore AI | Okta + Okta IGA | Workday / BambooHR |
+| --- | --- | --- | --- |
+| Monthly Cost | $14 / user / month (All-inclusive) | $35 - $50 / user / mo (Heavy add-on fees) | $10 - $20 / user / mo (HR only, no IAM) |
+| State Rollback Guarantee | Guaranteed Temporal compensating sagas | No rollback guarantee (Leaves ghost state) | N/A (Cannot touch cloud infrastructure) |
+| JML Deprovision Speed | Sub-5 seconds (Atomic revocation) | Multi-minute batch or manual triggers | Manual ticket to IT engineering team |
+| Policy Intel (Employee Wiki) | Grounded RAG with PDF page citations | None | Static PDF files buried in drive |
+| Deployment Timeline | 14 days (or BYOC Helm in private VPC) | 3 - 6 months enterprise rollout | 6 - 12 months systems integration |
+| Sub-Team Tool Bundling | Granular profiles (SecOps, DevOps, L2) | Coarse group rules (Broad assignments) | Department title only (No SaaS maps) |
 
 ### Detailed competitive battlecards
 
@@ -219,7 +192,7 @@ Traditional large language models frequently hallucinate HR guidelines, guess in
 
 ## ROI Model · Financial impact for a 500-employee enterprise
 
-NexusCore AI replaces five disconnected point subscriptions with a unified sovereign operating system, delivering hard-dollar savings within the first two quarters of adoption.
+NexusCore AI replaces five disconnected point subscriptions with a unified sovereign operating system. The figures below are a modelled estimate built from list-price and staffing assumptions — a projection, not measured results from a deployment.
 
 ```text
 Legacy Disconnected Point Stack:

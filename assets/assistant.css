@@ -456,6 +456,15 @@
   color: var(--accent);
 }
 
+.ask-privacy {
+  margin-top: 8px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+.ask-privacy a {
+  color: var(--accent);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ask-typing span {
     animation: none;

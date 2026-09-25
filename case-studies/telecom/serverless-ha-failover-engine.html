@@ -4,18 +4,23 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Automating telecom failover, preserving licensed identity — Prudhvi Raj Anupoju</title>
     <meta name="description" content="Bringing recovery orchestration, service validation, and hardware-bound licensing into one failover workflow, with an explicit same-AZ boundary." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/case-studies/telecom/serverless-ha-failover-engine.html" />
     <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://anupojuprudhvi.github.io/case-studies/telecom/serverless-ha-failover-engine.html" />
     <meta property="og:title" content="Automating telecom failover, preserving licensed identity" />
     <meta property="og:description" content="Bringing recovery orchestration, service validation, and hardware-bound licensing into one failover workflow, with an explicit same-AZ boundary." />
-    <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta property="og:image" content="https://anupojuprudhvi.github.io/assets/og/telecom/serverless-ha-failover-engine.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://anupojuprudhvi.github.io/assets/og/telecom/serverless-ha-failover-engine.jpg" />
     <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies" href="https://anupojuprudhvi.github.io/feed.xml" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Case studies","item":"https://anupojuprudhvi.github.io/case-studies/"},{"@type":"ListItem","position":3,"name":"Telecom & Secure Communications","item":"https://anupojuprudhvi.github.io/case-studies/telecom/"},{"@type":"ListItem","position":4,"name":"Failover and licensing continuity","item":"https://anupojuprudhvi.github.io/case-studies/telecom/serverless-ha-failover-engine.html"}]}</script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -36,7 +41,7 @@
           "name": "Prudhvi Raj Anupoju"
         },
         "url": "https://anupojuprudhvi.github.io/case-studies/telecom/serverless-ha-failover-engine.html",
-        "image": "https://anupojuprudhvi.github.io/og-image.png",
+        "image": "https://anupojuprudhvi.github.io/assets/og/telecom/serverless-ha-failover-engine.jpg",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/case-studies/telecom/serverless-ha-failover-engine.html",
         "keywords": "failover, licensing, eni, recovery, orchestration, AWS Lambda, DynamoDB, CloudWatch, Systems Manager, EC2, Elastic Network Interfaces"
       }
@@ -52,7 +57,7 @@
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
         <a class="brand" href="../../index.html">Prudhvi Raj Anupoju</a>
-        <div class="navlinks">
+        <div class="navlinks" id="siteNavLinks">
           <a href="../../index.html#work">Selected work</a>
           <div class="nav-dropdown">
             <a href="../../case-studies/index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" aria-current="page"
@@ -115,8 +120,11 @@
             </div>
           </div>
           <a href="../../index.html#contact" class="nav-cta">Let's connect ↗</a>
-          <button id="themeToggle" aria-label="Switch to light theme">☼</button>
         </div>
+        <button id="themeToggle" type="button" aria-label="Switch to light theme">☼</button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNavLinks" aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
       </div>
     </nav>
     <main id="main">
@@ -132,12 +140,14 @@
           <p class="sub">Bringing recovery orchestration, service validation, and hardware-bound licensing into one failover workflow, with an explicit same-AZ boundary.</p>
           <div class="meta">
             <div><b>Project</b><br />Telecom &amp; Secure Communications</div>
-            <div><b>Layer</b><br />Resilience</div>
+            <div><b>Capability</b><br />Resilience &amp; DR</div>
             <div><b>Stack</b><br />AWS Lambda · DynamoDB · CloudWatch · Systems Manager · EC2 · Elastic Network Interfaces</div>
             <div><b>Tags</b><br />failover · licensing · eni · recovery · orchestration</div>
+            <div><b>Reading time</b><br />3 min</div>
           </div>
         </div>
       </header>
+
 
 <section>
 <div class="wrap">
@@ -302,14 +312,13 @@
 <p>Capture lease-expiry tests, partially completed interface moves, unavailable Systems Manager agents, and failed fencing calls. Verify the promotion/fencing sequence and record the recovery timeline for each scenario, including the point at which clients can successfully use the service.</p>
 </div>
 </section>
-
       <aside class="next-study wrap">
         <a href="../../case-studies/telecom/aurora-global-database-modernization.html">← Database migration and connection pooling</a>
         <a href="../../case-studies/telecom/in-memory-column-encryption-kms.html">Key-management migration →</a>
       </aside>
       <div class="closing">
         <div class="wrap">
-          <h2>Want to talk through how this would apply to your environment?</h2>
+          <h2>Questions about this case study?</h2>
           <p>
             Want to drill into the failure modes? I'm happy to walk through the recovery runbook, DynamoDB lease coordination limits, or how we validated automated failover times.
           </p>
@@ -325,7 +334,8 @@
         ><a href="../../learning-paths/index.html">Learning paths ↗</a
         ><a href="../../case-studies/index.html">Case studies ↗</a
         ><a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a
-        ><a href="../../index.html#work">Back to overview ↗</a>
+        ><a href="../../index.html#work">Back to overview ↗</a
+        ><a href="../../privacy.html">Privacy</a>
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>

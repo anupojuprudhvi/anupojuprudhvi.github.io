@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Case-study social preview</title>
+    <!--
+      Per-page social card rendered by scripts/render-social.mjs. Content comes
+      from the query string (eyebrow, title, stat, statLabel), never from the
+      network, and is inserted with textContent only.
+    -->
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        width: 1200px;
+        height: 630px;
+        background: #0b1218;
+        color: #eef5f6;
+        font-family: system-ui, sans-serif;
+        padding: 58px 70px;
+        position: relative;
+        overflow: hidden;
+      }
+      body::after {
+        content: "";
+        position: absolute;
+        right: -120px;
+        top: -120px;
+        width: 520px;
+        height: 520px;
+        background:
+          linear-gradient(#2a3b4655 1px, transparent 1px),
+          linear-gradient(90deg, #2a3b4655 1px, transparent 1px);
+        background-size: 30px 30px;
+        mask-image: radial-gradient(circle, #000 30%, transparent 70%);
+      }
+      .brand {
+        font-size: 20px;
+        letter-spacing: -0.5px;
+        display: flex;
+        align-items: center;
+      }
+      .mark {
+        display: inline-grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        border: 1px solid #81e4c1;
+        margin-right: 14px;
+        color: #81e4c1;
+        font-size: 15px;
+      }
+      .eyebrow {
+        margin-top: 64px;
+        font: 600 17px ui-monospace, monospace;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #81e4c1;
+      }
+      h1 {
+        font-size: 60px;
+        line-height: 1.1;
+        letter-spacing: -2.5px;
+        font-weight: 650;
+        margin: 22px 0 0;
+        max-width: 1000px;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      h1.long {
+        font-size: 48px;
+        letter-spacing: -1.8px;
+      }
+      .footer {
+        position: absolute;
+        bottom: 45px;
+        left: 70px;
+        right: 70px;
+        border-top: 1px solid #2a3b46;
+        padding-top: 22px;
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 40px;
+        color: #92a7b4;
+        font-size: 16px;
+      }
+      .stat strong {
+        display: block;
+        color: #f2b155;
+        font-size: 44px;
+        font-weight: 650;
+        letter-spacing: -1.5px;
+        line-height: 1;
+      }
+      .stat span {
+        display: block;
+        margin-top: 8px;
+        max-width: 620px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .site {
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="brand"><span class="mark">PA</span>Prudhvi Raj Anupoju</div>
+    <div class="eyebrow" id="eyebrow"></div>
+    <h1 id="title"></h1>
+    <div class="footer">
+      <div class="stat" id="stat"><strong></strong><span></span></div>
+      <span class="site" id="site">anupojuprudhvi.github.io · Case study</span>
+    </div>
+    <script>
+      const q = new URLSearchParams(location.search);
+      const set = (id, text) => (document.getElementById(id).textContent = text || "");
+      set("eyebrow", q.get("eyebrow"));
+      set("title", q.get("title"));
+      if (q.get("kind")) set("site", `anupojuprudhvi.github.io · ${q.get("kind")}`);
+      const title = document.getElementById("title");
+      if ((q.get("title") || "").length > 70) title.classList.add("long");
+      const stat = document.getElementById("stat");
+      if (q.get("stat")) {
+        stat.querySelector("strong").textContent = q.get("stat");
+        stat.querySelector("span").textContent = q.get("statLabel") || "";
+      } else stat.hidden = true;
+    </script>
+  </body>
+</html>

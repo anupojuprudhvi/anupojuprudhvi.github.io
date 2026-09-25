@@ -86,9 +86,18 @@ Before describing a change as production-ready, verify as applicable:
   account numbers, or client infrastructure identifiers. Use anonymized, industry-level
   framing (e.g., "Electronic tolling systems", "Telecom platform", "Regulated healthcare provider").
 - **Recent case studies showcase**: When publishing a new case study that should be
-  featured on the homepage floating toast widget, update `content/recent-case-studies.json`
+  featured in the homepage "Latest case studies" strip, update `content/recent-case-studies.json`
   to place the new study at the top, maintaining strictly the 3 most recent entries.
-  The generator automatically limits to the top 3 and renders the component dynamically.
+  The generator automatically limits to the top 3 and renders the strip. Card text
+  (`title`, `desc`, `badge`) must be supported by the case study itself.
+- **Capability taxonomy**: every case study's `layer:` must be one of `LAYER_ORDER` in
+  `scripts/lib/render.mjs`; the build fails otherwise. Add a new capability there only
+  when at least two case studies need it.
+- **Neutral voice**: the site is a portfolio, not a sales page. Do not add language that
+  solicits work (availability, hiring, consulting/contract offers, "your environment",
+  pricing or sales calls to action). Contact copy stays neutral: questions about the work.
+- **Social images**: after adding or renaming a case study, run `npm run social` (needs a
+  local Chromium/Chrome) and then `npm run build` so the page uses its own preview image.
 - Keep terminology consistent: use “authentication” for proving identity and
   “authorization” for permissions.
 

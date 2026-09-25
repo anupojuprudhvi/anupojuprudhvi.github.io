@@ -4,7 +4,7 @@ nav: Keep Aurora DR in configuration parity
 label: Data resilience
 heading: Closing the configuration gaps in a multi-region Aurora design
 project: tolling
-layer: Data
+layer: Resilience & DR
 order: 30
 stack: [Amazon Aurora Global Database, AWS Secrets Manager, AWS KMS, Terraform]
 tags: [resilience, disaster-recovery, database, terraform, security, multi-region]

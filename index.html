@@ -4,6 +4,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Prudhvi Raj Anupoju — Cloud Platform Architect</title>
     <meta
       name="description"
@@ -94,7 +96,7 @@
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
         <a class="brand" href="#top">Prudhvi Raj Anupoju</a>
-        <div class="navlinks">
+        <div class="navlinks" id="siteNavLinks">
           <a href="#work">Selected work</a>
           <div class="nav-dropdown">
             <a href="case-studies/index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false"
@@ -156,12 +158,14 @@
               </a>
             </div>
           </div>
-          <a href="#why-me">Why me?</a><a href="#background">About</a
-          ><a href="#contact" class="nav-cta">Let’s connect ↗</a
-          ><button id="themeToggle" aria-label="Switch to light theme">
-            ☼
-          </button>
+          <a href="#why-me">Why me?</a>
+          <a href="#background">About</a>
+          <a href="#contact" class="nav-cta">Let's connect ↗</a>
         </div>
+        <button id="themeToggle" type="button" aria-label="Switch to light theme">☼</button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNavLinks" aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
       </div>
     </nav>
     <main id="main">
@@ -186,20 +190,22 @@
                   loading="eager"
                   style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--accent);flex-shrink:0;display:block;"
                 />
-                <a
-                  class="hero-name-link"
-                  href="https://www.linkedin.com/in/prudhvi-raj-anupoju/"
-                  target="_blank"
-                  rel="noopener"
-                  >Prudhvi Raj Anupoju</a
+                <span class="hero-intro-text"
+                  ><a
+                    class="hero-name-link"
+                    href="https://www.linkedin.com/in/prudhvi-raj-anupoju/"
+                    target="_blank"
+                    rel="noopener"
+                    >Prudhvi Raj Anupoju</a
+                  >
+                  · A decade of enterprise delivery</span
                 >
-                · A decade of enterprise delivery
               </p>
               <div class="actions">
                 <a class="button" href="#work"
                   >Explore my work <span aria-hidden="true">↘</span></a
-                ><a class="text-link" href="mailto:anupojuprudhvi@gmail.com"
-                  >Start a conversation ↗</a
+                ><a class="text-link" href="#contact"
+                  >Get in touch ↘</a
                 >
               </div>
             </div>
@@ -249,6 +255,49 @@
           </div>
         </div>
       </header>
+      <section class="latest" aria-labelledby="latestTitle">
+        <div class="wrap">
+          <div class="latest-head">
+            <h2 id="latestTitle">Latest case studies</h2>
+            <a href="case-studies/index.html" class="recent-all-link">Browse all case studies →</a>
+          </div>
+          <ul class="recent-list">
+            <li class="recent-card-item">
+              <a href="case-studies/independent-products/nexuscore-ai-workforce-operating-system.html" class="recent-card-link">
+                <span class="recent-card-meta">
+                  <span class="recent-card-tag">Autonomous AI Platform</span>
+                  <span class="recent-card-badge">Latest</span>
+                </span>
+                <strong class="recent-card-title">NexusCore AI: Autonomous Workforce OS</strong>
+                <span class="recent-card-desc">Identity and Joiner-Mover-Leaver automation on durable Temporal sagas, with sub-5s de-provisioning and a policy assistant that cites its sources.</span>
+                <span class="recent-card-cta">Read the case study <span aria-hidden="true">→</span></span>
+              </a>
+            </li>
+            <li class="recent-card-item">
+              <a href="case-studies/tolling/s3-large-scale-bucket-migration.html" class="recent-card-link">
+                <span class="recent-card-meta">
+                  <span class="recent-card-tag">AWS Cloud Infrastructure</span>
+                  <span class="recent-card-badge">8h → 54m</span>
+                </span>
+                <strong class="recent-card-title">Tolling S3 Migration: 1.48M Objects</strong>
+                <span class="recent-card-desc">High-concurrency migration of 225 GB across 1.48M small objects using in-region EC2 + s5cmd with $0 compute overhead.</span>
+                <span class="recent-card-cta">Read the case study <span aria-hidden="true">→</span></span>
+              </a>
+            </li>
+            <li class="recent-card-item">
+              <a href="case-studies/independent-products/solo-saas-hardening-ai-agentic-engineering.html" class="recent-card-link">
+                <span class="recent-card-meta">
+                  <span class="recent-card-tag">AI-Agentic Engineering</span>
+                  <span class="recent-card-badge">10 Suites</span>
+                </span>
+                <strong class="recent-card-title">Solo SaaS Hardening: AI Protocols</strong>
+                <span class="recent-card-desc">Disciplined verification protocol with 10 automated test suites and strict pre-push checklists for agentic autonomy.</span>
+                <span class="recent-card-cta">Read the case study <span aria-hidden="true">→</span></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
       <section id="work">
         <div class="wrap">
           <div class="section-head">
@@ -262,30 +311,18 @@
             </p>
           </div>
           <div class="filters" role="group" aria-label="Filter engagements">
-            <button class="filter" data-filter="all" aria-pressed="true">
-              All work</button
-            ><button
-              class="filter"
-              data-filter="resilience"
-              aria-pressed="false"
-            >
-              Resilience</button
-            ><button
-              class="filter"
-              data-filter="governance"
-              aria-pressed="false"
-            >
-              Tolling</button
-            ><button class="filter" data-filter="platform" aria-pressed="false">
-              Platform engineering</button
-            ><button class="filter" data-filter="finops" aria-pressed="false">
-              FinOps
-            </button>
+            <button class="filter" data-filter="all" aria-pressed="true">All work</button
+            ><button class="filter" data-filter="resilience" aria-pressed="false">Resilience</button
+            ><button class="filter" data-filter="platform" aria-pressed="false">Platform engineering</button
+            ><button class="filter" data-filter="governance" aria-pressed="false">Governance &amp; security</button
+            ><button class="filter" data-filter="migration" aria-pressed="false">Migration</button
+            ><button class="filter" data-filter="finops" aria-pressed="false">FinOps</button>
           </div>
           <p class="filter-status" id="filterStatus" role="status">
             6 engagements shown
           </p>
-          <article class="case" data-tags="resilience finops">
+          <div class="case-list">
+          <article class="case" data-tags="resilience finops migration">
             <div class="case-grid">
               <div>
                 <div class="tag">01 / Telecom &amp; Secure Communications</div>
@@ -302,8 +339,8 @@
               </div>
               <div class="case-result">
                 <strong>Automated</strong>
-                <p>Automated failover recovery</p>
-                <small>Recovery designed around licensed service identity</small>
+                <p>Failover recovery in one orchestrated workflow</p>
+                <small>Recovery, service validation and licensed service identity handled together</small>
               </div>
             </div>
             <details>
@@ -331,10 +368,9 @@
               </ul>
             </details>
             <div class="case-bottom">
-              <a
-                href="case-studies/telecom/index.html"
-                >Explore the architecture <span aria-hidden="true">↗</span></a
-              ><span>TECHNICAL CASE STUDY</span>
+              <a href="case-studies/telecom/index.html"
+                >View 5 case studies <span aria-hidden="true">↗</span></a
+              >
             </div>
           </article>
           <article class="case" data-tags="governance platform">
@@ -395,14 +431,12 @@
               </ul>
             </details>
             <div class="case-bottom">
-              <a
-                href="case-studies/tolling/index.html"
-                >Explore case studies
-                <span aria-hidden="true">↗</span></a
-              ><span>TECHNICAL CASE STUDY</span>
+              <a href="case-studies/tolling/index.html"
+                >View 11 case studies <span aria-hidden="true">↗</span></a
+              >
             </div>
           </article>
-          <article class="case" data-tags="finops resilience">
+          <article class="case" data-tags="finops resilience governance">
             <div class="case-grid">
               <div>
                 <div class="tag">03 / Healthcare &amp; Cost Architecture</div>
@@ -453,10 +487,9 @@
               </ul>
             </details>
             <div class="case-bottom">
-              <a
-                href="case-studies/healthcare/index.html"
-                >Explore the architecture <span aria-hidden="true">↗</span></a
-              ><span>TECHNICAL CASE STUDY</span>
+              <a href="case-studies/healthcare/index.html"
+                >View 5 case studies <span aria-hidden="true">↗</span></a
+              >
             </div>
           </article>
           <article class="case" data-tags="migration finops platform">
@@ -513,13 +546,12 @@
               </ul>
             </details>
             <div class="case-bottom">
-              <a
-                href="case-studies/partner-engagements/index.html"
-                >Explore the architecture <span aria-hidden="true">↗</span></a
-              ><span>TECHNICAL CASE STUDY</span>
+              <a href="case-studies/partner-engagements/index.html"
+                >View 5 case studies <span aria-hidden="true">↗</span></a
+              >
             </div>
           </article>
-          <article class="case" data-tags="database high-availability hybrid-cloud">
+          <article class="case" data-tags="database resilience hybrid-cloud">
             <div class="case-grid">
               <div>
                 <div class="tag">05 / Enterprise Hybrid Cloud Infrastructure</div>
@@ -537,9 +569,9 @@
                 </p>
               </div>
               <div class="case-result">
-                <strong>&lt;3 min</strong>
-                <p>Automated mail failover, down from 4+ hours manual recovery</p>
-                <small>21+ node RAC cluster with zero downtime at peak concurrency</small>
+                <strong>21+</strong>
+                <p>Active Oracle RAC nodes on AWS, without native shared-SAN storage</p>
+                <small>Mail failover cut from 4+ hours of manual recovery to under 3 minutes</small>
               </div>
             </div>
             <details>
@@ -570,13 +602,12 @@
               </ul>
             </details>
             <div class="case-bottom">
-              <a
-                href="case-studies/enterprise-infrastructure/index.html"
-                >Explore the architecture <span aria-hidden="true">↗</span></a
-              ><span>TECHNICAL CASE STUDY</span>
+              <a href="case-studies/enterprise-infrastructure/index.html"
+                >View 3 case studies <span aria-hidden="true">↗</span></a
+              >
             </div>
           </article>
-          <article class="case" data-tags="platform finops resilience security ai-assisted-engineering">
+          <article class="case" data-tags="platform finops resilience governance ai-assisted-engineering">
             <div class="case-grid">
               <div>
                 <div class="tag">06 / Independent Products &amp; AI-Assisted Engineering</div>
@@ -589,9 +620,9 @@
                   Enterprise workforce and identity operating system unifying IAM governance,
                   Joiner-Mover-Leaver (JML) lifecycle automation, attendance tracking, and
                   deterministic policy intelligence into a sovereign, distributed platform.
-                  Eliminates the $1,400/employee identity fragmentation tax with Temporal
-                  distributed state machines, SHA-256 tamper-evident audit trails, and strict
-                  multi-tenant isolation.
+                  Built on Temporal distributed state machines, SHA-256 tamper-evident audit
+                  trails, and strict multi-tenant isolation, targeting the modelled
+                  ~$1,400/employee cost of identity fragmentation.
                 </p>
                 <p class="case-stack">
                   FastAPI · Next.js 15 · Temporal SDK · PostgreSQL 16 · Amazon EKS · ArgoCD · Terraform
@@ -599,8 +630,8 @@
               </div>
               <div class="case-result">
                 <strong>$240K/yr</strong>
-                <p>Net TCO recurring savings (66.7% cut for 500 emps)</p>
-                <small>Sub-5s de-provisioning · 509 passing tests · 89% ticket deflection</small>
+                <p>Modelled net TCO savings (66.7% for a 500-employee company)</p>
+                <small>Sub-5s de-provisioning · 509 passing tests · 89% modelled ticket deflection</small>
               </div>
             </div>
             <details>
@@ -635,12 +666,12 @@
               </ul>
             </details>
             <div class="case-bottom">
-              <a
-                href="case-studies/independent-products/index.html"
-                >Explore the architecture <span aria-hidden="true">↗</span></a
-              ><span>ENTERPRISE CASE STUDY</span>
+              <a href="case-studies/independent-products/index.html"
+                >View 2 case studies <span aria-hidden="true">↗</span></a
+              >
             </div>
           </article>
+          </div>
         </div>
       </section>
       <section id="why-me">
@@ -786,17 +817,17 @@
               <span class="ticker-dot"></span>
               <span class="ticker-text" id="closingTicker">10+ years in production cloud architecture</span>
             </div>
-            <p class="eyebrow">Let’s build what’s next</p>
-            <h2>A complex cloud challenge?<br />Let’s work through it.</h2>
+            <p class="eyebrow">Get in touch</p>
+            <h2>Questions about any<br />of this work?</h2>
             <p>
-              I’m interested in senior architecture and advisory opportunities
-              where reliability, governance, and cost discipline matter. Happy
-              to discuss your platform or go deeper on my work.
+              Happy to go deeper on any case study or learning path — the
+              architecture, the trade-offs, or the thinking behind it. Email or
+              LinkedIn is the quickest way to reach me.
             </p>
           </div>
           <div class="contact-actions">
             <a class="button" href="mailto:anupojuprudhvi@gmail.com"
-              >Start a conversation ↗</a
+              >Email me ↗</a
             ><a class="email" href="mailto:anupojuprudhvi@gmail.com"
               >anupojuprudhvi@gmail.com</a
             ><a
@@ -829,69 +860,9 @@
           rel="noopener noreferrer"
           title="Live uptime monitoring, running since September 2026"
           >Uptime status ↗</a
+        ><a href="privacy.html">Privacy</a
         ><a href="#top">Back to top ↑</a>
       </div>
     </footer>
-        <!-- Floating "3 Recent Case Studies" Launcher (Bottom-Left) -->
-    <button class="recent-launcher" id="recentLauncher" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="recentModal">
-      <span class="recent-launcher-dot" aria-hidden="true"><span class="recent-dot-pulse"></span></span>
-      <span>3 Recent Case Studies</span>
-      <kbd>R</kbd>
-    </button>
-
-    <!-- Recent Case Studies Modal Backdrop & Dialog Panel -->
-    <div class="recent-backdrop" id="recentBackdrop" hidden>
-      <div class="recent-panel" id="recentModal" role="dialog" aria-modal="true" aria-labelledby="recentTitle">
-        <button class="recent-close" id="recentClose" type="button" aria-label="Close">×</button>
-        <div class="recent-head">
-          <div class="recent-badge">✨ NEW &amp; FEATURED ARCHITECTURE</div>
-          <h2 id="recentTitle">3 Recent Case Studies</h2>
-          <p class="recent-note">
-            Flagship enterprise platforms, high-concurrency S3 migration tooling, and deterministic AI protocols engineered for real production constraints.
-          </p>
-        </div>
-        <div class="recent-body">
-          <ul class="recent-list">
-            <li class="recent-card-item">
-              <a href="case-studies/independent-products/nexuscore-ai-workforce-operating-system.html" class="recent-card-link">
-                <div class="recent-card-meta">
-                  <span class="recent-card-tag">Autonomous AI Platform</span>
-                  <span class="recent-card-badge">Latest</span>
-                </div>
-                <strong class="recent-card-title">NexusCore AI: Autonomous Workforce OS</strong>
-                <p class="recent-card-desc">Multi-agent topology, zero-trust sandbox execution &amp; real-time FinOps spend guardrails.</p>
-                <span class="recent-card-cta">Explore case study <span aria-hidden="true">→</span></span>
-              </a>
-            </li>
-            <li class="recent-card-item">
-              <a href="case-studies/tolling/s3-large-scale-bucket-migration.html" class="recent-card-link">
-                <div class="recent-card-meta">
-                  <span class="recent-card-tag">AWS Cloud Infrastructure</span>
-                  <span class="recent-card-badge">8h → 54m</span>
-                </div>
-                <strong class="recent-card-title">Tolling S3 Migration: 1.48M Objects</strong>
-                <p class="recent-card-desc">High-concurrency migration of 225 GB across 1.48M small objects using in-region EC2 + s5cmd with $0 compute overhead.</p>
-                <span class="recent-card-cta">Explore case study <span aria-hidden="true">→</span></span>
-              </a>
-            </li>
-            <li class="recent-card-item">
-              <a href="case-studies/independent-products/solo-saas-hardening-ai-agentic-engineering.html" class="recent-card-link">
-                <div class="recent-card-meta">
-                  <span class="recent-card-tag">AI-Agentic Engineering</span>
-                  <span class="recent-card-badge">10 Suites</span>
-                </div>
-                <strong class="recent-card-title">Solo SaaS Hardening: AI Protocols</strong>
-                <p class="recent-card-desc">Disciplined verification protocol with 10 automated test suites and strict pre-push checklists for agentic autonomy.</p>
-                <span class="recent-card-cta">Explore case study <span aria-hidden="true">→</span></span>
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class="recent-foot">
-          <span>Looking for a specific engagement?</span>
-          <a href="case-studies/index.html" class="recent-all-link">Browse all case studies &amp; filters →</a>
-        </div>
-      </div>
-    </div>
   </body>
 </html>

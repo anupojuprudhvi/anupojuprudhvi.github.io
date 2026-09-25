@@ -3,7 +3,7 @@ title: Automated sub-3-minute failover for enterprise mail infrastructure
 nav: Mail disaster recovery
 summary: An automated EC2 failover system for a single-instance enterprise mail platform, cutting recovery time from 4+ hours of manual recovery to under 3 minutes, paired with tiered S3 backups and DNS-authenticated delivery.
 project: enterprise-infrastructure
-layer: Resilience
+layer: Resilience & DR
 order: 30
 stack: [Zimbra, AWS EC2, AWS EBS, AWS S3, Bash, SPF/DKIM/DMARC]
 tags: [disaster-recovery, availability, email, automation]

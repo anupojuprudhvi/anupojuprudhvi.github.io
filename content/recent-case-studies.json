@@ -5,7 +5,7 @@
     "tag": "Autonomous AI Platform",
     "badge": "Latest",
     "title": "NexusCore AI: Autonomous Workforce OS",
-    "desc": "Multi-agent topology, zero-trust sandbox execution & real-time FinOps spend guardrails."
+    "desc": "Identity and Joiner-Mover-Leaver automation on durable Temporal sagas, with sub-5s de-provisioning and a policy assistant that cites its sources."
   },
   {
     "slug": "s3-large-scale-bucket-migration",

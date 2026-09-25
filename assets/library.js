@@ -56,6 +56,13 @@
         c.setAttribute("aria-pressed", String(c === chip)),
       );
       apply();
+      // Keep the address bar in sync so a filtered view can be shared.
+      try {
+        const url = new URL(location.href);
+        if (active === "all") url.searchParams.delete("filter");
+        else url.searchParams.set("filter", active);
+        history.replaceState(null, "", url);
+      } catch {}
     }),
   );
 

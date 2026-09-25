@@ -4,7 +4,7 @@ nav: Connected IoT cloud migration
 label: Target architecture
 heading: Translating monolithic telemetry backends into managed AWS cloud architectures
 project: partner-engagements
-layer: Architecture & Services
+layer: Migration & strategy
 order: 30
 stack: [AWS IoT Core, Amazon EKS, Amazon Kinesis, Aurora PostgreSQL, DynamoDB, AWS MAP]
 tags: [iot, telemetry, monolith-to-microservices, architecture, eks, kinesis, map]

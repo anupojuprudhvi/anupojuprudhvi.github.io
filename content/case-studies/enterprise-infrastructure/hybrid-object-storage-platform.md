@@ -3,7 +3,7 @@ title: Distributed S3-compatible storage spanning AWS, on-prem VMware, and OpenS
 nav: Hybrid object storage
 summary: A self-hosted distributed object storage layer unifying backups, ERP media, and mail archives across a public cloud, an on-prem data center, and a private OpenStack cloud behind one S3 API.
 project: enterprise-infrastructure
-layer: Platform
+layer: Data & storage
 order: 20
 stack: [MinIO, Docker Compose, Nginx, Restic, AWS S3 Glacier, Python, Boto3]
 tags: [storage, hybrid-cloud, backups, cost-optimization]

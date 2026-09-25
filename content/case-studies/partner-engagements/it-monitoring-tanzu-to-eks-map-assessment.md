@@ -4,7 +4,7 @@ nav: IT monitoring Tanzu to EKS MAP
 label: Kubernetes modernization
 heading: Assessing VMware Tanzu workloads, Dell VxRail footprints, and architecting Amazon EKS target states
 project: partner-engagements
-layer: Architecture & Kubernetes
+layer: Migration & strategy
 order: 25
 stack: [Amazon EKS, VMware Tanzu, Karpenter, AWS Transform, RVTools, Dell VxRail, AWS MAP]
 tags: [kubernetes, eks, tanzu, vmware, migration, map-assess, karpenter, finops]

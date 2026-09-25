@@ -3,7 +3,7 @@ title: Decoupled real-time analytics for clinical telemetry
 nav: Real-time clinical analytics
 summary: Streaming physiological telemetry into a real-time OLAP store so care teams can query months of patient vitals without touching the operational database.
 project: healthcare
-layer: Data engineering
+layer: Data & storage
 order: 20
 stack: [Apache NiFi, Apache Pinot, Tableau Server, mTLS]
 tags: [data-engineering, real-time-analytics, olap, streaming]

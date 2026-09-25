@@ -4,6 +4,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Container Delivery — Build, Tag, Push, Promote — Prudhvi Raj Anupoju</title>
     <meta name="description" content="A registry-to-cluster promotion workflow for EKS, and the one headless-authentication detail that only breaks once a human isn't the one typing the command." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/03-container-delivery-to-eks.html" />
@@ -52,7 +54,7 @@
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
         <a class="brand" href="../../index.html">Prudhvi Raj Anupoju</a>
-        <div class="navlinks">
+        <div class="navlinks" id="siteNavLinks">
           <a href="../../index.html#work">Selected work</a>
           <div class="nav-dropdown">
             <a href="../../case-studies/index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false"
@@ -115,8 +117,11 @@
             </div>
           </div>
           <a href="../../index.html#contact" class="nav-cta">Let's connect ↗</a>
-          <button id="themeToggle" aria-label="Switch to light theme">☼</button>
         </div>
+        <button id="themeToggle" type="button" aria-label="Switch to light theme">☼</button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNavLinks" aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
       </div>
     </nav>
     <main id="main">
@@ -145,7 +150,7 @@
 <h2>A consistent tag format is what makes promotion safe</h2>
 <p>Building an image is the easy part; the part that actually matters operationally is having a tagging convention that makes it unambiguous which exact artifact is running in which environment, and lets that same artifact be promoted forward without rebuilding it.</p>
 <p>A simple, effective convention is <code>&lt;environment&gt;&lt;major&gt;.&lt;minor&gt;.&lt;build-number&gt;</code> — for example <code>qa1.0.42</code> — so the tag itself tells you the environment it was built for and the build that produced it, without needing to cross-reference a separate build log.</p>
-<pre tabindex="0" class="code"><code class="language-text"># 1. Build the image locally
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># 1. Build the image locally
 docker build -t my-service:latest .
 
 # 2. Tag it for the target environment
@@ -156,7 +161,7 @@ docker push &lt;registry&gt;/my-service:qa1.0.42
 
 # 4. Promote the *same* artifact forward — retag, don't rebuild
 docker tag &lt;registry&gt;/my-service:qa1.0.42 &lt;registry&gt;/my-service:prod1.0.10
-docker push &lt;registry&gt;/my-service:prod1.0.10</code></pre>
+docker push &lt;registry&gt;/my-service:prod1.0.10</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <p>Retagging rather than rebuilding for promotion matters more than it looks: it guarantees the artifact that passed QA is bit-for-bit the same one that reaches Production, instead of trusting that rebuilding from the same commit produces an identical image.</p>
 </div>
 </section>
@@ -165,14 +170,14 @@ docker push &lt;registry&gt;/my-service:prod1.0.10</code></pre>
 <div class="section-eyebrow">The gotcha</div>
 <h2>Registry login fails specifically in headless CI/CD</h2>
 <p>A container registry's standard login flow is built around an interactive terminal session. That's invisible when you're testing the command by hand — it works fine — right up until the same command runs inside a headless CI/CD agent, where it fails with something like:</p>
-<pre tabindex="0" class="code"><code class="language-text">Error: Cannot perform an interactive login from a non-TTY device</code></pre>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">Error: Cannot perform an interactive login from a non-TTY device</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <h3>Fix</h3>
-<pre tabindex="0" class="code"><code class="language-text"># Interactive-only — breaks in a headless CI/CD runner:
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Interactive-only — breaks in a headless CI/CD runner:
 docker login -u AWS -p $(aws ecr get-login) &lt;registry&gt;
 
 # Headless-safe — pipes the token via stdin instead:
 aws ecr get-login-password --region &lt;region&gt; \
-  | docker login --username AWS --password-stdin &lt;registry&gt;</code></pre>
+  | docker login --username AWS --password-stdin &lt;registry&gt;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <p>The fix consumes a temporary authentication token through standard input rather than an interactive prompt, which is exactly what a non-interactive CI agent needs — no pseudo-terminal required. The reason this is worth calling out specifically: it's a class of bug that's invisible in local testing and only surfaces once the pipeline is actually wired up end-to-end in its real, headless environment, which is often later than you'd like to discover it.</p>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
@@ -196,7 +201,7 @@ aws ecr get-login-password --region &lt;region&gt; \
       </article>
       <div class="closing">
         <div class="wrap">
-          <h2>Want to discuss EKS ingress design or cluster operations?</h2>
+          <h2>Questions about this learning path?</h2>
           <p>
             I'm happy to dive deeper into any of these patterns — the ingress cost mechanics, RBAC design, or incident-triage workflow.
           </p>
@@ -213,6 +218,7 @@ aws ecr get-login-password --region &lt;region&gt; \
         <a href="../../case-studies/index.html">Case studies ↗</a>
         <a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a>
         <a href="../../index.html#work">Selected work ↗</a>
+        <a href="../../privacy.html">Privacy</a>
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>

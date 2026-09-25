@@ -3,7 +3,7 @@ title: One governed cloud foundation under 40+ accounts
 nav: Standardize the cloud
 label: Foundation
 project: tolling
-layer: Foundation
+layer: Foundation & governance
 order: 10
 stack: [Terraform, AWS Organizations, Transit Gateway, GitHub Actions]
 tags: [governance, networking, terraform, cicd, multi-account]

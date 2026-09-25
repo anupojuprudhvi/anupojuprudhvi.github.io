@@ -4,6 +4,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Day-2 Operations &amp; Incident Triage — Prudhvi Raj Anupoju</title>
     <meta name="description" content="Switching cluster context safely, verifying a rollout actually succeeded instead of assuming it did, and a repeatable sequence for triaging a stuck deployment." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/04-day-2-operations-and-incident-triage.html" />
@@ -52,7 +54,7 @@
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
         <a class="brand" href="../../index.html">Prudhvi Raj Anupoju</a>
-        <div class="navlinks">
+        <div class="navlinks" id="siteNavLinks">
           <a href="../../index.html#work">Selected work</a>
           <div class="nav-dropdown">
             <a href="../../case-studies/index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false"
@@ -115,8 +117,11 @@
             </div>
           </div>
           <a href="../../index.html#contact" class="nav-cta">Let's connect ↗</a>
-          <button id="themeToggle" aria-label="Switch to light theme">☼</button>
         </div>
+        <button id="themeToggle" type="button" aria-label="Switch to light theme">☼</button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNavLinks" aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
       </div>
     </nav>
     <main id="main">
@@ -144,7 +149,7 @@
 <div class="section-eyebrow">Principle</div>
 <h2>&quot;It deployed&quot; and &quot;it's healthy&quot; are different questions</h2>
 <p>A <code>kubectl apply</code> returning without error only confirms the manifest was accepted by the API server — not that the resulting pods came up healthy, passed their readiness checks, and are actually serving traffic. Treating those as the same thing is how a broken rollout goes unnoticed until a user reports it.</p>
-<pre tabindex="0" class="code"><code class="language-text"># Confirm the rollout actually finished, not just that it started
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Confirm the rollout actually finished, not just that it started
 kubectl rollout status deployment/&lt;name&gt; -n &lt;namespace&gt;
 
 # Check pod-level health, not just deployment-level status
@@ -152,7 +157,7 @@ kubectl get pods -n &lt;namespace&gt; -l app=&lt;name&gt;
 kubectl describe pod &lt;pod-name&gt; -n &lt;namespace&gt;
 
 # Tail logs from the specific pod that's misbehaving
-kubectl logs &lt;pod-name&gt; -n &lt;namespace&gt; --previous</code></pre>
+kubectl logs &lt;pod-name&gt; -n &lt;namespace&gt; --previous</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <p><code>kubectl rollout status</code> blocks until the rollout genuinely completes or fails, which makes it a better automation gate than treating <code>apply</code> as the finish line. <code>--previous</code> on <code>kubectl logs</code> matters specifically after a crash loop — it retrieves logs from the container's last run, not the fresh, log-empty restart that's currently in <code>CrashLoopBackOff</code>.</p>
 </div>
 </section>
@@ -175,12 +180,12 @@ kubectl logs &lt;pod-name&gt; -n &lt;namespace&gt; --previous</code></pre>
 <section>
 <div class="wrap">
 <h2>When to roll back versus roll forward</h2>
-<pre tabindex="0" class="code"><code class="language-text"># Roll back to the previous known-good revision
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Roll back to the previous known-good revision
 kubectl rollout undo deployment/&lt;name&gt; -n &lt;namespace&gt;
 
 # Roll back to a specific earlier revision
 kubectl rollout history deployment/&lt;name&gt; -n &lt;namespace&gt;
-kubectl rollout undo deployment/&lt;name&gt; -n &lt;namespace&gt; --to-revision=&lt;n&gt;</code></pre>
+kubectl rollout undo deployment/&lt;name&gt; -n &lt;namespace&gt; --to-revision=&lt;n&gt;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <p>Rolling back is the right call when the previous revision is known-good and restoring service matters more than root-causing immediately — which is most production incidents. Rolling forward with a fix is preferable when the previous revision has its own known issues, or when the fix is small, well-understood, and faster to ship than a rollback-then-redeploy cycle would be.</p>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
@@ -204,7 +209,7 @@ kubectl rollout undo deployment/&lt;name&gt; -n &lt;namespace&gt; --to-revision=
       </article>
       <div class="closing">
         <div class="wrap">
-          <h2>Want to discuss EKS ingress design or cluster operations?</h2>
+          <h2>Questions about this learning path?</h2>
           <p>
             I'm happy to dive deeper into any of these patterns — the ingress cost mechanics, RBAC design, or incident-triage workflow.
           </p>
@@ -221,6 +226,7 @@ kubectl rollout undo deployment/&lt;name&gt; -n &lt;namespace&gt; --to-revision=
         <a href="../../case-studies/index.html">Case studies ↗</a>
         <a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a>
         <a href="../../index.html#work">Selected work ↗</a>
+        <a href="../../privacy.html">Privacy</a>
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>

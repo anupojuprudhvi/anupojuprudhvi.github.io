@@ -3,7 +3,7 @@ title: Automating telecom failover, preserving licensed identity
 nav: Failover and licensing continuity
 label: High availability
 project: telecom
-layer: Resilience
+layer: Resilience & DR
 order: 20
 stack: [AWS Lambda, DynamoDB, CloudWatch, Systems Manager, EC2, Elastic Network Interfaces]
 tags: [failover, licensing, eni, recovery, orchestration]

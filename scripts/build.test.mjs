@@ -52,7 +52,11 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
         }
       }
     }
-    assert.equal(locations.length, initialIndex.length + initialProjects.length + 2 + initialLearningPathPages);
+    // Home, library, and privacy page, plus every study, overview, and learning-path page.
+    assert.equal(locations.length, initialIndex.length + initialProjects.length + 3 + initialLearningPathPages);
+    assert(locations.includes("https://anupojuprudhvi.github.io/privacy.html"));
+    assert(!locations.some((l) => l.endsWith("404.html")), "the 404 page must stay out of the sitemap");
+    assert.match(read("404.html"), /name="robots" content="noindex"/);
     assert.equal(new Set(locations).size, locations.length);
     assert(locations.includes("https://anupojuprudhvi.github.io/"));
     assert(locations.includes("https://anupojuprudhvi.github.io/case-studies/"));
@@ -75,13 +79,17 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
     succeeds();
 
     const source = "content/case-studies/telecom/second-study.md";
+    // Layers come from a fixed capability taxonomy; an unknown one fails loudly.
     fs.writeFileSync(file(source), "---\ntitle: Second & new study\nproject: telecom\nsummary: A new study.\nlayer: A new layer\norder: 15\n---\n\n## Architecture\n\nA test narrative.\n");
+    assert.match(run().stderr, /layer "A new layer" must be one of/);
+    fs.writeFileSync(file(source), "---\ntitle: Second & new study\nproject: telecom\nsummary: A new study.\nlayer: Operations & incidents\norder: 15\n---\n\n## Architecture\n\n| Step | Owner |\n| --- | --- |\n| Detect | On-call |\n\nA test narrative.\n");
     succeeds();
     const index = JSON.parse(read("assets/case-studies.json"));
     assert.equal(index.filter((item) => item.project === "telecom").length, initialIndex.filter((item) => item.project === "telecom").length + 1);
     assert.match(read("sitemap.xml"), /\/telecom\/second-study.html<\/loc>/);
     assert.match(read("case-studies/telecom/index.html"), /second-study.html/);
-    assert.match(read("case-studies/index.html"), /data-uc-filter="layer:A new layer"/);
+    assert.match(read("case-studies/index.html"), /data-uc-filter="layer:Operations &amp; incidents"/);
+    assert.match(read("case-studies/telecom/second-study.html"), /<table class="md-table">[\s\S]*<td data-label="Owner">On-call<\/td>/);
     assert.match(read("case-studies/telecom/second-study.html"), /Second &amp; new study/);
     assert.match(read("case-studies/telecom/second-study.html"), /aurora-global-database-modernization.html/);
     const originalStudy = read("case-studies/telecom/aurora-global-database-modernization.html");

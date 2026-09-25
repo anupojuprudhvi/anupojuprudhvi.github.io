@@ -3,7 +3,7 @@ title: HL7 device-interoperability engine for remote monitoring
 nav: HL7 device interoperability
 summary: A dedicated integration tier translating proprietary medical-IoT telemetry into standardized HL7 and JSON for clinical systems and a partner hospital network.
 project: healthcare
-layer: Integration
+layer: Applications & integration
 order: 10
 stack: [NextGen Mirth Connect, Nginx, MySQL, HL7 v2.5.1, TLS 1.2+]
 tags: [interoperability, hl7, healthcare-iot, integration-engineering]

@@ -379,10 +379,11 @@
     );
     msgFoot().innerHTML = `
       <div class="ask-field-row">
-        <input type="email" id="askMsgEmail" placeholder="you@company.com" autocomplete="email" />
+        <input type="email" id="askMsgEmail" placeholder="you@example.com" autocomplete="email" />
         <button class="ask-send" id="askMsgEmailNext" type="button">Next</button>
       </div>
-      <p class="ask-err" id="askMsgEmailErr" hidden>That doesn't look like a valid email.</p>`;
+      <p class="ask-err" id="askMsgEmailErr" hidden>That doesn't look like a valid email.</p>
+      <p class="ask-privacy">Used only to reply to you — see <a href="${siteRoot}privacy.html">privacy</a>.</p>`;
     const input = backdrop.querySelector("#askMsgEmail");
     const err = backdrop.querySelector("#askMsgEmailErr");
     const valid = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
@@ -406,12 +407,12 @@
   }
 
   async function askInterest() {
-    await botSay("What are you looking for?");
+    await botSay("What's it about?");
     msgFoot().innerHTML = `
       <div class="ask-chip-row" id="askInterestChips">
-        <button class="ask-chip" data-v="Advisory engagement">Advisory engagement</button>
-        <button class="ask-chip" data-v="Consulting / contract">Consulting / contract</button>
-        <button class="ask-chip" data-v="Full-time hire">Full-time hire</button>
+        <button class="ask-chip" data-v="A case study">A case study</button>
+        <button class="ask-chip" data-v="A learning path">A learning path</button>
+        <button class="ask-chip" data-v="Something else">Something else</button>
         <button class="ask-chip" data-v="Just saying hi">Just saying hi</button>
       </div>`;
     backdrop.querySelectorAll("#askInterestChips .ask-chip").forEach((chip) => {
@@ -430,7 +431,7 @@
     );
     msgFoot().innerHTML = `
       <div class="ask-field-row">
-        <textarea id="askMsgNote" rows="2" placeholder="e.g. migrating a legacy platform, timeline is Q1..."></textarea>
+        <textarea id="askMsgNote" rows="2" placeholder="e.g. a question about the S3 migration write-up"></textarea>
       </div>
       <div class="ask-foot-actions">
         <button class="ask-link-btn" id="askMsgSkip" type="button">Skip</button>
@@ -458,7 +459,7 @@
       <dl class="ask-recap">
         <dt>Name</dt><dd>${escape(msgState.name)}</dd>
         <dt>Email</dt><dd>${escape(msgState.email)}</dd>
-        <dt>Looking for</dt><dd>${escape(msgState.interest)}</dd>
+        <dt>Topic</dt><dd>${escape(msgState.interest)}</dd>
         ${msgState.note ? `<dt>Note</dt><dd>${escape(msgState.note)}</dd>` : ""}
       </dl>`);
     msgFoot().innerHTML = `
@@ -484,7 +485,7 @@
 
     const finishAsSent = async () => {
       await botSay(
-        `Sent — thanks, <b>${escape(msgState.name)}</b>. Expect a reply within a business day or two. You can also reach <b>anupojuprudhvi@gmail.com</b> directly anytime.`,
+        `Sent — thanks, <b>${escape(msgState.name)}</b>. I'll get back to you when I can. You can also reach <b>anupojuprudhvi@gmail.com</b> directly anytime.`,
       );
       clearMsgFoot();
       msgFoot().innerHTML = `<div class="ask-foot-actions"><span></span><button class="ask-link-btn" id="askMsgClose" type="button">Close</button></div>`;
@@ -515,7 +516,7 @@
           name: msgState.name,
           email: msgState.email,
           subject: `Portfolio contact — ${msgState.interest}`,
-          message: `Looking for: ${msgState.interest}${
+          message: `Topic: ${msgState.interest}${
             msgState.note ? `\n\nNote: ${msgState.note}` : ""
           }`,
           botcheck: false,

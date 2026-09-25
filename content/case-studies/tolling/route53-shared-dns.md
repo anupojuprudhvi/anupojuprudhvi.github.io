@@ -4,7 +4,7 @@ nav: Share DNS across environments
 label: DNS architecture
 heading: How one Route 53 design serves every environment
 project: tolling
-layer: Shared Services
+layer: Networking & security
 order: 90
 stack: [Amazon Route 53, Route 53 Resolver, VPC, Transit Gateway, Terraform]
 tags: [dns, route53, networking, multi-account, shared-services, terraform]

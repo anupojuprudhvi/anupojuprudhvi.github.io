@@ -4,7 +4,7 @@ nav: Upload and retrieve images
 label: Image handling
 heading: How a request actually reaches S3
 project: tolling
-layer: Applications
+layer: Applications & integration
 order: 100
 stack: [API Gateway, Amazon S3, Route 53, VPC endpoints, IAM, Terraform]
 tags: [storage, security, api, networking, dns, cost]

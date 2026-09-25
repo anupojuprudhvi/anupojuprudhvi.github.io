@@ -3,7 +3,7 @@ title: Modernizing a telecom database with a controlled cutover
 nav: Database migration and connection pooling
 label: Database modernization
 project: telecom
-layer: Data
+layer: Data & storage
 order: 10
 stack: [Aurora PostgreSQL, AWS DMS, PgBouncer, C client libraries, Terraform]
 tags: [database, migration, cdc, aurora, pgbouncer, performance]

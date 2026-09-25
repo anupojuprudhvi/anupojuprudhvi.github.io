@@ -116,6 +116,44 @@ function renderSection(sec) {
   return `<section>\n<div class="wrap">\n${head}${inner}\n</div>\n</section>`;
 }
 
+/** Fenced blocks wider than this (in characters) overflow a phone screen. */
+const WIDE_FENCE = 44;
+
+const isTableRow = (l) => /^\s*\|.*\|\s*$/.test(l);
+const isTableSeparator = (l) => /^\s*\|(\s*:?-{3,}:?\s*\|)+\s*$/.test(l);
+
+/** Split "| a | b \| c |" into ["a", "b | c"], honouring escaped pipes. */
+function splitRow(line) {
+  const cells = [];
+  let cell = "";
+  const inner = line.trim().replace(/^\|/, "").replace(/\|$/, "");
+  for (let k = 0; k < inner.length; k++) {
+    if (inner[k] === "\\" && inner[k + 1] === "|") {
+      cell += "|";
+      k++;
+    } else if (inner[k] === "|") {
+      cells.push(cell.trim());
+      cell = "";
+    } else cell += inner[k];
+  }
+  cells.push(cell.trim());
+  return cells;
+}
+
+function renderTable(header, align, rows) {
+  const style = (k) => (align[k] ? ` style="text-align:${align[k]}"` : "");
+  const head = header.map((h, k) => `<th scope="col"${style(k)}>${inline(h)}</th>`).join("");
+  const body = rows
+    .map(
+      (r) =>
+        `<tr>${header
+          .map((h, k) => `<td data-label="${esc(h.replace(/[`*]/g, ""))}"${style(k)}>${inline(r[k] ?? "")}</td>`)
+          .join("")}</tr>`,
+    )
+    .join("\n");
+  return `<div class="table-wrap"><table class="md-table">\n<thead><tr>${head}</tr></thead>\n<tbody>\n${body}\n</tbody>\n</table></div>`;
+}
+
 const VOID_TAGS = new Set([
   "area", "base", "br", "col", "embed", "hr", "img", "input",
   "link", "meta", "param", "source", "track", "wbr",
@@ -154,7 +192,33 @@ function renderBlocks(text) {
       }
       if (i < lines.length) i++; // consume the closing fence
       const lang = fence[1] ? ` class="language-${esc(fence[1])}"` : "";
-      out.push(`<pre class="code"><code${lang}>${esc(buf.join("\n"))}</code></pre>`);
+      const pre = `<pre class="code"><code${lang}>${esc(buf.join("\n"))}</code></pre>`;
+      // Wide diagrams can't reflow on a phone. Say so, instead of silently
+      // clipping the right-hand side (the hint is only shown on small screens).
+      const widest = Math.max(0, ...buf.map((l) => [...l].length));
+      out.push(
+        widest > WIDE_FENCE
+          ? `<figure class="wide-block">${pre}<figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>`
+          : pre,
+      );
+      continue;
+    }
+
+    // Pipe table: a header row, a separator row of dashes (with optional
+    // ":" alignment markers), then body rows. Rendered as a real <table> so
+    // it is accessible and can reflow on small screens.
+    if (isTableRow(line) && i + 1 < lines.length && isTableSeparator(lines[i + 1])) {
+      const header = splitRow(line);
+      const align = splitRow(lines[i + 1]).map((c) =>
+        c.startsWith(":") && c.endsWith(":") ? "center" : c.endsWith(":") ? "right" : "",
+      );
+      i += 2;
+      const rows = [];
+      while (i < lines.length && isTableRow(lines[i])) {
+        rows.push(splitRow(lines[i]));
+        i++;
+      }
+      out.push(renderTable(header, align, rows));
       continue;
     }
 
@@ -256,13 +320,16 @@ function renderBlocks(text) {
       continue;
     }
 
-    // paragraph
-    const buf = [];
+    // paragraph — always consumes the current line, so a stray "| … |"
+    // line that isn't a real table still renders as text instead of stalling.
+    const buf = [line.trim()];
+    i++;
     while (
       i < lines.length &&
       lines[i].trim() &&
       !isList(lines[i]) &&
       !isOrderedList(lines[i]) &&
+      !isTableRow(lines[i]) &&
       !/^#{2,3}\s/.test(lines[i]) &&
       !/^\s*</.test(lines[i])
     ) {

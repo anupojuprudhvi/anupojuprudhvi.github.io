@@ -4,18 +4,23 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>CI/CD delivery pipeline for a regulated healthcare platform — Prudhvi Raj Anupoju</title>
     <meta name="description" content="A GitFlow-to-Kubernetes pipeline with per-branch promotion gates, headless registry authentication, and deployment lead time cut from hours to minutes." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/case-studies/healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.html" />
     <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://anupojuprudhvi.github.io/case-studies/healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.html" />
     <meta property="og:title" content="CI/CD delivery pipeline for a regulated healthcare platform" />
     <meta property="og:description" content="A GitFlow-to-Kubernetes pipeline with per-branch promotion gates, headless registry authentication, and deployment lead time cut from hours to minutes." />
-    <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta property="og:image" content="https://anupojuprudhvi.github.io/assets/og/healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://anupojuprudhvi.github.io/assets/og/healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.jpg" />
     <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies" href="https://anupojuprudhvi.github.io/feed.xml" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Case studies","item":"https://anupojuprudhvi.github.io/case-studies/"},{"@type":"ListItem","position":3,"name":"Healthcare & Cost Architecture","item":"https://anupojuprudhvi.github.io/case-studies/healthcare/"},{"@type":"ListItem","position":4,"name":"Regulated CI/CD delivery","item":"https://anupojuprudhvi.github.io/case-studies/healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.html"}]}</script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -36,7 +41,7 @@
           "name": "Prudhvi Raj Anupoju"
         },
         "url": "https://anupojuprudhvi.github.io/case-studies/healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.html",
-        "image": "https://anupojuprudhvi.github.io/og-image.png",
+        "image": "https://anupojuprudhvi.github.io/assets/og/healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.jpg",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/case-studies/healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.html",
         "keywords": "ci-cd, devops, jenkins, delivery-engineering, Jenkins, Bitbucket, AWS ECR, Amazon EKS"
       }
@@ -52,7 +57,7 @@
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
         <a class="brand" href="../../index.html">Prudhvi Raj Anupoju</a>
-        <div class="navlinks">
+        <div class="navlinks" id="siteNavLinks">
           <a href="../../index.html#work">Selected work</a>
           <div class="nav-dropdown">
             <a href="../../case-studies/index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" aria-current="page"
@@ -115,8 +120,11 @@
             </div>
           </div>
           <a href="../../index.html#contact" class="nav-cta">Let's connect ↗</a>
-          <button id="themeToggle" aria-label="Switch to light theme">☼</button>
         </div>
+        <button id="themeToggle" type="button" aria-label="Switch to light theme">☼</button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNavLinks" aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
       </div>
     </nav>
     <main id="main">
@@ -134,12 +142,23 @@
             <div><b>Project</b><br />Healthcare &amp; Cost Architecture</div>
             <div><b>Role</b><br />CI/CD &amp; delivery engineering</div>
             <div><b>Scope</b><br />Multi-service Jenkins pipeline design and branch promotion policy</div>
-            <div><b>Layer</b><br />Delivery engineering</div>
+            <div><b>Capability</b><br />Platform &amp; delivery</div>
             <div><b>Stack</b><br />Jenkins · Bitbucket · AWS ECR · Amazon EKS</div>
             <div><b>Tags</b><br />ci-cd · devops · jenkins · delivery-engineering</div>
+            <div><b>Reading time</b><br />3 min</div>
           </div>
         </div>
       </header>
+<section class="key-results" aria-labelledby="keyResultsTitle">
+<div class="wrap">
+<h2 class="section-eyebrow" id="keyResultsTitle">Key results</h2>
+<div class="outcomes">
+<div class="outcome"><div class="num">4hrs → &lt;5min</div><div class="txt">Deployment lead time, from commit-ready build to running in the target environment</div></div>
+<div class="outcome"><div class="num">5</div><div class="txt">Independently deployable services on the same pipeline pattern</div></div>
+<div class="outcome"><div class="num">4</div><div class="txt">Promotion gates from a feature branch to a live production deployment</div></div>
+</div>
+</div>
+</section>
 
 <section>
 <div class="wrap">
@@ -152,7 +171,16 @@
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
 <h2>The branch determines the environment, the pipeline does the rest</h2>
-<p>| Branch | Target environment | Promotion trigger | | :--- | :--- | :--- | | <code>feature/*</code> | Local / dev sandbox | Developer commit, automated test suite | | <code>develop</code> | Development cluster | Pull request merge, peer review | | <code>qa</code> | QA cluster | Merge to QA branch, automated regression suite | | <code>staging</code> | Staging (pre-production) | Release-manager approval | | <code>live</code> | Production | Change-control sign-off, rolling update |</p>
+<div class="table-wrap"><table class="md-table">
+<thead><tr><th scope="col">Branch</th><th scope="col">Target environment</th><th scope="col">Promotion trigger</th></tr></thead>
+<tbody>
+<tr><td data-label="Branch"><code>feature/*</code></td><td data-label="Target environment">Local / dev sandbox</td><td data-label="Promotion trigger">Developer commit, automated test suite</td></tr>
+<tr><td data-label="Branch"><code>develop</code></td><td data-label="Target environment">Development cluster</td><td data-label="Promotion trigger">Pull request merge, peer review</td></tr>
+<tr><td data-label="Branch"><code>qa</code></td><td data-label="Target environment">QA cluster</td><td data-label="Promotion trigger">Merge to QA branch, automated regression suite</td></tr>
+<tr><td data-label="Branch"><code>staging</code></td><td data-label="Target environment">Staging (pre-production)</td><td data-label="Promotion trigger">Release-manager approval</td></tr>
+<tr><td data-label="Branch"><code>live</code></td><td data-label="Target environment">Production</td><td data-label="Promotion trigger">Change-control sign-off, rolling update</td></tr>
+</tbody>
+</table></div>
 <p>A commit's branch is the only input the pipeline needs to know where it's headed — there's no separate deployment ticket or manual environment selection, which removes an entire class of &quot;deployed to the wrong environment&quot; mistakes.</p>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
@@ -170,26 +198,15 @@
 <h2>Headless container-registry authentication</h2>
 <p>Jenkins agents run as headless, non-interactive processes, and the registry's standard login flow expected an interactive terminal — every pipeline run failed at the authentication stage with a &quot;cannot perform an interactive login from a non-TTY device&quot; error.</p>
 <h3>Fix</h3>
-<pre tabindex="0" class="code"><code class="language-text"># What failed (interactive-only):
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># What failed (interactive-only):
 docker login -u AWS -p $(aws ecr get-login) &lt;registry&gt;
 
 # What works headlessly:
 aws ecr get-login-password --region &lt;region&gt; \
-  | docker login --username AWS --password-stdin &lt;registry&gt;</code></pre>
+  | docker login --username AWS --password-stdin &lt;registry&gt;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <p>Piping the temporary authentication token directly into <code>docker login</code> over standard input avoids the interactive prompt entirely, letting a headless CI runner authenticate the same way a human would at a terminal — just without a terminal. This is a small, easy-to-miss detail that breaks registry authentication specifically in automated pipelines while working fine when tested by hand, which is exactly why it surfaced only after the pipeline was wired up end-to-end.</p>
 <h3>Result</h3>
 <p>Replacing the manual build-and-deploy process with this pipeline took deployment lead time — from a commit ready to ship, to that change running in its target environment — from roughly four hours down to under five minutes, while adding more approval structure to the path to production, not less.</p>
-</div>
-</section>
-<section>
-<div class="wrap">
-<div class="section-eyebrow">Outcome</div>
-<h2>What changed</h2>
-<div class="outcomes">
-<div class="outcome"><div class="num">4hrs → &lt;5min</div><div class="txt">Deployment lead time, from commit-ready build to running in the target environment</div></div>
-<div class="outcome"><div class="num">5</div><div class="txt">Independently deployable services on the same pipeline pattern</div></div>
-<div class="outcome"><div class="num">4</div><div class="txt">Promotion gates from a feature branch to a live production deployment</div></div>
-</div>
 </div>
 </section>
       <aside class="next-study wrap">
@@ -197,7 +214,7 @@ aws ecr get-login-password --region &lt;region&gt; \
       </aside>
       <div class="closing">
         <div class="wrap">
-          <h2>Want to talk through how this would apply to your environment?</h2>
+          <h2>Questions about this case study?</h2>
           <p>
             I'm happy to go deeper on the pipeline structure, the promotion policy, or the headless registry-authentication fix below.
           </p>
@@ -213,7 +230,8 @@ aws ecr get-login-password --region &lt;region&gt; \
         ><a href="../../learning-paths/index.html">Learning paths ↗</a
         ><a href="../../case-studies/index.html">Case studies ↗</a
         ><a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a
-        ><a href="../../index.html#work">Back to overview ↗</a>
+        ><a href="../../index.html#work">Back to overview ↗</a
+        ><a href="../../privacy.html">Privacy</a>
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>

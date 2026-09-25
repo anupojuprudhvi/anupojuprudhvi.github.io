@@ -4,7 +4,7 @@ nav: Trace an EKS ingress incident
 label: Incident response
 heading: How the ingress path was narrowed from edge request to pod
 project: tolling
-layer: Applications
+layer: Operations & incidents
 order: 40
 stack: [Amazon EKS, AWS Load Balancer Controller, Application Load Balancer, Route 53, CloudWatch]
 tags: [eks, kubernetes, ingress, incident-response, observability, networking]

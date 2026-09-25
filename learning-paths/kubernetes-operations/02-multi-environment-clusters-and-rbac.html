@@ -4,6 +4,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Multi-Environment Clusters &amp; IAM/RBAC — Prudhvi Raj Anupoju</title>
     <meta name="description" content="Isolating Dev, QA, Staging, and Production as separate clusters, and mapping IAM identities to Kubernetes RBAC via aws-auth, without a shared superuser." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/02-multi-environment-clusters-and-rbac.html" />
@@ -52,7 +54,7 @@
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
         <a class="brand" href="../../index.html">Prudhvi Raj Anupoju</a>
-        <div class="navlinks">
+        <div class="navlinks" id="siteNavLinks">
           <a href="../../index.html#work">Selected work</a>
           <div class="nav-dropdown">
             <a href="../../case-studies/index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false"
@@ -115,8 +117,11 @@
             </div>
           </div>
           <a href="../../index.html#contact" class="nav-cta">Let's connect ↗</a>
-          <button id="themeToggle" aria-label="Switch to light theme">☼</button>
         </div>
+        <button id="themeToggle" type="button" aria-label="Switch to light theme">☼</button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNavLinks" aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
       </div>
     </nav>
     <main id="main">
@@ -152,7 +157,7 @@
 <div class="section-eyebrow">Mechanism</div>
 <h2>IAM identities become Kubernetes identities through aws-auth</h2>
 <p>EKS doesn't have its own separate user database — cluster authentication is IAM authentication, and the <code>aws-auth</code> ConfigMap in <code>kube-system</code> is what maps an IAM role or user to a Kubernetes RBAC group.</p>
-<pre tabindex="0" class="code"><code class="language-yaml">apiVersion: v1
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml">apiVersion: v1
 kind: ConfigMap
 metadata:
   name: aws-auth
@@ -168,7 +173,7 @@ data:
     - userarn: arn:aws:iam::&lt;account-id&gt;:user/&lt;engineer-username&gt;
       username: &lt;engineer-username&gt;
       groups:
-        - system:masters</code></pre>
+        - system:masters</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
 <ul>
@@ -178,12 +183,12 @@ data:
 </ul>
 </details>
 <h3>Switching context safely between environments</h3>
-<pre tabindex="0" class="code"><code class="language-text"># Point kubectl at a specific cluster's context
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Point kubectl at a specific cluster's context
 aws eks --region &lt;region&gt; update-kubeconfig --name &lt;cluster-name&gt;
 
 # Confirm which cluster and namespace you're actually pointed at
 kubectl config current-context
-kubectl config set-context --current --namespace=&lt;namespace&gt;</code></pre>
+kubectl config set-context --current --namespace=&lt;namespace&gt;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <p>Running <code>kubectl config current-context</code> before any destructive or production-affecting command is a cheap habit that directly prevents the most common multi-cluster mistake: running a command intended for QA against Production because a terminal tab had the wrong context set from earlier in the day.</p>
 <h3>Trade-offs</h3>
 <p>Separate clusters per environment cost more than namespace isolation on one shared cluster — each has its own control plane and minimum node footprint. For a platform where a Development-cluster misconfiguration must never be able to reach Production data or traffic, that's a deliberate, defensible trade rather than an oversight; for lower-stakes workloads, namespace isolation on fewer clusters is a reasonable and cheaper alternative.</p>
@@ -201,7 +206,7 @@ kubectl config set-context --current --namespace=&lt;namespace&gt;</code></pre>
       </article>
       <div class="closing">
         <div class="wrap">
-          <h2>Want to discuss EKS ingress design or cluster operations?</h2>
+          <h2>Questions about this learning path?</h2>
           <p>
             I'm happy to dive deeper into any of these patterns — the ingress cost mechanics, RBAC design, or incident-triage workflow.
           </p>
@@ -218,6 +223,7 @@ kubectl config set-context --current --namespace=&lt;namespace&gt;</code></pre>
         <a href="../../case-studies/index.html">Case studies ↗</a>
         <a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a>
         <a href="../../index.html#work">Selected work ↗</a>
+        <a href="../../privacy.html">Privacy</a>
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>

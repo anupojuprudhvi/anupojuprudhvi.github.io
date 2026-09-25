@@ -4,24 +4,29 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>NexusCore AI — Autonomous Enterprise Workforce &amp; Identity Operating System — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="Unifying IAM, Joiner-Mover-Leaver (JML) lifecycle automation, attendance tracking, and deterministic policy intelligence into a sovereign, distributed platform — eliminating the $1,400/emp identity fragmentation tax with sub-5s de-provisioning." />
+    <meta name="description" content="Unifying IAM, Joiner-Mover-Leaver (JML) lifecycle automation, attendance tracking, and deterministic policy intelligence into a sovereign, distributed platform — targeting the modelled ~$1,400/employee cost of identity fragmentation, with sub-5s de-provisioning." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/case-studies/independent-products/nexuscore-ai-workforce-operating-system.html" />
     <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://anupojuprudhvi.github.io/case-studies/independent-products/nexuscore-ai-workforce-operating-system.html" />
     <meta property="og:title" content="NexusCore AI — Autonomous Enterprise Workforce &amp; Identity Operating System" />
-    <meta property="og:description" content="Unifying IAM, Joiner-Mover-Leaver (JML) lifecycle automation, attendance tracking, and deterministic policy intelligence into a sovereign, distributed platform — eliminating the $1,400/emp identity fragmentation tax with sub-5s de-provisioning." />
-    <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta property="og:description" content="Unifying IAM, Joiner-Mover-Leaver (JML) lifecycle automation, attendance tracking, and deterministic policy intelligence into a sovereign, distributed platform — targeting the modelled ~$1,400/employee cost of identity fragmentation, with sub-5s de-provisioning." />
+    <meta property="og:image" content="https://anupojuprudhvi.github.io/assets/og/independent-products/nexuscore-ai-workforce-operating-system.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://anupojuprudhvi.github.io/assets/og/independent-products/nexuscore-ai-workforce-operating-system.jpg" />
     <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies" href="https://anupojuprudhvi.github.io/feed.xml" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Case studies","item":"https://anupojuprudhvi.github.io/case-studies/"},{"@type":"ListItem","position":3,"name":"Independent Products & AI-Assisted Engineering","item":"https://anupojuprudhvi.github.io/case-studies/independent-products/"},{"@type":"ListItem","position":4,"name":"NexusCore AI Enterprise OS","item":"https://anupojuprudhvi.github.io/case-studies/independent-products/nexuscore-ai-workforce-operating-system.html"}]}</script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "NexusCore AI — Autonomous Enterprise Workforce & Identity Operating System",
-        "description": "Unifying IAM, Joiner-Mover-Leaver (JML) lifecycle automation, attendance tracking, and deterministic policy intelligence into a sovereign, distributed platform — eliminating the $1,400/emp identity fragmentation tax with sub-5s de-provisioning.",
+        "description": "Unifying IAM, Joiner-Mover-Leaver (JML) lifecycle automation, attendance tracking, and deterministic policy intelligence into a sovereign, distributed platform — targeting the modelled ~$1,400/employee cost of identity fragmentation, with sub-5s de-provisioning.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -36,7 +41,7 @@
           "name": "Prudhvi Raj Anupoju"
         },
         "url": "https://anupojuprudhvi.github.io/case-studies/independent-products/nexuscore-ai-workforce-operating-system.html",
-        "image": "https://anupojuprudhvi.github.io/og-image.png",
+        "image": "https://anupojuprudhvi.github.io/assets/og/independent-products/nexuscore-ai-workforce-operating-system.jpg",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/case-studies/independent-products/nexuscore-ai-workforce-operating-system.html",
         "keywords": "identity-governance, distributed-systems, agentic-ai, temporal, security, finops, kubernetes, FastAPI, Next.js 15, Temporal SDK, PostgreSQL 16, Amazon EKS, ArgoCD GitOps, External Secrets, Terraform"
       }
@@ -52,7 +57,7 @@
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
         <a class="brand" href="../../index.html">Prudhvi Raj Anupoju</a>
-        <div class="navlinks">
+        <div class="navlinks" id="siteNavLinks">
           <a href="../../index.html#work">Selected work</a>
           <div class="nav-dropdown">
             <a href="../../case-studies/index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" aria-current="page"
@@ -115,8 +120,11 @@
             </div>
           </div>
           <a href="../../index.html#contact" class="nav-cta">Let's connect ↗</a>
-          <button id="themeToggle" aria-label="Switch to light theme">☼</button>
         </div>
+        <button id="themeToggle" type="button" aria-label="Switch to light theme">☼</button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNavLinks" aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
       </div>
     </nav>
     <main id="main">
@@ -134,12 +142,24 @@
             <div><b>Project</b><br />Independent Products &amp; AI-Assisted Engineering</div>
             <div><b>Role</b><br />Enterprise Platform Architect &amp; Systems Engineer</div>
             <div><b>Scope</b><br />Monorepo-to-polyrepo microservices architecture, Temporal distributed state machines, deterministic Policy RAG engine, multi-tenant isolation, and Kubernetes GitOps</div>
-            <div><b>Layer</b><br />Enterprise Platform &amp; Distributed Systems</div>
+            <div><b>Capability</b><br />Product engineering</div>
             <div><b>Stack</b><br />FastAPI · Next.js 15 · Temporal SDK · PostgreSQL 16 · Amazon EKS · ArgoCD GitOps · External Secrets · Terraform</div>
             <div><b>Tags</b><br />identity-governance · distributed-systems · agentic-ai · temporal · security · finops · kubernetes</div>
+            <div><b>Reading time</b><br />10 min</div>
           </div>
         </div>
       </header>
+<section class="key-results" aria-labelledby="keyResultsTitle">
+<div class="wrap">
+<h2 class="section-eyebrow" id="keyResultsTitle">Key results</h2>
+<div class="outcomes">
+<div class="outcome"><div class="num">66.7%</div><div class="txt">Modelled net TCO reduction ($240,000/yr for a 500-employee company, 3.8-month payback) — a projection, not a measured result</div></div>
+<div class="outcome"><div class="num">&lt;5s</div><div class="txt">Automated Joiner-Mover-Leaver provisioning and 100% session de-provisioning with zero ghost credentials</div></div>
+<div class="outcome"><div class="num">509</div><div class="txt">Passing automated tests (340 API, 36 Worker, 17 AI, 80 Web Unit, 36 Browser E2E) across 5 continuous test suites</div></div>
+<div class="outcome"><div class="num">89%</div><div class="txt">Modelled IT helpdesk ticket deflection via self-service manager queues, sub-team access profiles, and grounded policy AI</div></div>
+</div>
+</div>
+</section>
 
 <section>
 <div class="wrap">
@@ -150,27 +170,19 @@
 <li><b>Identity Sprawl &amp; Zombie Licenses:</b> When employees change departments or leave, their cloud and SaaS access remains active for weeks. 12% to 18% of paid enterprise SaaS seats remain assigned to departed or moved staff, bleeding recurring software licensing budgets.</li>
 <li><b>Onboarding Productivity Drag:</b> New engineers and knowledge workers wait an average of 7.2 business days to receive full access to their department-specific tools, repositories, and cloud environments, resulting in substantial lost productivity.</li>
 <li><b>IT Helpdesk Overhead:</b> IT teams spend hundreds of hours manually processing repetitive Joiner, Mover, and Leaver (JML) tickets, resetting passwords, and chasing managers for routine leave and timesheet signoffs.</li>
-<li><b>Compliance Exposure &amp; SEC Rule 106 Liability:</b> Orphaned credentials and privilege creep create dangerous attack surfaces. Under SEC Rule 106, public and regulated companies face mandatory 4-day material cybersecurity incident disclosure rules. Manual spreadsheets and unversioned scripts fail external SOC 2 Type II and SOX audits.</li>
+<li><b>Compliance Exposure &amp; SEC Cybersecurity Disclosure:</b> Orphaned credentials and privilege creep create dangerous attack surfaces. Under the SEC's 2023 cybersecurity rules, public companies must disclose material incidents within four business days (Form 8-K Item 1.05) and describe their cyber-risk management (Regulation S-K Item 106). Manual spreadsheets and unversioned scripts fail external SOC 2 Type II and SOX audits.</li>
 </ol>
-<pre tabindex="0" class="code"><code class="language-text">┌─────────────────────────────────────────────────────────────────────────────────┐
-│                    THE $1,400 / EMPLOYEE HIDDEN ANNUAL TAX                     │
-├──────────────────────┬────────────────────────────────────┬─────────────────────┤
-│ Cost Driver          │ Enterprise Reality                 │ Annual Cost / Emp   │
-├──────────────────────┼────────────────────────────────────┼─────────────────────┤
-│ Zombie SaaS Seats    │ 12-18% of licenses remain assigned │ $420 / employee     │
-│                      │ to departed staff or unused roles  │                     │
-├──────────────────────┼────────────────────────────────────┼─────────────────────┤
-│ IT Ticket Overhead   │ 4.5 JML/access tickets per employee│ $380 / employee     │
-│                      │ per year ($85 fully burdened cost) │                     │
-├──────────────────────┼────────────────────────────────────┼─────────────────────┤
-│ Onboarding Drag      │ 7.2 business days until full new   │ $450 / employee     │
-│                      │ hire engineering productivity      │ (salary waste)      │
-├──────────────────────┼────────────────────────────────────┼─────────────────────┤
-│ Compliance Exposure  │ Audit prep, external sampling,     │ $150 / employee     │
-│                      │ and manual spreadsheet evidence    │                     │
-├──────────────────────┼────────────────────────────────────┼─────────────────────┤
-│ TOTAL HIDDEN TAX     │ Bleeding balance sheets annually   │ $1,400 / emp / yr   │
-└──────────────────────┴────────────────────────────────────┴─────────────────────┘</code></pre>
+<p><b>The $1,400 / Employee Hidden Annual Tax</b></p>
+<div class="table-wrap"><table class="md-table">
+<thead><tr><th scope="col">Cost Driver</th><th scope="col">Enterprise Reality</th><th scope="col">Annual Cost / Emp</th></tr></thead>
+<tbody>
+<tr><td data-label="Cost Driver">Zombie SaaS Seats</td><td data-label="Enterprise Reality">12-18% of licenses remain assigned to departed staff or unused roles</td><td data-label="Annual Cost / Emp">$420 / employee</td></tr>
+<tr><td data-label="Cost Driver">IT Ticket Overhead</td><td data-label="Enterprise Reality">4.5 JML/access tickets per employee per year ($85 fully burdened cost)</td><td data-label="Annual Cost / Emp">$380 / employee</td></tr>
+<tr><td data-label="Cost Driver">Onboarding Drag</td><td data-label="Enterprise Reality">7.2 business days until full new hire engineering productivity</td><td data-label="Annual Cost / Emp">$450 / employee (salary waste)</td></tr>
+<tr><td data-label="Cost Driver">Compliance Exposure</td><td data-label="Enterprise Reality">Audit prep, external sampling, and manual spreadsheet evidence</td><td data-label="Annual Cost / Emp">$150 / employee</td></tr>
+<tr><td data-label="Cost Driver">TOTAL HIDDEN TAX</td><td data-label="Enterprise Reality">Bleeding balance sheets annually</td><td data-label="Annual Cost / Emp">$1,400 / emp / yr</td></tr>
+</tbody>
+</table></div>
 </div>
 </section>
 <section>
@@ -178,7 +190,7 @@
 <div class="section-eyebrow">Architecture</div>
 <h2>Decoupled microservices, durable sagas, and GitOps delivery</h2>
 <p>NexusCore AI is architected as a high-availability, sovereign operating system. The platform was transitioned from a monolithic core into six specialized, decoupled repositories, enabling independent release cycles, containerization, and zero-downtime rollouts.</p>
-<pre tabindex="0" class="code"><code class="language-text">   [ Knowledge Workers / Line Managers / CxO Leadership ]
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">   [ Knowledge Workers / Line Managers / CxO Leadership ]
                            │ (HTTPS / TLS 1.3)
                            ▼
              [ AWS Application Load Balancer ]
@@ -211,7 +223,7 @@
              │   AWS EKS &amp; ArgoCD GitOps │
              │   External Secrets (ESO)  │
              │   Terraform 4-Layer IaC   │
-             └───────────────────────────┘</code></pre>
+             └───────────────────────────┘</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
 <ul>
@@ -228,27 +240,17 @@
 <div class="section-eyebrow">Competitor Comparison</div>
 <h2>Why NexusCore AI outperforms enterprise alternatives</h2>
 <p>NexusCore AI is purpose-built to eliminate the compromises of legacy point solutions, fragmented identity tools, and fragile homegrown scripts.</p>
-<pre tabindex="0" class="code"><code class="language-text">┌──────────────────┬──────────────────────┬──────────────────────┬──────────────────────┐
-│ Capability       │ NexusCore AI         │ Okta + Okta IGA      │ Workday / BambooHR   │
-├──────────────────┼──────────────────────┼──────────────────────┼──────────────────────┤
-│ Monthly Cost     │ $14 / user / month   │ $35 - $50 / user / mo│ $10 - $20 / user / mo│
-│                  │ (All-inclusive)      │ (Heavy add-on fees)  │ (HR only, no IAM)    │
-├──────────────────┼──────────────────────┼──────────────────────┼──────────────────────┤
-│ State Rollback   │ Guaranteed Temporal  │ No rollback guarantee│ N/A (Cannot touch    │
-│ Guarantee        │ compensating sagas   │ (Leaves ghost state) │ cloud infrastructure)│
-├──────────────────┼──────────────────────┼──────────────────────┼──────────────────────┤
-│ JML Deprovision  │ Sub-5 seconds        │ Multi-minute batch   │ Manual ticket to     │
-│ Speed            │ (Atomic revocation)  │ or manual triggers   │ IT engineering team  │
-├──────────────────┼──────────────────────┼──────────────────────┼──────────────────────┤
-│ Policy Intel     │ Grounded RAG with    │ None                 │ Static PDF files     │
-│ (Employee Wiki)  │ PDF page citations   │                      │ buried in drive      │
-├──────────────────┼──────────────────────┼──────────────────────┼──────────────────────┤
-│ Deployment       │ 14 days (or BYOC     │ 3 - 6 months         │ 6 - 12 months        │
-│ Timeline         │ Helm in private VPC) │ enterprise rollout   │ systems integration  │
-├──────────────────┼──────────────────────┼──────────────────────┼──────────────────────┤
-│ Sub-Team Tool    │ Granular profiles    │ Coarse group rules   │ Department title     │
-│ Bundling         │ (SecOps, DevOps, L2) │ (Broad assignments)  │ only (No SaaS maps)  │
-└──────────────────┴──────────────────────┴──────────────────────┴──────────────────────┘</code></pre>
+<div class="table-wrap"><table class="md-table">
+<thead><tr><th scope="col">Capability</th><th scope="col">NexusCore AI</th><th scope="col">Okta + Okta IGA</th><th scope="col">Workday / BambooHR</th></tr></thead>
+<tbody>
+<tr><td data-label="Capability">Monthly Cost</td><td data-label="NexusCore AI">$14 / user / month (All-inclusive)</td><td data-label="Okta + Okta IGA">$35 - $50 / user / mo (Heavy add-on fees)</td><td data-label="Workday / BambooHR">$10 - $20 / user / mo (HR only, no IAM)</td></tr>
+<tr><td data-label="Capability">State Rollback Guarantee</td><td data-label="NexusCore AI">Guaranteed Temporal compensating sagas</td><td data-label="Okta + Okta IGA">No rollback guarantee (Leaves ghost state)</td><td data-label="Workday / BambooHR">N/A (Cannot touch cloud infrastructure)</td></tr>
+<tr><td data-label="Capability">JML Deprovision Speed</td><td data-label="NexusCore AI">Sub-5 seconds (Atomic revocation)</td><td data-label="Okta + Okta IGA">Multi-minute batch or manual triggers</td><td data-label="Workday / BambooHR">Manual ticket to IT engineering team</td></tr>
+<tr><td data-label="Capability">Policy Intel (Employee Wiki)</td><td data-label="NexusCore AI">Grounded RAG with PDF page citations</td><td data-label="Okta + Okta IGA">None</td><td data-label="Workday / BambooHR">Static PDF files buried in drive</td></tr>
+<tr><td data-label="Capability">Deployment Timeline</td><td data-label="NexusCore AI">14 days (or BYOC Helm in private VPC)</td><td data-label="Okta + Okta IGA">3 - 6 months enterprise rollout</td><td data-label="Workday / BambooHR">6 - 12 months systems integration</td></tr>
+<tr><td data-label="Capability">Sub-Team Tool Bundling</td><td data-label="NexusCore AI">Granular profiles (SecOps, DevOps, L2)</td><td data-label="Okta + Okta IGA">Coarse group rules (Broad assignments)</td><td data-label="Workday / BambooHR">Department title only (No SaaS maps)</td></tr>
+</tbody>
+</table></div>
 <details class="implementation-notes">
 <summary>Detailed competitive battlecards</summary>
 <ul>
@@ -265,7 +267,7 @@
 <div class="section-eyebrow">Workflows</div>
 <h2>Durable Joiner-Mover-Leaver sagas with atomic rollback</h2>
 <p>At the core of NexusCore AI is a resilient distributed state engine powered by Temporal. Rather than executing fire-and-forget API requests, every employee lifecycle transition runs as an atomic, reversible multi-step saga.</p>
-<pre tabindex="0" class="code"><code class="language-text">  [ Admin / HR Triggers Onboarding ]
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">  [ Admin / HR Triggers Onboarding ]
                   │
                   ▼
   ┌──────────────────────────────────┐
@@ -289,7 +291,7 @@
   └─────────────────┬────────────────┘
                     │
                     ▼
-  [ Saga Status: COMPLETED in &lt;5s · Recorded in SHA-256 Tamper-Evident Ledger ]</code></pre>
+  [ Saga Status: COMPLETED in &lt;5s · Recorded in SHA-256 Tamper-Evident Ledger ]</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <details class="implementation-notes">
 <summary>Workflow capabilities</summary>
 <ul>
@@ -306,7 +308,7 @@
 <div class="section-eyebrow">AI Intelligence</div>
 <h2>Deterministic, zero-hallucination Policy RAG</h2>
 <p>Traditional large language models frequently hallucinate HR guidelines, guess incorrect expense limits, and leak confidential policies across organizational boundaries. NexusCore AI implements a grounded, deterministic Retrieval-Augmented Generation (RAG) architecture.</p>
-<pre tabindex="0" class="code"><code class="language-text">  [ Corporate Employee Handbook (PDF / Text) ]
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">  [ Corporate Employee Handbook (PDF / Text) ]
                        │
                        ▼
   ┌─────────────────────────────────────────┐
@@ -325,7 +327,7 @@
   ┌────────────────────────────────────────────────────────────────────────┐
   │ Grounded Synthesis: Verbatim answer with Clause Heading &amp; PDF Page Cit.│
   │ (Relevance score checked: If below confidence threshold, alerts HR)    │
-  └────────────────────────────────────────────────────────────────────────┘</code></pre>
+  └────────────────────────────────────────────────────────────────────────┘</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <details class="implementation-notes">
 <summary>Policy intelligence capabilities</summary>
 <ul>
@@ -343,8 +345,8 @@
 <div class="wrap">
 <div class="section-eyebrow">ROI Model</div>
 <h2>Financial impact for a 500-employee enterprise</h2>
-<p>NexusCore AI replaces five disconnected point subscriptions with a unified sovereign operating system, delivering hard-dollar savings within the first two quarters of adoption.</p>
-<pre tabindex="0" class="code"><code class="language-text">Legacy Disconnected Point Stack:
+<p>NexusCore AI replaces five disconnected point subscriptions with a unified sovereign operating system. The figures below are a modelled estimate built from list-price and staffing assumptions — a projection, not measured results from a deployment.</p>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">Legacy Disconnected Point Stack:
 ├── Okta SSO + Identity Governance ($25/user/mo)  : $150,000 / yr
 ├── Core HRIS (BambooHR / Workday) ($10/user/mo)  :  $60,000 / yr
 ├── Policy Wiki / Knowledge Hub ($5/user/mo)     :  $30,000 / yr
@@ -365,7 +367,7 @@ PERCENTAGE TCO BUDGET REDUCTION                  : 66.7% NET CUT
 PAYBACK PERIOD FROM SIGNATURE                     : 3.8 MONTHS
 ENGINEERING HOURS RECLAIMED                       : 1,800 HOURS / YR
 IT TICKET DEFLECTION                             : 89% REDUCTION
-==================================================================</code></pre>
+==================================================================</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <details class="implementation-notes">
 <summary>Quality &amp; test verification</summary>
 <ul>
@@ -375,27 +377,15 @@ IT TICKET DEFLECTION                             : 89% REDUCTION
 </details>
 </div>
 </section>
-<section>
-<div class="wrap">
-<div class="section-eyebrow">Outcome</div>
-<h2>What changed</h2>
-<div class="outcomes">
-<div class="outcome"><div class="num">66.7%</div><div class="txt">Net TCO budget reduction ($240,000/yr net recurring savings for a 500-employee enterprise with a 3.8-month payback)</div></div>
-<div class="outcome"><div class="num">&lt;5s</div><div class="txt">Automated Joiner-Mover-Leaver provisioning and 100% session de-provisioning with zero ghost credentials</div></div>
-<div class="outcome"><div class="num">509</div><div class="txt">Passing automated tests (340 API, 36 Worker, 17 AI, 80 Web Unit, 36 Browser E2E) across 5 continuous test suites</div></div>
-<div class="outcome"><div class="num">89%</div><div class="txt">IT helpdesk ticket deflection via self-service manager queues, sub-team access profiles, and grounded policy AI</div></div>
-</div>
-</div>
-</section>
       <aside class="next-study wrap">
         <a href="../../case-studies/index.html">← Case studies</a>
         <a href="../../case-studies/independent-products/solo-saas-hardening-ai-agentic-engineering.html">Solo SaaS hardening →</a>
       </aside>
       <div class="closing">
         <div class="wrap">
-          <h2>Want to talk through how this would apply to your environment?</h2>
+          <h2>Questions about this case study?</h2>
           <p>
-            Interested in discussing how an autonomous workforce and identity operating system eliminates SaaS sprawl, slashes onboarding time to seconds, and ensures ironclad audit compliance?
+            Happy to go deeper on the Temporal saga design, the policy-retrieval engine, or the multi-tenant isolation model.
           </p>
           <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
             >anupojuprudhvi@gmail.com</a
@@ -409,7 +399,8 @@ IT TICKET DEFLECTION                             : 89% REDUCTION
         ><a href="../../learning-paths/index.html">Learning paths ↗</a
         ><a href="../../case-studies/index.html">Case studies ↗</a
         ><a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a
-        ><a href="../../index.html#work">Back to overview ↗</a>
+        ><a href="../../index.html#work">Back to overview ↗</a
+        ><a href="../../privacy.html">Privacy</a>
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>

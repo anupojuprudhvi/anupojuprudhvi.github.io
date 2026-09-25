@@ -4,7 +4,7 @@ nav: Federate WorkSpaces with Entra
 label: Identity integration
 heading: How a corporate identity becomes a usable WorkSpaces session
 project: tolling
-layer: Shared Services
+layer: Networking & security
 order: 70
 stack: [Microsoft Entra ID, SAML 2.0, AWS IAM, Amazon WorkSpaces, AD Connector, Terraform]
 tags: [identity, sso, saml, workspaces, entra, active-directory, terraform]

@@ -4,6 +4,8 @@
     if (localStorage.getItem("theme") === "light") theme = "light";
   } catch {}
   document.documentElement.dataset.theme = theme;
+  // Lets CSS collapse the mobile menu only when this script can reopen it.
+  document.documentElement.classList.add("js");
   document.addEventListener("DOMContentLoaded", () => {
     const toggle = document.getElementById("themeToggle");
     const label = () => {
@@ -25,6 +27,26 @@
           localStorage.setItem("theme", next);
         } catch {}
         label();
+      });
+    }
+
+    // Mobile menu: the Menu button shows/hides the nav links on small screens.
+    const menuButton = document.querySelector(".nav-toggle");
+    const menu = menuButton && document.getElementById(menuButton.getAttribute("aria-controls"));
+    const setMenu = (open) => {
+      if (!menuButton || !menu) return;
+      menu.classList.toggle("is-open", open);
+      menuButton.setAttribute("aria-expanded", String(open));
+      menuButton.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    };
+    if (menuButton && menu) {
+      menuButton.addEventListener("click", () =>
+        setMenu(menuButton.getAttribute("aria-expanded") !== "true"),
+      );
+      // Following an in-page link (e.g. #work) should close the menu.
+      menu.addEventListener("click", (e) => {
+        const link = e.target.closest("a[href]");
+        if (link && !link.classList.contains("nav-dropdown-trigger")) setMenu(false);
       });
     }
 
@@ -54,6 +76,10 @@
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
+        if (menuButton?.getAttribute("aria-expanded") === "true") {
+          setMenu(false);
+          menuButton.focus();
+        }
         document.querySelectorAll(".nav-dropdown.is-open").forEach((d) => {
           d.classList.remove("is-open");
           d.querySelector(".nav-dropdown-trigger")?.setAttribute(

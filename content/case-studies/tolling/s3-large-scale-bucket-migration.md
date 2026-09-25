@@ -4,7 +4,7 @@ nav: S3 migration at scale
 label: Storage operations
 heading: High-concurrency S3 migration for small objects
 project: tolling
-layer: Operations
+layer: Data & storage
 order: 105
 stack: [Amazon S3, AWS CLI, s5cmd, Amazon EC2, AWS Data Pipeline, Bash]
 tags: [s3, migration, performance, storage, concurrency, cost, aws]
@@ -51,27 +51,12 @@ However, the dataset in this migration consisted of **1.48 million small objects
 
 Four distinct approaches were evaluated to balance migration runtime, infrastructure cost, and operational complexity:
 
-```text
-┌──────────────────────┬──────────────────────┬──────────────────────┐
-│ Approach             │ Pros                 │ Cons / Verdict       │
-├──────────────────────┼──────────────────────┼──────────────────────┤
-│ 1. Standard          │ Built into AWS CLI;  │ 8+ hour runtime;     │
-│    aws s3 sync       │ zero new tooling     │ Rejected (Too slow)  │
-├──────────────────────┼──────────────────────┼──────────────────────┤
-│ 2. AWS Data Pipeline │ Native managed tool; │ EMR cluster overhead │
-│    (EMR / S3DistCp)  │ distributed copy     │ (15m bootstrap lag); │
-│                      │ across workers       │ added EMR/EC2 fees;  │
-│                      │                      │ overkill for 225 GB  │
-├──────────────────────┼──────────────────────┼──────────────────────┤
-│ 3. Dedicated Large   │ Isolated compute;    │ Unnecessary cost and │
-│    EC2 / DataSync    │ high network pipe    │ agent provisioning   │
-│                      │                      │ for a one-off task   │
-├──────────────────────┼──────────────────────┼──────────────────────┤
-│ 4. In-Region EC2 +   │ Zero extra infra;    │ Selected             │
-│    High-Concurrency  │ ~9x faster;          │ (54 min runtime,     │
-│    Tooling (s5cmd)   │ zero egress fees     │ zero added cost)     │
-└──────────────────────┴──────────────────────┴──────────────────────┘
-```
+| Approach | Pros | Cons / Verdict |
+| --- | --- | --- |
+| 1. Standard `aws s3 sync` | Built into AWS CLI; zero new tooling | 8+ hour runtime; Rejected (Too slow) |
+| 2. AWS Data Pipeline (EMR / S3DistCp) | Native managed tool; distributed copy across workers | EMR cluster overhead (15m bootstrap lag); added EMR/EC2 fees; overkill for 225 GB |
+| 3. Dedicated Large EC2 / DataSync | Isolated compute; high network pipe | Unnecessary cost and agent provisioning for a one-off task |
+| 4. In-Region EC2 + High-Concurrency Tooling (s5cmd) | Zero extra infra; ~9x faster; zero egress fees | Selected (54 min runtime, zero added cost) |
 
 ### Why AWS Data Pipeline was rejected
 

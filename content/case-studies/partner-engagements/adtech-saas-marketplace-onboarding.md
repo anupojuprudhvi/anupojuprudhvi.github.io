@@ -4,7 +4,7 @@ nav: AdTech SaaS marketplace onboarding
 label: Marketplace architecture
 heading: Engineering cloud marketplace integration, automated onboarding, and multi-cloud commercialization
 project: partner-engagements
-layer: Architecture & Delivery
+layer: Applications & integration
 order: 40
 stack: [Google Cloud Marketplace, AWS, SaaS Integration, Webhooks, API Gateway, Cloud Functions]
 tags: [marketplace, saas, multi-cloud, adtech, commercialization, integration]

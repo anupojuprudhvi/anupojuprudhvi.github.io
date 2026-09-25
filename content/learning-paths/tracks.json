@@ -8,7 +8,7 @@
     "duration": "6 Modules · 45 min read",
     "badge": "Production Playbook",
     "stack": ["Terraform 1.5+", "AWS", "HCL", "Checkov", "TFLint", "S3 & DynamoDB"],
-    "closingQuestion": "Want to discuss enterprise Terraform architecture?",
+    "closingQuestion": "Questions about this learning path?",
     "closingBody": "I'm happy to dive deeper into any of these patterns — module abstraction trade-offs, state migration runbooks, or CI/CD security scanning."
   },
   {
@@ -20,7 +20,7 @@
     "duration": "6 Modules · 50 min read",
     "badge": "Delivery Playbook",
     "stack": ["AWS MAP", "AWS Transform", "RVTools", "TCO Modeling", "Landing Zone", "Well-Architected", "Amazon EKS"],
-    "closingQuestion": "Want to discuss an enterprise migration or TCO model?",
+    "closingQuestion": "Questions about this learning path?",
     "closingBody": "I'm happy to dive deeper into any of these patterns — assessment scoping, financial modeling, or Mobilize wave sequencing."
   },
   {
@@ -32,7 +32,7 @@
     "duration": "4 Modules · 30 min read",
     "badge": "Operations Playbook",
     "stack": ["Amazon EKS", "Kubernetes", "AWS Load Balancer Controller", "Nginx Ingress", "AWS ECR"],
-    "closingQuestion": "Want to discuss EKS ingress design or cluster operations?",
+    "closingQuestion": "Questions about this learning path?",
     "closingBody": "I'm happy to dive deeper into any of these patterns — the ingress cost mechanics, RBAC design, or incident-triage workflow."
   }
 ]

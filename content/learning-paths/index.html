@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {{headSecurity}}
     <title>Learning Paths & Playbooks — Prudhvi Raj Anupoju</title>
     <meta
       name="description"
@@ -33,43 +34,7 @@
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <nav class="topnav" aria-label="Main navigation">
-      <div class="wrap nav-inner">
-        <a class="brand" href="../index.html">Prudhvi Raj Anupoju</a>
-        <div class="navlinks">
-          <a href="../index.html#work">Selected work</a>
-          {{caseStudiesNav}}
-          <div class="nav-dropdown">
-            <a href="index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" aria-current="page"
-              >Learning paths <span class="nav-arrow" aria-hidden="true">▾</span></a
-            >
-            <div class="nav-dropdown-menu" role="menu">
-              <a href="index.html" role="menuitem" class="nav-dropdown-item">
-                <strong>All Learning Paths</strong>
-                <small>Curriculum overview &amp; tracks</small>
-              </a>
-              <div class="nav-dropdown-divider" role="separator"></div>
-              <a href="terraform/index.html" role="menuitem" class="nav-dropdown-item">
-                <strong>Terraform for Enterprise</strong>
-                <small>6 Modules · Modules, State &amp; CI/CD</small>
-              </a>
-              <a href="migration-journey/index.html" role="menuitem" class="nav-dropdown-item">
-                <strong>Cloud Migration Journey</strong>
-                <small>6 Modules · Assess, Mobilize &amp; Modernize</small>
-              </a>
-              <a href="kubernetes-operations/index.html" role="menuitem" class="nav-dropdown-item">
-                <strong>Kubernetes Ingress &amp; Operations on EKS</strong>
-                <small>4 Modules · Ingress, RBAC &amp; Day-2 Ops</small>
-              </a>
-            </div>
-          </div>
-          <a href="../index.html#contact" class="nav-cta">Let's connect ↗</a
-          ><button id="themeToggle" aria-label="Switch to light theme">
-            ☼
-          </button>
-        </div>
-      </div>
-    </nav>
+{{siteNav}}
     <main id="main">
       <header class="lp-hero">
         <div class="wrap">
@@ -82,8 +47,9 @@
           </p>
         </div>
       </header>
-      <section class="lp-content">
+      <section class="lp-content" aria-labelledby="lpTracksTitle">
         <div class="wrap">
+          <h2 class="visually-hidden" id="lpTracksTitle">Learning path tracks</h2>
           <div class="lp-tracks-grid">
             <article class="case">
               <div class="case-grid">
@@ -178,7 +144,8 @@
         <span>© 2026 Prudhvi Raj Anupoju</span
         ><a href="../case-studies/index.html">Case studies ↗</a
         ><a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a
-        ><a href="../index.html#work">Selected work ↗</a>
+        ><a href="../index.html#work">Selected work ↗</a
+        ><a href="../privacy.html">Privacy</a>
       </div>
     </footer>
     <script src="../assets/assistant.js" defer></script>

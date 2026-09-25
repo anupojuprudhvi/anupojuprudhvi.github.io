@@ -3,7 +3,7 @@ title: Making telecom node provisioning repeatable
 nav: Repeatable platform delivery
 label: Platform engineering
 project: telecom
-layer: Platform
+layer: Platform & delivery
 order: 40
 stack: [Bash, AWS Systems Manager, systemd, Linux, Postfix]
 tags: [automation, provisioning, configuration, service-discovery, deployment]

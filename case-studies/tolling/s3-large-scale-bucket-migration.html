@@ -4,18 +4,23 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Moving 1.48 million S3 objects in 54 minutes instead of 8+ hours — Prudhvi Raj Anupoju</title>
     <meta name="description" content="Moving 225 GB of data across 1.48 million small objects between same-region S3 buckets, cutting transfer time from 8+ hours to 54 minutes using high-concurrency tooling on existing in-region compute." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/case-studies/tolling/s3-large-scale-bucket-migration.html" />
     <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://anupojuprudhvi.github.io/case-studies/tolling/s3-large-scale-bucket-migration.html" />
     <meta property="og:title" content="Moving 1.48 million S3 objects in 54 minutes instead of 8+ hours" />
     <meta property="og:description" content="Moving 225 GB of data across 1.48 million small objects between same-region S3 buckets, cutting transfer time from 8+ hours to 54 minutes using high-concurrency tooling on existing in-region compute." />
-    <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta property="og:image" content="https://anupojuprudhvi.github.io/assets/og/tolling/s3-large-scale-bucket-migration.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://anupojuprudhvi.github.io/assets/og/tolling/s3-large-scale-bucket-migration.jpg" />
     <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies" href="https://anupojuprudhvi.github.io/feed.xml" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Case studies","item":"https://anupojuprudhvi.github.io/case-studies/"},{"@type":"ListItem","position":3,"name":"Tolling Infrastructure","item":"https://anupojuprudhvi.github.io/case-studies/tolling/"},{"@type":"ListItem","position":4,"name":"S3 migration at scale","item":"https://anupojuprudhvi.github.io/case-studies/tolling/s3-large-scale-bucket-migration.html"}]}</script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -36,7 +41,7 @@
           "name": "Prudhvi Raj Anupoju"
         },
         "url": "https://anupojuprudhvi.github.io/case-studies/tolling/s3-large-scale-bucket-migration.html",
-        "image": "https://anupojuprudhvi.github.io/og-image.png",
+        "image": "https://anupojuprudhvi.github.io/assets/og/tolling/s3-large-scale-bucket-migration.jpg",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/case-studies/tolling/s3-large-scale-bucket-migration.html",
         "keywords": "s3, migration, performance, storage, concurrency, cost, aws, Amazon S3, AWS CLI, s5cmd, Amazon EC2, AWS Data Pipeline, Bash"
       }
@@ -52,7 +57,7 @@
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
         <a class="brand" href="../../index.html">Prudhvi Raj Anupoju</a>
-        <div class="navlinks">
+        <div class="navlinks" id="siteNavLinks">
           <a href="../../index.html#work">Selected work</a>
           <div class="nav-dropdown">
             <a href="../../case-studies/index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" aria-current="page"
@@ -115,8 +120,11 @@
             </div>
           </div>
           <a href="../../index.html#contact" class="nav-cta">Let's connect ↗</a>
-          <button id="themeToggle" aria-label="Switch to light theme">☼</button>
         </div>
+        <button id="themeToggle" type="button" aria-label="Switch to light theme">☼</button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNavLinks" aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
       </div>
     </nav>
     <main id="main">
@@ -132,12 +140,23 @@
           <p class="sub">Moving 225 GB of data across 1.48 million small objects between same-region S3 buckets, cutting transfer time from 8+ hours to 54 minutes using high-concurrency tooling on existing in-region compute.</p>
           <div class="meta">
             <div><b>Project</b><br />Tolling Infrastructure</div>
-            <div><b>Layer</b><br />Operations</div>
+            <div><b>Capability</b><br />Data &amp; storage</div>
             <div><b>Stack</b><br />Amazon S3 · AWS CLI · s5cmd · Amazon EC2 · AWS Data Pipeline · Bash</div>
             <div><b>Tags</b><br />s3 · migration · performance · storage · concurrency · cost · aws</div>
+            <div><b>Reading time</b><br />4 min</div>
           </div>
         </div>
       </header>
+<section class="key-results" aria-labelledby="keyResultsTitle">
+<div class="wrap">
+<h2 class="section-eyebrow" id="keyResultsTitle">Key results</h2>
+<div class="outcomes">
+<div class="outcome"><div class="num">54 min</div><div class="txt">Total migration time for 1.48M objects, down from an estimated 8+ hours (~9x speedup)</div></div>
+<div class="outcome"><div class="num">Zero</div><div class="txt">Additional infrastructure charges by utilizing an existing in-region EC2 instance</div></div>
+<div class="outcome"><div class="num">100%</div><div class="txt">Parity verified across all 1.48 million object counts and checksums with zero transfer errors</div></div>
+</div>
+</div>
+</section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Storage operations</div>
@@ -204,25 +223,15 @@
 <div class="section-eyebrow">Alternatives</div>
 <h2>Evaluating migration paths</h2>
 <p>Four distinct approaches were evaluated to balance migration runtime, infrastructure cost, and operational complexity:</p>
-<pre tabindex="0" class="code"><code class="language-text">┌──────────────────────┬──────────────────────┬──────────────────────┐
-│ Approach             │ Pros                 │ Cons / Verdict       │
-├──────────────────────┼──────────────────────┼──────────────────────┤
-│ 1. Standard          │ Built into AWS CLI;  │ 8+ hour runtime;     │
-│    aws s3 sync       │ zero new tooling     │ Rejected (Too slow)  │
-├──────────────────────┼──────────────────────┼──────────────────────┤
-│ 2. AWS Data Pipeline │ Native managed tool; │ EMR cluster overhead │
-│    (EMR / S3DistCp)  │ distributed copy     │ (15m bootstrap lag); │
-│                      │ across workers       │ added EMR/EC2 fees;  │
-│                      │                      │ overkill for 225 GB  │
-├──────────────────────┼──────────────────────┼──────────────────────┤
-│ 3. Dedicated Large   │ Isolated compute;    │ Unnecessary cost and │
-│    EC2 / DataSync    │ high network pipe    │ agent provisioning   │
-│                      │                      │ for a one-off task   │
-├──────────────────────┼──────────────────────┼──────────────────────┤
-│ 4. In-Region EC2 +   │ Zero extra infra;    │ Selected             │
-│    High-Concurrency  │ ~9x faster;          │ (54 min runtime,     │
-│    Tooling (s5cmd)   │ zero egress fees     │ zero added cost)     │
-└──────────────────────┴──────────────────────┴──────────────────────┘</code></pre>
+<div class="table-wrap"><table class="md-table">
+<thead><tr><th scope="col">Approach</th><th scope="col">Pros</th><th scope="col">Cons / Verdict</th></tr></thead>
+<tbody>
+<tr><td data-label="Approach">1. Standard <code>aws s3 sync</code></td><td data-label="Pros">Built into AWS CLI; zero new tooling</td><td data-label="Cons / Verdict">8+ hour runtime; Rejected (Too slow)</td></tr>
+<tr><td data-label="Approach">2. AWS Data Pipeline (EMR / S3DistCp)</td><td data-label="Pros">Native managed tool; distributed copy across workers</td><td data-label="Cons / Verdict">EMR cluster overhead (15m bootstrap lag); added EMR/EC2 fees; overkill for 225 GB</td></tr>
+<tr><td data-label="Approach">3. Dedicated Large EC2 / DataSync</td><td data-label="Pros">Isolated compute; high network pipe</td><td data-label="Cons / Verdict">Unnecessary cost and agent provisioning for a one-off task</td></tr>
+<tr><td data-label="Approach">4. In-Region EC2 + High-Concurrency Tooling (s5cmd)</td><td data-label="Pros">Zero extra infra; ~9x faster; zero egress fees</td><td data-label="Cons / Verdict">Selected (54 min runtime, zero added cost)</td></tr>
+</tbody>
+</table></div>
 <h3>Why AWS Data Pipeline was rejected</h3>
 <p>AWS Data Pipeline offers a managed S3-to-S3 copy template, but it operates by provisioning an on-demand <b>Amazon EMR (Elastic MapReduce)</b> cluster running <code>S3DistCp</code> under the hood. While effective for petabyte-scale migrations, it introduced significant friction for this workload:</p>
 <ul>
@@ -238,7 +247,7 @@
 <div class="section-eyebrow">Execution</div>
 <h2>S5cmd and 128 concurrent workers</h2>
 <p>The tool of choice was <b><code>s5cmd</code></b>, a high-performance S3 client written in Go. Unlike standard CLI implementations, <code>s5cmd</code> uses lightweight goroutines to issue deeply pipelined, concurrent S3 API calls.</p>
-<pre tabindex="0" class="code"><code class="language-text">       Source S3 Bucket                      Destination S3 Bucket
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">       Source S3 Bucket                      Destination S3 Bucket
       [ 1.48M Small Objects ]                [ Target Bucket ]
                  │                                   ▲
                  │ GET (128 Streams)                 │ PUT (128 Streams)
@@ -248,7 +257,7 @@
       │         Tool: s5cmd (Go-based parallel client)            │
       │         Workers: 128 concurrent goroutines                │
       │         Network: Intracloud same-region VPC endpoint      │
-      └───────────────────────────────────────────────────────────┘</code></pre>
+      └───────────────────────────────────────────────────────────┘</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <details class="implementation-notes">
 <summary>Execution details</summary>
 <ul>
@@ -279,26 +288,15 @@
 <p>A simple change in tooling — moving from serial CLI processes to a parallel Go-based client on existing in-region compute — eliminated an 8-hour operational bottleneck in under an hour, with zero added infrastructure spend.</p>
 </div>
 </section>
-<section>
-<div class="wrap">
-<div class="section-eyebrow">Outcome</div>
-<h2>What changed</h2>
-<div class="outcomes">
-<div class="outcome"><div class="num">54 min</div><div class="txt">Total migration time for 1.48M objects, down from an estimated 8+ hours (~9x speedup)</div></div>
-<div class="outcome"><div class="num">Zero</div><div class="txt">Additional infrastructure charges by utilizing an existing in-region EC2 instance</div></div>
-<div class="outcome"><div class="num">100%</div><div class="txt">Parity verified across all 1.48 million object counts and checksums with zero transfer errors</div></div>
-</div>
-</div>
-</section>
       <aside class="next-study wrap">
         <a href="../../case-studies/tolling/s3-image-api.html">← Upload and retrieve images</a>
       </aside>
       <div class="closing">
         <div class="wrap">
-          <h2>Want to talk through how this would apply to your environment?</h2>
+          <h2>Questions about this case study?</h2>
           <p>
-            I'm happy to go deeper on any part of this — the architecture, the
-            trade-offs, or how it would adapt to a different environment.
+            Happy to go deeper on any part of this — the architecture, the
+            trade-offs, or the decisions behind it.
           </p>
           <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
             >anupojuprudhvi@gmail.com</a
@@ -312,7 +310,8 @@
         ><a href="../../learning-paths/index.html">Learning paths ↗</a
         ><a href="../../case-studies/index.html">Case studies ↗</a
         ><a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a
-        ><a href="../../index.html#work">Back to overview ↗</a>
+        ><a href="../../index.html#work">Back to overview ↗</a
+        ><a href="../../privacy.html">Privacy</a>
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>

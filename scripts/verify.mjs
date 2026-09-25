@@ -26,6 +26,7 @@ try {
   await verifySearch(browser, base);
   const pages = [
     "index.html",
+    "privacy.html",
     ...fs
       .readdirSync(path.join(root, "case-studies"), { recursive: true })
       .filter((p) => p.endsWith(".html"))
@@ -87,6 +88,9 @@ try {
     );
     const page = await context.newPage();
     page.on("pageerror", (e) => errors.push(`${file}: ${e.message}`));
+    page.on("console", (m) => {
+      if (/Content Security Policy/i.test(m.text())) errors.push(`${file} CSP: ${m.text()}`);
+    });
     page.on("response", (r) => {
       if (r.status() >= 400) errors.push(`${r.status()} ${r.url()}`);
     });
@@ -226,6 +230,30 @@ try {
   await page.reload();
   assert.equal(await page.locator("html").getAttribute("data-theme"), "light");
   await context.close();
+  // Mobile menu: collapsed by default, opens from the Menu button, closes on Escape.
+  const mobile = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const phone = await mobile.newPage();
+  await phone.goto(base);
+  assert.equal(await phone.locator("#siteNavLinks").isVisible(), false, "menu starts collapsed on phones");
+  await phone.getByRole("button", { name: "Open menu" }).click();
+  assert.equal(await phone.locator("#siteNavLinks").isVisible(), true);
+  assert.equal(await phone.locator(".nav-toggle").getAttribute("aria-expanded"), "true");
+  await phone.keyboard.press("Escape");
+  assert.equal(await phone.locator("#siteNavLinks").isVisible(), false);
+  // Only one floating control, so nothing overlaps on a small screen.
+  assert.equal(await phone.locator(".recent-launcher").count(), 0);
+  assert.equal(await phone.locator(".latest .recent-card-link").count(), 3);
+  await mobile.close();
+  // Branded 404 page renders with working root-relative assets.
+  const notFound = await browser.newContext();
+  const missing = await notFound.newPage();
+  missing.on("response", (r) => {
+    if (r.status() >= 400 && !r.url().endsWith("/404.html")) errors.push(`404 page asset ${r.status()} ${r.url()}`);
+  });
+  await missing.goto(`${base}/404.html`);
+  assert.equal(await missing.locator("h1").textContent(), "This page doesn’t exist.");
+  assert.deepEqual((await new AxeBuilder({ page: missing }).withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze()).violations, []);
+  await notFound.close();
   const nojs = await browser.newContext({
     javaScriptEnabled: false,
     viewport: { width: 360, height: 900 },
@@ -244,7 +272,7 @@ try {
   await nojs.close();
   assert.deepEqual(errors, []);
   console.log(
-    "PASS: theme persistence, JavaScript-disabled content, no browser errors.",
+    "PASS: theme persistence, mobile menu, latest strip, 404 page, JavaScript-disabled content, CSP, no browser errors.",
   );
 } finally {
   if (browser) await browser.close();

@@ -4,18 +4,23 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Global media platform · Cross-region MAP migration — Prudhvi Raj Anupoju</title>
     <meta name="description" content="Inventory profiling and cloud transformation across US and EU data centers, sizing high-capacity media storage, compute, and localized workflows under AWS MAP." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/case-studies/partner-engagements/media-cross-region-map-migration.html" />
     <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://anupojuprudhvi.github.io/case-studies/partner-engagements/media-cross-region-map-migration.html" />
     <meta property="og:title" content="Global media platform · Cross-region MAP migration" />
     <meta property="og:description" content="Inventory profiling and cloud transformation across US and EU data centers, sizing high-capacity media storage, compute, and localized workflows under AWS MAP." />
-    <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta property="og:image" content="https://anupojuprudhvi.github.io/assets/og/partner-engagements/media-cross-region-map-migration.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://anupojuprudhvi.github.io/assets/og/partner-engagements/media-cross-region-map-migration.jpg" />
     <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies" href="https://anupojuprudhvi.github.io/feed.xml" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Case studies","item":"https://anupojuprudhvi.github.io/case-studies/"},{"@type":"ListItem","position":3,"name":"AWS APN & Migration Engagements","item":"https://anupojuprudhvi.github.io/case-studies/partner-engagements/"},{"@type":"ListItem","position":4,"name":"Global media MAP assessment","item":"https://anupojuprudhvi.github.io/case-studies/partner-engagements/media-cross-region-map-migration.html"}]}</script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -36,7 +41,7 @@
           "name": "Prudhvi Raj Anupoju"
         },
         "url": "https://anupojuprudhvi.github.io/case-studies/partner-engagements/media-cross-region-map-migration.html",
-        "image": "https://anupojuprudhvi.github.io/og-image.png",
+        "image": "https://anupojuprudhvi.github.io/assets/og/partner-engagements/media-cross-region-map-migration.jpg",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/case-studies/partner-engagements/media-cross-region-map-migration.html",
         "keywords": "migration, map, media, cross-region, tco, storage, finops, AWS Application Discovery, AWS MAP, Excel Analytics, Multi-Region Profiling, TCO Modeling"
       }
@@ -52,7 +57,7 @@
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
         <a class="brand" href="../../index.html">Prudhvi Raj Anupoju</a>
-        <div class="navlinks">
+        <div class="navlinks" id="siteNavLinks">
           <a href="../../index.html#work">Selected work</a>
           <div class="nav-dropdown">
             <a href="../../case-studies/index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" aria-current="page"
@@ -115,8 +120,11 @@
             </div>
           </div>
           <a href="../../index.html#contact" class="nav-cta">Let's connect ↗</a>
-          <button id="themeToggle" aria-label="Switch to light theme">☼</button>
         </div>
+        <button id="themeToggle" type="button" aria-label="Switch to light theme">☼</button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNavLinks" aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
       </div>
     </nav>
     <main id="main">
@@ -132,12 +140,23 @@
           <p class="sub">Inventory profiling and cloud transformation across US and EU data centers, sizing high-capacity media storage, compute, and localized workflows under AWS MAP.</p>
           <div class="meta">
             <div><b>Project</b><br />AWS APN &amp; Migration Engagements</div>
-            <div><b>Layer</b><br />Strategy &amp; Infrastructure</div>
+            <div><b>Capability</b><br />Migration &amp; strategy</div>
             <div><b>Stack</b><br />AWS Application Discovery · AWS MAP · Excel Analytics · Multi-Region Profiling · TCO Modeling</div>
             <div><b>Tags</b><br />migration · map · media · cross-region · tco · storage · finops</div>
+            <div><b>Reading time</b><br />2 min</div>
           </div>
         </div>
       </header>
+<section class="key-results" aria-labelledby="keyResultsTitle">
+<div class="wrap">
+<h2 class="section-eyebrow" id="keyResultsTitle">Key results</h2>
+<div class="outcomes">
+<div class="outcome"><div class="num">600+</div><div class="txt">Servers cataloged and right-sized across US and European facilities</div></div>
+<div class="outcome"><div class="num">Multi-PB</div><div class="txt">Media asset storage mapped to automated cloud lifecycle tiers</div></div>
+<div class="outcome"><div class="num">Dual-Region</div><div class="txt">Synchronized discovery and financial modeling across US and EU</div></div>
+</div>
+</div>
+</section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Cross-region discovery</div>
@@ -217,27 +236,16 @@
 <p>The engagement delivered comprehensive documentation: the <b>Recommended Migration Analysis Report</b>, the <b>Success Criteria &amp; KPI Framework</b>, and the <b>MAP Assess Findings &amp; TCO Executive Deck</b>. The financial modeling demonstrated substantial multi-year savings compared to physical hardware refresh cycles, securing enterprise board approval to transition to the MAP Mobilize phase.</p>
 </div>
 </section>
-<section>
-<div class="wrap">
-<div class="section-eyebrow">Outcome</div>
-<h2>What changed</h2>
-<div class="outcomes">
-<div class="outcome"><div class="num">600+</div><div class="txt">Servers cataloged and right-sized across US and European facilities</div></div>
-<div class="outcome"><div class="num">Multi-PB</div><div class="txt">Media asset storage mapped to automated cloud lifecycle tiers</div></div>
-<div class="outcome"><div class="num">Dual-Region</div><div class="txt">Synchronized discovery and financial modeling across US and EU</div></div>
-</div>
-</div>
-</section>
       <aside class="next-study wrap">
         <a href="../../case-studies/partner-engagements/fintech-map-assess-business-case.html">← Digital asset platform MAP assess</a>
         <a href="../../case-studies/partner-engagements/it-monitoring-tanzu-to-eks-map-assessment.html">IT monitoring Tanzu to EKS MAP →</a>
       </aside>
       <div class="closing">
         <div class="wrap">
-          <h2>Want to talk through how this would apply to your environment?</h2>
+          <h2>Questions about this case study?</h2>
           <p>
-            I'm happy to go deeper on any part of this — the architecture, the
-            trade-offs, or how it would adapt to a different environment.
+            Happy to go deeper on any part of this — the architecture, the
+            trade-offs, or the decisions behind it.
           </p>
           <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
             >anupojuprudhvi@gmail.com</a
@@ -251,7 +259,8 @@
         ><a href="../../learning-paths/index.html">Learning paths ↗</a
         ><a href="../../case-studies/index.html">Case studies ↗</a
         ><a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a
-        ><a href="../../index.html#work">Back to overview ↗</a>
+        ><a href="../../index.html#work">Back to overview ↗</a
+        ><a href="../../privacy.html">Privacy</a>
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>

@@ -4,7 +4,7 @@ nav: Build the delivery engine
 label: CI/CD architecture
 heading: How Terraform changes move from pull request to environment
 project: tolling
-layer: Foundation
+layer: Platform & delivery
 order: 50
 stack: [GitHub Actions, Terraform, AWS IAM OIDC, AWS STS, GitHub Environments]
 tags: [cicd, github-actions, terraform, oidc, security, deployment, governance]

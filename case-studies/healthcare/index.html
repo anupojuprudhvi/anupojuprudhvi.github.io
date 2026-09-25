@@ -4,24 +4,29 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Healthcare &amp; Cost Architecture — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="Explore the case studies from this engagement, including the problems, architecture decisions, and outcomes." />
-    <link rel="canonical" href="https://anupojuprudhvi.github.io/case-studies/healthcare/index.html" />
+    <meta name="description" content="A regulated healthcare platform, end to end: decomposing an on-premise clinical monolith, integrating medical-IoT devices over HL7, real-time clinical analytics, a network with no public ingress, and a gated delivery pipeline." />
+    <link rel="canonical" href="https://anupojuprudhvi.github.io/case-studies/healthcare/" />
     <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://anupojuprudhvi.github.io/case-studies/healthcare/" />
     <meta property="og:title" content="Healthcare &amp; Cost Architecture" />
-    <meta property="og:description" content="Explore the case studies from this engagement, including the problems, architecture decisions, and outcomes." />
-    <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta property="og:description" content="A regulated healthcare platform, end to end: decomposing an on-premise clinical monolith, integrating medical-IoT devices over HL7, real-time clinical analytics, a network with no public ingress, and a gated delivery pipeline." />
+    <meta property="og:image" content="https://anupojuprudhvi.github.io/assets/og/healthcare/index.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://anupojuprudhvi.github.io/assets/og/healthcare/index.jpg" />
     <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies" href="https://anupojuprudhvi.github.io/feed.xml" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Case studies","item":"https://anupojuprudhvi.github.io/case-studies/"},{"@type":"ListItem","position":3,"name":"Healthcare & Cost Architecture","item":"https://anupojuprudhvi.github.io/case-studies/healthcare/"}]}</script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "Healthcare & Cost Architecture",
-        "description": "Explore the case studies from this engagement, including the problems, architecture decisions, and outcomes.",
+        "description": "A regulated healthcare platform, end to end: decomposing an on-premise clinical monolith, integrating medical-IoT devices over HL7, real-time clinical analytics, a network with no public ingress, and a gated delivery pipeline.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -35,9 +40,9 @@
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju"
         },
-        "url": "https://anupojuprudhvi.github.io/case-studies/healthcare/index.html",
-        "image": "https://anupojuprudhvi.github.io/og-image.png",
-        "mainEntityOfPage": "https://anupojuprudhvi.github.io/case-studies/healthcare/index.html",
+        "url": "https://anupojuprudhvi.github.io/case-studies/healthcare/",
+        "image": "https://anupojuprudhvi.github.io/assets/og/healthcare/index.jpg",
+        "mainEntityOfPage": "https://anupojuprudhvi.github.io/case-studies/healthcare/",
         "keywords": ""
       }
     </script>
@@ -52,7 +57,7 @@
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
         <a class="brand" href="../../index.html">Prudhvi Raj Anupoju</a>
-        <div class="navlinks">
+        <div class="navlinks" id="siteNavLinks">
           <a href="../../index.html#work">Selected work</a>
           <div class="nav-dropdown">
             <a href="../../case-studies/index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" aria-current="page"
@@ -115,8 +120,11 @@
             </div>
           </div>
           <a href="../../index.html#contact" class="nav-cta">Let's connect ↗</a>
-          <button id="themeToggle" aria-label="Switch to light theme">☼</button>
         </div>
+        <button id="themeToggle" type="button" aria-label="Switch to light theme">☼</button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNavLinks" aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
       </div>
     </nav>
     <main id="main">
@@ -129,28 +137,25 @@
         <div class="wrap">
           <div class="eyebrow">Healthcare &amp; Cost Architecture</div>
           <h1>Healthcare &amp; Cost Architecture</h1>
-          <p class="sub">Explore the case studies from this engagement, including the problems, architecture decisions, and outcomes.</p>
-          <div class="meta">
-            <div><b>Project</b><br />Healthcare &amp; Cost Architecture</div>
-          </div>
+          <p class="sub">The platform had to grow beyond its on-premise hardware without putting clinical data or uptime at risk. These case studies cover the application decomposition, the device-integration tier, the analytics pipeline that took reporting load off the live database, the network and access model, and the CI/CD pipeline that ships to it.</p>
         </div>
       </header>
 
-<section><div class="wrap"><h2>Case studies</h2><div class="case-study-links">            <a href="clinical-platform-modernization-and-cost-optimization.html"><span>01 / Applications</span><strong>Cut database read load</strong><small>Decomposing an on-premise clinical monolith into containerized services, and taking reporting load off the live database with a decoupled analytics pipeline. →</small></a>
-            <a href="hl7-device-interoperability-engine.html"><span>02 / Integration</span><strong>HL7 device interoperability</strong><small>A dedicated integration tier translating proprietary medical-IoT telemetry into standardized HL7 and JSON for clinical systems and a partner hospital network. →</small></a>
-            <a href="real-time-clinical-analytics-pipeline.html"><span>03 / Data engineering</span><strong>Real-time clinical analytics</strong><small>Streaming physiological telemetry into a real-time OLAP store so care teams can query months of patient vitals without touching the operational database. →</small></a>
-            <a href="zero-public-ingress-network-security.html"><span>04 / Network &amp; security</span><strong>Zero-public-ingress security</strong><small>A network design where no compute or database resource has a public IP, engineering access is mutual-TLS VPN only, and the CDN is tuned for clinical apps. →</small></a>
-            <a href="ci-cd-delivery-pipeline-for-regulated-healthcare.html"><span>05 / Delivery engineering</span><strong>Regulated CI/CD delivery</strong><small>A GitFlow-to-Kubernetes pipeline with per-branch promotion gates, headless registry authentication, and deployment lead time cut from hours to minutes. →</small></a></div></div></section>
 
+<section><div class="wrap"><h2>Case studies</h2><div class="case-study-links">            <a href="clinical-platform-modernization-and-cost-optimization.html"><span>01 / Applications &amp; integration</span><strong>Cut database read load</strong><small>Decomposing an on-premise clinical monolith into containerized services, and taking reporting load off the live database with a decoupled analytics pipeline. →</small></a>
+            <a href="hl7-device-interoperability-engine.html"><span>02 / Applications &amp; integration</span><strong>HL7 device interoperability</strong><small>A dedicated integration tier translating proprietary medical-IoT telemetry into standardized HL7 and JSON for clinical systems and a partner hospital network. →</small></a>
+            <a href="real-time-clinical-analytics-pipeline.html"><span>03 / Data &amp; storage</span><strong>Real-time clinical analytics</strong><small>Streaming physiological telemetry into a real-time OLAP store so care teams can query months of patient vitals without touching the operational database. →</small></a>
+            <a href="zero-public-ingress-network-security.html"><span>04 / Networking &amp; security</span><strong>Zero-public-ingress security</strong><small>A network design where no compute or database resource has a public IP, engineering access is mutual-TLS VPN only, and the CDN is tuned for clinical apps. →</small></a>
+            <a href="ci-cd-delivery-pipeline-for-regulated-healthcare.html"><span>05 / Platform &amp; delivery</span><strong>Regulated CI/CD delivery</strong><small>A GitFlow-to-Kubernetes pipeline with per-branch promotion gates, headless registry authentication, and deployment lead time cut from hours to minutes. →</small></a></div></div></section>
       <aside class="next-study wrap">
         <a href="../../case-studies/index.html">← Case studies</a>
       </aside>
       <div class="closing">
         <div class="wrap">
-          <h2>Want to talk through how this would apply to your environment?</h2>
+          <h2>Questions about this work?</h2>
           <p>
-            I'm happy to go deeper on any part of this — the architecture, the
-            trade-offs, or how it would adapt to a different environment.
+            Happy to go deeper on any part of this — the architecture, the
+            trade-offs, or the decisions behind it.
           </p>
           <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
             >anupojuprudhvi@gmail.com</a
@@ -164,7 +169,8 @@
         ><a href="../../learning-paths/index.html">Learning paths ↗</a
         ><a href="../../case-studies/index.html">Case studies ↗</a
         ><a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a
-        ><a href="../../index.html#work">Back to overview ↗</a>
+        ><a href="../../index.html#work">Back to overview ↗</a
+        ><a href="../../privacy.html">Privacy</a>
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>

@@ -3,7 +3,7 @@ title: Clinical platform modernization and cost architecture
 nav: Cut database read load
 summary: Decomposing an on-premise clinical monolith into containerized services, and taking reporting load off the live database with a decoupled analytics pipeline.
 project: healthcare
-layer: Applications
+layer: Applications & integration
 stack: [Amazon EKS, RDS, ElastiCache, CloudFront]
 tags: [finops, modernization, kubernetes, caching, analytics]
 problem: An on-premise clinical platform past the scaling limits of fixed hardware, where heavy reporting queries competed with real-time device ingestion on the same database.

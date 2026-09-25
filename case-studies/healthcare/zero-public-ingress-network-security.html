@@ -4,18 +4,23 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Zero-public-ingress network architecture for HIPAA — Prudhvi Raj Anupoju</title>
     <meta name="description" content="A network design where no compute or database resource has a public IP, engineering access is mutual-TLS VPN only, and the CDN is tuned for clinical apps." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/case-studies/healthcare/zero-public-ingress-network-security.html" />
     <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://anupojuprudhvi.github.io/case-studies/healthcare/zero-public-ingress-network-security.html" />
     <meta property="og:title" content="Zero-public-ingress network architecture for HIPAA" />
     <meta property="og:description" content="A network design where no compute or database resource has a public IP, engineering access is mutual-TLS VPN only, and the CDN is tuned for clinical apps." />
-    <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta property="og:image" content="https://anupojuprudhvi.github.io/assets/og/healthcare/zero-public-ingress-network-security.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://anupojuprudhvi.github.io/assets/og/healthcare/zero-public-ingress-network-security.jpg" />
     <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies" href="https://anupojuprudhvi.github.io/feed.xml" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Case studies","item":"https://anupojuprudhvi.github.io/case-studies/"},{"@type":"ListItem","position":3,"name":"Healthcare & Cost Architecture","item":"https://anupojuprudhvi.github.io/case-studies/healthcare/"},{"@type":"ListItem","position":4,"name":"Zero-public-ingress security","item":"https://anupojuprudhvi.github.io/case-studies/healthcare/zero-public-ingress-network-security.html"}]}</script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -36,7 +41,7 @@
           "name": "Prudhvi Raj Anupoju"
         },
         "url": "https://anupojuprudhvi.github.io/case-studies/healthcare/zero-public-ingress-network-security.html",
-        "image": "https://anupojuprudhvi.github.io/og-image.png",
+        "image": "https://anupojuprudhvi.github.io/assets/og/healthcare/zero-public-ingress-network-security.jpg",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/case-studies/healthcare/zero-public-ingress-network-security.html",
         "keywords": "security, hipaa, networking, vpn, cdn, AWS Client VPN, AWS CloudFront, AWS WAF, AWS KMS"
       }
@@ -52,7 +57,7 @@
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
         <a class="brand" href="../../index.html">Prudhvi Raj Anupoju</a>
-        <div class="navlinks">
+        <div class="navlinks" id="siteNavLinks">
           <a href="../../index.html#work">Selected work</a>
           <div class="nav-dropdown">
             <a href="../../case-studies/index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" aria-current="page"
@@ -115,8 +120,11 @@
             </div>
           </div>
           <a href="../../index.html#contact" class="nav-cta">Let's connect ↗</a>
-          <button id="themeToggle" aria-label="Switch to light theme">☼</button>
         </div>
+        <button id="themeToggle" type="button" aria-label="Switch to light theme">☼</button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNavLinks" aria-label="Open menu">
+          <span class="nav-toggle-bars" aria-hidden="true"></span>
+        </button>
       </div>
     </nav>
     <main id="main">
@@ -134,12 +142,23 @@
             <div><b>Project</b><br />Healthcare &amp; Cost Architecture</div>
             <div><b>Role</b><br />Network security &amp; HIPAA compliance architecture</div>
             <div><b>Scope</b><br />VPN access design, edge/CDN policy, and at-rest encryption strategy</div>
-            <div><b>Layer</b><br />Network &amp; security</div>
+            <div><b>Capability</b><br />Networking &amp; security</div>
             <div><b>Stack</b><br />AWS Client VPN · AWS CloudFront · AWS WAF · AWS KMS</div>
             <div><b>Tags</b><br />security · hipaa · networking · vpn · cdn</div>
+            <div><b>Reading time</b><br />3 min</div>
           </div>
         </div>
       </header>
+<section class="key-results" aria-labelledby="keyResultsTitle">
+<div class="wrap">
+<h2 class="section-eyebrow" id="keyResultsTitle">Key results</h2>
+<div class="outcomes">
+<div class="outcome"><div class="num">0</div><div class="txt">Compute or database resources with a public IPv4 address</div></div>
+<div class="outcome"><div class="num">3</div><div class="txt">Mutual-TLS VPN scopes segmenting Dev/Sandbox, QA/Staging, and Production access</div></div>
+<div class="outcome"><div class="num">KMS</div><div class="txt">Customer-managed encryption for every storage layer at rest</div></div>
+</div>
+</div>
+</section>
 
 <section>
 <div class="wrap">
@@ -152,7 +171,7 @@
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
 <h2>Separate the user path from the operator path completely</h2>
-<pre tabindex="0" class="code"><code class="language-text">   Clinicians &amp; Patients                    Engineering &amp; Operations
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">   Clinicians &amp; Patients                    Engineering &amp; Operations
           │                                          │
           ▼                                          ▼
   [ AWS WAF ]                              [ AWS Client VPN ]
@@ -166,7 +185,7 @@
           • EKS clusters (Dev / QA / Staging / Production)
           • Integration &amp; analytics hosts
           • RDS (KMS-encrypted at rest)
-          • ElastiCache (encrypted in transit)</code></pre>
+          • ElastiCache (encrypted in transit)</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <p>Both paths terminate at the edge of the private network — the CDN and WAF handle public application traffic, and the VPN handles everything else — and nothing behind that edge has a public IPv4 address to reach directly, from either direction.</p>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
@@ -181,24 +200,13 @@
 <p>Mutual-TLS VPN access for engineering is meaningfully more operational overhead than a bastion host or a shared VPN — every engineer needs a per-environment profile, and profile issuance and revocation has to be a deliberate process rather than a shared credential. That overhead is the direct cost of the environments never having a public network path into them at all; for a platform handling PHI, that trade was made deliberately rather than defaulted into.</p>
 </div>
 </section>
-<section>
-<div class="wrap">
-<div class="section-eyebrow">Outcome</div>
-<h2>What changed</h2>
-<div class="outcomes">
-<div class="outcome"><div class="num">0</div><div class="txt">Compute or database resources with a public IPv4 address</div></div>
-<div class="outcome"><div class="num">3</div><div class="txt">Mutual-TLS VPN scopes segmenting Dev/Sandbox, QA/Staging, and Production access</div></div>
-<div class="outcome"><div class="num">KMS</div><div class="txt">Customer-managed encryption for every storage layer at rest</div></div>
-</div>
-</div>
-</section>
       <aside class="next-study wrap">
         <a href="../../case-studies/healthcare/real-time-clinical-analytics-pipeline.html">← Real-time clinical analytics</a>
         <a href="../../case-studies/healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.html">Regulated CI/CD delivery →</a>
       </aside>
       <div class="closing">
         <div class="wrap">
-          <h2>Want to talk through how this would apply to your environment?</h2>
+          <h2>Questions about this case study?</h2>
           <p>
             I'm happy to go deeper on the per-environment VPN segmentation, the CDN cache-policy split, or the encryption approach.
           </p>
@@ -214,7 +222,8 @@
         ><a href="../../learning-paths/index.html">Learning paths ↗</a
         ><a href="../../case-studies/index.html">Case studies ↗</a
         ><a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a
-        ><a href="../../index.html#work">Back to overview ↗</a>
+        ><a href="../../index.html#work">Back to overview ↗</a
+        ><a href="../../privacy.html">Privacy</a>
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>

@@ -4,7 +4,7 @@ nav: Protect CloudTrail evidence
 label: Security architecture
 heading: How centralized audit logs remain trustworthy after an account compromise
 project: tolling
-layer: Foundation
+layer: Foundation & governance
 order: 60
 stack: [AWS CloudTrail, AWS Organizations, Amazon S3, AWS KMS, S3 Object Lock, Amazon SNS]
 tags: [security, cloudtrail, audit, compliance, s3, multi-account, governance]
