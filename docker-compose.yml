@@ -1,0 +1,46 @@
+# Local production-like run of the portfolio.
+#
+#   docker compose up --build
+#     → site:  http://localhost:8080 (keeps running)
+#     → tests: full test suite against the source and the running container,
+#              then exits; screenshots land in ./artifacts
+#
+#   docker compose run --rm tests   # tests only; exit code is the result
+#   docker compose down             # stop everything
+
+services:
+  site:
+    build:
+      context: .
+      target: site
+    image: prudhvi-portfolio:local
+    ports:
+      - "8080:8080"
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  tests:
+    build:
+      context: .
+      target: test
+    image: prudhvi-portfolio-tests:local
+    depends_on:
+      site:
+        condition: service_healthy
+    environment:
+      SITE_URL: http://site:8080
+      VERIFY_CONCURRENCY: "4"
+    volumes:
+      - ./artifacts:/site/artifacts
+    ipc: host

@@ -1,0 +1,11 @@
+# Keep the build context small and never ship local-only files.
+.git
+.github
+.agents
+node_modules
+artifacts
+_to_delete
+Claude outputs
+*.log
+.env
+.env.*

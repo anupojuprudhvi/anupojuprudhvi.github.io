@@ -7,6 +7,23 @@ for the generator — it is plain Node.
 
 Live at: https://anupojuprudhvi.github.io/
 
+## Run it locally with Docker
+
+`docker compose up --build` starts two containers:
+
+- **site** — the generated site on a hardened, non-root nginx at
+  <http://localhost:8080>, served like GitHub Pages (directory `index.html`,
+  branded `404.html`) plus real security headers (CSP, `X-Frame-Options`,
+  `Referrer-Policy`, `Permissions-Policy`). It keeps running.
+- **tests** — waits for the site to be healthy, then runs every check CI runs
+  (`npm run check`, `test:build`, `test:preview`, `test:browser`) and
+  `scripts/verify-docker.mjs` against the running container. It exits when done;
+  page screenshots are written to `./artifacts`.
+
+`docker compose run --rm tests` runs only the tests (the exit code is the
+result). `docker compose down` stops everything. The container check also runs
+in CI (`container` job in `.github/workflows/build-check.yml`).
+
 ## How the site is put together
 
 The published HTML is generated. Edit the files under `content/`, then run
