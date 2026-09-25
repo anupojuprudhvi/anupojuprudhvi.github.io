@@ -152,16 +152,14 @@ summary {
 .skip-link:focus {
   top: 12px;
 }
-nav.topnav,
-.topbar {
+nav.topnav {
   position: sticky;
   top: 0;
   z-index: 20;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
 }
-.nav-inner,
-.topbar .wrap {
+.nav-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1283,9 +1281,6 @@ footer {
   .footer-inner {
     flex-wrap: wrap;
   }
-  .topbar .wrap {
-    min-height: 66px;
-  }
   .breadcrumb-bar {
     padding: 14px 0 0;
   }
@@ -1458,7 +1453,6 @@ footer {
 
 @media print {
   nav,
-  .topbar,
   .filters,
   #themeToggle,
   .copy-email {

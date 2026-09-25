@@ -240,8 +240,6 @@ try {
   assert.equal(await phone.locator(".nav-toggle").getAttribute("aria-expanded"), "true");
   await phone.keyboard.press("Escape");
   assert.equal(await phone.locator("#siteNavLinks").isVisible(), false);
-  // Only one floating control, so nothing overlaps on a small screen.
-  assert.equal(await phone.locator(".recent-launcher").count(), 0);
   assert.equal(await phone.locator(".latest .recent-card-link").count(), 3);
   await mobile.close();
   // Branded 404 page renders with working root-relative assets.

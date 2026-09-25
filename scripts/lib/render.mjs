@@ -14,8 +14,8 @@ export const HEAD_SECURITY = `<meta http-equiv="Content-Security-Policy" content
 
 /* ------------------------------------------------- "Case studies" nav dropdown */
 /**
- * Shared by every page that shows the nav (home, the library, and the
- * learning-paths hub). Counts and sector names come straight from the
+ * Used by siteTopNav, so every page shows the same menu. Counts and sector
+ * names come straight from the
  * case-study data — never typed by hand — so a new case study or a renamed
  * sector can never leave the nav showing a stale number.
  *
@@ -27,7 +27,7 @@ export const HEAD_SECURITY = `<meta http-equiv="Content-Security-Policy" content
  * down). `current: true` marks the trigger as the active nav item, for use
  * on the case-studies page itself.
  */
-export function caseStudiesNavDropdown(items = [], { prefix = "", current = false } = {}) {
+function caseStudiesNavDropdown(items = [], { prefix = "", current = false } = {}) {
   const sectors = [];
   const bySector = new Map();
   for (const item of (items || [])) {
@@ -70,7 +70,7 @@ export function caseStudiesNavDropdown(items = [], { prefix = "", current = fals
 }
 
 /* ------------------------------------------------- "Learning paths" nav dropdown */
-export function learningPathsNavDropdown({ prefix = "", current = false } = {}) {
+function learningPathsNavDropdown({ prefix = "", current = false } = {}) {
   const allHref = `${prefix}index.html`;
   return `<div class="nav-dropdown">
             <a href="${allHref}" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false"${
@@ -140,9 +140,8 @@ export function siteTopNav({
 /* ------------------------------------------------- "Latest case studies" strip */
 /**
  * The three most recent case studies, shown inline on the homepage right
- * under the hero stats. It used to be a floating launcher + modal, but two
- * floating buttons collided on phones and covered content on desktop, so the
- * list now lives in the page flow where it is always visible and needs no JS.
+ * under the hero stats, in the page flow so it is always visible, never
+ * overlaps other content, and needs no JavaScript.
  * Source of truth: content/recent-case-studies.json (see build.mjs).
  */
 export function latestCaseStudies(recentItems, { prefix = "" } = {}) {

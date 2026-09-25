@@ -27,7 +27,7 @@ import { join, relative, dirname, basename } from "node:path";
 
 import { esc } from "./lib/html.mjs";
 import { parseFrontMatter, renderBody } from "./lib/markdown.mjs";
-import { SITE, HEAD_SECURITY, page, libraryPage, learningPathPage, caseStudiesNavDropdown, learningPathsNavDropdown, siteTopNav, latestCaseStudies, LAYER_ORDER } from "./lib/render.mjs";
+import { SITE, HEAD_SECURITY, page, libraryPage, learningPathPage, siteTopNav, latestCaseStudies, LAYER_ORDER } from "./lib/render.mjs";
 
 const ROOT = process.cwd();
 const CONTENT = join(ROOT, "content/case-studies");

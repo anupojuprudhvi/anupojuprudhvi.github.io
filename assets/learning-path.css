@@ -94,24 +94,6 @@
   border-radius: 4px;
   color: var(--accent);
 }
-.lp-callout {
-  background: var(--bg-raised);
-  border-left: 3px solid var(--accent);
-  padding: 18px 22px;
-  border-radius: 0 8px 8px 0;
-  margin: 28px 0;
-}
-.lp-callout strong {
-  color: var(--text);
-  display: block;
-  margin-bottom: 6px;
-  font-size: 14px;
-}
-.lp-callout p {
-  margin: 0;
-  font-size: 14px;
-  color: var(--text-body);
-}
 
 /* Chapter Navigation Footer */
 .lp-nav {

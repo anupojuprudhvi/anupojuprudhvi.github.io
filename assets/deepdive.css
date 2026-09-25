@@ -202,37 +202,6 @@
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
-.compare {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 14px;
-  align-items: center;
-  margin: 22px 0;
-}
-.compare .cbox {
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px 18px;
-  background: var(--bg-raised);
-}
-.compare .cbox .clbl {
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-.compare .cbox.after {
-  border-color: var(--accent);
-}
-.compare .cbox.after .clbl {
-  color: var(--accent);
-}
-.compare .carrow {
-  font-size: 20px;
-  color: var(--accent);
-}
 .gtable {
   width: 100%;
   border-collapse: collapse;
@@ -272,9 +241,6 @@ pre.code {
   font-size: 12.5px;
   line-height: 1.6;
   margin: 18px 0;
-}
-pre.code .cmt {
-  color: var(--inverse-text-muted);
 }
 .seq {
   counter-reset: step;
@@ -615,28 +581,6 @@ pre.code .cmt {
 .problem-solution p {
   font-size: 14px;
 }
-.integration-flow {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 0;
-  margin: 24px 0;
-  list-style: none;
-  counter-reset: integration-step;
-}
-.integration-flow li {
-  flex: 1 1 130px;
-  padding: 14px;
-  border: 1px solid var(--border);
-  background: var(--bg-raised);
-  border-radius: 6px;
-  font-size: 12px;
-}
-.integration-flow li::before {
-  counter-increment: integration-step;
-  content: counter(integration-step) " / ";
-  color: var(--accent);
-}
 .implementation-notes {
   font-size: 14px;
 }
@@ -664,8 +608,7 @@ pre.code .cmt {
   .deepdive section {
     padding: 36px 0;
   }
-  .outcomes,
-  .compare {
+  .outcomes {
     grid-template-columns: 1fr;
   }
   .scroll-hint {
@@ -717,10 +660,6 @@ pre.code .cmt {
   }
   .md-table tbody tr:last-child td {
     border-bottom: 0;
-  }
-  .compare .carrow {
-    transform: rotate(90deg);
-    justify-self: center;
   }
   .deepdive .diagram-top {
     align-items: flex-start;
