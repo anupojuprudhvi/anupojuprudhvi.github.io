@@ -1720,3 +1720,31 @@ html.js .reveal-in {
 .anim-paused * {
   animation-play-state: paused;
 }
+
+/* "Pause animations" (theme.js): stops every CSS animation site-wide. */
+.motion-paused *,
+.motion-paused *::before,
+.motion-paused *::after {
+  animation-play-state: paused !important;
+}
+.motion-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 12.5px;
+  padding: 6px 12px;
+  min-height: 32px;
+  cursor: pointer;
+}
+.motion-toggle:hover {
+  color: var(--text);
+  border-color: var(--text-muted);
+}
+
+/* Keep keyboard-focused elements clear of the floating "Ask" button
+   (WCAG 2.2 Focus Not Obscured). */
+html {
+  scroll-padding-bottom: 88px;
+}

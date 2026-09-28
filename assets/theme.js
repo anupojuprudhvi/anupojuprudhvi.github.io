@@ -6,6 +6,11 @@
   document.documentElement.dataset.theme = theme;
   // Lets CSS collapse the mobile menu only when this script can reopen it.
   document.documentElement.classList.add("js");
+  // Remembered "Pause animations" choice (WCAG 2.2.2), applied before first paint.
+  try {
+    if (localStorage.getItem("motion") === "paused") document.documentElement.classList.add("motion-paused");
+  } catch {}
+  const motionPaused = () => document.documentElement.classList.contains("motion-paused");
   document.addEventListener("DOMContentLoaded", () => {
     const toggle = document.getElementById("themeToggle");
     const label = () => {
@@ -154,11 +159,41 @@
       const diagramObserver = new IntersectionObserver((entries) => {
         for (const { target, isIntersecting } of entries) {
           target.classList.toggle("anim-paused", !isIntersecting);
-          if (isIntersecting) target.unpauseAnimations?.();
+          if (isIntersecting && !motionPaused()) target.unpauseAnimations?.();
           else target.pauseAnimations?.();
         }
       });
       diagrams.forEach((svg) => diagramObserver.observe(svg));
+    }
+
+    // "Pause animations" (WCAG 2.2.2 Pause, Stop, Hide): looping diagrams, the
+    // typing headline, and the ticker all stop, and the choice is remembered.
+    // Only offered where something actually loops and motion isn't already reduced.
+    const looping = document.querySelector("svg.hub-net, svg.hub-net-compact, svg.motif, #typeWord, #closingTicker");
+    const footerRow = document.querySelector("footer .footer-inner, footer .wrap");
+    if (looping && footerRow && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "motion-toggle";
+      const sync = () => {
+        const paused = motionPaused();
+        button.textContent = paused ? "▶ Play animations" : "⏸ Pause animations";
+        button.setAttribute("aria-pressed", String(paused));
+        document.querySelectorAll("svg").forEach((svg) => {
+          if (paused) svg.pauseAnimations?.();
+          else if (!svg.classList.contains("anim-paused")) svg.unpauseAnimations?.();
+        });
+      };
+      button.addEventListener("click", () => {
+        const paused = document.documentElement.classList.toggle("motion-paused");
+        try {
+          if (paused) localStorage.setItem("motion", "paused");
+          else localStorage.removeItem("motion");
+        } catch {}
+        sync();
+      });
+      footerRow.append(button);
+      sync();
     }
   });
 })();

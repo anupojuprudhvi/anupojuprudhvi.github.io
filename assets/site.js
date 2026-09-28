@@ -32,6 +32,9 @@ copyButton?.addEventListener("click", async () => {
   }
 });
 
+// "Pause animations" in the footer (theme.js) sets this class; loops below respect it.
+const motionPaused = () => document.documentElement.classList.contains("motion-paused");
+
 const tickerEl = document.getElementById("closingTicker");
 if (tickerEl && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
   const phrases = [
@@ -42,6 +45,7 @@ if (tickerEl && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
   ];
   let tickerIndex = 0;
   setInterval(() => {
+    if (motionPaused()) return;
     tickerIndex = (tickerIndex + 1) % phrases.length;
     tickerEl.style.opacity = "0";
     setTimeout(() => {
@@ -75,10 +79,12 @@ if (
   };
   (async function loop() {
     while (true) {
+      while (motionPaused()) await sleep(500);
       const role = roles[roleIndex % roles.length];
       await typeText(role);
       typeLineEl.setAttribute("aria-label", `${role} platform architect`);
-      await sleep(1800);
+      // Hold a whole word on screen for as long as animations are paused.
+      do await sleep(1800); while (motionPaused());
       await deleteText(role);
       await sleep(350);
       roleIndex++;
