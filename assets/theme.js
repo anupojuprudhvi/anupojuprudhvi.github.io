@@ -57,6 +57,12 @@
 
       trigger.addEventListener("click", (e) => {
         e.preventDefault();
+        // Only one dropdown open at a time, so menus never stack on phones.
+        document.querySelectorAll(".nav-dropdown.is-open").forEach((other) => {
+          if (other === dropdown) return;
+          other.classList.remove("is-open");
+          other.querySelector(".nav-dropdown-trigger")?.setAttribute("aria-expanded", "false");
+        });
         const isOpen = dropdown.classList.toggle("is-open");
         trigger.setAttribute("aria-expanded", String(isOpen));
       });
