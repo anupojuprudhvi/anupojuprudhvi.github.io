@@ -375,7 +375,7 @@ pre.code {
   --maxw: 920px;
 }
 .deepdive .topnav .wrap {
-  max-width: 1160px;
+  max-width: var(--site-maxw);
 }
 .deepdive .back {
   font-size: 13px;

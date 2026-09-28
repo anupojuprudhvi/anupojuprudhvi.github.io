@@ -17,6 +17,7 @@
   --text-on-accent-bright: #06231b;
   --danger: #e0776e;
   --maxw: 1160px;
+  --site-maxw: 1160px;
   --hero-dot: rgba(146, 167, 180, 0.32);
   --hero-glow-a: rgba(129, 228, 193, 0.13);
   --hero-glow-b: rgba(242, 177, 85, 0.07);
@@ -1248,6 +1249,27 @@ footer {
   /* Follow the content down by the extra 24px of padding. */
   .hub-net {
     top: 24px;
+  }
+}
+/* Large screens: browsing pages (homepage, library, learning hub) widen to
+   1320px instead of sitting in a narrow column with wide empty margins.
+   Reading pages keep their narrower --maxw (.deepdive); the nav bar follows
+   --site-maxw everywhere so it lines up across all pages. The homepage
+   network switches to its layout drawn for this width. */
+.hub-net-wide {
+  display: none;
+  margin-left: -800px;
+}
+@media (min-width: 1600px) {
+  :root {
+    --site-maxw: 1320px;
+    --maxw: 1320px;
+  }
+  .hub-net:not(.hub-net-wide) {
+    display: none;
+  }
+  .hub-net-wide {
+    display: block;
   }
 }
 @media (max-width: 900px) {
