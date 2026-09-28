@@ -1,6 +1,7 @@
 [
   {
     "id": "terraform",
+    "motif": "pipeline",
     "title": "Terraform for Enterprise Production",
     "eyebrow": "Infrastructure as Code",
     "summary": "An authoritative engineering playbook on building, scaling, and governing Terraform in enterprise AWS environments — from module contracts and state isolation to zero-downtime refactoring and automated security guardrails.",
@@ -13,6 +14,7 @@
   },
   {
     "id": "migration-journey",
+    "motif": "migration",
     "title": "Enterprise Cloud Migration: Assess, Mobilize & Modernize",
     "eyebrow": "Migration Acceleration Program (MAP)",
     "summary": "An authoritative architectural and financial guide for enterprise cloud migrations — comparing rapid (4–6 wk) vs. deep (3–4 mo) assessments, 3-year TCO modeling (On-Demand, 1-Yr, 3-Yr RIs/Savings Plans, Microsoft licensing), target Landing Zone design, Mobilize wave planning, and in-flight modernization.",
@@ -25,6 +27,7 @@
   },
   {
     "id": "kubernetes-operations",
+    "motif": "network",
     "title": "Kubernetes Ingress & Operations on Amazon EKS",
     "eyebrow": "Container Platform Engineering",
     "summary": "A hands-on operations playbook for running multi-environment Amazon EKS in production — dual ingress architecture and its real cost mechanics, IAM/RBAC across clusters, headless container delivery, and day-2 incident triage.",

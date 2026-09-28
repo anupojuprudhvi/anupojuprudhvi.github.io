@@ -5,6 +5,7 @@ nav: Key-management migration
 label: Security modernization
 project: telecom
 layer: Networking & security
+motif: security
 order: 30
 stack: [AWS KMS, C, Linux shared memory, systemd, PostgreSQL]
 tags: [security, encryption, kms, legacy-modernization, key-management]

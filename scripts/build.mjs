@@ -27,6 +27,7 @@ import { join, relative, dirname, basename } from "node:path";
 
 import { esc } from "./lib/html.mjs";
 import { parseFrontMatter, renderBody } from "./lib/markdown.mjs";
+import { MOTIF_NAMES, LAYER_MOTIF } from "./lib/motifs.mjs";
 import { SITE, HEAD_SECURITY, page, libraryPage, learningPathPage, siteTopNav, latestCaseStudies, LAYER_ORDER } from "./lib/render.mjs";
 
 const ROOT = process.cwd();
@@ -100,6 +101,10 @@ function socialImage(project, slug) {
 }
 
 /* ---------------------------------------------------------------- build */
+// Every capability layer needs a default header motif (scripts/lib/motifs.mjs).
+for (const layer of LAYER_ORDER)
+  if (!MOTIF_NAMES.includes(LAYER_MOTIF[layer])) throw new Error(`No default motif for layer "${layer}" in scripts/lib/motifs.mjs`);
+
 const files = walk(CONTENT).sort();
 const projects = JSON.parse(readFileSync(join(ROOT, "content/projects.json"), "utf8"));
 const projectMap = new Map();
@@ -129,6 +134,8 @@ const docs = files.map((file) => {
   if (data.order !== undefined && !Number.isFinite(Number(data.order))) throw new Error(`${file}: order must be a number`);
   if (data.layer && !LAYER_ORDER.includes(data.layer))
     throw new Error(`${file}: layer "${data.layer}" must be one of: ${LAYER_ORDER.join(", ")}`);
+  if (data.motif !== undefined && !MOTIF_NAMES.includes(data.motif))
+    throw new Error(`${file}: motif "${data.motif}" must be one of: ${MOTIF_NAMES.join(", ")}`);
   for (const key of ["stack", "tags", "scripts", "outcomes", "flow"])
     if (data[key] !== undefined && !Array.isArray(data[key])) throw new Error(`${file}: ${key} must be a list`);
   const url = `case-studies/${data.project}/${slug}.html`;
@@ -282,6 +289,8 @@ if (existsSync(join(LEARNING_PATHS_DIR, "tracks.json"))) {
   }
 
   for (const track of tracks) {
+    if (track.motif !== undefined && !MOTIF_NAMES.includes(track.motif))
+      throw new Error(`tracks.json ${track.id}: motif "${track.motif}" must be one of: ${MOTIF_NAMES.join(", ")}`);
     const trackDir = join(LEARNING_PATHS_DIR, track.id);
     if (!existsSync(trackDir)) continue;
 

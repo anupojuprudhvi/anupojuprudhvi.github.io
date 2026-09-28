@@ -6,6 +6,7 @@ label: Storage operations
 heading: High-concurrency S3 migration for small objects
 project: tolling
 layer: Data & storage
+motif: migration
 order: 105
 stack: [Amazon S3, AWS CLI, s5cmd, Amazon EC2, AWS Data Pipeline, Bash]
 tags: [s3, migration, performance, storage, concurrency, cost, aws]

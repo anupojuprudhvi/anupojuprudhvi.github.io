@@ -135,9 +135,30 @@
       </nav>
       <header class="hero">
         <div class="wrap">
-          <div class="eyebrow">Tolling Infrastructure · Data resilience</div>
-          <h1>Make Aurora DR behave like the primary, not exist beside it</h1>
-          <p class="sub">Closing the two gaps that can make a replicated Aurora environment fail differently in recovery: secondary parameter-group drift and missing regional secrets.</p>
+          <div class="hero-split">
+            <div>
+              <div class="eyebrow">Tolling Infrastructure · Data resilience</div>
+              <h1>Make Aurora DR behave like the primary, not exist beside it</h1>
+              <p class="sub">Closing the two gaps that can make a replicated Aurora environment fail differently in recovery: secondary parameter-group drift and missing regional secrets.</p>
+            </div>
+            <svg class="motif motif-failover" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
+    <defs><path id="mP" d="M110 32 V66 H56 V100" /><path id="mS" d="M130 32 V66 H184 V100" /></defs>
+    <path class="m-line mf-link-p" d="M110 32 V66 H56 V100" />
+    <path class="m-line mf-link-s" d="M130 32 V66 H184 V100" />
+    <path class="m-line m-dash" d="M104 132 H136" />
+    <g class="m-packets">
+      <g class="mf-to-p"><circle class="m-pk" r="2.4"><animateMotion dur="2.2s" begin="-0.2s" repeatCount="indefinite"><mpath href="#mP" /></animateMotion></circle><circle class="m-pk" r="2.4"><animateMotion dur="2.2s" begin="-1.3s" repeatCount="indefinite"><mpath href="#mP" /></animateMotion></circle></g>
+      <g class="mf-to-s"><circle class="m-pk" r="2.4"><animateMotion dur="2.2s" begin="-0.6s" repeatCount="indefinite"><mpath href="#mS" /></animateMotion></circle><circle class="m-pk" r="2.4"><animateMotion dur="2.2s" begin="-1.7s" repeatCount="indefinite"><mpath href="#mS" /></animateMotion></circle></g>
+    </g>
+    <rect class="m-node m-hub" x="90" y="8" width="60" height="24" rx="4" /><text class="m-hot" x="120" y="23">DNS</text>
+    <rect class="m-node mf-primary" x="8" y="100" width="96" height="64" rx="5" />
+    <text x="56" y="128">PRIMARY</text>
+    <text class="m-state mf-ok" x="56" y="144">HEALTHY</text><text class="m-state m-warn mf-bad" x="56" y="144">FAILED</text>
+    <rect class="m-node mf-standby" x="136" y="100" width="96" height="64" rx="5" />
+    <text x="184" y="128">SECONDARY</text>
+    <text class="m-state m-muted mf-ok" x="184" y="144">STANDBY</text><text class="m-state mf-bad" x="184" y="144">ACTIVE</text>
+    </svg>
+          </div>
           <div class="meta">
             <div><b>Project</b><br />Tolling Infrastructure</div>
             <div><b>Capability</b><br />Resilience &amp; DR</div>

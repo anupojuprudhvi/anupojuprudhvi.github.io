@@ -1,4 +1,5 @@
 import { esc, inline, para, jsonLd } from "./html.mjs";
+import { motifFor, motifSvg } from "./motifs.mjs";
 
 export const SITE = "https://anupojuprudhvi.github.io";
 
@@ -408,11 +409,16 @@ ${siteTopNav({ docs, up, active: "case-studies" })}
       </nav>
       <header class="hero">
         <div class="wrap">
-          <div class="eyebrow">${esc(d.projectName || "")}${
-            d.label ? " · " + esc(d.label) : ""
-          }</div>
-          <h1>${inline(d.heroTitle || d.title)}</h1>
-          ${d.intro || d.summary ? `<p class="sub">${inline(d.intro || d.summary)}</p>` : ""}${metaBits ? `
+          <div class="hero-split">
+            <div>
+              <div class="eyebrow">${esc(d.projectName || "")}${
+                d.label ? " · " + esc(d.label) : ""
+              }</div>
+              <h1>${inline(d.heroTitle || d.title)}</h1>
+              ${d.intro || d.summary ? `<p class="sub">${inline(d.intro || d.summary)}</p>` : ""}
+            </div>${isStudy && motifFor(d) ? `
+            ${motifSvg(motifFor(d))}` : ""}
+          </div>${metaBits ? `
           <div class="meta">
             ${metaBits}
           </div>` : ""}
@@ -718,9 +724,14 @@ ${siteTopNav({ docs, up, active: "learning-paths" })}
       </nav>
       <header class="lp-hero">
         <div class="wrap">
-          <span class="lp-badge">${esc(d.level || track.badge || "Production Playbook")}</span>
-          <h1>${esc(d.title)}</h1>
-          ${d.summary ? `<p class="sub">${inline(d.summary)}</p>` : ""}
+          <div class="hero-split">
+            <div>
+              <span class="lp-badge">${esc(d.level || track.badge || "Production Playbook")}</span>
+              <h1>${esc(d.title)}</h1>
+              ${d.summary ? `<p class="sub">${inline(d.summary)}</p>` : ""}
+            </div>${track.motif ? `
+            ${motifSvg(track.motif)}` : ""}
+          </div>
           <div class="lp-meta-bar">
             ${metaBits}
           </div>

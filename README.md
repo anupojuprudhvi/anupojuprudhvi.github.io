@@ -97,6 +97,12 @@ Front matter drives the page scaffold. The body is a small Markdown subset:
   attributes or `<style>` blocks: the Content-Security-Policy blocks inline CSS. A body that begins with `<section>` is
   emitted verbatim — that is how the richer case studies are written.
 
+Every case study and playbook header shows a small animated illustration
+(`scripts/lib/motifs.mjs`): one of eight themes (`network`, `failover`,
+`pipeline`, `replication`, `migration`, `stream`, `monitor`, `security`). A case
+study gets the default for its `layer`; set `motif:` in front matter to choose
+another. Playbook tracks set `motif` in `content/learning-paths/tracks.json`.
+
 To attach a diagram script, drop it in `assets/` and reference it:
 `scripts: [tgw-diagram.js]`.
 

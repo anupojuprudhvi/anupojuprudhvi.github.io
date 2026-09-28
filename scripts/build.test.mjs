@@ -82,6 +82,9 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
     // Layers come from a fixed capability taxonomy; an unknown one fails loudly.
     fs.writeFileSync(file(source), "---\ntitle: Second & new study\ndate: 2030-01-02\nproject: telecom\nsummary: A new study.\nlayer: A new layer\norder: 15\n---\n\n## Architecture\n\nA test narrative.\n");
     assert.match(run().stderr, /layer "A new layer" must be one of/);
+    // Header motifs come from a fixed set too.
+    fs.writeFileSync(file(source), "---\ntitle: Second & new study\ndate: 2030-01-02\nproject: telecom\nsummary: A new study.\nlayer: Operations & incidents\nmotif: fireworks\n---\n\nBody.\n");
+    assert.match(run().stderr, /motif "fireworks" must be one of: network, failover/);
     // Publication dates feed the RSS feed and sitemap, so they are required and validated.
     fs.writeFileSync(file(source), "---\ntitle: Second & new study\nproject: telecom\nsummary: A new study.\nlayer: Operations & incidents\n---\n\nBody.\n");
     assert.match(run().stderr, /front matter missing "date"/);

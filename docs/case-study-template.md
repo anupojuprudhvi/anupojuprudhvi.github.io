@@ -14,6 +14,7 @@ label: Architecture area
 heading: How the problem was solved
 project: project-folder
 layer: Applications & integration
+motif: stream # optional: header animation (network, failover, pipeline, replication, migration, stream, monitor, security); defaults from layer
 order: 10
 stack: [AWS service, Terraform]
 tags: [security, networking]

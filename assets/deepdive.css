@@ -697,3 +697,187 @@ pre.code {
     text-align: left;
   }
 }
+
+/* ---------------------------------- Header motifs (scripts/lib/motifs.mjs)
+   A small animated illustration beside the title of each case study and
+   playbook. Decorative only; hidden below 1100px, where the title needs the
+   full width. Packets move by SVG animation, so reduced motion hides them;
+   the CSS cycles below are stopped by the site-wide reduced-motion rule. */
+.hero-split {
+  display: block;
+}
+.motif {
+  display: none;
+}
+@media (min-width: 1100px) {
+  .hero-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 48px;
+    align-items: center;
+  }
+  .motif {
+    display: block;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .motif .m-packets {
+    display: none;
+  }
+}
+.motif text {
+  fill: var(--text-muted);
+  font: 600 8px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: 0.1em;
+  text-anchor: middle;
+}
+.motif .m-start { text-anchor: start; }
+.motif .m-end { text-anchor: end; }
+.motif .m-big { font-size: 18px; }
+.motif .m-hot { fill: var(--accent); }
+.motif .m-warn { fill: var(--accent2); }
+.motif .m-muted { fill: var(--text-muted); opacity: 0.8; }
+.motif .m-line,
+.motif .m-grid,
+.motif .m-row {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 1.2;
+}
+.motif .m-dash {
+  stroke: var(--accent);
+  stroke-dasharray: 3 5;
+  animation: m-flow 1s linear infinite;
+}
+.motif .m-node {
+  fill: var(--bg);
+  stroke: var(--border);
+  stroke-width: 1.2;
+}
+.motif .m-hub { stroke: var(--accent); }
+.motif .m-dashed { stroke-dasharray: 4 3; }
+.motif .m-pk { fill: var(--accent); }
+.motif .m-pk-plain { fill: var(--text-muted); }
+@keyframes m-flow {
+  to { stroke-dashoffset: -8; }
+}
+
+/* failover: every 10s the primary fails and DNS shifts traffic to the secondary. */
+.motif-failover .mf-primary { animation: mf-primary 10s infinite; }
+.motif-failover .mf-standby { stroke-dasharray: 4 3; animation: mf-standby 10s infinite; }
+.motif-failover .mf-link-p { animation: mf-link-p 10s infinite; }
+.motif-failover .mf-link-s { stroke-dasharray: 3 4; animation: mf-link-s 10s infinite; }
+.motif-failover .mf-to-p,
+.motif-failover .mf-ok { animation: m-normal 10s infinite; }
+.motif-failover .mf-to-s,
+.motif-failover .mf-bad { opacity: 0; animation: m-failover 10s infinite; }
+.motif-failover .m-state:not(.m-warn):not(.m-muted) { fill: var(--accent); }
+@keyframes m-normal {
+  0%, 45% { opacity: 1; }
+  50%, 85% { opacity: 0; }
+  90%, 100% { opacity: 1; }
+}
+@keyframes m-failover {
+  0%, 45% { opacity: 0; }
+  50%, 85% { opacity: 1; }
+  90%, 100% { opacity: 0; }
+}
+@keyframes mf-primary {
+  0%, 45%, 90%, 100% { stroke: var(--border); }
+  50%, 85% { stroke: var(--accent2); }
+}
+@keyframes mf-standby {
+  0%, 45%, 90%, 100% { stroke: var(--border); stroke-dasharray: 4 3; }
+  50%, 85% { stroke: var(--accent); stroke-dasharray: none; }
+}
+@keyframes mf-link-p {
+  0%, 45%, 90%, 100% { stroke: var(--border); stroke-dasharray: none; }
+  50%, 85% { stroke: var(--accent2); stroke-dasharray: 2 4; }
+}
+@keyframes mf-link-s {
+  0%, 45%, 90%, 100% { stroke: var(--border); stroke-dasharray: 3 4; }
+  50%, 85% { stroke: var(--accent); stroke-dasharray: none; }
+}
+
+/* pipeline: stages pass one by one, the bar fills, the release goes live. */
+.motif-pipeline .mp-s1 { animation: mp-s1 7s infinite; }
+.motif-pipeline .mp-s2 { animation: mp-s2 7s infinite; }
+.motif-pipeline .mp-s3 { animation: mp-s3 7s infinite; }
+.motif-pipeline .mp-s4 { animation: mp-s4 7s infinite; }
+.motif-pipeline .m-track { fill: var(--border); }
+.motif-pipeline .m-bar {
+  fill: var(--accent);
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: mp-bar 7s infinite;
+}
+.motif-pipeline .mp-done { fill: var(--accent); opacity: 0; animation: mp-done 7s infinite; }
+@keyframes mp-s1 { 0%, 2% { stroke: var(--border); fill: var(--bg); } 6%, 88% { stroke: var(--accent); fill: var(--accent-soft); } 94%, 100% { stroke: var(--border); fill: var(--bg); } }
+@keyframes mp-s2 { 0%, 20% { stroke: var(--border); fill: var(--bg); } 24%, 88% { stroke: var(--accent); fill: var(--accent-soft); } 94%, 100% { stroke: var(--border); fill: var(--bg); } }
+@keyframes mp-s3 { 0%, 38% { stroke: var(--border); fill: var(--bg); } 42%, 88% { stroke: var(--accent); fill: var(--accent-soft); } 94%, 100% { stroke: var(--border); fill: var(--bg); } }
+@keyframes mp-s4 { 0%, 56% { stroke: var(--border); fill: var(--bg); } 60%, 88% { stroke: var(--accent); fill: var(--accent-soft); } 94%, 100% { stroke: var(--border); fill: var(--bg); } }
+@keyframes mp-bar { 0% { transform: scaleX(0); } 62%, 88% { transform: scaleX(1); } 94%, 100% { transform: scaleX(0); } }
+@keyframes mp-done { 0%, 62% { opacity: 0; } 66%, 88% { opacity: 1; } 94%, 100% { opacity: 0; } }
+
+/* replication: replica rows catch up in turn. */
+.motif-replication .m-row { stroke: var(--accent); opacity: 0.25; }
+.motif-replication .mr-1 { animation: mr-row 3s infinite; }
+.motif-replication .mr-2 { animation: mr-row 3s 1s infinite; }
+.motif-replication .mr-3 { animation: mr-row 3s 2s infinite; }
+@keyframes mr-row { 0%, 100% { opacity: 0.25; } 15%, 40% { opacity: 1; } }
+
+/* migration: servers drain from on-prem and land in AWS, wave by wave. */
+.motif-migration .mm-src1 { animation: mm-src1 9s infinite; }
+.motif-migration .mm-src2 { animation: mm-src2 9s infinite; }
+.motif-migration .mm-src3 { animation: mm-src3 9s infinite; }
+.motif-migration .mm-dst1 { animation: mm-dst1 9s infinite; }
+.motif-migration .mm-dst2 { animation: mm-dst2 9s infinite; }
+.motif-migration .mm-dst3 { animation: mm-dst3 9s infinite; }
+@keyframes mm-src1 { 0%, 8% { opacity: 1; } 14%, 90% { opacity: 0.25; } 96%, 100% { opacity: 1; } }
+@keyframes mm-src2 { 0%, 34% { opacity: 1; } 40%, 90% { opacity: 0.25; } 96%, 100% { opacity: 1; } }
+@keyframes mm-src3 { 0%, 60% { opacity: 1; } 66%, 90% { opacity: 0.25; } 96%, 100% { opacity: 1; } }
+@keyframes mm-dst1 { 0%, 16% { stroke: var(--border); fill: var(--bg); } 22%, 90% { stroke: var(--accent); fill: var(--accent-soft); } 96%, 100% { stroke: var(--border); fill: var(--bg); } }
+@keyframes mm-dst2 { 0%, 42% { stroke: var(--border); fill: var(--bg); } 48%, 90% { stroke: var(--accent); fill: var(--accent-soft); } 96%, 100% { stroke: var(--border); fill: var(--bg); } }
+@keyframes mm-dst3 { 0%, 68% { stroke: var(--border); fill: var(--bg); } 74%, 90% { stroke: var(--accent); fill: var(--accent-soft); } 96%, 100% { stroke: var(--border); fill: var(--bg); } }
+
+/* stream: messages fill and drain the queue. */
+.motif-stream .m-cell { fill: var(--accent); opacity: 0.15; animation: ms-cell 2.5s infinite; }
+.motif-stream .ms-c2 { animation-delay: 0.3s; }
+.motif-stream .ms-c3 { animation-delay: 0.6s; }
+.motif-stream .ms-c4 { animation-delay: 0.9s; }
+.motif-stream .ms-c5 { animation-delay: 1.2s; }
+@keyframes ms-cell { 0%, 100% { opacity: 0.15; } 30%, 50% { opacity: 0.8; } }
+
+/* monitor: the latency trace draws, breaches the SLO, alerts, then resolves. */
+.motif-monitor .m-grid { opacity: 0.5; }
+.motif-monitor .m-slo { fill: none; stroke: var(--accent2); stroke-width: 1; stroke-dasharray: 4 4; opacity: 0.7; }
+.motif-monitor .m-trace {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  stroke-dasharray: 100;
+  animation: mo-trace 8s infinite;
+}
+.motif-monitor .m-badge { fill: var(--accent-soft); stroke: var(--accent); }
+.motif-monitor .m-badge-warn { fill: var(--bg); stroke: var(--accent2); }
+.motif-monitor .mo-alert { opacity: 0; animation: mo-alert 8s infinite; }
+.motif-monitor .mo-ok { opacity: 0; animation: mo-ok 8s infinite; }
+@keyframes mo-trace { 0% { stroke-dashoffset: 100; opacity: 1; } 50%, 92% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+@keyframes mo-alert { 0%, 32% { opacity: 0; } 36%, 60% { opacity: 1; } 64%, 100% { opacity: 0; } }
+@keyframes mo-ok { 0%, 62% { opacity: 0; } 66%, 90% { opacity: 1; } 95%, 100% { opacity: 0; } }
+
+/* security: data passes through the KMS lock while the key ring rotates. */
+.motif-security .m-ring {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.2;
+  stroke-dasharray: 6 8;
+  opacity: 0.6;
+  transform-box: view-box;
+  transform-origin: 120px 90px;
+  animation: msec-ring 12s linear infinite;
+}
+.motif-security .m-keyhole { fill: var(--accent); }
+.motif-security .m-shackle { fill: none; }
+@keyframes msec-ring { to { transform: rotate(360deg); } }

@@ -95,6 +95,9 @@ Before describing a change as production-ready, verify as applicable:
 - **Capability taxonomy**: every case study's `layer:` must be one of `LAYER_ORDER` in
   `scripts/lib/render.mjs`; the build fails otherwise. Add a new capability there only
   when at least two case studies need it.
+- **Header motifs**: `motif:` must be one of `MOTIF_NAMES` in `scripts/lib/motifs.mjs`
+  (the build fails otherwise); omit it to use the default for the case study's layer.
+  Prefer an existing motif; add a new one only when several case studies need it.
 - **Neutral voice**: the site is a portfolio, not a sales page. Do not add language that
   solicits work (availability, hiring, consulting/contract offers, "your environment",
   pricing or sales calls to action). Contact copy stays neutral: questions about the work.
