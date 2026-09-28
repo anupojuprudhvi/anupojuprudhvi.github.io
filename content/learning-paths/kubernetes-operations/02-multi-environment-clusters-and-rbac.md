@@ -28,19 +28,19 @@ EKS doesn't keep its own list of users. Signing in to a cluster is IAM authentic
 ```text
 # Let the platform team's SSO role administer the whole cluster
 aws eks create-access-entry --cluster-name prod \
-  --principal-arn arn:aws:iam::<account-id>:role/<platform-admin-role>
+  --principal-arn arn:aws:iam::<your-account-number>:role/<platform-admin-role>
 
 aws eks associate-access-policy --cluster-name prod \
-  --principal-arn arn:aws:iam::<account-id>:role/<platform-admin-role> \
+  --principal-arn arn:aws:iam::<your-account-number>:role/<platform-admin-role> \
   --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy \
   --access-scope type=cluster
 
 # Let the CI/CD deploy role manage workloads in one namespace only
 aws eks create-access-entry --cluster-name prod \
-  --principal-arn arn:aws:iam::<account-id>:role/<ci-deploy-role>
+  --principal-arn arn:aws:iam::<your-account-number>:role/<ci-deploy-role>
 
 aws eks associate-access-policy --cluster-name prod \
-  --principal-arn arn:aws:iam::<account-id>:role/<ci-deploy-role> \
+  --principal-arn arn:aws:iam::<your-account-number>:role/<ci-deploy-role> \
   --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy \
   --access-scope type=namespace,namespaces=orders
 ```

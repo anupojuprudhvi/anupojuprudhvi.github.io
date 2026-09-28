@@ -76,7 +76,7 @@ Terraform 1.5+ allows you to import resources declaratively:
 
 import {
   to = aws_security_group.ingress
-  id = "sg-0123456789abcdef0" # AWS Resource ID
+  id = "<security-group-id>" # the existing resource ID in AWS
 }</code></pre>
 
 You can even ask Terraform to write the initial HCL for you:

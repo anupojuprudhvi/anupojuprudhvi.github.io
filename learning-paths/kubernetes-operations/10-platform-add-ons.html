@@ -239,7 +239,7 @@
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># One service account per add-on, each pointing at its own role
 kubectl create serviceaccount external-dns -n kube-system
 kubectl annotate serviceaccount external-dns -n kube-system \
-  eks.amazonaws.com/role-arn=arn:aws:iam::&lt;account-id&gt;:role/&lt;cluster-name&gt;-external-dns \
+  eks.amazonaws.com/role-arn=arn:aws:iam::&lt;your-account-number&gt;:role/&lt;external-dns-role&gt; \
   --overwrite
 
 # A running pod keeps its old credentials, so restart it to pick up the change
@@ -257,7 +257,7 @@ kubectl -n kube-system rollout restart deployment/external-dns</code></pre><figc
   - --source=ingress
   - --domain-filter=internal.example        # only touch records under this domain
   - --aws-zone-type=private                 # only private hosted zones
-  - --aws-assume-role=arn:aws:iam::&lt;shared-services-account-id&gt;:role/&lt;dns-role&gt;
+  - --aws-assume-role=arn:aws:iam::&lt;shared-services-account-number&gt;:role/&lt;dns-role&gt;
   - --policy=upsert-only                    # create and update, never delete
   - --registry=txt
   - --txt-owner-id=&lt;cluster-name&gt;           # marks which records this cluster owns</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>

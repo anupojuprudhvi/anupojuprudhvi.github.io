@@ -39,7 +39,7 @@ Most of these add-ons call AWS APIs, so each needs AWS permissions. The original
 # One service account per add-on, each pointing at its own role
 kubectl create serviceaccount external-dns -n kube-system
 kubectl annotate serviceaccount external-dns -n kube-system \
-  eks.amazonaws.com/role-arn=arn:aws:iam::<account-id>:role/<cluster-name>-external-dns \
+  eks.amazonaws.com/role-arn=arn:aws:iam::<your-account-number>:role/<external-dns-role> \
   --overwrite
 
 # A running pod keeps its old credentials, so restart it to pick up the change
@@ -59,7 +59,7 @@ args:
   - --source=ingress
   - --domain-filter=internal.example        # only touch records under this domain
   - --aws-zone-type=private                 # only private hosted zones
-  - --aws-assume-role=arn:aws:iam::<shared-services-account-id>:role/<dns-role>
+  - --aws-assume-role=arn:aws:iam::<shared-services-account-number>:role/<dns-role>
   - --policy=upsert-only                    # create and update, never delete
   - --registry=txt
   - --txt-owner-id=<cluster-name>           # marks which records this cluster owns

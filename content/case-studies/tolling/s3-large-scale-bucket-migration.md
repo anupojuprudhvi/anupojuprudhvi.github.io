@@ -66,7 +66,7 @@ AWS Data Pipeline offers a managed S3-to-S3 copy template, but it operates by pr
 
 - **Cluster Bootstrap Lag:** Spin-up time alone for an EMR cluster (master node and core task instances) takes 10 to 15+ minutes before the first object is read.
 - **Cost Disproportion:** EMR charges hourly management fees on top of multi-instance EC2 worker compute costs. Paying for an entire Hadoop/Spark cluster to move 225 GB is fundamentally cost-inefficient.
-- **Operational Overhead:** Required configuring dedicated IAM roles (`DataPipelineDefaultRole`, `DataPipelineDefaultResourceRole`), S3 log staging paths, and JSON pipeline definitions for a task that needed to run exactly once.
+- **Operational Overhead:** Required configuring dedicated IAM roles (the default Data Pipeline service and resource roles), S3 log staging paths, and JSON pipeline definitions for a task that needed to run exactly once.
 
 Spinning up dedicated infrastructure or an EMR cluster would have introduced unnecessary cost and IAM provisioning. The most pragmatic and cost-effective path was to use an **existing EC2 instance already running in `us-east-1`** (the identical AWS region housing both buckets) paired with high-concurrency client tooling.
 

@@ -227,19 +227,19 @@
 <p>EKS doesn't keep its own list of users. Signing in to a cluster is IAM authentication, and <b>access entries</b> decide what each IAM role can do once it's in. You create an access entry for a role, then attach an access policy to it, either for the whole cluster or for specific namespaces.</p>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Let the platform team's SSO role administer the whole cluster
 aws eks create-access-entry --cluster-name prod \
-  --principal-arn arn:aws:iam::&lt;account-id&gt;:role/&lt;platform-admin-role&gt;
+  --principal-arn arn:aws:iam::&lt;your-account-number&gt;:role/&lt;platform-admin-role&gt;
 
 aws eks associate-access-policy --cluster-name prod \
-  --principal-arn arn:aws:iam::&lt;account-id&gt;:role/&lt;platform-admin-role&gt; \
+  --principal-arn arn:aws:iam::&lt;your-account-number&gt;:role/&lt;platform-admin-role&gt; \
   --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy \
   --access-scope type=cluster
 
 # Let the CI/CD deploy role manage workloads in one namespace only
 aws eks create-access-entry --cluster-name prod \
-  --principal-arn arn:aws:iam::&lt;account-id&gt;:role/&lt;ci-deploy-role&gt;
+  --principal-arn arn:aws:iam::&lt;your-account-number&gt;:role/&lt;ci-deploy-role&gt;
 
 aws eks associate-access-policy --cluster-name prod \
-  --principal-arn arn:aws:iam::&lt;account-id&gt;:role/&lt;ci-deploy-role&gt; \
+  --principal-arn arn:aws:iam::&lt;your-account-number&gt;:role/&lt;ci-deploy-role&gt; \
   --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy \
   --access-scope type=namespace,namespaces=orders</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <p>Access entries are ordinary AWS API calls, so they show up in CloudTrail, can be managed in Terraform, and can't be broken by a typo in a YAML file.</p>

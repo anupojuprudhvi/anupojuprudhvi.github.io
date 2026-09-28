@@ -41,7 +41,7 @@ Pod Identity links an IAM role to a service account with one API call. You insta
 # Link the role to the "orders-api" service account in the "orders" namespace
 aws eks create-pod-identity-association --cluster-name prod \
   --namespace orders --service-account orders-api \
-  --role-arn arn:aws:iam::<account-id>:role/<orders-api-role>
+  --role-arn arn:aws:iam::<your-account-number>:role/<orders-api-role>
 ```
 
 Any pod running as that service account now gets short-lived credentials for that role, automatically. Nothing needs to change in the application if it uses a current AWS SDK.
@@ -57,7 +57,7 @@ metadata:
   name: orders-api
   namespace: orders
   annotations:
-    eks.amazonaws.com/role-arn: arn:aws:iam::<account-id>:role/<orders-api-role>
+    eks.amazonaws.com/role-arn: arn:aws:iam::<your-account-number>:role/<orders-api-role>
 ```
 
 It works well, but each role's trust policy is tied to one cluster's OIDC provider, which makes adding clusters or moving workloads between them more work. If you're starting fresh, Pod Identity is usually simpler; if IRSA is already working, there's no rush to switch.

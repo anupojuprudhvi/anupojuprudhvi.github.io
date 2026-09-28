@@ -162,7 +162,7 @@
             <div><b>Capability</b><br />Data &amp; storage</div>
             <div><b>Stack</b><br />Amazon S3 · AWS CLI · s5cmd · Amazon EC2 · AWS Data Pipeline · Bash</div>
             <div><b>Tags</b><br />s3 · migration · performance · storage · concurrency · cost · aws</div>
-            <div><b>Reading time</b><br />4 min</div>
+            <div><b>Reading time</b><br />5 min</div>
             <div><b>Published</b><br /><time datetime="2026-09-24">24 Sep 2026</time></div>
           </div>
         </div>
@@ -257,7 +257,7 @@
 <ul>
 <li><b>Cluster Bootstrap Lag:</b> Spin-up time alone for an EMR cluster (master node and core task instances) takes 10 to 15+ minutes before the first object is read.</li>
 <li><b>Cost Disproportion:</b> EMR charges hourly management fees on top of multi-instance EC2 worker compute costs. Paying for an entire Hadoop/Spark cluster to move 225 GB is fundamentally cost-inefficient.</li>
-<li><b>Operational Overhead:</b> Required configuring dedicated IAM roles (<code>DataPipelineDefaultRole</code>, <code>DataPipelineDefaultResourceRole</code>), S3 log staging paths, and JSON pipeline definitions for a task that needed to run exactly once.</li>
+<li><b>Operational Overhead:</b> Required configuring dedicated IAM roles (the default Data Pipeline service and resource roles), S3 log staging paths, and JSON pipeline definitions for a task that needed to run exactly once.</li>
 </ul>
 <p>Spinning up dedicated infrastructure or an EMR cluster would have introduced unnecessary cost and IAM provisioning. The most pragmatic and cost-effective path was to use an <b>existing EC2 instance already running in <code>us-east-1</code></b> (the identical AWS region housing both buckets) paired with high-concurrency client tooling.</p>
 </div>

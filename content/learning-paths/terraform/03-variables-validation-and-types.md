@@ -57,7 +57,7 @@ While variable validation checks inputs in isolation, `lifecycle { precondition 
 
 data "aws_ami" "ubuntu" {
   most_recent = true
-  owners      = ["099720109477"] # Canonical
+  owners      = ["<ami-owner-account-number>"] # the image publisher (Canonical, for Ubuntu)
 
   filter {
     name   = "name"
