@@ -104,7 +104,7 @@ if (traceBtn) {
   const steps = [
     {
       node: "core",
-      text: "Every request starts inside the <b>governed foundation</b> — security boundaries, network segmentation, and automation applied before anything ships.",
+      text: "Every request starts inside the <b>governed foundation</b>. Security boundaries, network segmentation, and automation are in place before anything ships.",
       hold: 3200,
     },
     {
@@ -114,12 +114,12 @@ if (traceBtn) {
     },
     {
       node: 1,
-      text: "<b>Scalable platforms</b>: capacity that right-sizes to real load instead of a fixed, over-provisioned ceiling.",
+      text: "<b>Scalable platforms</b>: capacity grows and shrinks with real load, instead of paying for a fixed ceiling.",
       hold: 2700,
     },
     {
       node: 2,
-      text: "<b>Cost-aware operations</b>: spend stays visible and attributable, not discovered at the end of the month.",
+      text: "<b>Cost-aware operations</b>: you can see what's being spent and why, before the monthly bill arrives.",
       hold: 2700,
     },
   ];

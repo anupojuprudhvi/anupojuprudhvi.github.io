@@ -4,7 +4,7 @@ date: 2026-09-18
 track: kubernetes-operations
 order: 4
 module: 4
-totalModules: 4
+totalModules: 6
 summary: Switching cluster context safely, verifying a rollout actually succeeded instead of assuming it did, and a repeatable sequence for triaging a stuck deployment.
 level: Operations
 readingTime: 8 min read
@@ -28,7 +28,7 @@ kubectl describe pod <pod-name> -n <namespace>
 kubectl logs <pod-name> -n <namespace> --previous
 ```
 
-`kubectl rollout status` blocks until the rollout genuinely completes or fails, which makes it a better automation gate than treating `apply` as the finish line. `--previous` on `kubectl logs` matters specifically after a crash loop — it retrieves logs from the container's last run, not the fresh, log-empty restart that's currently in `CrashLoopBackOff`.
+`kubectl rollout status` waits until the rollout really completes or fails, which makes it a better automation gate than treating `apply` as the finish line. `--previous` on `kubectl logs` matters specifically after a crash loop — it retrieves logs from the container's last run, not the fresh, log-empty restart that's currently in `CrashLoopBackOff`.
 
 ## A repeatable triage sequence for a stuck deployment
 

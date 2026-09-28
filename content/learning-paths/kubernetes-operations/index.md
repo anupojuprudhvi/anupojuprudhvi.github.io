@@ -4,7 +4,7 @@ date: 2026-09-18
 track: kubernetes-operations
 summary: A hands-on playbook for running EKS in production — dual ingress cost mechanics, IAM/RBAC across clusters, and day-2 incident triage.
 level: Intermediate to Advanced
-duration: 4 Modules · 30 min read
+duration: 6 Modules · 45 min read
 stack: [Amazon EKS, Kubernetes, AWS Load Balancer Controller, Nginx Ingress, AWS ECR]
 ---
 
@@ -18,8 +18,12 @@ This track draws on running Amazon EKS across four separate environments (Dev, Q
 - How to isolate IAM access per environment without hand-editing cluster permissions per engineer.
 - The one authentication detail that breaks container delivery specifically in headless CI/CD, and nowhere else.
 - A repeatable way to triage a stuck or failing deployment instead of guessing.
+- How resource requests drive scheduling, autoscaling, and cost.
+- How to upgrade a cluster one version at a time without breaking deploys.
 
-## Curriculum · The 4 operations modules
+Modules 5 and 6 are general EKS practice rather than notes from that one deployment.
+
+## Curriculum · The 6 operations modules
 
 <ul class="lp-syllabus">
   <li>
@@ -58,6 +62,26 @@ This track draws on running Amazon EKS across four separate environments (Dev, Q
       <div class="lp-module-body">
         <h3>Day-2 Operations &amp; Incident Triage</h3>
         <p>Context switching across clusters safely, verifying a rollout actually succeeded, and a systematic sequence for triaging a stuck deployment.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="05-scaling-requests-and-cost.html">
+      <span class="lp-module-num">05</span>
+      <div class="lp-module-body">
+        <h3>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</h3>
+        <p>Why resource requests drive scheduling, autoscaling, and the bill, and how pod and node autoscaling fit together.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="06-cluster-upgrades.html">
+      <span class="lp-module-num">06</span>
+      <div class="lp-module-body">
+        <h3>Cluster Upgrades Without Drama</h3>
+        <p>Checking for removed APIs first, then upgrading the control plane, add-ons, and nodes in an order that keeps workloads running.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>

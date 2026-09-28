@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <title>Dual Ingress Architecture &amp; Its Cost Mechanics — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="When to route traffic through a shared ALB versus an internal Nginx Ingress, and why grouping services onto one load balancer is a real, measurable saving." />
-    <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/01-dual-ingress-architecture.html" />
+    <title>Cluster Upgrades Without Drama — Prudhvi Raj Anupoju</title>
+    <meta name="description" content="How to upgrade EKS one version at a time — checking for removed APIs first, then the control plane, add-ons, and nodes, in an order that keeps workloads running." />
+    <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/06-cluster-upgrades.html" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="Dual Ingress Architecture &amp; Its Cost Mechanics — Prudhvi Raj Anupoju" />
-    <meta property="og:description" content="When to route traffic through a shared ALB versus an internal Nginx Ingress, and why grouping services onto one load balancer is a real, measurable saving." />
+    <meta property="og:title" content="Cluster Upgrades Without Drama — Prudhvi Raj Anupoju" />
+    <meta property="og:description" content="How to upgrade EKS one version at a time — checking for removed APIs first, then the control plane, add-ons, and nodes, in an order that keeps workloads running." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -22,8 +22,8 @@
       {
         "@context": "https://schema.org",
         "@type": "TechArticle",
-        "headline": "Dual Ingress Architecture & Its Cost Mechanics",
-        "description": "When to route traffic through a shared ALB versus an internal Nginx Ingress, and why grouping services onto one load balancer is a real, measurable saving.",
+        "headline": "Cluster Upgrades Without Drama",
+        "description": "How to upgrade EKS one version at a time — checking for removed APIs first, then the control plane, add-ons, and nodes, in an order that keeps workloads running.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -37,10 +37,10 @@
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju"
         },
-        "url": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/01-dual-ingress-architecture.html",
+        "url": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/06-cluster-upgrades.html",
         "image": "https://anupojuprudhvi.github.io/og-image.png",
-        "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/01-dual-ingress-architecture.html",
-        "keywords": "ingress, alb, nginx, cost-optimization, eks, Amazon EKS, AWS Load Balancer Controller, Nginx Ingress, AWS VPC CNI"
+        "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/06-cluster-upgrades.html",
+        "keywords": "upgrades, lifecycle, eks, kubernetes, operations, Amazon EKS, Kubernetes, kubectl, Managed Node Groups"
       }
     </script>
     <script src="../../assets/theme.js"></script>
@@ -134,9 +134,9 @@
         <div class="wrap">
           <div class="hero-split">
             <div>
-              <span class="lp-badge">Core Architecture</span>
-              <h1>Dual Ingress Architecture &amp; Its Cost Mechanics</h1>
-              <p class="sub">When to route traffic through a shared ALB versus an internal Nginx Ingress, and why grouping services onto one load balancer is a real, measurable saving.</p>
+              <span class="lp-badge">Operations</span>
+              <h1>Cluster Upgrades Without Drama</h1>
+              <p class="sub">How to upgrade EKS one version at a time — checking for removed APIs first, then the control plane, add-ons, and nodes, in an order that keeps workloads running.</p>
             </div>
             <svg class="motif motif-network" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <defs>
@@ -153,10 +153,10 @@
     </svg>
           </div>
           <div class="lp-meta-bar">
-            <span><b>Module:</b> 01 of 06</span>
-            <span><b>Level:</b> Core Architecture</span>
+            <span><b>Module:</b> 06 of 06</span>
+            <span><b>Level:</b> Operations</span>
             <span><b>Time:</b> 8 min read</span>
-            <span><b>Published:</b> <time datetime="2026-09-18">18 Sep 2026</time></span>
+            <span><b>Published:</b> <time datetime="2026-09-28">28 Sep 2026</time></span>
           </div>
         </div>
       </header>
@@ -164,108 +164,71 @@
         <div class="wrap">
           <section>
 <div class="wrap">
-<div class="section-eyebrow">Problem</div>
-<h2>One load balancer per microservice adds up fast</h2>
-<p>The default instinct when exposing a new microservice on EKS is to give it its own Ingress and let the AWS Load Balancer Controller provision a dedicated Application Load Balancer for it. That works, and it's simple to reason about — but each ALB is a standing monthly cost on top of its data-processing charges, and that cost scales linearly with the number of services, independent of how much traffic any of them actually carry.</p>
-<p>At even a modest number of independently-deployed APIs, that adds up to a meaningful, entirely avoidable line item.</p>
+<div class="section-eyebrow">Principle</div>
+<h2>Upgrades are routine work, so make them boring</h2>
+<p>Kubernetes ships a new minor version roughly three times a year, and each EKS version gets a fixed window of standard support. After that, a cluster moves to extended support, which costs several times the standard per-cluster price, and eventually it's upgraded for you whether you're ready or not.</p>
+<p>The teams that struggle with upgrades are usually the ones that do them rarely. A small, repeatable upgrade every few months is far less risky than a big jump once the deadline arrives.</p>
+<p>Two rules shape everything else:</p>
+<ul>
+<li><b>The control plane moves one minor version at a time.</b> You can't go from 1.28 straight to 1.31. Each step is its own upgrade.</li>
+<li><b>Nodes can lag behind the control plane, never lead it.</b> Upgrade the control plane first, then bring the nodes up to match.</li>
+</ul>
 </div>
 </section>
 <section>
 <div class="wrap">
-<div class="section-eyebrow">Pattern</div>
-<h2>Two ingress controllers, used for what each is actually good at</h2>
-<p>Rather than picking one ingress approach for everything, a dual-ingress design uses each controller for the traffic shape it's actually suited to:</p>
+<div class="section-eyebrow">Step 1</div>
+<h2>Find what the new version removes</h2>
+<p>Most upgrade failures aren't caused by the upgrade itself. They come from manifests or Helm charts that still use an API version the new release has removed. The cluster upgrades fine, then the next deploy fails.</p>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Check the EKS upgrade insights for the cluster
+aws eks list-insights --cluster-name &lt;cluster&gt;
+
+# See which API versions the cluster currently serves
+kubectl api-versions</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<p>EKS upgrade insights flag deprecated API usage the cluster has actually seen, which is more reliable than grepping a repository. Tools such as <code>pluto</code> can scan your manifests and Helm releases as well. Fix everything they find *before* you start. Changing an API version on a live cluster is easy; finding out after the upgrade is not.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Step 2</div>
+<h2>Control plane, then add-ons, then nodes</h2>
+<details class="implementation-notes">
+<summary>Upgrade order</summary>
 <ul>
-<li><b>AWS Load Balancer Controller, with Ingress Grouping, for backend APIs.</b> Multiple independent services share a single ALB by annotating each Ingress with the same <code>group.name</code>, instead of each service provisioning its own load balancer.</li>
-<li><b>Nginx Ingress Controller for frontend single-page applications.</b> SPAs frequently need regex-based URL rewriting (stripping a path prefix before it reaches the container, for example) that's more naturally expressed in Nginx's ingress annotations than through ALB rules.</li>
+<li><b>Control plane.</b> <code>aws eks update-cluster-version</code> (or change the version in Terraform). EKS runs the API servers across several Availability Zones and replaces them in the background; running workloads keep going.</li>
+<li><b>Core add-ons.</b> Bring the VPC CNI, CoreDNS, and kube-proxy up to versions that match the new release. Managed add-ons make this a version bump; self-managed ones need their manifests updated.</li>
+<li><b>Nodes.</b> For managed node groups, start a version update and EKS replaces nodes in a rolling fashion, cordoning and draining each one. With Karpenter, updating the AMI or the node class causes it to replace nodes gradually.</li>
+<li><b>Everything else.</b> Controllers that talk to the Kubernetes API, such as the AWS Load Balancer Controller or an ingress controller, often have their own compatibility ranges. Check them against the new version.</li>
 </ul>
-<h3>Shared-ALB ingress grouping</h3>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml">apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: orders-api
-  namespace: prod
-  annotations:
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/group.name: api
-    alb.ingress.kubernetes.io/group.order: '10'
-spec:
-  rules:
-    - http:
-        paths:
-          - path: /orders
-            pathType: Prefix
-            backend:
-              service:
-                name: orders-api
-                port:
-                  number: 80
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: billing-api
-  namespace: prod
-  annotations:
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/group.name: api
-    alb.ingress.kubernetes.io/group.order: '20'
-spec:
-  rules:
-    - http:
-        paths:
-          - path: /billing
-            pathType: Prefix
-            backend:
-              service:
-                name: billing-api
-                port:
-                  number: 80</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<p>Both Ingress resources share <code>group.name: api</code>, so the AWS Load Balancer Controller provisions and reuses one ALB for both, adding routing rules for each rather than a load balancer per service. <code>target-type: ip</code> also matters here — it routes traffic directly to a pod's VPC IP via the AWS VPC CNI instead of hopping through a NodePort first, which removes an extra network hop on every request.</p>
-<h3>Nginx Ingress for frontend rewrites</h3>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml">apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: customer-portal
-  namespace: prod
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/use-regex: 'true'
-spec:
-  rules:
-    - http:
-        paths:
-          - path: /portal
-            pathType: Prefix
-            backend:
-              service:
-                name: customer-portal
-                port:
-                  number: 80</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+</details>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Watch nodes come up on the new version as the rollout proceeds
+kubectl get nodes -L eks.amazonaws.com/nodegroup \
+  -o custom-columns=NAME:.metadata.name,VERSION:.status.nodeInfo.kubeletVersion</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Step 3</div>
+<h2>Prove it on a non-production cluster first</h2>
+<p>Run the same upgrade on Dev or Staging a week or two before Production, with real deploys happening on it in between. Most surprises show up as a failed deploy or a controller that stops reconciling, and you want to meet those somewhere quiet.</p>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
 <ul>
-<li><b>Ingress Grouping doesn't require the services to know about each other.</b> Each team still owns its own Ingress manifest; the only coordination needed is agreeing on a shared <code>group.name</code> and non-conflicting <code>group.order</code> values.</li>
-<li><b>Target-type <code>ip</code> requires the VPC CNI and enough available IPs per subnet.</b> Plan subnet sizing with this in mind — it's a common surprise when a subnet runs out of assignable IPs under pod scale-up, not at cluster creation time.</li>
-<li><b>Nginx Ingress and ALB Ingress can coexist on the same cluster indefinitely.</b> There's no need to standardize on one; the deciding factor is the routing behavior each specific workload actually needs.</li>
+<li><b>Draining respects PodDisruptionBudgets.</b> A PDB that allows zero disruptions will stall the node rollout. Check PDBs before the upgrade, not when the node group update hangs.</li>
+<li><b>Single-replica workloads will blip.</b> Every pod is evicted once as its node is replaced. If something can't tolerate that, give it a second replica before you start.</li>
+<li><b>Keep the cluster version in code.</b> A Terraform variable or a pinned value in your cluster config makes the upgrade a reviewed change with a clear history, rather than a console click nobody remembers.</li>
+<li><b>Put the next upgrade in the calendar.</b> Knowing when each version leaves standard support turns upgrades into planned work instead of an emergency.</li>
 </ul>
 </details>
-<h3>When not to share an ALB</h3>
-<p>A few situations really do call for a dedicated load balancer instead of grouping: a service with materially different security-group or WAF requirements from the rest of the group, or a service whose traffic pattern makes shared connection draining or health-check tuning impractical. Sharing by default and carving out an exception when one of these applies is a more defensible starting point than defaulting to one ALB per service.</p>
 </div>
 </section>
-          <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/index.html">
-          <span class="lp-nav-label">← Curriculum</span>
-          <span class="lp-nav-title">Track Overview</span>
+          <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/05-scaling-requests-and-cost.html">
+          <span class="lp-nav-label">← Module 05</span>
+          <span class="lp-nav-title">Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span>
         </a>
-<a class="lp-nav-link next" href="../../learning-paths/kubernetes-operations/02-multi-environment-clusters-and-rbac.html">
-          <span class="lp-nav-label">Module 02 →</span>
-          <span class="lp-nav-title">Multi-Environment Clusters &amp; IAM/RBAC</span>
+<a class="lp-nav-link next" href="../../learning-paths/index.html">
+          <span class="lp-nav-label">Track Complete →</span>
+          <span class="lp-nav-title">All Learning Paths</span>
         </a></nav>
         </div>
       </article>

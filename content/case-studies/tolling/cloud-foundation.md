@@ -379,7 +379,7 @@ outcomes:
           <h2>Designing so a mistake literally cannot ship</h2>
           <p>
             Terraform changes are safe to review but dangerous to run carelessly
-            against 40+ live accounts, so the deployment pipeline was engineered to make an
+            against 40+ live accounts, so the deployment pipeline was designed to make an
             unintended <code>apply</code> structurally impossible rather than
             relying on manual vigilance. Every module inherits
             one shared pipeline engine instead of copy-pasted YAML, and every

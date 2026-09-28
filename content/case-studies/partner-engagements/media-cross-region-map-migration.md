@@ -23,7 +23,7 @@ solution: |
   Led the cross-region technical discovery and transformation analysis across both US
   and EU infrastructure environments. By normalizing inventory exports and workload
   telemetry, mapped legacy render/transcode clusters to dynamic Amazon EC2 Graviton and
-  Spot instance fleets, and architected tiered storage strategies (Amazon S3 Standard to
+  Spot instance fleets, and designed tiered storage strategies (Amazon S3 Standard to
   Glacier Deep Archive) for multi-petabyte media catalogs. Authored the formal
   Migration Readiness Assessment (MRA) findings, established phase-wise success criteria,
   and presented the final financial TCO deck to C-level stakeholders.
@@ -39,7 +39,7 @@ flow:
     note: Executing Cloud Adoption Framework workshops, publishing MRA scores, and establishing phase-wise migration gates.
 enables: |
   Eliminates regional infrastructure silos, models scalable transcode compute
-  that expands on-demand during major film and television release cycles, and unlocks
+  that expands on-demand during major film and television release cycles, and opens up
   AWS MAP partner funding for enterprise migration waves.
 outcomes:
   - value: 600+
@@ -59,7 +59,7 @@ Under the AWS Migration Acceleration Program (MAP) Assess phase, the discovery i
 ### Implementation notes
 
 - **Cross-region inventory normalization:** Ingested raw inventory extracts from divergent virtualization clusters across US and EU data centers. Standardized core CPU allocations, memory footprints, operating system versions, and storage allocations into a single unified data model.
-- **Compute transformation modeling:** Identified that over 65% of legacy on-premises servers ran static batch transcode tasks. Designed a target compute model shifting these fixed server fleets to dynamic, containerized worker tasks on Amazon EKS utilizing Graviton (ARM64) and EC2 Spot instances, slashing compute runtime costs.
+- **Compute transformation modeling:** Identified that over 65% of legacy on-premises servers ran static batch transcode tasks. Designed a target compute model shifting these fixed server fleets to dynamic, containerized worker tasks on Amazon EKS using Graviton (ARM64) and EC2 Spot instances, cutting compute costs.
 - **Media storage tiering architecture:** Analyzed storage access patterns across high-performance editing SANs, nearline NAS repositories, and deep cold archives. Modeled an automated cloud lifecycle policy moving media from Amazon S3 Standard (active localization) to S3 Infrequent Access, and finally S3 Glacier Deep Archive post-release, protecting margins on historical catalog storage.
 
 ## Readiness · The 6-Pillar Cloud Adoption Framework (CAF)
@@ -72,4 +72,4 @@ To prepare the organization for cross-border migration execution, Migration Read
 
 ## Outcome · Executive approval and structured mobilize roadmap
 
-The engagement delivered comprehensive documentation: the **Recommended Migration Analysis Report**, the **Success Criteria & KPI Framework**, and the **MAP Assess Findings & TCO Executive Deck**. The financial modeling demonstrated substantial multi-year savings compared to physical hardware refresh cycles, securing enterprise board approval to transition to the MAP Mobilize phase.
+The engagement delivered full documentation: the **Recommended Migration Analysis Report**, the **Success Criteria & KPI Framework**, and the **MAP Assess Findings & TCO Executive Deck**. The financial modeling demonstrated substantial multi-year savings compared to physical hardware refresh cycles, securing enterprise board approval to transition to the MAP Mobilize phase.

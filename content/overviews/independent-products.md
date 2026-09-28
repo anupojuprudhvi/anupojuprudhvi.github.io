@@ -1,71 +1,69 @@
 ---
-title: Sovereign enterprise software and AI-assisted platform engineering
-summary: From autonomous workforce identity governance with distributed sagas to hardened serverless platforms — architecting, building, and operating production software with formal AI-agent engineering discipline.
+title: Two products I built and run myself, with AI as a closely supervised helper
+summary: A workforce identity platform built on reliable Temporal workflows, and a serverless PDF product taken from broken to audited, both built under a strict, written way of working with AI coding tools.
 role: Platform Architect, Systems Engineer & Solo Product Builder
-scope: Distributed state machines, deterministic policy RAG, monorepo-to-polyrepo microservices, WebAssembly compilation, security auditing, and automated CI/CD guardrails
+scope: Temporal workflows, cited policy search, splitting a monorepo into services, WebAssembly, security review, and automated CI/CD checks
 ---
 
-## Problem · Bridging the gap between software ambition and operational reality
+## Problem · Big ambitions, small team
 
-Building and operating independent software products presents two steep challenges: enterprise software typically requires large teams to maintain complex integrations across identity providers, HR systems, and cloud infrastructure; and solo-built products often suffer from architectural shortcuts that fail when deployed under real production constraints.
+Independent products run into two problems. Enterprise software usually needs a large team to keep its integrations with identity providers, HR systems, and cloud infrastructure working. Products built by one person tend to collect shortcuts that break once real users arrive.
 
-Enterprises bleed hundreds of thousands of dollars annually on disconnected identity tools and orphaned SaaS licenses, while solo engineers struggle to maintain velocity without sacrificing security, automated test coverage, and systematic root-cause discipline.
+Companies spend a lot on identity tools that don't talk to each other and on SaaS licences nobody remembered to cancel. A solo engineer, meanwhile, has to move quickly without letting security, test coverage, or careful root-cause work slip.
 
-## Solution · Two distinct platforms, one uncompromising engineering standard
+## Solution · Two products, one set of standards
 
-This engagement track showcases two software products engineered to solve complex operational problems through disciplined architecture and formal AI-agent collaboration:
+This section covers two products, both built with AI coding tools working under clear rules:
 
-1. **NexusCore AI (Flagship Enterprise OS):** An autonomous enterprise workforce, identity, and policy operating system that unifies Identity Governance (IAM), employee Joiner-Mover-Leaver (JML) automation, attendance tracking, and handbook policy retrieval. Powered by Temporal distributed state machines, Next.js 15, FastAPI, and PostgreSQL 16, it replaces five disconnected enterprise subscriptions, eliminating the $1,400/employee identity fragmentation tax with guaranteed sub-5s de-provisioning.
-2. **Solo SaaS Hardening (PDF Performance & Security):** A production document processing platform taken from a broken serverless deployment to an audited, 93% lighter WebAssembly engine with Supabase Postgres and automated payment verification — engineered solo against a strict operating protocol.
+1. **NexusCore AI:** one system for workforce identity and policy. It brings together account access (IAM), joiner-mover-leaver (JML) automation, attendance, and answers to handbook questions. It runs on Temporal, Next.js 15, FastAPI, and PostgreSQL 16, and is designed to replace five separate subscriptions and remove a departing employee's access in under five seconds.
+2. **Solo SaaS hardening:** a PDF processing product I took from a serverless deployment that didn't work to a security-reviewed WebAssembly engine about 93% lighter, with Supabase Postgres and verified payment handling. I built it alone, following a written working protocol.
 
-## Architecture · Durable state machines and sovereign execution
+## Architecture · Workflows that finish or undo themselves
 
-NexusCore AI is designed for zero-trust enterprise sovereignty. Instead of fragile webhooks or unversioned Lambda scripts that fail silently when third-party APIs rate-limit, all multi-step employee lifecycle operations run as **atomic distributed sagas** orchestrated by Temporal. If any downstream SaaS API encounters an error, exponential backoff retries and automated compensating rollback transactions prevent half-configured ghost credentials from lingering in production.
+In NexusCore AI, multi-step employee changes don't rely on webhooks or loose Lambda scripts that can fail quietly when a third-party API starts rate-limiting. Each change runs as a Temporal workflow. If a downstream SaaS API fails, the workflow retries with backoff, and if it still can't finish, it undoes the earlier steps. Nobody is left with half-configured access.
 
-All security-sensitive operations — including user creation, privilege elevation, manager reassignments, and tenant status changes — are cryptographically recorded in an append-only, tamper-evident SHA-256 audit ledger ready for SOC 2 Type II and SOX compliance reviews.
+Every security-sensitive action (creating a user, raising privileges, changing a manager, changing a tenant's status) is written to an append-only audit log protected with SHA-256 hashing, so it's ready for SOC 2 Type II and SOX reviews.
 
 ```text
-       NexusCore AI (Enterprise Workforce & Identity OS)
+       NexusCore AI (workforce & identity platform)
        ─────────────────────────────────────────────────
-       • 6 Decoupled Services: Web, API, AI, Worker, Infra, Manifests
-       • Temporal Durable Execution Engine & Saga Compensation
-       • Grounded Policy RAG: In-Memory BM25 + S3 Vectors with Page Citations
-       • AWS EKS + ArgoCD GitOps Continuous Delivery
-       • 509 Continuous Automated Tests (100% Pass Rate)
+       • 6 separate services: web, API, AI, worker, infra, manifests
+       • Temporal workflows with automatic undo on failure
+       • Policy search: in-memory BM25 + S3 vectors, with page citations
+       • Amazon EKS + ArgoCD GitOps delivery
+       • 509 automated tests, all passing
 
-       Solo SaaS Hardening (High-Performance Document Engine)
+       Solo SaaS hardening (PDF engine)
        ─────────────────────────────────────────────────────
-       • Zero-Native WASM Rendering Pipeline (Runs Local & Serverless)
-       • Managed Supabase Postgres with Strict Row-Level Security (RLS)
-       • Cryptographic Webhook Verification & Double-Spend Protection
-       • 93% Payload Reduction (1.47MB down to 106KB)
+       • WebAssembly rendering, no native binaries (runs locally and serverless)
+       • Supabase Postgres with row-level security (RLS)
+       • Signed webhook checks and protection against double charging
+       • First load cut from 1.47 MB to 106 KB (about 93%)
 ```
 
 ### Implementation notes
 
-- **Enterprise multi-tenancy & zero data leakage:** In NexusCore AI, relational schemas are strictly scoped by `organization_id` with foreign-key validation guards. Handbooks ingested into the Policy RAG engine are partitioned in memory and storage, ensuring that natural-language policy queries from one tenant can never retrieve or synthesize another tenant's proprietary documents.
-- **Deterministic AI with mathematical guardrails:** Rather than allowing generic LLMs to hallucinate corporate policies, NexusCore AI requires verbatim clause and PDF page citations for every policy answer. Queries falling below a strict relevance threshold are automatically routed to human HR teams.
-- **Polyrepo GitOps delivery:** Infrastructure is provisioned via 4-layer modular Terraform, managed on Kubernetes (AWS EKS) through ArgoCD GitOps, and decoupled from application secrets via the External Secrets Operator (ESO) bridging to AWS Secrets Manager.
-- **Dual deployment topologies:** Deploys either as an auto-scaling Kubernetes cluster on AWS EKS with ArgoCD, or as an air-gapped standalone EC2 instance with Docker Compose and 127.0.0.1 port isolation for rapid proof-of-concept evaluations without Kubernetes overhead.
+- **Each customer's data stays separate.** Every table is scoped by `organization_id` and checked with foreign keys. Handbooks loaded into the policy search are kept apart in memory and in storage, so one company's question can never pull in another company's documents.
+- **Policy answers must show their source.** Instead of letting a language model guess at company policy, every answer quotes the exact clause and PDF page. Questions that don't match anything closely enough go to the HR team instead.
+- **Infrastructure in code, delivered through Git.** Infrastructure is built with four layers of Terraform, the services run on Amazon EKS managed by ArgoCD, and secrets come from AWS Secrets Manager through the External Secrets Operator.
+- **Two ways to deploy.** It runs either on an autoscaling EKS cluster with ArgoCD, or on a single EC2 instance with Docker Compose and ports bound to localhost, for a quick trial without Kubernetes.
 
-## Delivery · The AI-agent engineering operating protocol
+## Delivery · How I work with AI coding tools
 
-Both platforms were built and operated through a formalized, written AI-agent engineering workflow. Rather than treating AI as an ad-hoc autocomplete tool, development was governed by strict operating guardrails:
+I built and run both products with AI coding tools, under written rules rather than ad-hoc autocomplete:
 
-- **Mandatory explain-propose-implement cycles:** Every bug fix and architectural addition required a written root-cause explanation and file-touch proposal before modifying code.
-- **Continuous test ratchets:** Rigorous multi-suite automated gates (509 passing tests in NexusCore AI; 10 suites in the PDF platform) prevented regressions from ever landing in production branches.
-- **Zero-hallucination verification:** All claims, endpoints, and architectural components are validated against live test suites and formal codebase audits.
+- **Explain, propose, then change.** Every fix or new feature starts with a written root-cause explanation and a list of files to touch, before any code changes.
+- **Tests only ratchet up.** Automated test suites (509 tests in NexusCore AI, 10 suites in the PDF product) block changes that would break something.
+- **Nothing is taken on trust.** Claims, endpoints, and architecture are checked against the test suites and code reviews.
 
-## Outcome · Measured enterprise and product impact
+## Outcome · What the numbers say
 
-Across both systems, this architectural discipline delivered verified, quantifiable outcomes:
+- **$240,000 a year in modelled net savings** for a 500-employee company using NexusCore AI: a 66.7% cut in identity costs with a 3.8-month payback. This is a projection, not a measured result.
+- **Access changes in under 5 seconds** for joiners, movers, and leavers, compared with the multi-day onboarding waits the case study describes.
+- **89% modelled drop in IT tickets**, from self-service manager approvals and policy answers people can check.
+- **About 93% less to download on first load**, and nine security findings fixed, on the PDF product.
 
-- **$240,000 net annual recurring savings** for a 500-employee enterprise adopting NexusCore AI, cutting identity TCO by 66.7% with a 3.8-month payback period.
-- **Sub-5 second Joiner-Mover-Leaver execution**, eliminating the 7.2-day onboarding lag and preventing security credential leaks.
-- **89% IT ticket deflection** via self-service manager approval queues and grounded policy retrieval.
-- **93% reduction in first-load page weight** and nine closed security vulnerabilities on the solo document platform.
-
-## Case studies · {{caseStudyCount}} technical deep dives and platform stories
+## Case studies · {{caseStudyCount}} detailed write-ups
 
 <div class="case-study-links">
 {{caseStudyLinks}}

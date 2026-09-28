@@ -62,10 +62,10 @@ The assessment must model two competing licensing pathways:
 
 ### Modernization Pathway: Replatforming SQL Server
 The DBC evaluates replatforming commercial SQL Server databases to managed cloud alternatives:
-- **SQL Server Enterprise to Standard:** Right-sizing database vCPUs often brings workloads within SQL Server Standard limits, slashing per-core licensing fees by ~70%.
+- **SQL Server Enterprise to Standard:** Right-sizing database vCPUs often brings workloads within SQL Server Standard limits, cutting per-core licensing fees by ~70%.
 - **Commercial to Open Source:** Mapping relational databases to **Amazon Aurora PostgreSQL** eliminates proprietary database licensing liabilities entirely.
 
-## Funding · Unlocking AWS MAP partner co-funding
+## Funding · Qualifying for AWS MAP partner co-funding
 
 The AWS Migration Acceleration Program (MAP) provides substantial financial incentives to offset migration costs:
 

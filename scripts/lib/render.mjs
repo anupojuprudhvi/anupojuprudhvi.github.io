@@ -283,6 +283,8 @@ export function page(d, bodyHtml, { up, url, prev, next, docs = [] } = {}) {
     .join("\n    ");
 
   const isStudy = Boolean(d.slug);
+  // Case studies default from their layer; overviews show one only when given.
+  const motifName = isStudy ? motifFor(d) : d.motif || "";
   const canonicalPath = url.replace(/index\.html$/, "");
   const canonical = `${SITE}/${canonicalPath}`;
   const ogImage = `${SITE}/${d.ogImage || "og-image.png"}`;
@@ -416,8 +418,8 @@ ${siteTopNav({ docs, up, active: "case-studies" })}
               }</div>
               <h1>${inline(d.heroTitle || d.title)}</h1>
               ${d.intro || d.summary ? `<p class="sub">${inline(d.intro || d.summary)}</p>` : ""}
-            </div>${isStudy && motifFor(d) ? `
-            ${motifSvg(motifFor(d))}` : ""}
+            </div>${motifName ? `
+            ${motifSvg(motifName)}` : ""}
           </div>${metaBits ? `
           <div class="meta">
             ${metaBits}

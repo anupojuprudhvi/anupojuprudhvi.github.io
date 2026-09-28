@@ -10,11 +10,11 @@ stack: [AWS MAP, AWS Transform, RVTools, TCO Modeling, Landing Zone, Well-Archit
 
 ## Overview · The enterprise migration & modernization journey
 
-Cloud migration at enterprise scale is rarely just an infrastructure project — it is a joint financial, operational, and architectural transformation. Organizations migrating legacy VMware estates, bare-metal datacenters, or colocation facilities to AWS must navigate rigid governance hurdles, executive financial justification, and strict risk mitigation before moving a single production workload.
+Cloud migration at enterprise scale is rarely just an infrastructure project — it is a joint financial, operational, and architectural transformation. Organizations migrating legacy VMware estates, bare-metal datacenters, or colocation facilities to AWS have to get through strict governance, executive financial justification, and strict risk mitigation before moving a single production workload.
 
 The **AWS Migration Acceleration Program (MAP)** provides a structured, phased methodology to de-risk this transition across three distinct stages:
 
-1. **Assess Phase:** Quantifying the technical estate, evaluating organizational readiness across the 6 Cloud Adoption Framework (CAF) pillars, and authoring a defensible 3–5 year Directional Business Case (DBC) that unlocks AWS co-funding grants.
+1. **Assess Phase:** Quantifying the technical estate, evaluating organizational readiness across the 6 Cloud Adoption Framework (CAF) pillars, and authoring a defensible 3–5 year Directional Business Case (DBC) that qualifies for AWS co-funding grants.
 2. **Mobilize Phase:** Bridging the business case to hands-on engineering — building the secure Multi-Account Landing Zone, mapping cross-application dependencies, refining 7Rs modernization strategies, and executing a lighthouse migration pilot.
 3. **Migrate & Modernize Phase:** Industrialized factory execution across sequenced migration waves, retiring legacy datacenter leases while executing in-flight modernization (containers on EKS, managed Aurora databases, serverless integration).
 
@@ -24,7 +24,7 @@ A successful enterprise engagement is measured by the quality, auditability, and
 
 ### 1. MAP Assess Phase Deliverables
 - **Migration Readiness Assessment (MRA):** An audited evaluation across the 6 AWS CAF pillars (Business, People, Governance, Platform, Security, Operations), delivering the organizational readiness scorecard, capability gap analysis, and executive risk mitigation matrix.
-- **Total Cost of Ownership (TCO) & Financial Model:** A comprehensive 3-year financial model contrasting current on-premises run costs against AWS On-Demand, 1-Year Savings Plans, and 3-Year Savings Plans (All/Partial Upfront), complete with Microsoft Windows Server and SQL Server licensing optimization (BYOL vs. License-Included).
+- **Total Cost of Ownership (TCO) & Financial Model:** A 3-year financial model contrasting current on-premises run costs against AWS On-Demand, 1-Year Savings Plans, and 3-Year Savings Plans (All/Partial Upfront), complete with Microsoft Windows Server and SQL Server licensing optimization (BYOL vs. License-Included).
 - **Target State Architecture Blueprint:** A Well-Architected technical layout detailing the multi-account Landing Zone, Transit Gateway network topology, hybrid connectivity (Direct Connect / VPN), security guardrails, and the 7Rs Workload Placement Matrix.
 - **Directional Business Case (DBC):** The executive C-level justification document providing cash-flow projections, ROI timelines, payback periods, and qualifying the program for AWS MAP co-funding credits.
 
@@ -36,7 +36,7 @@ A successful enterprise engagement is measured by the quality, auditability, and
 - **Skills Enablement & CCoE Operating Charter:** Cloud Center of Excellence governance structure, RACI operational boundaries, and training curriculum for internal engineering squads.
 
 ### 3. Migrate & Modernize Phase Deliverables
-- **Industrialized Migration Factory Pipelines:** High-velocity replication workflows utilizing AWS Application Migration Service (MGN) and AWS Database Migration Service (DMS).
+- **Migration factory pipelines:** Fast, repeatable replication workflows using AWS Application Migration Service (MGN) and AWS Database Migration Service (DMS).
 - **Modernization Blueprints:** Cloud-native target architectures containerizing workloads onto Amazon EKS with Karpenter, replatforming databases to Amazon Aurora PostgreSQL, and serverless messaging.
 - **MAP Customer Sign-Off & Decommissioning Package:** Audited milestone completion packages submitted to AWS partner governance to release financial incentive credits, accompanied by official datacenter asset decommissioning certificates.
 

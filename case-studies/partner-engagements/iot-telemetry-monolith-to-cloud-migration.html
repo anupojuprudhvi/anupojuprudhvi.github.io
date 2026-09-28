@@ -7,12 +7,12 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Connected IoT platform · Monolith to AWS cloud migration — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="Modernizing a connected device platform from on-premise servers to AWS managed services — service translation matrices, estimates, and MAP Mobilize roadmaps." />
+    <meta name="description" content="Moving a connected-device platform from on-premise servers to AWS managed services: mapping each old service to its AWS replacement, cost estimates, and a MAP Mobilize roadmap." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/case-studies/partner-engagements/iot-telemetry-monolith-to-cloud-migration.html" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://anupojuprudhvi.github.io/case-studies/partner-engagements/iot-telemetry-monolith-to-cloud-migration.html" />
     <meta property="og:title" content="Connected IoT platform · Monolith to AWS cloud migration" />
-    <meta property="og:description" content="Modernizing a connected device platform from on-premise servers to AWS managed services — service translation matrices, estimates, and MAP Mobilize roadmaps." />
+    <meta property="og:description" content="Moving a connected-device platform from on-premise servers to AWS managed services: mapping each old service to its AWS replacement, cost estimates, and a MAP Mobilize roadmap." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/assets/og/partner-engagements/iot-telemetry-monolith-to-cloud-migration.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -26,7 +26,7 @@
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "Connected IoT platform · Monolith to AWS cloud migration",
-        "description": "Modernizing a connected device platform from on-premise servers to AWS managed services — service translation matrices, estimates, and MAP Mobilize roadmaps.",
+        "description": "Moving a connected-device platform from on-premise servers to AWS managed services: mapping each old service to its AWS replacement, cost estimates, and a MAP Mobilize roadmap.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -139,7 +139,7 @@
             <div>
               <div class="eyebrow">AWS APN &amp; Migration Engagements · Target architecture</div>
               <h1>Connected IoT platform · Monolith to AWS cloud migration</h1>
-              <p class="sub">Modernizing a connected device platform from on-premise servers to AWS managed services — service translation matrices, estimates, and MAP Mobilize roadmaps.</p>
+              <p class="sub">Moving a connected-device platform from on-premise servers to AWS managed services: mapping each old service to its AWS replacement, cost estimates, and a MAP Mobilize roadmap.</p>
             </div>
             <svg class="motif motif-migration" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <defs><path id="mM" d="M84 90 C 108 44, 132 44, 156 90" /></defs>
@@ -188,7 +188,7 @@
 </div>
 <div>
 <h3>The architectural solution</h3>
-<p>Designed the target cloud architecture and authored the comprehensive Service Mapping Matrix translating monolithic components to scalable AWS managed equivalents: migrating self-hosted MQTT to AWS IoT Core, background processing to Amazon EKS on AWS Graviton, telemetry streaming to Amazon Kinesis, and operational persistence to Amazon Aurora and Amazon DynamoDB. Formulated the 3-year capacity cost models, authored the MAP Assessment Final Report, and established the technical governance and cadence framework for the Mobilize phase.</p>
+<p>Designed the target cloud architecture and wrote the Service Mapping Matrix translating monolithic components to scalable AWS managed equivalents: migrating self-hosted MQTT to AWS IoT Core, background processing to Amazon EKS on AWS Graviton, telemetry streaming to Amazon Kinesis, and operational persistence to Amazon Aurora and Amazon DynamoDB. Built the 3-year capacity cost models, authored the MAP Assessment Final Report, and established the technical governance and cadence framework for the Mobilize phase.</p>
 </div>
 </div>
 <figure class="reqflow">
@@ -236,7 +236,7 @@
 <li>*Raw Telemetry Buffer* ➔ <b>Amazon Kinesis Data Streams</b> (sharded, real-time event streaming buffer absorbing traffic surges).</li>
 <li>*Self-Hosted Relational Database* ➔ <b>Amazon Aurora PostgreSQL Multi-AZ</b> (managed backups, storage auto-scaling, read replica offloading).</li>
 <li>*Device Metric Time-Series* ➔ <b>Amazon DynamoDB</b> (single-digit millisecond latency at scale for device state snapshots).</li>
-<li><b>Multi-region disaster recovery roadmap:</b> Engineered a primary deployment in <code>us-east-1</code> paired with a pilot light recovery posture in <code>us-west-2</code>, leveraging Aurora global replication and Route 53 latency-based routing.</li>
+<li><b>Multi-region disaster recovery roadmap:</b> Designed a primary deployment in <code>us-east-1</code> paired with a pilot light recovery posture in <code>us-west-2</code>, using Aurora global replication and Route 53 latency-based routing.</li>
 <li><b>Ballpark infrastructure estimation:</b> Built multi-scenario financial projections accounting for anticipated hardware device manufacturing growth over 12, 24, and 36 months, establishing exact compute, data ingress/egress, and storage budget guardrails.</li>
 </ul>
 </details>

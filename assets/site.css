@@ -1714,3 +1714,9 @@ html.js .reveal-in {
     background: none;
   }
 }
+
+/* theme.js marks animated diagrams that are off screen. */
+.anim-paused,
+.anim-paused * {
+  animation-play-state: paused;
+}

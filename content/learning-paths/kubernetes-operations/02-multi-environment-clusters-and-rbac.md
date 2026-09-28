@@ -4,7 +4,7 @@ date: 2026-09-18
 track: kubernetes-operations
 order: 2
 module: 2
-totalModules: 4
+totalModules: 6
 summary: Isolating Dev, QA, Staging, and Production as separate clusters, and mapping IAM identities to Kubernetes RBAC via aws-auth, without a shared superuser.
 level: Access Control
 readingTime: 7 min read
@@ -14,7 +14,7 @@ tags: [rbac, iam, eks, multi-environment, security]
 
 ## Principle · Separate clusters, not separate namespaces, for hard environment boundaries
 
-Namespaces are a reasonable way to organize workloads within one cluster, but they're a soft boundary — a misconfigured RBAC role or a cluster-wide resource (a CRD, a webhook, a node-level setting) can still cross a namespace line. For environments with materially different risk profiles — a development sandbox versus a production cluster serving live traffic — a genuinely hard boundary means separate clusters, each with its own control plane, its own node groups, and its own IAM trust relationship.
+Namespaces are a reasonable way to organize workloads within one cluster, but they're a soft boundary — a misconfigured RBAC role or a cluster-wide resource (a CRD, a webhook, a node-level setting) can still cross a namespace line. For environments with materially different risk profiles — a development sandbox versus a production cluster serving live traffic — a real hard boundary means separate clusters, each with its own control plane, its own node groups, and its own IAM trust relationship.
 
 A typical layout: one EKS cluster each for Development, QA, Staging, and Production, with engineers authenticating to whichever cluster their current task requires rather than one shared always-on context.
 

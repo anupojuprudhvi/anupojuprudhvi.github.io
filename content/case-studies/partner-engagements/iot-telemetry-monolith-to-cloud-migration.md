@@ -9,7 +9,7 @@ layer: Migration & strategy
 order: 30
 stack: [AWS IoT Core, Amazon EKS, Amazon Kinesis, Aurora PostgreSQL, DynamoDB, AWS MAP]
 tags: [iot, telemetry, monolith-to-microservices, architecture, eks, kinesis, map]
-summary: Modernizing a connected device platform from on-premise servers to AWS managed services — service translation matrices, estimates, and MAP Mobilize roadmaps.
+summary: Moving a connected-device platform from on-premise servers to AWS managed services: mapping each old service to its AWS replacement, cost estimates, and a MAP Mobilize roadmap.
 problem: |
   A connected smart consumer IoT platform transmitting continuous streams of biometric
   and environmental telemetry from millions of deployed hardware units was constrained
@@ -20,11 +20,11 @@ problem: |
   Well-Architected target blueprint, mapping legacy server daemons to managed cloud services,
   and establishing defensible infrastructure cost estimates.
 solution: |
-  Designed the target cloud architecture and authored the comprehensive Service Mapping
+  Designed the target cloud architecture and wrote the Service Mapping
   Matrix translating monolithic components to scalable AWS managed equivalents:
   migrating self-hosted MQTT to AWS IoT Core, background processing to Amazon EKS on
   AWS Graviton, telemetry streaming to Amazon Kinesis, and operational persistence to
-  Amazon Aurora and Amazon DynamoDB. Formulated the 3-year capacity cost models,
+  Amazon Aurora and Amazon DynamoDB. Built the 3-year capacity cost models,
   authored the MAP Assessment Final Report, and established the technical governance
   and cadence framework for the Mobilize phase.
 flowLabel: Monolith-to-cloud service translation pipeline
@@ -66,7 +66,7 @@ Under the AWS Migration Acceleration Program (MAP) Assess phase, the objective w
   - *Raw Telemetry Buffer* ➔ **Amazon Kinesis Data Streams** (sharded, real-time event streaming buffer absorbing traffic surges).
   - *Self-Hosted Relational Database* ➔ **Amazon Aurora PostgreSQL Multi-AZ** (managed backups, storage auto-scaling, read replica offloading).
   - *Device Metric Time-Series* ➔ **Amazon DynamoDB** (single-digit millisecond latency at scale for device state snapshots).
-- **Multi-region disaster recovery roadmap:** Engineered a primary deployment in `us-east-1` paired with a pilot light recovery posture in `us-west-2`, leveraging Aurora global replication and Route 53 latency-based routing.
+- **Multi-region disaster recovery roadmap:** Designed a primary deployment in `us-east-1` paired with a pilot light recovery posture in `us-west-2`, using Aurora global replication and Route 53 latency-based routing.
 - **Ballpark infrastructure estimation:** Built multi-scenario financial projections accounting for anticipated hardware device manufacturing growth over 12, 24, and 36 months, establishing exact compute, data ingress/egress, and storage budget guardrails.
 
 ## Architecture · Decoupled telemetry ingestion and processing

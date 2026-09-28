@@ -18,8 +18,8 @@ Every cloud migration starts with the **Assess** phase, but no two enterprise es
 
 When entering an assessment, architects and migration leads must select between two primary delivery engagement models:
 
-1. **The Rapid Assessment (4–6 Weeks):** A focused, telemetry-led evaluation engineered for speed. It leverages automated tooling to answer the core financial and infrastructure questions: *"What do we have, what will it cost on AWS, and what are our immediate licensing liabilities?"*
-2. **The Deep Enterprise Assessment (3–4 Months):** A holistic organizational and technical transformation study. It pairs automated discovery with extensive cross-functional stakeholder workshops across all six **AWS Cloud Adoption Framework (CAF)** perspectives, analyzing people, skills, governance, and operating models alongside server inventory.
+1. **The Rapid Assessment (4–6 Weeks):** A focused, telemetry-led evaluation built for speed. It uses automated tooling to answer the core financial and infrastructure questions: *"What do we have, what will it cost on AWS, and what are our immediate licensing liabilities?"*
+2. **The Deep Enterprise Assessment (3–4 Months):** A full study of the organization and its technology. It pairs automated discovery with extensive cross-functional stakeholder workshops across all six **AWS Cloud Adoption Framework (CAF)** perspectives, analyzing people, skills, governance, and operating models alongside server inventory.
 
 Selecting the wrong engagement model introduces severe delivery friction: executing a multi-month discovery when a datacenter lease expires in 90 days causes paralysis, while running a rapid 4-week tooling scan on a heavily regulated bank without organizational buy-in leads to stalled Mobilize initiatives.
 
@@ -32,14 +32,14 @@ The table below contrasts the scope, cadence, deliverables, and trade-offs of bo
   - **Discovery Mechanism:** Automated RVTools exports and lightweight AWS Transform agentless OVA appliances.
   - **Stakeholder Footprint:** Infrastructure, virtualization, and cloud finance leads.
   - **Key Deliverable:** Directional Business Case (DBC) with 3-year TCO modeling (On-Demand vs. Savings Plans) and high-level 7Rs workload mapping.
-  - **Core Advantage:** Fast time-to-value, low organizational tax, unlocks AWS MAP funding eligibility quickly.
+  - **Core Advantage:** Fast time-to-value, low organizational tax, qualifies for AWS MAP funding quickly.
   - **Known Trade-off:** Limited visibility into application-level interdependencies and organizational change management readiness.
 
 - **Deep Enterprise Assessment (3–4 Months):**
   - **Primary Trigger:** Large-scale enterprise estate exit (500+ VMs), complex regulatory compliance (HIPAA, PCI-DSS, SOC2), or significant legacy operational debt.
   - **Discovery Mechanism:** Continuous telemetry over 30–90 days (capturing quarter-end processing peaks) combined with deep application owner questionnaires.
   - **Stakeholder Footprint:** Full executive suite: CIO, CISO, VP of Infrastructure, Enterprise Architecture, FinOps, HR/Enablement, and Application Tier owners.
-  - **Key Deliverable:** Comprehensive Migration Readiness Assessment (MRA) across 6 CAF pillars, detailed Total Cost of Ownership (TCO) with BYOL licensing audit, detailed wave planning, and Cloud Center of Excellence (CCoE) operating charter.
+  - **Key Deliverable:** A full Migration Readiness Assessment (MRA) across 6 CAF pillars, detailed Total Cost of Ownership (TCO) with BYOL licensing audit, detailed wave planning, and Cloud Center of Excellence (CCoE) operating charter.
   - **Core Advantage:** High architectural precision, deep cross-functional alignment, minimizes unexpected surprises during Mobilize.
   - **Known Trade-off:** Substantial time investment and organizational energy required across engineering and business teams.
 

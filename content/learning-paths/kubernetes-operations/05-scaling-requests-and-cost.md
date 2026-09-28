@@ -1,0 +1,91 @@
+---
+title: Scaling Without Surprises: Requests, Autoscaling & Cost
+date: 2026-09-28
+track: kubernetes-operations
+order: 5
+module: 5
+totalModules: 6
+summary: Why resource requests drive almost everything in an EKS cluster — scheduling, autoscaling, and the bill — and how pod and node autoscaling fit together.
+level: Operations
+readingTime: 8 min read
+stack: [Amazon EKS, Kubernetes, Horizontal Pod Autoscaler, Karpenter, Cluster Autoscaler]
+tags: [autoscaling, cost, capacity, eks, kubernetes]
+---
+
+## Principle · Requests are a promise, and the cluster plans around them
+
+Every scaling decision in Kubernetes starts from resource requests. The scheduler places a pod on a node only if the node has room for what the pod *requests*, not what it actually uses. Node autoscalers add nodes when pods can't be placed. The Horizontal Pod Autoscaler measures CPU as a percentage of the request.
+
+So when requests are wrong, everything built on top of them is wrong too. Set them too high and you pay for nodes that sit half-empty. Set them too low, or leave them out, and pods get packed onto nodes that can't actually carry them.
+
+```yaml
+resources:
+  requests:
+    cpu: 250m        # what the scheduler reserves for this pod
+    memory: 256Mi
+  limits:
+    memory: 512Mi    # hard ceiling: going over gets the container OOMKilled
+```
+
+Limits behave differently for CPU and memory. Going over a CPU limit slows the container down (it gets throttled). Going over a memory limit kills it. That's why many teams set a memory limit but leave CPU unlimited, so a busy pod can borrow idle CPU instead of being throttled while the node has spare capacity.
+
+## Two layers of autoscaling
+
+It helps to keep the two layers apart in your head:
+
+- **Pods scale out** with the Horizontal Pod Autoscaler (HPA). It adds or removes replicas based on a metric, usually CPU or memory usage relative to the request.
+- **Nodes scale out** with Cluster Autoscaler or Karpenter. They add capacity when pods are stuck in `Pending` because no node has room, and remove nodes that sit mostly idle.
+
+```yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: api
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: api
+  minReplicas: 3
+  maxReplicas: 20
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70   # 70% of the CPU *request*, not of the node
+```
+
+The HPA needs metrics-server (or another metrics source) running in the cluster, and it needs requests set on the pods it watches. Without a CPU request there's nothing to calculate a percentage against, and it won't scale on CPU.
+
+### Choosing a node autoscaler
+
+- **Cluster Autoscaler** works through your existing node groups. It grows or shrinks an Auto Scaling group, so every new node looks like the ones you defined up front. It's predictable and easy to reason about.
+- **Karpenter** skips node groups and launches EC2 instances directly, picking instance types that fit the pods that are waiting. It usually packs workloads more tightly and reacts faster, and it can mix Spot and On-Demand capacity. The trade-off is that you describe what's *allowed* rather than exactly what you get.
+- Whichever you choose, run one. Two node autoscalers acting on the same capacity will fight each other.
+
+## Keeping scale-down from hurting you
+
+Scaling in is where outages hide. When a node autoscaler removes a node, or a Spot instance is reclaimed (AWS gives a two-minute warning), the pods on it are evicted. A PodDisruptionBudget tells Kubernetes how many replicas must stay up during that kind of voluntary disruption.
+
+```yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: api
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: api
+```
+
+A PDB only protects against *voluntary* disruptions: drains, scale-downs, upgrades. It does nothing for a crash or a node that dies outright. For that you still need more than one replica, spread across Availability Zones.
+
+### Implementation notes
+
+- **Start from real usage, not guesses.** Watch actual CPU and memory for a week (`kubectl top pods`, Container Insights, or your metrics stack) and set requests a little above the typical peak.
+- **A PDB with `minAvailable` equal to the replica count blocks every drain.** It looks safe, but it quietly stops node upgrades and scale-down until someone notices.
+- **Idle capacity is the most common hidden cost.** Nodes sized for requests that nobody uses cost exactly the same as busy ones. Check the gap between requested and used resources regularly.
+- **Spot suits stateless, replicated workloads.** Keep anything that can't tolerate a two-minute eviction on On-Demand capacity.

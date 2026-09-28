@@ -4,7 +4,7 @@ date: 2026-09-18
 track: kubernetes-operations
 order: 3
 module: 3
-totalModules: 4
+totalModules: 6
 summary: A registry-to-cluster promotion workflow for EKS, and the one headless-authentication detail that only breaks once a human isn't the one typing the command.
 level: Delivery
 readingTime: 7 min read

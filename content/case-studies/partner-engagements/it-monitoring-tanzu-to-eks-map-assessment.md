@@ -20,10 +20,10 @@ problem: |
   stateful data persistence mapping, and an audited 3-year TCO financial justification to validate
   a complete datacenter exit.
 solution: |
-  Serving as Lead Cloud Architect, spearheaded the technical workload assessment and EKS
-  target state architecture. Formulated a comprehensive 33-question evaluation matrix spanning
-  container resource requests/limits, network policies, and pod storage drivers. Architected the
-  target AWS platform transitioning VMware Tanzu workloads to Amazon EKS utilizing Karpenter
+  Serving as Lead Cloud Architect, led the technical workload assessment and EKS
+  target state architecture. Built a 33-question evaluation matrix spanning
+  container resource requests/limits, network policies, and pod storage drivers. Designed the
+  target AWS platform transitioning VMware Tanzu workloads to Amazon EKS using Karpenter
   with AWS Graviton and Spot instances, mapped relational databases to Amazon Aurora, and authored
   the compute right-sizing report (projecting ≥ 25% compute savings) and official AWS MAP Customer
   Sign-Off package.
@@ -40,7 +40,7 @@ flow:
 enables: |
   Decouples the enterprise from restrictive on-premises hypervisor licensing,
   automates container autoscaling via Karpenter on modern Graviton processors, and
-  establishes the blueprint for a seamless colocation datacenter retirement.
+  establishes the plan for retiring the colocation datacenter cleanly.
 outcomes:
   - value: ≥ 25%
     label: Projected compute cost reduction via EKS right-sizing and Karpenter
@@ -59,7 +59,7 @@ As Lead Cloud Architect for this AWS Migration Acceleration Program (MAP) Assess
 ### Implementation notes
 
 - **Kubernetes assessment framework:** To address gaps in standard hypervisor discovery, an in-depth Kubernetes assessment questionnaire was established spanning 33 architectural dimensions, covering pod resource `requests` and `limits`, ingress controllers, network policy enforcement, and Prometheus metrics retention.
-- **VPC CNI IP capacity planning:** Evaluated AWS VPC CNI behavior where secondary private IPs are assigned directly to pods. Architected secondary CIDR blocks (`100.64.0.0/16`) for pod networking to prevent private IPv4 address exhaustion in production subnets.
+- **VPC CNI IP capacity planning:** Evaluated AWS VPC CNI behavior where secondary private IPs are assigned directly to pods. Designed secondary CIDR blocks (`100.64.0.0/16`) for pod networking to prevent private IPv4 address exhaustion in production subnets.
 - **Dynamic autoscaling with Karpenter:** Modeled replacing static on-premise Dell VxRail worker nodes with Amazon EKS using **Karpenter**. By combining Graviton (ARM64) for baseline microservices with auto-scaling EC2 Spot instances for ephemeral GitLab CI runners and QA probe test farms, the architecture projected over 25% compute cost savings.
 - **Persistent storage replatforming:** Analyzed stateful container workloads backed by Fiber Channel SAN and NFS shares. Defined clear replatforming pathways: moving transactional relational databases to **Amazon Aurora PostgreSQL**, shared developer file storage to **Amazon EFS** and **FSx for Windows**, and backup repositories to **AWS Backup** with automated S3 lifecycle tiering.
 
@@ -69,7 +69,7 @@ The target state architecture transitioned physical hyperconverged hardware and 
 
 - **Compute & Orchestration:**
   - *Current State:* VMware Tanzu Kubernetes running across 4 Dell VxRail ESXi physical hosts with static CI runner fleets.
-  - *Target State:* Amazon EKS (Multi-AZ) with Karpenter just-in-time node provisioning, leveraging AWS Graviton3 (ARM64) for baseline microservices and auto-scaling EC2 Spot instances for ephemeral CI/CD runners.
+  - *Target State:* Amazon EKS (Multi-AZ) with Karpenter just-in-time node provisioning, using AWS Graviton3 (ARM64) for baseline microservices and auto-scaling EC2 Spot instances for ephemeral CI/CD runners.
 - **Relational Databases & Persistent Storage:**
   - *Current State:* Self-managed PostgreSQL and BI reporting databases residing on physical Fiber Channel SAN arrays.
   - *Target State:* Amazon Aurora PostgreSQL Multi-AZ with automated storage autoscaling and cross-AZ read replica offloading.

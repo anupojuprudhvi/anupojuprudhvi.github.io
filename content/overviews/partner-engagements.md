@@ -5,7 +5,7 @@ role: APN Cloud Migration Architect & Technical Lead
 scope: Enterprise VMware estates, multi-region discovery, AWS Transform business cases, and target architecture design
 ---
 
-## Problem · Navigating migration scale, legacy constraints, and executive justification
+## Problem · Migration scale, legacy constraints, and making the business case to executives
 
 Enterprise organizations transitioning from legacy virtualized infrastructure or monolithic architectures to AWS face severe friction: lack of workload dependency visibility, uncertain multi-year financial returns, unquantified migration risks, and institutional inertia. Without structured discovery and formal TCO modeling, enterprise cloud initiatives stall before migration begins.
 
@@ -35,9 +35,9 @@ Where enterprise identity systems presented friction — such as legacy SAML con
 
 Discovery mechanisms operated strictly within read-only service account boundaries. For air-gapped or restricted financial environments, the discovery tool operated fully offline, collecting performance metrics locally and exporting encrypted assessment files for offline ingestion into AWS Transform.
 
-## Delivery · Unlocking migration funding and executive sponsorship
+## Delivery · Securing migration funding and executive sponsorship
 
-The primary milestone of the Assess phase is delivering the **Directional Business Case (DBC)** and **Migration Readiness Assessment (MRA)** report. These documents provide the rigorous financial and technical justification required for C-level investment approval and unlock AWS MAP partner co-funding for the subsequent Mobilize and Migrate phases.
+The primary milestone of the Assess phase is delivering the **Directional Business Case (DBC)** and **Migration Readiness Assessment (MRA)** report. These documents provide the rigorous financial and technical justification required for C-level investment approval and qualify for AWS MAP partner co-funding for the subsequent Mobilize and Migrate phases.
 
 ## Outcome · Measured clarity across diverse enterprise estates
 

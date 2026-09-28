@@ -7,11 +7,11 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Modern HCL — Types, Validations &amp; Preconditions — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="Writing robust, self-defending Terraform with rich object schemas, custom validation blocks, lifecycle preconditions, and deterministic for_each key mapping." />
+    <meta name="description" content="Writing Terraform that checks its own inputs, using rich object schemas, custom validation blocks, lifecycle preconditions, and deterministic for_each key mapping." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/terraform/03-variables-validation-and-types.html" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="Modern HCL — Types, Validations &amp; Preconditions — Prudhvi Raj Anupoju" />
-    <meta property="og:description" content="Writing robust, self-defending Terraform with rich object schemas, custom validation blocks, lifecycle preconditions, and deterministic for_each key mapping." />
+    <meta property="og:description" content="Writing Terraform that checks its own inputs, using rich object schemas, custom validation blocks, lifecycle preconditions, and deterministic for_each key mapping." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -23,7 +23,7 @@
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "Modern HCL — Types, Validations & Preconditions",
-        "description": "Writing robust, self-defending Terraform with rich object schemas, custom validation blocks, lifecycle preconditions, and deterministic for_each key mapping.",
+        "description": "Writing Terraform that checks its own inputs, using rich object schemas, custom validation blocks, lifecycle preconditions, and deterministic for_each key mapping.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -136,7 +136,7 @@
             <div>
               <span class="lp-badge">Core Architecture</span>
               <h1>Modern HCL — Types, Validations &amp; Preconditions</h1>
-              <p class="sub">Writing robust, self-defending Terraform with rich object schemas, custom validation blocks, lifecycle preconditions, and deterministic for_each key mapping.</p>
+              <p class="sub">Writing Terraform that checks its own inputs, using rich object schemas, custom validation blocks, lifecycle preconditions, and deterministic for_each key mapping.</p>
             </div>
             <svg class="motif motif-pipeline" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <text class="m-start m-muted" x="4" y="40">git push → main</text>
@@ -300,7 +300,7 @@ resource "aws_subnet" "this" {
         <div class="wrap">
           <h2>Questions about this learning path?</h2>
           <p>
-            I'm happy to dive deeper into any of these patterns — module abstraction trade-offs, state migration runbooks, or CI/CD security scanning.
+            I'm happy to go into more detail on any of this: module design trade-offs, moving state safely, or security scanning in CI/CD.
           </p>
           <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
             >anupojuprudhvi@gmail.com</a

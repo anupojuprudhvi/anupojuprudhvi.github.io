@@ -153,7 +153,7 @@
     </svg>
           </div>
           <div class="lp-meta-bar">
-            <span><b>Module:</b> 04 of 04</span>
+            <span><b>Module:</b> 04 of 06</span>
             <span><b>Level:</b> Operations</span>
             <span><b>Time:</b> 8 min read</span>
             <span><b>Published:</b> <time datetime="2026-09-18">18 Sep 2026</time></span>
@@ -176,7 +176,7 @@ kubectl describe pod &lt;pod-name&gt; -n &lt;namespace&gt;
 
 # Tail logs from the specific pod that's misbehaving
 kubectl logs &lt;pod-name&gt; -n &lt;namespace&gt; --previous</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<p><code>kubectl rollout status</code> blocks until the rollout genuinely completes or fails, which makes it a better automation gate than treating <code>apply</code> as the finish line. <code>--previous</code> on <code>kubectl logs</code> matters specifically after a crash loop — it retrieves logs from the container's last run, not the fresh, log-empty restart that's currently in <code>CrashLoopBackOff</code>.</p>
+<p><code>kubectl rollout status</code> waits until the rollout really completes or fails, which makes it a better automation gate than treating <code>apply</code> as the finish line. <code>--previous</code> on <code>kubectl logs</code> matters specifically after a crash loop — it retrieves logs from the container's last run, not the fresh, log-empty restart that's currently in <code>CrashLoopBackOff</code>.</p>
 </div>
 </section>
 <section>
@@ -219,9 +219,9 @@ kubectl rollout undo deployment/&lt;name&gt; -n &lt;namespace&gt; --to-revision=
           <span class="lp-nav-label">← Module 03</span>
           <span class="lp-nav-title">Container Delivery — Build, Tag, Push, Promote</span>
         </a>
-<a class="lp-nav-link next" href="../../learning-paths/index.html">
-          <span class="lp-nav-label">Track Complete →</span>
-          <span class="lp-nav-title">All Learning Paths</span>
+<a class="lp-nav-link next" href="../../learning-paths/kubernetes-operations/05-scaling-requests-and-cost.html">
+          <span class="lp-nav-label">Module 05 →</span>
+          <span class="lp-nav-title">Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span>
         </a></nav>
         </div>
       </article>
@@ -229,7 +229,7 @@ kubectl rollout undo deployment/&lt;name&gt; -n &lt;namespace&gt; --to-revision=
         <div class="wrap">
           <h2>Questions about this learning path?</h2>
           <p>
-            I'm happy to dive deeper into any of these patterns — the ingress cost mechanics, RBAC design, or incident-triage workflow.
+            I'm happy to go into more detail on any of this: ingress costs, RBAC design, or how I triage incidents.
           </p>
           <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
             >anupojuprudhvi@gmail.com</a

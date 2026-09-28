@@ -4,7 +4,7 @@ date: 2026-09-18
 track: kubernetes-operations
 order: 1
 module: 1
-totalModules: 4
+totalModules: 6
 summary: When to route traffic through a shared ALB versus an internal Nginx Ingress, and why grouping services onto one load balancer is a real, measurable saving.
 level: Core Architecture
 readingTime: 8 min read
@@ -110,4 +110,4 @@ spec:
 
 ### When not to share an ALB
 
-A handful of scenarios genuinely warrant a dedicated load balancer instead of grouping: a service with materially different security-group or WAF requirements from the rest of the group, or a service whose traffic pattern makes shared connection draining or health-check tuning impractical. Sharing by default and carving out an exception when one of these applies is a more defensible starting point than defaulting to one ALB per service.
+A few situations really do call for a dedicated load balancer instead of grouping: a service with materially different security-group or WAF requirements from the rest of the group, or a service whose traffic pattern makes shared connection draining or health-check tuning impractical. Sharing by default and carving out an exception when one of these applies is a more defensible starting point than defaulting to one ALB per service.

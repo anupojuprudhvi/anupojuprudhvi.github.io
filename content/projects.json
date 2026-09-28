@@ -2,33 +2,39 @@
   {
     "id": "telecom",
     "name": "Telecom & Secure Communications",
+    "motif": "failover",
     "customOverview": true
   },
   {
     "id": "tolling",
     "name": "Tolling Infrastructure",
+    "motif": "network",
     "customOverview": true
   },
   {
     "id": "healthcare",
     "name": "Healthcare & Cost Architecture",
+    "motif": "stream",
     "summary": "A regulated healthcare platform, end to end: decomposing an on-premise clinical monolith, integrating medical-IoT devices over HL7, real-time clinical analytics, a network with no public ingress, and a gated delivery pipeline.",
     "intro": "The platform had to grow beyond its on-premise hardware without putting clinical data or uptime at risk. These case studies cover the application decomposition, the device-integration tier, the analytics pipeline that took reporting load off the live database, the network and access model, and the CI/CD pipeline that ships to it."
   },
   {
     "id": "partner-engagements",
     "name": "AWS APN & Migration Engagements",
+    "motif": "migration",
     "customOverview": true
   },
   {
     "id": "enterprise-infrastructure",
     "name": "Enterprise Hybrid Cloud Infrastructure",
+    "motif": "replication",
     "summary": "Hybrid infrastructure spanning AWS, an on-prem VMware data center, and a private OpenStack cloud: a 21+ node Oracle RAC cluster on AWS, a shared S3-compatible storage layer, and automated mail disaster recovery.",
     "intro": "Three pieces of an enterprise estate that had to work across public cloud, on-premise virtualization, and a private cloud at once — active-active database clustering without native shared storage, one object-storage API for every environment, and a mail platform that recovers in minutes instead of hours."
   },
   {
     "id": "independent-products",
     "name": "Independent Products & AI-Assisted Engineering",
+    "motif": "pipeline",
     "customOverview": true
   }
 ]

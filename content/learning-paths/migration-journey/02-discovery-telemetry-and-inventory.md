@@ -22,7 +22,7 @@ Translating provisioned hardware 1:1 into AWS results in inflated cloud bills th
 
 ## Tooling · The dual-path discovery architecture
 
-Modern discovery leverages two complementary data collection mechanisms:
+Discovery today uses two data sources that complement each other:
 
 1. **Point-in-Time Hypervisor Snapshots (RVTools):**
    - **How it works:** A read-only vSphere client utility connects to vCenter and exports an `.xlsx` multi-sheet workbook containing hardware configuration for every VM: provisioned vCPUs, memory, disk datastores, OS labels, and power states.

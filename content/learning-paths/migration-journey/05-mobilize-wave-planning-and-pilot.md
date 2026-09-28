@@ -47,7 +47,7 @@ Attempting to migrate an enterprise estate in one massive "big bang" weekend is 
    - Internal Tier-2 corporate tooling (reporting, staging utilities) migrate next.
    - Core Tier-1 customer-facing transaction platforms migrate in later, highly refined waves.
 3. **Change Freeze & Compliance Windows:** Aligning wave schedules with corporate blackout periods (e.g., month-end financial book closings or peak seasonal retail windows).
-4. **Target Modernization Strategy:** Grouping servers utilizing the same migration tooling (e.g., block-level replication via **AWS Application Migration Service [MGN]** vs. database replication via **AWS Database Migration Service [DMS]**).
+4. **Target Modernization Strategy:** Grouping servers that use the same migration tooling (e.g., block-level replication via **AWS Application Migration Service [MGN]** vs. database replication via **AWS Database Migration Service [DMS]**).
 
 ## Execution · The Wave 0 Lighthouse Pilot
 
@@ -60,7 +60,7 @@ The pilot application must meet three specific criteria:
 
 ### What the Lighthouse Pilot Proves
 
-The pilot is a comprehensive rehearsal that tests every operational boundary:
+The pilot is a full dress rehearsal. It tests every operational boundary:
 
 ```
 [ Pre-Cutover Preparation ]
@@ -92,4 +92,4 @@ The Mobilize phase concludes with formal delivery of:
 3. **The Validated Migration Runbook:** Standardized operational procedure refined during the lighthouse cutover, ready for automated factory execution.
 4. **AWS MAP Mobilize Completion Package:** Submitted to AWS partner governance to release Mobilize co-funding credits and approve migration-phase incentive allocations.
 
-With the platform built, runbooks proven, and internal teams enabled, the organization is fully equipped to execute high-velocity, repeatable workload migrations with confidence.
+With the platform built, runbooks proven, and internal teams enabled, the organization is fully equipped to run fast, repeatable workload migrations with confidence.

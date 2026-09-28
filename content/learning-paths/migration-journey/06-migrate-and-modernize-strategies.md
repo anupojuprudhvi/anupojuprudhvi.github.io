@@ -38,7 +38,7 @@ Choosing the optimal modernization strategy depends on workload criticality, tec
   - **Core Mechanism:** Replatforming or refactoring workloads directly into managed AWS primitives during the migration wave.
   - **Best For:** Core proprietary applications, workloads facing punitive commercial database licensing renewals, or continuous integration/developer runner fleets.
   - **Core Benefit:** Immediate cost reduction (up to 40%–60%), serverless elasticity, and zero dual-migration operational tax.
-  - **Trade-Off:** Requires higher upfront engineering effort, comprehensive regression testing, and active application team engagement.
+  - **Trade-Off:** Requires higher upfront engineering effort, thorough regression testing, and active application team engagement.
 
 ## Architecture · In-Flight Modernization Patterns
 
@@ -52,14 +52,14 @@ The diagram below illustrates how enterprise estates decouple workloads during i
 
 ### 1. Compute: VMs to Amazon EKS with Karpenter
 Rather than provisioning static EC2 instances that match legacy VM specs, containerized workloads transition directly to **Amazon EKS**:
-- **Dynamic Node Provisioning:** Utilizing **Karpenter** to provision right-sized compute nodes just-in-time based on actual pod resource requests, eliminating idle worker node waste.
+- **Dynamic Node Provisioning:** Using **Karpenter** to provision right-sized compute nodes just-in-time based on actual pod resource requests, eliminating idle worker node waste.
 - **Architecture Shift to ARM64:** Deploying microservices onto **AWS Graviton3** processors, delivering 25% better compute performance and 20% lower cost compared to x86 equivalents.
 - **Spot Fleet Offloading:** Routing ephemeral workloads (CI/CD build runners, background queue workers) to EC2 Spot instances, saving up to 90% off On-Demand rates with automated graceful draining.
 
 ### 2. Database: Commercial Engines to Amazon Aurora
 Relational database tiers represent the highest ongoing licensing expense:
 - **Replatforming to Aurora Multi-AZ:** Migrating self-hosted PostgreSQL/MySQL VMs to **Amazon Aurora**, replacing manual backup scripts and hypervisor maintenance with automated cross-AZ replication, 1-day point-in-time recovery, and storage autoscaling up to 128 TiB.
-- **Heterogeneous Database Migration:** Utilizing the **AWS Schema Conversion Tool (SCT)** and **AWS Database Migration Service (DMS)** to convert proprietary Oracle or Microsoft SQL Server schemas into open-source compatible Amazon Aurora PostgreSQL, eliminating commercial database core licensing permanently.
+- **Heterogeneous Database Migration:** Using the **AWS Schema Conversion Tool (SCT)** and **AWS Database Migration Service (DMS)** to convert proprietary Oracle or Microsoft SQL Server schemas into open-source compatible Amazon Aurora PostgreSQL, eliminating commercial database core licensing permanently.
 
 ### 3. Messaging & Integration: Monolith Queues to EventBridge
 Replacing fragile host-bound message brokers with managed serverless primitives:
@@ -73,5 +73,5 @@ The Migrate & Modernize phase concludes with formal enterprise delivery artifact
 1. **Industrialized Migration Factory Runbooks:** Standardized, automated pipelines orchestrating block-level and database cutovers across sequenced waves.
 2. **Modernization Target Blueprints:** Production-hardened Helm charts, Terraform infrastructure modules for EKS/Aurora, and CI/CD deployment workflows.
 3. **Cutover Validation & Sign-Off Reports:** Real-time post-cutover performance metrics, SLA compliance records, and business acceptance sign-offs.
-4. **AWS MAP Post-Migration Governance Package:** Formal proof of migration submitted to AWS partner governance, unlocking financial cloud credits and ARR rebates.
+4. **AWS MAP Post-Migration Governance Package:** Formal proof of migration submitted to AWS partner governance, which releases cloud credits and ARR rebates.
 5. **Datacenter Asset Decommissioning Certificates:** Verification of clean data wiping and decommissioning of on-premises physical hardware, securing final datacenter lease termination.

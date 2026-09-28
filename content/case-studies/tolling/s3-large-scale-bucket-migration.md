@@ -14,7 +14,7 @@ summary: Moving 225 GB of data across 1.48 million small objects between same-re
 problem: |
   A bucket reorganization required moving 225 GB of data between two S3 buckets. While 225 GB is modest in total bytes, the payload comprised 1.48 million small objects. Standard `aws s3 sync` projected over 8 hours to complete because S3 request overhead and Python CLI concurrency limits bottlenecked on API metadata transactions rather than network bandwidth.
 solution: |
-  Rather than spinning up expensive one-off migration infrastructure or accepting an 8-hour window, the transfer was orchestrated directly from an existing EC2 instance in `us-east-1` (the same region as both buckets) using `s5cmd`, a Go-based parallel S3 client, tuned to 128 concurrent workers. The entire migration completed in 54 minutes with zero errors, validated by full object count and MD5 checksum parity before source deprecation.
+  Rather than spinning up expensive one-off migration infrastructure or accepting an 8-hour window, the transfer was run directly from an existing EC2 instance in `us-east-1` (the same region as both buckets) using `s5cmd`, a Go-based parallel S3 client, tuned to 128 concurrent workers. The entire migration completed in 54 minutes with zero errors, validated by full object count and MD5 checksum parity before source deprecation.
 flowLabel: Migration execution path
 flow:
   - step: Source S3 bucket
@@ -32,7 +32,7 @@ outcomes:
   - value: 54 min
     label: Total migration time for 1.48M objects, down from an estimated 8+ hours (~9x speedup)
   - value: Zero
-    label: Additional infrastructure charges by utilizing an existing in-region EC2 instance
+    label: Additional infrastructure charges by using an existing in-region EC2 instance
   - value: 100%
     label: Parity verified across all 1.48 million object counts and checksums with zero transfer errors
 enables: |
@@ -68,7 +68,7 @@ AWS Data Pipeline offers a managed S3-to-S3 copy template, but it operates by pr
 - **Cost Disproportion:** EMR charges hourly management fees on top of multi-instance EC2 worker compute costs. Paying for an entire Hadoop/Spark cluster to move 225 GB is fundamentally cost-inefficient.
 - **Operational Overhead:** Required configuring dedicated IAM roles (`DataPipelineDefaultRole`, `DataPipelineDefaultResourceRole`), S3 log staging paths, and JSON pipeline definitions for a task that needed to run exactly once.
 
-Spinning up dedicated infrastructure or an EMR cluster would have introduced unnecessary cost and IAM provisioning. The most pragmatic and cost-effective path was leveraging an **existing EC2 instance already running in `us-east-1`** (the identical AWS region housing both buckets) paired with high-concurrency client tooling.
+Spinning up dedicated infrastructure or an EMR cluster would have introduced unnecessary cost and IAM provisioning. The most pragmatic and cost-effective path was to use an **existing EC2 instance already running in `us-east-1`** (the identical AWS region housing both buckets) paired with high-concurrency client tooling.
 
 ## Execution · S5cmd and 128 concurrent workers
 
@@ -102,7 +102,7 @@ Speed is meaningless if data integrity cannot be guaranteed. Before source data 
 2. **Checksum & Size Verification:** Compared object sizes and S3 ETags (MD5 hashes for single-part uploads) across sample partitions to verify zero byte-level corruption during the transfer.
 3. **Controlled Cutover:** Source deletion was only initiated after application services successfully pointed to and verified reads from the destination bucket.
 
-## Key Takeaway · Concurrency beats bandwidth for small objects
+## Lesson · Concurrency beats bandwidth for small objects
 
 At cloud scale, small-file storage operations are **API transaction problems**, not bandwidth problems. When moving millions of small objects, throwing larger network pipes at the problem does not help if the client cannot dispatch concurrent requests fast enough.
 

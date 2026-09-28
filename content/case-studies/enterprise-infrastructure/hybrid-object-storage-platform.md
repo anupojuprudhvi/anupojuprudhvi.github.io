@@ -9,7 +9,7 @@ order: 20
 stack: [MinIO, Docker Compose, Nginx, Restic, AWS S3 Glacier, Python, Boto3]
 tags: [storage, hybrid-cloud, backups, cost-optimization]
 problem: |
-  The organization's footprint was genuinely hybrid, not hybrid-in-name — production compute in
+  The organization's footprint was hybrid in practice, not just on paper — production compute in
   AWS, enterprise virtualization in an on-prem data center running VMware, and a private
   OpenStack cloud, each with its own block storage and no shared way to store unstructured data:
   ERP file attachments, database dumps, and system backups. Every environment's storage was
@@ -20,7 +20,7 @@ solution: |
   reverse proxy, reachable via the same S3 API from all three environments, with automated
   Restic-encrypted backup pipelines and AWS S3 Glacier lifecycle tiering for long-term retention.
 heroTitle: One S3 API in front of three separate infrastructure environments
-intro: A genuinely hybrid footprint — public cloud, an on-prem VMware data center, and a private OpenStack cloud — had no shared way to store backups or application media beyond each environment's own local block storage. This case study covers building a distributed object storage layer that gave all three the same S3 interface, and the backup and cost-tiering automation built on top of it.
+intro: A truly mixed footprint — public cloud, an on-prem VMware data center, and a private OpenStack cloud — had no shared way to store backups or application media beyond each environment's own local block storage. This case study covers building a distributed object storage layer that gave all three the same S3 interface, and the backup and cost-tiering automation built on top of it.
 role: Lead platform engineer / distributed storage architect
 scope: Cluster deployment, backup pipeline design, and lifecycle-based cost tiering
 closingText: Happy to go deeper on the erasure-coding setup, the Restic backup integration, or the Glacier tiering rules.

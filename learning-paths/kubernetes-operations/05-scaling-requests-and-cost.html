@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <title>Dual Ingress Architecture &amp; Its Cost Mechanics — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="When to route traffic through a shared ALB versus an internal Nginx Ingress, and why grouping services onto one load balancer is a real, measurable saving." />
-    <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/01-dual-ingress-architecture.html" />
+    <title>Scaling Without Surprises: Requests, Autoscaling &amp; Cost — Prudhvi Raj Anupoju</title>
+    <meta name="description" content="Why resource requests drive almost everything in an EKS cluster — scheduling, autoscaling, and the bill — and how pod and node autoscaling fit together." />
+    <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/05-scaling-requests-and-cost.html" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="Dual Ingress Architecture &amp; Its Cost Mechanics — Prudhvi Raj Anupoju" />
-    <meta property="og:description" content="When to route traffic through a shared ALB versus an internal Nginx Ingress, and why grouping services onto one load balancer is a real, measurable saving." />
+    <meta property="og:title" content="Scaling Without Surprises: Requests, Autoscaling &amp; Cost — Prudhvi Raj Anupoju" />
+    <meta property="og:description" content="Why resource requests drive almost everything in an EKS cluster — scheduling, autoscaling, and the bill — and how pod and node autoscaling fit together." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -22,8 +22,8 @@
       {
         "@context": "https://schema.org",
         "@type": "TechArticle",
-        "headline": "Dual Ingress Architecture & Its Cost Mechanics",
-        "description": "When to route traffic through a shared ALB versus an internal Nginx Ingress, and why grouping services onto one load balancer is a real, measurable saving.",
+        "headline": "Scaling Without Surprises: Requests, Autoscaling & Cost",
+        "description": "Why resource requests drive almost everything in an EKS cluster — scheduling, autoscaling, and the bill — and how pod and node autoscaling fit together.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -37,10 +37,10 @@
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju"
         },
-        "url": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/01-dual-ingress-architecture.html",
+        "url": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/05-scaling-requests-and-cost.html",
         "image": "https://anupojuprudhvi.github.io/og-image.png",
-        "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/01-dual-ingress-architecture.html",
-        "keywords": "ingress, alb, nginx, cost-optimization, eks, Amazon EKS, AWS Load Balancer Controller, Nginx Ingress, AWS VPC CNI"
+        "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/05-scaling-requests-and-cost.html",
+        "keywords": "autoscaling, cost, capacity, eks, kubernetes, Amazon EKS, Kubernetes, Horizontal Pod Autoscaler, Karpenter, Cluster Autoscaler"
       }
     </script>
     <script src="../../assets/theme.js"></script>
@@ -134,9 +134,9 @@
         <div class="wrap">
           <div class="hero-split">
             <div>
-              <span class="lp-badge">Core Architecture</span>
-              <h1>Dual Ingress Architecture &amp; Its Cost Mechanics</h1>
-              <p class="sub">When to route traffic through a shared ALB versus an internal Nginx Ingress, and why grouping services onto one load balancer is a real, measurable saving.</p>
+              <span class="lp-badge">Operations</span>
+              <h1>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</h1>
+              <p class="sub">Why resource requests drive almost everything in an EKS cluster — scheduling, autoscaling, and the bill — and how pod and node autoscaling fit together.</p>
             </div>
             <svg class="motif motif-network" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <defs>
@@ -153,10 +153,10 @@
     </svg>
           </div>
           <div class="lp-meta-bar">
-            <span><b>Module:</b> 01 of 06</span>
-            <span><b>Level:</b> Core Architecture</span>
+            <span><b>Module:</b> 05 of 06</span>
+            <span><b>Level:</b> Operations</span>
             <span><b>Time:</b> 8 min read</span>
-            <span><b>Published:</b> <time datetime="2026-09-18">18 Sep 2026</time></span>
+            <span><b>Published:</b> <time datetime="2026-09-28">28 Sep 2026</time></span>
           </div>
         </div>
       </header>
@@ -164,108 +164,88 @@
         <div class="wrap">
           <section>
 <div class="wrap">
-<div class="section-eyebrow">Problem</div>
-<h2>One load balancer per microservice adds up fast</h2>
-<p>The default instinct when exposing a new microservice on EKS is to give it its own Ingress and let the AWS Load Balancer Controller provision a dedicated Application Load Balancer for it. That works, and it's simple to reason about — but each ALB is a standing monthly cost on top of its data-processing charges, and that cost scales linearly with the number of services, independent of how much traffic any of them actually carry.</p>
-<p>At even a modest number of independently-deployed APIs, that adds up to a meaningful, entirely avoidable line item.</p>
+<div class="section-eyebrow">Principle</div>
+<h2>Requests are a promise, and the cluster plans around them</h2>
+<p>Every scaling decision in Kubernetes starts from resource requests. The scheduler places a pod on a node only if the node has room for what the pod *requests*, not what it actually uses. Node autoscalers add nodes when pods can't be placed. The Horizontal Pod Autoscaler measures CPU as a percentage of the request.</p>
+<p>So when requests are wrong, everything built on top of them is wrong too. Set them too high and you pay for nodes that sit half-empty. Set them too low, or leave them out, and pods get packed onto nodes that can't actually carry them.</p>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml">resources:
+  requests:
+    cpu: 250m        # what the scheduler reserves for this pod
+    memory: 256Mi
+  limits:
+    memory: 512Mi    # hard ceiling: going over gets the container OOMKilled</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<p>Limits behave differently for CPU and memory. Going over a CPU limit slows the container down (it gets throttled). Going over a memory limit kills it. That's why many teams set a memory limit but leave CPU unlimited, so a busy pod can borrow idle CPU instead of being throttled while the node has spare capacity.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
-<div class="section-eyebrow">Pattern</div>
-<h2>Two ingress controllers, used for what each is actually good at</h2>
-<p>Rather than picking one ingress approach for everything, a dual-ingress design uses each controller for the traffic shape it's actually suited to:</p>
+<h2>Two layers of autoscaling</h2>
+<p>It helps to keep the two layers apart in your head:</p>
 <ul>
-<li><b>AWS Load Balancer Controller, with Ingress Grouping, for backend APIs.</b> Multiple independent services share a single ALB by annotating each Ingress with the same <code>group.name</code>, instead of each service provisioning its own load balancer.</li>
-<li><b>Nginx Ingress Controller for frontend single-page applications.</b> SPAs frequently need regex-based URL rewriting (stripping a path prefix before it reaches the container, for example) that's more naturally expressed in Nginx's ingress annotations than through ALB rules.</li>
+<li><b>Pods scale out</b> with the Horizontal Pod Autoscaler (HPA). It adds or removes replicas based on a metric, usually CPU or memory usage relative to the request.</li>
+<li><b>Nodes scale out</b> with Cluster Autoscaler or Karpenter. They add capacity when pods are stuck in <code>Pending</code> because no node has room, and remove nodes that sit mostly idle.</li>
 </ul>
-<h3>Shared-ALB ingress grouping</h3>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml">apiVersion: networking.k8s.io/v1
-kind: Ingress
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml">apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
 metadata:
-  name: orders-api
-  namespace: prod
-  annotations:
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/group.name: api
-    alb.ingress.kubernetes.io/group.order: '10'
+  name: api
 spec:
-  rules:
-    - http:
-        paths:
-          - path: /orders
-            pathType: Prefix
-            backend:
-              service:
-                name: orders-api
-                port:
-                  number: 80
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: api
+  minReplicas: 3
+  maxReplicas: 20
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70   # 70% of the CPU *request*, not of the node</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<p>The HPA needs metrics-server (or another metrics source) running in the cluster, and it needs requests set on the pods it watches. Without a CPU request there's nothing to calculate a percentage against, and it won't scale on CPU.</p>
+<details class="implementation-notes">
+<summary>Choosing a node autoscaler</summary>
+<ul>
+<li><b>Cluster Autoscaler</b> works through your existing node groups. It grows or shrinks an Auto Scaling group, so every new node looks like the ones you defined up front. It's predictable and easy to reason about.</li>
+<li><b>Karpenter</b> skips node groups and launches EC2 instances directly, picking instance types that fit the pods that are waiting. It usually packs workloads more tightly and reacts faster, and it can mix Spot and On-Demand capacity. The trade-off is that you describe what's *allowed* rather than exactly what you get.</li>
+<li>Whichever you choose, run one. Two node autoscalers acting on the same capacity will fight each other.</li>
+</ul>
+</details>
+</div>
+</section>
+<section>
+<div class="wrap">
+<h2>Keeping scale-down from hurting you</h2>
+<p>Scaling in is where outages hide. When a node autoscaler removes a node, or a Spot instance is reclaimed (AWS gives a two-minute warning), the pods on it are evicted. A PodDisruptionBudget tells Kubernetes how many replicas must stay up during that kind of voluntary disruption.</p>
+<pre tabindex="0" class="code"><code class="language-yaml">apiVersion: policy/v1
+kind: PodDisruptionBudget
 metadata:
-  name: billing-api
-  namespace: prod
-  annotations:
-    kubernetes.io/ingress.class: alb
-    alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/group.name: api
-    alb.ingress.kubernetes.io/group.order: '20'
+  name: api
 spec:
-  rules:
-    - http:
-        paths:
-          - path: /billing
-            pathType: Prefix
-            backend:
-              service:
-                name: billing-api
-                port:
-                  number: 80</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<p>Both Ingress resources share <code>group.name: api</code>, so the AWS Load Balancer Controller provisions and reuses one ALB for both, adding routing rules for each rather than a load balancer per service. <code>target-type: ip</code> also matters here — it routes traffic directly to a pod's VPC IP via the AWS VPC CNI instead of hopping through a NodePort first, which removes an extra network hop on every request.</p>
-<h3>Nginx Ingress for frontend rewrites</h3>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml">apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: customer-portal
-  namespace: prod
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/use-regex: 'true'
-spec:
-  rules:
-    - http:
-        paths:
-          - path: /portal
-            pathType: Prefix
-            backend:
-              service:
-                name: customer-portal
-                port:
-                  number: 80</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: api</code></pre>
+<p>A PDB only protects against *voluntary* disruptions: drains, scale-downs, upgrades. It does nothing for a crash or a node that dies outright. For that you still need more than one replica, spread across Availability Zones.</p>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
 <ul>
-<li><b>Ingress Grouping doesn't require the services to know about each other.</b> Each team still owns its own Ingress manifest; the only coordination needed is agreeing on a shared <code>group.name</code> and non-conflicting <code>group.order</code> values.</li>
-<li><b>Target-type <code>ip</code> requires the VPC CNI and enough available IPs per subnet.</b> Plan subnet sizing with this in mind — it's a common surprise when a subnet runs out of assignable IPs under pod scale-up, not at cluster creation time.</li>
-<li><b>Nginx Ingress and ALB Ingress can coexist on the same cluster indefinitely.</b> There's no need to standardize on one; the deciding factor is the routing behavior each specific workload actually needs.</li>
+<li><b>Start from real usage, not guesses.</b> Watch actual CPU and memory for a week (<code>kubectl top pods</code>, Container Insights, or your metrics stack) and set requests a little above the typical peak.</li>
+<li><b>A PDB with <code>minAvailable</code> equal to the replica count blocks every drain.</b> It looks safe, but it quietly stops node upgrades and scale-down until someone notices.</li>
+<li><b>Idle capacity is the most common hidden cost.</b> Nodes sized for requests that nobody uses cost exactly the same as busy ones. Check the gap between requested and used resources regularly.</li>
+<li><b>Spot suits stateless, replicated workloads.</b> Keep anything that can't tolerate a two-minute eviction on On-Demand capacity.</li>
 </ul>
 </details>
-<h3>When not to share an ALB</h3>
-<p>A few situations really do call for a dedicated load balancer instead of grouping: a service with materially different security-group or WAF requirements from the rest of the group, or a service whose traffic pattern makes shared connection draining or health-check tuning impractical. Sharing by default and carving out an exception when one of these applies is a more defensible starting point than defaulting to one ALB per service.</p>
 </div>
 </section>
-          <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/index.html">
-          <span class="lp-nav-label">← Curriculum</span>
-          <span class="lp-nav-title">Track Overview</span>
+          <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/04-day-2-operations-and-incident-triage.html">
+          <span class="lp-nav-label">← Module 04</span>
+          <span class="lp-nav-title">Day-2 Operations &amp; Incident Triage</span>
         </a>
-<a class="lp-nav-link next" href="../../learning-paths/kubernetes-operations/02-multi-environment-clusters-and-rbac.html">
-          <span class="lp-nav-label">Module 02 →</span>
-          <span class="lp-nav-title">Multi-Environment Clusters &amp; IAM/RBAC</span>
+<a class="lp-nav-link next" href="../../learning-paths/kubernetes-operations/06-cluster-upgrades.html">
+          <span class="lp-nav-label">Module 06 →</span>
+          <span class="lp-nav-title">Cluster Upgrades Without Drama</span>
         </a></nav>
         </div>
       </article>

@@ -12,19 +12,19 @@ tags: [migration, map-assess, tco, vmware, identity-center, finops, enterprise]
 summary: An agentless VMware discovery, a third-party IdP-to-Identity Center SAML fix, and a Directional Business Case for an institutional financial platform.
 problem: |
   An institutional digital asset and accounting platform running on-premises in
-  VMware required a comprehensive evaluation for migration to AWS under the
-  Migration Acceleration Program (MAP). To unlock executive sponsorship and AWS MAP
+  VMware needed a full evaluation for migration to AWS under the
+  Migration Acceleration Program (MAP). To win executive sponsorship and AWS MAP
   co-funding, the engineering and finance leadership required empirical utilization
   baselines, right-sized EC2 compute recommendations, licensing optimization models,
-  and a formal 6-pillar Migration Readiness Assessment (MRA). Furthermore, the client's
+  and a formal 6-pillar Migration Readiness Assessment (MRA). The client's
   existing third-party SAML integration blocked access to AWS Transform workspaces,
   and strict financial compliance demanded a zero-agent discovery methodology.
 solution: |
-  Designed and executed a dual-path discovery architecture utilizing automated RVTools
+  Designed and executed a dual-path discovery approach using automated RVTools
   exports alongside an agentless AWS Transform OVA collector deployed directly into
-  the private VMware vCenter cluster. To resolve the authentication deadlock, engineered
-  an identity bridge configuring the enterprise IdP for AWS IAM Identity Center
-  via SAML and SCIM sync, allowing coexistence with legacy access. The ingested telemetry
+  the private VMware vCenter cluster. To break the authentication deadlock, built
+  an identity bridge that connects the enterprise IdP to AWS IAM Identity Center
+  through SAML and SCIM sync, so it works alongside the existing access setup. The ingested telemetry
   was evaluated in AWS Transform to produce a 3-year Directional Business Case (DBC),
   licensing comparison (BYOL vs. License Included), and a phased 7Rs workload migration roadmap.
 flowLabel: Discovery, identity federation, and business case pipeline
@@ -39,7 +39,7 @@ flow:
     note: AWS Transform normalizes server specs, models 3-year Reserved Instances, evaluates BYOL vs License-Included licensing, and outputs executive reports.
 enables: |
   Establishes the factual, technical, and financial foundation required to pass
-  AWS MAP Assess milestone audits, unlocking co-funding grants and providing the
+  AWS MAP Assess milestone audits, qualifying for co-funding grants and providing the
   engineering organization with a sequenced wave roadmap.
 outcomes:
   - value: 3-Year
@@ -57,7 +57,7 @@ Financial and crypto accounting platforms operate under stringent regulatory and
 The discovery process had to answer three critical questions:
 1. **What is the true on-premises resource utilization?** Rather than allocating AWS instances based on allocated vCPU and RAM (which leads to massive over-provisioning), the assessment required empirical utilization percentiles (average vs. peak CPU, memory, and disk throughput).
 2. **What will AWS cost compared to on-premises over 3 to 5 years?** Detailed total cost of ownership (TCO) modeling across compute, storage, data transfer, and support.
-3. **Is the organizational structure ready for cloud operations?** Comprehensive maturity scoring across security, governance, platform, operations, people, and business pillars.
+3. **Is the organizational structure ready for cloud operations?** Maturity scoring across security, governance, platform, operations, people, and business pillars.
 
 ### Implementation notes
 

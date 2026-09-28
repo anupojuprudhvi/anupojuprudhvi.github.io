@@ -124,5 +124,19 @@
       });
       addEventListener("beforeprint", () => blocks.forEach((el) => el.classList.remove("reveal-pending")));
     }
+
+    // Animated diagrams run only while on screen: SVG traffic (SMIL) and CSS
+    // cycles both pause when a diagram scrolls away, saving battery on phones.
+    const diagrams = document.querySelectorAll("svg.hub-net, svg.hub-net-compact, svg.motif");
+    if (diagrams.length && "IntersectionObserver" in window) {
+      const diagramObserver = new IntersectionObserver((entries) => {
+        for (const { target, isIntersecting } of entries) {
+          target.classList.toggle("anim-paused", !isIntersecting);
+          if (isIntersecting) target.unpauseAnimations?.();
+          else target.pauseAnimations?.();
+        }
+      });
+      diagrams.forEach((svg) => diagramObserver.observe(svg));
+    }
   });
 })();

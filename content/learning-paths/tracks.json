@@ -4,38 +4,38 @@
     "motif": "pipeline",
     "title": "Terraform for Enterprise Production",
     "eyebrow": "Infrastructure as Code",
-    "summary": "An authoritative engineering playbook on building, scaling, and governing Terraform in enterprise AWS environments — from module contracts and state isolation to zero-downtime refactoring and automated security guardrails.",
+    "summary": "A practical guide to building and running Terraform in enterprise AWS: how to structure modules, keep state safe, refactor without downtime, and add automated security checks.",
     "level": "Intermediate to Advanced",
     "duration": "6 Modules · 45 min read",
     "badge": "Production Playbook",
     "stack": ["Terraform 1.5+", "AWS", "HCL", "Checkov", "TFLint", "S3 & DynamoDB"],
     "closingQuestion": "Questions about this learning path?",
-    "closingBody": "I'm happy to dive deeper into any of these patterns — module abstraction trade-offs, state migration runbooks, or CI/CD security scanning."
+    "closingBody": "I'm happy to go into more detail on any of this: module design trade-offs, moving state safely, or security scanning in CI/CD."
   },
   {
     "id": "migration-journey",
     "motif": "migration",
     "title": "Enterprise Cloud Migration: Assess, Mobilize & Modernize",
     "eyebrow": "Migration Acceleration Program (MAP)",
-    "summary": "An authoritative architectural and financial guide for enterprise cloud migrations — comparing rapid (4–6 wk) vs. deep (3–4 mo) assessments, 3-year TCO modeling (On-Demand, 1-Yr, 3-Yr RIs/Savings Plans, Microsoft licensing), target Landing Zone design, Mobilize wave planning, and in-flight modernization.",
+    "summary": "An architecture and cost guide for enterprise cloud migrations: rapid (4–6 week) versus deep (3–4 month) assessments, 3-year cost modelling including Savings Plans and Microsoft licensing, landing zone design, wave planning, and modernizing along the way.",
     "level": "Intermediate to Executive",
     "duration": "6 Modules · 50 min read",
     "badge": "Delivery Playbook",
     "stack": ["AWS MAP", "AWS Transform", "RVTools", "TCO Modeling", "Landing Zone", "Well-Architected", "Amazon EKS"],
     "closingQuestion": "Questions about this learning path?",
-    "closingBody": "I'm happy to dive deeper into any of these patterns — assessment scoping, financial modeling, or Mobilize wave sequencing."
+    "closingBody": "I'm happy to go into more detail on any of this: scoping an assessment, building the cost model, or planning migration waves."
   },
   {
     "id": "kubernetes-operations",
     "motif": "network",
     "title": "Kubernetes Ingress & Operations on Amazon EKS",
     "eyebrow": "Container Platform Engineering",
-    "summary": "A hands-on operations playbook for running multi-environment Amazon EKS in production — dual ingress architecture and its real cost mechanics, IAM/RBAC across clusters, headless container delivery, and day-2 incident triage.",
+    "summary": "A hands-on guide to running Amazon EKS across several environments: two-ingress routing and what it really costs, IAM and RBAC across clusters, container delivery from CI, incident triage, autoscaling and cost, and cluster upgrades.",
     "level": "Intermediate to Advanced",
-    "duration": "4 Modules · 30 min read",
+    "duration": "6 Modules · 45 min read",
     "badge": "Operations Playbook",
     "stack": ["Amazon EKS", "Kubernetes", "AWS Load Balancer Controller", "Nginx Ingress", "AWS ECR"],
     "closingQuestion": "Questions about this learning path?",
-    "closingBody": "I'm happy to dive deeper into any of these patterns — the ingress cost mechanics, RBAC design, or incident-triage workflow."
+    "closingBody": "I'm happy to go into more detail on any of this: ingress costs, RBAC design, or how I triage incidents."
   }
 ]

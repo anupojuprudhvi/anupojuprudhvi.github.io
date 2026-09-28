@@ -4,16 +4,15 @@
                 <div class="tag">{{projectNumber}} / {{projectName}}</div>
                 <h3>
                   <a href="{{engagementUrl}}"
-                    >NexusCore AI: Autonomous Enterprise Workforce OS.<br />Durable sagas, verifiable policy AI &amp; sub-5s JML.</a
+                    >NexusCore AI: one system for joiners, movers &amp; leavers.<br />Reliable workflows, cited policy answers, sub-5s offboarding.</a
                   >
                 </h3>
                 <p class="ctx">
-                  Enterprise workforce and identity operating system unifying IAM governance,
-                  Joiner-Mover-Leaver (JML) lifecycle automation, attendance tracking, and
-                  deterministic policy intelligence into a sovereign, distributed platform.
-                  Built on Temporal distributed state machines, SHA-256 tamper-evident audit
-                  trails, and strict multi-tenant isolation, targeting the modelled
-                  ~$1,400/employee cost of identity fragmentation.
+                  A platform that brings account access, joiner-mover-leaver (JML) automation,
+                  attendance, and HR policy answers into one place, instead of a dozen
+                  disconnected tools. It runs on Temporal workflows, keeps a tamper-evident
+                  (SHA-256) audit trail, and keeps each customer's data separate. It targets
+                  the modelled ~$1,400 per employee that scattered identity tooling costs.
                 </p>
                 <p class="case-stack">
                   FastAPI · Next.js 15 · Temporal SDK · PostgreSQL 16 · Amazon EKS · ArgoCD · Terraform
@@ -29,30 +28,31 @@
               <summary>Architectural contribution</summary>
               <ul>
                 <li>
-                  <b>Architected durable lifecycle sagas with Temporal:</b>
-                  automated multi-step Joiner, Mover, and Leaver provisioning across SaaS
-                  tools with guaranteed exponential backoffs and compensating rollback
-                  transactions preventing ghost accounts.
+                  <b>Built joiner, mover, and leaver workflows on Temporal:</b>
+                  multi-step account changes across SaaS tools that retry with backoff and
+                  undo earlier steps if a later one fails, so no half-removed accounts are
+                  left behind.
                 </li>
                 <li>
-                  <b>Engineered deterministic, zero-hallucination Policy RAG:</b>
-                  hybrid in-memory BM25 and vector indexing citing exact clause headings
-                  and PDF handbook page numbers, backed by strict cross-tenant vector isolation.
+                  <b>Built policy answers that cite their source:</b>
+                  keyword (BM25) plus vector search that quotes the exact clause heading and
+                  handbook page, with each customer's documents kept strictly separate.
                 </li>
                 <li>
-                  <b>Implemented granular Sub-Team RBAC profiles:</b>
-                  customizable access bundles for specialized teams (SecOps, DevOps, Tier-2 Support)
-                  with interactive pre-flight checklists for HR prior to provisioning.
+                  <b>Added per-team access profiles:</b>
+                  ready-made access bundles for teams such as SecOps, DevOps, and Tier-2
+                  Support, with a checklist HR works through before anything is provisioned.
                 </li>
                 <li>
-                  <b>Delivered GitOps &amp; multi-tenant cloud infrastructure:</b>
-                  decoupled 6-service polyrepo deployed via Helm on AWS EKS with ArgoCD
-                  continuous synchronization and External Secrets Operator (plus standalone EC2 Docker option).
+                  <b>Set up GitOps delivery on AWS:</b>
+                  six services in separate repos, deployed with Helm to Amazon EKS and kept in
+                  sync by ArgoCD, with secrets from External Secrets Operator (and a simpler
+                  single-EC2 Docker option).
                 </li>
                 <li>
-                  <b>Formalized AI-agent engineering workflow:</b>
-                  governed by written operating protocols, 509 passing automated tests
-                  across 5 test suites (100% pass rate), and zero raw HTML control guardrails.
+                  <b>Put AI-assisted development on a short leash:</b>
+                  written working rules, 509 automated tests across 5 suites (all passing),
+                  and guardrails that block raw HTML controls.
                 </li>
               </ul>
             </details>

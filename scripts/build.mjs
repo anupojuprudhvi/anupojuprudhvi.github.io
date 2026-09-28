@@ -27,7 +27,7 @@ import { join, relative, dirname, basename } from "node:path";
 
 import { esc } from "./lib/html.mjs";
 import { parseFrontMatter, renderBody } from "./lib/markdown.mjs";
-import { MOTIF_NAMES, LAYER_MOTIF } from "./lib/motifs.mjs";
+import { MOTIF_NAMES, LAYER_MOTIF, motifSvg } from "./lib/motifs.mjs";
 import { SITE, HEAD_SECURITY, page, libraryPage, learningPathPage, siteTopNav, latestCaseStudies, LAYER_ORDER } from "./lib/render.mjs";
 
 const ROOT = process.cwd();
@@ -111,6 +111,8 @@ const projectMap = new Map();
 for (const project of projects) {
   if (!/^[a-z0-9-]+$/.test(project.id) || !project.name || projectMap.has(project.id))
     throw new Error(`Invalid or duplicate project: ${project.id}`);
+  if (project.motif !== undefined && !MOTIF_NAMES.includes(project.motif))
+    throw new Error(`projects.json ${project.id}: motif "${project.motif}" must be one of: ${MOTIF_NAMES.join(", ")}`);
   projectMap.set(project.id, project);
 }
 if (!files.length) {
@@ -198,11 +200,12 @@ const selectedWork = projects.map((project, projectIndex) => {
       ogImage: socialImage(project.id, "index"),
       headSecurity: HEAD_SECURITY,
       siteNav: siteTopNav({ docs, up: "../../", active: "case-studies" }),
+      motif: motifSvg(project.motif),
     };
     if (sources[0] === ".md") {
       const { data, body } = parseFrontMatter(source, overviewBase + ".md");
       if (!data.title || !data.summary) throw new Error(`${project.id}: overview requires title and summary`);
-      emit(engagementUrl, page({ ...data, projectName: project.name, ogImage: slots.ogImage }, template(renderBody(body), slots), { up: "../../", url: engagementUrl, docs }));
+      emit(engagementUrl, page({ ...data, projectName: project.name, ogImage: slots.ogImage, motif: project.motif }, template(renderBody(body), slots), { up: "../../", url: engagementUrl, docs }));
     } else {
       emit(engagementUrl, template(source, slots));
     }
@@ -210,7 +213,7 @@ const selectedWork = projects.map((project, projectIndex) => {
     emit(engagementUrl, page({ title: project.name, projectName: project.name,
       // Prefer a hand-written summary in projects.json; otherwise describe the studies themselves.
       summary: project.summary || `${studies.length} case ${studies.length === 1 ? "study" : "studies"}: ${studies.map((d) => d.nav || d.title).join(", ")}.`,
-      intro: project.intro, ogImage: socialImage(project.id, "index") },
+      intro: project.intro, ogImage: socialImage(project.id, "index"), motif: project.motif },
       `<section><div class="wrap"><h2>Case studies</h2><div class="case-study-links">${caseStudyLinks}</div></div></section>`,
       { up: "../../", url: engagementUrl, docs }));
   }

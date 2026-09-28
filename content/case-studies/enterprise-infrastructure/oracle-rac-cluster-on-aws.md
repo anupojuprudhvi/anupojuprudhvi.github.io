@@ -9,7 +9,7 @@ order: 10
 stack: [Oracle RAC, FlashGrid, AWS EC2, AWS EBS, AWS DMS, CentOS]
 tags: [database, high-availability, oracle, clustering, aws]
 problem: |
-  A large education-services platform ran mission-critical academic and financial operations —
+  A large education-services platform ran its core academic and financial operations —
   registrations, fee processing, and examination results — on a database tier that had to absorb
   extreme, predictable concurrency spikes (an exam-results release could multiply load by an order
   of magnitude in minutes) without downtime or throttling. Oracle RAC is the standard answer for

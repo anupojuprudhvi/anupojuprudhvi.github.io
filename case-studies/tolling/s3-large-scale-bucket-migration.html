@@ -172,7 +172,7 @@
 <h2 class="section-eyebrow" id="keyResultsTitle">Key results</h2>
 <div class="outcomes">
 <div class="outcome"><div class="num">54 min</div><div class="txt">Total migration time for 1.48M objects, down from an estimated 8+ hours (~9x speedup)</div></div>
-<div class="outcome"><div class="num">Zero</div><div class="txt">Additional infrastructure charges by utilizing an existing in-region EC2 instance</div></div>
+<div class="outcome"><div class="num">Zero</div><div class="txt">Additional infrastructure charges by using an existing in-region EC2 instance</div></div>
 <div class="outcome"><div class="num">100%</div><div class="txt">Parity verified across all 1.48 million object counts and checksums with zero transfer errors</div></div>
 </div>
 </div>
@@ -188,7 +188,7 @@
 </div>
 <div>
 <h3>The architectural solution</h3>
-<p>Rather than spinning up expensive one-off migration infrastructure or accepting an 8-hour window, the transfer was orchestrated directly from an existing EC2 instance in <code>us-east-1</code> (the same region as both buckets) using <code>s5cmd</code>, a Go-based parallel S3 client, tuned to 128 concurrent workers. The entire migration completed in 54 minutes with zero errors, validated by full object count and MD5 checksum parity before source deprecation.</p>
+<p>Rather than spinning up expensive one-off migration infrastructure or accepting an 8-hour window, the transfer was run directly from an existing EC2 instance in <code>us-east-1</code> (the same region as both buckets) using <code>s5cmd</code>, a Go-based parallel S3 client, tuned to 128 concurrent workers. The entire migration completed in 54 minutes with zero errors, validated by full object count and MD5 checksum parity before source deprecation.</p>
 </div>
 </div>
 <figure class="reqflow">
@@ -259,7 +259,7 @@
 <li><b>Cost Disproportion:</b> EMR charges hourly management fees on top of multi-instance EC2 worker compute costs. Paying for an entire Hadoop/Spark cluster to move 225 GB is fundamentally cost-inefficient.</li>
 <li><b>Operational Overhead:</b> Required configuring dedicated IAM roles (<code>DataPipelineDefaultRole</code>, <code>DataPipelineDefaultResourceRole</code>), S3 log staging paths, and JSON pipeline definitions for a task that needed to run exactly once.</li>
 </ul>
-<p>Spinning up dedicated infrastructure or an EMR cluster would have introduced unnecessary cost and IAM provisioning. The most pragmatic and cost-effective path was leveraging an <b>existing EC2 instance already running in <code>us-east-1</code></b> (the identical AWS region housing both buckets) paired with high-concurrency client tooling.</p>
+<p>Spinning up dedicated infrastructure or an EMR cluster would have introduced unnecessary cost and IAM provisioning. The most pragmatic and cost-effective path was to use an <b>existing EC2 instance already running in <code>us-east-1</code></b> (the identical AWS region housing both buckets) paired with high-concurrency client tooling.</p>
 </div>
 </section>
 <section>
@@ -302,7 +302,7 @@
 </section>
 <section>
 <div class="wrap">
-<div class="section-eyebrow">Key Takeaway</div>
+<div class="section-eyebrow">Lesson</div>
 <h2>Concurrency beats bandwidth for small objects</h2>
 <p>At cloud scale, small-file storage operations are <b>API transaction problems</b>, not bandwidth problems. When moving millions of small objects, throwing larger network pipes at the problem does not help if the client cannot dispatch concurrent requests fast enough.</p>
 <p>A simple change in tooling — moving from serial CLI processes to a parallel Go-based client on existing in-region compute — eliminated an 8-hour operational bottleneck in under an hour, with zero added infrastructure spend.</p>

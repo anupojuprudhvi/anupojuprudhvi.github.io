@@ -2,25 +2,25 @@
   {
     "slug": "nexuscore-ai-workforce-operating-system",
     "project": "independent-products",
-    "tag": "Autonomous AI Platform",
+    "tag": "AI platform",
     "badge": "Latest",
-    "title": "NexusCore AI: Autonomous Workforce OS",
-    "desc": "Identity and Joiner-Mover-Leaver automation on durable Temporal sagas, with sub-5s de-provisioning and a policy assistant that cites its sources."
+    "title": "NexusCore AI: joiners, movers & leavers",
+    "desc": "Account and access changes for joiners, movers, and leavers, run as reliable Temporal workflows, with offboarding in under 5 seconds and a policy assistant that cites its sources."
   },
   {
     "slug": "s3-large-scale-bucket-migration",
     "project": "tolling",
-    "tag": "AWS Cloud Infrastructure",
+    "tag": "AWS infrastructure",
     "badge": "8h → 54m",
     "title": "Tolling S3 Migration: 1.48M Objects",
-    "desc": "High-concurrency migration of 225 GB across 1.48M small objects using in-region EC2 + s5cmd with $0 compute overhead."
+    "desc": "Moving 225 GB spread across 1.48M small objects with s5cmd on an existing in-region EC2 instance, at no extra compute cost."
   },
   {
     "slug": "solo-saas-hardening-ai-agentic-engineering",
     "project": "independent-products",
-    "tag": "AI-Agentic Engineering",
+    "tag": "AI-assisted engineering",
     "badge": "10 Suites",
-    "title": "Solo SaaS Hardening: AI Protocols",
-    "desc": "Disciplined verification protocol with 10 automated test suites and strict pre-push checklists for agentic autonomy."
+    "title": "Hardening a solo SaaS built with AI",
+    "desc": "How 10 automated test suites and a strict pre-push checklist kept AI-written code in check."
   }
 ]

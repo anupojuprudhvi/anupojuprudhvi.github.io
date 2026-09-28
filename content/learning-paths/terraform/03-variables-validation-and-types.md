@@ -5,7 +5,7 @@ track: terraform
 order: 3
 module: 3
 totalModules: 6
-summary: Writing robust, self-defending Terraform with rich object schemas, custom validation blocks, lifecycle preconditions, and deterministic for_each key mapping.
+summary: Writing Terraform that checks its own inputs, using rich object schemas, custom validation blocks, lifecycle preconditions, and deterministic for_each key mapping.
 level: Core Architecture
 readingTime: 7 min read
 stack: [Terraform 1.5+, HCL, AWS]

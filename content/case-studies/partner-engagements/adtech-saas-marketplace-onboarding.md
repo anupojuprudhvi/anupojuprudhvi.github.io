@@ -9,7 +9,7 @@ layer: Applications & integration
 order: 40
 stack: [Google Cloud Marketplace, AWS, SaaS Integration, Webhooks, API Gateway, Cloud Functions]
 tags: [marketplace, saas, multi-cloud, adtech, commercialization, integration]
-summary: An automated cloud marketplace integration for an AdTech SaaS platform — buyer procurement flows, billing telemetry, and post-onboarding verification.
+summary: Getting an AdTech SaaS product listed and sold through a cloud marketplace: the buyer sign-up flow, usage-based billing, and checks after launch.
 problem: |
   An enterprise AdTech software provider required multi-cloud commercialization channels
   to allow corporate clients to procure its analytics and audience optimization platform
@@ -20,16 +20,16 @@ problem: |
   integration blueprint, webhook subscription receivers, licensing entitlement
   workflows, and a rigorous post-onboarding operational compliance checklist.
 solution: |
-  Authored the Architecture Initiation Blueprint and engineered the marketplace
+  Authored the Architecture Initiation Blueprint and built the marketplace
   integration architecture connecting Cloud Marketplace procurement APIs to the SaaS
   platform's tenant management engine. Designed the automated onboarding workflows,
-  formulated the Product Setup Matrix and Post-Onboarding Verification Checklist,
+  wrote the Product Setup Matrix and Post-Onboarding Verification Checklist,
   and established automated tests validating procurement webhooks, account activation
   redirects, and usage metering telemetry.
 flowLabel: Cloud marketplace procurement and automated tenant provisioning flow
 flow:
   - step: Marketplace buyer procurement
-    note: Enterprise customer purchases SaaS product subscription via Cloud Marketplace console utilizing corporate cloud credits.
+    note: Enterprise customer purchases SaaS product subscription via Cloud Marketplace console using corporate cloud credits.
   - step: Subscription webhook notification
     note: Cloud Marketplace publishes a cryptographically verified subscription event to the SaaS platform's secure ingestion endpoint.
   - step: Automated tenant provisioning
@@ -37,7 +37,7 @@ flow:
   - step: Post-onboarding verification
     note: Automated validation suite executes test purchases, verifies billing metering ingestion, and confirms cancel/downgrade workflows.
 enables: |
-  Unlocks frictionless procurement through enterprise cloud marketplace catalogs,
+  Makes buying easy through enterprise cloud marketplace catalogs,
   reducing customer onboarding latency from days to minutes while ensuring 100%
   accurate billing event reconciliation between cloud providers and SaaS accounting.
 outcomes:
@@ -60,10 +60,10 @@ However, listing an enterprise SaaS product on a cloud marketplace requires subs
 
 ### Implementation notes
 
-- **Architecture Initiation Document:** Authored the comprehensive technical design specification detailing authentication boundaries, webhook signature validation, OAuth2 token exchange, and tenant data isolation.
+- **Architecture Initiation Document:** Wrote the technical design specification detailing authentication boundaries, webhook signature validation, OAuth2 token exchange, and tenant data isolation.
 - **Product Setup Matrix:** Established the configuration parameters for multi-tier pricing models (e.g., Starter, Professional, Enterprise tiers) mapped to cloud SKU definitions and dimension keys.
 - **Webhook receiver resiliency:** Implemented idempotent event processing on webhook receivers to prevent double-provisioning or race conditions caused by network retries from the marketplace notification bus.
-- **Post-Onboarding Verification Checklist:** Created a comprehensive operational checklist spanning pre-launch staging verification, dry-run procurement tests with partner sandbox accounts, and production go-live verification.
+- **Post-Onboarding Verification Checklist:** Created an operational checklist spanning pre-launch staging verification, dry-run procurement tests with partner sandbox accounts, and production go-live verification.
 
 ## Workflow · The customer onboarding and verification journey
 
@@ -92,4 +92,4 @@ However, listing an enterprise SaaS product on a cloud marketplace requires subs
 
 ## Outcome · Accelerated commercial launch
 
-The structured architecture blueprint and onboarding checklists transformed an ad-hoc, manual provisioning process into a fully automated, certified cloud marketplace integration. The product achieved seamless commercial listing status, enabling enterprise sales teams to close deals through cloud provider enterprise agreements with zero engineering friction.
+The structured architecture blueprint and onboarding checklists transformed an ad-hoc, manual provisioning process into a fully automated, certified cloud marketplace integration. The product was listed for sale without issues, enabling enterprise sales teams to close deals through cloud provider enterprise agreements with zero engineering friction.

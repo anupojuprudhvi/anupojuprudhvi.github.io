@@ -416,7 +416,7 @@
     ],
     "url": "case-studies/tolling/s3-large-scale-bucket-migration.html",
     "problem": "A bucket reorganization required moving 225 GB of data between two S3 buckets. While 225 GB is modest in total bytes, the payload comprised 1.48 million small objects. Standard `aws s3 sync` projected over 8 hours to complete because S3 request overhead and Python CLI concurrency limits bottlenecked on API metadata transactions rather than network bandwidth.",
-    "solution": "Rather than spinning up expensive one-off migration infrastructure or accepting an 8-hour window, the transfer was orchestrated directly from an existing EC2 instance in `us-east-1` (the same region as both buckets) using `s5cmd`, a Go-based parallel S3 client, tuned to 128 concurrent workers. The entire migration completed in 54 minutes with zero errors, validated by full object count and MD5 checksum parity before source deprecation."
+    "solution": "Rather than spinning up expensive one-off migration infrastructure or accepting an 8-hour window, the transfer was run directly from an existing EC2 instance in `us-east-1` (the same region as both buckets) using `s5cmd`, a Go-based parallel S3 client, tuned to 128 concurrent workers. The entire migration completed in 54 minutes with zero errors, validated by full object count and MD5 checksum parity before source deprecation."
   },
   {
     "title": "Clinical platform modernization and cost architecture",
@@ -561,8 +561,8 @@
       "enterprise"
     ],
     "url": "case-studies/partner-engagements/fintech-map-assess-business-case.html",
-    "problem": "An institutional digital asset and accounting platform running on-premises in VMware required a comprehensive evaluation for migration to AWS under the Migration Acceleration Program (MAP). To unlock executive sponsorship and AWS MAP co-funding, the engineering and finance leadership required empirical utilization baselines, right-sized EC2 compute recommendations, licensing optimization models, and a formal 6-pillar Migration Readiness Assessment (MRA). Furthermore, the client's existing third-party SAML integration blocked access to AWS Transform workspaces, and strict financial compliance demanded a zero-agent discovery methodology.",
-    "solution": "Designed and executed a dual-path discovery architecture utilizing automated RVTools exports alongside an agentless AWS Transform OVA collector deployed directly into the private VMware vCenter cluster. To resolve the authentication deadlock, engineered an identity bridge configuring the enterprise IdP for AWS IAM Identity Center via SAML and SCIM sync, allowing coexistence with legacy access. The ingested telemetry was evaluated in AWS Transform to produce a 3-year Directional Business Case (DBC), licensing comparison (BYOL vs. License Included), and a phased 7Rs workload migration roadmap."
+    "problem": "An institutional digital asset and accounting platform running on-premises in VMware needed a full evaluation for migration to AWS under the Migration Acceleration Program (MAP). To win executive sponsorship and AWS MAP co-funding, the engineering and finance leadership required empirical utilization baselines, right-sized EC2 compute recommendations, licensing optimization models, and a formal 6-pillar Migration Readiness Assessment (MRA). The client's existing third-party SAML integration blocked access to AWS Transform workspaces, and strict financial compliance demanded a zero-agent discovery methodology.",
+    "solution": "Designed and executed a dual-path discovery approach using automated RVTools exports alongside an agentless AWS Transform OVA collector deployed directly into the private VMware vCenter cluster. To break the authentication deadlock, built an identity bridge that connects the enterprise IdP to AWS IAM Identity Center through SAML and SCIM sync, so it works alongside the existing access setup. The ingested telemetry was evaluated in AWS Transform to produce a 3-year Directional Business Case (DBC), licensing comparison (BYOL vs. License Included), and a phased 7Rs workload migration roadmap."
   },
   {
     "title": "Global media platform · Cross-region MAP migration",
@@ -589,7 +589,7 @@
     ],
     "url": "case-studies/partner-engagements/media-cross-region-map-migration.html",
     "problem": "A global media localization, subtitling, and dubbing enterprise operated multi-petabyte media processing pipelines distributed across physical data centers in North America and Europe. The decentralized infrastructure footprint suffered from inconsistent visibility, spiraling on-premise SAN/NAS storage expansion costs, and fragmented licensing agreements across continents. Preparing for an enterprise-wide cloud transition under the AWS Migration Acceleration Program (MAP) required categorizing over 600 virtual and physical servers, analyzing transcode utilization peaks, and establishing a defensible multi-year Total Cost of Ownership (TCO) model.",
-    "solution": "Led the cross-region technical discovery and transformation analysis across both US and EU infrastructure environments. By normalizing inventory exports and workload telemetry, mapped legacy render/transcode clusters to dynamic Amazon EC2 Graviton and Spot instance fleets, and architected tiered storage strategies (Amazon S3 Standard to Glacier Deep Archive) for multi-petabyte media catalogs. Authored the formal Migration Readiness Assessment (MRA) findings, established phase-wise success criteria, and presented the final financial TCO deck to C-level stakeholders."
+    "solution": "Led the cross-region technical discovery and transformation analysis across both US and EU infrastructure environments. By normalizing inventory exports and workload telemetry, mapped legacy render/transcode clusters to dynamic Amazon EC2 Graviton and Spot instance fleets, and designed tiered storage strategies (Amazon S3 Standard to Glacier Deep Archive) for multi-petabyte media catalogs. Authored the formal Migration Readiness Assessment (MRA) findings, established phase-wise success criteria, and presented the final financial TCO deck to C-level stakeholders."
   },
   {
     "title": "Enterprise IT monitoring · VMware Tanzu to EKS assessment",
@@ -619,12 +619,12 @@
     ],
     "url": "case-studies/partner-engagements/it-monitoring-tanzu-to-eks-map-assessment.html",
     "problem": "A European enterprise IT infrastructure and network monitoring software leader operated its core commercial platforms, continuous integration runner fleets, and extensive QA test farms across on-premises Dell VxRail clusters running VMware Tanzu. Facing impending hypervisor licensing price increases and substantial physical colocation datacenter lease overheads, the organization initiated an AWS Migration Acceleration Program (MAP) assessment. The initiative required deep container-level discovery, VPC CNI IP capacity planning, stateful data persistence mapping, and an audited 3-year TCO financial justification to validate a complete datacenter exit.",
-    "solution": "Serving as Lead Cloud Architect, spearheaded the technical workload assessment and EKS target state architecture. Formulated a comprehensive 33-question evaluation matrix spanning container resource requests/limits, network policies, and pod storage drivers. Architected the target AWS platform transitioning VMware Tanzu workloads to Amazon EKS utilizing Karpenter with AWS Graviton and Spot instances, mapped relational databases to Amazon Aurora, and authored the compute right-sizing report (projecting ≥ 25% compute savings) and official AWS MAP Customer Sign-Off package."
+    "solution": "Serving as Lead Cloud Architect, led the technical workload assessment and EKS target state architecture. Built a 33-question evaluation matrix spanning container resource requests/limits, network policies, and pod storage drivers. Designed the target AWS platform transitioning VMware Tanzu workloads to Amazon EKS using Karpenter with AWS Graviton and Spot instances, mapped relational databases to Amazon Aurora, and authored the compute right-sizing report (projecting ≥ 25% compute savings) and official AWS MAP Customer Sign-Off package."
   },
   {
     "title": "Connected IoT platform · Monolith to AWS cloud migration",
     "nav": "Connected IoT cloud migration",
-    "summary": "Modernizing a connected device platform from on-premise servers to AWS managed services — service translation matrices, estimates, and MAP Mobilize roadmaps.",
+    "summary": "Moving a connected-device platform from on-premise servers to AWS managed services: mapping each old service to its AWS replacement, cost estimates, and a MAP Mobilize roadmap.",
     "project": "partner-engagements",
     "projectName": "AWS APN & Migration Engagements",
     "layer": "Migration & strategy",
@@ -647,12 +647,12 @@
     ],
     "url": "case-studies/partner-engagements/iot-telemetry-monolith-to-cloud-migration.html",
     "problem": "A connected smart consumer IoT platform transmitting continuous streams of biometric and environmental telemetry from millions of deployed hardware units was constrained by an aging on-premises monolithic backend. Monolithic MQTT connection brokers, self-managed database clusters, and co-located background worker daemons created critical scaling bottlenecks and single points of failure during usage spikes. Transitioning to AWS under the Migration Acceleration Program (MAP) required a complete Well-Architected target blueprint, mapping legacy server daemons to managed cloud services, and establishing defensible infrastructure cost estimates.",
-    "solution": "Designed the target cloud architecture and authored the comprehensive Service Mapping Matrix translating monolithic components to scalable AWS managed equivalents: migrating self-hosted MQTT to AWS IoT Core, background processing to Amazon EKS on AWS Graviton, telemetry streaming to Amazon Kinesis, and operational persistence to Amazon Aurora and Amazon DynamoDB. Formulated the 3-year capacity cost models, authored the MAP Assessment Final Report, and established the technical governance and cadence framework for the Mobilize phase."
+    "solution": "Designed the target cloud architecture and wrote the Service Mapping Matrix translating monolithic components to scalable AWS managed equivalents: migrating self-hosted MQTT to AWS IoT Core, background processing to Amazon EKS on AWS Graviton, telemetry streaming to Amazon Kinesis, and operational persistence to Amazon Aurora and Amazon DynamoDB. Built the 3-year capacity cost models, authored the MAP Assessment Final Report, and established the technical governance and cadence framework for the Mobilize phase."
   },
   {
     "title": "Enterprise AdTech SaaS · Cloud marketplace onboarding",
     "nav": "AdTech SaaS marketplace onboarding",
-    "summary": "An automated cloud marketplace integration for an AdTech SaaS platform — buyer procurement flows, billing telemetry, and post-onboarding verification.",
+    "summary": "Getting an AdTech SaaS product listed and sold through a cloud marketplace: the buyer sign-up flow, usage-based billing, and checks after launch.",
     "project": "partner-engagements",
     "projectName": "AWS APN & Migration Engagements",
     "layer": "Applications & integration",
@@ -674,7 +674,7 @@
     ],
     "url": "case-studies/partner-engagements/adtech-saas-marketplace-onboarding.html",
     "problem": "An enterprise AdTech software provider required multi-cloud commercialization channels to allow corporate clients to procure its analytics and audience optimization platform directly against their cloud enterprise discount commitments (such as Google Cloud and AWS Marketplace). The existing platform lacked automated subscription lifecycle endpoints, requiring manual sales engineering intervention to provision accounts and reconcile invoices. Launching on enterprise cloud marketplaces required an automated integration blueprint, webhook subscription receivers, licensing entitlement workflows, and a rigorous post-onboarding operational compliance checklist.",
-    "solution": "Authored the Architecture Initiation Blueprint and engineered the marketplace integration architecture connecting Cloud Marketplace procurement APIs to the SaaS platform's tenant management engine. Designed the automated onboarding workflows, formulated the Product Setup Matrix and Post-Onboarding Verification Checklist, and established automated tests validating procurement webhooks, account activation redirects, and usage metering telemetry."
+    "solution": "Authored the Architecture Initiation Blueprint and built the marketplace integration architecture connecting Cloud Marketplace procurement APIs to the SaaS platform's tenant management engine. Designed the automated onboarding workflows, wrote the Product Setup Matrix and Post-Onboarding Verification Checklist, and established automated tests validating procurement webhooks, account activation redirects, and usage metering telemetry."
   },
   {
     "title": "21-node Oracle RAC cluster on AWS without shared-SAN storage",
@@ -699,7 +699,7 @@
       "aws"
     ],
     "url": "case-studies/enterprise-infrastructure/oracle-rac-cluster-on-aws.html",
-    "problem": "A large education-services platform ran mission-critical academic and financial operations — registrations, fee processing, and examination results — on a database tier that had to absorb extreme, predictable concurrency spikes (an exam-results release could multiply load by an order of magnitude in minutes) without downtime or throttling. Oracle RAC is the standard answer for active-active database high availability, but RAC has traditionally required shared-SAN block storage that AWS doesn't provide natively — EBS volumes attach to one instance at a time.",
+    "problem": "A large education-services platform ran its core academic and financial operations — registrations, fee processing, and examination results — on a database tier that had to absorb extreme, predictable concurrency spikes (an exam-results release could multiply load by an order of magnitude in minutes) without downtime or throttling. Oracle RAC is the standard answer for active-active database high availability, but RAC has traditionally required shared-SAN block storage that AWS doesn't provide natively — EBS volumes attach to one instance at a time.",
     "solution": "A 21+ node active-active Oracle RAC cluster on AWS EC2, using a software-defined clustered storage layer (FlashGrid) to emulate shared-SAN semantics across independently-attached EBS volumes, with tuned ASM diskgroups, provisioned-IOPS storage, and kernel-level I/O tuning to hit sub-2ms latency under load."
   },
   {
@@ -725,7 +725,7 @@
       "cost-optimization"
     ],
     "url": "case-studies/enterprise-infrastructure/hybrid-object-storage-platform.html",
-    "problem": "The organization's footprint was genuinely hybrid, not hybrid-in-name — production compute in AWS, enterprise virtualization in an on-prem data center running VMware, and a private OpenStack cloud, each with its own block storage and no shared way to store unstructured data: ERP file attachments, database dumps, and system backups. Every environment's storage was siloed, expensive to scale, and reachable only through whatever tooling that specific platform supported — there was no common access pattern across all three.",
+    "problem": "The organization's footprint was hybrid in practice, not just on paper — production compute in AWS, enterprise virtualization in an on-prem data center running VMware, and a private OpenStack cloud, each with its own block storage and no shared way to store unstructured data: ERP file attachments, database dumps, and system backups. Every environment's storage was siloed, expensive to scale, and reachable only through whatever tooling that specific platform supported — there was no common access pattern across all three.",
     "solution": "A distributed, S3-compatible object storage platform (MinIO) deployed behind an Nginx TLS reverse proxy, reachable via the same S3 API from all three environments, with automated Restic-encrypted backup pipelines and AWS S3 Glacier lifecycle tiering for long-term retention."
   },
   {
@@ -754,9 +754,9 @@
     "solution": "A single Bash script that automates the entire failover sequence end to end — instance metadata lookup, elastic IP reassociation, EBS volume attachment with a polling wait loop, filesystem mount (including NVMe device-mapping for newer instance types), and a service restart — plus a tiered S3 backup pipeline and full SPF/DKIM/DMARC DNS hardening."
   },
   {
-    "title": "NexusCore AI — Autonomous Enterprise Workforce & Identity Operating System",
-    "nav": "NexusCore AI Enterprise OS",
-    "summary": "Unifying IAM, Joiner-Mover-Leaver (JML) lifecycle automation, attendance tracking, and deterministic policy intelligence into a sovereign, distributed platform — targeting the modelled ~$1,400/employee cost of identity fragmentation, with sub-5s de-provisioning.",
+    "title": "NexusCore AI: one system for workforce identity, access, and HR policy",
+    "nav": "NexusCore AI",
+    "summary": "Bringing account access, joiner-mover-leaver (JML) automation, attendance, and HR policy answers into one platform, with offboarding in under 5 seconds. It targets the modelled ~$1,400 per employee that scattered identity tooling costs.",
     "project": "independent-products",
     "projectName": "Independent Products & AI-Assisted Engineering",
     "layer": "Product engineering",
@@ -780,13 +780,13 @@
       "kubernetes"
     ],
     "url": "case-studies/independent-products/nexuscore-ai-workforce-operating-system.html",
-    "problem": "Modern enterprises run an average of 42 disparate SaaS apps per employee across disconnected HRIS, IAM, and cloud silos, incurring a $1,400/employee annual hidden tax from orphaned licenses, 7.2-day onboarding drag, and endless IT tickets. De-provisioning failures leave critical security gaps and SEC Rule 106 compliance exposure, while static PDF handbooks buried in SharePoint cause constant HR interruptions.",
-    "solution": "Architected and delivered NexusCore AI, a decoupled multi-repo platform powered by an immutable PostgreSQL Identity Graph, Temporal durable execution state machines for sub-5 second JML provisioning with automatic compensation rollbacks, SHA-256 tamper-evident audit chaining, and a deterministic Policy RAG engine with verifiable PDF page citations."
+    "problem": "Companies run dozens of SaaS apps per employee, spread across HR systems, identity tools, and cloud accounts that don't talk to each other. That costs an estimated $1,400 per employee a year in forgotten licences, slow onboarding, and IT tickets. When offboarding misses an account, it leaves a security gap and a compliance problem (including the SEC's cybersecurity disclosure rules), and HR spends its days answering questions that are already in a PDF handbook nobody reads.",
+    "solution": "I designed and built NexusCore AI: separate services around a PostgreSQL identity graph, Temporal workflows that complete joiner-mover-leaver changes in under 5 seconds and undo themselves if a step fails, a SHA-256 audit trail that shows any tampering, and policy search that cites the exact PDF page."
   },
   {
     "title": "Hardening a solo SaaS product, end to end, with AI-agent-assisted engineering",
     "nav": "Solo SaaS hardening",
-    "summary": "Taking a solo-built PDF SaaS product from a serverless deployment that didn't actually run to a security-audited, ~93% lighter production app — built and operated solo using a formalized AI-agent engineering workflow.",
+    "summary": "Taking a PDF SaaS product I built alone from a serverless deployment that didn't run to a security-reviewed app about 93% lighter, using AI coding tools under strict written rules.",
     "project": "independent-products",
     "projectName": "Independent Products & AI-Assisted Engineering",
     "layer": "Product engineering",

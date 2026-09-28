@@ -188,7 +188,7 @@
 </div>
 <div>
 <h3>The architectural solution</h3>
-<p>Serving as Lead Cloud Architect, spearheaded the technical workload assessment and EKS target state architecture. Formulated a comprehensive 33-question evaluation matrix spanning container resource requests/limits, network policies, and pod storage drivers. Architected the target AWS platform transitioning VMware Tanzu workloads to Amazon EKS utilizing Karpenter with AWS Graviton and Spot instances, mapped relational databases to Amazon Aurora, and authored the compute right-sizing report (projecting ≥ 25% compute savings) and official AWS MAP Customer Sign-Off package.</p>
+<p>Serving as Lead Cloud Architect, led the technical workload assessment and EKS target state architecture. Built a 33-question evaluation matrix spanning container resource requests/limits, network policies, and pod storage drivers. Designed the target AWS platform transitioning VMware Tanzu workloads to Amazon EKS using Karpenter with AWS Graviton and Spot instances, mapped relational databases to Amazon Aurora, and authored the compute right-sizing report (projecting ≥ 25% compute savings) and official AWS MAP Customer Sign-Off package.</p>
 </div>
 </div>
 <figure class="reqflow">
@@ -217,7 +217,7 @@
 </ol>
 </figure>
 
-<div class="callout"><b>What this enables:</b> Decouples the enterprise from restrictive on-premises hypervisor licensing, automates container autoscaling via Karpenter on modern Graviton processors, and establishes the blueprint for a seamless colocation datacenter retirement.</div>
+<div class="callout"><b>What this enables:</b> Decouples the enterprise from restrictive on-premises hypervisor licensing, automates container autoscaling via Karpenter on modern Graviton processors, and establishes the plan for retiring the colocation datacenter cleanly.</div>
 </div>
 </section>
 <section>
@@ -230,7 +230,7 @@
 <summary>Implementation notes</summary>
 <ul>
 <li><b>Kubernetes assessment framework:</b> To address gaps in standard hypervisor discovery, an in-depth Kubernetes assessment questionnaire was established spanning 33 architectural dimensions, covering pod resource <code>requests</code> and <code>limits</code>, ingress controllers, network policy enforcement, and Prometheus metrics retention.</li>
-<li><b>VPC CNI IP capacity planning:</b> Evaluated AWS VPC CNI behavior where secondary private IPs are assigned directly to pods. Architected secondary CIDR blocks (<code>100.64.0.0/16</code>) for pod networking to prevent private IPv4 address exhaustion in production subnets.</li>
+<li><b>VPC CNI IP capacity planning:</b> Evaluated AWS VPC CNI behavior where secondary private IPs are assigned directly to pods. Designed secondary CIDR blocks (<code>100.64.0.0/16</code>) for pod networking to prevent private IPv4 address exhaustion in production subnets.</li>
 <li><b>Dynamic autoscaling with Karpenter:</b> Modeled replacing static on-premise Dell VxRail worker nodes with Amazon EKS using <b>Karpenter</b>. By combining Graviton (ARM64) for baseline microservices with auto-scaling EC2 Spot instances for ephemeral GitLab CI runners and QA probe test farms, the architecture projected over 25% compute cost savings.</li>
 <li><b>Persistent storage replatforming:</b> Analyzed stateful container workloads backed by Fiber Channel SAN and NFS shares. Defined clear replatforming pathways: moving transactional relational databases to <b>Amazon Aurora PostgreSQL</b>, shared developer file storage to <b>Amazon EFS</b> and <b>FSx for Windows</b>, and backup repositories to <b>AWS Backup</b> with automated S3 lifecycle tiering.</li>
 </ul>
@@ -245,7 +245,7 @@
 <ul>
 <li><b>Compute &amp; Orchestration:</b></li>
 <li>*Current State:* VMware Tanzu Kubernetes running across 4 Dell VxRail ESXi physical hosts with static CI runner fleets.</li>
-<li>*Target State:* Amazon EKS (Multi-AZ) with Karpenter just-in-time node provisioning, leveraging AWS Graviton3 (ARM64) for baseline microservices and auto-scaling EC2 Spot instances for ephemeral CI/CD runners.</li>
+<li>*Target State:* Amazon EKS (Multi-AZ) with Karpenter just-in-time node provisioning, using AWS Graviton3 (ARM64) for baseline microservices and auto-scaling EC2 Spot instances for ephemeral CI/CD runners.</li>
 <li><b>Relational Databases &amp; Persistent Storage:</b></li>
 <li>*Current State:* Self-managed PostgreSQL and BI reporting databases residing on physical Fiber Channel SAN arrays.</li>
 <li>*Target State:* Amazon Aurora PostgreSQL Multi-AZ with automated storage autoscaling and cross-AZ read replica offloading.</li>
