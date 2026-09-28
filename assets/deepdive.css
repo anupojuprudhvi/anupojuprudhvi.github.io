@@ -700,14 +700,19 @@ pre.code {
 
 /* ---------------------------------- Header motifs (scripts/lib/motifs.mjs)
    A small animated illustration beside the title of each case study and
-   playbook. Decorative only; hidden below 1100px, where the title needs the
-   full width. Packets move by SVG animation, so reduced motion hides them;
-   the CSS cycles below are stopped by the site-wide reduced-motion rule. */
+   playbook (below the summary on narrower screens, where the title needs the
+   full width). Decorative only. Packets move by SVG animation, so reduced
+   motion hides them; the CSS cycles below are stopped by the site-wide
+   reduced-motion rule. */
 .hero-split {
   display: block;
 }
 .motif {
-  display: none;
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  margin-top: 28px;
 }
 @media (min-width: 1100px) {
   .hero-split {
@@ -717,7 +722,8 @@ pre.code {
     align-items: center;
   }
   .motif {
-    display: block;
+    width: 240px;
+    margin-top: 0;
   }
 }
 @media (prefers-reduced-motion: reduce) {
