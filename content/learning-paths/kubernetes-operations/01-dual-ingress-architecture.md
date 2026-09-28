@@ -7,7 +7,7 @@ order: 1
 module: 1
 totalModules: 10
 summary: When to route traffic through a shared ALB versus a separate ingress controller, why grouping services onto one load balancer is a real saving, and where Gateway API fits now that ingress-nginx is retired.
-level: Core Architecture
+level: Foundations · Networking
 readingTime: 9 min read
 stack: [Amazon EKS, AWS Load Balancer Controller, Nginx Ingress, Gateway API, AWS VPC CNI]
 tags: [ingress, alb, nginx, gateway-api, cost-optimization, eks]

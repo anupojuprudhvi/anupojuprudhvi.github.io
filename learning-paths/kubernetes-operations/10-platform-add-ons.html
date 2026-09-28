@@ -111,8 +111,8 @@
                 <small>6 Modules · Assess, Mobilize &amp; Modernize</small>
               </a>
               <a href="../../learning-paths/kubernetes-operations/index.html" role="menuitem" class="nav-dropdown-item">
-                <strong>Kubernetes Ingress &amp; Operations on EKS</strong>
-                <small>4 Modules · Ingress, RBAC &amp; Day-2 Ops</small>
+                <strong>Kubernetes on Amazon EKS</strong>
+                <small>10 Modules · Foundations &amp; Operations</small>
               </a>
             </div>
           </div>
@@ -127,14 +127,14 @@
     <main id="main">
       <nav class="breadcrumb-bar" aria-label="Breadcrumb">
         <div class="wrap">
-          <div class="back"><a class="back-link back" href="../../learning-paths/kubernetes-operations/index.html">← Kubernetes Ingress &amp; Operations on Amazon EKS</a></div>
+          <div class="back"><a class="back-link back" href="../../learning-paths/kubernetes-operations/index.html">← Kubernetes on Amazon EKS: Foundations &amp; Operations</a></div>
         </div>
       </nav>
       <header class="lp-hero">
         <div class="wrap">
           <div class="hero-split">
             <div>
-              <span class="lp-badge">Platform</span>
+              <span class="lp-badge">Foundations · Platform</span>
               <h1>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</h1>
               <p class="sub">The small set of add-ons a new EKS cluster needs before any application can run well (load balancing, DNS, metrics, autoscaling, logs, storage), each with its own IAM role, installed in a way you can repeat safely.</p>
             </div>
@@ -153,8 +153,8 @@
     </svg>
           </div>
           <div class="lp-meta-bar">
-            <span><b>Module:</b> 10 of 10</span>
-            <span><b>Level:</b> Platform</span>
+            <span><b>Module:</b> 05 of 10</span>
+            <span><b>Level:</b> Foundations · Platform</span>
             <span><b>Time:</b> 9 min read</span>
             <span><b>Published:</b> <time datetime="2026-09-28">28 Sep 2026</time></span>
           </div>
@@ -164,7 +164,7 @@
         <div class="wrap">
           <section>
 <div class="wrap">
-<p><b>Before you start:</b> this pulls together modules 1, 5, 7, and 8. It's based on the add-on setup used in the multi-environment deployment this track draws on, with every name, account, and domain replaced by a placeholder.</p>
+<p><b>Before you start:</b> this pulls together pieces from modules 1 and 4, and from modules 7 and 8 later in the track. It's based on the add-on setup used in the multi-environment deployment this track draws on, with every name, account, and domain replaced by a placeholder.</p>
 </div>
 </section>
 <section>
@@ -179,8 +179,8 @@
 <tbody>
 <tr><td data-label="Add-on">AWS Load Balancer Controller</td><td data-label="What it does">Creates ALBs and NLBs from Ingress and Service objects</td><td data-label="Covered in">Module 1</td></tr>
 <tr><td data-label="Add-on">ExternalDNS</td><td data-label="What it does">Creates DNS records for services and ingresses</td><td data-label="Covered in">Below</td></tr>
-<tr><td data-label="Add-on">metrics-server</td><td data-label="What it does">Reports pod CPU and memory, needed by <code>kubectl top</code> and the HPA</td><td data-label="Covered in">Module 5</td></tr>
-<tr><td data-label="Add-on">Cluster Autoscaler</td><td data-label="What it does">Adds and removes nodes as pods need room</td><td data-label="Covered in">Module 5</td></tr>
+<tr><td data-label="Add-on">metrics-server</td><td data-label="What it does">Reports pod CPU and memory, needed by <code>kubectl top</code> and the HPA</td><td data-label="Covered in">Module 7</td></tr>
+<tr><td data-label="Add-on">Cluster Autoscaler</td><td data-label="What it does">Adds and removes nodes as pods need room</td><td data-label="Covered in">Module 7</td></tr>
 <tr><td data-label="Add-on">Fluent Bit</td><td data-label="What it does">Ships container logs to a central store, such as CloudWatch Logs</td><td data-label="Covered in">Module 8</td></tr>
 <tr><td data-label="Add-on">EBS and EFS CSI drivers</td><td data-label="What it does">Give pods persistent volumes</td><td data-label="Covered in">Below</td></tr>
 </tbody>
@@ -190,7 +190,7 @@
 <section>
 <div class="wrap">
 <h2>Each add-on gets its own IAM role</h2>
-<p>Most of these add-ons call AWS APIs, so each needs AWS permissions. The original setup gave every add-on its <b>own</b> IAM role, attached to its own service account in <code>kube-system</code> using IRSA (module 7): one role for the load balancer controller, one for ExternalDNS, one for the autoscaler, one for Fluent Bit. An application that talked to a managed message broker got its own role in the same way.</p>
+<p>Most of these add-ons call AWS APIs, so each needs AWS permissions. The original setup gave every add-on its <b>own</b> IAM role, attached to its own service account in <code>kube-system</code> using IRSA (module 4): one role for the load balancer controller, one for ExternalDNS, one for the autoscaler, one for Fluent Bit. An application that talked to a managed message broker got its own role in the same way.</p>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># One service account per add-on, each pointing at its own role
 kubectl create serviceaccount external-dns -n kube-system
 kubectl annotate serviceaccount external-dns -n kube-system \
@@ -252,19 +252,19 @@ volumeBindingMode: WaitForFirstConsumer</code></pre>
 <ul>
 <li><b>Make the install repeatable.</b> The original script checked whether each thing existed before creating it, so it could be re-run safely. Keep that property whatever tool you use.</li>
 <li><b>Give each piece one owner.</b> The OIDC provider was first created by the script and later moved into Terraform, and the script was changed to stop deleting it. Two tools managing the same resource will eventually fight.</li>
-<li><b>Prefer managed add-ons and pinned Helm charts over raw manifests.</b> EKS managed add-ons (VPC CNI, CoreDNS, kube-proxy, the EBS CSI driver, Pod Identity agent, and others) get versioned upgrades with the cluster. The rest can be pinned Helm releases, ideally managed through Argo CD (module 9) so every cluster gets the same set.</li>
+<li><b>Prefer managed add-ons and pinned Helm charts over raw manifests.</b> EKS managed add-ons (VPC CNI, CoreDNS, kube-proxy, the EBS CSI driver, Pod Identity agent, and others) get versioned upgrades with the cluster. The rest can be pinned Helm releases, ideally managed through Argo CD (module 6) so every cluster gets the same set.</li>
 <li><b>Graviton nodes need ARM64 images.</b> If the node groups use AWS Graviton, every add-on and application image must be published for <code>arm64</code>. Most well-known add-ons are multi-architecture, but check anything custom before switching.</li>
 </ul>
 </details>
 </div>
 </section>
-          <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/09-gitops-with-argo-cd.html">
-          <span class="lp-nav-label">← Module 09</span>
-          <span class="lp-nav-title">GitOps with Argo CD: Git as the Source of Truth</span>
+          <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/07-workload-identity-and-secrets.html">
+          <span class="lp-nav-label">← Module 04</span>
+          <span class="lp-nav-title">Workload Identity &amp; Secrets: How Pods Get AWS Access</span>
         </a>
-<a class="lp-nav-link next" href="../../learning-paths/index.html">
-          <span class="lp-nav-label">Track Complete →</span>
-          <span class="lp-nav-title">All Learning Paths</span>
+<a class="lp-nav-link next" href="../../learning-paths/kubernetes-operations/09-gitops-with-argo-cd.html">
+          <span class="lp-nav-label">Module 06 →</span>
+          <span class="lp-nav-title">GitOps with Argo CD: Git as the Source of Truth</span>
         </a></nav>
         </div>
       </article>

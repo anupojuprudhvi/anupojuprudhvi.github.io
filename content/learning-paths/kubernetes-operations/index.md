@@ -1,5 +1,5 @@
 ---
-title: Kubernetes Ingress & Operations on Amazon EKS
+title: Kubernetes on Amazon EKS: Foundations & Operations
 date: 2026-09-18
 track: kubernetes-operations
 summary: A hands-on playbook for running EKS in production — dual ingress cost mechanics, IAM/RBAC across clusters, and day-2 incident triage.
@@ -25,9 +25,11 @@ This track draws on running Amazon EKS across four separate environments (Dev, Q
 - Running deploys through Git with Argo CD.
 - The add-ons every new cluster needs before any app arrives.
 
-Modules 1–3 and 10 draw on that deployment (with every name and account removed). Modules 4–9 are general EKS practice.
+The track is in two parts: **learn the foundations** (modules 1–6), then **run it in production** (modules 7–10). Modules 1–3 and 5 draw on that deployment, with every name and account removed; the rest are general EKS practice.
 
-## Curriculum · The 10 operations modules
+## Part 1 · Learn the foundations
+
+How traffic gets in, who can get in, how code gets there, and the building blocks every cluster needs. Read these in order if you are setting up a platform.
 
 <ul class="lp-syllabus">
   <li>
@@ -35,7 +37,7 @@ Modules 1–3 and 10 draw on that deployment (with every name and account remove
       <span class="lp-module-num">01</span>
       <div class="lp-module-body">
         <h3>Dual Ingress Architecture &amp; Its Cost Mechanics</h3>
-        <p>When to route through a shared AWS ALB versus an internal Nginx Ingress controller, and why grouping services onto one load balancer is a real line-item saving.</p>
+        <p>When to share one ALB across services, when a separate controller helps, and moving from the retired ingress-nginx to Gateway API.</p>
       </div>
       <span class="lp-module-action">Start module →</span>
     </a>
@@ -45,7 +47,7 @@ Modules 1–3 and 10 draw on that deployment (with every name and account remove
       <span class="lp-module-num">02</span>
       <div class="lp-module-body">
         <h3>Multi-Environment Clusters &amp; IAM/RBAC</h3>
-        <p>Isolating Dev, QA, Staging, and Production as separate clusters and mapping IAM identities to Kubernetes RBAC without a shared superuser credential.</p>
+        <p>Separate clusters per environment, and giving people and pipelines access with EKS access entries instead of a shared superuser.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>
@@ -55,47 +57,54 @@ Modules 1–3 and 10 draw on that deployment (with every name and account remove
       <span class="lp-module-num">03</span>
       <div class="lp-module-body">
         <h3>Container Delivery: Build, Tag, Push, Promote</h3>
-        <p>A registry-to-cluster promotion workflow, and the headless-authentication gotcha that only shows up once a human isn't the one running the command.</p>
-      </div>
-      <span class="lp-module-action">Read module →</span>
-    </a>
-  </li>
-  <li>
-    <a class="lp-module-card" href="04-day-2-operations-and-incident-triage.html">
-      <span class="lp-module-num">04</span>
-      <div class="lp-module-body">
-        <h3>Day-2 Operations &amp; Incident Triage</h3>
-        <p>Context switching across clusters safely, verifying a rollout actually succeeded, and a systematic sequence for triaging a stuck deployment.</p>
-      </div>
-      <span class="lp-module-action">Read module →</span>
-    </a>
-  </li>
-  <li>
-    <a class="lp-module-card" href="05-scaling-requests-and-cost.html">
-      <span class="lp-module-num">05</span>
-      <div class="lp-module-body">
-        <h3>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</h3>
-        <p>Why resource requests drive scheduling, autoscaling, and the bill, and how pod and node autoscaling fit together.</p>
-      </div>
-      <span class="lp-module-action">Read module →</span>
-    </a>
-  </li>
-  <li>
-    <a class="lp-module-card" href="06-cluster-upgrades.html">
-      <span class="lp-module-num">06</span>
-      <div class="lp-module-body">
-        <h3>Cluster Upgrades Without Drama</h3>
-        <p>Checking for removed APIs first, then upgrading the control plane, add-ons, and nodes in an order that keeps workloads running.</p>
+        <p>Build an image once and promote that exact image by digest, plus the registry login detail that only breaks in CI.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>
   </li>
   <li>
     <a class="lp-module-card" href="07-workload-identity-and-secrets.html">
-      <span class="lp-module-num">07</span>
+      <span class="lp-module-num">04</span>
       <div class="lp-module-body">
         <h3>Workload Identity &amp; Secrets</h3>
         <p>Giving each workload its own AWS permissions with EKS Pod Identity or IRSA, and getting secrets into pods without putting them in Git.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="10-platform-add-ons.html">
+      <span class="lp-module-num">05</span>
+      <div class="lp-module-body">
+        <h3>The Platform Add-on Layer</h3>
+        <p>The add-ons every new cluster needs (load balancing, DNS, metrics, autoscaling, logs, storage), each with its own IAM role.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="09-gitops-with-argo-cd.html">
+      <span class="lp-module-num">06</span>
+      <div class="lp-module-body">
+        <h3>GitOps with Argo CD</h3>
+        <p>Letting Argo CD keep each cluster matching Git, so a deploy is a reviewed pull request and a rollback is a revert.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+</ul>
+
+## Part 2 · Run it in production
+
+Keeping a running platform healthy: capacity and cost, knowing when something is wrong, fixing it, and upgrading without drama. Dip into these as you need them.
+
+<ul class="lp-syllabus">
+  <li>
+    <a class="lp-module-card" href="05-scaling-requests-and-cost.html">
+      <span class="lp-module-num">07</span>
+      <div class="lp-module-body">
+        <h3>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</h3>
+        <p>Why resource requests drive scheduling, autoscaling, and the bill, and how pod and node autoscaling fit together.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>
@@ -111,21 +120,21 @@ Modules 1–3 and 10 draw on that deployment (with every name and account remove
     </a>
   </li>
   <li>
-    <a class="lp-module-card" href="09-gitops-with-argo-cd.html">
+    <a class="lp-module-card" href="04-day-2-operations-and-incident-triage.html">
       <span class="lp-module-num">09</span>
       <div class="lp-module-body">
-        <h3>GitOps with Argo CD</h3>
-        <p>Letting Argo CD keep each cluster matching Git, so a deploy is a reviewed pull request and a rollback is a revert.</p>
+        <h3>Day-2 Operations &amp; Incident Triage</h3>
+        <p>Context switching across clusters safely, verifying a rollout actually succeeded, and a systematic sequence for triaging a stuck deployment.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>
   </li>
   <li>
-    <a class="lp-module-card" href="10-platform-add-ons.html">
+    <a class="lp-module-card" href="06-cluster-upgrades.html">
       <span class="lp-module-num">10</span>
       <div class="lp-module-body">
-        <h3>The Platform Add-on Layer</h3>
-        <p>The add-ons every new cluster needs (load balancing, DNS, metrics, autoscaling, logs, storage), each with its own IAM role.</p>
+        <h3>Cluster Upgrades Without Drama</h3>
+        <p>Checking for removed APIs first, then upgrading the control plane, add-ons, and nodes in an order that keeps workloads running.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>

@@ -111,8 +111,8 @@
                 <small>6 Modules · Assess, Mobilize &amp; Modernize</small>
               </a>
               <a href="../../learning-paths/kubernetes-operations/index.html" role="menuitem" class="nav-dropdown-item">
-                <strong>Kubernetes Ingress &amp; Operations on EKS</strong>
-                <small>4 Modules · Ingress, RBAC &amp; Day-2 Ops</small>
+                <strong>Kubernetes on Amazon EKS</strong>
+                <small>10 Modules · Foundations &amp; Operations</small>
               </a>
             </div>
           </div>
@@ -127,14 +127,14 @@
     <main id="main">
       <nav class="breadcrumb-bar" aria-label="Breadcrumb">
         <div class="wrap">
-          <div class="back"><a class="back-link back" href="../../learning-paths/kubernetes-operations/index.html">← Kubernetes Ingress &amp; Operations on Amazon EKS</a></div>
+          <div class="back"><a class="back-link back" href="../../learning-paths/kubernetes-operations/index.html">← Kubernetes on Amazon EKS: Foundations &amp; Operations</a></div>
         </div>
       </nav>
       <header class="lp-hero">
         <div class="wrap">
           <div class="hero-split">
             <div>
-              <span class="lp-badge">Delivery</span>
+              <span class="lp-badge">Foundations · Delivery</span>
               <h1>GitOps with Argo CD: Git as the Source of Truth</h1>
               <p class="sub">Letting Argo CD keep each cluster matching what's in Git, so a deploy is a reviewed pull request, drift gets fixed automatically, and rolling back means reverting a commit.</p>
             </div>
@@ -153,8 +153,8 @@
     </svg>
           </div>
           <div class="lp-meta-bar">
-            <span><b>Module:</b> 09 of 10</span>
-            <span><b>Level:</b> Delivery</span>
+            <span><b>Module:</b> 06 of 10</span>
+            <span><b>Level:</b> Foundations · Delivery</span>
             <span><b>Time:</b> 8 min read</span>
             <span><b>Published:</b> <time datetime="2026-09-28">28 Sep 2026</time></span>
           </div>
@@ -224,7 +224,7 @@ spec:
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
 <ul>
-<li><b>Keep secrets out of the manifests repo.</b> Use the External Secrets Operator from module 7, so Git holds only a reference to each secret.</li>
+<li><b>Keep secrets out of the manifests repo.</b> Use the External Secrets Operator from module 4, so Git holds only a reference to each secret.</li>
 <li><b>Turn on self-heal gradually.</b> Start with automated sync and no self-heal while teams get used to it, then enable it once nobody relies on hand edits.</li>
 <li><b>Watch for sync failures.</b> An application stuck &quot;OutOfSync&quot; or &quot;Degraded&quot; is an alert worth sending, as covered in module 8.</li>
 <li><b>Protect Argo CD itself.</b> It can change everything in the cluster. Restrict who can use its UI and API, sign in through SSO, and keep its own configuration in Git as well.</li>
@@ -232,13 +232,13 @@ spec:
 </details>
 </div>
 </section>
-          <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/08-observability.html">
-          <span class="lp-nav-label">← Module 08</span>
-          <span class="lp-nav-title">Observability: Knowing Something's Wrong Before Users Do</span>
-        </a>
-<a class="lp-nav-link next" href="../../learning-paths/kubernetes-operations/10-platform-add-ons.html">
-          <span class="lp-nav-label">Module 10 →</span>
+          <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/10-platform-add-ons.html">
+          <span class="lp-nav-label">← Module 05</span>
           <span class="lp-nav-title">The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span>
+        </a>
+<a class="lp-nav-link next" href="../../learning-paths/kubernetes-operations/05-scaling-requests-and-cost.html">
+          <span class="lp-nav-label">Module 07 →</span>
+          <span class="lp-nav-title">Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span>
         </a></nav>
         </div>
       </article>

@@ -7,7 +7,7 @@ order: 3
 module: 3
 totalModules: 10
 summary: Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command.
-level: Delivery
+level: Foundations · Delivery
 readingTime: 8 min read
 stack: [Amazon ECR, Docker, Amazon EKS, CI/CD]
 tags: [ecr, ci-cd, container-delivery, eks]

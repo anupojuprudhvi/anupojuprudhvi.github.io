@@ -2,11 +2,11 @@
 title: GitOps with Argo CD: Git as the Source of Truth
 date: 2026-09-28
 track: kubernetes-operations
-order: 9
-module: 9
+order: 6
+module: 6
 totalModules: 10
 summary: Letting Argo CD keep each cluster matching what's in Git, so a deploy is a reviewed pull request, drift gets fixed automatically, and rolling back means reverting a commit.
-level: Delivery
+level: Foundations · Delivery
 readingTime: 8 min read
 stack: [Amazon EKS, Argo CD, Helm, Kustomize, GitHub]
 tags: [gitops, argo-cd, ci-cd, delivery, eks]
@@ -67,7 +67,7 @@ Keeping application code and deployment manifests in separate repositories is co
 
 ### Implementation notes
 
-- **Keep secrets out of the manifests repo.** Use the External Secrets Operator from module 7, so Git holds only a reference to each secret.
+- **Keep secrets out of the manifests repo.** Use the External Secrets Operator from module 4, so Git holds only a reference to each secret.
 - **Turn on self-heal gradually.** Start with automated sync and no self-heal while teams get used to it, then enable it once nobody relies on hand edits.
 - **Watch for sync failures.** An application stuck "OutOfSync" or "Degraded" is an alert worth sending, as covered in module 8.
 - **Protect Argo CD itself.** It can change everything in the cluster. Restrict who can use its UI and API, sign in through SSO, and keep its own configuration in Git as well.

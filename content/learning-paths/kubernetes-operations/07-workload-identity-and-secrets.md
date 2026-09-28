@@ -2,11 +2,11 @@
 title: Workload Identity & Secrets: How Pods Get AWS Access
 date: 2026-09-28
 track: kubernetes-operations
-order: 7
-module: 7
+order: 4
+module: 4
 totalModules: 10
 summary: Giving each workload its own narrowly scoped AWS permissions with EKS Pod Identity or IRSA, instead of sharing the node's role, and getting secrets into pods without putting them in Git or container images.
-level: Security
+level: Foundations · Security
 readingTime: 9 min read
 stack: [Amazon EKS, EKS Pod Identity, IRSA, AWS IAM, AWS Secrets Manager, External Secrets Operator]
 tags: [security, iam, pod-identity, irsa, secrets, eks]

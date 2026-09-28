@@ -7,7 +7,7 @@ order: 2
 module: 2
 totalModules: 10
 summary: Isolating Dev, QA, Staging, and Production as separate clusters, and granting people and pipelines cluster access with EKS access entries instead of a shared superuser.
-level: Access Control
+level: Foundations · Access
 readingTime: 8 min read
 stack: [Amazon EKS, AWS IAM, Kubernetes RBAC, EKS access entries]
 tags: [rbac, iam, eks, multi-environment, security]

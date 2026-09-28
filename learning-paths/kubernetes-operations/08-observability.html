@@ -111,8 +111,8 @@
                 <small>6 Modules · Assess, Mobilize &amp; Modernize</small>
               </a>
               <a href="../../learning-paths/kubernetes-operations/index.html" role="menuitem" class="nav-dropdown-item">
-                <strong>Kubernetes Ingress &amp; Operations on EKS</strong>
-                <small>4 Modules · Ingress, RBAC &amp; Day-2 Ops</small>
+                <strong>Kubernetes on Amazon EKS</strong>
+                <small>10 Modules · Foundations &amp; Operations</small>
               </a>
             </div>
           </div>
@@ -127,14 +127,14 @@
     <main id="main">
       <nav class="breadcrumb-bar" aria-label="Breadcrumb">
         <div class="wrap">
-          <div class="back"><a class="back-link back" href="../../learning-paths/kubernetes-operations/index.html">← Kubernetes Ingress &amp; Operations on Amazon EKS</a></div>
+          <div class="back"><a class="back-link back" href="../../learning-paths/kubernetes-operations/index.html">← Kubernetes on Amazon EKS: Foundations &amp; Operations</a></div>
         </div>
       </nav>
       <header class="lp-hero">
         <div class="wrap">
           <div class="hero-split">
             <div>
-              <span class="lp-badge">Operations</span>
+              <span class="lp-badge">Operations · Monitoring</span>
               <h1>Observability: Knowing Something's Wrong Before Users Do</h1>
               <p class="sub">What to collect from an EKS cluster (logs, metrics, and cluster state), which few signals deserve an alert, and how to set alerts that wake people for real problems only.</p>
             </div>
@@ -154,7 +154,7 @@
           </div>
           <div class="lp-meta-bar">
             <span><b>Module:</b> 08 of 10</span>
-            <span><b>Level:</b> Operations</span>
+            <span><b>Level:</b> Operations · Monitoring</span>
             <span><b>Time:</b> 8 min read</span>
             <span><b>Published:</b> <time datetime="2026-09-28">28 Sep 2026</time></span>
           </div>
@@ -164,7 +164,7 @@
         <div class="wrap">
           <section>
 <div class="wrap">
-<p><b>Before you start:</b> module 4 covered what to do once you know something is broken. This module is about finding out in the first place.</p>
+<p><b>Before you start:</b> this module is about finding out that something is broken. Module 9 covers what to do next.</p>
 </div>
 </section>
 <section>
@@ -213,20 +213,20 @@ kubectl get events -A --field-selector=type=Warning --sort-by='.lastTimestamp'</
 <summary>Implementation notes</summary>
 <ul>
 <li><b>Always require &quot;for N minutes&quot;.</b> A single bad minute is noise. An alert that fires on one sample will train people to ignore it.</li>
-<li><b>Every alert needs an owner and a first step.</b> If nobody knows what to do when it fires, it isn't ready to page anyone. Link it to the triage checklist from module 4.</li>
+<li><b>Every alert needs an owner and a first step.</b> If nobody knows what to do when it fires, it isn't ready to page anyone. Link it to the triage checklist from module 9.</li>
 <li><b>Watch the cost of logs.</b> Log volume grows quietly. Set retention periods, drop noisy debug logs in production, and check the logging bill now and then.</li>
 <li><b>Test alerts on purpose.</b> Break something in a non-production cluster and confirm the alert fires, reaches the right person, and makes sense to them.</li>
 </ul>
 </details>
 </div>
 </section>
-          <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/07-workload-identity-and-secrets.html">
+          <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/05-scaling-requests-and-cost.html">
           <span class="lp-nav-label">← Module 07</span>
-          <span class="lp-nav-title">Workload Identity &amp; Secrets: How Pods Get AWS Access</span>
+          <span class="lp-nav-title">Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span>
         </a>
-<a class="lp-nav-link next" href="../../learning-paths/kubernetes-operations/09-gitops-with-argo-cd.html">
+<a class="lp-nav-link next" href="../../learning-paths/kubernetes-operations/04-day-2-operations-and-incident-triage.html">
           <span class="lp-nav-label">Module 09 →</span>
-          <span class="lp-nav-title">GitOps with Argo CD: Git as the Source of Truth</span>
+          <span class="lp-nav-title">Day-2 Operations &amp; Incident Triage</span>
         </a></nav>
         </div>
       </article>

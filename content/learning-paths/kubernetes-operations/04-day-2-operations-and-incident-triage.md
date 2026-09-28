@@ -2,11 +2,11 @@
 title: Day-2 Operations & Incident Triage
 date: 2026-09-18
 track: kubernetes-operations
-order: 4
-module: 4
+order: 9
+module: 9
 totalModules: 10
 summary: Switching cluster context safely, verifying a rollout actually succeeded instead of assuming it did, and a repeatable sequence for triaging a stuck deployment.
-level: Operations
+level: Operations · Incidents
 readingTime: 8 min read
 stack: [Amazon EKS, kubectl, Kubernetes]
 tags: [operations, incident-response, kubectl, eks]

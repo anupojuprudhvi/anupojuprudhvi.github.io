@@ -2,11 +2,11 @@
 title: Cluster Upgrades Without Drama
 date: 2026-09-28
 track: kubernetes-operations
-order: 6
-module: 6
+order: 10
+module: 10
 totalModules: 10
 summary: How to upgrade EKS one version at a time — checking for removed APIs first, then the control plane, add-ons, and nodes, in an order that keeps workloads running.
-level: Operations
+level: Operations · Upgrades
 readingTime: 8 min read
 stack: [Amazon EKS, Kubernetes, kubectl, Managed Node Groups]
 tags: [upgrades, lifecycle, eks, kubernetes, operations]
