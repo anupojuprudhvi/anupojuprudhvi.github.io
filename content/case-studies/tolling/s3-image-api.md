@@ -1,5 +1,6 @@
 ---
 title: A private image API without a proxy application to operate
+date: 2026-09-16
 nav: Upload and retrieve images
 label: Image handling
 heading: How a request actually reaches S3

@@ -1,5 +1,6 @@
 ---
 title: Institutional digital asset platform · AWS MAP business case
+date: 2026-09-17
 nav: Digital asset platform MAP assess
 label: Migration assessment
 heading: Automating VMware discovery and modeling 3-year cloud TCO for digital asset accounting

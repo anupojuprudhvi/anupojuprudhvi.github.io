@@ -1,2 +1,14 @@
 node_modules/
 artifacts/
+
+# Local-only files; kept in step with .dockerignore. This repo is public.
+.env
+.env.*
+*.log
+_to_delete/
+Claude outputs/
+
+# OS clutter
+.DS_Store
+Thumbs.db
+desktop.ini

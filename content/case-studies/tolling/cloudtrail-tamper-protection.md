@@ -1,5 +1,6 @@
 ---
 title: Make organization CloudTrail evidence difficult to alter
+date: 2026-09-17
 nav: Protect CloudTrail evidence
 label: Security architecture
 heading: How centralized audit logs remain trustworthy after an account compromise

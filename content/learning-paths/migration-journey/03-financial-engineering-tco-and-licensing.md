@@ -1,5 +1,6 @@
 ---
 title: Financial Engineering · 3-Year TCO & Licensing
+date: 2026-09-17
 track: migration-journey
 order: 3
 module: 3

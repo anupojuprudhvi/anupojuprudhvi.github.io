@@ -1,5 +1,6 @@
 ---
 title: Global media platform · Cross-region MAP migration
+date: 2026-09-17
 nav: Global media MAP assessment
 label: Cross-region discovery
 heading: Profiling distributed US and EU data center estates for media supply-chain cloud migration

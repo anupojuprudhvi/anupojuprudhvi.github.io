@@ -1,5 +1,6 @@
 ---
 title: Clinical platform modernization and cost architecture
+date: 2026-09-16
 nav: Cut database read load
 summary: Decomposing an on-premise clinical monolith into containerized services, and taking reporting load off the live database with a decoupled analytics pipeline.
 project: healthcare

@@ -1,5 +1,6 @@
 ---
 title: Making telecom node provisioning repeatable
+date: 2026-09-17
 nav: Repeatable platform delivery
 label: Platform engineering
 project: telecom

@@ -1,5 +1,6 @@
 ---
 title: Moving 1.48 million S3 objects in 54 minutes instead of 8+ hours
+date: 2026-09-24
 nav: S3 migration at scale
 label: Storage operations
 heading: High-concurrency S3 migration for small objects

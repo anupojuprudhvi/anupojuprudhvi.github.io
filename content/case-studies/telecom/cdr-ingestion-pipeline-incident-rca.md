@@ -1,5 +1,6 @@
 ---
 title: Diagnosing a silent call-record ingestion failure
+date: 2026-09-17
 nav: Incident: silent CDR ingestion failure
 label: Incident write-up
 project: telecom

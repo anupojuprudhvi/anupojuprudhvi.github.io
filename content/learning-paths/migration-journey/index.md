@@ -1,5 +1,6 @@
 ---
 title: Enterprise Cloud Migration · Assess, Mobilize & Modernize
+date: 2026-09-17
 track: migration-journey
 summary: A guide to enterprise cloud migrations — rapid vs. deep assessments, 3-year TCO modeling, Landing Zone design, and Mobilize wave planning.
 level: Intermediate to Executive

@@ -1,5 +1,6 @@
 ---
 title: Zero-public-ingress network architecture for HIPAA
+date: 2026-09-18
 nav: Zero-public-ingress security
 summary: A network design where no compute or database resource has a public IP, engineering access is mutual-TLS VPN only, and the CDN is tuned for clinical apps.
 project: healthcare

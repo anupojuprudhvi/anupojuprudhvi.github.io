@@ -1,5 +1,6 @@
 ---
 title: Enterprise IT monitoring · VMware Tanzu to EKS assessment
+date: 2026-09-17
 nav: IT monitoring Tanzu to EKS MAP
 label: Kubernetes modernization
 heading: Assessing VMware Tanzu workloads, Dell VxRail footprints, and architecting Amazon EKS target states

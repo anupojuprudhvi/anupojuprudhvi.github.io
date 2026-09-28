@@ -1,5 +1,6 @@
 ---
 title: 21-node Oracle RAC cluster on AWS without shared-SAN storage
+date: 2026-09-18
 nav: Oracle RAC on AWS
 summary: A 21+ node Oracle RAC cluster running active-active database failover on AWS, built around software-defined clustered storage to work around AWS's lack of native shared-SAN block storage.
 project: enterprise-infrastructure

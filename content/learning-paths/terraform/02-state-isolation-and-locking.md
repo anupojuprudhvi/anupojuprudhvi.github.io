@@ -1,5 +1,6 @@
 ---
 title: State Isolation, Remote Locking & Blast Radius Control
+date: 2026-09-17
 track: terraform
 order: 2
 module: 2

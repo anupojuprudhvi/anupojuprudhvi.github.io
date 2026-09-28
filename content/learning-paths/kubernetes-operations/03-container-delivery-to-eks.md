@@ -1,5 +1,6 @@
 ---
 title: Container Delivery — Build, Tag, Push, Promote
+date: 2026-09-18
 track: kubernetes-operations
 order: 3
 module: 3

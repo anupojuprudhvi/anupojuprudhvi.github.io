@@ -1,5 +1,6 @@
 ---
 title: Zero-Downtime Refactoring with Moved & Import Blocks
+date: 2026-09-17
 track: terraform
 order: 5
 module: 5

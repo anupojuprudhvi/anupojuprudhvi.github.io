@@ -1,5 +1,6 @@
 ---
 title: A reusable CI/CD engine with safe-by-default delivery
+date: 2026-09-17
 nav: Build the delivery engine
 label: CI/CD architecture
 heading: How Terraform changes move from pull request to environment

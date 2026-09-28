@@ -1,5 +1,6 @@
 ---
 title: Letting a SaaS webhook reach a private service, safely
+date: 2026-09-16
 nav: Connect JSM to private services
 label: Service integration
 heading: How a webhook reaches a private service

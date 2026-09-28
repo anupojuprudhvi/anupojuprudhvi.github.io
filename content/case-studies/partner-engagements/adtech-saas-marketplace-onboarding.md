@@ -1,5 +1,6 @@
 ---
 title: Enterprise AdTech SaaS · Cloud marketplace onboarding
+date: 2026-09-17
 nav: AdTech SaaS marketplace onboarding
 label: Marketplace architecture
 heading: Engineering cloud marketplace integration, automated onboarding, and multi-cloud commercialization

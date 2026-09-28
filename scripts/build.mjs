@@ -60,6 +60,25 @@ function walk(dir) {
   return out;
 }
 
+/** `date` (first published) and optional `updated` must be real YYYY-MM-DD calendar dates. */
+function checkDates(data, file) {
+  for (const key of ["date", "updated"]) {
+    if (data[key] === undefined) continue;
+    const parsed = new Date(`${data[key]}T00:00:00Z`);
+    // Round-tripping rejects impossible dates such as 2026-02-30.
+    const valid = /^\d{4}-\d{2}-\d{2}$/.test(data[key]) && !Number.isNaN(parsed.getTime()) && parsed.toISOString().startsWith(data[key]);
+    if (!valid) throw new Error(`${file}: ${key} must be a YYYY-MM-DD date`);
+  }
+  if (data.date && data.updated && data.updated < data.date) throw new Error(`${file}: updated is earlier than date`);
+}
+
+// Last-modified date per generated page, used for sitemap <lastmod>.
+const lastModified = new Map();
+const noteLastModified = (url, data) => {
+  const value = data.updated || data.date;
+  if (value) lastModified.set(url, value);
+};
+
 function walkHtml(dir) {
   const out = [];
   if (!existsSync(dir)) return out;
@@ -93,8 +112,9 @@ if (!files.length) {
 
 const docs = files.map((file) => {
   const { data, body } = parseFrontMatter(readFileSync(file, "utf8").replaceAll("\r\n", "\n"), file);
-  for (const req of ["title", "project", "summary"])
+  for (const req of ["title", "project", "summary", "date"])
     if (!data[req]) throw new Error(`${file}: front matter missing "${req}"`);
+  checkDates(data, file);
   const slug = basename(file, ".md");
   const project = projectMap.get(data.project);
   if (!project || basename(dirname(file)) !== data.project || !/^[a-z0-9-]+$/.test(slug))
@@ -109,6 +129,7 @@ const docs = files.map((file) => {
   for (const key of ["stack", "tags", "scripts", "outcomes", "flow"])
     if (data[key] !== undefined && !Array.isArray(data[key])) throw new Error(`${file}: ${key} must be a list`);
   const url = `case-studies/${data.project}/${slug}.html`;
+  noteLastModified(url, data);
   return { ...data, projectName: project.name, slug, url, file,
     ogImage: socialImage(data.project, slug),
     bodyHtml: renderBody(body) };
@@ -267,8 +288,10 @@ if (existsSync(join(LEARNING_PATHS_DIR, "tracks.json"))) {
 
     const modules = moduleFiles.map((file) => {
       const { data, body } = parseFrontMatter(readFileSync(file, "utf8").replaceAll("\r\n", "\n"), file);
+      checkDates(data, file);
       const slug = basename(file, ".md");
       const url = `learning-paths/${track.id}/${slug}.html`;
+      noteLastModified(url, data);
       return {
         ...data,
         slug,
@@ -292,7 +315,9 @@ if (existsSync(join(LEARNING_PATHS_DIR, "tracks.json"))) {
 
     if (overviewFile) {
       const { data, body } = parseFrontMatter(readFileSync(overviewFile, "utf8").replaceAll("\r\n", "\n"), overviewFile);
+      checkDates(data, overviewFile);
       const overviewUrl = `learning-paths/${track.id}/index.html`;
+      noteLastModified(overviewUrl, data);
       emit(
         overviewUrl,
         learningPathPage(
@@ -308,7 +333,7 @@ if (existsSync(join(LEARNING_PATHS_DIR, "tracks.json"))) {
 }
 
 // Derive discovery files from the actual page canonicals, including custom overviews.
-const canonicalUrls = new Set();
+const canonicalUrls = new Map(); // canonical URL → generated path
 for (const [url, html] of outputs) {
   if (!url.endsWith(".html") || url === "404.html") continue;
   const matches = [...html.matchAll(/<link\s+rel="canonical"\s+href="([^"]+)"\s*\/?>/g)];
@@ -317,13 +342,19 @@ for (const [url, html] of outputs) {
   const allowed = [`${SITE}/${url}`, `${SITE}/${url.replace(/index\.html$/, "")}`];
   if (!allowed.includes(canonical) || canonicalUrls.has(canonical))
     throw new Error(`${url}: invalid or duplicate canonical URL: ${canonical}`);
-  canonicalUrls.add(canonical);
+  canonicalUrls.set(canonical, url);
 }
 emit("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${[...canonicalUrls].sort().map((url) => `  <url><loc>${esc(url)}</loc></url>`).join("\n")}
+${[...canonicalUrls.keys()].sort().map((canonical) => {
+  const lastmod = lastModified.get(canonicalUrls.get(canonical));
+  return `  <url><loc>${esc(canonical)}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}</url>`;
+}).join("\n")}
 </urlset>
 `);
+// Newest first; ties keep the library order so output stays deterministic.
+const feedDocs = docs.map((d, i) => ({ d, i })).sort((a, b) => b.d.date.localeCompare(a.d.date) || a.i - b.i).map(({ d }) => d);
+const rfc822 = (date) => new Date(`${date}T00:00:00Z`).toUTCString();
 emit("robots.txt", `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 emit("feed.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
@@ -333,12 +364,14 @@ emit("feed.xml", `<?xml version="1.0" encoding="UTF-8"?>
     <description>Enterprise cloud architecture case studies covering governance, resilience, integration, and cost optimization.</description>
     <language>en</language>
     <atom:link href="${SITE}/feed.xml" rel="self" type="application/rss+xml"/>
-${docs
+    <lastBuildDate>${rfc822(feedDocs.reduce((max, d) => ((d.updated || d.date) > max ? d.updated || d.date : max), ""))}</lastBuildDate>
+${feedDocs
   .map(
     (d) => `    <item>
       <title>${esc(d.title)}</title>
       <link>${SITE}/${d.url}</link>
       <guid>${SITE}/${d.url}</guid>
+      <pubDate>${rfc822(d.date)}</pubDate>
       <description>${esc(d.summary || "")}</description>
       <category>${esc(d.layer || d.projectName)}</category>
     </item>`,

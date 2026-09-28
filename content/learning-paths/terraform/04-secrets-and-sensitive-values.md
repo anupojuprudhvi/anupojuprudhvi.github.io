@@ -1,5 +1,6 @@
 ---
 title: Zero-Plaintext Secret Architecture
+date: 2026-09-17
 track: terraform
 order: 4
 module: 4

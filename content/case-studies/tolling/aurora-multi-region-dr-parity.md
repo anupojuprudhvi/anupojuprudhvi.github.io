@@ -1,5 +1,6 @@
 ---
 title: Make Aurora DR behave like the primary, not exist beside it
+date: 2026-09-17
 nav: Keep Aurora DR in configuration parity
 label: Data resilience
 heading: Closing the configuration gaps in a multi-region Aurora design

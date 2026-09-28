@@ -1,5 +1,6 @@
 ---
 title: Modernizing a telecom database with a controlled cutover
+date: 2026-09-17
 nav: Database migration and connection pooling
 label: Database modernization
 project: telecom

@@ -1,6 +1,9 @@
 {
   "name": "prudhvi-portfolio",
   "private": true,
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "build": "node scripts/build.mjs",
     "test": "npm run test:build && npm run test:preview && npm run test:browser",

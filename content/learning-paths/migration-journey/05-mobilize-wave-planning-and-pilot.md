@@ -1,5 +1,6 @@
 ---
 title: The Mobilize Phase · Wave Planning & Lighthouse Pilot
+date: 2026-09-17
 track: migration-journey
 order: 5
 module: 5

@@ -1,5 +1,6 @@
 ---
 title: Hardening a solo SaaS product, end to end, with AI-agent-assisted engineering
+date: 2026-09-18
 nav: Solo SaaS hardening
 summary: Taking a solo-built PDF SaaS product from a serverless deployment that didn't actually run to a security-audited, ~93% lighter production app — built and operated solo using a formalized AI-agent engineering workflow.
 project: independent-products

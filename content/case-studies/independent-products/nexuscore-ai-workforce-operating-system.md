@@ -1,5 +1,6 @@
 ---
 title: NexusCore AI — Autonomous Enterprise Workforce & Identity Operating System
+date: 2026-09-24
 nav: NexusCore AI Enterprise OS
 summary: Unifying IAM, Joiner-Mover-Leaver (JML) lifecycle automation, attendance tracking, and deterministic policy intelligence into a sovereign, distributed platform — targeting the modelled ~$1,400/employee cost of identity fragmentation, with sub-5s de-provisioning.
 project: independent-products

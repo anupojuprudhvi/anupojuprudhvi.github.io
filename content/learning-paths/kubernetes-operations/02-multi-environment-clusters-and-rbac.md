@@ -1,5 +1,6 @@
 ---
 title: Multi-Environment Clusters & IAM/RBAC
+date: 2026-09-18
 track: kubernetes-operations
 order: 2
 module: 2

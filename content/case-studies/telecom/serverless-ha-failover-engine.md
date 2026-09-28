@@ -1,5 +1,6 @@
 ---
 title: Automating telecom failover, preserving licensed identity
+date: 2026-09-17
 nav: Failover and licensing continuity
 label: High availability
 project: telecom

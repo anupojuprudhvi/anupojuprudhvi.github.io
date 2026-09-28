@@ -428,6 +428,7 @@ nav.topnav {
   object-fit: cover;
   border: 2px solid var(--accent);
   flex-shrink: 0;
+  display: block;
 }
 .hero-intro-text {
   min-width: 0;

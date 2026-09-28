@@ -1,5 +1,6 @@
 ---
 title: Connected IoT platform · Monolith to AWS cloud migration
+date: 2026-09-17
 nav: Connected IoT cloud migration
 label: Target architecture
 heading: Translating monolithic telemetry backends into managed AWS cloud architectures

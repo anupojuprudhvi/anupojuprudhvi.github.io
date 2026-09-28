@@ -1,5 +1,6 @@
 ---
 title: Assessment Frameworks · Rapid vs. Deep Enterprise
+date: 2026-09-17
 track: migration-journey
 order: 1
 module: 1

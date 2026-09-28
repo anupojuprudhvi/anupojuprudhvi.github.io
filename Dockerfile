@@ -7,7 +7,7 @@
 #   site   – hardened, non-root nginx serving only the public files
 #   test   – Playwright image running the same checks as CI
 
-ARG NODE_VERSION=20
+ARG NODE_VERSION=24
 ARG PLAYWRIGHT_VERSION=1.63.0
 
 # ---------------------------------------------------------------- build

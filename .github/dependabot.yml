@@ -1,0 +1,19 @@
+version: 2
+updates:
+  # Keeps the workflow's actions/* pins on supported major versions.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns: ["*"]
+
+  # Dev-only test tooling (Playwright, axe); the site itself has no runtime dependencies.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      test-tooling:
+        patterns: ["*"]

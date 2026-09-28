@@ -1,5 +1,6 @@
 ---
 title: Target State Blueprint · Landing Zone & 7Rs Roadmap
+date: 2026-09-17
 track: migration-journey
 order: 4
 module: 4

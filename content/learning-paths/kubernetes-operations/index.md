@@ -1,5 +1,6 @@
 ---
 title: Kubernetes Ingress & Operations on Amazon EKS
+date: 2026-09-18
 track: kubernetes-operations
 summary: A hands-on playbook for running EKS in production — dual ingress cost mechanics, IAM/RBAC across clusters, and day-2 incident triage.
 level: Intermediate to Advanced

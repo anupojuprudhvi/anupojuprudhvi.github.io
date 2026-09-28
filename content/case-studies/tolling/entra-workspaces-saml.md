@@ -1,5 +1,6 @@
 ---
 title: Corporate SSO for Amazon WorkSpaces, without losing AD
+date: 2026-09-17
 nav: Federate WorkSpaces with Entra
 label: Identity integration
 heading: How a corporate identity becomes a usable WorkSpaces session

@@ -1,5 +1,6 @@
 ---
 title: Day-2 Operations & Incident Triage
+date: 2026-09-18
 track: kubernetes-operations
 order: 4
 module: 4

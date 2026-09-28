@@ -1,5 +1,6 @@
 ---
 title: Modern HCL — Types, Validations & Preconditions
+date: 2026-09-17
 track: terraform
 order: 3
 module: 3

@@ -1,5 +1,6 @@
 ---
 title: Turn an EKS ingress incident into a diagnosable traffic path
+date: 2026-09-17
 nav: Trace an EKS ingress incident
 label: Incident response
 heading: How the ingress path was narrowed from edge request to pod

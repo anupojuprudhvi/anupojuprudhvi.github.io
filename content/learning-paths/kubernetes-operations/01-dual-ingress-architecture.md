@@ -1,5 +1,6 @@
 ---
 title: Dual Ingress Architecture & Its Cost Mechanics
+date: 2026-09-18
 track: kubernetes-operations
 order: 1
 module: 1

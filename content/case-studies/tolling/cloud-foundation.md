@@ -1,5 +1,6 @@
 ---
 title: One governed cloud foundation under 40+ accounts
+date: 2026-09-16
 nav: Standardize the cloud
 label: Foundation
 project: tolling

@@ -103,7 +103,7 @@ function learningPathsNavDropdown({ prefix = "", current = false } = {}) {
 /* ------------------------------------------------- Unified Site Top Navigation */
 /**
  * One navigation bar for every page. `home: true` swaps in the homepage's
- * in-page anchors (Why me?, About). On small screens the links collapse
+ * in-page anchors (Approach, About). On small screens the links collapse
  * behind a Menu button (wired in assets/theme.js); without JavaScript the
  * links simply stay visible, so navigation never depends on scripts.
  */
@@ -117,7 +117,7 @@ export function siteTopNav({
   const page = home ? "" : a("index.html");
   const homeAnchors = home
     ? `
-          <a href="#why-me">Why me?</a>
+          <a href="#approach">Approach</a>
           <a href="#background">About</a>`
     : "";
   return `    <nav class="topnav" aria-label="Main navigation">

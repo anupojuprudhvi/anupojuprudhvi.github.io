@@ -21,8 +21,15 @@ Live at: https://anupojuprudhvi.github.io/
   page screenshots are written to `./artifacts`.
 
 `docker compose run --rm tests` runs only the tests (the exit code is the
-result). `docker compose down` stops everything. The container check also runs
-in CI (`container` job in `.github/workflows/build-check.yml`).
+result). `docker compose down` stops everything. CI
+(`.github/workflows/build-check.yml`) runs the same checks directly on the
+runner; the container itself is only exercised locally.
+
+> **Headers differ in production.** GitHub Pages cannot send custom response
+> headers, so the live site relies on the `<meta http-equiv="Content-Security-Policy">`
+> tag in every page. A meta CSP cannot express `frame-ancestors`, and there is no
+> `X-Frame-Options` or `Permissions-Policy` on the live site; those protections
+> exist only in the local nginx container.
 
 ## How the site is put together
 

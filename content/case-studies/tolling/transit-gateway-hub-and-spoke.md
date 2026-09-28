@@ -1,5 +1,6 @@
 ---
 title: A Transit Gateway hub that keeps account routing deliberate
+date: 2026-09-17
 nav: Connect accounts through Transit Gateway
 label: Network architecture
 heading: How the hub-and-spoke network makes cross-account paths explicit

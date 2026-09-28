@@ -1,5 +1,6 @@
 ---
 title: CI/CD Guardrails — TFLint, Checkov & Plan Automation
+date: 2026-09-17
 track: terraform
 order: 6
 module: 6

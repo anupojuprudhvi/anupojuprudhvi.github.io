@@ -1,5 +1,6 @@
 ---
 title: Terraform for Enterprise Production
+date: 2026-09-17
 track: terraform
 summary: A playbook for building, scaling, and governing Terraform in enterprise AWS — modular design, remote state isolation, and security guardrails.
 level: Intermediate to Advanced

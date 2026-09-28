@@ -1,5 +1,6 @@
 ---
 title: Enterprise Repository & Module Layout
+date: 2026-09-17
 track: terraform
 order: 1
 module: 1

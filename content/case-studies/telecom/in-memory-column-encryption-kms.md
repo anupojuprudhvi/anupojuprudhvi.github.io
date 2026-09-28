@@ -1,5 +1,6 @@
 ---
 title: Moving legacy telecom key management to AWS KMS
+date: 2026-09-17
 nav: Key-management migration
 label: Security modernization
 project: telecom

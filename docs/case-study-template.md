@@ -7,6 +7,8 @@ under `case-studies/` directly.
 ```markdown
 ---
 title: A concise description of the engineering problem solved
+date: 2026-01-31 # required: first published (YYYY-MM-DD); drives RSS order and sitemap lastmod
+updated: 2026-02-15 # optional: last substantive revision, never earlier than date
 nav: Short navigation label
 label: Architecture area
 heading: How the problem was solved

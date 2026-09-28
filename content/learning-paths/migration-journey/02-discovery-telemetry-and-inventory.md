@@ -1,5 +1,6 @@
 ---
 title: Discovery Telemetry · RVTools, AWS Transform & Sizing
+date: 2026-09-17
 track: migration-journey
 order: 2
 module: 2

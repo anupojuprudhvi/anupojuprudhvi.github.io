@@ -1,5 +1,6 @@
 ---
 title: One DNS model for public services and private environments
+date: 2026-09-17
 nav: Share DNS across environments
 label: DNS architecture
 heading: How one Route 53 design serves every environment

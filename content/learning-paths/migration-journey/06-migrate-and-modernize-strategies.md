@@ -1,5 +1,6 @@
 ---
 title: Migrate & Modernize · In-Flight vs. Sequential Factory
+date: 2026-09-17
 track: migration-journey
 order: 6
 module: 6

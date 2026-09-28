@@ -1,5 +1,6 @@
 ---
 title: CI/CD delivery pipeline for a regulated healthcare platform
+date: 2026-09-18
 nav: Regulated CI/CD delivery
 summary: A GitFlow-to-Kubernetes pipeline with per-branch promotion gates, headless registry authentication, and deployment lead time cut from hours to minutes.
 project: healthcare

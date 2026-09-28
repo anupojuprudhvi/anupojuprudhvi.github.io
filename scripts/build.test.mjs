@@ -80,10 +80,23 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
 
     const source = "content/case-studies/telecom/second-study.md";
     // Layers come from a fixed capability taxonomy; an unknown one fails loudly.
-    fs.writeFileSync(file(source), "---\ntitle: Second & new study\nproject: telecom\nsummary: A new study.\nlayer: A new layer\norder: 15\n---\n\n## Architecture\n\nA test narrative.\n");
+    fs.writeFileSync(file(source), "---\ntitle: Second & new study\ndate: 2030-01-02\nproject: telecom\nsummary: A new study.\nlayer: A new layer\norder: 15\n---\n\n## Architecture\n\nA test narrative.\n");
     assert.match(run().stderr, /layer "A new layer" must be one of/);
-    fs.writeFileSync(file(source), "---\ntitle: Second & new study\nproject: telecom\nsummary: A new study.\nlayer: Operations & incidents\norder: 15\n---\n\n## Architecture\n\n| Step | Owner |\n| --- | --- |\n| Detect | On-call |\n\nA test narrative.\n");
+    // Publication dates feed the RSS feed and sitemap, so they are required and validated.
+    fs.writeFileSync(file(source), "---\ntitle: Second & new study\nproject: telecom\nsummary: A new study.\nlayer: Operations & incidents\n---\n\nBody.\n");
+    assert.match(run().stderr, /front matter missing "date"/);
+    fs.writeFileSync(file(source), "---\ntitle: Second & new study\ndate: 2030-02-30\nproject: telecom\nsummary: A new study.\nlayer: Operations & incidents\n---\n\nBody.\n");
+    assert.match(run().stderr, /date must be a YYYY-MM-DD date/);
+    fs.writeFileSync(file(source), "---\ntitle: Second & new study\ndate: 2030-01-02\nupdated: 2029-12-31\nproject: telecom\nsummary: A new study.\nlayer: Operations & incidents\n---\n\nBody.\n");
+    assert.match(run().stderr, /updated is earlier than date/);
+    fs.writeFileSync(file(source), "---\ntitle: Second & new study\ndate: 2030-01-02\nproject: telecom\nsummary: A new study.\nlayer: Operations & incidents\norder: 15\n---\n\n## Architecture\n\n| Step | Owner |\n| --- | --- |\n| Detect | On-call |\n\nA test narrative.\n");
     succeeds();
+    assert.match(read("sitemap.xml"), /\/telecom\/second-study.html<\/loc><lastmod>2030-01-02<\/lastmod>/);
+    const feed = read("feed.xml");
+    assert.match(feed, /<lastBuildDate>Wed, 02 Jan 2030 00:00:00 GMT<\/lastBuildDate>/);
+    const firstItem = feed.match(/<item>[\s\S]*?<\/item>/)[0];
+    assert.match(firstItem, /second-study.html/, "the feed lists the newest study first");
+    assert.match(firstItem, /<pubDate>Wed, 02 Jan 2030 00:00:00 GMT<\/pubDate>/);
     const index = JSON.parse(read("assets/case-studies.json"));
     assert.equal(index.filter((item) => item.project === "telecom").length, initialIndex.filter((item) => item.project === "telecom").length + 1);
     assert.match(read("sitemap.xml"), /\/telecom\/second-study.html<\/loc>/);
@@ -132,7 +145,7 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
     fs.writeFileSync(file("content/projects.json"), JSON.stringify(projects));
     fs.writeFileSync(file("content/engagements/new-project.html"), '<article class="case"><h3>{{projectName}}</h3><a href="{{engagementUrl}}">Explore case studies</a></article>');
     fs.mkdirSync(file("content/case-studies/new-project"));
-    fs.writeFileSync(file("content/case-studies/new-project/first-study.md"), "---\ntitle: First study\nproject: new-project\nsummary: New project narrative.\n---\n\n## Architecture\n\nDetails.\n");
+    fs.writeFileSync(file("content/case-studies/new-project/first-study.md"), "---\ntitle: First study\ndate: 2030-01-01\nproject: new-project\nsummary: New project narrative.\n---\n\n## Architecture\n\nDetails.\n");
     succeeds();
     assert.match(read("index.html"), /Another project/);
     assert.match(read("case-studies/new-project/index.html"), /first-study.html/);
