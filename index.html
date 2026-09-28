@@ -170,6 +170,68 @@
     </nav>
     <main id="main">
       <header class="hero" id="top">
+        <!-- Decorative hub-and-spoke network behind the hero: traffic flows
+             through a transit gateway; every cycle PROD fails, traffic fails over
+             to DR, then recovers. Laid out on the 1440px design grid so lines run
+             through the gaps around the text and the architecture card. -->
+        <div class="hero-bg" aria-hidden="true">
+          <svg class="hub-net" width="1440" height="820" viewBox="0 0 1440 820" focusable="false">
+            <defs>
+              <path id="hubToProd" d="M1043 584 V55" />
+              <path id="hubToDev" d="M973 600 H787 V55" />
+              <path id="hubToShared" d="M973 600 H615" />
+              <path id="hubToDr" d="M1113 600 H1318 V395" />
+            </defs>
+            <g class="hub-links">
+              <path class="hub-link hub-link-prod" d="M1043 584 V55" />
+              <path class="hub-link" d="M973 600 H615" />
+              <path class="hub-link" d="M787 600 V55" />
+              <path class="hub-link hub-link-dr" d="M1113 600 H1318 V395" />
+              <circle class="hub-joint" cx="787" cy="600" r="2.5" />
+            </g>
+            <g class="hub-packets">
+              <g class="pk-prod">
+                <circle class="pk" r="2.2"><animateMotion dur="3.4s" begin="-0.4s" repeatCount="indefinite"><mpath href="#hubToProd" /></animateMotion></circle>
+                <circle class="pk" r="2.2"><animateMotion dur="3.4s" begin="-2.1s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#hubToProd" /></animateMotion></circle>
+              </g>
+              <circle class="pk" r="2.2"><animateMotion dur="4.2s" begin="-1.3s" repeatCount="indefinite"><mpath href="#hubToDev" /></animateMotion></circle>
+              <circle class="pk" r="2.2"><animateMotion dur="4.2s" begin="-3.4s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#hubToDev" /></animateMotion></circle>
+              <circle class="pk" r="2.2"><animateMotion dur="2.6s" begin="-0.9s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#hubToShared" /></animateMotion></circle>
+              <g class="pk-dr">
+                <circle class="pk" r="2.2"><animateMotion dur="2.4s" begin="-0.2s" repeatCount="indefinite"><mpath href="#hubToDr" /></animateMotion></circle>
+                <circle class="pk" r="2.2"><animateMotion dur="2.4s" begin="-1.4s" repeatCount="indefinite"><mpath href="#hubToDr" /></animateMotion></circle>
+              </g>
+            </g>
+            <g class="hub-nodes">
+              <g class="hub-node hub-node-hub">
+                <rect x="973" y="584" width="140" height="32" rx="5" />
+                <text x="1043" y="604">TRANSIT GATEWAY</text>
+              </g>
+              <g class="hub-node hub-node-prod">
+                <rect x="983" y="17" width="120" height="38" rx="5" />
+                <text x="1043" y="33">VPC · PROD</text>
+                <text class="hub-state hub-state-ok" x="1043" y="47">HEALTHY</text>
+                <text class="hub-state hub-state-bad" x="1043" y="47">FAILING</text>
+              </g>
+              <g class="hub-node">
+                <rect x="737" y="17" width="100" height="38" rx="5" />
+                <text x="787" y="33">VPC · DEV</text>
+                <text class="hub-state" x="787" y="47">HEALTHY</text>
+              </g>
+              <g class="hub-node">
+                <rect x="505" y="584" width="110" height="32" rx="5" />
+                <text x="560" y="604">SHARED SVCS</text>
+              </g>
+              <g class="hub-node hub-node-dr">
+                <rect x="1278" y="357" width="80" height="38" rx="5" />
+                <text x="1318" y="373">VPC · DR</text>
+                <text class="hub-state hub-state-standby" x="1318" y="387">STANDBY</text>
+                <text class="hub-state hub-state-active" x="1318" y="387">ACTIVE</text>
+              </g>
+            </g>
+          </svg>
+          <span class="hero-spot"></span>
+        </div>
         <div class="wrap">
           <div class="hero-grid">
             <div>

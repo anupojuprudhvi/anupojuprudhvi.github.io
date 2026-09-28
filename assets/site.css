@@ -17,6 +17,9 @@
   --text-on-accent-bright: #06231b;
   --danger: #e0776e;
   --maxw: 1160px;
+  --hero-dot: rgba(146, 167, 180, 0.32);
+  --hero-glow-a: rgba(129, 228, 193, 0.13);
+  --hero-glow-b: rgba(242, 177, 85, 0.07);
 }
 :root[data-theme="light"] {
   color-scheme: light;
@@ -36,6 +39,9 @@
   --inverse-heading: #eef5f6;
   --text-on-accent-bright: #06231b;
   --danger: #b3403a;
+  --hero-dot: rgba(82, 108, 120, 0.26);
+  --hero-glow-a: rgba(23, 107, 83, 0.09);
+  --hero-glow-b: rgba(122, 74, 15, 0.05);
 }
 * {
   box-sizing: border-box;
@@ -392,6 +398,162 @@ nav.topnav {
   position: relative;
   overflow: hidden;
 }
+.hero > .wrap {
+  position: relative;
+  z-index: 1;
+}
+
+/* Hero background: a slow aurora glow, a hub-and-spoke network where traffic
+   flows through a transit gateway and PROD periodically fails over to DR, and
+   (site.js) a glow that follows the pointer. Decorative only: aria-hidden, no
+   pointer events. Under reduced motion the diagram stays, static and healthy. */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+}
+.hero-bg::before {
+  content: "";
+  position: absolute;
+  width: 820px;
+  height: 820px;
+  right: -160px;
+  top: -260px;
+  /* closest-side keeps both glows fully faded inside the box, so the
+     rotating box never shows an edge. */
+  background:
+    radial-gradient(closest-side at 40% 42%, var(--hero-glow-a), transparent),
+    radial-gradient(closest-side at 68% 70%, var(--hero-glow-b), transparent);
+  animation: hero-aurora 24s ease-in-out infinite alternate;
+}
+@keyframes hero-aurora {
+  0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  50% { transform: translate(-90px, 50px) scale(1.12) rotate(12deg); }
+  100% { transform: translate(-30px, 110px) scale(0.94) rotate(-8deg); }
+}
+
+/* Drawn on the 1440px design grid and centred, so it lines up with the
+   1160px content column at any desktop width; hidden where the layout
+   reflows and the gaps it uses disappear (below 1280px the right-hand
+   DR node would be clipped). */
+.hub-net {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin-left: -720px;
+  opacity: 0.75;
+}
+@media (max-width: 1279px) {
+  .hub-net {
+    display: none;
+  }
+}
+.hub-link {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 1.2;
+}
+.hub-joint {
+  fill: var(--border);
+}
+.pk {
+  fill: var(--accent);
+}
+.hub-node rect {
+  fill: var(--bg);
+  stroke: var(--border);
+  stroke-width: 1;
+}
+.hub-node text {
+  fill: var(--text-muted);
+  font: 600 9px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: 0.12em;
+  text-anchor: middle;
+}
+.hub-node .hub-state {
+  fill: var(--accent);
+  font-size: 8px;
+}
+.hub-node-hub rect {
+  stroke: var(--accent);
+}
+.hub-node-hub text {
+  fill: var(--accent);
+}
+
+/* The failover cycle (18s): PROD fails, its traffic stops, DR goes active
+   and takes traffic, then PROD recovers and DR returns to standby. */
+.hub-node-prod rect { animation: hub-prod-rect 18s infinite; }
+.hub-link-prod { animation: hub-prod-link 18s infinite; }
+.pk-prod { animation: hub-prod-traffic 18s infinite; }
+.hub-state-ok { animation: hub-show-normal 18s infinite; }
+.hub-node .hub-state-bad { fill: var(--accent2); opacity: 0; animation: hub-show-failover 18s infinite; }
+.hub-node-dr rect { stroke-dasharray: 3 3; animation: hub-dr-rect 18s infinite; }
+.hub-link-dr { stroke-dasharray: 3 4; animation: hub-dr-link 18s infinite; }
+.pk-dr { opacity: 0; animation: hub-show-failover 18s infinite; }
+.hub-node .hub-state-standby { fill: var(--text-muted); animation: hub-show-normal 18s infinite; }
+.hub-state-active { opacity: 0; animation: hub-show-failover 18s infinite; }
+
+@keyframes hub-show-normal {
+  0%, 52% { opacity: 1; }
+  55%, 82% { opacity: 0; }
+  85%, 100% { opacity: 1; }
+}
+@keyframes hub-show-failover {
+  0%, 52% { opacity: 0; }
+  55%, 82% { opacity: 1; }
+  85%, 100% { opacity: 0; }
+}
+@keyframes hub-prod-traffic {
+  0%, 50% { opacity: 1; }
+  53%, 84% { opacity: 0; }
+  87%, 100% { opacity: 1; }
+}
+@keyframes hub-prod-rect {
+  0%, 50% { stroke: var(--border); }
+  53%, 82% { stroke: var(--accent2); }
+  85%, 100% { stroke: var(--border); }
+}
+@keyframes hub-prod-link {
+  0%, 50% { stroke: var(--border); stroke-dasharray: none; }
+  53%, 82% { stroke: var(--accent2); stroke-dasharray: 2 5; }
+  85%, 100% { stroke: var(--border); stroke-dasharray: none; }
+}
+@keyframes hub-dr-rect {
+  0%, 52% { stroke: var(--border); stroke-dasharray: 3 3; }
+  55%, 82% { stroke: var(--accent); stroke-dasharray: none; }
+  85%, 100% { stroke: var(--border); stroke-dasharray: 3 3; }
+}
+@keyframes hub-dr-link {
+  0%, 52% { stroke: var(--border); stroke-dasharray: 3 4; }
+  55%, 82% { stroke: var(--accent); stroke-dasharray: none; }
+  85%, 100% { stroke: var(--border); stroke-dasharray: 3 4; }
+}
+/* Packets move by SVG animation, which the global CSS kill switch can't stop. */
+@media (prefers-reduced-motion: reduce) {
+  .hub-packets {
+    display: none;
+  }
+}
+
+.hero-spot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--hero-glow-a), transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  will-change: transform;
+}
+.hero-spot.is-on {
+  opacity: 1;
+}
 .hero-grid {
   display: grid;
   grid-template-columns: 1.3fr 1fr;
@@ -489,6 +651,8 @@ nav.topnav {
     32px 32px,
     32px 32px;
   border: 1px solid var(--border);
+  /* Mostly opaque so the hero's dot grid doesn't show through its own grid. */
+  background-color: color-mix(in srgb, var(--bg) 88%, transparent);
   border-radius: 8px;
   padding: 24px;
   min-height: 350px;
@@ -1066,6 +1230,10 @@ footer {
 @media (min-width: 1500px) {
   .hero {
     padding-top: 110px;
+  }
+  /* Follow the content down by the extra 24px of padding. */
+  .hub-net {
+    top: 24px;
   }
 }
 @media (max-width: 900px) {

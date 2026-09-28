@@ -163,6 +163,23 @@ if (traceBtn) {
   traceBtn.addEventListener("click", play);
 }
 
+// Hero glow that follows the pointer (mouse devices only, motion allowed).
+const heroEl = document.querySelector(".hero");
+const heroSpot = heroEl?.querySelector(".hero-spot");
+if (heroSpot && matchMedia("(hover: hover) and (prefers-reduced-motion: no-preference)").matches) {
+  let spotFrame = 0;
+  heroEl.addEventListener("pointermove", (event) => {
+    cancelAnimationFrame(spotFrame);
+    spotFrame = requestAnimationFrame(() => {
+      const box = heroEl.getBoundingClientRect();
+      const half = heroSpot.offsetWidth / 2;
+      heroSpot.style.transform = `translate(${event.clientX - box.left - half}px, ${event.clientY - box.top - half}px)`;
+      heroSpot.classList.add("is-on");
+    });
+  });
+  heroEl.addEventListener("pointerleave", () => heroSpot.classList.remove("is-on"));
+}
+
 const statsRow = document.getElementById("statsRow");
 if (statsRow && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
   const statEls = [...statsRow.querySelectorAll("strong[data-target]")];
