@@ -4,13 +4,15 @@ date: 2026-09-18
 track: kubernetes-operations
 order: 4
 module: 4
-totalModules: 6
+totalModules: 10
 summary: Switching cluster context safely, verifying a rollout actually succeeded instead of assuming it did, and a repeatable sequence for triaging a stuck deployment.
 level: Operations
 readingTime: 8 min read
 stack: [Amazon EKS, kubectl, Kubernetes]
 tags: [operations, incident-response, kubectl, eks]
 ---
+
+**Before you start:** you'll want `kubectl` access to a cluster (see module 2) and a deployment you can safely break in a non-production environment.
 
 ## Principle · "It deployed" and "it's healthy" are different questions
 

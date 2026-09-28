@@ -4,13 +4,15 @@ date: 2026-09-28
 track: kubernetes-operations
 order: 5
 module: 5
-totalModules: 6
+totalModules: 10
 summary: Why resource requests drive almost everything in an EKS cluster — scheduling, autoscaling, and the bill — and how pod and node autoscaling fit together.
 level: Operations
 readingTime: 8 min read
 stack: [Amazon EKS, Kubernetes, Horizontal Pod Autoscaler, Karpenter, Cluster Autoscaler]
 tags: [autoscaling, cost, capacity, eks, kubernetes]
 ---
+
+**Before you start:** you'll want metrics-server running in the cluster (module 10 covers installing it) and `kubectl top` working.
 
 ## Principle · Requests are a promise, and the cluster plans around them
 

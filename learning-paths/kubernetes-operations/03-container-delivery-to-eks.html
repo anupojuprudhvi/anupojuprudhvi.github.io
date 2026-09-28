@@ -7,11 +7,11 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Container Delivery — Build, Tag, Push, Promote — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="A registry-to-cluster promotion workflow for EKS, and the one headless-authentication detail that only breaks once a human isn't the one typing the command." />
+    <meta name="description" content="Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/03-container-delivery-to-eks.html" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="Container Delivery — Build, Tag, Push, Promote — Prudhvi Raj Anupoju" />
-    <meta property="og:description" content="A registry-to-cluster promotion workflow for EKS, and the one headless-authentication detail that only breaks once a human isn't the one typing the command." />
+    <meta property="og:description" content="Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -23,7 +23,7 @@
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "Container Delivery — Build, Tag, Push, Promote",
-        "description": "A registry-to-cluster promotion workflow for EKS, and the one headless-authentication detail that only breaks once a human isn't the one typing the command.",
+        "description": "Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -40,7 +40,7 @@
         "url": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/03-container-delivery-to-eks.html",
         "image": "https://anupojuprudhvi.github.io/og-image.png",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/03-container-delivery-to-eks.html",
-        "keywords": "ecr, ci-cd, container-delivery, eks, AWS ECR, Docker, Amazon EKS, CI/CD"
+        "keywords": "ecr, ci-cd, container-delivery, eks, Amazon ECR, Docker, Amazon EKS, CI/CD"
       }
     </script>
     <script src="../../assets/theme.js"></script>
@@ -136,7 +136,7 @@
             <div>
               <span class="lp-badge">Delivery</span>
               <h1>Container Delivery — Build, Tag, Push, Promote</h1>
-              <p class="sub">A registry-to-cluster promotion workflow for EKS, and the one headless-authentication detail that only breaks once a human isn't the one typing the command.</p>
+              <p class="sub">Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command.</p>
             </div>
             <svg class="motif motif-network" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <defs>
@@ -153,10 +153,10 @@
     </svg>
           </div>
           <div class="lp-meta-bar">
-            <span><b>Module:</b> 03 of 06</span>
+            <span><b>Module:</b> 03 of 10</span>
             <span><b>Level:</b> Delivery</span>
-            <span><b>Time:</b> 7 min read</span>
-            <span><b>Published:</b> <time datetime="2026-09-18">18 Sep 2026</time></span>
+            <span><b>Time:</b> 8 min read</span>
+            <span><b>Updated:</b> <time datetime="2026-09-28">28 Sep 2026</time></span>
           </div>
         </div>
       </header>
@@ -164,45 +164,62 @@
         <div class="wrap">
           <section>
 <div class="wrap">
-<div class="section-eyebrow">Workflow</div>
-<h2>A consistent tag format is what makes promotion safe</h2>
-<p>Building an image is the easy part; the part that actually matters operationally is having a tagging convention that makes it unambiguous which exact artifact is running in which environment, and lets that same artifact be promoted forward without rebuilding it.</p>
-<p>A simple, effective convention is <code>&lt;environment&gt;&lt;major&gt;.&lt;minor&gt;.&lt;build-number&gt;</code> — for example <code>qa1.0.42</code> — so the tag itself tells you the environment it was built for and the build that produced it, without needing to cross-reference a separate build log.</p>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># 1. Build the image locally
-docker build -t my-service:latest .
+<p><b>Before you start:</b> you'll want Docker, the AWS CLI v2, an ECR repository, and a CI/CD system that can assume an AWS role.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Principle</div>
+<h2>Build once, then promote the same image</h2>
+<p>Building an image is the easy part. What matters in operation is being able to say exactly which image is running in which environment, and moving *that same image* forward instead of rebuilding it for each environment. Rebuilding from the same commit usually gives you the same thing, but &quot;usually&quot; isn't a guarantee: a base image or dependency can change in between.</p>
+<h3>How the original deployment tagged images</h3>
+<p>The deployment this track is based on put the environment and a build number in the tag, for example <code>qa1.0.42</code>, then retagged the image for production (<code>prod1.0.10</code>). It was readable at a glance and it kept the rule that the image isn't rebuilt. But the tag says nothing about what's *inside* the image, and a tag can be moved to point at a different image later.</p>
+<details class="implementation-notes">
+<summary>A sturdier approach: immutable tags and digests</summary>
+<ul>
+<li><b>Tag each build with something that never changes</b>, such as the git commit SHA (<code>sha-3f9c2e1</code>).</li>
+<li><b>Turn on tag immutability in ECR</b>, so a tag, once pushed, can never be overwritten.</li>
+<li><b>Deploy by digest.</b> Every image has a content hash (<code>sha256:...</code>). A manifest that references the digest will always run exactly that image, whatever happens to tags.</li>
+</ul>
+</details>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Build and push once, tagged with the commit
+docker build -t &lt;registry&gt;/my-service:sha-3f9c2e1 .
+docker push &lt;registry&gt;/my-service:sha-3f9c2e1
 
-# 2. Tag it for the target environment
-docker tag my-service:latest &lt;registry&gt;/my-service:qa1.0.42
+# Make tags permanent for this repository (one-time setup)
+aws ecr put-image-tag-mutability --repository-name my-service \
+  --image-tag-mutability IMMUTABLE
 
-# 3. Push to the registry
-docker push &lt;registry&gt;/my-service:qa1.0.42
-
-# 4. Promote the *same* artifact forward — retag, don't rebuild
-docker tag &lt;registry&gt;/my-service:qa1.0.42 &lt;registry&gt;/my-service:prod1.0.10
-docker push &lt;registry&gt;/my-service:prod1.0.10</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<p>Retagging rather than rebuilding for promotion matters more than it looks: it guarantees the artifact that passed QA is bit-for-bit the same one that reaches Production, instead of trusting that rebuilding from the same commit produces an identical image.</p>
+# Look up the image's digest
+aws ecr describe-images --repository-name my-service \
+  --image-ids imageTag=sha-3f9c2e1 --query 'imageDetails[0].imageDigest'</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml"># Promotion means changing this one line in each environment, never rebuilding
+containers:
+  - name: my-service
+    image: &lt;registry&gt;/my-service@sha256:&lt;digest&gt;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<p>Promoting to Production is then a small, reviewable change that points Production at the digest QA already tested. You can still add a friendly tag such as <code>prod-2026-09-28</code> for people to read, but the digest is what guarantees the match.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">The gotcha</div>
-<h2>Registry login fails specifically in headless CI/CD</h2>
-<p>A container registry's standard login flow is built around an interactive terminal session. That's invisible when you're testing the command by hand — it works fine — right up until the same command runs inside a headless CI/CD agent, where it fails with something like:</p>
+<h2>Registry login breaks in headless CI/CD</h2>
+<p><code>docker login</code> normally asks for a password at the terminal. That's invisible when you try the command by hand, because it just works. Then the same step runs in a CI/CD job, where there's no terminal to type into, and it fails with:</p>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">Error: Cannot perform an interactive login from a non-TTY device</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <h3>Fix</h3>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Interactive-only — breaks in a headless CI/CD runner:
-docker login -u AWS -p $(aws ecr get-login) &lt;registry&gt;
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Prompts for a password, so it fails in a headless CI/CD job:
+docker login --username AWS &lt;registry&gt;
 
-# Headless-safe — pipes the token via stdin instead:
+# Headless-safe: pipe a short-lived token in through stdin
 aws ecr get-login-password --region &lt;region&gt; \
   | docker login --username AWS --password-stdin &lt;registry&gt;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<p>The fix consumes a temporary authentication token through standard input rather than an interactive prompt, which is exactly what a non-interactive CI agent needs — no pseudo-terminal required. The reason this is worth calling out specifically: it's a class of bug that's invisible in local testing and only surfaces once the pipeline is actually wired up end-to-end in its real, headless environment, which is often later than you'd like to discover it.</p>
+<p>The fix passes a temporary token through standard input instead of a prompt, which is exactly what a job with no terminal needs. (Older scripts may use <code>aws ecr get-login</code>, which only existed in AWS CLI v1 and was removed in v2; replace it with the command above.) This kind of bug is worth calling out because it never shows up in local testing. It only appears once the pipeline runs for real, which is usually later than you'd like.</p>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
 <ul>
-<li><b>Test registry authentication changes in an actual headless context, not just locally.</b> A command that works in an interactive shell isn't proof it works in CI — run it inside the same kind of non-interactive agent the real pipeline uses before trusting it.</li>
-<li><b>Registry tokens are short-lived by design.</b> <code>aws ecr get-login-password</code> returns a token valid for a fixed window (12 hours for ECR); a long-running pipeline stage that authenticates once at the start and pushes much later can hit an expired-token failure that looks unrelated to authentication at first glance.</li>
-<li><b>Rolling updates depend on the image actually being pullable from the target environment's network path</b>, not just present in the registry — a private registry with restrictive network policy can push successfully while a cluster in a different network path still fails to pull.</li>
+<li><b>Test registry login in a real headless job, not just locally.</b> A command that works in your shell isn't proof it works in CI. Run it in the same kind of non-interactive runner the pipeline uses.</li>
+<li><b>Registry tokens are short-lived.</b> A token from <code>aws ecr get-login-password</code> lasts 12 hours. A long pipeline that logs in at the start and pushes much later can fail with an expired token that doesn't look like a login problem at first.</li>
+<li><b>Being in the registry isn't the same as being pullable.</b> A cluster in a different network path, or without permission to that repository, can fail to pull an image that pushed perfectly well. Check the pull from the target environment.</li>
 </ul>
 </details>
 </div>

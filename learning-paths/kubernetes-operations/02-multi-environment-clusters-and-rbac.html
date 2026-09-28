@@ -7,11 +7,11 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Multi-Environment Clusters &amp; IAM/RBAC — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="Isolating Dev, QA, Staging, and Production as separate clusters, and mapping IAM identities to Kubernetes RBAC via aws-auth, without a shared superuser." />
+    <meta name="description" content="Isolating Dev, QA, Staging, and Production as separate clusters, and granting people and pipelines cluster access with EKS access entries instead of a shared superuser." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/02-multi-environment-clusters-and-rbac.html" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="Multi-Environment Clusters &amp; IAM/RBAC — Prudhvi Raj Anupoju" />
-    <meta property="og:description" content="Isolating Dev, QA, Staging, and Production as separate clusters, and mapping IAM identities to Kubernetes RBAC via aws-auth, without a shared superuser." />
+    <meta property="og:description" content="Isolating Dev, QA, Staging, and Production as separate clusters, and granting people and pipelines cluster access with EKS access entries instead of a shared superuser." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -23,7 +23,7 @@
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "Multi-Environment Clusters & IAM/RBAC",
-        "description": "Isolating Dev, QA, Staging, and Production as separate clusters, and mapping IAM identities to Kubernetes RBAC via aws-auth, without a shared superuser.",
+        "description": "Isolating Dev, QA, Staging, and Production as separate clusters, and granting people and pipelines cluster access with EKS access entries instead of a shared superuser.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -40,7 +40,7 @@
         "url": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/02-multi-environment-clusters-and-rbac.html",
         "image": "https://anupojuprudhvi.github.io/og-image.png",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/02-multi-environment-clusters-and-rbac.html",
-        "keywords": "rbac, iam, eks, multi-environment, security, Amazon EKS, AWS IAM, Kubernetes RBAC, aws-auth"
+        "keywords": "rbac, iam, eks, multi-environment, security, Amazon EKS, AWS IAM, Kubernetes RBAC, EKS access entries"
       }
     </script>
     <script src="../../assets/theme.js"></script>
@@ -136,7 +136,7 @@
             <div>
               <span class="lp-badge">Access Control</span>
               <h1>Multi-Environment Clusters &amp; IAM/RBAC</h1>
-              <p class="sub">Isolating Dev, QA, Staging, and Production as separate clusters, and mapping IAM identities to Kubernetes RBAC via aws-auth, without a shared superuser.</p>
+              <p class="sub">Isolating Dev, QA, Staging, and Production as separate clusters, and granting people and pipelines cluster access with EKS access entries instead of a shared superuser.</p>
             </div>
             <svg class="motif motif-network" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <defs>
@@ -153,10 +153,10 @@
     </svg>
           </div>
           <div class="lp-meta-bar">
-            <span><b>Module:</b> 02 of 06</span>
+            <span><b>Module:</b> 02 of 10</span>
             <span><b>Level:</b> Access Control</span>
-            <span><b>Time:</b> 7 min read</span>
-            <span><b>Published:</b> <time datetime="2026-09-18">18 Sep 2026</time></span>
+            <span><b>Time:</b> 8 min read</span>
+            <span><b>Updated:</b> <time datetime="2026-09-28">28 Sep 2026</time></span>
           </div>
         </div>
       </header>
@@ -164,52 +164,63 @@
         <div class="wrap">
           <section>
 <div class="wrap">
+<p><b>Before you start:</b> you'll want the AWS CLI and <code>kubectl</code>, permission to manage EKS clusters, and a rough idea of how IAM roles work.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
 <div class="section-eyebrow">Principle</div>
 <h2>Separate clusters, not separate namespaces, for hard environment boundaries</h2>
-<p>Namespaces are a reasonable way to organize workloads within one cluster, but they're a soft boundary — a misconfigured RBAC role or a cluster-wide resource (a CRD, a webhook, a node-level setting) can still cross a namespace line. For environments with materially different risk profiles — a development sandbox versus a production cluster serving live traffic — a real hard boundary means separate clusters, each with its own control plane, its own node groups, and its own IAM trust relationship.</p>
-<p>A typical layout: one EKS cluster each for Development, QA, Staging, and Production, with engineers authenticating to whichever cluster their current task requires rather than one shared always-on context.</p>
+<p>Namespaces are a good way to organize workloads inside one cluster, but they're a soft boundary. A misconfigured RBAC role or a cluster-wide resource (a CRD, a webhook, a node setting) can still reach across them. When environments carry very different risks, such as a development sandbox versus a production cluster serving live traffic, a real boundary means separate clusters, each with its own control plane, node groups, and IAM trust.</p>
+<p>The deployment this track is based on ran one EKS cluster each for Development, QA, Staging, and Production. Engineers connected to whichever cluster their task needed, rather than to one shared, always-on context.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Mechanism</div>
-<h2>IAM identities become Kubernetes identities through aws-auth</h2>
-<p>EKS doesn't have its own separate user database — cluster authentication is IAM authentication, and the <code>aws-auth</code> ConfigMap in <code>kube-system</code> is what maps an IAM role or user to a Kubernetes RBAC group.</p>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml">apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: aws-auth
-  namespace: kube-system
-data:
-  mapRoles: |
-    - rolearn: arn:aws:iam::&lt;account-id&gt;:role/eks-node-group-role
-      username: system:node:{{EC2PrivateDNSName}}
-      groups:
-        - system:bootstrappers
-        - system:nodes
-  mapUsers: |
-    - userarn: arn:aws:iam::&lt;account-id&gt;:user/&lt;engineer-username&gt;
-      username: &lt;engineer-username&gt;
-      groups:
-        - system:masters</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<h2>IAM identities become Kubernetes identities through access entries</h2>
+<p>EKS doesn't keep its own list of users. Signing in to a cluster is IAM authentication, and <b>access entries</b> decide what each IAM role can do once it's in. You create an access entry for a role, then attach an access policy to it, either for the whole cluster or for specific namespaces.</p>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Let the platform team's SSO role administer the whole cluster
+aws eks create-access-entry --cluster-name prod \
+  --principal-arn arn:aws:iam::&lt;account-id&gt;:role/&lt;platform-admin-role&gt;
+
+aws eks associate-access-policy --cluster-name prod \
+  --principal-arn arn:aws:iam::&lt;account-id&gt;:role/&lt;platform-admin-role&gt; \
+  --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy \
+  --access-scope type=cluster
+
+# Let the CI/CD deploy role manage workloads in one namespace only
+aws eks create-access-entry --cluster-name prod \
+  --principal-arn arn:aws:iam::&lt;account-id&gt;:role/&lt;ci-deploy-role&gt;
+
+aws eks associate-access-policy --cluster-name prod \
+  --principal-arn arn:aws:iam::&lt;account-id&gt;:role/&lt;ci-deploy-role&gt; \
+  --policy-arn arn:aws:eks::aws:cluster-access-policy/AmazonEKSEditPolicy \
+  --access-scope type=namespace,namespaces=orders</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<p>Access entries are ordinary AWS API calls, so they show up in CloudTrail, can be managed in Terraform, and can't be broken by a typo in a YAML file.</p>
+<h3>What about aws-auth?</h3>
+<p>Older clusters, including the one this track is based on, used the <code>aws-auth</code> ConfigMap in <code>kube-system</code> to map IAM roles to Kubernetes groups. AWS has deprecated it in favour of access entries. If you still have it, switch the cluster's authentication mode to <code>API_AND_CONFIG_MAP</code>, recreate each mapping as an access entry, check everyone can still get in, and then move to <code>API</code> only.</p>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">aws eks update-cluster-config --name prod \
+  --access-config authenticationMode=API_AND_CONFIG_MAP</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
 <ul>
-<li><b><code>mapRoles</code> covers machine identities (node groups, CI/CD deployment roles); <code>mapUsers</code> covers individual engineers.</b> Keeping this distinction explicit makes it obvious at a glance which entries in the ConfigMap are humans and which are automation.</li>
-<li><b><code>system:masters</code> is cluster-admin — grant it deliberately, per environment, not by default.</b> An engineer with <code>system:masters</code> in a Development cluster shouldn't automatically have it in Production; each cluster's <code>aws-auth</code> is edited independently, which is exactly the point of the hard cluster boundary.</li>
-<li><b>Editing <code>aws-auth</code> directly is a privileged, auditable action.</b> Because it controls who has cluster access at all, changes to it deserve the same review discipline as an IAM policy change — a mistake here doesn't just misconfigure a workload, it can lock out (or over-grant) cluster access entirely.</li>
+<li><b>Grant access to roles, not IAM users.</b> People should sign in through SSO and assume a role. That way, removing someone from the identity provider removes their cluster access too, and there are no long-lived access keys to leak.</li>
+<li><b>Give cluster admin on purpose, per environment.</b> Someone who is admin in Development shouldn't automatically be admin in Production. Each cluster has its own access entries, which is exactly the point of separate clusters.</li>
+<li><b>Avoid <code>system:masters</code>.</b> Membership in that group bypasses RBAC entirely and can't be taken away by an RBAC change. The access policies above do the same job and can be revoked.</li>
+<li><b>Treat access changes like IAM policy changes.</b> They decide who can reach the cluster at all, so review them the same way. A mistake can lock everyone out, or let the wrong people in.</li>
 </ul>
 </details>
 <h3>Switching context safely between environments</h3>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Point kubectl at a specific cluster's context
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Point kubectl at a specific cluster
 aws eks --region &lt;region&gt; update-kubeconfig --name &lt;cluster-name&gt;
 
-# Confirm which cluster and namespace you're actually pointed at
+# Check which cluster and namespace you're actually pointed at
 kubectl config current-context
 kubectl config set-context --current --namespace=&lt;namespace&gt;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<p>Running <code>kubectl config current-context</code> before any destructive or production-affecting command is a cheap habit that directly prevents the most common multi-cluster mistake: running a command intended for QA against Production because a terminal tab had the wrong context set from earlier in the day.</p>
+<p>Running <code>kubectl config current-context</code> before anything destructive is a cheap habit that prevents the most common multi-cluster mistake: running a command meant for QA against Production because a terminal tab was left on the wrong context earlier in the day.</p>
 <h3>Trade-offs</h3>
-<p>Separate clusters per environment cost more than namespace isolation on one shared cluster — each has its own control plane and minimum node footprint. For a platform where a Development-cluster misconfiguration must never be able to reach Production data or traffic, that's a deliberate, defensible trade rather than an oversight; for lower-stakes workloads, namespace isolation on fewer clusters is a reasonable and cheaper alternative.</p>
+<p>Separate clusters per environment cost more than namespaces on one shared cluster, since each has its own control plane and minimum set of nodes. When a mistake in Development must never be able to reach Production data or traffic, that's a deliberate trade, not waste. For lower-stakes workloads, namespaces on fewer clusters are a reasonable, cheaper option.</p>
 </div>
 </section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/01-dual-ingress-architecture.html">

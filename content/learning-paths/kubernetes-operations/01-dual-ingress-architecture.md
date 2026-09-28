@@ -1,29 +1,32 @@
 ---
 title: Dual Ingress Architecture & Its Cost Mechanics
 date: 2026-09-18
+updated: 2026-09-28
 track: kubernetes-operations
 order: 1
 module: 1
-totalModules: 6
-summary: When to route traffic through a shared ALB versus an internal Nginx Ingress, and why grouping services onto one load balancer is a real, measurable saving.
+totalModules: 10
+summary: When to route traffic through a shared ALB versus a separate ingress controller, why grouping services onto one load balancer is a real saving, and where Gateway API fits now that ingress-nginx is retired.
 level: Core Architecture
-readingTime: 8 min read
-stack: [Amazon EKS, AWS Load Balancer Controller, Nginx Ingress, AWS VPC CNI]
-tags: [ingress, alb, nginx, cost-optimization, eks]
+readingTime: 9 min read
+stack: [Amazon EKS, AWS Load Balancer Controller, Nginx Ingress, Gateway API, AWS VPC CNI]
+tags: [ingress, alb, nginx, gateway-api, cost-optimization, eks]
 ---
 
-## Problem · One load balancer per microservice adds up fast
+**Before you start:** you'll want an EKS cluster with the AWS Load Balancer Controller installed, and a basic idea of what a Kubernetes Service and Ingress are.
 
-The default instinct when exposing a new microservice on EKS is to give it its own Ingress and let the AWS Load Balancer Controller provision a dedicated Application Load Balancer for it. That works, and it's simple to reason about — but each ALB is a standing monthly cost on top of its data-processing charges, and that cost scales linearly with the number of services, independent of how much traffic any of them actually carry.
+## Principle · Share load balancers unless there's a reason not to
 
-At even a modest number of independently-deployed APIs, that adds up to a meaningful, entirely avoidable line item.
+The default instinct when exposing a new microservice on EKS is to give it its own Ingress and let the AWS Load Balancer Controller create a dedicated Application Load Balancer for it. That works, and it's easy to reason about. But every ALB is a fixed monthly cost on top of its traffic charges, and that cost grows with the number of services, however little traffic each one gets.
 
-## Pattern · Two ingress controllers, used for what each is actually good at
+With even a modest number of separately deployed APIs, that turns into a noticeable line item you don't need to pay.
 
-Rather than picking one ingress approach for everything, a dual-ingress design uses each controller for the traffic shape it's actually suited to:
+## Pattern · Two ingress paths, each used for what it's good at
 
-- **AWS Load Balancer Controller, with Ingress Grouping, for backend APIs.** Multiple independent services share a single ALB by annotating each Ingress with the same `group.name`, instead of each service provisioning its own load balancer.
-- **Nginx Ingress Controller for frontend single-page applications.** SPAs frequently need regex-based URL rewriting (stripping a path prefix before it reaches the container, for example) that's more naturally expressed in Nginx's ingress annotations than through ALB rules.
+The deployment this track is based on didn't pick one ingress approach for everything. It used each controller for the kind of traffic it suits:
+
+- **AWS Load Balancer Controller with ingress grouping, for backend APIs.** Several services share one ALB by giving each Ingress the same `group.name`, instead of each service getting its own load balancer.
+- **An Nginx-based ingress controller for frontend single-page apps.** SPAs often need regex URL rewriting (stripping a path prefix before the request reaches the container, for example), which is easier to express in Nginx than in ALB rules.
 
 ### Shared-ALB ingress grouping
 
@@ -34,12 +37,12 @@ metadata:
   name: orders-api
   namespace: prod
   annotations:
-    kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/group.name: api
     alb.ingress.kubernetes.io/group.order: '10'
 spec:
+  ingressClassName: alb
   rules:
     - http:
         paths:
@@ -57,12 +60,12 @@ metadata:
   name: billing-api
   namespace: prod
   annotations:
-    kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/group.name: api
     alb.ingress.kubernetes.io/group.order: '20'
 spec:
+  ingressClassName: alb
   rules:
     - http:
         paths:
@@ -75,9 +78,9 @@ spec:
                   number: 80
 ```
 
-Both Ingress resources share `group.name: api`, so the AWS Load Balancer Controller provisions and reuses one ALB for both, adding routing rules for each rather than a load balancer per service. `target-type: ip` also matters here — it routes traffic directly to a pod's VPC IP via the AWS VPC CNI instead of hopping through a NodePort first, which removes an extra network hop on every request.
+Both Ingresses share `group.name: api`, so the controller creates one ALB and adds a routing rule for each service. `spec.ingressClassName` picks the controller; the older `kubernetes.io/ingress.class` annotation is deprecated, so avoid it in new manifests. `target-type: ip` sends traffic straight to each pod's VPC IP (through the VPC CNI) instead of going through a NodePort first, which removes a hop from every request.
 
-### Nginx Ingress for frontend rewrites
+### Nginx ingress for frontend rewrites
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -86,15 +89,15 @@ metadata:
   name: customer-portal
   namespace: prod
   annotations:
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/use-regex: 'true'
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
+  ingressClassName: nginx
   rules:
     - http:
         paths:
-          - path: /portal
-            pathType: Prefix
+          - path: /portal(/|$)(.*)
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: customer-portal
@@ -102,12 +105,47 @@ spec:
                   number: 80
 ```
 
+The regex captures everything after `/portal`, and `rewrite-target: /$2` passes just that part to the container. So `/portal/assets/app.js` reaches the app as `/assets/app.js`. A plain `rewrite-target: /` would send *every* request to `/`, which quietly breaks the app's CSS and JavaScript.
+
+## Update · ingress-nginx is retired, so plan the next step
+
+The community **ingress-nginx** controller used in this design is being retired. In November 2025 the Kubernetes project announced it would get only best-effort maintenance until March 2026, and no further releases or security fixes after that. The pattern above (a separate controller for rewrite-heavy frontends) still makes sense, but new clusters shouldn't start on ingress-nginx, and existing ones need a migration plan.
+
+The long-term direction is the **Gateway API**, the successor to Ingress. It splits the job into a `Gateway` (the load balancer, owned by the platform team) and `HTTPRoute`s (routing rules, owned by each app team), and it supports path rewrites without controller-specific annotations:
+
+```yaml
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: customer-portal
+  namespace: prod
+spec:
+  parentRefs:
+    - name: public-gateway
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /portal
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
+      backendRefs:
+        - name: customer-portal
+          port: 80
+```
+
+Several maintained controllers implement Gateway API, and the AWS Load Balancer Controller has been adding support for it too. Check the current status of whichever you choose before committing to it.
+
 ### Implementation notes
 
-- **Ingress Grouping doesn't require the services to know about each other.** Each team still owns its own Ingress manifest; the only coordination needed is agreeing on a shared `group.name` and non-conflicting `group.order` values.
-- **Target-type `ip` requires the VPC CNI and enough available IPs per subnet.** Plan subnet sizing with this in mind — it's a common surprise when a subnet runs out of assignable IPs under pod scale-up, not at cluster creation time.
-- **Nginx Ingress and ALB Ingress can coexist on the same cluster indefinitely.** There's no need to standardize on one; the deciding factor is the routing behavior each specific workload actually needs.
+- **Ingress grouping doesn't need the services to know about each other.** Each team still owns its own Ingress; they only need to agree on a shared `group.name` and non-overlapping `group.order` values.
+- **Target type `ip` needs the VPC CNI and enough free IPs in each subnet.** Size subnets with this in mind. Running out of IPs tends to happen during a scale-up, not when the cluster is created.
+- **Two controllers can run side by side indefinitely.** There's no need to standardize on one. What matters is the routing each workload needs, and that each controller is still maintained.
 
 ### When not to share an ALB
 
-A few situations really do call for a dedicated load balancer instead of grouping: a service with materially different security-group or WAF requirements from the rest of the group, or a service whose traffic pattern makes shared connection draining or health-check tuning impractical. Sharing by default and carving out an exception when one of these applies is a more defensible starting point than defaulting to one ALB per service.
+A few situations call for a dedicated load balancer: a service with clearly different security-group or WAF needs from the rest of the group, or one whose traffic makes shared connection draining or health-check settings impractical. Share by default and make an exception when one of these applies. That's easier to defend than one ALB per service by default.

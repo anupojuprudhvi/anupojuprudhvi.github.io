@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <title>Kubernetes Ingress &amp; Operations on Amazon EKS — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="A hands-on playbook for running EKS in production — dual ingress cost mechanics, IAM/RBAC across clusters, and day-2 incident triage." />
-    <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/index.html" />
+    <title>Observability: Knowing Something's Wrong Before Users Do — Prudhvi Raj Anupoju</title>
+    <meta name="description" content="What to collect from an EKS cluster (logs, metrics, and cluster state), which few signals deserve an alert, and how to set alerts that wake people for real problems only." />
+    <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/08-observability.html" />
     <meta property="og:type" content="article" />
-    <meta property="og:title" content="Kubernetes Ingress &amp; Operations on Amazon EKS — Prudhvi Raj Anupoju" />
-    <meta property="og:description" content="A hands-on playbook for running EKS in production — dual ingress cost mechanics, IAM/RBAC across clusters, and day-2 incident triage." />
+    <meta property="og:title" content="Observability: Knowing Something's Wrong Before Users Do — Prudhvi Raj Anupoju" />
+    <meta property="og:description" content="What to collect from an EKS cluster (logs, metrics, and cluster state), which few signals deserve an alert, and how to set alerts that wake people for real problems only." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -22,8 +22,8 @@
       {
         "@context": "https://schema.org",
         "@type": "TechArticle",
-        "headline": "Kubernetes Ingress & Operations on Amazon EKS",
-        "description": "A hands-on playbook for running EKS in production — dual ingress cost mechanics, IAM/RBAC across clusters, and day-2 incident triage.",
+        "headline": "Observability: Knowing Something's Wrong Before Users Do",
+        "description": "What to collect from an EKS cluster (logs, metrics, and cluster state), which few signals deserve an alert, and how to set alerts that wake people for real problems only.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -37,10 +37,10 @@
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju"
         },
-        "url": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/index.html",
+        "url": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/08-observability.html",
         "image": "https://anupojuprudhvi.github.io/og-image.png",
-        "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/index.html",
-        "keywords": "Amazon EKS, Kubernetes, AWS Load Balancer Controller, Nginx Ingress, AWS ECR"
+        "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/08-observability.html",
+        "keywords": "observability, monitoring, logging, alerting, eks, Amazon EKS, CloudWatch Container Insights, Fluent Bit, Prometheus, Amazon Managed Service for Prometheus, Grafana"
       }
     </script>
     <script src="../../assets/theme.js"></script>
@@ -127,16 +127,16 @@
     <main id="main">
       <nav class="breadcrumb-bar" aria-label="Breadcrumb">
         <div class="wrap">
-          <div class="back"><a class="back-link back" href="../../learning-paths/index.html">← All learning paths</a></div>
+          <div class="back"><a class="back-link back" href="../../learning-paths/kubernetes-operations/index.html">← Kubernetes Ingress &amp; Operations on Amazon EKS</a></div>
         </div>
       </nav>
       <header class="lp-hero">
         <div class="wrap">
           <div class="hero-split">
             <div>
-              <span class="lp-badge">Intermediate to Advanced</span>
-              <h1>Kubernetes Ingress &amp; Operations on Amazon EKS</h1>
-              <p class="sub">A hands-on playbook for running EKS in production — dual ingress cost mechanics, IAM/RBAC across clusters, and day-2 incident triage.</p>
+              <span class="lp-badge">Operations</span>
+              <h1>Observability: Knowing Something's Wrong Before Users Do</h1>
+              <p class="sub">What to collect from an EKS cluster (logs, metrics, and cluster state), which few signals deserve an alert, and how to set alerts that wake people for real problems only.</p>
             </div>
             <svg class="motif motif-network" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <defs>
@@ -153,9 +153,10 @@
     </svg>
           </div>
           <div class="lp-meta-bar">
-            <span><b>Level:</b> Intermediate to Advanced</span>
-            <span><b>Duration:</b> 10 Modules · 85 min read</span>
-            <span><b>Published:</b> <time datetime="2026-09-18">18 Sep 2026</time></span>
+            <span><b>Module:</b> 08 of 10</span>
+            <span><b>Level:</b> Operations</span>
+            <span><b>Time:</b> 8 min read</span>
+            <span><b>Published:</b> <time datetime="2026-09-28">28 Sep 2026</time></span>
           </div>
         </div>
       </header>
@@ -163,134 +164,70 @@
         <div class="wrap">
           <section>
 <div class="wrap">
-<div class="section-eyebrow">Overview</div>
-<h2>Running EKS is mostly a routing and access-control problem</h2>
-<p>Provisioning an EKS cluster is the easy part. The decisions that actually shape a production platform are how traffic gets routed into it, who can reach which environment, how a container actually gets from a developer's commit into a running pod, and what you do at 2 a.m. when a rollout is stuck.</p>
-<p>This track draws on running Amazon EKS across four separate environments (Dev, QA, Staging, Production) for a single platform — the ingress design, environment isolation, and container-delivery mechanics below reflect that real deployment, paired with a general operational discipline for triaging a stuck rollout that applies to any EKS cluster. It covers:</p>
-<ul>
-<li>Why running two different ingress controllers side-by-side is a cost decision, not just a technical preference.</li>
-<li>How to isolate IAM access per environment without hand-editing cluster permissions per engineer.</li>
-<li>The one authentication detail that breaks container delivery specifically in headless CI/CD, and nowhere else.</li>
-<li>A repeatable way to triage a stuck or failing deployment instead of guessing.</li>
-<li>How resource requests drive scheduling, autoscaling, and cost.</li>
-<li>How to upgrade a cluster one version at a time without breaking deploys.</li>
-<li>How pods get their own AWS permissions, and how secrets reach them safely.</li>
-<li>What to monitor, and which alerts are worth waking someone for.</li>
-<li>Running deploys through Git with Argo CD.</li>
-<li>The add-ons every new cluster needs before any app arrives.</li>
-</ul>
-<p>Modules 1–3 and 10 draw on that deployment (with every name and account removed). Modules 4–9 are general EKS practice.</p>
+<p><b>Before you start:</b> module 4 covered what to do once you know something is broken. This module is about finding out in the first place.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
-<div class="section-eyebrow">Curriculum</div>
-<h2>The 10 operations modules</h2>
-<ul class="lp-syllabus">
-  <li>
-    <a class="lp-module-card" href="01-dual-ingress-architecture.html">
-      <span class="lp-module-num">01</span>
-      <div class="lp-module-body">
-        <h3>Dual Ingress Architecture &amp; Its Cost Mechanics</h3>
-        <p>When to route through a shared AWS ALB versus an internal Nginx Ingress controller, and why grouping services onto one load balancer is a real line-item saving.</p>
-      </div>
-      <span class="lp-module-action">Start module →</span>
-    </a>
-  </li>
-  <li>
-    <a class="lp-module-card" href="02-multi-environment-clusters-and-rbac.html">
-      <span class="lp-module-num">02</span>
-      <div class="lp-module-body">
-        <h3>Multi-Environment Clusters &amp; IAM/RBAC</h3>
-        <p>Isolating Dev, QA, Staging, and Production as separate clusters and mapping IAM identities to Kubernetes RBAC without a shared superuser credential.</p>
-      </div>
-      <span class="lp-module-action">Read module →</span>
-    </a>
-  </li>
-  <li>
-    <a class="lp-module-card" href="03-container-delivery-to-eks.html">
-      <span class="lp-module-num">03</span>
-      <div class="lp-module-body">
-        <h3>Container Delivery: Build, Tag, Push, Promote</h3>
-        <p>A registry-to-cluster promotion workflow, and the headless-authentication gotcha that only shows up once a human isn't the one running the command.</p>
-      </div>
-      <span class="lp-module-action">Read module →</span>
-    </a>
-  </li>
-  <li>
-    <a class="lp-module-card" href="04-day-2-operations-and-incident-triage.html">
-      <span class="lp-module-num">04</span>
-      <div class="lp-module-body">
-        <h3>Day-2 Operations &amp; Incident Triage</h3>
-        <p>Context switching across clusters safely, verifying a rollout actually succeeded, and a systematic sequence for triaging a stuck deployment.</p>
-      </div>
-      <span class="lp-module-action">Read module →</span>
-    </a>
-  </li>
-  <li>
-    <a class="lp-module-card" href="05-scaling-requests-and-cost.html">
-      <span class="lp-module-num">05</span>
-      <div class="lp-module-body">
-        <h3>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</h3>
-        <p>Why resource requests drive scheduling, autoscaling, and the bill, and how pod and node autoscaling fit together.</p>
-      </div>
-      <span class="lp-module-action">Read module →</span>
-    </a>
-  </li>
-  <li>
-    <a class="lp-module-card" href="06-cluster-upgrades.html">
-      <span class="lp-module-num">06</span>
-      <div class="lp-module-body">
-        <h3>Cluster Upgrades Without Drama</h3>
-        <p>Checking for removed APIs first, then upgrading the control plane, add-ons, and nodes in an order that keeps workloads running.</p>
-      </div>
-      <span class="lp-module-action">Read module →</span>
-    </a>
-  </li>
-  <li>
-    <a class="lp-module-card" href="07-workload-identity-and-secrets.html">
-      <span class="lp-module-num">07</span>
-      <div class="lp-module-body">
-        <h3>Workload Identity &amp; Secrets</h3>
-        <p>Giving each workload its own AWS permissions with EKS Pod Identity or IRSA, and getting secrets into pods without putting them in Git.</p>
-      </div>
-      <span class="lp-module-action">Read module →</span>
-    </a>
-  </li>
-  <li>
-    <a class="lp-module-card" href="08-observability.html">
-      <span class="lp-module-num">08</span>
-      <div class="lp-module-body">
-        <h3>Observability: Knowing Something&#39;s Wrong First</h3>
-        <p>What to collect from a cluster, the few signals worth alerting on, and alerts that wake people for real problems only.</p>
-      </div>
-      <span class="lp-module-action">Read module →</span>
-    </a>
-  </li>
-  <li>
-    <a class="lp-module-card" href="09-gitops-with-argo-cd.html">
-      <span class="lp-module-num">09</span>
-      <div class="lp-module-body">
-        <h3>GitOps with Argo CD</h3>
-        <p>Letting Argo CD keep each cluster matching Git, so a deploy is a reviewed pull request and a rollback is a revert.</p>
-      </div>
-      <span class="lp-module-action">Read module →</span>
-    </a>
-  </li>
-  <li>
-    <a class="lp-module-card" href="10-platform-add-ons.html">
-      <span class="lp-module-num">10</span>
-      <div class="lp-module-body">
-        <h3>The Platform Add-on Layer</h3>
-        <p>The add-ons every new cluster needs (load balancing, DNS, metrics, autoscaling, logs, storage), each with its own IAM role.</p>
-      </div>
-      <span class="lp-module-action">Read module →</span>
-    </a>
-  </li>
+<div class="section-eyebrow">Principle</div>
+<h2>Alert on what users feel, investigate with everything else</h2>
+<p>A cluster can produce thousands of metrics. Paging someone for each one leads to alert fatigue, and then the alert that matters gets ignored. A simpler rule works better: <b>alert on symptoms users would notice</b> (errors, slowness, unavailability), and keep the detailed metrics for working out *why*.</p>
+<p>For most services, four signals cover the symptoms:</p>
+<ul>
+<li><b>Errors:</b> the share of requests that fail.</li>
+<li><b>Latency:</b> how long requests take, looking at the slow end (p95 or p99), not the average.</li>
+<li><b>Traffic:</b> how many requests are coming in, so a sudden drop to zero doesn't look like &quot;no errors&quot;.</li>
+<li><b>Saturation:</b> how close the service is to its limits, such as CPU throttling, memory near the limit, or a queue backing up.</li>
 </ul>
 </div>
 </section>
-          
+<section>
+<div class="wrap">
+<h2>What to collect</h2>
+<ul>
+<li><b>Logs.</b> Containers write to stdout and stderr; a log agent on each node ships them somewhere searchable. Fluent Bit sending to CloudWatch Logs is the common AWS default. Log in a structured format (JSON) with a request ID, so one request can be followed across services.</li>
+<li><b>Metrics.</b> CloudWatch Container Insights (installed through the <code>amazon-cloudwatch-observability</code> add-on) gives node, pod, and container metrics with little setup. Prometheus, self-run or through Amazon Managed Service for Prometheus with Grafana, gives more control and is the usual choice when apps expose their own metrics.</li>
+<li><b>Cluster state.</b> <code>kube-state-metrics</code> turns Kubernetes objects into metrics: pods stuck in <code>Pending</code>, containers restarting, deployments with fewer ready replicas than desired. Many real incidents show up here first.</li>
+</ul>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Is anything restarting or stuck right now?
+kubectl get pods -A --field-selector=status.phase!=Running
+kubectl get pods -A --sort-by='.status.containerStatuses[0].restartCount'
+
+# Recent warnings across the whole cluster
+kubectl get events -A --field-selector=type=Warning --sort-by='.lastTimestamp'</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+</div>
+</section>
+<section>
+<div class="wrap">
+<h2>Alerts that are worth waking up for</h2>
+<p>A short list, each tied to something a user would feel or will soon feel:</p>
+<ul>
+<li><b>Error rate above a threshold for several minutes</b>, per service, not per pod.</li>
+<li><b>Slow requests (p99 latency) above the target for several minutes.</b></li>
+<li><b>A deployment with fewer ready replicas than desired for more than a few minutes.</b> This catches failed rollouts and crash loops.</li>
+<li><b>Pods stuck in <code>Pending</code></b>, which usually means the cluster is out of capacity or a node autoscaler is stuck.</li>
+<li><b>Nodes <code>NotReady</code></b>, and disks or subnets close to full (running out of pod IPs is a classic EKS surprise).</li>
+</ul>
+<p>Everything else goes on a dashboard or into a daily report rather than a pager.</p>
+<details class="implementation-notes">
+<summary>Implementation notes</summary>
+<ul>
+<li><b>Always require &quot;for N minutes&quot;.</b> A single bad minute is noise. An alert that fires on one sample will train people to ignore it.</li>
+<li><b>Every alert needs an owner and a first step.</b> If nobody knows what to do when it fires, it isn't ready to page anyone. Link it to the triage checklist from module 4.</li>
+<li><b>Watch the cost of logs.</b> Log volume grows quietly. Set retention periods, drop noisy debug logs in production, and check the logging bill now and then.</li>
+<li><b>Test alerts on purpose.</b> Break something in a non-production cluster and confirm the alert fires, reaches the right person, and makes sense to them.</li>
+</ul>
+</details>
+</div>
+</section>
+          <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/07-workload-identity-and-secrets.html">
+          <span class="lp-nav-label">← Module 07</span>
+          <span class="lp-nav-title">Workload Identity &amp; Secrets: How Pods Get AWS Access</span>
+        </a>
+<a class="lp-nav-link next" href="../../learning-paths/kubernetes-operations/09-gitops-with-argo-cd.html">
+          <span class="lp-nav-label">Module 09 →</span>
+          <span class="lp-nav-title">GitOps with Argo CD: Git as the Source of Truth</span>
+        </a></nav>
         </div>
       </article>
       <div class="closing">
