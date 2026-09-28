@@ -1,5 +1,8 @@
 node_modules/
 artifacts/
+# Build outputs: the staged public site and Lighthouse reports.
+_site/
+.lighthouseci/
 
 # Local-only files; kept in step with .dockerignore. This repo is public.
 .env

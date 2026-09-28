@@ -1,0 +1,27 @@
+name: External links
+
+# Links to other sites rot on their own schedule, so they're checked weekly
+# rather than on every push (a third-party outage should never block a deploy).
+# A failed run emails the repository owner.
+on:
+  schedule:
+    - cron: "17 6 * * 1" # Mondays 06:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - name: Check external links
+        run: node scripts/check-links.mjs

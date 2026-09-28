@@ -141,7 +141,8 @@ function splitRow(line) {
 }
 
 function renderTable(header, align, rows) {
-  const style = (k) => (align[k] ? ` style="text-align:${align[k]}"` : "");
+  // A class, not style="": the CSP allows no inline CSS.
+  const style = (k) => (align[k] ? ` class="align-${align[k]}"` : "");
   const head = header.map((h, k) => `<th scope="col"${style(k)}>${inline(h)}</th>`).join("");
   const body = rows
     .map(

@@ -86,6 +86,11 @@
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 0.9em;
 }
+/* Shrinking inline code is right in prose, but inside a block it compounded
+   to 11.7px, below the 12px mobile legibility floor. */
+.lp-content pre code {
+  font-size: inherit;
+}
 .lp-content p code,
 .lp-content li code {
   background: var(--bg-raised);

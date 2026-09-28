@@ -12,7 +12,10 @@
     "test:browser": "node scripts/verify.mjs",
     "preview": "node scripts/serve.mjs",
     "check": "node scripts/build.mjs --check",
-    "social": "node scripts/render-social.mjs"
+    "social": "node scripts/render-social.mjs",
+    "stage": "node scripts/stage.mjs",
+    "links": "node scripts/check-links.mjs",
+    "lighthouse": "npx --yes @lhci/cli@0.15.1 autorun"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",

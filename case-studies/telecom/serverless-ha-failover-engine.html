@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Automating telecom failover, preserving licensed identity — Prudhvi Raj Anupoju</title>
     <meta name="description" content="Bringing recovery orchestration, service validation, and hardware-bound licensing into one failover workflow, with an explicit same-AZ boundary." />
@@ -144,6 +144,7 @@
             <div><b>Stack</b><br />AWS Lambda · DynamoDB · CloudWatch · Systems Manager · EC2 · Elastic Network Interfaces</div>
             <div><b>Tags</b><br />failover · licensing · eni · recovery · orchestration</div>
             <div><b>Reading time</b><br />3 min</div>
+            <div><b>Published</b><br /><time datetime="2026-09-17">17 Sep 2026</time></div>
           </div>
         </div>
       </header>
@@ -171,7 +172,7 @@
 <p>The orchestrator ran outside the two service nodes. Its responsibilities included acquiring a lease, moving the designated interface, requesting service changes, checking readiness and ownership, and handling the degraded host. These are distinct controls: a coordination lock does not itself fence a node or prove that only one node can accept writes.</p>
 <div class="hubwrap">
             <div class="diagram-top">
-              <h3 style="font-size: 15.5px">
+              <h3>
                 Walk through an automated failover
               </h3>
               <button id="failoverPlayBtn">▶ Play failover sequence</button>

@@ -90,8 +90,7 @@
              and sendMessage() below drops the submission without hitting
              the network. Name matches Web3Forms' own botcheck convention. -->
         <input type="checkbox" id="askBotcheck" name="botcheck" tabindex="-1"
-               autocomplete="off" aria-hidden="true"
-               style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" />
+               autocomplete="off" aria-hidden="true" class="ask-honeypot" />
       </div>
     </div>`;
 

@@ -10,6 +10,14 @@
   white-space: nowrap;
   border: 0;
 }
+/* Spam trap in the message form: off-screen and never focused by people. */
+.ask-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
 
 .ask-launcher {
   position: fixed;

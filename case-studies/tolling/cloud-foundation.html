@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>One governed cloud foundation under 40+ accounts — Prudhvi Raj Anupoju</title>
     <meta name="description" content="A four-layer landing zone, one hub-and-spoke network, and a CI/CD pipeline where an unintended apply is structurally impossible." />
@@ -144,6 +144,7 @@
             <div><b>Stack</b><br />Terraform · AWS Organizations · Transit Gateway · GitHub Actions</div>
             <div><b>Tags</b><br />governance · networking · terraform · cicd · multi-account</div>
             <div><b>Reading time</b><br />4 min</div>
+            <div><b>Published</b><br /><time datetime="2026-09-16">16 Sep 2026</time></div>
           </div>
         </div>
       </header>
@@ -270,7 +271,7 @@
 
           <div class="hubwrap">
             <div class="diagram-top">
-              <h3 style="font-size: 15.5px">
+              <h3>
                 How a request actually moves through the hub
               </h3>
               <button id="tgwPlayBtn">▶ Show traffic flow</button>
@@ -442,14 +443,14 @@
               hub-routed traffic.
             </div>
           </div>
-          <p style="font-size: 13.5px; color: var(--muted); margin-top: 10px">
+          <p class="hub-note">
             Security and Archive &amp; Migration are kept as a lightweight
             <b>governance and compliance stack</b> — audit, guardrails,
             long-term retention — structurally separate from the accounts that
             actually run workloads. Every account in either group still connects
             to the same single hub.
           </p>
-          <p style="font-size: 14px; color: var(--muted); margin-top: 14px">
+          <p class="hub-detail">
             To be precise about the path: a public request hits CloudFront
             first, with a WAF in front of it, then resolves through Route 53 —
             both the public zone for the domain and the private zones used for

@@ -21,9 +21,27 @@ Live at: https://anupojuprudhvi.github.io/
   page screenshots are written to `./artifacts`.
 
 `docker compose run --rm tests` runs only the tests (the exit code is the
-result). `docker compose down` stops everything. CI
-(`.github/workflows/build-check.yml`) runs the same checks directly on the
-runner; the container itself is only exercised locally.
+result). `docker compose down` stops everything. CI runs the same containers in
+its `container` job.
+
+## CI and deployment
+
+`.github/workflows/build-check.yml` runs on every push and pull request:
+
+- **build** — generated-output drift check, generator and preview-server tests,
+  the full browser suite, then `npm run stage` (copies only public files to
+  `_site/` and fails on any local link that would 404) and `npm run lighthouse`
+  (median of 3 runs; performance ≥ 90, accessibility, best practices and SEO
+  ≥ 95; reports kept as a run artifact).
+- **container** — the Docker setup above, so it can't silently rot.
+- **deploy** — on `main` only, and only after **build** passes: publishes
+  `_site/` to GitHub Pages. Requires *Settings → Pages → Source: GitHub Actions*.
+  Publishing the staged folder also keeps `content/`, `scripts/`, and repo docs
+  off the public site.
+
+`.github/workflows/links.yml` checks every external link weekly
+(`npm run links`); a failed run emails the repository owner. Dependabot proposes
+monthly updates for actions, npm packages and Docker images.
 
 > **Headers differ in production.** GitHub Pages cannot send custom response
 > headers, so the live site relies on the `<meta http-equiv="Content-Security-Policy">`
@@ -75,7 +93,8 @@ Front matter drives the page scaffold. The body is a small Markdown subset:
   "architecture decisions" block.
 - `**bold**`, `` `code` ``, `[links](url)` and plain lists work as expected.
 - Raw HTML passes straight through, so a case study that needs a custom SVG
-  diagram or table just includes it. A body that begins with `<section>` is
+  diagram or table just includes it. Style it with classes, not `style=""`
+  attributes or `<style>` blocks: the Content-Security-Policy blocks inline CSS. A body that begins with `<section>` is
   emitted verbatim — that is how the richer case studies are written.
 
 To attach a diagram script, drop it in `assets/` and reference it:

@@ -176,6 +176,22 @@
   flex-wrap: wrap;
   gap: 12px;
 }
+.diagram-top h3 {
+  font-size: 15.5px;
+}
+/* Notes under a hub diagram (classes, not inline styles: the CSP allows no inline CSS). */
+.hub-note,
+.hub-detail {
+  color: var(--text-muted);
+}
+.hub-note {
+  font-size: 13.5px;
+  margin-top: 10px;
+}
+.hub-detail {
+  font-size: 14px;
+  margin-top: 14px;
+}
 #failoverPlayBtn,
 #tgwPlayBtn,
 #cachePlayBtn {
@@ -223,6 +239,10 @@
   border-bottom: 1px solid var(--border);
   vertical-align: top;
 }
+.gtable .w-18 { width: 18%; }
+.gtable .w-20 { width: 20%; }
+.gtable .w-30 { width: 30%; }
+.gtable .w-32 { width: 32%; }
 .gtable tr:last-child td {
   border-bottom: none;
 }
@@ -506,6 +526,8 @@ pre.code {
   vertical-align: top;
   border-bottom: 1px solid var(--border);
 }
+.md-table .align-center { text-align: center; }
+.md-table .align-right { text-align: right; }
 .md-table thead th {
   background: var(--bg);
   color: var(--text-muted);

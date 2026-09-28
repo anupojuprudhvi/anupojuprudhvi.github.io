@@ -32,7 +32,7 @@ The orchestrator ran outside the two service nodes. Its responsibilities include
 
 <div class="hubwrap">
             <div class="diagram-top">
-              <h3 style="font-size: 15.5px">
+              <h3>
                 Walk through an automated failover
               </h3>
               <button id="failoverPlayBtn">▶ Play failover sequence</button>

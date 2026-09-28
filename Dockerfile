@@ -23,11 +23,9 @@ COPY learning-paths ./learning-paths
 # The generator has no npm dependencies, so no install step is needed.
 RUN node scripts/build.mjs
 
-# Only what a visitor can request ends up in the served image.
-RUN mkdir /public \
- && cp -r index.html 404.html privacy.html og-image.png robots.txt sitemap.xml feed.xml \
-          assets case-studies learning-paths /public/ \
- && rm -f /public/assets/og-template.html /public/assets/og-page.html
+# Only what a visitor can request ends up in the served image — the same set
+# the GitHub Pages deploy publishes (scripts/stage.mjs).
+RUN node scripts/stage.mjs /public
 
 # ----------------------------------------------------------------- site
 FROM nginxinc/nginx-unprivileged:1.30-alpine AS site

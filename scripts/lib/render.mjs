@@ -6,11 +6,19 @@ export const SITE = "https://anupojuprudhvi.github.io";
  * Security policy for every page. GitHub Pages can't send custom response
  * headers, so the Content-Security-Policy is delivered as a <meta> tag: scripts
  * only from this site (no inline or third-party JavaScript), and the only
- * outbound connection is the contact form's Web3Forms endpoint. Inline styles
- * stay allowed for the small style attributes some diagrams use.
+ * outbound connection is the contact form's Web3Forms endpoint. No inline CSS
+ * either: style="" attributes and <style> blocks are blocked, so put styling in
+ * a stylesheet class. (Setting element.style from JavaScript is still allowed.)
  */
-export const HEAD_SECURITY = `<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
+export const HEAD_SECURITY = `<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />`;
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+/** "2026-09-16" → <time datetime="2026-09-16">16 Sep 2026</time>; fixed format, never locale-dependent. */
+function timeTag(iso) {
+  const [y, m, d] = iso.split("-");
+  return `<time datetime="${esc(iso)}">${Number(d)} ${MONTHS[Number(m) - 1]} ${y}</time>`;
+}
 
 /* ------------------------------------------------- "Case studies" nav dropdown */
 /**
@@ -300,6 +308,7 @@ export function page(d, bodyHtml, { up, url, prev, next, docs = [] } = {}) {
       ? `<div><b>Tags</b><br />${d.tags.map(esc).join(" · ")}</div>`
       : "",
     minutes ? `<div><b>Reading time</b><br />${minutes} min</div>` : "",
+    isStudy && d.date && `<div><b>${d.updated ? "Updated" : "Published"}</b><br />${timeTag(d.updated || d.date)}</div>`,
   ]
     .filter(Boolean)
     .join("\n            ");
@@ -644,6 +653,7 @@ export function learningPathPage(d, bodyHtml, { up, url, prev, next, track, docs
     d.level && `<span><b>Level:</b> ${esc(d.level)}</span>`,
     d.readingTime && `<span><b>Time:</b> ${esc(d.readingTime)}</span>`,
     d.duration && `<span><b>Duration:</b> ${esc(d.duration)}</span>`,
+    d.date && `<span><b>${d.updated ? "Updated" : "Published"}:</b> ${timeTag(d.updated || d.date)}</span>`,
   ]
     .filter(Boolean)
     .join("\n            ");

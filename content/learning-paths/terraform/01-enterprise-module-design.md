@@ -73,10 +73,10 @@ Why slice environments into numbered layers instead of one monolithic deployment
 <table class="gtable">
   <thead>
     <tr>
-      <th style="width: 18%;">Layer</th>
-      <th style="width: 32%;">Responsibility &amp; Components</th>
-      <th style="width: 20%;">Volatility</th>
-      <th style="width: 30%;">Blast Radius &amp; Team Ownership</th>
+      <th class="w-18">Layer</th>
+      <th class="w-32">Responsibility &amp; Components</th>
+      <th class="w-20">Volatility</th>
+      <th class="w-30">Blast Radius &amp; Team Ownership</th>
     </tr>
   </thead>
   <tbody>

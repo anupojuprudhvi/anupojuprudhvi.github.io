@@ -131,7 +131,7 @@ scripts: [cache-diagram.js]
 
           <div class="hubwrap">
             <div class="diagram-top">
-              <h3 style="font-size: 15.5px">
+              <h3>
                 How a vitals reading reaches a clinician's dashboard
               </h3>
               <button id="cachePlayBtn">▶ Show the read path</button>

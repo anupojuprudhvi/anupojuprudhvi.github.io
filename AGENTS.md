@@ -23,7 +23,9 @@ that preserve the site's existing visual language and static-site architecture.
    generator changes. Review the generated diff; do not discard intentional
    output changes.
 5. **Validate before finishing.** Run the narrowest relevant checks first, then
-   `npm run check`, `git diff --check`, and `npm test` when available. If a
+   `npm run check`, `git diff --check`, `npm test`, and `npm run stage` (the
+   exact files GitHub Pages will publish; fails on any local link that would
+   404) when available. If a
    check cannot run, report the exact command, limitation, and remaining risk.
 6. **Review the final diff.** Confirm links, anchors, paths, responsive markup,
    accessibility semantics, content accuracy, and unintended files before

@@ -91,9 +91,12 @@ function walkHtml(dir) {
 }
 
 /** Per-page social preview (made by scripts/render-social.mjs), if present. */
+const missingSocial = [];
 function socialImage(project, slug) {
   const file = `assets/og/${project}/${slug}.jpg`;
-  return existsSync(join(ROOT, file)) ? file : "og-image.png";
+  if (existsSync(join(ROOT, file))) return file;
+  missingSocial.push(file);
+  return "og-image.png";
 }
 
 /* ---------------------------------------------------------------- build */
@@ -406,6 +409,12 @@ for (const dir of ["case-studies", "learning-paths"]) {
       else { unlinkSync(file); console.log("  remove ", url); }
     }
   }
+}
+// Not fatal (the site falls back to og-image.png), but surfaced loudly: in
+// GitHub Actions each one becomes a warning annotation on the run.
+for (const file of new Set(missingSocial)) {
+  const message = `No social preview image ${file}; run npm run social, then npm run build.`;
+  console.warn(process.env.GITHUB_ACTIONS ? `::warning file=${file}::${message}` : `  warning ${message}`);
 }
 if (stale) process.exitCode = 1;
 console.log(`\n${checkOnly ? "Checked" : "Built"} ${written} pages, homepage, overviews, playbooks, library, and search index.`);

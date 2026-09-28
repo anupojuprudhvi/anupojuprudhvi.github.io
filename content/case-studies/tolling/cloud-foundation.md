@@ -131,7 +131,7 @@ outcomes:
 
           <div class="hubwrap">
             <div class="diagram-top">
-              <h3 style="font-size: 15.5px">
+              <h3>
                 How a request actually moves through the hub
               </h3>
               <button id="tgwPlayBtn">▶ Show traffic flow</button>
@@ -303,14 +303,14 @@ outcomes:
               hub-routed traffic.
             </div>
           </div>
-          <p style="font-size: 13.5px; color: var(--muted); margin-top: 10px">
+          <p class="hub-note">
             Security and Archive &amp; Migration are kept as a lightweight
             <b>governance and compliance stack</b> — audit, guardrails,
             long-term retention — structurally separate from the accounts that
             actually run workloads. Every account in either group still connects
             to the same single hub.
           </p>
-          <p style="font-size: 14px; color: var(--muted); margin-top: 14px">
+          <p class="hub-detail">
             To be precise about the path: a public request hits CloudFront
             first, with a WAF in front of it, then resolves through Route 53 —
             both the public zone for the domain and the private zones used for

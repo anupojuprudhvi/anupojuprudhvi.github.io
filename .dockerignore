@@ -4,6 +4,8 @@
 .agents
 node_modules
 artifacts
+_site
+.lighthouseci
 _to_delete
 Claude outputs
 *.log
