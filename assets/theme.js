@@ -89,5 +89,40 @@
         });
       }
     });
+
+    // Scroll reveal: blocks fade up as they scroll into view. Only blocks that
+    // start below the fold are hidden, so nothing on screen ever blinks and, if
+    // this never runs, nothing is hidden at all.
+    if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const selector = ".section-head, .case, .capability, .role, .cred, .case-study-links a, .uc-card, body.deepdive main section";
+      const blocks = [...document.querySelectorAll(selector)].filter(
+        (el) => !el.parentElement.closest(selector) && el.getBoundingClientRect().top > innerHeight,
+      );
+      const reveal = (el, delay) => {
+        el.style.setProperty("--reveal-delay", `${delay}ms`);
+        el.classList.add("reveal-in");
+        el.classList.remove("reveal-pending");
+        // Hand transitions back to the element's own hover styles afterwards.
+        setTimeout(() => {
+          el.classList.remove("reveal-in");
+          el.style.removeProperty("--reveal-delay");
+        }, 700 + delay);
+      };
+      const observer = new IntersectionObserver(
+        (entries) => {
+          // Blocks arriving together (a card grid) stagger slightly.
+          entries.filter((e) => e.isIntersecting).forEach((e, i) => {
+            observer.unobserve(e.target);
+            reveal(e.target, Math.min(i, 3) * 80);
+          });
+        },
+        { rootMargin: "0px 0px -8% 0px" },
+      );
+      blocks.forEach((el) => {
+        el.classList.add("reveal-pending");
+        observer.observe(el);
+      });
+      addEventListener("beforeprint", () => blocks.forEach((el) => el.classList.remove("reveal-pending")));
+    }
   });
 })();

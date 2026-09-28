@@ -553,9 +553,16 @@ pre.code {
   border: 1px solid var(--border);
   border-radius: 8px;
   text-decoration: none;
+  transition: border-color 0.2s, transform 0.2s ease, box-shadow 0.2s ease;
 }
 .case-study-links a:hover {
   border-color: var(--accent);
+}
+@media (hover: hover) {
+  .case-study-links a:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+  }
 }
 .case-study-links span {
   font-size: 11px;
