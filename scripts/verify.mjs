@@ -101,7 +101,7 @@ try {
       theme,
     );
     const audit = await new AxeBuilder({ page })
-      .withTags(["wcag2a", "wcag2aa", "wcag21aa"])
+      .withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"])
       .analyze();
     for (const v of audit.violations)
       errors.push(
@@ -250,7 +250,7 @@ try {
   });
   await missing.goto(`${base}/404.html`);
   assert.equal(await missing.locator("h1").textContent(), "This page doesn’t exist.");
-  assert.deepEqual((await new AxeBuilder({ page: missing }).withTags(["wcag2a", "wcag2aa", "wcag21aa"]).analyze()).violations, []);
+  assert.deepEqual((await new AxeBuilder({ page: missing }).withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"]).analyze()).violations, []);
   await notFound.close();
   const nojs = await browser.newContext({
     javaScriptEnabled: false,

@@ -616,6 +616,8 @@ pre.code {
 .implementation-notes summary {
   cursor: pointer;
   color: var(--accent);
+  /* WCAG 2.2 target size: at least 24px tall to tap. */
+  padding: 6px 0;
 }
 .implementation-notes ul {
   margin-top: 18px;
