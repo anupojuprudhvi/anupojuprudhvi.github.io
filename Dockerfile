@@ -30,7 +30,7 @@ RUN mkdir /public \
  && rm -f /public/assets/og-template.html /public/assets/og-page.html
 
 # ----------------------------------------------------------------- site
-FROM nginxinc/nginx-unprivileged:1.27-alpine AS site
+FROM nginxinc/nginx-unprivileged:1.30-alpine AS site
 COPY --chown=root:root docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build --chown=root:root /public /usr/share/nginx/html
 EXPOSE 8080

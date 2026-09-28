@@ -9,6 +9,13 @@ updates:
       actions:
         patterns: ["*"]
 
+  # Base images in the local Docker setup. Tags set through ARG (node,
+  # playwright) are not visible to Dependabot; bump those by hand.
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: monthly
+
   # Dev-only test tooling (Playwright, axe); the site itself has no runtime dependencies.
   - package-ecosystem: npm
     directory: /
