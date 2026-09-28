@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="../../assets/learning-path.css" />
     <link rel="stylesheet" href="../../assets/assistant.css" />
   </head>
-  <body class="deepdive">
+  <body class="deepdive lp-with-sidebar">
     <a class="skip-link" href="#main">Skip to content</a>
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
@@ -159,11 +159,40 @@
         </div>
       </header>
       <article class="lp-content">
-        <div class="wrap">
+        <div class="lp-layout">
+          <aside class="lp-sidebar">
+            <nav class="lp-toc" aria-label="Modules in this track">
+              <a class="lp-toc-track" href="index.html">Terraform for Enterprise Production</a>
+              <ol class="lp-toc-list">
+                <li><a href="01-enterprise-module-design.html"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a></li>
+                <li class="is-current"><a href="02-state-isolation-and-locking.html" aria-current="page"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a>
+                <ol class="lp-toc-sections"><li><a href="#state-is-your-single-point-of-truth-and-vulnerability">State is your single point of truth and vulnerability</a></li><li><a href="#secure-s3-dynamodb-backend-design">Secure S3 &amp; DynamoDB backend design</a></li><li><a href="#layering-state-to-control-blast-radius">Layering state to control blast radius</a></li><li><a href="#avoiding-the-terraform-remote-state-trap">Avoiding the terraform_remote_state trap</a></li></ol></li>
+                <li><a href="03-variables-validation-and-types.html"><span class="lp-toc-num">03</span><span>Modern HCL — Types, Validations &amp; Preconditions</span></a></li>
+                <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
+                <li><a href="05-refactoring-with-moved-blocks.html"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a></li>
+                <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a></li>
+              </ol>
+            </nav>
+          </aside>
+          <div class="lp-main">
+            <details class="lp-toc-mobile">
+              <summary>All modules in this track (6)</summary>
+              <nav class="lp-toc" aria-label="All modules">
+              <a class="lp-toc-track" href="index.html">Terraform for Enterprise Production</a>
+              <ol class="lp-toc-list">
+                <li><a href="01-enterprise-module-design.html"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a></li>
+                <li class="is-current"><a href="02-state-isolation-and-locking.html" aria-current="page"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a></li>
+                <li><a href="03-variables-validation-and-types.html"><span class="lp-toc-num">03</span><span>Modern HCL — Types, Validations &amp; Preconditions</span></a></li>
+                <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
+                <li><a href="05-refactoring-with-moved-blocks.html"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a></li>
+                <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a></li>
+              </ol>
+            </nav>
+            </details>
           <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2>State is your single point of truth and vulnerability</h2>
+<h2 id="state-is-your-single-point-of-truth-and-vulnerability">State is your single point of truth and vulnerability</h2>
 <p>Terraform state files map your declarative code to real-world cloud resources, track metadata, and cache resource attributes. In production, an improperly governed state file introduces two severe risks:</p>
 <ol>
 <li><b>State Corruption / Concurrency Race:</b> Two CI jobs or engineers applying changes concurrently can overwrite each other's state, leading to orphaned resources or silent cloud drift.</li>
@@ -174,7 +203,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>Secure S3 &amp; DynamoDB backend design</h2>
+<h2 id="secure-s3-dynamodb-backend-design">Secure S3 &amp; DynamoDB backend design</h2>
 <p>An enterprise S3 state backend must be locked down with multiple layers of defense:</p>
 <pre tabindex="0"><code># backend.tf
 terraform {
@@ -201,7 +230,7 @@ terraform {
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Strategy</div>
-<h2>Layering state to control blast radius</h2>
+<h2 id="layering-state-to-control-blast-radius">Layering state to control blast radius</h2>
 <p>Never deploy all infrastructure in a single state file. Partition your infrastructure into separate directories, each with its own independent <code>key</code> in the state bucket:</p>
 <pre tabindex="0"><code>State Hierarchy & Blast Radius:
 ┌────────────────────────────────────────────────────────┐
@@ -229,7 +258,7 @@ terraform {
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Contracts</div>
-<h2>Avoiding the <code>terraform_remote_state</code> trap</h2>
+<h2 id="avoiding-the-terraform-remote-state-trap">Avoiding the <code>terraform_remote_state</code> trap</h2>
 <p>Historically, teams shared outputs between state files using <code>data &quot;terraform_remote_state&quot;</code>:</p>
 <pre tabindex="0"><code># ANTI-PATTERN: Tight state coupling
 data "terraform_remote_state" "vpc" {
@@ -279,6 +308,7 @@ resource "aws_security_group" "app" {
           <span class="lp-nav-label">Module 03 →</span>
           <span class="lp-nav-title">Modern HCL — Types, Validations &amp; Preconditions</span>
         </a></nav>
+          </div>
         </div>
       </article>
       <div class="closing">

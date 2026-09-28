@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="../../assets/learning-path.css" />
     <link rel="stylesheet" href="../../assets/assistant.css" />
   </head>
-  <body class="deepdive">
+  <body class="deepdive lp-with-sidebar">
     <a class="skip-link" href="#main">Skip to content</a>
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
@@ -159,11 +159,40 @@
         </div>
       </header>
       <article class="lp-content">
-        <div class="wrap">
+        <div class="lp-layout">
+          <aside class="lp-sidebar">
+            <nav class="lp-toc" aria-label="Modules in this track">
+              <a class="lp-toc-track" href="index.html">Terraform for Enterprise Production</a>
+              <ol class="lp-toc-list">
+                <li><a href="01-enterprise-module-design.html"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a></li>
+                <li><a href="02-state-isolation-and-locking.html"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a></li>
+                <li class="is-current"><a href="03-variables-validation-and-types.html" aria-current="page"><span class="lp-toc-num">03</span><span>Modern HCL — Types, Validations &amp; Preconditions</span></a>
+                <ol class="lp-toc-sections"><li><a href="#make-invalid-states-unrepresentable">Make invalid states unrepresentable</a></li><li><a href="#custom-variable-validation-blocks">Custom variable validation blocks</a></li><li><a href="#lifecycle-preconditions-postconditions">Lifecycle preconditions &amp; postconditions</a></li><li><a href="#the-catastrophic-count-index-shift-trap">The catastrophic count index-shift trap</a></li></ol></li>
+                <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
+                <li><a href="05-refactoring-with-moved-blocks.html"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a></li>
+                <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a></li>
+              </ol>
+            </nav>
+          </aside>
+          <div class="lp-main">
+            <details class="lp-toc-mobile">
+              <summary>All modules in this track (6)</summary>
+              <nav class="lp-toc" aria-label="All modules">
+              <a class="lp-toc-track" href="index.html">Terraform for Enterprise Production</a>
+              <ol class="lp-toc-list">
+                <li><a href="01-enterprise-module-design.html"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a></li>
+                <li><a href="02-state-isolation-and-locking.html"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a></li>
+                <li class="is-current"><a href="03-variables-validation-and-types.html" aria-current="page"><span class="lp-toc-num">03</span><span>Modern HCL — Types, Validations &amp; Preconditions</span></a></li>
+                <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
+                <li><a href="05-refactoring-with-moved-blocks.html"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a></li>
+                <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a></li>
+              </ol>
+            </nav>
+            </details>
           <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2>Make invalid states unrepresentable</h2>
+<h2 id="make-invalid-states-unrepresentable">Make invalid states unrepresentable</h2>
 <p>In production, human errors often stem from invalid variable inputs passed to modules (e.g. invalid CIDR blocks, illegal naming characters, or out-of-range retention windows).</p>
 <p>Modern Terraform (1.5+) allows you to build <b>self-defending modules</b> that fail fast during <code>terraform plan</code> before any API calls are made to AWS.</p>
 </div>
@@ -171,7 +200,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Validation</div>
-<h2>Custom variable validation blocks</h2>
+<h2 id="custom-variable-validation-blocks">Custom variable validation blocks</h2>
 <p>Always pair input variables with explicit types, descriptions, and custom <code>validation {}</code> blocks:</p>
 <pre tabindex="0"><code># variables.tf
 
@@ -204,7 +233,7 @@ variable "vpc_cidr" {
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Guardrails</div>
-<h2>Lifecycle preconditions &amp; postconditions</h2>
+<h2 id="lifecycle-preconditions-postconditions">Lifecycle preconditions &amp; postconditions</h2>
 <p>While variable validation checks inputs in isolation, <code>lifecycle { precondition {} }</code> and <code>postcondition {}</code> assert architectural assumptions against real resource attributes and data sources during the plan and apply phases.</p>
 <pre tabindex="0"><code># main.tf
 
@@ -241,7 +270,7 @@ resource "aws_instance" "app" {
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Mechanics</div>
-<h2>The catastrophic <code>count</code> index-shift trap</h2>
+<h2 id="the-catastrophic-count-index-shift-trap">The catastrophic <code>count</code> index-shift trap</h2>
 <p>One of the most dangerous patterns in Terraform is using <code>count</code> on a list of resources instead of <code>for_each</code> with a map.</p>
 <h3>The Problem with <code>count</code>:</h3>
 <pre tabindex="0"><code># DANGEROUS: Using count with a list
@@ -294,6 +323,7 @@ resource "aws_subnet" "this" {
           <span class="lp-nav-label">Module 04 →</span>
           <span class="lp-nav-title">Zero-Plaintext Secret Architecture</span>
         </a></nav>
+          </div>
         </div>
       </article>
       <div class="closing">

@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="../../assets/learning-path.css" />
     <link rel="stylesheet" href="../../assets/assistant.css" />
   </head>
-  <body class="deepdive">
+  <body class="deepdive lp-with-sidebar">
     <a class="skip-link" href="#main">Skip to content</a>
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
@@ -161,7 +161,52 @@
         </div>
       </header>
       <article class="lp-content">
-        <div class="wrap">
+        <div class="lp-layout">
+          <aside class="lp-sidebar">
+            <nav class="lp-toc" aria-label="Modules in this track">
+              <a class="lp-toc-track" href="index.html">Kubernetes on Amazon EKS: Foundations &amp; Operations</a>
+              <p class="lp-toc-part">Learn the foundations</p>
+              <ol class="lp-toc-list">
+                <li><a href="01-dual-ingress-architecture.html"><span class="lp-toc-num">01</span><span>Dual Ingress Architecture &amp; Its Cost Mechanics</span></a></li>
+                <li><a href="02-multi-environment-clusters-and-rbac.html"><span class="lp-toc-num">02</span><span>Multi-Environment Clusters &amp; IAM/RBAC</span></a></li>
+                <li><a href="03-container-delivery-to-eks.html"><span class="lp-toc-num">03</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
+                <li><a href="07-workload-identity-and-secrets.html"><span class="lp-toc-num">04</span><span>Workload Identity &amp; Secrets: How Pods Get AWS Access</span></a></li>
+                <li><a href="10-platform-add-ons.html"><span class="lp-toc-num">05</span><span>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span></a></li>
+                <li class="is-current"><a href="09-gitops-with-argo-cd.html" aria-current="page"><span class="lp-toc-num">06</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a>
+                <ol class="lp-toc-sections"><li><a href="#the-cluster-should-match-git-and-nothing-else">The cluster should match Git, and nothing else</a></li><li><a href="#setting-up-an-application">Setting up an application</a></li><li><a href="#how-a-deploy-flows">How a deploy flows</a></li></ol></li>
+              </ol>
+              <p class="lp-toc-part">Run it in production</p>
+              <ol class="lp-toc-list">
+                <li><a href="05-scaling-requests-and-cost.html"><span class="lp-toc-num">07</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
+                <li><a href="08-observability.html"><span class="lp-toc-num">08</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
+                <li><a href="04-day-2-operations-and-incident-triage.html"><span class="lp-toc-num">09</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
+                <li><a href="06-cluster-upgrades.html"><span class="lp-toc-num">10</span><span>Cluster Upgrades Without Drama</span></a></li>
+              </ol>
+            </nav>
+          </aside>
+          <div class="lp-main">
+            <details class="lp-toc-mobile">
+              <summary>All modules in this track (10)</summary>
+              <nav class="lp-toc" aria-label="All modules">
+              <a class="lp-toc-track" href="index.html">Kubernetes on Amazon EKS: Foundations &amp; Operations</a>
+              <p class="lp-toc-part">Learn the foundations</p>
+              <ol class="lp-toc-list">
+                <li><a href="01-dual-ingress-architecture.html"><span class="lp-toc-num">01</span><span>Dual Ingress Architecture &amp; Its Cost Mechanics</span></a></li>
+                <li><a href="02-multi-environment-clusters-and-rbac.html"><span class="lp-toc-num">02</span><span>Multi-Environment Clusters &amp; IAM/RBAC</span></a></li>
+                <li><a href="03-container-delivery-to-eks.html"><span class="lp-toc-num">03</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
+                <li><a href="07-workload-identity-and-secrets.html"><span class="lp-toc-num">04</span><span>Workload Identity &amp; Secrets: How Pods Get AWS Access</span></a></li>
+                <li><a href="10-platform-add-ons.html"><span class="lp-toc-num">05</span><span>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span></a></li>
+                <li class="is-current"><a href="09-gitops-with-argo-cd.html" aria-current="page"><span class="lp-toc-num">06</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
+              </ol>
+              <p class="lp-toc-part">Run it in production</p>
+              <ol class="lp-toc-list">
+                <li><a href="05-scaling-requests-and-cost.html"><span class="lp-toc-num">07</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
+                <li><a href="08-observability.html"><span class="lp-toc-num">08</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
+                <li><a href="04-day-2-operations-and-incident-triage.html"><span class="lp-toc-num">09</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
+                <li><a href="06-cluster-upgrades.html"><span class="lp-toc-num">10</span><span>Cluster Upgrades Without Drama</span></a></li>
+              </ol>
+            </nav>
+            </details>
           <section>
 <div class="wrap">
 <p><b>Before you start:</b> this builds on module 3. There, CI built and pushed an image. Here, a separate process decides what actually runs in each cluster.</p>
@@ -170,14 +215,14 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2>The cluster should match Git, and nothing else</h2>
+<h2 id="the-cluster-should-match-git-and-nothing-else">The cluster should match Git, and nothing else</h2>
 <p>In a push-based pipeline, CI runs <code>kubectl apply</code> or <code>helm upgrade</code> against the cluster. That works, but the pipeline needs admin-level access to every cluster, and anything changed by hand in the cluster stays changed until someone notices.</p>
-<p>GitOps flips it around. A controller *inside* the cluster (here, Argo CD) watches a Git repository and keeps the cluster matching it. If someone edits a deployment by hand, Argo CD puts it back. A deploy becomes a pull request, and the Git history is the deploy history.</p>
+<p>GitOps flips it around. A controller <em>inside</em> the cluster (here, Argo CD) watches a Git repository and keeps the cluster matching it. If someone edits a deployment by hand, Argo CD puts it back. A deploy becomes a pull request, and the Git history is the deploy history.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
-<h2>Setting up an application</h2>
+<h2 id="setting-up-an-application">Setting up an application</h2>
 <p>An Argo CD <code>Application</code> says which part of which repository should be running where:</p>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml">apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -204,7 +249,7 @@ spec:
 </section>
 <section>
 <div class="wrap">
-<h2>How a deploy flows</h2>
+<h2 id="how-a-deploy-flows">How a deploy flows</h2>
 <ol>
 <li>CI builds and pushes the image, as in module 3, and records its digest.</li>
 <li>CI (or a person) opens a pull request in the manifests repository that changes the image digest for one environment.</li>
@@ -240,6 +285,7 @@ spec:
           <span class="lp-nav-label">Module 07 →</span>
           <span class="lp-nav-title">Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span>
         </a></nav>
+          </div>
         </div>
       </article>
       <div class="closing">

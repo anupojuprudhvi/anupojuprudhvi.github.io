@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="../../assets/learning-path.css" />
     <link rel="stylesheet" href="../../assets/assistant.css" />
   </head>
-  <body class="deepdive">
+  <body class="deepdive lp-with-sidebar">
     <a class="skip-link" href="#main">Skip to content</a>
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
@@ -161,7 +161,52 @@
         </div>
       </header>
       <article class="lp-content">
-        <div class="wrap">
+        <div class="lp-layout">
+          <aside class="lp-sidebar">
+            <nav class="lp-toc" aria-label="Modules in this track">
+              <a class="lp-toc-track" href="index.html">Kubernetes on Amazon EKS: Foundations &amp; Operations</a>
+              <p class="lp-toc-part">Learn the foundations</p>
+              <ol class="lp-toc-list">
+                <li><a href="01-dual-ingress-architecture.html"><span class="lp-toc-num">01</span><span>Dual Ingress Architecture &amp; Its Cost Mechanics</span></a></li>
+                <li><a href="02-multi-environment-clusters-and-rbac.html"><span class="lp-toc-num">02</span><span>Multi-Environment Clusters &amp; IAM/RBAC</span></a></li>
+                <li><a href="03-container-delivery-to-eks.html"><span class="lp-toc-num">03</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
+                <li><a href="07-workload-identity-and-secrets.html"><span class="lp-toc-num">04</span><span>Workload Identity &amp; Secrets: How Pods Get AWS Access</span></a></li>
+                <li><a href="10-platform-add-ons.html"><span class="lp-toc-num">05</span><span>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span></a></li>
+                <li><a href="09-gitops-with-argo-cd.html"><span class="lp-toc-num">06</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
+              </ol>
+              <p class="lp-toc-part">Run it in production</p>
+              <ol class="lp-toc-list">
+                <li><a href="05-scaling-requests-and-cost.html"><span class="lp-toc-num">07</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
+                <li class="is-current"><a href="08-observability.html" aria-current="page"><span class="lp-toc-num">08</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a>
+                <ol class="lp-toc-sections"><li><a href="#alert-on-what-users-feel-investigate-with-everything-else">Alert on what users feel, investigate with everything else</a></li><li><a href="#what-to-collect">What to collect</a></li><li><a href="#alerts-that-are-worth-waking-up-for">Alerts that are worth waking up for</a></li></ol></li>
+                <li><a href="04-day-2-operations-and-incident-triage.html"><span class="lp-toc-num">09</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
+                <li><a href="06-cluster-upgrades.html"><span class="lp-toc-num">10</span><span>Cluster Upgrades Without Drama</span></a></li>
+              </ol>
+            </nav>
+          </aside>
+          <div class="lp-main">
+            <details class="lp-toc-mobile">
+              <summary>All modules in this track (10)</summary>
+              <nav class="lp-toc" aria-label="All modules">
+              <a class="lp-toc-track" href="index.html">Kubernetes on Amazon EKS: Foundations &amp; Operations</a>
+              <p class="lp-toc-part">Learn the foundations</p>
+              <ol class="lp-toc-list">
+                <li><a href="01-dual-ingress-architecture.html"><span class="lp-toc-num">01</span><span>Dual Ingress Architecture &amp; Its Cost Mechanics</span></a></li>
+                <li><a href="02-multi-environment-clusters-and-rbac.html"><span class="lp-toc-num">02</span><span>Multi-Environment Clusters &amp; IAM/RBAC</span></a></li>
+                <li><a href="03-container-delivery-to-eks.html"><span class="lp-toc-num">03</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
+                <li><a href="07-workload-identity-and-secrets.html"><span class="lp-toc-num">04</span><span>Workload Identity &amp; Secrets: How Pods Get AWS Access</span></a></li>
+                <li><a href="10-platform-add-ons.html"><span class="lp-toc-num">05</span><span>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span></a></li>
+                <li><a href="09-gitops-with-argo-cd.html"><span class="lp-toc-num">06</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
+              </ol>
+              <p class="lp-toc-part">Run it in production</p>
+              <ol class="lp-toc-list">
+                <li><a href="05-scaling-requests-and-cost.html"><span class="lp-toc-num">07</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
+                <li class="is-current"><a href="08-observability.html" aria-current="page"><span class="lp-toc-num">08</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
+                <li><a href="04-day-2-operations-and-incident-triage.html"><span class="lp-toc-num">09</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
+                <li><a href="06-cluster-upgrades.html"><span class="lp-toc-num">10</span><span>Cluster Upgrades Without Drama</span></a></li>
+              </ol>
+            </nav>
+            </details>
           <section>
 <div class="wrap">
 <p><b>Before you start:</b> this module is about finding out that something is broken. Module 9 covers what to do next.</p>
@@ -170,8 +215,8 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2>Alert on what users feel, investigate with everything else</h2>
-<p>A cluster can produce thousands of metrics. Paging someone for each one leads to alert fatigue, and then the alert that matters gets ignored. A simpler rule works better: <b>alert on symptoms users would notice</b> (errors, slowness, unavailability), and keep the detailed metrics for working out *why*.</p>
+<h2 id="alert-on-what-users-feel-investigate-with-everything-else">Alert on what users feel, investigate with everything else</h2>
+<p>A cluster can produce thousands of metrics. Paging someone for each one leads to alert fatigue, and then the alert that matters gets ignored. A simpler rule works better: <b>alert on symptoms users would notice</b> (errors, slowness, unavailability), and keep the detailed metrics for working out <em>why</em>.</p>
 <p>For most services, four signals cover the symptoms:</p>
 <ul>
 <li><b>Errors:</b> the share of requests that fail.</li>
@@ -183,7 +228,7 @@
 </section>
 <section>
 <div class="wrap">
-<h2>What to collect</h2>
+<h2 id="what-to-collect">What to collect</h2>
 <ul>
 <li><b>Logs.</b> Containers write to stdout and stderr; a log agent on each node ships them somewhere searchable. Fluent Bit sending to CloudWatch Logs is the common AWS default. Log in a structured format (JSON) with a request ID, so one request can be followed across services.</li>
 <li><b>Metrics.</b> CloudWatch Container Insights (installed through the <code>amazon-cloudwatch-observability</code> add-on) gives node, pod, and container metrics with little setup. Prometheus, self-run or through Amazon Managed Service for Prometheus with Grafana, gives more control and is the usual choice when apps expose their own metrics.</li>
@@ -199,7 +244,7 @@ kubectl get events -A --field-selector=type=Warning --sort-by='.lastTimestamp'</
 </section>
 <section>
 <div class="wrap">
-<h2>Alerts that are worth waking up for</h2>
+<h2 id="alerts-that-are-worth-waking-up-for">Alerts that are worth waking up for</h2>
 <p>A short list, each tied to something a user would feel or will soon feel:</p>
 <ul>
 <li><b>Error rate above a threshold for several minutes</b>, per service, not per pod.</li>
@@ -228,6 +273,7 @@ kubectl get events -A --field-selector=type=Warning --sort-by='.lastTimestamp'</
           <span class="lp-nav-label">Module 09 →</span>
           <span class="lp-nav-title">Day-2 Operations &amp; Incident Triage</span>
         </a></nav>
+          </div>
         </div>
       </article>
       <div class="closing">

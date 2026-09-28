@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="../../assets/learning-path.css" />
     <link rel="stylesheet" href="../../assets/assistant.css" />
   </head>
-  <body class="deepdive">
+  <body class="deepdive lp-with-sidebar">
     <a class="skip-link" href="#main">Skip to content</a>
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
@@ -163,11 +163,40 @@
         </div>
       </header>
       <article class="lp-content">
-        <div class="wrap">
+        <div class="lp-layout">
+          <aside class="lp-sidebar">
+            <nav class="lp-toc" aria-label="Modules in this track">
+              <a class="lp-toc-track" href="index.html">Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</a>
+              <ol class="lp-toc-list">
+                <li><a href="01-assessment-paths-rapid-vs-deep.html"><span class="lp-toc-num">01</span><span>Assessment Frameworks · Rapid vs. Deep Enterprise</span></a></li>
+                <li><a href="02-discovery-telemetry-and-inventory.html"><span class="lp-toc-num">02</span><span>Discovery Telemetry · RVTools, AWS Transform &amp; Sizing</span></a></li>
+                <li><a href="03-financial-engineering-tco-and-licensing.html"><span class="lp-toc-num">03</span><span>Financial Engineering · 3-Year TCO &amp; Licensing</span></a></li>
+                <li><a href="04-target-architecture-and-landing-zone.html"><span class="lp-toc-num">04</span><span>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</span></a></li>
+                <li><a href="05-mobilize-wave-planning-and-pilot.html"><span class="lp-toc-num">05</span><span>The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot</span></a></li>
+                <li class="is-current"><a href="06-migrate-and-modernize-strategies.html" aria-current="page"><span class="lp-toc-num">06</span><span>Migrate &amp; Modernize · In-Flight vs. Sequential Factory</span></a>
+                <ol class="lp-toc-sections"><li><a href="#the-modernization-dilemma-sequential-vs-in-flight">The modernization dilemma: sequential vs. in-flight</a></li><li><a href="#sequential-factory-vs-in-flight-modernization">Sequential Factory vs. In-Flight Modernization</a></li><li><a href="#in-flight-modernization-patterns">In-Flight Modernization Patterns</a></li><li><a href="#the-migrate-modernize-milestone-package">The Migrate &amp; Modernize Milestone Package</a></li></ol></li>
+              </ol>
+            </nav>
+          </aside>
+          <div class="lp-main">
+            <details class="lp-toc-mobile">
+              <summary>All modules in this track (6)</summary>
+              <nav class="lp-toc" aria-label="All modules">
+              <a class="lp-toc-track" href="index.html">Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</a>
+              <ol class="lp-toc-list">
+                <li><a href="01-assessment-paths-rapid-vs-deep.html"><span class="lp-toc-num">01</span><span>Assessment Frameworks · Rapid vs. Deep Enterprise</span></a></li>
+                <li><a href="02-discovery-telemetry-and-inventory.html"><span class="lp-toc-num">02</span><span>Discovery Telemetry · RVTools, AWS Transform &amp; Sizing</span></a></li>
+                <li><a href="03-financial-engineering-tco-and-licensing.html"><span class="lp-toc-num">03</span><span>Financial Engineering · 3-Year TCO &amp; Licensing</span></a></li>
+                <li><a href="04-target-architecture-and-landing-zone.html"><span class="lp-toc-num">04</span><span>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</span></a></li>
+                <li><a href="05-mobilize-wave-planning-and-pilot.html"><span class="lp-toc-num">05</span><span>The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot</span></a></li>
+                <li class="is-current"><a href="06-migrate-and-modernize-strategies.html" aria-current="page"><span class="lp-toc-num">06</span><span>Migrate &amp; Modernize · In-Flight vs. Sequential Factory</span></a></li>
+              </ol>
+            </nav>
+            </details>
           <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2>The modernization dilemma: sequential vs. in-flight</h2>
+<h2 id="the-modernization-dilemma-sequential-vs-in-flight">The modernization dilemma: sequential vs. in-flight</h2>
 <p>In traditional cloud adoption, enterprise migrations were treated as a strict sequential two-step process:</p>
 <ol>
 <li><b>Step 1 (Migrate):</b> Lift-and-shift VMs to Amazon EC2 as quickly as possible with minimal changes (Rehost).</li>
@@ -178,13 +207,13 @@
 <li>The enterprise spends substantial capital to replicate legacy operational patterns, OS licenses, and VM patch maintenance in the cloud.</li>
 <li>Once in AWS, teams face operational fatigue, leaving workloads in an unoptimized, expensive state for years.</li>
 </ul>
-<p>Consequently, forward-leaning enterprise clients actively demand a <b>hybrid dual-track approach</b>: mixing <b>Mobilize</b> and <b>Modernize</b> together. By modernizing strategic tiers *during* the migration cutover, organizations achieve immediate elasticity, eliminate hypervisor/database licensing liabilities, and bypass the migration tax entirely.</p>
+<p>Consequently, forward-leaning enterprise clients actively demand a <b>hybrid dual-track approach</b>: mixing <b>Mobilize</b> and <b>Modernize</b> together. By modernizing strategic tiers <em>during</em> the migration cutover, organizations achieve immediate elasticity, eliminate hypervisor/database licensing liabilities, and bypass the migration tax entirely.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Comparison</div>
-<h2>Sequential Factory vs. In-Flight Modernization</h2>
+<h2 id="sequential-factory-vs-in-flight-modernization">Sequential Factory vs. In-Flight Modernization</h2>
 <p>Choosing the optimal modernization strategy depends on workload criticality, technical debt, and business deadlines:</p>
 <ul>
 <li><b>Sequential Factory (Rehost First, Modernize Later):</b></li>
@@ -203,7 +232,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>In-Flight Modernization Patterns</h2>
+<h2 id="in-flight-modernization-patterns">In-Flight Modernization Patterns</h2>
 <p>The diagram below illustrates how enterprise estates decouple workloads during in-flight modernization:</p>
 <pre tabindex="0"><code>[ On-Premises Legacy Footprint ]
   ├── Monolithic VM Web/API Tier   ──► In-Flight Modernization ──► Amazon EKS + Karpenter (Graviton3 ARM64)
@@ -234,7 +263,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Deliverables</div>
-<h2>The Migrate &amp; Modernize Milestone Package</h2>
+<h2 id="the-migrate-modernize-milestone-package">The Migrate &amp; Modernize Milestone Package</h2>
 <p>The Migrate &amp; Modernize phase concludes with formal enterprise delivery artifacts:</p>
 <ol>
 <li><b>Industrialized Migration Factory Runbooks:</b> Standardized, automated pipelines orchestrating block-level and database cutovers across sequenced waves.</li>
@@ -253,6 +282,7 @@
           <span class="lp-nav-label">Track Complete →</span>
           <span class="lp-nav-title">All Learning Paths</span>
         </a></nav>
+          </div>
         </div>
       </article>
       <div class="closing">

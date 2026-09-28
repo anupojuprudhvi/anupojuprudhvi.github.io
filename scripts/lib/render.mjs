@@ -625,9 +625,54 @@ ${cards}
 }
 
 /* --------------------------------------------------------- learning path page */
-export function learningPathPage(d, bodyHtml, { up, url, prev, next, track, docs = [] } = {}) {
+/** Plain-text slug for heading ids ("Two layers of autoscaling" → "two-layers-of-autoscaling"). */
+const slugify = (html) =>
+  html.replace(/<[^>]+>/g, "").replace(/&[a-z#0-9]+;/gi, "").toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "section";
+
+/**
+ * Module sidebar: every module in the track (grouped into parts when the track
+ * defines them), the current one marked, with links to its own sections.
+ * Rendered twice: a sticky sidebar on wide screens and a collapsible
+ * "All modules" menu on narrow ones (CSS shows one or the other).
+ */
+function moduleToc({ d, track, modules, sections, label }) {
+  const pad = (n) => String(n).padStart(2, "0");
+  const groups = track.parts
+    ? track.parts.map((part) => ({ title: part.title, mods: modules.filter((m) => part.modules.includes(m.module)) }))
+    : [{ title: "", mods: modules }];
+  const item = (m) => {
+    const current = m.slug === d.slug;
+    const onPage = current && sections.length
+      ? `\n                <ol class="lp-toc-sections">${sections.map((s) => `<li><a href="#${s.id}">${s.text}</a></li>`).join("")}</ol>`
+      : "";
+    return `<li${current ? ' class="is-current"' : ""}><a href="${esc(m.slug)}.html"${current ? ' aria-current="page"' : ""}><span class="lp-toc-num">${pad(m.module)}</span><span>${esc(m.title)}</span></a>${onPage}</li>`;
+  };
+  return `<nav class="lp-toc" aria-label="${esc(label)}">
+              <a class="lp-toc-track" href="index.html">${esc(track.title)}</a>
+              ${groups.map((g) => `${g.title ? `<p class="lp-toc-part">${esc(g.title)}</p>\n              ` : ""}<ol class="lp-toc-list">
+                ${g.mods.map(item).join("\n                ")}
+              </ol>`).join("\n              ")}
+            </nav>`;
+}
+
+export function learningPathPage(d, bodyHtml, { up, url, prev, next, track, docs = [], modules = [] } = {}) {
   const a = (p) => `${up}${p}`;
   const isOverview = !d.module;
+
+  // Give each section heading an id so the sidebar can link to it.
+  const sections = [];
+  if (!isOverview) {
+    const used = new Set();
+    bodyHtml = bodyHtml.replace(/<h2>([\s\S]*?)<\/h2>/g, (_, inner) => {
+      let id = slugify(inner);
+      for (let n = 2; used.has(id); n++) id = `${slugify(inner)}-${n}`;
+      used.add(id);
+      sections.push({ id, text: inner.replace(/<[^>]+>/g, "") });
+      return `<h2 id="${id}">${inner}</h2>`;
+    });
+  }
+  const withSidebar = !isOverview && modules.length > 1;
 
   const breadcrumb = isOverview
     ? `<a class="back-link back" href="${a("learning-paths/index.html")}">← All learning paths</a>`
@@ -715,7 +760,7 @@ export function learningPathPage(d, bodyHtml, { up, url, prev, next, track, docs
     <link rel="stylesheet" href="${a("assets/learning-path.css")}" />
     <link rel="stylesheet" href="${a("assets/assistant.css")}" />
   </head>
-  <body class="deepdive">
+  <body class="deepdive${withSidebar ? " lp-with-sidebar" : ""}">
     <a class="skip-link" href="#main">Skip to content</a>
 ${siteTopNav({ docs, up, active: "learning-paths" })}
     <main id="main">
@@ -740,9 +785,18 @@ ${siteTopNav({ docs, up, active: "learning-paths" })}
         </div>
       </header>
       <article class="lp-content">
-        <div class="wrap">
+        <div class="${withSidebar ? "lp-layout" : "wrap"}">${withSidebar ? `
+          <aside class="lp-sidebar">
+            ${moduleToc({ d, track, modules, sections, label: "Modules in this track" })}
+          </aside>
+          <div class="lp-main">
+            <details class="lp-toc-mobile">
+              <summary>All modules in this track (${modules.length})</summary>
+              ${moduleToc({ d, track, modules, sections: [], label: "All modules" })}
+            </details>` : ""}
           ${bodyHtml.replace(/<pre(?![^>]*tabindex)/g, '<pre tabindex="0"')}
-          ${!isOverview ? `<nav class="lp-nav" aria-label="Module navigation">${nav}</nav>` : ""}
+          ${!isOverview ? `<nav class="lp-nav" aria-label="Module navigation">${nav}</nav>` : ""}${withSidebar ? `
+          </div>` : ""}
         </div>
       </article>
       <div class="closing">

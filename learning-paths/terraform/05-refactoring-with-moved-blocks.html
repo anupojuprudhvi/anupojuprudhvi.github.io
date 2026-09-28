@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="../../assets/learning-path.css" />
     <link rel="stylesheet" href="../../assets/assistant.css" />
   </head>
-  <body class="deepdive">
+  <body class="deepdive lp-with-sidebar">
     <a class="skip-link" href="#main">Skip to content</a>
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
@@ -159,11 +159,40 @@
         </div>
       </header>
       <article class="lp-content">
-        <div class="wrap">
+        <div class="lp-layout">
+          <aside class="lp-sidebar">
+            <nav class="lp-toc" aria-label="Modules in this track">
+              <a class="lp-toc-track" href="index.html">Terraform for Enterprise Production</a>
+              <ol class="lp-toc-list">
+                <li><a href="01-enterprise-module-design.html"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a></li>
+                <li><a href="02-state-isolation-and-locking.html"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a></li>
+                <li><a href="03-variables-validation-and-types.html"><span class="lp-toc-num">03</span><span>Modern HCL — Types, Validations &amp; Preconditions</span></a></li>
+                <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
+                <li class="is-current"><a href="05-refactoring-with-moved-blocks.html" aria-current="page"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a>
+                <ol class="lp-toc-sections"><li><a href="#code-refactoring-must-not-cause-resource-recreation">Code refactoring must not cause resource recreation</a></li><li><a href="#refactoring-with-declarative-moved-blocks">Refactoring with declarative moved blocks</a></li><li><a href="#declarative-adoption-with-import-blocks">Declarative adoption with import blocks</a></li><li><a href="#safely-detaching-resources-with-removed-blocks">Safely detaching resources with removed blocks</a></li><li><a href="#the-zero-downtime-refactoring-protocol">The Zero-Downtime Refactoring Protocol</a></li></ol></li>
+                <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a></li>
+              </ol>
+            </nav>
+          </aside>
+          <div class="lp-main">
+            <details class="lp-toc-mobile">
+              <summary>All modules in this track (6)</summary>
+              <nav class="lp-toc" aria-label="All modules">
+              <a class="lp-toc-track" href="index.html">Terraform for Enterprise Production</a>
+              <ol class="lp-toc-list">
+                <li><a href="01-enterprise-module-design.html"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a></li>
+                <li><a href="02-state-isolation-and-locking.html"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a></li>
+                <li><a href="03-variables-validation-and-types.html"><span class="lp-toc-num">03</span><span>Modern HCL — Types, Validations &amp; Preconditions</span></a></li>
+                <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
+                <li class="is-current"><a href="05-refactoring-with-moved-blocks.html" aria-current="page"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a></li>
+                <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a></li>
+              </ol>
+            </nav>
+            </details>
           <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2>Code refactoring must not cause resource recreation</h2>
+<h2 id="code-refactoring-must-not-cause-resource-recreation">Code refactoring must not cause resource recreation</h2>
 <p>In the early days of Terraform, renaming a resource or moving it into a child module meant running risky, manual CLI commands:</p>
 <pre tabindex="0"><code># DANGEROUS LEGACY APPROACH: Manual CLI state manipulation
 terraform state mv aws_s3_bucket.logs module.logging.aws_s3_bucket.this</code></pre>
@@ -180,7 +209,7 @@ terraform state mv aws_s3_bucket.logs module.logging.aws_s3_bucket.this</code></
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Pattern 1</div>
-<h2>Refactoring with declarative <code>moved</code> blocks</h2>
+<h2 id="refactoring-with-declarative-moved-blocks">Refactoring with declarative <code>moved</code> blocks</h2>
 <p>Terraform 1.1+ introduced the <code>moved {}</code> block. When Terraform encounters a <code>moved</code> block during <code>terraform plan</code>, it updates the state file in memory without destroying or modifying the physical cloud resource.</p>
 <h3>Scenario A: Moving an existing resource into a module</h3>
 <pre tabindex="0"><code># In environments/prod/main.tf
@@ -218,7 +247,7 @@ moved {
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Pattern 2</div>
-<h2>Declarative adoption with <code>import</code> blocks</h2>
+<h2 id="declarative-adoption-with-import-blocks">Declarative adoption with <code>import</code> blocks</h2>
 <p>Before Terraform 1.5, adopting unmanaged AWS resources required running <code>terraform import &lt;addr&gt; &lt;id&gt;</code>, followed by hand-writing HCL to match reality.</p>
 <p>Terraform 1.5+ allows you to import resources declaratively:</p>
 <pre tabindex="0"><code># import.tf
@@ -235,7 +264,7 @@ import {
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Pattern 3</div>
-<h2>Safely detaching resources with <code>removed</code> blocks</h2>
+<h2 id="safely-detaching-resources-with-removed-blocks">Safely detaching resources with <code>removed</code> blocks</h2>
 <p>In Terraform 1.7+, if you want to stop managing a resource in Terraform <b>without deleting the underlying infrastructure in AWS</b>, use the <code>removed {}</code> block:</p>
 <pre tabindex="0"><code># main.tf
 
@@ -252,7 +281,7 @@ removed {
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Checklist</div>
-<h2>The Zero-Downtime Refactoring Protocol</h2>
+<h2 id="the-zero-downtime-refactoring-protocol">The Zero-Downtime Refactoring Protocol</h2>
 <ol>
 <li><b>Never delete code before declaring <code>moved</code>:</b> Add the new module or resource structure alongside the <code>moved {}</code> block in the same commit.</li>
 <li><b>Review the plan diff religiously:</b> Verify that <code>terraform plan</code> outputs <code>Plan: 0 to add, 0 to change, 0 to destroy</code>. If the plan shows <code>Destroy</code>, stop immediately — your <code>from</code> or <code>to</code> path is misaligned.</li>
@@ -268,6 +297,7 @@ removed {
           <span class="lp-nav-label">Module 06 →</span>
           <span class="lp-nav-title">CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span>
         </a></nav>
+          </div>
         </div>
       </article>
       <div class="closing">

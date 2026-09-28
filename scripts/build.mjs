@@ -319,11 +319,17 @@ if (existsSync(join(LEARNING_PATHS_DIR, "tracks.json"))) {
     });
 
     modules.sort((a, b) => a.module - b.module || a.slug.localeCompare(b.slug));
+    if (track.parts) {
+      const listed = track.parts.flatMap((part) => part.modules);
+      const numbers = modules.map((m) => m.module);
+      if (listed.length !== numbers.length || numbers.some((n) => listed.filter((l) => l === n).length !== 1))
+        throw new Error(`tracks.json ${track.id}: parts must list every module exactly once (${numbers.join(", ")})`);
+    }
 
     modules.forEach((mod, idx) => {
       const prev = modules[idx - 1] || null;
       const next = modules[idx + 1] || null;
-      emit(mod.url, learningPathPage(mod, mod.bodyHtml, { up: "../../", url: mod.url, prev, next, track, docs }));
+      emit(mod.url, learningPathPage(mod, mod.bodyHtml, { up: "../../", url: mod.url, prev, next, track, docs, modules }));
       written++;
       console.log("  playbook", mod.url);
     });

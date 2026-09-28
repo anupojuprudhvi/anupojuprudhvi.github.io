@@ -218,3 +218,128 @@
   transform: translateY(-1px);
 }
 
+
+/* ---------------------------------- Module sidebar (render.mjs moduleToc)
+   Wide screens: a sticky list of every module beside the article, so readers
+   can jump anywhere without going back to the track page. The page shell
+   widens to make room, keeping the article at its usual reading width.
+   Narrow screens: the same list as a collapsible "All modules" menu. */
+.lp-sidebar {
+  display: none;
+}
+.lp-toc-mobile {
+  margin: 0 0 32px;
+  padding: 0 32px;
+}
+.lp-toc-mobile summary {
+  cursor: pointer;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-raised);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+.lp-toc-mobile[open] summary {
+  margin-bottom: 12px;
+}
+.lp-toc {
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+.lp-toc-track {
+  display: block;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+  margin-bottom: 14px;
+}
+.lp-toc-track:hover {
+  color: var(--accent);
+}
+.lp-content .lp-toc-part {
+  font: 600 10.5px/1.4 ui-monospace, monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 18px 0 8px;
+}
+.lp-content .lp-toc ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.lp-content .lp-toc li {
+  margin: 0;
+}
+.lp-toc-list > li > a {
+  display: flex;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  border-left: 2px solid transparent;
+  color: var(--text-body);
+  text-decoration: none;
+}
+.lp-toc-list > li > a:hover {
+  background: var(--bg-raised);
+  color: var(--text);
+}
+.lp-toc-list > li > a[aria-current="page"] {
+  background: var(--accent-soft);
+  border-left-color: var(--accent);
+  color: var(--text);
+  font-weight: 600;
+}
+.lp-toc-num {
+  font: 12px/1.6 ui-monospace, monospace;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.lp-content .lp-toc-sections {
+  margin: 4px 0 8px 30px;
+  border-left: 1px solid var(--border);
+}
+.lp-toc-sections a {
+  display: block;
+  padding: 4px 0 4px 12px;
+  margin-left: -1px;
+  border-left: 2px solid transparent;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+.lp-toc-sections a:hover,
+.lp-toc-sections a.is-active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
+
+@media (min-width: 1100px) {
+  /* Wider shell so the sidebar fits and the article keeps its width. */
+  .lp-with-sidebar .breadcrumb-bar .wrap,
+  .lp-with-sidebar .lp-hero .wrap {
+    max-width: 1200px;
+  }
+  .lp-layout {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+    gap: 32px;
+    align-items: start;
+  }
+  .lp-sidebar {
+    display: block;
+    position: sticky;
+    top: 100px;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+    padding-right: 8px;
+  }
+  .lp-toc-mobile {
+    display: none;
+  }
+}

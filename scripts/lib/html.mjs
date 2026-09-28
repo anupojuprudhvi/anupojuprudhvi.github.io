@@ -20,7 +20,8 @@ export const esc = (s) =>
 // already-escaped <code> markup up front) so phase 2 can treat the rest of
 // the string as plain text to escape without re-escaping that markup.
 const CODE_SPAN = /`([^`]+)`/g;
-const OTHER_SPANS = /\*\*([^*]+)\*\*|\[([^\]]+)\]\(([^)]+)\)/g;
+// **bold**, *italic* (asterisks hugging a word, so "a * b" stays literal), [link](url).
+const OTHER_SPANS = /\*\*([^*]+)\*\*|(?<![\w*])\*(?![\s*])([^*\n]+?)(?<![\s*])\*(?![\w*])|\[([^\]]+)\]\(([^)]+)\)/g;
 const PLACEHOLDER = /\u0000(\d+)\u0000/g;
 
 export const inline = (s) => {
@@ -34,8 +35,9 @@ export const inline = (s) => {
   let last = 0;
   for (const m of withPlaceholders.matchAll(OTHER_SPANS)) {
     out += esc(withPlaceholders.slice(last, m.index));
-    const [, bold, linkText, linkUrl] = m;
+    const [, bold, italic, linkText, linkUrl] = m;
     if (bold !== undefined) out += `<b>${esc(bold)}</b>`;
+    else if (italic !== undefined) out += `<em>${esc(italic)}</em>`;
     else out += `<a href="${esc(linkUrl)}">${esc(linkText)}</a>`;
     last = m.index + m[0].length;
   }

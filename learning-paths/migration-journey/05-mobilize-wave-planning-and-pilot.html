@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="../../assets/learning-path.css" />
     <link rel="stylesheet" href="../../assets/assistant.css" />
   </head>
-  <body class="deepdive">
+  <body class="deepdive lp-with-sidebar">
     <a class="skip-link" href="#main">Skip to content</a>
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
@@ -163,13 +163,42 @@
         </div>
       </header>
       <article class="lp-content">
-        <div class="wrap">
+        <div class="lp-layout">
+          <aside class="lp-sidebar">
+            <nav class="lp-toc" aria-label="Modules in this track">
+              <a class="lp-toc-track" href="index.html">Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</a>
+              <ol class="lp-toc-list">
+                <li><a href="01-assessment-paths-rapid-vs-deep.html"><span class="lp-toc-num">01</span><span>Assessment Frameworks · Rapid vs. Deep Enterprise</span></a></li>
+                <li><a href="02-discovery-telemetry-and-inventory.html"><span class="lp-toc-num">02</span><span>Discovery Telemetry · RVTools, AWS Transform &amp; Sizing</span></a></li>
+                <li><a href="03-financial-engineering-tco-and-licensing.html"><span class="lp-toc-num">03</span><span>Financial Engineering · 3-Year TCO &amp; Licensing</span></a></li>
+                <li><a href="04-target-architecture-and-landing-zone.html"><span class="lp-toc-num">04</span><span>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</span></a></li>
+                <li class="is-current"><a href="05-mobilize-wave-planning-and-pilot.html" aria-current="page"><span class="lp-toc-num">05</span><span>The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot</span></a>
+                <ol class="lp-toc-sections"><li><a href="#shifting-from-strategy-to-factory-engineering">Shifting from strategy to factory engineering</a></li><li><a href="#partnering-with-client-engineering-teams">Partnering with client engineering teams</a></li><li><a href="#dependency-clustering-into-migration-waves">Dependency clustering into migration waves</a></li><li><a href="#the-wave-0-lighthouse-pilot">The Wave 0 Lighthouse Pilot</a></li><li><a href="#passing-the-mobilize-gate-to-begin-migration-factory">Passing the Mobilize gate to begin Migration Factory</a></li></ol></li>
+                <li><a href="06-migrate-and-modernize-strategies.html"><span class="lp-toc-num">06</span><span>Migrate &amp; Modernize · In-Flight vs. Sequential Factory</span></a></li>
+              </ol>
+            </nav>
+          </aside>
+          <div class="lp-main">
+            <details class="lp-toc-mobile">
+              <summary>All modules in this track (6)</summary>
+              <nav class="lp-toc" aria-label="All modules">
+              <a class="lp-toc-track" href="index.html">Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</a>
+              <ol class="lp-toc-list">
+                <li><a href="01-assessment-paths-rapid-vs-deep.html"><span class="lp-toc-num">01</span><span>Assessment Frameworks · Rapid vs. Deep Enterprise</span></a></li>
+                <li><a href="02-discovery-telemetry-and-inventory.html"><span class="lp-toc-num">02</span><span>Discovery Telemetry · RVTools, AWS Transform &amp; Sizing</span></a></li>
+                <li><a href="03-financial-engineering-tco-and-licensing.html"><span class="lp-toc-num">03</span><span>Financial Engineering · 3-Year TCO &amp; Licensing</span></a></li>
+                <li><a href="04-target-architecture-and-landing-zone.html"><span class="lp-toc-num">04</span><span>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</span></a></li>
+                <li class="is-current"><a href="05-mobilize-wave-planning-and-pilot.html" aria-current="page"><span class="lp-toc-num">05</span><span>The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot</span></a></li>
+                <li><a href="06-migrate-and-modernize-strategies.html"><span class="lp-toc-num">06</span><span>Migrate &amp; Modernize · In-Flight vs. Sequential Factory</span></a></li>
+              </ol>
+            </nav>
+            </details>
           <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2>Shifting from strategy to factory engineering</h2>
+<h2 id="shifting-from-strategy-to-factory-engineering">Shifting from strategy to factory engineering</h2>
 <p>Securing executive sign-off on the Directional Business Case (DBC) and qualifying for AWS MAP co-funding marks the successful conclusion of the <b>Assess</b> phase. The initiative now transitions into <b>Mobilize</b>.</p>
-<p>Where Assess answered *&quot;Why should we migrate and what will it cost?&quot;*, Mobilize answers *&quot;How do we build the target platform, validate cutover runbooks, and train our engineering teams to operate it safely?&quot;*</p>
+<p>Where Assess answered <em>&quot;Why should we migrate and what will it cost?&quot;</em>, Mobilize answers <em>&quot;How do we build the target platform, validate cutover runbooks, and train our engineering teams to operate it safely?&quot;</em></p>
 <p>Mobilize bridges high-level architecture to industrialized execution through three critical workstreams:</p>
 <ol>
 <li><b>Landing Zone Deployment:</b> Standing up the multi-account foundation, security guardrails, and hybrid connectivity designed in Assess.</li>
@@ -181,7 +210,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Collaboration</div>
-<h2>Partnering with client engineering teams</h2>
+<h2 id="partnering-with-client-engineering-teams">Partnering with client engineering teams</h2>
 <p>Mobilize succeeds or fails on organizational alignment. A migration cannot be executed in isolation by external consultants; it requires a joint delivery model partnering consulting architects with the client's internal engineering squads:</p>
 <pre tabindex="0"><code>[ Joint Cloud Center of Excellence (CCoE) ]
   ├── Consulting Migration Lead &amp; Client Program Manager (Pacing, scope, MAP governance)
@@ -200,7 +229,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Methodology</div>
-<h2>Dependency clustering into migration waves</h2>
+<h2 id="dependency-clustering-into-migration-waves">Dependency clustering into migration waves</h2>
 <p>Attempting to migrate an enterprise estate in one massive &quot;big bang&quot; weekend is an unacceptably high operational risk. Instead, workloads are sequenced into <b>discrete migration waves</b> (typically 15 to 40 servers per wave) based on four structural criteria:</p>
 <ol>
 <li><b>Network Communication Affinity:</b> Ingesting network connection telemetry (source/destination IP traffic from hypervisors or netflow logs). Servers that exchange high-volume synchronous RPC or database queries must migrate in the <b>same wave</b> to avoid high-latency cross-datacenter application degradation.</li>
@@ -220,7 +249,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Execution</div>
-<h2>The Wave 0 Lighthouse Pilot</h2>
+<h2 id="the-wave-0-lighthouse-pilot">The Wave 0 Lighthouse Pilot</h2>
 <p>The most vital milestone in Mobilize is the <b>Lighthouse Pilot (Wave 0)</b>.</p>
 <p>The pilot application must meet three specific criteria:</p>
 <ul>
@@ -257,7 +286,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Outcome</div>
-<h2>Passing the Mobilize gate to begin Migration Factory</h2>
+<h2 id="passing-the-mobilize-gate-to-begin-migration-factory">Passing the Mobilize gate to begin Migration Factory</h2>
 <p>The Mobilize phase concludes with formal delivery of:</p>
 <ol>
 <li><b>The Production Landing Zone:</b> Validated multi-account AWS environment with enforced security guardrails, centralized logging, and active hybrid connectivity.</li>
@@ -276,6 +305,7 @@
           <span class="lp-nav-label">Module 06 →</span>
           <span class="lp-nav-title">Migrate &amp; Modernize · In-Flight vs. Sequential Factory</span>
         </a></nav>
+          </div>
         </div>
       </article>
       <div class="closing">

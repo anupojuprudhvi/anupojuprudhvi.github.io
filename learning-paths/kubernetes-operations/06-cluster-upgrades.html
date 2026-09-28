@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="../../assets/learning-path.css" />
     <link rel="stylesheet" href="../../assets/assistant.css" />
   </head>
-  <body class="deepdive">
+  <body class="deepdive lp-with-sidebar">
     <a class="skip-link" href="#main">Skip to content</a>
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
@@ -161,7 +161,52 @@
         </div>
       </header>
       <article class="lp-content">
-        <div class="wrap">
+        <div class="lp-layout">
+          <aside class="lp-sidebar">
+            <nav class="lp-toc" aria-label="Modules in this track">
+              <a class="lp-toc-track" href="index.html">Kubernetes on Amazon EKS: Foundations &amp; Operations</a>
+              <p class="lp-toc-part">Learn the foundations</p>
+              <ol class="lp-toc-list">
+                <li><a href="01-dual-ingress-architecture.html"><span class="lp-toc-num">01</span><span>Dual Ingress Architecture &amp; Its Cost Mechanics</span></a></li>
+                <li><a href="02-multi-environment-clusters-and-rbac.html"><span class="lp-toc-num">02</span><span>Multi-Environment Clusters &amp; IAM/RBAC</span></a></li>
+                <li><a href="03-container-delivery-to-eks.html"><span class="lp-toc-num">03</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
+                <li><a href="07-workload-identity-and-secrets.html"><span class="lp-toc-num">04</span><span>Workload Identity &amp; Secrets: How Pods Get AWS Access</span></a></li>
+                <li><a href="10-platform-add-ons.html"><span class="lp-toc-num">05</span><span>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span></a></li>
+                <li><a href="09-gitops-with-argo-cd.html"><span class="lp-toc-num">06</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
+              </ol>
+              <p class="lp-toc-part">Run it in production</p>
+              <ol class="lp-toc-list">
+                <li><a href="05-scaling-requests-and-cost.html"><span class="lp-toc-num">07</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
+                <li><a href="08-observability.html"><span class="lp-toc-num">08</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
+                <li><a href="04-day-2-operations-and-incident-triage.html"><span class="lp-toc-num">09</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
+                <li class="is-current"><a href="06-cluster-upgrades.html" aria-current="page"><span class="lp-toc-num">10</span><span>Cluster Upgrades Without Drama</span></a>
+                <ol class="lp-toc-sections"><li><a href="#upgrades-are-routine-work-so-make-them-boring">Upgrades are routine work, so make them boring</a></li><li><a href="#find-what-the-new-version-removes">Find what the new version removes</a></li><li><a href="#control-plane-then-add-ons-then-nodes">Control plane, then add-ons, then nodes</a></li><li><a href="#prove-it-on-a-non-production-cluster-first">Prove it on a non-production cluster first</a></li></ol></li>
+              </ol>
+            </nav>
+          </aside>
+          <div class="lp-main">
+            <details class="lp-toc-mobile">
+              <summary>All modules in this track (10)</summary>
+              <nav class="lp-toc" aria-label="All modules">
+              <a class="lp-toc-track" href="index.html">Kubernetes on Amazon EKS: Foundations &amp; Operations</a>
+              <p class="lp-toc-part">Learn the foundations</p>
+              <ol class="lp-toc-list">
+                <li><a href="01-dual-ingress-architecture.html"><span class="lp-toc-num">01</span><span>Dual Ingress Architecture &amp; Its Cost Mechanics</span></a></li>
+                <li><a href="02-multi-environment-clusters-and-rbac.html"><span class="lp-toc-num">02</span><span>Multi-Environment Clusters &amp; IAM/RBAC</span></a></li>
+                <li><a href="03-container-delivery-to-eks.html"><span class="lp-toc-num">03</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
+                <li><a href="07-workload-identity-and-secrets.html"><span class="lp-toc-num">04</span><span>Workload Identity &amp; Secrets: How Pods Get AWS Access</span></a></li>
+                <li><a href="10-platform-add-ons.html"><span class="lp-toc-num">05</span><span>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span></a></li>
+                <li><a href="09-gitops-with-argo-cd.html"><span class="lp-toc-num">06</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
+              </ol>
+              <p class="lp-toc-part">Run it in production</p>
+              <ol class="lp-toc-list">
+                <li><a href="05-scaling-requests-and-cost.html"><span class="lp-toc-num">07</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
+                <li><a href="08-observability.html"><span class="lp-toc-num">08</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
+                <li><a href="04-day-2-operations-and-incident-triage.html"><span class="lp-toc-num">09</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
+                <li class="is-current"><a href="06-cluster-upgrades.html" aria-current="page"><span class="lp-toc-num">10</span><span>Cluster Upgrades Without Drama</span></a></li>
+              </ol>
+            </nav>
+            </details>
           <section>
 <div class="wrap">
 <p><b>Before you start:</b> you'll want a non-production cluster to rehearse on, and your cluster version defined in code (Terraform or similar).</p>
@@ -170,7 +215,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2>Upgrades are routine work, so make them boring</h2>
+<h2 id="upgrades-are-routine-work-so-make-them-boring">Upgrades are routine work, so make them boring</h2>
 <p>Kubernetes ships a new minor version roughly three times a year, and each EKS version gets a fixed window of standard support. After that, a cluster moves to extended support, which costs several times the standard per-cluster price, and eventually it's upgraded for you whether you're ready or not.</p>
 <p>The teams that struggle with upgrades are usually the ones that do them rarely. A small, repeatable upgrade every few months is far less risky than a big jump once the deadline arrives.</p>
 <p>Two rules shape everything else:</p>
@@ -183,20 +228,20 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Step 1</div>
-<h2>Find what the new version removes</h2>
+<h2 id="find-what-the-new-version-removes">Find what the new version removes</h2>
 <p>Most upgrade failures aren't caused by the upgrade itself. They come from manifests or Helm charts that still use an API version the new release has removed. The cluster upgrades fine, then the next deploy fails.</p>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Check the EKS upgrade insights for the cluster
 aws eks list-insights --cluster-name &lt;cluster&gt;
 
 # See which API versions the cluster currently serves
 kubectl api-versions</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<p>EKS upgrade insights flag deprecated API usage the cluster has actually seen, which is more reliable than grepping a repository. Tools such as <code>pluto</code> can scan your manifests and Helm releases as well. Fix everything they find *before* you start. Changing an API version on a live cluster is easy; finding out after the upgrade is not.</p>
+<p>EKS upgrade insights flag deprecated API usage the cluster has actually seen, which is more reliable than grepping a repository. Tools such as <code>pluto</code> can scan your manifests and Helm releases as well. Fix everything they find <em>before</em> you start. Changing an API version on a live cluster is easy; finding out after the upgrade is not.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Step 2</div>
-<h2>Control plane, then add-ons, then nodes</h2>
+<h2 id="control-plane-then-add-ons-then-nodes">Control plane, then add-ons, then nodes</h2>
 <details class="implementation-notes">
 <summary>Upgrade order</summary>
 <ul>
@@ -214,7 +259,7 @@ kubectl get nodes -L eks.amazonaws.com/nodegroup \
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Step 3</div>
-<h2>Prove it on a non-production cluster first</h2>
+<h2 id="prove-it-on-a-non-production-cluster-first">Prove it on a non-production cluster first</h2>
 <p>Run the same upgrade on Dev or Staging a week or two before Production, with real deploys happening on it in between. Most surprises show up as a failed deploy or a controller that stops reconciling, and you want to meet those somewhere quiet.</p>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
@@ -235,6 +280,7 @@ kubectl get nodes -L eks.amazonaws.com/nodegroup \
           <span class="lp-nav-label">Track Complete →</span>
           <span class="lp-nav-title">All Learning Paths</span>
         </a></nav>
+          </div>
         </div>
       </article>
       <div class="closing">

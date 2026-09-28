@@ -28,6 +28,10 @@
   {
     "id": "kubernetes-operations",
     "motif": "network",
+    "parts": [
+      { "title": "Learn the foundations", "modules": [1, 2, 3, 4, 5, 6] },
+      { "title": "Run it in production", "modules": [7, 8, 9, 10] }
+    ],
     "title": "Kubernetes on Amazon EKS: Foundations & Operations",
     "eyebrow": "Container Platform Engineering",
     "summary": "A hands-on guide to running Amazon EKS across several environments: two-ingress routing and what it really costs, IAM and RBAC across clusters, container delivery, incident triage, autoscaling and cost, upgrades, workload identity, observability, GitOps, and the platform add-ons every cluster needs.",

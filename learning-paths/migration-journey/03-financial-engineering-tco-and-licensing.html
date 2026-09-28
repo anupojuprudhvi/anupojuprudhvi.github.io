@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="../../assets/learning-path.css" />
     <link rel="stylesheet" href="../../assets/assistant.css" />
   </head>
-  <body class="deepdive">
+  <body class="deepdive lp-with-sidebar">
     <a class="skip-link" href="#main">Skip to content</a>
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
@@ -163,11 +163,40 @@
         </div>
       </header>
       <article class="lp-content">
-        <div class="wrap">
+        <div class="lp-layout">
+          <aside class="lp-sidebar">
+            <nav class="lp-toc" aria-label="Modules in this track">
+              <a class="lp-toc-track" href="index.html">Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</a>
+              <ol class="lp-toc-list">
+                <li><a href="01-assessment-paths-rapid-vs-deep.html"><span class="lp-toc-num">01</span><span>Assessment Frameworks · Rapid vs. Deep Enterprise</span></a></li>
+                <li><a href="02-discovery-telemetry-and-inventory.html"><span class="lp-toc-num">02</span><span>Discovery Telemetry · RVTools, AWS Transform &amp; Sizing</span></a></li>
+                <li class="is-current"><a href="03-financial-engineering-tco-and-licensing.html" aria-current="page"><span class="lp-toc-num">03</span><span>Financial Engineering · 3-Year TCO &amp; Licensing</span></a>
+                <ol class="lp-toc-sections"><li><a href="#the-language-of-the-c-suite-is-cash-flow">The language of the C-suite is cash flow</a></li><li><a href="#sizing-the-3-commitment-tiers">Sizing the 3 commitment tiers</a></li><li><a href="#the-microsoft-windows-sql-server-optimization-curve">The Microsoft Windows &amp; SQL Server optimization curve</a></li><li><a href="#qualifying-for-aws-map-partner-co-funding">Qualifying for AWS MAP partner co-funding</a></li><li><a href="#the-directional-business-case-dbc-package">The Directional Business Case (DBC) package</a></li></ol></li>
+                <li><a href="04-target-architecture-and-landing-zone.html"><span class="lp-toc-num">04</span><span>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</span></a></li>
+                <li><a href="05-mobilize-wave-planning-and-pilot.html"><span class="lp-toc-num">05</span><span>The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot</span></a></li>
+                <li><a href="06-migrate-and-modernize-strategies.html"><span class="lp-toc-num">06</span><span>Migrate &amp; Modernize · In-Flight vs. Sequential Factory</span></a></li>
+              </ol>
+            </nav>
+          </aside>
+          <div class="lp-main">
+            <details class="lp-toc-mobile">
+              <summary>All modules in this track (6)</summary>
+              <nav class="lp-toc" aria-label="All modules">
+              <a class="lp-toc-track" href="index.html">Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</a>
+              <ol class="lp-toc-list">
+                <li><a href="01-assessment-paths-rapid-vs-deep.html"><span class="lp-toc-num">01</span><span>Assessment Frameworks · Rapid vs. Deep Enterprise</span></a></li>
+                <li><a href="02-discovery-telemetry-and-inventory.html"><span class="lp-toc-num">02</span><span>Discovery Telemetry · RVTools, AWS Transform &amp; Sizing</span></a></li>
+                <li class="is-current"><a href="03-financial-engineering-tco-and-licensing.html" aria-current="page"><span class="lp-toc-num">03</span><span>Financial Engineering · 3-Year TCO &amp; Licensing</span></a></li>
+                <li><a href="04-target-architecture-and-landing-zone.html"><span class="lp-toc-num">04</span><span>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</span></a></li>
+                <li><a href="05-mobilize-wave-planning-and-pilot.html"><span class="lp-toc-num">05</span><span>The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot</span></a></li>
+                <li><a href="06-migrate-and-modernize-strategies.html"><span class="lp-toc-num">06</span><span>Migrate &amp; Modernize · In-Flight vs. Sequential Factory</span></a></li>
+              </ol>
+            </nav>
+            </details>
           <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2>The language of the C-suite is cash flow</h2>
+<h2 id="the-language-of-the-c-suite-is-cash-flow">The language of the C-suite is cash flow</h2>
 <p>Engineering teams often pitch cloud migration around agility, autoscaling, and modern APIs. Chief Financial Officers (CFOs) evaluate cloud migration through three pragmatic metrics: <b>Total Cost of Ownership (TCO)</b>, <b>net cash-flow timing</b>, and <b>payback period</b>.</p>
 <p>A successful Assess phase culminates in the <b>Directional Business Case (DBC)</b>. The DBC translates raw server telemetry into an audited 3-year financial comparison, contrasting current on-premises capital and operational expenditures (CapEx/OpEx) against right-sized AWS run costs under diverse commitment models.</p>
 </div>
@@ -175,7 +204,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Framework</div>
-<h2>Sizing the 3 commitment tiers</h2>
+<h2 id="sizing-the-3-commitment-tiers">Sizing the 3 commitment tiers</h2>
 <p>The financial model projects target AWS infrastructure spend across three pricing horizons:</p>
 <details class="implementation-notes">
 <summary>1. On-Demand Pricing (The Baseline Ceiling)</summary>
@@ -212,7 +241,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Licensing</div>
-<h2>The Microsoft Windows &amp; SQL Server optimization curve</h2>
+<h2 id="the-microsoft-windows-sql-server-optimization-curve">The Microsoft Windows &amp; SQL Server optimization curve</h2>
 <p>In enterprise VMware environments, commercial software licensing — specifically <b>Microsoft Windows Server</b> and <b>Microsoft SQL Server</b> — frequently costs more than the physical compute hardware it runs on.</p>
 <p>The assessment must model two competing licensing pathways:</p>
 <details class="implementation-notes">
@@ -241,7 +270,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Funding</div>
-<h2>Qualifying for AWS MAP partner co-funding</h2>
+<h2 id="qualifying-for-aws-map-partner-co-funding">Qualifying for AWS MAP partner co-funding</h2>
 <p>The AWS Migration Acceleration Program (MAP) provides substantial financial incentives to offset migration costs:</p>
 <ol>
 <li><b>Assess Phase Funding:</b> Fixed partner cash or cloud credits (typically $15,000 to $60,000 depending on estate size) to fund the partner's discovery and business case delivery.</li>
@@ -253,7 +282,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Delivery</div>
-<h2>The Directional Business Case (DBC) package</h2>
+<h2 id="the-directional-business-case-dbc-package">The Directional Business Case (DBC) package</h2>
 <p>Passing the Assess phase milestone gate requires presenting a validated DBC package to executive leadership:</p>
 <ul>
 <li><b>Executive Summary:</b> Projected 3-year TCO savings percentage (typically 25%–45% lower than current on-prem run costs).</li>
@@ -271,6 +300,7 @@
           <span class="lp-nav-label">Module 04 →</span>
           <span class="lp-nav-title">Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</span>
         </a></nav>
+          </div>
         </div>
       </article>
       <div class="closing">

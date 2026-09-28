@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="../../assets/learning-path.css" />
     <link rel="stylesheet" href="../../assets/assistant.css" />
   </head>
-  <body class="deepdive">
+  <body class="deepdive lp-with-sidebar">
     <a class="skip-link" href="#main">Skip to content</a>
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
@@ -159,11 +159,40 @@
         </div>
       </header>
       <article class="lp-content">
-        <div class="wrap">
+        <div class="lp-layout">
+          <aside class="lp-sidebar">
+            <nav class="lp-toc" aria-label="Modules in this track">
+              <a class="lp-toc-track" href="index.html">Terraform for Enterprise Production</a>
+              <ol class="lp-toc-list">
+                <li class="is-current"><a href="01-enterprise-module-design.html" aria-current="page"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a>
+                <ol class="lp-toc-sections"><li><a href="#the-two-types-of-terraform-modules">The two types of Terraform modules</a></li><li><a href="#the-canonical-directory-layout">The canonical directory layout</a></li><li><a href="#strict-root-pinning-vs-optimistic-module-constraints">Strict root pinning vs optimistic module constraints</a></li><li><a href="#anti-patterns-to-avoid">Anti-patterns to avoid</a></li></ol></li>
+                <li><a href="02-state-isolation-and-locking.html"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a></li>
+                <li><a href="03-variables-validation-and-types.html"><span class="lp-toc-num">03</span><span>Modern HCL — Types, Validations &amp; Preconditions</span></a></li>
+                <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
+                <li><a href="05-refactoring-with-moved-blocks.html"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a></li>
+                <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a></li>
+              </ol>
+            </nav>
+          </aside>
+          <div class="lp-main">
+            <details class="lp-toc-mobile">
+              <summary>All modules in this track (6)</summary>
+              <nav class="lp-toc" aria-label="All modules">
+              <a class="lp-toc-track" href="index.html">Terraform for Enterprise Production</a>
+              <ol class="lp-toc-list">
+                <li class="is-current"><a href="01-enterprise-module-design.html" aria-current="page"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a></li>
+                <li><a href="02-state-isolation-and-locking.html"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a></li>
+                <li><a href="03-variables-validation-and-types.html"><span class="lp-toc-num">03</span><span>Modern HCL — Types, Validations &amp; Preconditions</span></a></li>
+                <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
+                <li><a href="05-refactoring-with-moved-blocks.html"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a></li>
+                <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a></li>
+              </ol>
+            </nav>
+            </details>
           <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2>The two types of Terraform modules</h2>
+<h2 id="the-two-types-of-terraform-modules">The two types of Terraform modules</h2>
 <p>In enterprise environments, confusing a <b>reusable child module</b> with a <b>root deployment module</b> is the primary reason codebases become unmaintainable spaghetti.</p>
 <p>A clean architecture enforces strict boundaries between these two concerns:</p>
 <ul>
@@ -175,7 +204,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Structure</div>
-<h2>The canonical directory layout</h2>
+<h2 id="the-canonical-directory-layout">The canonical directory layout</h2>
 <p>For enterprise AWS delivery, organize your Terraform repositories into clear layers of responsibility:</p>
 <pre tabindex="0"><code>terraform-root/
 ├── modules/                         # Reusable child modules (pure blueprints, versioned)
@@ -265,7 +294,7 @@
 <details class="implementation-notes">
 <summary>Three architectural guarantees of environment layering:</summary>
 <ul>
-<li><b>State File &amp; Lock Isolation:</b> Running <code>terraform apply</code> in <code>04-compute</code> locks *only* the compute state file. Database and networking states remain 100% unlocked and completely immune to accidental modifications.</li>
+<li><b>State File &amp; Lock Isolation:</b> Running <code>terraform apply</code> in <code>04-compute</code> locks <em>only</em> the compute state file. Database and networking states remain 100% unlocked and completely immune to accidental modifications.</li>
 <li><b>Role-Based Access Control (RBAC):</b> In your CI/CD pipeline (e.g. GitHub Actions with AWS OIDC), application teams only assume an IAM role scoped to execute in <code>04-compute</code>. They physically cannot destroy <code>01-networking</code> or <code>03-data</code>.</li>
 <li><b>Fast Plans (&lt; 30 seconds):</b> Because each layer contains 20-40 resources instead of 500+, <code>terraform plan</code> executes in seconds instead of timing out.</li>
 </ul>
@@ -283,7 +312,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Versioning</div>
-<h2>Strict root pinning vs optimistic module constraints</h2>
+<h2 id="strict-root-pinning-vs-optimistic-module-constraints">Strict root pinning vs optimistic module constraints</h2>
 <p>A subtle but critical rule in enterprise Terraform is how version constraints are declared:</p>
 <h3>1. In Reusable Child Modules: Use pessimistic operators (<code>~&gt;</code>)</h3>
 <p>Child modules should allow safe backward-compatible minor updates:</p>
@@ -316,7 +345,7 @@ terraform {
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Failure Modes</div>
-<h2>Anti-patterns to avoid</h2>
+<h2 id="anti-patterns-to-avoid">Anti-patterns to avoid</h2>
 <h3>Anti-Pattern 1: The &quot;Monolithic State Monster&quot;</h3>
 <p>Putting VPC networking, Aurora clusters, IAM roles, and EKS deployments in a single <code>main.tf</code> file.</p>
 <ul>
@@ -345,6 +374,7 @@ terraform {
           <span class="lp-nav-label">Module 02 →</span>
           <span class="lp-nav-title">State Isolation, Remote Locking &amp; Blast Radius Control</span>
         </a></nav>
+          </div>
         </div>
       </article>
       <div class="closing">

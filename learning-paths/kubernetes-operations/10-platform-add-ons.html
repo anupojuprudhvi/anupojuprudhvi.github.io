@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="../../assets/learning-path.css" />
     <link rel="stylesheet" href="../../assets/assistant.css" />
   </head>
-  <body class="deepdive">
+  <body class="deepdive lp-with-sidebar">
     <a class="skip-link" href="#main">Skip to content</a>
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
@@ -161,7 +161,52 @@
         </div>
       </header>
       <article class="lp-content">
-        <div class="wrap">
+        <div class="lp-layout">
+          <aside class="lp-sidebar">
+            <nav class="lp-toc" aria-label="Modules in this track">
+              <a class="lp-toc-track" href="index.html">Kubernetes on Amazon EKS: Foundations &amp; Operations</a>
+              <p class="lp-toc-part">Learn the foundations</p>
+              <ol class="lp-toc-list">
+                <li><a href="01-dual-ingress-architecture.html"><span class="lp-toc-num">01</span><span>Dual Ingress Architecture &amp; Its Cost Mechanics</span></a></li>
+                <li><a href="02-multi-environment-clusters-and-rbac.html"><span class="lp-toc-num">02</span><span>Multi-Environment Clusters &amp; IAM/RBAC</span></a></li>
+                <li><a href="03-container-delivery-to-eks.html"><span class="lp-toc-num">03</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
+                <li><a href="07-workload-identity-and-secrets.html"><span class="lp-toc-num">04</span><span>Workload Identity &amp; Secrets: How Pods Get AWS Access</span></a></li>
+                <li class="is-current"><a href="10-platform-add-ons.html" aria-current="page"><span class="lp-toc-num">05</span><span>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span></a>
+                <ol class="lp-toc-sections"><li><a href="#a-new-cluster-is-an-empty-building">A new cluster is an empty building</a></li><li><a href="#each-add-on-gets-its-own-iam-role">Each add-on gets its own IAM role</a></li><li><a href="#externaldns-across-accounts-for-a-private-zone">ExternalDNS across accounts, for a private zone</a></li><li><a href="#storage-classes-that-respect-availability-zones">Storage classes that respect Availability Zones</a></li><li><a href="#two-gotchas-from-the-original-install-script">Two gotchas from the original install script</a></li></ol></li>
+                <li><a href="09-gitops-with-argo-cd.html"><span class="lp-toc-num">06</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
+              </ol>
+              <p class="lp-toc-part">Run it in production</p>
+              <ol class="lp-toc-list">
+                <li><a href="05-scaling-requests-and-cost.html"><span class="lp-toc-num">07</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
+                <li><a href="08-observability.html"><span class="lp-toc-num">08</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
+                <li><a href="04-day-2-operations-and-incident-triage.html"><span class="lp-toc-num">09</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
+                <li><a href="06-cluster-upgrades.html"><span class="lp-toc-num">10</span><span>Cluster Upgrades Without Drama</span></a></li>
+              </ol>
+            </nav>
+          </aside>
+          <div class="lp-main">
+            <details class="lp-toc-mobile">
+              <summary>All modules in this track (10)</summary>
+              <nav class="lp-toc" aria-label="All modules">
+              <a class="lp-toc-track" href="index.html">Kubernetes on Amazon EKS: Foundations &amp; Operations</a>
+              <p class="lp-toc-part">Learn the foundations</p>
+              <ol class="lp-toc-list">
+                <li><a href="01-dual-ingress-architecture.html"><span class="lp-toc-num">01</span><span>Dual Ingress Architecture &amp; Its Cost Mechanics</span></a></li>
+                <li><a href="02-multi-environment-clusters-and-rbac.html"><span class="lp-toc-num">02</span><span>Multi-Environment Clusters &amp; IAM/RBAC</span></a></li>
+                <li><a href="03-container-delivery-to-eks.html"><span class="lp-toc-num">03</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
+                <li><a href="07-workload-identity-and-secrets.html"><span class="lp-toc-num">04</span><span>Workload Identity &amp; Secrets: How Pods Get AWS Access</span></a></li>
+                <li class="is-current"><a href="10-platform-add-ons.html" aria-current="page"><span class="lp-toc-num">05</span><span>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span></a></li>
+                <li><a href="09-gitops-with-argo-cd.html"><span class="lp-toc-num">06</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
+              </ol>
+              <p class="lp-toc-part">Run it in production</p>
+              <ol class="lp-toc-list">
+                <li><a href="05-scaling-requests-and-cost.html"><span class="lp-toc-num">07</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
+                <li><a href="08-observability.html"><span class="lp-toc-num">08</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
+                <li><a href="04-day-2-operations-and-incident-triage.html"><span class="lp-toc-num">09</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
+                <li><a href="06-cluster-upgrades.html"><span class="lp-toc-num">10</span><span>Cluster Upgrades Without Drama</span></a></li>
+              </ol>
+            </nav>
+            </details>
           <section>
 <div class="wrap">
 <p><b>Before you start:</b> this pulls together pieces from modules 1 and 4, and from modules 7 and 8 later in the track. It's based on the add-on setup used in the multi-environment deployment this track draws on, with every name, account, and domain replaced by a placeholder.</p>
@@ -170,7 +215,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2>A new cluster is an empty building</h2>
+<h2 id="a-new-cluster-is-an-empty-building">A new cluster is an empty building</h2>
 <p>Terraform can create an EKS cluster and its node groups, but a fresh cluster can't do much yet. It can't create a load balancer for an Ingress, publish DNS names, report pod CPU to an autoscaler, add nodes when it runs out of room, ship logs anywhere, or give pods persistent disks. Each of those is a separate add-on.</p>
 <p>It helps to treat these as their own layer: installed right after the cluster exists, the same way in every environment, before any application team deploys anything.</p>
 <h3>The add-on set in the original deployment</h3>
@@ -189,7 +234,7 @@
 </section>
 <section>
 <div class="wrap">
-<h2>Each add-on gets its own IAM role</h2>
+<h2 id="each-add-on-gets-its-own-iam-role">Each add-on gets its own IAM role</h2>
 <p>Most of these add-ons call AWS APIs, so each needs AWS permissions. The original setup gave every add-on its <b>own</b> IAM role, attached to its own service account in <code>kube-system</code> using IRSA (module 4): one role for the load balancer controller, one for ExternalDNS, one for the autoscaler, one for Fluent Bit. An application that talked to a managed message broker got its own role in the same way.</p>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># One service account per add-on, each pointing at its own role
 kubectl create serviceaccount external-dns -n kube-system
@@ -204,7 +249,7 @@ kubectl -n kube-system rollout restart deployment/external-dns</code></pre><figc
 </section>
 <section>
 <div class="wrap">
-<h2>ExternalDNS across accounts, for a private zone</h2>
+<h2 id="externaldns-across-accounts-for-a-private-zone">ExternalDNS across accounts, for a private zone</h2>
 <p>In a multi-account setup the DNS zone often lives in a shared-services account, not in the cluster's account (the same pattern as the shared Route 53 case study). ExternalDNS can manage records there by assuming a role in the other account:</p>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml">args:
   - --provider=aws
@@ -226,7 +271,7 @@ kubectl -n kube-system rollout restart deployment/external-dns</code></pre><figc
 </section>
 <section>
 <div class="wrap">
-<h2>Storage classes that respect Availability Zones</h2>
+<h2 id="storage-classes-that-respect-availability-zones">Storage classes that respect Availability Zones</h2>
 <p>An EBS volume lives in one Availability Zone and can only attach to a node in that zone. If a volume is created before the pod is scheduled, it can end up in a zone where the pod can't run. <code>WaitForFirstConsumer</code> waits until the pod has a node, then creates the volume in that node's zone:</p>
 <pre tabindex="0" class="code"><code class="language-yaml">apiVersion: storage.k8s.io/v1
 kind: StorageClass
@@ -239,8 +284,8 @@ volumeBindingMode: WaitForFirstConsumer</code></pre>
 </section>
 <section>
 <div class="wrap">
-<h2>Two gotchas from the original install script</h2>
-<p><b>1. <code>safe-to-evict</code> goes on the pod, not the Deployment.</b> The script annotated the Cluster Autoscaler *Deployment* with <code>cluster-autoscaler.kubernetes.io/safe-to-evict: &quot;false&quot;</code>, to stop the autoscaler from removing the node it runs on. The command succeeds, but it does nothing: the autoscaler only reads that annotation from <b>pods</b>. It has to go in the pod template:</p>
+<h2 id="two-gotchas-from-the-original-install-script">Two gotchas from the original install script</h2>
+<p><b>1. <code>safe-to-evict</code> goes on the pod, not the Deployment.</b> The script annotated the Cluster Autoscaler <em>Deployment</em> with <code>cluster-autoscaler.kubernetes.io/safe-to-evict: &quot;false&quot;</code>, to stop the autoscaler from removing the node it runs on. The command succeeds, but it does nothing: the autoscaler only reads that annotation from <b>pods</b>. It has to go in the pod template:</p>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml">spec:
   template:
     metadata:
@@ -266,6 +311,7 @@ volumeBindingMode: WaitForFirstConsumer</code></pre>
           <span class="lp-nav-label">Module 06 →</span>
           <span class="lp-nav-title">GitOps with Argo CD: Git as the Source of Truth</span>
         </a></nav>
+          </div>
         </div>
       </article>
       <div class="closing">

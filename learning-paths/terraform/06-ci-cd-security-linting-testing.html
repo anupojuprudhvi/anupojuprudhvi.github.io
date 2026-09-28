@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="../../assets/learning-path.css" />
     <link rel="stylesheet" href="../../assets/assistant.css" />
   </head>
-  <body class="deepdive">
+  <body class="deepdive lp-with-sidebar">
     <a class="skip-link" href="#main">Skip to content</a>
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
@@ -159,11 +159,40 @@
         </div>
       </header>
       <article class="lp-content">
-        <div class="wrap">
+        <div class="lp-layout">
+          <aside class="lp-sidebar">
+            <nav class="lp-toc" aria-label="Modules in this track">
+              <a class="lp-toc-track" href="index.html">Terraform for Enterprise Production</a>
+              <ol class="lp-toc-list">
+                <li><a href="01-enterprise-module-design.html"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a></li>
+                <li><a href="02-state-isolation-and-locking.html"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a></li>
+                <li><a href="03-variables-validation-and-types.html"><span class="lp-toc-num">03</span><span>Modern HCL — Types, Validations &amp; Preconditions</span></a></li>
+                <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
+                <li><a href="05-refactoring-with-moved-blocks.html"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a></li>
+                <li class="is-current"><a href="06-ci-cd-security-linting-testing.html" aria-current="page"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a>
+                <ol class="lp-toc-sections"><li><a href="#the-three-tier-verification-pipeline">The three-tier verification pipeline</a></li><li><a href="#code-quality-linting-with-tflint">Code quality &amp; linting with TFLint</a></li><li><a href="#security-scanning-with-checkov">Security scanning with Checkov</a></li><li><a href="#automated-plan-posting-in-pull-requests">Automated plan posting in Pull Requests</a></li><li><a href="#scheduled-drift-detection">Scheduled drift detection</a></li></ol></li>
+              </ol>
+            </nav>
+          </aside>
+          <div class="lp-main">
+            <details class="lp-toc-mobile">
+              <summary>All modules in this track (6)</summary>
+              <nav class="lp-toc" aria-label="All modules">
+              <a class="lp-toc-track" href="index.html">Terraform for Enterprise Production</a>
+              <ol class="lp-toc-list">
+                <li><a href="01-enterprise-module-design.html"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a></li>
+                <li><a href="02-state-isolation-and-locking.html"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a></li>
+                <li><a href="03-variables-validation-and-types.html"><span class="lp-toc-num">03</span><span>Modern HCL — Types, Validations &amp; Preconditions</span></a></li>
+                <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
+                <li><a href="05-refactoring-with-moved-blocks.html"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a></li>
+                <li class="is-current"><a href="06-ci-cd-security-linting-testing.html" aria-current="page"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a></li>
+              </ol>
+            </nav>
+            </details>
           <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2>The three-tier verification pipeline</h2>
+<h2 id="the-three-tier-verification-pipeline">The three-tier verification pipeline</h2>
 <p>Never allow engineers to run <code>terraform apply</code> directly from their local laptops in production. All changes must pass through an automated, audited, and locked-down CI/CD pipeline.</p>
 <p>A production pipeline structures checks into three distinct tiers:</p>
 <pre tabindex="0"><code>Production CI/CD Gateways:
@@ -191,7 +220,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Tier 1</div>
-<h2>Code quality &amp; linting with TFLint</h2>
+<h2 id="code-quality-linting-with-tflint">Code quality &amp; linting with TFLint</h2>
 <p>While <code>terraform validate</code> checks basic syntax, <b>TFLint</b> analyzes provider-specific rules, invalid instance types, unreferenced variables, and naming conventions.</p>
 <pre tabindex="0"><code># .tflint.hcl
 config {
@@ -221,7 +250,7 @@ tflint --recursive</code></pre>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Tier 2</div>
-<h2>Security scanning with Checkov</h2>
+<h2 id="security-scanning-with-checkov">Security scanning with Checkov</h2>
 <p><b>Checkov</b> is an industry-standard static code analysis tool for infrastructure as code. It scans your code against hundreds of security policies before cloud resources are provisioned.</p>
 <details class="implementation-notes">
 <summary>Example Checkov rules enforced in CI:</summary>
@@ -241,7 +270,7 @@ tflint --recursive</code></pre>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Tier 3</div>
-<h2>Automated plan posting in Pull Requests</h2>
+<h2 id="automated-plan-posting-in-pull-requests">Automated plan posting in Pull Requests</h2>
 <p>When a PR is opened, the pipeline runs <code>terraform plan</code> and posts a formatted summary as a comment on the GitHub PR:</p>
 <pre tabindex="0"><code># Example GitHub Actions Workflow snippet
 - name: Terraform Plan
@@ -272,7 +301,7 @@ tflint --recursive</code></pre>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Operational Control</div>
-<h2>Scheduled drift detection</h2>
+<h2 id="scheduled-drift-detection">Scheduled drift detection</h2>
 <p>Even in strictly governed environments, emergency manual changes or out-of-band updates in the AWS Console happen.</p>
 <p>Set up a scheduled cron job (e.g. every weekday at 02:00 UTC) that runs a read-only plan:</p>
 <pre tabindex="0"><code># Run in scheduled CI
@@ -292,6 +321,7 @@ terraform plan -detailed-exitcode</code></pre>
           <span class="lp-nav-label">Track Complete →</span>
           <span class="lp-nav-title">All Learning Paths</span>
         </a></nav>
+          </div>
         </div>
       </article>
       <div class="closing">

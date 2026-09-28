@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="../../assets/learning-path.css" />
     <link rel="stylesheet" href="../../assets/assistant.css" />
   </head>
-  <body class="deepdive">
+  <body class="deepdive lp-with-sidebar">
     <a class="skip-link" href="#main">Skip to content</a>
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
@@ -161,7 +161,52 @@
         </div>
       </header>
       <article class="lp-content">
-        <div class="wrap">
+        <div class="lp-layout">
+          <aside class="lp-sidebar">
+            <nav class="lp-toc" aria-label="Modules in this track">
+              <a class="lp-toc-track" href="index.html">Kubernetes on Amazon EKS: Foundations &amp; Operations</a>
+              <p class="lp-toc-part">Learn the foundations</p>
+              <ol class="lp-toc-list">
+                <li><a href="01-dual-ingress-architecture.html"><span class="lp-toc-num">01</span><span>Dual Ingress Architecture &amp; Its Cost Mechanics</span></a></li>
+                <li class="is-current"><a href="02-multi-environment-clusters-and-rbac.html" aria-current="page"><span class="lp-toc-num">02</span><span>Multi-Environment Clusters &amp; IAM/RBAC</span></a>
+                <ol class="lp-toc-sections"><li><a href="#separate-clusters-not-separate-namespaces-for-hard-environment-boundaries">Separate clusters, not separate namespaces, for hard environment boundaries</a></li><li><a href="#iam-identities-become-kubernetes-identities-through-access-entries">IAM identities become Kubernetes identities through access entries</a></li></ol></li>
+                <li><a href="03-container-delivery-to-eks.html"><span class="lp-toc-num">03</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
+                <li><a href="07-workload-identity-and-secrets.html"><span class="lp-toc-num">04</span><span>Workload Identity &amp; Secrets: How Pods Get AWS Access</span></a></li>
+                <li><a href="10-platform-add-ons.html"><span class="lp-toc-num">05</span><span>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span></a></li>
+                <li><a href="09-gitops-with-argo-cd.html"><span class="lp-toc-num">06</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
+              </ol>
+              <p class="lp-toc-part">Run it in production</p>
+              <ol class="lp-toc-list">
+                <li><a href="05-scaling-requests-and-cost.html"><span class="lp-toc-num">07</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
+                <li><a href="08-observability.html"><span class="lp-toc-num">08</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
+                <li><a href="04-day-2-operations-and-incident-triage.html"><span class="lp-toc-num">09</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
+                <li><a href="06-cluster-upgrades.html"><span class="lp-toc-num">10</span><span>Cluster Upgrades Without Drama</span></a></li>
+              </ol>
+            </nav>
+          </aside>
+          <div class="lp-main">
+            <details class="lp-toc-mobile">
+              <summary>All modules in this track (10)</summary>
+              <nav class="lp-toc" aria-label="All modules">
+              <a class="lp-toc-track" href="index.html">Kubernetes on Amazon EKS: Foundations &amp; Operations</a>
+              <p class="lp-toc-part">Learn the foundations</p>
+              <ol class="lp-toc-list">
+                <li><a href="01-dual-ingress-architecture.html"><span class="lp-toc-num">01</span><span>Dual Ingress Architecture &amp; Its Cost Mechanics</span></a></li>
+                <li class="is-current"><a href="02-multi-environment-clusters-and-rbac.html" aria-current="page"><span class="lp-toc-num">02</span><span>Multi-Environment Clusters &amp; IAM/RBAC</span></a></li>
+                <li><a href="03-container-delivery-to-eks.html"><span class="lp-toc-num">03</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
+                <li><a href="07-workload-identity-and-secrets.html"><span class="lp-toc-num">04</span><span>Workload Identity &amp; Secrets: How Pods Get AWS Access</span></a></li>
+                <li><a href="10-platform-add-ons.html"><span class="lp-toc-num">05</span><span>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span></a></li>
+                <li><a href="09-gitops-with-argo-cd.html"><span class="lp-toc-num">06</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
+              </ol>
+              <p class="lp-toc-part">Run it in production</p>
+              <ol class="lp-toc-list">
+                <li><a href="05-scaling-requests-and-cost.html"><span class="lp-toc-num">07</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
+                <li><a href="08-observability.html"><span class="lp-toc-num">08</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
+                <li><a href="04-day-2-operations-and-incident-triage.html"><span class="lp-toc-num">09</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
+                <li><a href="06-cluster-upgrades.html"><span class="lp-toc-num">10</span><span>Cluster Upgrades Without Drama</span></a></li>
+              </ol>
+            </nav>
+            </details>
           <section>
 <div class="wrap">
 <p><b>Before you start:</b> you'll want the AWS CLI and <code>kubectl</code>, permission to manage EKS clusters, and a rough idea of how IAM roles work.</p>
@@ -170,7 +215,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2>Separate clusters, not separate namespaces, for hard environment boundaries</h2>
+<h2 id="separate-clusters-not-separate-namespaces-for-hard-environment-boundaries">Separate clusters, not separate namespaces, for hard environment boundaries</h2>
 <p>Namespaces are a good way to organize workloads inside one cluster, but they're a soft boundary. A misconfigured RBAC role or a cluster-wide resource (a CRD, a webhook, a node setting) can still reach across them. When environments carry very different risks, such as a development sandbox versus a production cluster serving live traffic, a real boundary means separate clusters, each with its own control plane, node groups, and IAM trust.</p>
 <p>The deployment this track is based on ran one EKS cluster each for Development, QA, Staging, and Production. Engineers connected to whichever cluster their task needed, rather than to one shared, always-on context.</p>
 </div>
@@ -178,7 +223,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Mechanism</div>
-<h2>IAM identities become Kubernetes identities through access entries</h2>
+<h2 id="iam-identities-become-kubernetes-identities-through-access-entries">IAM identities become Kubernetes identities through access entries</h2>
 <p>EKS doesn't keep its own list of users. Signing in to a cluster is IAM authentication, and <b>access entries</b> decide what each IAM role can do once it's in. You create an access entry for a role, then attach an access policy to it, either for the whole cluster or for specific namespaces.</p>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Let the platform team's SSO role administer the whole cluster
 aws eks create-access-entry --cluster-name prod \
@@ -231,6 +276,7 @@ kubectl config set-context --current --namespace=&lt;namespace&gt;</code></pre><
           <span class="lp-nav-label">Module 03 →</span>
           <span class="lp-nav-title">Container Delivery — Build, Tag, Push, Promote</span>
         </a></nav>
+          </div>
         </div>
       </article>
       <div class="closing">

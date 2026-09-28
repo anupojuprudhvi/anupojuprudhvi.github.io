@@ -131,6 +131,22 @@
       addEventListener("beforeprint", () => blocks.forEach((el) => el.classList.remove("reveal-pending")));
     }
 
+    // Module sidebar: highlight the section currently being read.
+    const sectionLinks = [...document.querySelectorAll(".lp-sidebar .lp-toc-sections a")];
+    if (sectionLinks.length && "IntersectionObserver" in window) {
+      const byId = new Map(sectionLinks.map((link) => [link.hash.slice(1), link]));
+      const headings = [...byId.keys()].map((id) => document.getElementById(id)).filter(Boolean);
+      const setActive = (id) => sectionLinks.forEach((link) => link.classList.toggle("is-active", link.hash === `#${id}`));
+      const spy = new IntersectionObserver(
+        (entries) => {
+          const visible = entries.filter((e) => e.isIntersecting).sort((x, y) => x.boundingClientRect.top - y.boundingClientRect.top);
+          if (visible.length) setActive(visible[0].target.id);
+        },
+        { rootMargin: "-90px 0px -60% 0px" },
+      );
+      headings.forEach((h) => spy.observe(h));
+    }
+
     // Animated diagrams run only while on screen: SVG traffic (SMIL) and CSS
     // cycles both pause when a diagram scrolls away, saving battery on phones.
     const diagrams = document.querySelectorAll("svg.hub-net, svg.hub-net-compact, svg.motif");

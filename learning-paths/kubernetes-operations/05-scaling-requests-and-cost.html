@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="../../assets/learning-path.css" />
     <link rel="stylesheet" href="../../assets/assistant.css" />
   </head>
-  <body class="deepdive">
+  <body class="deepdive lp-with-sidebar">
     <a class="skip-link" href="#main">Skip to content</a>
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
@@ -161,7 +161,52 @@
         </div>
       </header>
       <article class="lp-content">
-        <div class="wrap">
+        <div class="lp-layout">
+          <aside class="lp-sidebar">
+            <nav class="lp-toc" aria-label="Modules in this track">
+              <a class="lp-toc-track" href="index.html">Kubernetes on Amazon EKS: Foundations &amp; Operations</a>
+              <p class="lp-toc-part">Learn the foundations</p>
+              <ol class="lp-toc-list">
+                <li><a href="01-dual-ingress-architecture.html"><span class="lp-toc-num">01</span><span>Dual Ingress Architecture &amp; Its Cost Mechanics</span></a></li>
+                <li><a href="02-multi-environment-clusters-and-rbac.html"><span class="lp-toc-num">02</span><span>Multi-Environment Clusters &amp; IAM/RBAC</span></a></li>
+                <li><a href="03-container-delivery-to-eks.html"><span class="lp-toc-num">03</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
+                <li><a href="07-workload-identity-and-secrets.html"><span class="lp-toc-num">04</span><span>Workload Identity &amp; Secrets: How Pods Get AWS Access</span></a></li>
+                <li><a href="10-platform-add-ons.html"><span class="lp-toc-num">05</span><span>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span></a></li>
+                <li><a href="09-gitops-with-argo-cd.html"><span class="lp-toc-num">06</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
+              </ol>
+              <p class="lp-toc-part">Run it in production</p>
+              <ol class="lp-toc-list">
+                <li class="is-current"><a href="05-scaling-requests-and-cost.html" aria-current="page"><span class="lp-toc-num">07</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a>
+                <ol class="lp-toc-sections"><li><a href="#requests-are-a-promise-and-the-cluster-plans-around-them">Requests are a promise, and the cluster plans around them</a></li><li><a href="#two-layers-of-autoscaling">Two layers of autoscaling</a></li><li><a href="#keeping-scale-down-from-hurting-you">Keeping scale-down from hurting you</a></li></ol></li>
+                <li><a href="08-observability.html"><span class="lp-toc-num">08</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
+                <li><a href="04-day-2-operations-and-incident-triage.html"><span class="lp-toc-num">09</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
+                <li><a href="06-cluster-upgrades.html"><span class="lp-toc-num">10</span><span>Cluster Upgrades Without Drama</span></a></li>
+              </ol>
+            </nav>
+          </aside>
+          <div class="lp-main">
+            <details class="lp-toc-mobile">
+              <summary>All modules in this track (10)</summary>
+              <nav class="lp-toc" aria-label="All modules">
+              <a class="lp-toc-track" href="index.html">Kubernetes on Amazon EKS: Foundations &amp; Operations</a>
+              <p class="lp-toc-part">Learn the foundations</p>
+              <ol class="lp-toc-list">
+                <li><a href="01-dual-ingress-architecture.html"><span class="lp-toc-num">01</span><span>Dual Ingress Architecture &amp; Its Cost Mechanics</span></a></li>
+                <li><a href="02-multi-environment-clusters-and-rbac.html"><span class="lp-toc-num">02</span><span>Multi-Environment Clusters &amp; IAM/RBAC</span></a></li>
+                <li><a href="03-container-delivery-to-eks.html"><span class="lp-toc-num">03</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
+                <li><a href="07-workload-identity-and-secrets.html"><span class="lp-toc-num">04</span><span>Workload Identity &amp; Secrets: How Pods Get AWS Access</span></a></li>
+                <li><a href="10-platform-add-ons.html"><span class="lp-toc-num">05</span><span>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span></a></li>
+                <li><a href="09-gitops-with-argo-cd.html"><span class="lp-toc-num">06</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
+              </ol>
+              <p class="lp-toc-part">Run it in production</p>
+              <ol class="lp-toc-list">
+                <li class="is-current"><a href="05-scaling-requests-and-cost.html" aria-current="page"><span class="lp-toc-num">07</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
+                <li><a href="08-observability.html"><span class="lp-toc-num">08</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
+                <li><a href="04-day-2-operations-and-incident-triage.html"><span class="lp-toc-num">09</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
+                <li><a href="06-cluster-upgrades.html"><span class="lp-toc-num">10</span><span>Cluster Upgrades Without Drama</span></a></li>
+              </ol>
+            </nav>
+            </details>
           <section>
 <div class="wrap">
 <p><b>Before you start:</b> you'll want metrics-server running in the cluster (module 5 covers installing it) and <code>kubectl top</code> working.</p>
@@ -170,8 +215,8 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2>Requests are a promise, and the cluster plans around them</h2>
-<p>Every scaling decision in Kubernetes starts from resource requests. The scheduler places a pod on a node only if the node has room for what the pod *requests*, not what it actually uses. Node autoscalers add nodes when pods can't be placed. The Horizontal Pod Autoscaler measures CPU as a percentage of the request.</p>
+<h2 id="requests-are-a-promise-and-the-cluster-plans-around-them">Requests are a promise, and the cluster plans around them</h2>
+<p>Every scaling decision in Kubernetes starts from resource requests. The scheduler places a pod on a node only if the node has room for what the pod <em>requests</em>, not what it actually uses. Node autoscalers add nodes when pods can't be placed. The Horizontal Pod Autoscaler measures CPU as a percentage of the request.</p>
 <p>So when requests are wrong, everything built on top of them is wrong too. Set them too high and you pay for nodes that sit half-empty. Set them too low, or leave them out, and pods get packed onto nodes that can't actually carry them.</p>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml">resources:
   requests:
@@ -184,7 +229,7 @@
 </section>
 <section>
 <div class="wrap">
-<h2>Two layers of autoscaling</h2>
+<h2 id="two-layers-of-autoscaling">Two layers of autoscaling</h2>
 <p>It helps to keep the two layers apart in your head:</p>
 <ul>
 <li><b>Pods scale out</b> with the Horizontal Pod Autoscaler (HPA). It adds or removes replicas based on a metric, usually CPU or memory usage relative to the request.</li>
@@ -213,7 +258,7 @@ spec:
 <summary>Choosing a node autoscaler</summary>
 <ul>
 <li><b>Cluster Autoscaler</b> works through your existing node groups. It grows or shrinks an Auto Scaling group, so every new node looks like the ones you defined up front. It's predictable and easy to reason about.</li>
-<li><b>Karpenter</b> skips node groups and launches EC2 instances directly, picking instance types that fit the pods that are waiting. It usually packs workloads more tightly and reacts faster, and it can mix Spot and On-Demand capacity. The trade-off is that you describe what's *allowed* rather than exactly what you get.</li>
+<li><b>Karpenter</b> skips node groups and launches EC2 instances directly, picking instance types that fit the pods that are waiting. It usually packs workloads more tightly and reacts faster, and it can mix Spot and On-Demand capacity. The trade-off is that you describe what's <em>allowed</em> rather than exactly what you get.</li>
 <li>Whichever you choose, run one. Two node autoscalers acting on the same capacity will fight each other.</li>
 </ul>
 </details>
@@ -221,7 +266,7 @@ spec:
 </section>
 <section>
 <div class="wrap">
-<h2>Keeping scale-down from hurting you</h2>
+<h2 id="keeping-scale-down-from-hurting-you">Keeping scale-down from hurting you</h2>
 <p>Scaling in is where outages hide. When a node autoscaler removes a node, or a Spot instance is reclaimed (AWS gives a two-minute warning), the pods on it are evicted. A PodDisruptionBudget tells Kubernetes how many replicas must stay up during that kind of voluntary disruption.</p>
 <pre tabindex="0" class="code"><code class="language-yaml">apiVersion: policy/v1
 kind: PodDisruptionBudget
@@ -232,7 +277,7 @@ spec:
   selector:
     matchLabels:
       app: api</code></pre>
-<p>A PDB only protects against *voluntary* disruptions: drains, scale-downs, upgrades. It does nothing for a crash or a node that dies outright. For that you still need more than one replica, spread across Availability Zones.</p>
+<p>A PDB only protects against <em>voluntary</em> disruptions: drains, scale-downs, upgrades. It does nothing for a crash or a node that dies outright. For that you still need more than one replica, spread across Availability Zones.</p>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
 <ul>
@@ -252,6 +297,7 @@ spec:
           <span class="lp-nav-label">Module 08 →</span>
           <span class="lp-nav-title">Observability: Knowing Something's Wrong Before Users Do</span>
         </a></nav>
+          </div>
         </div>
       </article>
       <div class="closing">

@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="../../assets/learning-path.css" />
     <link rel="stylesheet" href="../../assets/assistant.css" />
   </head>
-  <body class="deepdive">
+  <body class="deepdive lp-with-sidebar">
     <a class="skip-link" href="#main">Skip to content</a>
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
@@ -163,11 +163,40 @@
         </div>
       </header>
       <article class="lp-content">
-        <div class="wrap">
+        <div class="lp-layout">
+          <aside class="lp-sidebar">
+            <nav class="lp-toc" aria-label="Modules in this track">
+              <a class="lp-toc-track" href="index.html">Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</a>
+              <ol class="lp-toc-list">
+                <li><a href="01-assessment-paths-rapid-vs-deep.html"><span class="lp-toc-num">01</span><span>Assessment Frameworks · Rapid vs. Deep Enterprise</span></a></li>
+                <li class="is-current"><a href="02-discovery-telemetry-and-inventory.html" aria-current="page"><span class="lp-toc-num">02</span><span>Discovery Telemetry · RVTools, AWS Transform &amp; Sizing</span></a>
+                <ol class="lp-toc-sections"><li><a href="#the-trap-of-1-1-infrastructure-translation">The trap of 1:1 infrastructure translation</a></li><li><a href="#the-dual-path-discovery-architecture">The dual-path discovery architecture</a></li><li><a href="#agentless-discovery-pipeline">Agentless discovery pipeline</a></li><li><a href="#the-right-sizing-algorithm">The right-sizing algorithm</a></li><li><a href="#handling-air-gapped-and-restricted-environments">Handling air-gapped and restricted environments</a></li></ol></li>
+                <li><a href="03-financial-engineering-tco-and-licensing.html"><span class="lp-toc-num">03</span><span>Financial Engineering · 3-Year TCO &amp; Licensing</span></a></li>
+                <li><a href="04-target-architecture-and-landing-zone.html"><span class="lp-toc-num">04</span><span>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</span></a></li>
+                <li><a href="05-mobilize-wave-planning-and-pilot.html"><span class="lp-toc-num">05</span><span>The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot</span></a></li>
+                <li><a href="06-migrate-and-modernize-strategies.html"><span class="lp-toc-num">06</span><span>Migrate &amp; Modernize · In-Flight vs. Sequential Factory</span></a></li>
+              </ol>
+            </nav>
+          </aside>
+          <div class="lp-main">
+            <details class="lp-toc-mobile">
+              <summary>All modules in this track (6)</summary>
+              <nav class="lp-toc" aria-label="All modules">
+              <a class="lp-toc-track" href="index.html">Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</a>
+              <ol class="lp-toc-list">
+                <li><a href="01-assessment-paths-rapid-vs-deep.html"><span class="lp-toc-num">01</span><span>Assessment Frameworks · Rapid vs. Deep Enterprise</span></a></li>
+                <li class="is-current"><a href="02-discovery-telemetry-and-inventory.html" aria-current="page"><span class="lp-toc-num">02</span><span>Discovery Telemetry · RVTools, AWS Transform &amp; Sizing</span></a></li>
+                <li><a href="03-financial-engineering-tco-and-licensing.html"><span class="lp-toc-num">03</span><span>Financial Engineering · 3-Year TCO &amp; Licensing</span></a></li>
+                <li><a href="04-target-architecture-and-landing-zone.html"><span class="lp-toc-num">04</span><span>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</span></a></li>
+                <li><a href="05-mobilize-wave-planning-and-pilot.html"><span class="lp-toc-num">05</span><span>The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot</span></a></li>
+                <li><a href="06-migrate-and-modernize-strategies.html"><span class="lp-toc-num">06</span><span>Migrate &amp; Modernize · In-Flight vs. Sequential Factory</span></a></li>
+              </ol>
+            </nav>
+            </details>
           <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2>The trap of 1:1 infrastructure translation</h2>
+<h2 id="the-trap-of-1-1-infrastructure-translation">The trap of 1:1 infrastructure translation</h2>
 <p>The single most expensive mistake in cloud migration is <b>naive 1:1 translation</b> — taking an on-premises VM configured with 16 vCPUs and 64 GB RAM and blindly matching it to an <code>m5.4xlarge</code> EC2 instance.</p>
 <p>On-premises infrastructure is chronically over-provisioned. Systems engineers historically purchased physical hosts with 3–5 year capacity buffers to avoid procurement lead times. In practice, enterprise VMware estates frequently operate at <b>average CPU utilization below 10%</b> and <b>RAM utilization below 35%</b>.</p>
 <p>Translating provisioned hardware 1:1 into AWS results in inflated cloud bills that destroy the business case. Precision discovery must capture <b>actual utilization curves</b> to calculate right-sized instance recommendations.</p>
@@ -176,7 +205,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Tooling</div>
-<h2>The dual-path discovery architecture</h2>
+<h2 id="the-dual-path-discovery-architecture">The dual-path discovery architecture</h2>
 <p>Discovery today uses two data sources that complement each other:</p>
 <ol>
 <li><b>Point-in-Time Hypervisor Snapshots (RVTools):</b></li>
@@ -199,7 +228,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>Agentless discovery pipeline</h2>
+<h2 id="agentless-discovery-pipeline">Agentless discovery pipeline</h2>
 <p>The diagram below illustrates the secure telemetry flow from private on-premises hypervisors to the AWS assessment analytics engine:</p>
 <pre tabindex="0"><code>[ VMware vCenter Cluster ]
        │
@@ -216,7 +245,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Analytics</div>
-<h2>The right-sizing algorithm</h2>
+<h2 id="the-right-sizing-algorithm">The right-sizing algorithm</h2>
 <p>Once telemetry is ingested into AWS Transform, right-sizing algorithms evaluate server performance across three primary dimensions:</p>
 <h3>1. Compute Right-Sizing (95th Percentile Rule)</h3>
 <p>Rather than sizing for absolute maximum spikes (which may represent a one-off backup or patch cycle), compute is sized against the <b>95th percentile CPU and memory demand</b> plus a 20–30% operational headroom buffer:</p>
@@ -235,7 +264,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Security</div>
-<h2>Handling air-gapped and restricted environments</h2>
+<h2 id="handling-air-gapped-and-restricted-environments">Handling air-gapped and restricted environments</h2>
 <p>In zero-trust or air-gapped datacenters where outbound HTTPS traffic to AWS public endpoints is strictly blocked:</p>
 <ul>
 <li>The AWS Transform collector can operate in <b>offline collection mode</b>.</li>
@@ -253,6 +282,7 @@
           <span class="lp-nav-label">Module 03 →</span>
           <span class="lp-nav-title">Financial Engineering · 3-Year TCO &amp; Licensing</span>
         </a></nav>
+          </div>
         </div>
       </article>
       <div class="closing">

@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="../../assets/learning-path.css" />
     <link rel="stylesheet" href="../../assets/assistant.css" />
   </head>
-  <body class="deepdive">
+  <body class="deepdive lp-with-sidebar">
     <a class="skip-link" href="#main">Skip to content</a>
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
@@ -161,7 +161,52 @@
         </div>
       </header>
       <article class="lp-content">
-        <div class="wrap">
+        <div class="lp-layout">
+          <aside class="lp-sidebar">
+            <nav class="lp-toc" aria-label="Modules in this track">
+              <a class="lp-toc-track" href="index.html">Kubernetes on Amazon EKS: Foundations &amp; Operations</a>
+              <p class="lp-toc-part">Learn the foundations</p>
+              <ol class="lp-toc-list">
+                <li><a href="01-dual-ingress-architecture.html"><span class="lp-toc-num">01</span><span>Dual Ingress Architecture &amp; Its Cost Mechanics</span></a></li>
+                <li><a href="02-multi-environment-clusters-and-rbac.html"><span class="lp-toc-num">02</span><span>Multi-Environment Clusters &amp; IAM/RBAC</span></a></li>
+                <li class="is-current"><a href="03-container-delivery-to-eks.html" aria-current="page"><span class="lp-toc-num">03</span><span>Container Delivery — Build, Tag, Push, Promote</span></a>
+                <ol class="lp-toc-sections"><li><a href="#build-once-then-promote-the-same-image">Build once, then promote the same image</a></li><li><a href="#registry-login-breaks-in-headless-ci-cd">Registry login breaks in headless CI/CD</a></li></ol></li>
+                <li><a href="07-workload-identity-and-secrets.html"><span class="lp-toc-num">04</span><span>Workload Identity &amp; Secrets: How Pods Get AWS Access</span></a></li>
+                <li><a href="10-platform-add-ons.html"><span class="lp-toc-num">05</span><span>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span></a></li>
+                <li><a href="09-gitops-with-argo-cd.html"><span class="lp-toc-num">06</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
+              </ol>
+              <p class="lp-toc-part">Run it in production</p>
+              <ol class="lp-toc-list">
+                <li><a href="05-scaling-requests-and-cost.html"><span class="lp-toc-num">07</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
+                <li><a href="08-observability.html"><span class="lp-toc-num">08</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
+                <li><a href="04-day-2-operations-and-incident-triage.html"><span class="lp-toc-num">09</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
+                <li><a href="06-cluster-upgrades.html"><span class="lp-toc-num">10</span><span>Cluster Upgrades Without Drama</span></a></li>
+              </ol>
+            </nav>
+          </aside>
+          <div class="lp-main">
+            <details class="lp-toc-mobile">
+              <summary>All modules in this track (10)</summary>
+              <nav class="lp-toc" aria-label="All modules">
+              <a class="lp-toc-track" href="index.html">Kubernetes on Amazon EKS: Foundations &amp; Operations</a>
+              <p class="lp-toc-part">Learn the foundations</p>
+              <ol class="lp-toc-list">
+                <li><a href="01-dual-ingress-architecture.html"><span class="lp-toc-num">01</span><span>Dual Ingress Architecture &amp; Its Cost Mechanics</span></a></li>
+                <li><a href="02-multi-environment-clusters-and-rbac.html"><span class="lp-toc-num">02</span><span>Multi-Environment Clusters &amp; IAM/RBAC</span></a></li>
+                <li class="is-current"><a href="03-container-delivery-to-eks.html" aria-current="page"><span class="lp-toc-num">03</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
+                <li><a href="07-workload-identity-and-secrets.html"><span class="lp-toc-num">04</span><span>Workload Identity &amp; Secrets: How Pods Get AWS Access</span></a></li>
+                <li><a href="10-platform-add-ons.html"><span class="lp-toc-num">05</span><span>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span></a></li>
+                <li><a href="09-gitops-with-argo-cd.html"><span class="lp-toc-num">06</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
+              </ol>
+              <p class="lp-toc-part">Run it in production</p>
+              <ol class="lp-toc-list">
+                <li><a href="05-scaling-requests-and-cost.html"><span class="lp-toc-num">07</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
+                <li><a href="08-observability.html"><span class="lp-toc-num">08</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
+                <li><a href="04-day-2-operations-and-incident-triage.html"><span class="lp-toc-num">09</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
+                <li><a href="06-cluster-upgrades.html"><span class="lp-toc-num">10</span><span>Cluster Upgrades Without Drama</span></a></li>
+              </ol>
+            </nav>
+            </details>
           <section>
 <div class="wrap">
 <p><b>Before you start:</b> you'll want Docker, the AWS CLI v2, an ECR repository, and a CI/CD system that can assume an AWS role.</p>
@@ -170,10 +215,10 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2>Build once, then promote the same image</h2>
-<p>Building an image is the easy part. What matters in operation is being able to say exactly which image is running in which environment, and moving *that same image* forward instead of rebuilding it for each environment. Rebuilding from the same commit usually gives you the same thing, but &quot;usually&quot; isn't a guarantee: a base image or dependency can change in between.</p>
+<h2 id="build-once-then-promote-the-same-image">Build once, then promote the same image</h2>
+<p>Building an image is the easy part. What matters in operation is being able to say exactly which image is running in which environment, and moving <em>that same image</em> forward instead of rebuilding it for each environment. Rebuilding from the same commit usually gives you the same thing, but &quot;usually&quot; isn't a guarantee: a base image or dependency can change in between.</p>
 <h3>How the original deployment tagged images</h3>
-<p>The deployment this track is based on put the environment and a build number in the tag, for example <code>qa1.0.42</code>, then retagged the image for production (<code>prod1.0.10</code>). It was readable at a glance and it kept the rule that the image isn't rebuilt. But the tag says nothing about what's *inside* the image, and a tag can be moved to point at a different image later.</p>
+<p>The deployment this track is based on put the environment and a build number in the tag, for example <code>qa1.0.42</code>, then retagged the image for production (<code>prod1.0.10</code>). It was readable at a glance and it kept the rule that the image isn't rebuilt. But the tag says nothing about what's <em>inside</em> the image, and a tag can be moved to point at a different image later.</p>
 <details class="implementation-notes">
 <summary>A sturdier approach: immutable tags and digests</summary>
 <ul>
@@ -203,7 +248,7 @@ containers:
 <section>
 <div class="wrap">
 <div class="section-eyebrow">The gotcha</div>
-<h2>Registry login breaks in headless CI/CD</h2>
+<h2 id="registry-login-breaks-in-headless-ci-cd">Registry login breaks in headless CI/CD</h2>
 <p><code>docker login</code> normally asks for a password at the terminal. That's invisible when you try the command by hand, because it just works. Then the same step runs in a CI/CD job, where there's no terminal to type into, and it fails with:</p>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">Error: Cannot perform an interactive login from a non-TTY device</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <h3>Fix</h3>
@@ -232,6 +277,7 @@ aws ecr get-login-password --region &lt;region&gt; \
           <span class="lp-nav-label">Module 04 →</span>
           <span class="lp-nav-title">Workload Identity &amp; Secrets: How Pods Get AWS Access</span>
         </a></nav>
+          </div>
         </div>
       </article>
       <div class="closing">

@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="../../assets/learning-path.css" />
     <link rel="stylesheet" href="../../assets/assistant.css" />
   </head>
-  <body class="deepdive">
+  <body class="deepdive lp-with-sidebar">
     <a class="skip-link" href="#main">Skip to content</a>
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
@@ -161,7 +161,52 @@
         </div>
       </header>
       <article class="lp-content">
-        <div class="wrap">
+        <div class="lp-layout">
+          <aside class="lp-sidebar">
+            <nav class="lp-toc" aria-label="Modules in this track">
+              <a class="lp-toc-track" href="index.html">Kubernetes on Amazon EKS: Foundations &amp; Operations</a>
+              <p class="lp-toc-part">Learn the foundations</p>
+              <ol class="lp-toc-list">
+                <li><a href="01-dual-ingress-architecture.html"><span class="lp-toc-num">01</span><span>Dual Ingress Architecture &amp; Its Cost Mechanics</span></a></li>
+                <li><a href="02-multi-environment-clusters-and-rbac.html"><span class="lp-toc-num">02</span><span>Multi-Environment Clusters &amp; IAM/RBAC</span></a></li>
+                <li><a href="03-container-delivery-to-eks.html"><span class="lp-toc-num">03</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
+                <li><a href="07-workload-identity-and-secrets.html"><span class="lp-toc-num">04</span><span>Workload Identity &amp; Secrets: How Pods Get AWS Access</span></a></li>
+                <li><a href="10-platform-add-ons.html"><span class="lp-toc-num">05</span><span>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span></a></li>
+                <li><a href="09-gitops-with-argo-cd.html"><span class="lp-toc-num">06</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
+              </ol>
+              <p class="lp-toc-part">Run it in production</p>
+              <ol class="lp-toc-list">
+                <li><a href="05-scaling-requests-and-cost.html"><span class="lp-toc-num">07</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
+                <li><a href="08-observability.html"><span class="lp-toc-num">08</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
+                <li class="is-current"><a href="04-day-2-operations-and-incident-triage.html" aria-current="page"><span class="lp-toc-num">09</span><span>Day-2 Operations &amp; Incident Triage</span></a>
+                <ol class="lp-toc-sections"><li><a href="#it-deployed-and-it-s-healthy-are-different-questions">&quot;It deployed&quot; and &quot;it's healthy&quot; are different questions</a></li><li><a href="#a-repeatable-triage-sequence-for-a-stuck-deployment">A repeatable triage sequence for a stuck deployment</a></li><li><a href="#when-to-roll-back-versus-roll-forward">When to roll back versus roll forward</a></li></ol></li>
+                <li><a href="06-cluster-upgrades.html"><span class="lp-toc-num">10</span><span>Cluster Upgrades Without Drama</span></a></li>
+              </ol>
+            </nav>
+          </aside>
+          <div class="lp-main">
+            <details class="lp-toc-mobile">
+              <summary>All modules in this track (10)</summary>
+              <nav class="lp-toc" aria-label="All modules">
+              <a class="lp-toc-track" href="index.html">Kubernetes on Amazon EKS: Foundations &amp; Operations</a>
+              <p class="lp-toc-part">Learn the foundations</p>
+              <ol class="lp-toc-list">
+                <li><a href="01-dual-ingress-architecture.html"><span class="lp-toc-num">01</span><span>Dual Ingress Architecture &amp; Its Cost Mechanics</span></a></li>
+                <li><a href="02-multi-environment-clusters-and-rbac.html"><span class="lp-toc-num">02</span><span>Multi-Environment Clusters &amp; IAM/RBAC</span></a></li>
+                <li><a href="03-container-delivery-to-eks.html"><span class="lp-toc-num">03</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
+                <li><a href="07-workload-identity-and-secrets.html"><span class="lp-toc-num">04</span><span>Workload Identity &amp; Secrets: How Pods Get AWS Access</span></a></li>
+                <li><a href="10-platform-add-ons.html"><span class="lp-toc-num">05</span><span>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span></a></li>
+                <li><a href="09-gitops-with-argo-cd.html"><span class="lp-toc-num">06</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
+              </ol>
+              <p class="lp-toc-part">Run it in production</p>
+              <ol class="lp-toc-list">
+                <li><a href="05-scaling-requests-and-cost.html"><span class="lp-toc-num">07</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
+                <li><a href="08-observability.html"><span class="lp-toc-num">08</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
+                <li class="is-current"><a href="04-day-2-operations-and-incident-triage.html" aria-current="page"><span class="lp-toc-num">09</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
+                <li><a href="06-cluster-upgrades.html"><span class="lp-toc-num">10</span><span>Cluster Upgrades Without Drama</span></a></li>
+              </ol>
+            </nav>
+            </details>
           <section>
 <div class="wrap">
 <p><b>Before you start:</b> you'll want <code>kubectl</code> access to a cluster (see module 2) and a deployment you can safely break in a non-production environment.</p>
@@ -170,7 +215,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2>&quot;It deployed&quot; and &quot;it's healthy&quot; are different questions</h2>
+<h2 id="it-deployed-and-it-s-healthy-are-different-questions">&quot;It deployed&quot; and &quot;it's healthy&quot; are different questions</h2>
 <p>A <code>kubectl apply</code> returning without error only confirms the manifest was accepted by the API server — not that the resulting pods came up healthy, passed their readiness checks, and are actually serving traffic. Treating those as the same thing is how a broken rollout goes unnoticed until a user reports it.</p>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Confirm the rollout actually finished, not just that it started
 kubectl rollout status deployment/&lt;name&gt; -n &lt;namespace&gt;
@@ -186,7 +231,7 @@ kubectl logs &lt;pod-name&gt; -n &lt;namespace&gt; --previous</code></pre><figca
 </section>
 <section>
 <div class="wrap">
-<h2>A repeatable triage sequence for a stuck deployment</h2>
+<h2 id="a-repeatable-triage-sequence-for-a-stuck-deployment">A repeatable triage sequence for a stuck deployment</h2>
 <p>Guessing under pressure is slower and less reliable than working a fixed sequence. A useful default order:</p>
 <details class="implementation-notes">
 <summary>Triage checklist</summary>
@@ -202,7 +247,7 @@ kubectl logs &lt;pod-name&gt; -n &lt;namespace&gt; --previous</code></pre><figca
 </section>
 <section>
 <div class="wrap">
-<h2>When to roll back versus roll forward</h2>
+<h2 id="when-to-roll-back-versus-roll-forward">When to roll back versus roll forward</h2>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Roll back to the previous known-good revision
 kubectl rollout undo deployment/&lt;name&gt; -n &lt;namespace&gt;
 
@@ -214,7 +259,7 @@ kubectl rollout undo deployment/&lt;name&gt; -n &lt;namespace&gt; --to-revision=
 <summary>Implementation notes</summary>
 <ul>
 <li><b>A stuck rollout and a failing rollout look identical from the outside at first.</b> <code>kubectl rollout status</code> distinguishes them for you rather than requiring you to infer it from pod counts.</li>
-<li>**Recording *why* a rollback happened, not just that it did, is what makes the next on-call engineer's job easier.** An undocumented rollback just moves the unknown failure mode to the next deployment attempt.</li>
+<li>**Recording <em>why</em> a rollback happened, not just that it did, is what makes the next on-call engineer's job easier.** An undocumented rollback just moves the unknown failure mode to the next deployment attempt.</li>
 <li><b>The single most common root cause of &quot;it worked in QA, not in Production&quot; is an environment-specific config or IAM permission difference, not the code.</b> Checking that first is usually faster than re-reading application logs from the top.</li>
 </ul>
 </details>
@@ -228,6 +273,7 @@ kubectl rollout undo deployment/&lt;name&gt; -n &lt;namespace&gt; --to-revision=
           <span class="lp-nav-label">Module 10 →</span>
           <span class="lp-nav-title">Cluster Upgrades Without Drama</span>
         </a></nav>
+          </div>
         </div>
       </article>
       <div class="closing">

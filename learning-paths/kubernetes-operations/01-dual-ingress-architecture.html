@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="../../assets/learning-path.css" />
     <link rel="stylesheet" href="../../assets/assistant.css" />
   </head>
-  <body class="deepdive">
+  <body class="deepdive lp-with-sidebar">
     <a class="skip-link" href="#main">Skip to content</a>
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
@@ -161,7 +161,52 @@
         </div>
       </header>
       <article class="lp-content">
-        <div class="wrap">
+        <div class="lp-layout">
+          <aside class="lp-sidebar">
+            <nav class="lp-toc" aria-label="Modules in this track">
+              <a class="lp-toc-track" href="index.html">Kubernetes on Amazon EKS: Foundations &amp; Operations</a>
+              <p class="lp-toc-part">Learn the foundations</p>
+              <ol class="lp-toc-list">
+                <li class="is-current"><a href="01-dual-ingress-architecture.html" aria-current="page"><span class="lp-toc-num">01</span><span>Dual Ingress Architecture &amp; Its Cost Mechanics</span></a>
+                <ol class="lp-toc-sections"><li><a href="#share-load-balancers-unless-there-s-a-reason-not-to">Share load balancers unless there's a reason not to</a></li><li><a href="#two-ingress-paths-each-used-for-what-it-s-good-at">Two ingress paths, each used for what it's good at</a></li><li><a href="#ingress-nginx-is-retired-so-plan-the-next-step">ingress-nginx is retired, so plan the next step</a></li></ol></li>
+                <li><a href="02-multi-environment-clusters-and-rbac.html"><span class="lp-toc-num">02</span><span>Multi-Environment Clusters &amp; IAM/RBAC</span></a></li>
+                <li><a href="03-container-delivery-to-eks.html"><span class="lp-toc-num">03</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
+                <li><a href="07-workload-identity-and-secrets.html"><span class="lp-toc-num">04</span><span>Workload Identity &amp; Secrets: How Pods Get AWS Access</span></a></li>
+                <li><a href="10-platform-add-ons.html"><span class="lp-toc-num">05</span><span>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span></a></li>
+                <li><a href="09-gitops-with-argo-cd.html"><span class="lp-toc-num">06</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
+              </ol>
+              <p class="lp-toc-part">Run it in production</p>
+              <ol class="lp-toc-list">
+                <li><a href="05-scaling-requests-and-cost.html"><span class="lp-toc-num">07</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
+                <li><a href="08-observability.html"><span class="lp-toc-num">08</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
+                <li><a href="04-day-2-operations-and-incident-triage.html"><span class="lp-toc-num">09</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
+                <li><a href="06-cluster-upgrades.html"><span class="lp-toc-num">10</span><span>Cluster Upgrades Without Drama</span></a></li>
+              </ol>
+            </nav>
+          </aside>
+          <div class="lp-main">
+            <details class="lp-toc-mobile">
+              <summary>All modules in this track (10)</summary>
+              <nav class="lp-toc" aria-label="All modules">
+              <a class="lp-toc-track" href="index.html">Kubernetes on Amazon EKS: Foundations &amp; Operations</a>
+              <p class="lp-toc-part">Learn the foundations</p>
+              <ol class="lp-toc-list">
+                <li class="is-current"><a href="01-dual-ingress-architecture.html" aria-current="page"><span class="lp-toc-num">01</span><span>Dual Ingress Architecture &amp; Its Cost Mechanics</span></a></li>
+                <li><a href="02-multi-environment-clusters-and-rbac.html"><span class="lp-toc-num">02</span><span>Multi-Environment Clusters &amp; IAM/RBAC</span></a></li>
+                <li><a href="03-container-delivery-to-eks.html"><span class="lp-toc-num">03</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
+                <li><a href="07-workload-identity-and-secrets.html"><span class="lp-toc-num">04</span><span>Workload Identity &amp; Secrets: How Pods Get AWS Access</span></a></li>
+                <li><a href="10-platform-add-ons.html"><span class="lp-toc-num">05</span><span>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span></a></li>
+                <li><a href="09-gitops-with-argo-cd.html"><span class="lp-toc-num">06</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
+              </ol>
+              <p class="lp-toc-part">Run it in production</p>
+              <ol class="lp-toc-list">
+                <li><a href="05-scaling-requests-and-cost.html"><span class="lp-toc-num">07</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
+                <li><a href="08-observability.html"><span class="lp-toc-num">08</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
+                <li><a href="04-day-2-operations-and-incident-triage.html"><span class="lp-toc-num">09</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
+                <li><a href="06-cluster-upgrades.html"><span class="lp-toc-num">10</span><span>Cluster Upgrades Without Drama</span></a></li>
+              </ol>
+            </nav>
+            </details>
           <section>
 <div class="wrap">
 <p><b>Before you start:</b> you'll want an EKS cluster with the AWS Load Balancer Controller installed, and a basic idea of what a Kubernetes Service and Ingress are.</p>
@@ -170,7 +215,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2>Share load balancers unless there's a reason not to</h2>
+<h2 id="share-load-balancers-unless-there-s-a-reason-not-to">Share load balancers unless there's a reason not to</h2>
 <p>The default instinct when exposing a new microservice on EKS is to give it its own Ingress and let the AWS Load Balancer Controller create a dedicated Application Load Balancer for it. That works, and it's easy to reason about. But every ALB is a fixed monthly cost on top of its traffic charges, and that cost grows with the number of services, however little traffic each one gets.</p>
 <p>With even a modest number of separately deployed APIs, that turns into a noticeable line item you don't need to pay.</p>
 </div>
@@ -178,7 +223,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Pattern</div>
-<h2>Two ingress paths, each used for what it's good at</h2>
+<h2 id="two-ingress-paths-each-used-for-what-it-s-good-at">Two ingress paths, each used for what it's good at</h2>
 <p>The deployment this track is based on didn't pick one ingress approach for everything. It used each controller for the kind of traffic it suits:</p>
 <ul>
 <li><b>AWS Load Balancer Controller with ingress grouping, for backend APIs.</b> Several services share one ALB by giving each Ingress the same <code>group.name</code>, instead of each service getting its own load balancer.</li>
@@ -252,13 +297,13 @@ spec:
                 name: customer-portal
                 port:
                   number: 80</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<p>The regex captures everything after <code>/portal</code>, and <code>rewrite-target: /$2</code> passes just that part to the container. So <code>/portal/assets/app.js</code> reaches the app as <code>/assets/app.js</code>. A plain <code>rewrite-target: /</code> would send *every* request to <code>/</code>, which quietly breaks the app's CSS and JavaScript.</p>
+<p>The regex captures everything after <code>/portal</code>, and <code>rewrite-target: /$2</code> passes just that part to the container. So <code>/portal/assets/app.js</code> reaches the app as <code>/assets/app.js</code>. A plain <code>rewrite-target: /</code> would send <em>every</em> request to <code>/</code>, which quietly breaks the app's CSS and JavaScript.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Update</div>
-<h2>ingress-nginx is retired, so plan the next step</h2>
+<h2 id="ingress-nginx-is-retired-so-plan-the-next-step">ingress-nginx is retired, so plan the next step</h2>
 <p>The community <b>ingress-nginx</b> controller used in this design is being retired. In November 2025 the Kubernetes project announced it would get only best-effort maintenance until March 2026, and no further releases or security fixes after that. The pattern above (a separate controller for rewrite-heavy frontends) still makes sense, but new clusters shouldn't start on ingress-nginx, and existing ones need a migration plan.</p>
 <p>The long-term direction is the <b>Gateway API</b>, the successor to Ingress. It splits the job into a <code>Gateway</code> (the load balancer, owned by the platform team) and <code>HTTPRoute</code>s (routing rules, owned by each app team), and it supports path rewrites without controller-specific annotations:</p>
 <pre tabindex="0" class="code"><code class="language-yaml">apiVersion: gateway.networking.k8s.io/v1
@@ -304,6 +349,7 @@ spec:
           <span class="lp-nav-label">Module 02 →</span>
           <span class="lp-nav-title">Multi-Environment Clusters &amp; IAM/RBAC</span>
         </a></nav>
+          </div>
         </div>
       </article>
       <div class="closing">

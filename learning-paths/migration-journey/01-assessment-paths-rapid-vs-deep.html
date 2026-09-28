@@ -49,7 +49,7 @@
     <link rel="stylesheet" href="../../assets/learning-path.css" />
     <link rel="stylesheet" href="../../assets/assistant.css" />
   </head>
-  <body class="deepdive">
+  <body class="deepdive lp-with-sidebar">
     <a class="skip-link" href="#main">Skip to content</a>
     <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
@@ -163,15 +163,44 @@
         </div>
       </header>
       <article class="lp-content">
-        <div class="wrap">
+        <div class="lp-layout">
+          <aside class="lp-sidebar">
+            <nav class="lp-toc" aria-label="Modules in this track">
+              <a class="lp-toc-track" href="index.html">Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</a>
+              <ol class="lp-toc-list">
+                <li class="is-current"><a href="01-assessment-paths-rapid-vs-deep.html" aria-current="page"><span class="lp-toc-num">01</span><span>Assessment Frameworks · Rapid vs. Deep Enterprise</span></a>
+                <ol class="lp-toc-sections"><li><a href="#the-two-paths-to-cloud-readiness">The two paths to cloud readiness</a></li><li><a href="#rapid-vs-deep-engagement-models">Rapid vs. Deep engagement models</a></li><li><a href="#the-6-cloud-adoption-framework-caf-pillars">The 6 Cloud Adoption Framework (CAF) pillars</a></li><li><a href="#selecting-the-right-path">Selecting the right path</a></li></ol></li>
+                <li><a href="02-discovery-telemetry-and-inventory.html"><span class="lp-toc-num">02</span><span>Discovery Telemetry · RVTools, AWS Transform &amp; Sizing</span></a></li>
+                <li><a href="03-financial-engineering-tco-and-licensing.html"><span class="lp-toc-num">03</span><span>Financial Engineering · 3-Year TCO &amp; Licensing</span></a></li>
+                <li><a href="04-target-architecture-and-landing-zone.html"><span class="lp-toc-num">04</span><span>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</span></a></li>
+                <li><a href="05-mobilize-wave-planning-and-pilot.html"><span class="lp-toc-num">05</span><span>The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot</span></a></li>
+                <li><a href="06-migrate-and-modernize-strategies.html"><span class="lp-toc-num">06</span><span>Migrate &amp; Modernize · In-Flight vs. Sequential Factory</span></a></li>
+              </ol>
+            </nav>
+          </aside>
+          <div class="lp-main">
+            <details class="lp-toc-mobile">
+              <summary>All modules in this track (6)</summary>
+              <nav class="lp-toc" aria-label="All modules">
+              <a class="lp-toc-track" href="index.html">Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</a>
+              <ol class="lp-toc-list">
+                <li class="is-current"><a href="01-assessment-paths-rapid-vs-deep.html" aria-current="page"><span class="lp-toc-num">01</span><span>Assessment Frameworks · Rapid vs. Deep Enterprise</span></a></li>
+                <li><a href="02-discovery-telemetry-and-inventory.html"><span class="lp-toc-num">02</span><span>Discovery Telemetry · RVTools, AWS Transform &amp; Sizing</span></a></li>
+                <li><a href="03-financial-engineering-tco-and-licensing.html"><span class="lp-toc-num">03</span><span>Financial Engineering · 3-Year TCO &amp; Licensing</span></a></li>
+                <li><a href="04-target-architecture-and-landing-zone.html"><span class="lp-toc-num">04</span><span>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</span></a></li>
+                <li><a href="05-mobilize-wave-planning-and-pilot.html"><span class="lp-toc-num">05</span><span>The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot</span></a></li>
+                <li><a href="06-migrate-and-modernize-strategies.html"><span class="lp-toc-num">06</span><span>Migrate &amp; Modernize · In-Flight vs. Sequential Factory</span></a></li>
+              </ol>
+            </nav>
+            </details>
           <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2>The two paths to cloud readiness</h2>
+<h2 id="the-two-paths-to-cloud-readiness">The two paths to cloud readiness</h2>
 <p>Every cloud migration starts with the <b>Assess</b> phase, but no two enterprise estates arrive with the same timeline, governance constraints, or organizational readiness.</p>
 <p>When entering an assessment, architects and migration leads must select between two primary delivery engagement models:</p>
 <ol>
-<li><b>The Rapid Assessment (4–6 Weeks):</b> A focused, telemetry-led evaluation built for speed. It uses automated tooling to answer the core financial and infrastructure questions: *&quot;What do we have, what will it cost on AWS, and what are our immediate licensing liabilities?&quot;*</li>
+<li><b>The Rapid Assessment (4–6 Weeks):</b> A focused, telemetry-led evaluation built for speed. It uses automated tooling to answer the core financial and infrastructure questions: <em>&quot;What do we have, what will it cost on AWS, and what are our immediate licensing liabilities?&quot;</em></li>
 <li><b>The Deep Enterprise Assessment (3–4 Months):</b> A full study of the organization and its technology. It pairs automated discovery with extensive cross-functional stakeholder workshops across all six <b>AWS Cloud Adoption Framework (CAF)</b> perspectives, analyzing people, skills, governance, and operating models alongside server inventory.</li>
 </ol>
 <p>Selecting the wrong engagement model introduces severe delivery friction: executing a multi-month discovery when a datacenter lease expires in 90 days causes paralysis, while running a rapid 4-week tooling scan on a heavily regulated bank without organizational buy-in leads to stalled Mobilize initiatives.</p>
@@ -180,7 +209,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Comparison</div>
-<h2>Rapid vs. Deep engagement models</h2>
+<h2 id="rapid-vs-deep-engagement-models">Rapid vs. Deep engagement models</h2>
 <p>The table below contrasts the scope, cadence, deliverables, and trade-offs of both assessment paths:</p>
 <ul>
 <li><b>Rapid Assessment (4–6 Weeks):</b></li>
@@ -203,7 +232,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Methodology</div>
-<h2>The 6 Cloud Adoption Framework (CAF) pillars</h2>
+<h2 id="the-6-cloud-adoption-framework-caf-pillars">The 6 Cloud Adoption Framework (CAF) pillars</h2>
 <p>In a Deep Assessment, technical inventory is only half the equation. The evaluation conducts structured workshops across the six AWS CAF pillars to gauge organizational maturity:</p>
 <ol>
 <li><b>Business Perspective:</b> Aligns migration objectives with business outcomes — separating cost optimization goals from agility, geographic expansion, or ESG carbon footprint mandates.</li>
@@ -218,7 +247,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Decision Matrix</div>
-<h2>Selecting the right path</h2>
+<h2 id="selecting-the-right-path">Selecting the right path</h2>
 <p>Use the following decision criteria to align leadership on the appropriate assessment model:</p>
 <ul>
 <li><b>Choose the Rapid Path (4–6 Weeks) when:</b></li>
@@ -240,6 +269,7 @@
           <span class="lp-nav-label">Module 02 →</span>
           <span class="lp-nav-title">Discovery Telemetry · RVTools, AWS Transform &amp; Sizing</span>
         </a></nav>
+          </div>
         </div>
       </article>
       <div class="closing">
