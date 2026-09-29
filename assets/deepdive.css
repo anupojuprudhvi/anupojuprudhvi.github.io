@@ -1061,3 +1061,115 @@ pre.code {
   color: var(--text-muted);
   font-size: 13px;
 }
+
+/* Traffic walkthrough (assets/flow-player.js): Play / Back / Next move a
+   highlight through the diagram, one hop at a time. */
+.deepdive .flow-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: -4px 0 16px;
+}
+.deepdive .flow-btn {
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg-raised);
+  color: var(--text);
+  cursor: pointer;
+}
+.deepdive .flow-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+}
+.deepdive .flow-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.deepdive .flow-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.deepdive .flow-play {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+.deepdive .flow-caption {
+  margin: 16px auto 0;
+  max-width: 620px;
+  padding: 12px 14px;
+  border-left: 2px solid var(--accent);
+  background: var(--bg-raised);
+  font-size: 13.5px;
+  color: var(--text-body);
+  min-height: 3.2em;
+}
+.deepdive .flow-caption strong {
+  display: block;
+  color: var(--text);
+}
+.deepdive .flow-caption span {
+  display: block;
+  margin-top: 4px;
+}
+.deepdive .flow-caption .flow-caption-where {
+  font: 10.5px ui-monospace, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.deepdive .flow .flow-node,
+.deepdive .flow .flow-edge {
+  transition: opacity 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.deepdive .flow.is-walking .flow-node,
+.deepdive .flow.is-walking .flow-edge {
+  opacity: 0.4;
+}
+.deepdive .flow.is-walking .is-visited {
+  opacity: 0.85;
+}
+.deepdive .flow.is-walking .flow-node.is-active,
+.deepdive .flow.is-walking .flow-edge.is-active {
+  opacity: 1;
+}
+.deepdive .flow.is-walking .flow-node.is-active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft), 0 0 18px var(--accent-soft);
+}
+.deepdive .flow-edge.is-active .flow-edge-label {
+  color: var(--text);
+  font-weight: 600;
+}
+/* The "packet": a dot that runs down the active arrow. */
+.deepdive .flow-edge.is-active .flow-arrow::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: flow-packet 1.1s ease-in infinite;
+}
+@keyframes flow-packet {
+  from { top: -4px; opacity: 0; }
+  20% { opacity: 1; }
+  to { top: calc(100% - 8px); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .deepdive .flow-edge.is-active .flow-arrow::before {
+    animation: none;
+    top: calc(50% - 5px);
+  }
+}
+.motion-paused .deepdive .flow-edge.is-active .flow-arrow::before {
+  animation: none;
+  top: calc(50% - 5px);
+}

@@ -28,6 +28,77 @@ Part 3 · Ship & run in production | delivery, GitOps, scaling, monitoring, inci
 
 Parts 2 and 3 draw on running Amazon EKS across four separate environments (Development, QA, Staging, Production) for a single platform, with every name and account removed. Where a module links to a case study, that's the real engagement the pattern came from.
 
+## Big picture · Follow the traffic through the whole platform
+
+Before the detail, here's the whole system end to end, as three flows. Press **Play traffic flow** on any of them to follow it hop by hop. Every box names the module that explains it, so you can use these as a map: if something breaks at one hop, that's the module to open.
+
+### Flow 1 · A user's request, from the browser to your code
+
+```flow
+title: Flow 1 · A request from the internet to a pod, and out to AWS
+group: Internet
+User | opens https://api.example.com/orders in a browser or app
+end
+-> Route 53 resolves the name; ExternalDNS keeps the record in sync (Module [06](platform-add-ons.html))
+group: Your VPC
+Application Load Balancer | TLS ends here; shared across APIs by an ingress group (Module [08](ingress-architecture-and-cost.html))
+-> Ingress rule /orders matches; target type ip sends it straight to a pod IP (Module [03](services-and-cluster-networking.html))
+group: EKS cluster
+Service orders-api | lists only the ready pods; the ALB targets come from it (Module [03](services-and-cluster-networking.html))
+-> readiness probe passed, so this pod is in rotation (Module [02](pods-deployments-and-rollouts.html))
+* orders-api pod | your container, with its own VPC IP from the VPC CNI (Modules [01](how-kubernetes-and-eks-work.html), [03](services-and-cluster-networking.html))
+-> calls another service by its DNS name, orders to payments (Module [03](services-and-cluster-networking.html))
+payments-api pod | reached through its ClusterIP Service and kube-proxy rules
+-> needs AWS: credentials come from EKS Pod Identity (Module [07](workload-identity-and-secrets.html))
+end
+end
+Amazon S3, SQS, Secrets Manager | IAM allows only what this workload's role permits (Module [07](workload-identity-and-secrets.html))
+```
+
+### Flow 2 · A code change, from a commit to running in Production
+
+```flow
+title: Flow 2 · Shipping a change safely through every environment
+Developer | merges a pull request to the application repo
+-> CI builds and tests the image once (Module [09](container-delivery-to-eks.html))
+Amazon ECR | image stored once, identified by its digest (Module [09](container-delivery-to-eks.html))
+-> a pull request to the manifests repo changes the digest for one environment (Module [10](gitops-with-argo-cd.html))
+Manifests repo | reviewed and merged; for Production this is the approval step (Module [10](gitops-with-argo-cd.html))
+-> Argo CD inside the cluster notices the change (Module [10](gitops-with-argo-cd.html))
+group: EKS cluster (one per environment, Module 05)
+Argo CD | applies the change, allowed by its RBAC permissions (Modules [04](namespaces-rbac-and-cluster-access.html), [05](multi-environment-clusters-and-access-entries.html))
+-> API server stores the new Deployment; the scheduler places the new pods (Module [01](how-kubernetes-and-eks-work.html))
+Rolling update | new pods start, pass readiness, then old ones are removed (Module [02](pods-deployments-and-rollouts.html))
+-> if new pods need room, Karpenter adds a node (Module [11](scaling-requests-and-cost.html))
+* New version live | same image digest that was tested in QA
+end
+loop: to roll back, revert the commit in Git; Argo CD syncs the cluster back (Module [10](gitops-with-argo-cd.html))
+```
+
+### Flow 3 · Keeping it running, from a warning sign to a fix
+
+```flow
+title: Flow 3 · From an early warning to a resolved incident
+group: EKS cluster
+Pods and nodes | emit logs, metrics, and events all the time
+-> Fluent Bit and a metrics agent ship them out of the cluster (Modules [06](platform-add-ons.html), [12](observability-and-alerting.html))
+end
+Logs and metrics | CloudWatch or Managed Prometheus, with Grafana dashboards (Module [12](observability-and-alerting.html))
+-> an alert rule on a user-facing symptom fires: errors, latency, or missing pods (Module [12](observability-and-alerting.html))
+On-call engineer | follows the runbook linked from the alert
+-> checks context, events, and pod status, one layer at a time (Module [13](incident-triage.html))
+paths
+path: Capacity
+Pods Pending or CPU-bound | tune requests and autoscaling (Module [11](scaling-requests-and-cost.html))
+path: Bad release
+Rollout failing | roll back through Git or kubectl (Modules [10](gitops-with-argo-cd.html), [13](incident-triage.html))
+path: Platform
+Old version or add-on | upgrade one minor version at a time (Module [14](cluster-upgrades.html))
+end
+-> fixed, and the cause written down
+* Service healthy | the alert clears and the next on-call person has the notes
+```
+
 ## Part 1 · Foundations
 
 How Kubernetes and EKS work. Read these in order: everything later relies on them.
