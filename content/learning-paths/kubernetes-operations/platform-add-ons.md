@@ -1,18 +1,19 @@
 ---
 title: The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive
 date: 2026-09-28
+updated: 2026-09-29
 track: kubernetes-operations
-order: 5
-module: 5
-totalModules: 10
+order: 6
+module: 6
 summary: The small set of add-ons a new EKS cluster needs before any application can run well (load balancing, DNS, metrics, autoscaling, logs, storage), each with its own IAM role, installed in a way you can repeat safely.
-level: Foundations · Platform
+level: Platform · Add-ons
 readingTime: 9 min read
 stack: [Amazon EKS, AWS Load Balancer Controller, ExternalDNS, metrics-server, Cluster Autoscaler, Fluent Bit, EBS CSI, EFS CSI, Helm]
 tags: [eks, add-ons, external-dns, irsa, storage, platform]
+redirectFrom: [10-platform-add-ons]
 ---
 
-**Before you start:** this pulls together pieces from modules 1 and 4, and from modules 7 and 8 later in the track. It's based on the add-on setup used in the multi-environment deployment this track draws on, with every name, account, and domain replaced by a placeholder.
+**Before you start:** this is the first module of Part 2. It installs the pieces that later modules rely on: load balancing (see [Ingress Architecture & Cost](ingress-architecture-and-cost.html)), metrics and autoscaling ([Scaling & Cost](scaling-requests-and-cost.html)), and logs ([Observability](observability-and-alerting.html)). It's based on the add-on setup used in the multi-environment deployment this track draws on, with every name, account, and domain replaced by a placeholder.
 
 ## Principle · A new cluster is an empty building
 
@@ -20,20 +21,29 @@ Terraform can create an EKS cluster and its node groups, but a fresh cluster can
 
 It helps to treat these as their own layer: installed right after the cluster exists, the same way in every environment, before any application team deploys anything.
 
+```flow
+title: The three layers of an EKS platform, installed in this order
+Layer 1 · Cluster | VPC, EKS control plane, node groups, created by Terraform
+-> an empty cluster: it runs pods, but can't reach AWS services for you
+* Layer 2 · Platform add-ons | load balancing, DNS, metrics, autoscaling, logs, storage; each with its own IAM role
+-> the same set, the same way, in every environment
+Layer 3 · Applications | team workloads deployed through CI/CD or Argo CD
+```
+
 ### The add-on set in the original deployment
 
 | Add-on | What it does | Covered in |
 | --- | --- | --- |
-| AWS Load Balancer Controller | Creates ALBs and NLBs from Ingress and Service objects | Module 1 |
+| AWS Load Balancer Controller | Creates ALBs and NLBs from Ingress and Service objects | [Ingress Architecture & Cost](ingress-architecture-and-cost.html) |
 | ExternalDNS | Creates DNS records for services and ingresses | Below |
-| metrics-server | Reports pod CPU and memory, needed by `kubectl top` and the HPA | Module 7 |
-| Cluster Autoscaler | Adds and removes nodes as pods need room | Module 7 |
-| Fluent Bit | Ships container logs to a central store, such as CloudWatch Logs | Module 8 |
+| metrics-server | Reports pod CPU and memory, needed by `kubectl top` and the HPA | [Scaling & Cost](scaling-requests-and-cost.html) |
+| Cluster Autoscaler | Adds and removes nodes as pods need room | [Scaling & Cost](scaling-requests-and-cost.html) |
+| Fluent Bit | Ships container logs to a central store, such as CloudWatch Logs | [Observability](observability-and-alerting.html) |
 | EBS and EFS CSI drivers | Give pods persistent volumes | Below |
 
 ## Each add-on gets its own IAM role
 
-Most of these add-ons call AWS APIs, so each needs AWS permissions. The original setup gave every add-on its **own** IAM role, attached to its own service account in `kube-system` using IRSA (module 4): one role for the load balancer controller, one for ExternalDNS, one for the autoscaler, one for Fluent Bit. An application that talked to a managed message broker got its own role in the same way.
+Most of these add-ons call AWS APIs, so each needs AWS permissions. The original setup gave every add-on its **own** IAM role, attached to its own service account in `kube-system` using IRSA (see [Workload Identity & Secrets](workload-identity-and-secrets.html)): one role for the load balancer controller, one for ExternalDNS, one for the autoscaler, one for Fluent Bit. An application that talked to a managed message broker got its own role in the same way.
 
 ```text
 # One service account per add-on, each pointing at its own role
@@ -104,5 +114,5 @@ spec:
 
 - **Make the install repeatable.** The original script checked whether each thing existed before creating it, so it could be re-run safely. Keep that property whatever tool you use.
 - **Give each piece one owner.** The OIDC provider was first created by the script and later moved into Terraform, and the script was changed to stop deleting it. Two tools managing the same resource will eventually fight.
-- **Prefer managed add-ons and pinned Helm charts over raw manifests.** EKS managed add-ons (VPC CNI, CoreDNS, kube-proxy, the EBS CSI driver, Pod Identity agent, and others) get versioned upgrades with the cluster. The rest can be pinned Helm releases, ideally managed through Argo CD (module 6) so every cluster gets the same set.
+- **Prefer managed add-ons and pinned Helm charts over raw manifests.** EKS managed add-ons (VPC CNI, CoreDNS, kube-proxy, the EBS CSI driver, Pod Identity agent, and others) get versioned upgrades with the cluster. The rest can be pinned Helm releases, ideally managed through Argo CD (see [GitOps with Argo CD](gitops-with-argo-cd.html)) so every cluster gets the same set.
 - **Graviton nodes need ARM64 images.** If the node groups use AWS Graviton, every add-on and application image must be published for `arm64`. Most well-known add-ons are multi-architecture, but check anything custom before switching.

@@ -1,15 +1,16 @@
 ---
 title: Cluster Upgrades Without Drama
 date: 2026-09-28
+updated: 2026-09-29
 track: kubernetes-operations
-order: 10
-module: 10
-totalModules: 10
+order: 14
+module: 14
 summary: How to upgrade EKS one version at a time — checking for removed APIs first, then the control plane, add-ons, and nodes, in an order that keeps workloads running.
-level: Operations · Upgrades
+level: Production · Upgrades
 readingTime: 8 min read
 stack: [Amazon EKS, Kubernetes, kubectl, Managed Node Groups]
 tags: [upgrades, lifecycle, eks, kubernetes, operations]
+redirectFrom: [06-cluster-upgrades]
 ---
 
 **Before you start:** you'll want a non-production cluster to rehearse on, and your cluster version defined in code (Terraform or similar).
@@ -40,6 +41,20 @@ kubectl api-versions
 EKS upgrade insights flag deprecated API usage the cluster has actually seen, which is more reliable than grepping a repository. Tools such as `pluto` can scan your manifests and Helm releases as well. Fix everything they find *before* you start. Changing an API version on a live cluster is easy; finding out after the upgrade is not.
 
 ## Step 2 · Control plane, then add-ons, then nodes
+
+```flow
+title: One minor-version upgrade, for example 1.32 to 1.33
+Pre-flight | upgrade insights clean, removed APIs fixed, rehearsed on a non-production cluster
+-> aws eks update-cluster-version, or the version in Terraform
+* Control plane on 1.33 | AWS replaces the API servers; workloads keep running
+-> nodes are still on 1.32, which is allowed: nodes may lag, never lead
+Core add-ons | VPC CNI, CoreDNS, kube-proxy moved to versions for 1.33
+-> then the nodes
+Nodes | new nodes on 1.33 join; old ones are cordoned, drained, and removed one at a time
+-> then everything else that talks to the API
+Other controllers | load balancer controller, ingress, Argo CD checked against 1.33
+loop: repeat for the next minor version; you can't skip one
+```
 
 ### Upgrade order
 

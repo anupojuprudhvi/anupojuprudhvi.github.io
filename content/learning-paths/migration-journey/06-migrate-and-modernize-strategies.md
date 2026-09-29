@@ -4,7 +4,6 @@ date: 2026-09-17
 track: migration-journey
 order: 6
 module: 6
-totalModules: 6
 summary: Deciding between sequential lift-and-shift and in-flight modernization during Mobilize, architecting cloud-native targets, and running the migration factory.
 level: Modernization Architecture
 readingTime: 9 min read

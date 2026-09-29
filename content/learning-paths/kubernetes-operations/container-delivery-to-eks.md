@@ -1,16 +1,17 @@
 ---
 title: Container Delivery — Build, Tag, Push, Promote
 date: 2026-09-18
-updated: 2026-09-28
+updated: 2026-09-29
 track: kubernetes-operations
-order: 3
-module: 3
-totalModules: 10
+order: 9
+module: 9
 summary: Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command.
-level: Foundations · Delivery
+level: Production · Delivery
 readingTime: 8 min read
 stack: [Amazon ECR, Docker, Amazon EKS, CI/CD]
 tags: [ecr, ci-cd, container-delivery, eks]
+redirectFrom: [03-container-delivery-to-eks]
+related: [healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare]
 ---
 
 **Before you start:** you'll want Docker, the AWS CLI v2, an ECR repository, and a CI/CD system that can assume an AWS role.
@@ -48,6 +49,22 @@ aws ecr describe-images --repository-name my-service \
 containers:
   - name: my-service
     image: <registry>/my-service@sha256:<digest>
+```
+
+```flow
+title: One image, built once, promoted through every environment
+CI pipeline | builds from commit 3f9c2e1, runs the tests, pushes once
+-> push my-service:sha-3f9c2e1 (tags can't be overwritten)
+* Amazon ECR | one image, identified by its digest sha256:9b1e...
+-> each environment's manifest points at that same digest
+paths
+path: Dev
+Dev cluster | deployed automatically on merge
+path: QA
+QA cluster | tested here
+path: Production
+Production cluster | a reviewed one-line change to the same digest; nothing is rebuilt
+end
 ```
 
 Promoting to Production is then a small, reviewable change that points Production at the digest QA already tested. You can still add a friendly tag such as `prod-2026-09-28` for people to read, but the digest is what guarantees the match.

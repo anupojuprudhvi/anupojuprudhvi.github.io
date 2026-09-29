@@ -1,12 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Prudhvi Raj Anupoju — Cloud Platform Architecture Case Studies</title>
+    <title>Prudhvi Raj Anupoju — Cloud Platform Case Studies &amp; Learning Paths</title>
     <link>https://anupojuprudhvi.github.io/case-studies/</link>
-    <description>Enterprise cloud architecture case studies covering governance, resilience, integration, and cost optimization.</description>
+    <description>Enterprise cloud architecture case studies and hands-on learning paths covering governance, resilience, Kubernetes, Terraform, migration, and cost optimization.</description>
     <language>en</language>
     <atom:link href="https://anupojuprudhvi.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Thu, 24 Sep 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 29 Sep 2026 00:00:00 GMT</lastBuildDate>
+    <item>
+      <title>How Kubernetes and Amazon EKS Actually Work</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/how-kubernetes-and-eks-work.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/how-kubernetes-and-eks-work.html</guid>
+      <pubDate>Tue, 29 Sep 2026 00:00:00 GMT</pubDate>
+      <description>The mental model everything else builds on. You declare the state you want, and controllers keep working to make it true. This module covers the parts of a cluster, what happens when you run kubectl apply, and exactly what AWS runs for you in EKS and what stays your job.</description>
+      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+    </item>
+    <item>
+      <title>Pods, Deployments &amp; Rollouts: How Your App Actually Runs</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/pods-deployments-and-rollouts.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/pods-deployments-and-rollouts.html</guid>
+      <pubDate>Tue, 29 Sep 2026 00:00:00 GMT</pubDate>
+      <description>The objects you'll write every day. Pods wrap your containers, Deployments keep the right number running and replace them safely, and probes tell Kubernetes when a container is really ready. Plus configuration, and a rolling update step by step.</description>
+      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+    </item>
+    <item>
+      <title>Services &amp; Cluster Networking: How Traffic Finds Your Pods</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/services-and-cluster-networking.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/services-and-cluster-networking.html</guid>
+      <pubDate>Tue, 29 Sep 2026 00:00:00 GMT</pubDate>
+      <description>Pods come and go with new IP addresses, so nothing should talk to a pod directly. How Services give a stable name and address, how cluster DNS and kube-proxy route each request, how EKS gives pods real VPC IPs, and how traffic from the internet reaches a pod.</description>
+      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+    </item>
+    <item>
+      <title>Namespaces, RBAC &amp; Cluster Access: Who Can Do What</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/namespaces-rbac-and-cluster-access.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/namespaces-rbac-and-cluster-access.html</guid>
+      <pubDate>Tue, 29 Sep 2026 00:00:00 GMT</pubDate>
+      <description>How a kubectl command is checked before it's allowed. Your IAM identity signs you in, RBAC decides what you may do, and namespaces set the scope. Covers Roles and RoleBindings, how EKS maps IAM roles to Kubernetes groups, service accounts, and checking permissions safely.</description>
+      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+    </item>
+    <item>
+      <title>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/platform-add-ons.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/platform-add-ons.html</guid>
+      <pubDate>Mon, 28 Sep 2026 00:00:00 GMT</pubDate>
+      <description>The small set of add-ons a new EKS cluster needs before any application can run well (load balancing, DNS, metrics, autoscaling, logs, storage), each with its own IAM role, installed in a way you can repeat safely.</description>
+      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+    </item>
+    <item>
+      <title>Workload Identity &amp; Secrets: How Pods Get AWS Access</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/workload-identity-and-secrets.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/workload-identity-and-secrets.html</guid>
+      <pubDate>Mon, 28 Sep 2026 00:00:00 GMT</pubDate>
+      <description>Giving each workload its own narrowly scoped AWS permissions with EKS Pod Identity or IRSA, instead of sharing the node's role, and getting secrets into pods without putting them in Git or container images.</description>
+      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+    </item>
+    <item>
+      <title>GitOps with Argo CD: Git as the Source of Truth</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/gitops-with-argo-cd.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/gitops-with-argo-cd.html</guid>
+      <pubDate>Mon, 28 Sep 2026 00:00:00 GMT</pubDate>
+      <description>Letting Argo CD keep each cluster matching what's in Git, so a deploy is a reviewed pull request, drift gets fixed automatically, and rolling back means reverting a commit.</description>
+      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+    </item>
+    <item>
+      <title>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/scaling-requests-and-cost.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/scaling-requests-and-cost.html</guid>
+      <pubDate>Mon, 28 Sep 2026 00:00:00 GMT</pubDate>
+      <description>Why resource requests drive almost everything in an EKS cluster — scheduling, autoscaling, and the bill — and how pod and node autoscaling fit together.</description>
+      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+    </item>
+    <item>
+      <title>Observability: Knowing Something's Wrong Before Users Do</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/observability-and-alerting.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/observability-and-alerting.html</guid>
+      <pubDate>Mon, 28 Sep 2026 00:00:00 GMT</pubDate>
+      <description>What to collect from an EKS cluster (logs, metrics, and cluster state), which few signals deserve an alert, and how to set alerts that wake people for real problems only.</description>
+      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+    </item>
+    <item>
+      <title>Cluster Upgrades Without Drama</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/cluster-upgrades.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/cluster-upgrades.html</guid>
+      <pubDate>Mon, 28 Sep 2026 00:00:00 GMT</pubDate>
+      <description>How to upgrade EKS one version at a time — checking for removed APIs first, then the control plane, add-ons, and nodes, in an order that keeps workloads running.</description>
+      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+    </item>
     <item>
       <title>Moving 1.48 million S3 objects in 54 minutes instead of 8+ hours</title>
       <link>https://anupojuprudhvi.github.io/case-studies/tolling/s3-large-scale-bucket-migration.html</link>
@@ -86,6 +166,38 @@
       <pubDate>Fri, 18 Sep 2026 00:00:00 GMT</pubDate>
       <description>Taking a PDF SaaS product I built alone from a serverless deployment that didn't run to a security-reviewed app about 93% lighter, using AI coding tools under strict written rules.</description>
       <category>Product engineering</category>
+    </item>
+    <item>
+      <title>Multi-Environment Clusters &amp; EKS Access Entries</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/multi-environment-clusters-and-access-entries.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/multi-environment-clusters-and-access-entries.html</guid>
+      <pubDate>Fri, 18 Sep 2026 00:00:00 GMT</pubDate>
+      <description>Isolating Dev, QA, Staging, and Production as separate clusters, and granting people and pipelines cluster access with EKS access entries instead of a shared superuser.</description>
+      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+    </item>
+    <item>
+      <title>Dual Ingress Architecture &amp; Its Cost Mechanics</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/ingress-architecture-and-cost.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/ingress-architecture-and-cost.html</guid>
+      <pubDate>Fri, 18 Sep 2026 00:00:00 GMT</pubDate>
+      <description>When to route traffic through a shared ALB versus a separate ingress controller, why grouping services onto one load balancer is a real saving, and where Gateway API fits now that ingress-nginx is retired.</description>
+      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+    </item>
+    <item>
+      <title>Container Delivery — Build, Tag, Push, Promote</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/container-delivery-to-eks.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/container-delivery-to-eks.html</guid>
+      <pubDate>Fri, 18 Sep 2026 00:00:00 GMT</pubDate>
+      <description>Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command.</description>
+      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+    </item>
+    <item>
+      <title>Day-2 Operations &amp; Incident Triage</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/incident-triage.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/incident-triage.html</guid>
+      <pubDate>Fri, 18 Sep 2026 00:00:00 GMT</pubDate>
+      <description>Switching cluster context safely, verifying a rollout actually succeeded instead of assuming it did, and a repeatable sequence for triaging a stuck deployment.</description>
+      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
     </item>
     <item>
       <title>Modernizing a telecom database with a controlled cutover</title>
@@ -222,6 +334,102 @@
       <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
       <description>Getting an AdTech SaaS product listed and sold through a cloud marketplace: the buyer sign-up flow, usage-based billing, and checks after launch.</description>
       <category>Applications &amp; integration</category>
+    </item>
+    <item>
+      <title>Enterprise Repository &amp; Module Layout</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/terraform/01-enterprise-module-design.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/terraform/01-enterprise-module-design.html</guid>
+      <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
+      <description>The enterprise pattern for structuring Terraform codebases — separating reusable child modules from root deployment environments, with strict version pinning.</description>
+      <category>Terraform for Enterprise Production</category>
+    </item>
+    <item>
+      <title>State Isolation, Remote Locking &amp; Blast Radius Control</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/terraform/02-state-isolation-and-locking.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/terraform/02-state-isolation-and-locking.html</guid>
+      <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
+      <description>Architecting remote state backends with S3 and DynamoDB, reducing blast radius via state layering, and replacing remote_state with parameter contracts.</description>
+      <category>Terraform for Enterprise Production</category>
+    </item>
+    <item>
+      <title>Modern HCL — Types, Validations &amp; Preconditions</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/terraform/03-variables-validation-and-types.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/terraform/03-variables-validation-and-types.html</guid>
+      <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
+      <description>Writing Terraform that checks its own inputs, using rich object schemas, custom validation blocks, lifecycle preconditions, and deterministic for_each key mapping.</description>
+      <category>Terraform for Enterprise Production</category>
+    </item>
+    <item>
+      <title>Zero-Plaintext Secret Architecture</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/terraform/04-secrets-and-sensitive-values.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/terraform/04-secrets-and-sensitive-values.html</guid>
+      <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
+      <description>The hard realities of secret management in Terraform — state file plaintext vulnerabilities, dynamic credentials, and replacing static API keys with IAM roles.</description>
+      <category>Terraform for Enterprise Production</category>
+    </item>
+    <item>
+      <title>Zero-Downtime Refactoring with Moved &amp; Import Blocks</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/terraform/05-refactoring-with-moved-blocks.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/terraform/05-refactoring-with-moved-blocks.html</guid>
+      <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
+      <description>Safely evolving production infrastructure without outages, using moved, import, and removed blocks to refactor Terraform state with zero downtime.</description>
+      <category>Terraform for Enterprise Production</category>
+    </item>
+    <item>
+      <title>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/terraform/06-ci-cd-security-linting-testing.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/terraform/06-ci-cd-security-linting-testing.html</guid>
+      <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
+      <description>Building a three-tier verification pipeline for Terraform — pre-merge formatting, deep linting, Checkov security scanning, plan reviews, and drift detection.</description>
+      <category>Terraform for Enterprise Production</category>
+    </item>
+    <item>
+      <title>Assessment Frameworks · Rapid vs. Deep Enterprise</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/migration-journey/01-assessment-paths-rapid-vs-deep.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/migration-journey/01-assessment-paths-rapid-vs-deep.html</guid>
+      <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
+      <description>Comparing rapid 4–6 week tooling-driven assessments with 3–4 month organizational evaluations across the 6 AWS Cloud Adoption Framework (CAF) pillars.</description>
+      <category>Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</category>
+    </item>
+    <item>
+      <title>Discovery Telemetry · RVTools, AWS Transform &amp; Sizing</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/migration-journey/02-discovery-telemetry-and-inventory.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/migration-journey/02-discovery-telemetry-and-inventory.html</guid>
+      <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
+      <description>Extracting hypervisor inventory, continuous utilization percentiles, and applying right-sizing algorithms to avoid naive 1:1 lift-and-shift over-provisioning.</description>
+      <category>Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</category>
+    </item>
+    <item>
+      <title>Financial Engineering · 3-Year TCO &amp; Licensing</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/migration-journey/03-financial-engineering-tco-and-licensing.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/migration-journey/03-financial-engineering-tco-and-licensing.html</guid>
+      <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
+      <description>Modeling On-Demand vs. 1-Yr/3-Yr Savings Plans, Microsoft Windows and SQL Server BYOL vs. License-Included scenarios, and passing MAP milestone audits.</description>
+      <category>Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</category>
+    </item>
+    <item>
+      <title>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/migration-journey/04-target-architecture-and-landing-zone.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/migration-journey/04-target-architecture-and-landing-zone.html</guid>
+      <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
+      <description>Architecting multi-account AWS Organizations, IAM Identity Center federation, Transit Gateway networking, and classifying workloads into 7Rs pathways.</description>
+      <category>Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</category>
+    </item>
+    <item>
+      <title>The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/migration-journey/05-mobilize-wave-planning-and-pilot.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/migration-journey/05-mobilize-wave-planning-and-pilot.html</guid>
+      <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
+      <description>Partnering with enterprise engineering teams, clustering dependency graphs into migration waves, executing a lighthouse pilot cutover, and team enablement.</description>
+      <category>Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</category>
+    </item>
+    <item>
+      <title>Migrate &amp; Modernize · In-Flight vs. Sequential Factory</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/migration-journey/06-migrate-and-modernize-strategies.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/migration-journey/06-migrate-and-modernize-strategies.html</guid>
+      <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
+      <description>Deciding between sequential lift-and-shift and in-flight modernization during Mobilize, architecting cloud-native targets, and running the migration factory.</description>
+      <category>Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</category>
     </item>
     <item>
       <title>One governed cloud foundation under 40+ accounts</title>

@@ -1,18 +1,20 @@
 ---
 title: Observability: Knowing Something's Wrong Before Users Do
 date: 2026-09-28
+updated: 2026-09-29
 track: kubernetes-operations
-order: 8
-module: 8
-totalModules: 10
+order: 12
+module: 12
 summary: What to collect from an EKS cluster (logs, metrics, and cluster state), which few signals deserve an alert, and how to set alerts that wake people for real problems only.
-level: Operations · Monitoring
+level: Production · Monitoring
 readingTime: 8 min read
 stack: [Amazon EKS, CloudWatch Container Insights, Fluent Bit, Prometheus, Amazon Managed Service for Prometheus, Grafana]
 tags: [observability, monitoring, logging, alerting, eks]
+redirectFrom: [08-observability]
+related: [tolling/eks-ingress-incident-rca]
 ---
 
-**Before you start:** this module is about finding out that something is broken. Module 9 covers what to do next.
+**Before you start:** this module is about finding out that something is broken. [Incident Triage](incident-triage.html) covers what to do next.
 
 ## Principle · Alert on what users feel, investigate with everything else
 
@@ -30,6 +32,31 @@ For most services, four signals cover the symptoms:
 - **Logs.** Containers write to stdout and stderr; a log agent on each node ships them somewhere searchable. Fluent Bit sending to CloudWatch Logs is the common AWS default. Log in a structured format (JSON) with a request ID, so one request can be followed across services.
 - **Metrics.** CloudWatch Container Insights (installed through the `amazon-cloudwatch-observability` add-on) gives node, pod, and container metrics with little setup. Prometheus, self-run or through Amazon Managed Service for Prometheus with Grafana, gives more control and is the usual choice when apps expose their own metrics.
 - **Cluster state.** `kube-state-metrics` turns Kubernetes objects into metrics: pods stuck in `Pending`, containers restarting, deployments with fewer ready replicas than desired. Many real incidents show up here first.
+
+```flow
+title: From a container to an on-call alert
+group: EKS cluster
+paths
+path: Logs
+App containers | write JSON lines to stdout and stderr
+-> collected on every node
+Fluent Bit (DaemonSet) | adds pod, namespace, and node labels
+path: Metrics
+App and node metrics | request counts, latency, CPU, memory
+-> scraped every 30 to 60 seconds
+Prometheus agent or CloudWatch agent | also collects kube-state-metrics
+end
+end
+-> shipped out of the cluster
+paths
+path: Search
+CloudWatch Logs | query by request ID across every service
+path: Dashboards and rules
+Managed Prometheus or CloudWatch | Grafana dashboards, and alert rules on the four signals
+end
+-> only symptoms users would feel
+* Alert to on-call | links to a runbook and the Incident Triage checklist
+```
 
 ```text
 # Is anything restarting or stuck right now?
@@ -55,6 +82,6 @@ Everything else goes on a dashboard or into a daily report rather than a pager.
 ### Implementation notes
 
 - **Always require "for N minutes".** A single bad minute is noise. An alert that fires on one sample will train people to ignore it.
-- **Every alert needs an owner and a first step.** If nobody knows what to do when it fires, it isn't ready to page anyone. Link it to the triage checklist from module 9.
+- **Every alert needs an owner and a first step.** If nobody knows what to do when it fires, it isn't ready to page anyone. Link it to the triage checklist in [Incident Triage](incident-triage.html).
 - **Watch the cost of logs.** Log volume grows quietly. Set retention periods, drop noisy debug logs in production, and check the logging bill now and then.
 - **Test alerts on purpose.** Break something in a non-production cluster and confirm the alert fires, reaches the right person, and makes sense to them.

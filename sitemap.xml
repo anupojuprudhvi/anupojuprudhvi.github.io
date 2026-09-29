@@ -40,17 +40,21 @@
   <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/s3-large-scale-bucket-migration.html</loc><lastmod>2026-09-24</lastmod></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/transit-gateway-hub-and-spoke.html</loc><lastmod>2026-09-17</lastmod></url>
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/</loc></url>
-  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/01-dual-ingress-architecture.html</loc><lastmod>2026-09-28</lastmod></url>
-  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/02-multi-environment-clusters-and-rbac.html</loc><lastmod>2026-09-28</lastmod></url>
-  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/03-container-delivery-to-eks.html</loc><lastmod>2026-09-28</lastmod></url>
-  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/04-day-2-operations-and-incident-triage.html</loc><lastmod>2026-09-18</lastmod></url>
-  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/05-scaling-requests-and-cost.html</loc><lastmod>2026-09-28</lastmod></url>
-  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/06-cluster-upgrades.html</loc><lastmod>2026-09-28</lastmod></url>
-  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/07-workload-identity-and-secrets.html</loc><lastmod>2026-09-28</lastmod></url>
-  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/08-observability.html</loc><lastmod>2026-09-28</lastmod></url>
-  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/09-gitops-with-argo-cd.html</loc><lastmod>2026-09-28</lastmod></url>
-  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/10-platform-add-ons.html</loc><lastmod>2026-09-28</lastmod></url>
-  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/index.html</loc><lastmod>2026-09-18</lastmod></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/cluster-upgrades.html</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/container-delivery-to-eks.html</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/gitops-with-argo-cd.html</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/how-kubernetes-and-eks-work.html</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/incident-triage.html</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/index.html</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/ingress-architecture-and-cost.html</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/multi-environment-clusters-and-access-entries.html</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/namespaces-rbac-and-cluster-access.html</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/observability-and-alerting.html</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/platform-add-ons.html</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/pods-deployments-and-rollouts.html</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/scaling-requests-and-cost.html</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/services-and-cluster-networking.html</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/workload-identity-and-secrets.html</loc><lastmod>2026-09-29</lastmod></url>
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/migration-journey/01-assessment-paths-rapid-vs-deep.html</loc><lastmod>2026-09-17</lastmod></url>
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/migration-journey/02-discovery-telemetry-and-inventory.html</loc><lastmod>2026-09-17</lastmod></url>
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/migration-journey/03-financial-engineering-tco-and-licensing.html</loc><lastmod>2026-09-17</lastmod></url>

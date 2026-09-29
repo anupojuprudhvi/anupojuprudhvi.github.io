@@ -4,7 +4,6 @@ date: 2026-09-17
 track: terraform
 order: 6
 module: 6
-totalModules: 6
 summary: Building a three-tier verification pipeline for Terraform — pre-merge formatting, deep linting, Checkov security scanning, plan reviews, and drift detection.
 level: DevOps & Governance
 readingTime: 9 min read

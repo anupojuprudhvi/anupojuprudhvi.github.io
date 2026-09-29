@@ -4,7 +4,6 @@ date: 2026-09-17
 track: terraform
 order: 2
 module: 2
-totalModules: 6
 summary: Architecting remote state backends with S3 and DynamoDB, reducing blast radius via state layering, and replacing remote_state with parameter contracts.
 level: Core Architecture
 readingTime: 8 min read

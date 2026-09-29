@@ -1,18 +1,20 @@
 ---
 title: Day-2 Operations & Incident Triage
 date: 2026-09-18
+updated: 2026-09-29
 track: kubernetes-operations
-order: 9
-module: 9
-totalModules: 10
+order: 13
+module: 13
 summary: Switching cluster context safely, verifying a rollout actually succeeded instead of assuming it did, and a repeatable sequence for triaging a stuck deployment.
-level: Operations · Incidents
+level: Production · Incidents
 readingTime: 8 min read
 stack: [Amazon EKS, kubectl, Kubernetes]
 tags: [operations, incident-response, kubectl, eks]
+redirectFrom: [04-day-2-operations-and-incident-triage]
+related: [tolling/eks-ingress-incident-rca]
 ---
 
-**Before you start:** you'll want `kubectl` access to a cluster (see module 2) and a deployment you can safely break in a non-production environment.
+**Before you start:** you'll want `kubectl` access to a cluster (see [Multi-Environment Clusters](multi-environment-clusters-and-access-entries.html)) and a deployment you can safely break in a non-production environment.
 
 ## Principle · "It deployed" and "it's healthy" are different questions
 
@@ -34,7 +36,29 @@ kubectl logs <pod-name> -n <namespace> --previous
 
 ## A repeatable triage sequence for a stuck deployment
 
-Guessing under pressure is slower and less reliable than working a fixed sequence. A useful default order:
+Guessing under pressure is slower and less reliable than working a fixed sequence. It follows the same path a deploy takes through the cluster (see [How Kubernetes and EKS Actually Work](how-kubernetes-and-eks-work.html)), so each step rules out one stage:
+
+```flow
+title: Triage a stuck deployment one layer at a time
+Right cluster and namespace? | kubectl config current-context
+-> yes
+Events | kubectl get events --sort-by=.lastTimestamp shows the real error first
+-> then look at the pod status
+paths
+path: Pending
+Scheduling problem | no node has room, a taint, or a zone mismatch; check requests and the node autoscaler
+path: ImagePullBackOff
+Image problem | wrong tag or digest, registry auth, or no network path to ECR
+path: CrashLoopBackOff
+App problem | kubectl logs --previous; often missing config or an IAM difference
+path: Running, not ready
+Readiness problem | the probe fails; check dependencies and the probe path
+end
+-> cause found
+* Roll back or fix forward | now based on a known cause
+```
+
+A useful default order:
 
 ### Triage checklist
 

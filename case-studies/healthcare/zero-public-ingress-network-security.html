@@ -18,7 +18,7 @@
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://anupojuprudhvi.github.io/assets/og/healthcare/zero-public-ingress-network-security.jpg" />
-    <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies" href="https://anupojuprudhvi.github.io/feed.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies &amp; Learning Paths" href="https://anupojuprudhvi.github.io/feed.xml" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Case studies","item":"https://anupojuprudhvi.github.io/case-studies/"},{"@type":"ListItem","position":3,"name":"Healthcare & Cost Architecture","item":"https://anupojuprudhvi.github.io/case-studies/healthcare/"},{"@type":"ListItem","position":4,"name":"Zero-public-ingress security","item":"https://anupojuprudhvi.github.io/case-studies/healthcare/zero-public-ingress-network-security.html"}]}</script>
     <script type="application/ld+json">
@@ -43,6 +43,8 @@
         "url": "https://anupojuprudhvi.github.io/case-studies/healthcare/zero-public-ingress-network-security.html",
         "image": "https://anupojuprudhvi.github.io/assets/og/healthcare/zero-public-ingress-network-security.jpg",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/case-studies/healthcare/zero-public-ingress-network-security.html",
+        "datePublished": "2026-09-18",
+        "dateModified": "2026-09-18",
         "keywords": "security, hipaa, networking, vpn, cdn, AWS Client VPN, AWS CloudFront, AWS WAF, AWS KMS"
       }
     </script>
@@ -115,7 +117,7 @@
               </a>
               <a href="../../learning-paths/kubernetes-operations/index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>Kubernetes on Amazon EKS</strong>
-                <small>10 Modules · Foundations &amp; Operations</small>
+                <small>14 Modules · Foundations to Production</small>
               </a>
             </div>
           </div>
@@ -218,6 +220,15 @@
 <p>Mutual-TLS VPN access for engineering is meaningfully more operational overhead than a bastion host or a shared VPN — every engineer needs a per-environment profile, and profile issuance and revocation has to be a deliberate process rather than a shared credential. That overhead is the direct cost of the environments never having a public network path into them at all; for a platform handling PHI, that trade was made deliberately rather than defaulted into.</p>
 </div>
 </section>
+      <div class="wrap">
+        <section class="related-links" aria-label="Learn the concepts behind this">
+          <h2>Learn the concepts behind this</h2>
+          <ul>
+            <li><a href="../../learning-paths/kubernetes-operations/services-and-cluster-networking.html"><span class="related-eyebrow">Kubernetes on Amazon EKS: Foundations to Production · Module 03</span><strong>Services &amp; Cluster Networking: How Traffic Finds Your Pods</strong><small>Pods come and go with new IP addresses, so nothing should talk to a pod directly. How Services give a stable name and address, how cluster DNS and kube-proxy route each request, how EKS gives pods real VPC IPs, and how traffic from the internet reaches a pod.</small></a></li>
+            <li><a href="../../learning-paths/kubernetes-operations/ingress-architecture-and-cost.html"><span class="related-eyebrow">Kubernetes on Amazon EKS: Foundations to Production · Module 08</span><strong>Dual Ingress Architecture &amp; Its Cost Mechanics</strong><small>When to route traffic through a shared ALB versus a separate ingress controller, why grouping services onto one load balancer is a real saving, and where Gateway API fits now that ingress-nginx is retired.</small></a></li>
+          </ul>
+        </section>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/healthcare/real-time-clinical-analytics-pipeline.html">← Real-time clinical analytics</a>
         <a href="../../case-studies/healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.html">Regulated CI/CD delivery →</a>

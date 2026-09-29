@@ -1,19 +1,20 @@
 ---
 title: Dual Ingress Architecture & Its Cost Mechanics
 date: 2026-09-18
-updated: 2026-09-28
+updated: 2026-09-29
 track: kubernetes-operations
-order: 1
-module: 1
-totalModules: 10
+order: 8
+module: 8
 summary: When to route traffic through a shared ALB versus a separate ingress controller, why grouping services onto one load balancer is a real saving, and where Gateway API fits now that ingress-nginx is retired.
-level: Foundations · Networking
+level: Platform · Networking
 readingTime: 9 min read
 stack: [Amazon EKS, AWS Load Balancer Controller, Nginx Ingress, Gateway API, AWS VPC CNI]
 tags: [ingress, alb, nginx, gateway-api, cost-optimization, eks]
+redirectFrom: [01-dual-ingress-architecture]
+related: [tolling/eks-ingress-incident-rca, healthcare/zero-public-ingress-network-security]
 ---
 
-**Before you start:** you'll want an EKS cluster with the AWS Load Balancer Controller installed, and a basic idea of what a Kubernetes Service and Ingress are.
+**Before you start:** you'll want an EKS cluster with the AWS Load Balancer Controller installed, and the basics from [Services & Cluster Networking](services-and-cluster-networking.html): what a Service and an Ingress are, and how the VPC CNI gives pods VPC IP addresses.
 
 ## Principle · Share load balancers unless there's a reason not to
 
@@ -27,6 +28,26 @@ The deployment this track is based on didn't pick one ingress approach for every
 
 - **AWS Load Balancer Controller with ingress grouping, for backend APIs.** Several services share one ALB by giving each Ingress the same `group.name`, instead of each service getting its own load balancer.
 - **An Nginx-based ingress controller for frontend single-page apps.** SPAs often need regex URL rewriting (stripping a path prefix before the request reaches the container, for example), which is easier to express in Nginx than in ALB rules.
+
+```flow
+title: Two ingress paths into the same cluster
+group: Internet
+Users and API clients | api.example.com and app.example.com
+end
+-> Route 53 sends each hostname to its own entry point
+paths
+path: Backend APIs
+* One shared ALB | ingress group "api": path rules for /orders, /billing, /payments
+-> target type "ip": straight to pod IPs
+orders-api, billing-api, payments-api pods | one ALB for every API, not one each
+path: Frontend apps
+Load balancer for Nginx | one entry point for the web frontends
+-> forwards to the Nginx controller pods
+Nginx ingress controller | rewrites paths with regex, then routes
+-> to the frontend Service
+Frontend SPA pods | the paths arrive already rewritten
+end
+```
 
 ### Shared-ALB ingress grouping
 

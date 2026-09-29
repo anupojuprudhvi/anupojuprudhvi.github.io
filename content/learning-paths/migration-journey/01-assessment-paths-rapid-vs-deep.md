@@ -4,7 +4,6 @@ date: 2026-09-17
 track: migration-journey
 order: 1
 module: 1
-totalModules: 6
 summary: Comparing rapid 4–6 week tooling-driven assessments with 3–4 month organizational evaluations across the 6 AWS Cloud Adoption Framework (CAF) pillars.
 level: Strategic Assessment
 readingTime: 8 min read

@@ -18,7 +18,7 @@
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://anupojuprudhvi.github.io/assets/og/tolling/cicd-delivery-engine.jpg" />
-    <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies" href="https://anupojuprudhvi.github.io/feed.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies &amp; Learning Paths" href="https://anupojuprudhvi.github.io/feed.xml" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Case studies","item":"https://anupojuprudhvi.github.io/case-studies/"},{"@type":"ListItem","position":3,"name":"Tolling Infrastructure","item":"https://anupojuprudhvi.github.io/case-studies/tolling/"},{"@type":"ListItem","position":4,"name":"Build the delivery engine","item":"https://anupojuprudhvi.github.io/case-studies/tolling/cicd-delivery-engine.html"}]}</script>
     <script type="application/ld+json">
@@ -43,6 +43,8 @@
         "url": "https://anupojuprudhvi.github.io/case-studies/tolling/cicd-delivery-engine.html",
         "image": "https://anupojuprudhvi.github.io/assets/og/tolling/cicd-delivery-engine.jpg",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/case-studies/tolling/cicd-delivery-engine.html",
+        "datePublished": "2026-09-17",
+        "dateModified": "2026-09-17",
         "keywords": "cicd, github-actions, terraform, oidc, security, deployment, governance, GitHub Actions, Terraform, AWS IAM OIDC, AWS STS, GitHub Environments"
       }
     </script>
@@ -115,7 +117,7 @@
               </a>
               <a href="../../learning-paths/kubernetes-operations/index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>Kubernetes on Amazon EKS</strong>
-                <small>10 Modules · Foundations &amp; Operations</small>
+                <small>14 Modules · Foundations to Production</small>
               </a>
             </div>
           </div>
@@ -282,6 +284,15 @@
 <p>The platform team can add delivery to another Terraform module by declaring its module-specific inputs in a small caller workflow. Authentication hardening, Terraform upgrades, plan presentation, and deployment gates remain centralized. That gives engineers a repeatable promotion path across the account hierarchy without turning every service team into a CI/CD platform maintainer.</p>
 </div>
 </section>
+      <div class="wrap">
+        <section class="related-links" aria-label="Learn the concepts behind this">
+          <h2>Learn the concepts behind this</h2>
+          <ul>
+            <li><a href="../../learning-paths/kubernetes-operations/workload-identity-and-secrets.html"><span class="related-eyebrow">Kubernetes on Amazon EKS: Foundations to Production · Module 07</span><strong>Workload Identity &amp; Secrets: How Pods Get AWS Access</strong><small>Giving each workload its own narrowly scoped AWS permissions with EKS Pod Identity or IRSA, instead of sharing the node's role, and getting secrets into pods without putting them in Git or container images.</small></a></li>
+            <li><a href="../../learning-paths/kubernetes-operations/gitops-with-argo-cd.html"><span class="related-eyebrow">Kubernetes on Amazon EKS: Foundations to Production · Module 10</span><strong>GitOps with Argo CD: Git as the Source of Truth</strong><small>Letting Argo CD keep each cluster matching what's in Git, so a deploy is a reviewed pull request, drift gets fixed automatically, and rolling back means reverting a commit.</small></a></li>
+          </ul>
+        </section>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/tolling/eks-ingress-incident-rca.html">← Trace an EKS ingress incident</a>
         <a href="../../case-studies/tolling/cloudtrail-tamper-protection.html">Protect CloudTrail evidence →</a>

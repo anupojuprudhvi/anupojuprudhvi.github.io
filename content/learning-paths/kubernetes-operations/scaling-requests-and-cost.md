@@ -1,18 +1,20 @@
 ---
 title: Scaling Without Surprises: Requests, Autoscaling & Cost
 date: 2026-09-28
+updated: 2026-09-29
 track: kubernetes-operations
-order: 7
-module: 7
-totalModules: 10
+order: 11
+module: 11
 summary: Why resource requests drive almost everything in an EKS cluster — scheduling, autoscaling, and the bill — and how pod and node autoscaling fit together.
-level: Operations · Capacity
+level: Production · Capacity
 readingTime: 8 min read
 stack: [Amazon EKS, Kubernetes, Horizontal Pod Autoscaler, Karpenter, Cluster Autoscaler]
 tags: [autoscaling, cost, capacity, eks, kubernetes]
+redirectFrom: [05-scaling-requests-and-cost]
+related: [partner-engagements/it-monitoring-tanzu-to-eks-map-assessment, healthcare/clinical-platform-modernization-and-cost-optimization]
 ---
 
-**Before you start:** you'll want metrics-server running in the cluster (module 5 covers installing it) and `kubectl top` working.
+**Before you start:** you'll want metrics-server running in the cluster ([Platform Add-ons](platform-add-ons.html) covers installing it) and `kubectl top` working.
 
 ## Principle · Requests are a promise, and the cluster plans around them
 
@@ -60,6 +62,25 @@ spec:
 ```
 
 The HPA needs metrics-server (or another metrics source) running in the cluster, and it needs requests set on the pods it watches. Without a CPU request there's nothing to calculate a percentage against, and it won't scale on CPU.
+
+Here's how the two layers work together when traffic spikes:
+
+```flow
+title: A traffic spike, from busy pods to a new node
+Traffic rises | the api pods average 90% of their CPU request
+-> metrics-server reports usage; the HPA checks every 15 seconds
+HPA | target is 70%, so it raises replicas from 3 to 5
+-> the scheduler places what fits
+paths
+path: Room on existing nodes
+New pod 4 | scheduled right away and serving within seconds
+path: No room left
+New pod 5 | stuck in Pending: no node has 250m CPU free
+-> Karpenter or Cluster Autoscaler sees the Pending pod
+* New EC2 node | joins the cluster in about a minute; pod 5 is scheduled on it
+end
+loop: when traffic falls, the HPA removes pods, then the node autoscaler removes nodes left mostly empty
+```
 
 ### Choosing a node autoscaler
 

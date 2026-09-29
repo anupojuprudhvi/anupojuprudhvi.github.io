@@ -160,6 +160,78 @@ const VOID_TAGS = new Set([
   "link", "meta", "param", "source", "track", "wbr",
 ]);
 
+/**
+ * A ```flow fence becomes a CSS-only flow diagram: boxes joined by labelled
+ * arrows, read top to bottom, so it reflows on a phone and needs no script.
+ *
+ *   title: Caption for the figure
+ *   Name | optional detail        a box ("* Name" highlights it)
+ *   -> label                      an arrow down to the next item
+ *   group: Label ... end          a labelled boundary (VPC, cluster, account)
+ *   paths ... path: Label ... end side-by-side alternatives (stack on phones)
+ *   loop: label                   a note that the flow repeats from the top
+ */
+function flowDiagram(source) {
+  let title = "";
+  let loop = "";
+  const root = { children: [] };
+  const stack = [root];
+  const top = () => stack[stack.length - 1];
+  const fail = (msg, line) => { throw new Error(`flow diagram: ${msg}${line ? ` ("${line.trim()}")` : ""}`); };
+
+  for (const raw of source) {
+    const line = raw.trim();
+    if (!line) continue;
+    let m;
+    if ((m = line.match(/^title:\s*(.+)$/))) title = m[1];
+    else if ((m = line.match(/^loop:\s*(.+)$/))) loop = m[1];
+    else if ((m = line.match(/^group:\s*(.+)$/))) {
+      const group = { type: "group", label: m[1], children: [] };
+      top().children.push(group);
+      stack.push(group);
+    } else if (line === "paths") {
+      const paths = { type: "paths", children: [] };
+      top().children.push(paths);
+      stack.push(paths);
+    } else if ((m = line.match(/^path:\s*(.+)$/))) {
+      // A new path closes the previous one; both belong to the enclosing "paths".
+      if (top().type === "path") stack.pop();
+      if (top().type !== "paths") fail("path: must sit inside a paths block", line);
+      const path = { type: "path", label: m[1], children: [] };
+      top().children.push(path);
+      stack.push(path);
+    } else if (line === "end") {
+      if (top().type === "path") stack.pop();
+      if (stack.length === 1) fail("end without a matching group or paths", line);
+      stack.pop();
+    } else if ((m = line.match(/^->\s*(.*)$/))) top().children.push({ type: "edge", label: m[1] });
+    else {
+      const highlight = line.startsWith("* ");
+      const [name, ...detail] = line.replace(/^\*\s+/, "").split("|");
+      top().children.push({ type: "node", name: name.trim(), detail: detail.join("|").trim(), highlight });
+    }
+  }
+  if (stack.length !== 1) fail("a group or paths block is missing its end");
+  if (!title) fail("add a title: line so the figure has a caption");
+
+  const render = (items) => items.map((it) => {
+    if (it.type === "node")
+      return `<div class="flow-node${it.highlight ? " is-key" : ""}"><strong>${inline(it.name)}</strong>${it.detail ? `<span>${inline(it.detail)}</span>` : ""}</div>`;
+    if (it.type === "edge")
+      return `<div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span>${it.label ? `<span class="flow-edge-label">${inline(it.label)}</span>` : ""}</div>`;
+    if (it.type === "group")
+      return `<div class="flow-group"><span class="flow-group-label">${inline(it.label)}</span>${render(it.children)}</div>`;
+    if (it.type === "paths")
+      return `<div class="flow-paths">${render(it.children)}</div>`;
+    return `<div class="flow-path"><span class="flow-path-label">${inline(it.label)}</span>${render(it.children)}</div>`;
+  }).join("");
+
+  return `<figure class="flow">
+<figcaption class="flow-title">${inline(title)}</figcaption>
+<div class="flow-body">${render(root.children)}${loop ? `<div class="flow-loop"><span aria-hidden="true">↻</span> ${inline(loop)}</div>` : ""}</div>
+</figure>`;
+}
+
 /** Block-level markdown inside a section. */
 function renderBlocks(text) {
   const out = [];
@@ -192,6 +264,10 @@ function renderBlocks(text) {
         i++;
       }
       if (i < lines.length) i++; // consume the closing fence
+      if (fence[1] === "flow") {
+        out.push(flowDiagram(buf));
+        continue;
+      }
       const lang = fence[1] ? ` class="language-${esc(fence[1])}"` : "";
       const pre = `<pre class="code"><code${lang}>${esc(buf.join("\n"))}</code></pre>`;
       // Wide diagrams can't reflow on a phone. Say so, instead of silently

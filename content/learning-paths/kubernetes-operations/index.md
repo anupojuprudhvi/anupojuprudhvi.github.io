@@ -1,80 +1,98 @@
 ---
-title: Kubernetes on Amazon EKS: Foundations & Operations
+title: Kubernetes on Amazon EKS: Foundations to Production
 date: 2026-09-18
+updated: 2026-09-29
 track: kubernetes-operations
-summary: A hands-on playbook for running EKS in production — dual ingress cost mechanics, IAM/RBAC across clusters, and day-2 incident triage.
-level: Intermediate to Advanced
-duration: 10 Modules · 85 min read
-stack: [Amazon EKS, Kubernetes, AWS Load Balancer Controller, Nginx Ingress, AWS ECR]
+summary: A structured path from how Kubernetes works to running Amazon EKS in production. Learn the foundations first, then build the platform, then ship and run it, with traffic-flow diagrams throughout.
+level: Foundations to Advanced
+duration: 14 Modules · 120 min read
+stack: [Kubernetes, Amazon EKS, kubectl, AWS Load Balancer Controller, Argo CD, Karpenter, Amazon ECR]
 ---
 
-## Overview · Running EKS is mostly a routing and access-control problem
+## Overview · Learn how it works, then how to run it
 
-Provisioning an EKS cluster is the easy part. The decisions that actually shape a production platform are how traffic gets routed into it, who can reach which environment, how a container actually gets from a developer's commit into a running pod, and what you do at 2 a.m. when a rollout is stuck.
+Most EKS guides start with a cluster already running and jump straight to production tricks. This track starts one step earlier. It explains how Kubernetes actually works, then uses that to build an EKS platform, then shows how to ship to it and keep it healthy. Each module builds on the ones before it, and each has diagrams that show how requests, permissions, and deploys flow through the system.
 
-This track draws on running Amazon EKS across four separate environments (Dev, QA, Staging, Production) for a single platform — the ingress design, environment isolation, and container-delivery mechanics below reflect that real deployment, paired with a general operational discipline for triaging a stuck rollout that applies to any EKS cluster. It covers:
+<div class="callout"><b>Who this is for, and what it assumes.</b> This track is for engineers who already know <b>containers</b> (what an image is, writing a Dockerfile, pushing to a registry, <code>docker run</code>) and basic <b>AWS</b> (VPCs and subnets, IAM roles). You don't need any Kubernetes experience; Part 1 starts from zero. If containers are new to you, <a href="https://docs.docker.com/get-started/">Docker's getting-started guide</a> is the best first step. If you already run Kubernetes, skim Part 1 and start at Part 2.</div>
 
-- Why running two different ingress controllers side-by-side is a cost decision, not just a technical preference.
-- How to isolate IAM access per environment without hand-editing cluster permissions per engineer.
-- The one authentication detail that breaks container delivery specifically in headless CI/CD, and nowhere else.
-- A repeatable way to triage a stuck or failing deployment instead of guessing.
-- How resource requests drive scheduling, autoscaling, and cost.
-- How to upgrade a cluster one version at a time without breaking deploys.
-- How pods get their own AWS permissions, and how secrets reach them safely.
-- What to monitor, and which alerts are worth waking someone for.
-- Running deploys through Git with Argo CD.
-- The add-ons every new cluster needs before any app arrives.
+```flow
+title: The route through this track
+Part 1 · Foundations | how Kubernetes works: control plane, pods, Services, access
+-> you can read and reason about any cluster
+Part 2 · Build the platform | separate environments, add-ons, workload identity, ingress
+-> you have an EKS platform ready for applications
+Part 3 · Ship & run in production | delivery, GitOps, scaling, monitoring, incidents, upgrades
+-> you can deploy to it safely and keep it healthy
+* Production-ready EKS | every step drawn from a real multi-environment deployment
+```
 
-The track is in two parts: **learn the foundations** (modules 1–6), then **run it in production** (modules 7–10). Modules 1–3 and 5 draw on that deployment, with every name and account removed; the rest are general EKS practice.
+Parts 2 and 3 draw on running Amazon EKS across four separate environments (Development, QA, Staging, Production) for a single platform, with every name and account removed. Where a module links to a case study, that's the real engagement the pattern came from.
 
-## Part 1 · Learn the foundations
+## Part 1 · Foundations
 
-How traffic gets in, who can get in, how code gets there, and the building blocks every cluster needs. Read these in order if you are setting up a platform.
+How Kubernetes and EKS work. Read these in order: everything later relies on them.
 
 <ul class="lp-syllabus">
   <li>
-    <a class="lp-module-card" href="01-dual-ingress-architecture.html">
+    <a class="lp-module-card" href="how-kubernetes-and-eks-work.html">
       <span class="lp-module-num">01</span>
       <div class="lp-module-body">
-        <h3>Dual Ingress Architecture &amp; Its Cost Mechanics</h3>
-        <p>When to share one ALB across services, when a separate controller helps, and moving from the retired ingress-nginx to Gateway API.</p>
+        <h3>How Kubernetes and Amazon EKS Actually Work</h3>
+        <p>Desired state and controllers, the control plane and nodes, what happens on kubectl apply, and what AWS runs for you.</p>
       </div>
-      <span class="lp-module-action">Start module →</span>
+      <span class="lp-module-action">Start here →</span>
     </a>
   </li>
   <li>
-    <a class="lp-module-card" href="02-multi-environment-clusters-and-rbac.html">
+    <a class="lp-module-card" href="pods-deployments-and-rollouts.html">
       <span class="lp-module-num">02</span>
       <div class="lp-module-body">
-        <h3>Multi-Environment Clusters &amp; IAM/RBAC</h3>
-        <p>Separate clusters per environment, and giving people and pipelines access with EKS access entries instead of a shared superuser.</p>
+        <h3>Pods, Deployments &amp; Rollouts</h3>
+        <p>How your app actually runs: Deployments, ReplicaSets, probes, configuration, and a rolling update step by step.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>
   </li>
   <li>
-    <a class="lp-module-card" href="03-container-delivery-to-eks.html">
+    <a class="lp-module-card" href="services-and-cluster-networking.html">
       <span class="lp-module-num">03</span>
       <div class="lp-module-body">
-        <h3>Container Delivery: Build, Tag, Push, Promote</h3>
-        <p>Build an image once and promote that exact image by digest, plus the registry login detail that only breaks in CI.</p>
+        <h3>Services &amp; Cluster Networking</h3>
+        <p>How traffic finds your pods: Services, cluster DNS, VPC IPs for pods, and the path from the internet to a pod.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>
   </li>
   <li>
-    <a class="lp-module-card" href="07-workload-identity-and-secrets.html">
+    <a class="lp-module-card" href="namespaces-rbac-and-cluster-access.html">
       <span class="lp-module-num">04</span>
       <div class="lp-module-body">
-        <h3>Workload Identity &amp; Secrets</h3>
-        <p>Giving each workload its own AWS permissions with EKS Pod Identity or IRSA, and getting secrets into pods without putting them in Git.</p>
+        <h3>Namespaces, RBAC &amp; Cluster Access</h3>
+        <p>Who can do what: the checks every request passes, Roles and bindings, IAM-to-Kubernetes mapping, and service accounts.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+</ul>
+
+## Part 2 · Build the platform
+
+Turning an empty EKS cluster into a platform that's safe to deploy to. Read these in order if you're setting one up.
+
+<ul class="lp-syllabus">
+  <li>
+    <a class="lp-module-card" href="multi-environment-clusters-and-access-entries.html">
+      <span class="lp-module-num">05</span>
+      <div class="lp-module-body">
+        <h3>Multi-Environment Clusters &amp; EKS Access Entries</h3>
+        <p>Separate clusters per environment, and giving people and pipelines access with access entries instead of a shared superuser.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>
   </li>
   <li>
-    <a class="lp-module-card" href="10-platform-add-ons.html">
-      <span class="lp-module-num">05</span>
+    <a class="lp-module-card" href="platform-add-ons.html">
+      <span class="lp-module-num">06</span>
       <div class="lp-module-body">
         <h3>The Platform Add-on Layer</h3>
         <p>The add-ons every new cluster needs (load balancing, DNS, metrics, autoscaling, logs, storage), each with its own IAM role.</p>
@@ -83,8 +101,45 @@ How traffic gets in, who can get in, how code gets there, and the building block
     </a>
   </li>
   <li>
-    <a class="lp-module-card" href="09-gitops-with-argo-cd.html">
-      <span class="lp-module-num">06</span>
+    <a class="lp-module-card" href="workload-identity-and-secrets.html">
+      <span class="lp-module-num">07</span>
+      <div class="lp-module-body">
+        <h3>Workload Identity &amp; Secrets</h3>
+        <p>Giving each workload its own AWS permissions with EKS Pod Identity or IRSA, and getting secrets into pods without putting them in Git.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="ingress-architecture-and-cost.html">
+      <span class="lp-module-num">08</span>
+      <div class="lp-module-body">
+        <h3>Ingress Architecture &amp; Its Cost Mechanics</h3>
+        <p>When to share one ALB across services, when a separate controller helps, and moving from the retired ingress-nginx to Gateway API.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+</ul>
+
+## Part 3 · Ship & run in production
+
+Getting code onto the platform and keeping it healthy: delivery, capacity, monitoring, incidents, and upgrades. Read in order, or go straight to what you need.
+
+<ul class="lp-syllabus">
+  <li>
+    <a class="lp-module-card" href="container-delivery-to-eks.html">
+      <span class="lp-module-num">09</span>
+      <div class="lp-module-body">
+        <h3>Container Delivery: Build, Tag, Push, Promote</h3>
+        <p>Build an image once and promote that exact image by digest, plus the registry login detail that only breaks in CI.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="gitops-with-argo-cd.html">
+      <span class="lp-module-num">10</span>
       <div class="lp-module-body">
         <h3>GitOps with Argo CD</h3>
         <p>Letting Argo CD keep each cluster matching Git, so a deploy is a reviewed pull request and a rollback is a revert.</p>
@@ -92,16 +147,9 @@ How traffic gets in, who can get in, how code gets there, and the building block
       <span class="lp-module-action">Read module →</span>
     </a>
   </li>
-</ul>
-
-## Part 2 · Run it in production
-
-Keeping a running platform healthy: capacity and cost, knowing when something is wrong, fixing it, and upgrading without drama. Dip into these as you need them.
-
-<ul class="lp-syllabus">
   <li>
-    <a class="lp-module-card" href="05-scaling-requests-and-cost.html">
-      <span class="lp-module-num">07</span>
+    <a class="lp-module-card" href="scaling-requests-and-cost.html">
+      <span class="lp-module-num">11</span>
       <div class="lp-module-body">
         <h3>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</h3>
         <p>Why resource requests drive scheduling, autoscaling, and the bill, and how pod and node autoscaling fit together.</p>
@@ -110,8 +158,8 @@ Keeping a running platform healthy: capacity and cost, knowing when something is
     </a>
   </li>
   <li>
-    <a class="lp-module-card" href="08-observability.html">
-      <span class="lp-module-num">08</span>
+    <a class="lp-module-card" href="observability-and-alerting.html">
+      <span class="lp-module-num">12</span>
       <div class="lp-module-body">
         <h3>Observability: Knowing Something&#39;s Wrong First</h3>
         <p>What to collect from a cluster, the few signals worth alerting on, and alerts that wake people for real problems only.</p>
@@ -120,18 +168,18 @@ Keeping a running platform healthy: capacity and cost, knowing when something is
     </a>
   </li>
   <li>
-    <a class="lp-module-card" href="04-day-2-operations-and-incident-triage.html">
-      <span class="lp-module-num">09</span>
+    <a class="lp-module-card" href="incident-triage.html">
+      <span class="lp-module-num">13</span>
       <div class="lp-module-body">
         <h3>Day-2 Operations &amp; Incident Triage</h3>
-        <p>Context switching across clusters safely, verifying a rollout actually succeeded, and a systematic sequence for triaging a stuck deployment.</p>
+        <p>Checking a rollout actually worked, and a repeatable sequence for triaging a stuck or failing deployment.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>
   </li>
   <li>
-    <a class="lp-module-card" href="06-cluster-upgrades.html">
-      <span class="lp-module-num">10</span>
+    <a class="lp-module-card" href="cluster-upgrades.html">
+      <span class="lp-module-num">14</span>
       <div class="lp-module-body">
         <h3>Cluster Upgrades Without Drama</h3>
         <p>Checking for removed APIs first, then upgrading the control plane, add-ons, and nodes in an order that keeps workloads running.</p>

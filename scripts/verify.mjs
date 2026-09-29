@@ -24,7 +24,7 @@ try {
   });
   fs.mkdirSync(artifacts, { recursive: true });
   await verifySearch(browser, base);
-  const pages = [
+  const allPages = [
     "index.html",
     "privacy.html",
     ...fs
@@ -38,8 +38,22 @@ try {
           .map((p) => "learning-paths/" + p.replaceAll("\\", "/"))
       : []),
   ];
+  // Moved pages leave a noindex stub behind (scripts/lib/render.mjs redirectPage);
+  // they're checked for a working redirect below, not as full pages.
+  const isRedirect = (file) => /<meta http-equiv="refresh"/.test(fs.readFileSync(path.join(root, file), "utf8"));
+  const pages = allPages.filter((file) => !isRedirect(file));
+  const redirectStubs = allPages.filter(isRedirect);
   const discoveryContext = await browser.newContext();
   try {
+    for (const file of redirectStubs) {
+      const stub = await discoveryContext.newPage();
+      await stub.goto(`${base}/${file}`);
+      await stub.waitForURL((url) => !url.pathname.endsWith(`/${file}`));
+      assert(pages.some((p) => new URL(stub.url()).pathname === `/${p}`), `${file} must redirect to a real page, got ${stub.url()}`);
+      assert.equal(await stub.locator("h1").count(), 1, `${file} must land on a rendered page`);
+      await stub.close();
+    }
+    if (redirectStubs.length) console.log(`PASS: ${redirectStubs.length} moved-page redirects land on live pages.`);
     const response = await discoveryContext.request.get(`${base}/sitemap.xml`);
     assert.equal(response.status(), 200);
     assert.match(response.headers()["content-type"], /application\/xml/);

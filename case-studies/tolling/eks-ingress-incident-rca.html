@@ -18,7 +18,7 @@
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="https://anupojuprudhvi.github.io/assets/og/tolling/eks-ingress-incident-rca.jpg" />
-    <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies" href="https://anupojuprudhvi.github.io/feed.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies &amp; Learning Paths" href="https://anupojuprudhvi.github.io/feed.xml" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Case studies","item":"https://anupojuprudhvi.github.io/case-studies/"},{"@type":"ListItem","position":3,"name":"Tolling Infrastructure","item":"https://anupojuprudhvi.github.io/case-studies/tolling/"},{"@type":"ListItem","position":4,"name":"Trace an EKS ingress incident","item":"https://anupojuprudhvi.github.io/case-studies/tolling/eks-ingress-incident-rca.html"}]}</script>
     <script type="application/ld+json">
@@ -43,6 +43,8 @@
         "url": "https://anupojuprudhvi.github.io/case-studies/tolling/eks-ingress-incident-rca.html",
         "image": "https://anupojuprudhvi.github.io/assets/og/tolling/eks-ingress-incident-rca.jpg",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/case-studies/tolling/eks-ingress-incident-rca.html",
+        "datePublished": "2026-09-17",
+        "dateModified": "2026-09-17",
         "keywords": "eks, kubernetes, ingress, incident-response, observability, networking, Amazon EKS, AWS Load Balancer Controller, Application Load Balancer, Route 53, CloudWatch"
       }
     </script>
@@ -115,7 +117,7 @@
               </a>
               <a href="../../learning-paths/kubernetes-operations/index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>Kubernetes on Amazon EKS</strong>
-                <small>10 Modules · Foundations &amp; Operations</small>
+                <small>14 Modules · Foundations to Production</small>
               </a>
             </div>
           </div>
@@ -276,6 +278,17 @@
 <p>Instrument a synthetic request that records the same correlation identifier at the edge, load balancer, controller, and application layers. Use a tabletop exercise to measure investigation time and the number of handoffs before publishing those metrics.</p>
 </div>
 </section>
+      <div class="wrap">
+        <section class="related-links" aria-label="Learn the concepts behind this">
+          <h2>Learn the concepts behind this</h2>
+          <ul>
+            <li><a href="../../learning-paths/kubernetes-operations/services-and-cluster-networking.html"><span class="related-eyebrow">Kubernetes on Amazon EKS: Foundations to Production · Module 03</span><strong>Services &amp; Cluster Networking: How Traffic Finds Your Pods</strong><small>Pods come and go with new IP addresses, so nothing should talk to a pod directly. How Services give a stable name and address, how cluster DNS and kube-proxy route each request, how EKS gives pods real VPC IPs, and how traffic from the internet reaches a pod.</small></a></li>
+            <li><a href="../../learning-paths/kubernetes-operations/ingress-architecture-and-cost.html"><span class="related-eyebrow">Kubernetes on Amazon EKS: Foundations to Production · Module 08</span><strong>Dual Ingress Architecture &amp; Its Cost Mechanics</strong><small>When to route traffic through a shared ALB versus a separate ingress controller, why grouping services onto one load balancer is a real saving, and where Gateway API fits now that ingress-nginx is retired.</small></a></li>
+            <li><a href="../../learning-paths/kubernetes-operations/observability-and-alerting.html"><span class="related-eyebrow">Kubernetes on Amazon EKS: Foundations to Production · Module 12</span><strong>Observability: Knowing Something's Wrong Before Users Do</strong><small>What to collect from an EKS cluster (logs, metrics, and cluster state), which few signals deserve an alert, and how to set alerts that wake people for real problems only.</small></a></li>
+            <li><a href="../../learning-paths/kubernetes-operations/incident-triage.html"><span class="related-eyebrow">Kubernetes on Amazon EKS: Foundations to Production · Module 13</span><strong>Day-2 Operations &amp; Incident Triage</strong><small>Switching cluster context safely, verifying a rollout actually succeeded instead of assuming it did, and a repeatable sequence for triaging a stuck deployment.</small></a></li>
+          </ul>
+        </section>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/tolling/aurora-multi-region-dr-parity.html">← Keep Aurora DR in configuration parity</a>
         <a href="../../case-studies/tolling/cicd-delivery-engine.html">Build the delivery engine →</a>

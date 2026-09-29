@@ -103,7 +103,7 @@ function learningPathsNavDropdown({ prefix = "", current = false } = {}) {
               </a>
               <a href="${prefix}kubernetes-operations/index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>Kubernetes on Amazon EKS</strong>
-                <small>10 Modules · Foundations &amp; Operations</small>
+                <small>14 Modules · Foundations to Production</small>
               </a>
             </div>
           </div>`;
@@ -275,8 +275,28 @@ function breadcrumbLd(crumbs) {
   }).replace(/</g, "\\u003c");
 }
 
+/** JSON-LD date fields for an article; each line ends with a comma, so place it before "keywords". */
+function articleDates(d) {
+  if (!d.date) return "";
+  return `\n        "datePublished": "${esc(d.date)}",\n        "dateModified": "${esc(d.updated || d.date)}",`;
+}
+
+/**
+ * Cross-links between learning-path modules and case studies, so each page
+ * leads to its counterpart: the concept on one side, the real engagement on
+ * the other. `items` are { href, eyebrow, title, summary }.
+ */
+function relatedLinks(heading, items) {
+  return `<section class="related-links" aria-label="${esc(heading)}">
+          <h2>${esc(heading)}</h2>
+          <ul>
+            ${items.map((i) => `<li><a href="${esc(i.href)}"><span class="related-eyebrow">${esc(i.eyebrow)}</span><strong>${esc(i.title)}</strong><small>${inline(i.summary || "")}</small></a></li>`).join("\n            ")}
+          </ul>
+        </section>`;
+}
+
 /* ------------------------------------------------------------- page shell */
-export function page(d, bodyHtml, { up, url, prev, next, docs = [] } = {}) {
+export function page(d, bodyHtml, { up, url, prev, next, docs = [], learning = [] } = {}) {
   const a = (p) => `${up}${p}`;
   const scripts = (d.scripts || [])
     .map((s) => `<script src="${a("assets/" + s)}" defer></script>`)
@@ -366,7 +386,7 @@ ${enables}
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="${ogImage}" />
-    <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies" href="${SITE}/feed.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies &amp; Learning Paths" href="${SITE}/feed.xml" />
     <link rel="icon" href="${a("assets/favicon.svg")}" type="image/svg+xml" />
     <script type="application/ld+json">${breadcrumbLd(crumbs)}</script>
     <script type="application/ld+json">
@@ -390,7 +410,7 @@ ${enables}
         },
         "url": "${canonical}",
         "image": "${ogImage}",
-        "mainEntityOfPage": "${canonical}",
+        "mainEntityOfPage": "${canonical}",${isStudy ? articleDates(d) : ""}
         "keywords": ${jsonLd((d.tags || []).concat(d.stack || []).join(", "))}
       }
     </script>
@@ -428,7 +448,10 @@ ${siteTopNav({ docs, up, active: "case-studies" })}
       </header>
 ${keyResults(d)}
 ${leadSection}
-${rest.replace(/<pre(?![^>]*tabindex)/g, '<pre tabindex="0"')}
+${rest.replace(/<pre(?![^>]*tabindex)/g, '<pre tabindex="0"')}${learning.length ? `
+      <div class="wrap">
+        ${relatedLinks("Learn the concepts behind this", learning.map((m) => ({ href: a(m.url), eyebrow: `${m.trackTitle} · Module ${String(m.module).padStart(2, "0")}`, title: m.title, summary: m.summary })))}
+      </div>` : ""}
       <aside class="next-study wrap">
         ${nav}
       </aside>
@@ -529,7 +552,7 @@ export function libraryPage(items) {
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies" href="${SITE}/feed.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies &amp; Learning Paths" href="${SITE}/feed.xml" />
     <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
     <script type="application/ld+json">${JSON.stringify({
       "@context": "https://schema.org",
@@ -656,9 +679,27 @@ function moduleToc({ d, track, modules, sections, label }) {
             </nav>`;
 }
 
-export function learningPathPage(d, bodyHtml, { up, url, prev, next, track, docs = [], modules = [] } = {}) {
+export function learningPathPage(d, bodyHtml, { up, url, prev, next, track, docs = [], modules = [], related = [] } = {}) {
   const a = (p) => `${up}${p}`;
   const isOverview = !d.module;
+  const canonical = `${SITE}/${url}`;
+  const trackUrl = `${SITE}/learning-paths/${track.id}/index.html`;
+  const crumbs = [
+    ["Home", `${SITE}/`],
+    ["Learning paths", `${SITE}/learning-paths/`],
+    [track.title, trackUrl],
+    ...(isOverview ? [] : [[d.title, canonical]]),
+  ];
+  // Modules point up to their track; the track overview lists its modules in order.
+  const structure = isOverview
+    ? modules.length ? `
+        "hasPart": ${jsonLd(modules.map((m) => ({ "@type": "TechArticle", position: m.module, name: m.title, url: `${SITE}/${m.url}` })))},` : ""
+    : `
+        "isPartOf": ${jsonLd({ "@type": "CreativeWorkSeries", name: track.title, url: trackUrl })},
+        "position": ${Number(d.module)},`;
+  const seeAlso = related.length
+    ? relatedLinks("See it in practice", related.map((doc) => ({ href: a(doc.url), eyebrow: `Case study · ${doc.projectName}`, title: doc.nav || doc.title, summary: doc.summary })))
+    : "";
 
   // Give each section heading an id so the sidebar can link to it.
   const sections = [];
@@ -719,16 +760,18 @@ export function learningPathPage(d, bodyHtml, { up, url, prev, next, track, docs
     ${HEAD_SECURITY}
     <title>${esc(d.title)} — Prudhvi Raj Anupoju</title>
     <meta name="description" content="${esc(d.summary || "")}" />
-    <link rel="canonical" href="${SITE}/${url}" />
+    <link rel="canonical" href="${canonical}" />
     <meta property="og:type" content="article" />
+    <meta property="og:url" content="${canonical}" />
     <meta property="og:title" content="${esc(d.title)} — Prudhvi Raj Anupoju" />
     <meta property="og:description" content="${esc(d.summary || "")}" />
     <meta property="og:image" content="${SITE}/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies" href="${SITE}/feed.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies &amp; Learning Paths" href="${SITE}/feed.xml" />
     <link rel="icon" href="${a("assets/favicon.svg")}" type="image/svg+xml" />
+    <script type="application/ld+json">${breadcrumbLd(crumbs)}</script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -748,9 +791,9 @@ export function learningPathPage(d, bodyHtml, { up, url, prev, next, track, docs
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju"
         },
-        "url": "${SITE}/${url}",
+        "url": "${canonical}",
         "image": "${SITE}/og-image.png",
-        "mainEntityOfPage": "${SITE}/${url}",
+        "mainEntityOfPage": "${canonical}",${articleDates(d)}${structure}
         "keywords": ${jsonLd((d.tags || []).concat(d.stack || []).join(", "))}
       }
     </script>
@@ -794,7 +837,8 @@ ${siteTopNav({ docs, up, active: "learning-paths" })}
               <summary>All modules in this track (${modules.length})</summary>
               ${moduleToc({ d, track, modules, sections: [], label: "All modules" })}
             </details>` : ""}
-          ${bodyHtml.replace(/<pre(?![^>]*tabindex)/g, '<pre tabindex="0"')}
+          ${bodyHtml.replace(/<pre(?![^>]*tabindex)/g, '<pre tabindex="0"')}${seeAlso ? `
+          ${seeAlso}` : ""}
           ${!isOverview ? `<nav class="lp-nav" aria-label="Module navigation">${nav}</nav>` : ""}${withSidebar ? `
           </div>` : ""}
         </div>
@@ -827,3 +871,29 @@ ${siteTopNav({ docs, up, active: "learning-paths" })}
 `;
 }
 
+
+/* ------------------------------------------------------------ redirect stub */
+/**
+ * A moved page. GitHub Pages can't send a 301, so the old URL keeps a tiny
+ * page that points search engines at the new one (canonical + noindex) and
+ * sends people there (meta refresh, plus a plain link that works without it).
+ * `to` is the new page's path relative to the old one.
+ */
+export function redirectPage({ title, to, canonical }) {
+  return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    ${HEAD_SECURITY}
+    <title>${esc(title)} — Prudhvi Raj Anupoju</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href="${esc(canonical)}" />
+    <meta http-equiv="refresh" content="0; url=${esc(to)}" />
+  </head>
+  <body>
+    <p>This page has moved to <a href="${esc(to)}">${esc(title)}</a>.</p>
+  </body>
+</html>
+`;
+}

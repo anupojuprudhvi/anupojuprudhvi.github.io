@@ -1,19 +1,20 @@
 ---
-title: Multi-Environment Clusters & IAM/RBAC
+title: Multi-Environment Clusters & EKS Access Entries
 date: 2026-09-18
-updated: 2026-09-28
+updated: 2026-09-29
 track: kubernetes-operations
-order: 2
-module: 2
-totalModules: 10
+order: 5
+module: 5
 summary: Isolating Dev, QA, Staging, and Production as separate clusters, and granting people and pipelines cluster access with EKS access entries instead of a shared superuser.
-level: Foundations · Access
+level: Platform · Access
 readingTime: 8 min read
 stack: [Amazon EKS, AWS IAM, Kubernetes RBAC, EKS access entries]
 tags: [rbac, iam, eks, multi-environment, security]
+redirectFrom: [02-multi-environment-clusters-and-rbac]
+related: [tolling/cloud-foundation]
 ---
 
-**Before you start:** you'll want the AWS CLI and `kubectl`, permission to manage EKS clusters, and a rough idea of how IAM roles work.
+**Before you start:** you'll want the AWS CLI and `kubectl`, permission to manage EKS clusters, and the RBAC basics from [Namespaces, RBAC & Cluster Access](namespaces-rbac-and-cluster-access.html). This module takes those ideas across several clusters.
 
 ## Principle · Separate clusters, not separate namespaces, for hard environment boundaries
 
@@ -24,6 +25,21 @@ The deployment this track is based on ran one EKS cluster each for Development, 
 ## Mechanism · IAM identities become Kubernetes identities through access entries
 
 EKS doesn't keep its own list of users. Signing in to a cluster is IAM authentication, and **access entries** decide what each IAM role can do once it's in. You create an access entry for a role, then attach an access policy to it, either for the whole cluster or for specific namespaces.
+
+```flow
+title: One identity provider, separate access in every cluster
+Engineer or CI pipeline | signs in through SSO, or OIDC for pipelines
+-> assumes an IAM role, such as platform-admin or ci-deploy
+paths
+path: Dev cluster
+Access entry: platform-admin | cluster admin
+Access entry: ci-deploy | edit, in app namespaces
+path: Production cluster
+* Access entry: platform-admin | cluster admin, for a smaller group
+Access entry: ci-deploy | edit, in the orders namespace only
+end
+-> each cluster decides on its own; admin in Dev grants nothing in Production
+```
 
 ```text
 # Let the platform team's SSO role administer the whole cluster

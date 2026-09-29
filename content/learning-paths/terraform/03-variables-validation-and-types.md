@@ -4,7 +4,6 @@ date: 2026-09-17
 track: terraform
 order: 3
 module: 3
-totalModules: 6
 summary: Writing Terraform that checks its own inputs, using rich object schemas, custom validation blocks, lifecycle preconditions, and deterministic for_each key mapping.
 level: Core Architecture
 readingTime: 7 min read

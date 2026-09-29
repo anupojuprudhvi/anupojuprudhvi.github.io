@@ -4,7 +4,6 @@ date: 2026-09-17
 track: terraform
 order: 4
 module: 4
-totalModules: 6
 summary: The hard realities of secret management in Terraform — state file plaintext vulnerabilities, dynamic credentials, and replacing static API keys with IAM roles.
 level: Security & Compliance
 readingTime: 7 min read

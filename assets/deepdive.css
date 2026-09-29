@@ -889,3 +889,175 @@ pre.code {
 .motif-security .m-keyhole { fill: var(--accent); }
 .motif-security .m-shackle { fill: none; }
 @keyframes msec-ring { to { transform: rotate(360deg); } }
+
+/* Flow diagrams (```flow fences, scripts/lib/markdown.mjs): boxes joined by
+   labelled arrows, read top to bottom. Pure CSS, so they work without
+   JavaScript and follow the light/dark theme tokens. */
+.deepdive .flow {
+  margin: 28px 0;
+  padding: 22px 20px 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+}
+.deepdive .flow-title {
+  font: 11px ui-monospace, monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+.deepdive .flow-body {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  max-width: 620px;
+  margin: 0 auto;
+}
+.deepdive .flow-node {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  text-align: center;
+}
+.deepdive .flow-node strong {
+  display: block;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+}
+.deepdive .flow-node span {
+  display: block;
+  color: var(--text-muted);
+  font-size: 12.5px;
+  margin-top: 2px;
+}
+.deepdive .flow-node.is-key {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+/* Arrow pinned to the centre line; its label sits to the right. */
+.deepdive .flow-edge {
+  display: grid;
+  grid-template-columns: 1fr 2px 1fr;
+  align-items: center;
+  column-gap: 10px;
+  min-height: 38px;
+  padding: 4px 0;
+}
+.deepdive .flow-arrow {
+  position: relative;
+  grid-column: 2;
+  width: 2px;
+  align-self: stretch;
+  min-height: 30px;
+  background: var(--accent);
+}
+.deepdive .flow-arrow::after {
+  content: "";
+  position: absolute;
+  left: -4px;
+  bottom: -1px;
+  border: 5px solid transparent;
+  border-top: 7px solid var(--accent);
+  border-bottom: 0;
+}
+.deepdive .flow-edge-label {
+  grid-column: 3;
+  font-size: 12px;
+  color: var(--text-body);
+}
+.deepdive .flow-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px dashed var(--text-muted);
+  border-radius: 10px;
+  padding: 26px 12px 12px;
+  margin: 2px 0;
+}
+.deepdive .flow-group-label,
+.deepdive .flow-path-label {
+  position: absolute;
+  top: 7px;
+  left: 12px;
+  font: 10.5px ui-monospace, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.deepdive .flow-paths {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 12px;
+}
+.deepdive .flow-path {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-top: 2px solid var(--accent);
+  padding-top: 26px;
+}
+.deepdive .flow-loop {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--accent);
+}
+@media (max-width: 640px) {
+  .deepdive .flow-paths {
+    grid-auto-flow: row;
+  }
+  .deepdive .flow {
+    padding: 18px 12px 14px;
+  }
+}
+
+/* "See it in practice" / "Learn the concepts" cross-links between
+   learning-path modules and case studies. */
+.deepdive .related-links {
+  margin: 48px 0 8px;
+}
+.deepdive .related-links h2 {
+  font-size: 18px;
+  margin-bottom: 14px;
+}
+.deepdive .related-links ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+.deepdive .related-links a {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  height: 100%;
+  padding: 16px 18px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-decoration: none;
+}
+.deepdive .related-links a:hover,
+.deepdive .related-links a:focus-visible {
+  border-color: var(--accent);
+}
+.deepdive .related-eyebrow {
+  font: 10.5px ui-monospace, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.deepdive .related-links strong {
+  color: var(--text);
+  font-size: 14.5px;
+}
+.deepdive .related-links small {
+  color: var(--text-muted);
+  font-size: 13px;
+}

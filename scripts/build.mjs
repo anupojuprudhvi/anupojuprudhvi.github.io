@@ -28,7 +28,7 @@ import { join, relative, dirname, basename } from "node:path";
 import { esc } from "./lib/html.mjs";
 import { parseFrontMatter, renderBody } from "./lib/markdown.mjs";
 import { MOTIF_NAMES, LAYER_MOTIF, motifSvg } from "./lib/motifs.mjs";
-import { SITE, HEAD_SECURITY, page, libraryPage, learningPathPage, siteTopNav, latestCaseStudies, LAYER_ORDER } from "./lib/render.mjs";
+import { SITE, HEAD_SECURITY, page, libraryPage, learningPathPage, redirectPage, siteTopNav, latestCaseStudies, LAYER_ORDER } from "./lib/render.mjs";
 
 const ROOT = process.cwd();
 const CONTENT = join(ROOT, "content/case-studies");
@@ -154,15 +154,10 @@ docs.sort(
 );
 
 let written = 0;
-docs.forEach((d, idx) => {
-  const prev = docs[idx - 1]?.project === d.project ? docs[idx - 1] : null;
-  const next = docs[idx + 1]?.project === d.project ? docs[idx + 1] : null;
-  const depth = d.url.split("/").length - 1;
-  const up = "../".repeat(depth);
-  emit(d.url, page(d, d.bodyHtml, { up, url: d.url, prev, next, docs }));
-  written++;
-  console.log("  page  ", d.url);
-});
+// Case-study pages are emitted after the learning paths, which add links back to them.
+const learningByStudy = new Map(); // case-study url → modules that list it under `related`
+const redirects = new Set(); // moved-page stubs: no canonical of their own, never in the sitemap
+const feedModules = [];
 
 // search index — the single source of truth for the library and assistant
 const index = docs.map((d) => ({
@@ -307,14 +302,25 @@ if (existsSync(join(LEARNING_PATHS_DIR, "tracks.json"))) {
       const slug = basename(file, ".md");
       const url = `learning-paths/${track.id}/${slug}.html`;
       noteLastModified(url, data);
+      for (const key of ["redirectFrom", "related"])
+        if (data[key] !== undefined && !Array.isArray(data[key])) throw new Error(`${file}: ${key} must be a list`);
+      // `related: [project/slug]` names case studies; an unknown one is a broken link, so fail.
+      const related = (data.related || []).map((ref) => {
+        const doc = docs.find((d) => `${d.project}/${d.slug}` === ref);
+        if (!doc) throw new Error(`${file}: related case study "${ref}" not found (use project/slug)`);
+        return doc;
+      });
+      for (const old of data.redirectFrom || [])
+        if (!/^[a-z0-9-]+$/.test(old) || old === slug) throw new Error(`${file}: invalid redirectFrom slug "${old}"`);
       return {
         ...data,
         slug,
         url,
         file,
+        related,
         bodyHtml: renderBody(body),
         module: Number(data.module || data.order || 0),
-        totalModules: data.totalModules || moduleFiles.length,
+        totalModules: moduleFiles.length,
       };
     });
 
@@ -329,9 +335,20 @@ if (existsSync(join(LEARNING_PATHS_DIR, "tracks.json"))) {
     modules.forEach((mod, idx) => {
       const prev = modules[idx - 1] || null;
       const next = modules[idx + 1] || null;
-      emit(mod.url, learningPathPage(mod, mod.bodyHtml, { up: "../../", url: mod.url, prev, next, track, docs, modules }));
+      emit(mod.url, learningPathPage(mod, mod.bodyHtml, { up: "../../", url: mod.url, prev, next, track, docs, modules, related: mod.related }));
       written++;
       console.log("  playbook", mod.url);
+      for (const doc of mod.related) {
+        if (!learningByStudy.has(doc.url)) learningByStudy.set(doc.url, []);
+        learningByStudy.get(doc.url).push({ ...mod, trackTitle: track.title });
+      }
+      for (const old of mod.redirectFrom || []) {
+        const oldUrl = `learning-paths/${track.id}/${old}.html`;
+        emit(oldUrl, redirectPage({ title: mod.title, to: `${mod.slug}.html`, canonical: `${SITE}/${mod.url}` }));
+        redirects.add(oldUrl);
+        console.log("  redirect", oldUrl, "→", mod.url);
+      }
+      feedModules.push({ ...mod, category: track.title });
     });
 
     if (overviewFile) {
@@ -344,7 +361,7 @@ if (existsSync(join(LEARNING_PATHS_DIR, "tracks.json"))) {
         learningPathPage(
           { ...data, totalModules: modules.length },
           renderBody(body),
-          { up: "../../", url: overviewUrl, track, docs }
+          { up: "../../", url: overviewUrl, track, docs, modules }
         )
       );
       written++;
@@ -353,10 +370,20 @@ if (existsSync(join(LEARNING_PATHS_DIR, "tracks.json"))) {
   }
 }
 
+docs.forEach((d, idx) => {
+  const prev = docs[idx - 1]?.project === d.project ? docs[idx - 1] : null;
+  const next = docs[idx + 1]?.project === d.project ? docs[idx + 1] : null;
+  const depth = d.url.split("/").length - 1;
+  const up = "../".repeat(depth);
+  emit(d.url, page(d, d.bodyHtml, { up, url: d.url, prev, next, docs, learning: learningByStudy.get(d.url) || [] }));
+  written++;
+  console.log("  page  ", d.url);
+});
+
 // Derive discovery files from the actual page canonicals, including custom overviews.
 const canonicalUrls = new Map(); // canonical URL → generated path
 for (const [url, html] of outputs) {
-  if (!url.endsWith(".html") || url === "404.html") continue;
+  if (!url.endsWith(".html") || url === "404.html" || redirects.has(url)) continue;
   const matches = [...html.matchAll(/<link\s+rel="canonical"\s+href="([^"]+)"\s*\/?>/g)];
   if (matches.length !== 1) throw new Error(`${url}: expected exactly one canonical URL`);
   const canonical = matches[0][1];
@@ -374,15 +401,15 @@ ${[...canonicalUrls.keys()].sort().map((canonical) => {
 </urlset>
 `);
 // Newest first; ties keep the library order so output stays deterministic.
-const feedDocs = docs.map((d, i) => ({ d, i })).sort((a, b) => b.d.date.localeCompare(a.d.date) || a.i - b.i).map(({ d }) => d);
+const feedDocs = [...docs, ...feedModules.filter((m) => m.date)].map((d, i) => ({ d, i })).sort((a, b) => b.d.date.localeCompare(a.d.date) || a.i - b.i).map(({ d }) => d);
 const rfc822 = (date) => new Date(`${date}T00:00:00Z`).toUTCString();
 emit("robots.txt", `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`);
 emit("feed.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Prudhvi Raj Anupoju — Cloud Platform Architecture Case Studies</title>
+    <title>Prudhvi Raj Anupoju — Cloud Platform Case Studies &amp; Learning Paths</title>
     <link>${SITE}/case-studies/</link>
-    <description>Enterprise cloud architecture case studies covering governance, resilience, integration, and cost optimization.</description>
+    <description>Enterprise cloud architecture case studies and hands-on learning paths covering governance, resilience, Kubernetes, Terraform, migration, and cost optimization.</description>
     <language>en</language>
     <atom:link href="${SITE}/feed.xml" rel="self" type="application/rss+xml"/>
     <lastBuildDate>${rfc822(feedDocs.reduce((max, d) => ((d.updated || d.date) > max ? d.updated || d.date : max), ""))}</lastBuildDate>
@@ -394,7 +421,7 @@ ${feedDocs
       <guid>${SITE}/${d.url}</guid>
       <pubDate>${rfc822(d.date)}</pubDate>
       <description>${esc(d.summary || "")}</description>
-      <category>${esc(d.layer || d.projectName)}</category>
+      <category>${esc(d.category || d.layer || d.projectName)}</category>
     </item>`,
   )
   .join("\n")}
