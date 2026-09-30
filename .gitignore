@@ -7,6 +7,7 @@ _site/
 # Local-only files; kept in step with .dockerignore. This repo is public.
 .env
 .env.*
+.confidential-terms
 *.log
 _to_delete/
 Claude outputs/
@@ -15,3 +16,6 @@ Claude outputs/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Claude Code personal settings (the shared .claude/settings.json is committed)
+.claude/settings.local.json

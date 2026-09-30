@@ -60,10 +60,14 @@ this skill focuses only on content-specific review.
 - Review the generated HTML and `assets/case-studies.json` for stale, duplicated, or
   contradictory text.
 - Search the repository for the changed claim or metric and check related copies.
+- Run `npm run confidential -- --changed`. It must pass before the review is
+  complete. It covers client names, AWS account numbers, and keys in source,
+  generated output, and file paths.
 - Run `git diff --check` and the relevant site-verification checks.
 
 ## Completion checklist
 
+- [ ] `npm run confidential -- --changed` passes.
 - [ ] Source-of-truth file identified.
 - [ ] Claims trace to repository evidence or are explicitly marked for review.
 - [ ] Personal contribution is distinct from team or organization outcomes.

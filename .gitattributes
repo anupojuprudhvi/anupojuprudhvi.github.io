@@ -1,4 +1,5 @@
 # Files executed inside Linux containers must keep LF endings on Windows checkouts.
 *.sh text eol=lf
+.githooks/* text eol=lf
 Dockerfile text eol=lf
 docker/*.conf text eol=lf

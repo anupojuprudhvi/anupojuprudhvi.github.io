@@ -11,3 +11,4 @@ Claude outputs
 *.log
 .env
 .env.*
+.confidential-terms

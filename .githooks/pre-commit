@@ -1,0 +1,5 @@
+#!/bin/sh
+# Blocks any commit that contains client names, AWS account numbers, or AWS keys,
+# whoever makes it: a person, Claude Code, OpenCode, or Codex.
+# Enabled by `npm install` (sets core.hooksPath). Never bypass with --no-verify.
+exec node scripts/check-confidential.mjs --staged

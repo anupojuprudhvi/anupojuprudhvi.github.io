@@ -56,10 +56,13 @@ Run, in order where applicable:
 
 ```sh
 npm run build
+npm run confidential -- --changed
 git diff --check
 npm run check
 npm test
 ```
+
+`npm run confidential` is mandatory and has no "where applicable" exemption.
 
 Inspect the rendered pages at `/`, `/case-studies/`, and any changed case-study URL.
 Check local links, anchors, page titles, descriptions, canonical paths, images,

@@ -31,6 +31,27 @@ that preserve the site's existing visual language and static-site architecture.
    accessibility semantics, content accuracy, and unintended files before
    declaring the task complete.
 
+## Confidentiality gate (mandatory, no exceptions)
+
+This repository is public. No client, agency, or partner name, proprietary client
+project name, AWS account number, or AWS key may be committed, in any file,
+including generated output, metadata, alt text, and file paths.
+
+- **Before every commit**, run `npm run confidential -- --staged`. The
+  `.githooks/pre-commit` hook runs the same scan and blocks the commit on any
+  match. Never bypass it with `--no-verify`, `-n`, or by changing `core.hooksPath`.
+- **Before declaring any case study, use case, or content change complete**,
+  run `npm run confidential -- --changed` and the full validation in step 5 of the
+  workflow. A task is not complete until both pass. Report the scan result in the
+  completion report.
+- The names to block live in `.confidential-terms`, one per line. It is git-ignored
+  and must stay that way. Never copy its contents into a tracked file, a commit
+  message, or a pull request. If the file is missing, stop and ask the owner for
+  it. Don't commit without it.
+- When the scan reports a match, replace it with anonymized, industry-level
+  wording. Never weaken the scanner, edit the terms list, or add an exception
+  to make the check pass.
+
 ## Architecture and maintainability
 
 - Preserve the static-site design: plain HTML, CSS, JavaScript, Markdown, and
@@ -84,7 +105,7 @@ Before describing a change as production-ready, verify as applicable:
 - Use the least sensitive detail necessary. Generalize client-sensitive names,
   identifiers, network ranges, credentials, and operational data.
 - **Client anonymity and confidential data**: Never publish client company, authority, or agency names
-  (e.g., Neology, SRTA, THEA, CTRMA, PRD, Lukka, Bespin, or any other partner/agency clients), proprietary client project names, internal AWS
+  (the git-ignored `.confidential-terms` list, plus any other partner or agency client), proprietary client project names, internal AWS
   account numbers, or client infrastructure identifiers. Use anonymized, industry-level
   framing (e.g., "Electronic tolling systems", "Telecom platform", "Regulated healthcare provider").
 - **Recent case studies showcase**: When publishing a new case study that should be
@@ -125,6 +146,6 @@ Every implementation response must include:
 
 - What changed and why.
 - Files changed, including generated files.
-- Commands run and their results.
+- Commands run and their results, including the `npm run confidential` result.
 - Known limitations, skipped checks, or deployment uncertainty.
 - A concise commit-message recommendation.
