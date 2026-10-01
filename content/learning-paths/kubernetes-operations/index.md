@@ -5,8 +5,8 @@ updated: 2026-10-01
 track: kubernetes-operations
 summary: A path from never having used Kubernetes to running Amazon EKS in production. Start with the basics on a free local cluster, learn the core concepts, move to EKS and build the platform, then work through the real challenges of operating it.
 level: Beginner to Advanced
-duration: 18 Modules · 160 min read
-stack: [Kubernetes, kind, kubectl, Amazon EKS, AWS Load Balancer Controller, Argo CD, Karpenter]
+duration: 20 Modules · 180 min read
+stack: [Kubernetes, kind, kubectl, Helm, Amazon EKS, AWS Load Balancer Controller, Argo CD, Karpenter]
 ---
 
 ## Overview · Learn the basics, then the concepts, then how to run it
@@ -19,7 +19,7 @@ Most EKS guides start with a cluster already running and jump straight to produc
 title: The route through this track
 Part 1 · Basics | why Kubernetes exists, a free local cluster, YAML and kubectl
 -> you can run an app on a cluster and read its manifests
-Part 2 · Core concepts | how a cluster works, workloads, networking, access
+Part 2 · Core concepts | how a cluster works, workloads, networking, storage, access, packaging
 -> you can read and reason about any cluster
 Part 3 · Kubernetes on Amazon EKS | what AWS runs, separate environments, add-ons, workload identity, ingress
 -> you have an EKS platform ready for applications
@@ -103,11 +103,31 @@ How Kubernetes works, on any cluster. Everything later relies on these, so read 
     </a>
   </li>
   <li>
+    <a class="lp-module-card" href="07-storage-and-workload-types.html">
+      <span class="lp-module-num">07</span>
+      <div class="lp-module-body">
+        <h3>Storage &amp; Other Workload Types</h3>
+        <p>Volumes, PersistentVolumeClaims and StorageClasses, StatefulSets for apps that need a stable identity, and DaemonSets, Jobs, and CronJobs.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
     <a class="lp-module-card" href="08-namespaces-rbac-and-cluster-access.html">
       <span class="lp-module-num">08</span>
       <div class="lp-module-body">
         <h3>Namespaces, RBAC &amp; Service Accounts</h3>
         <p>Who can do what: the checks every request passes, Roles and bindings, the built-in roles, and identities for pods.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="09-helm-and-kustomize.html">
+      <span class="lp-module-num">09</span>
+      <div class="lp-module-body">
+        <h3>Packaging Apps with Helm and Kustomize</h3>
+        <p>One app across several environments with Kustomize overlays, and installing, upgrading, and rolling back packaged software with Helm.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>

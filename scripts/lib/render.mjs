@@ -103,7 +103,7 @@ function learningPathsNavDropdown({ prefix = "", current = false } = {}) {
               </a>
               <a href="${prefix}kubernetes-operations/index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>Kubernetes on Amazon EKS</strong>
-                <small>18 Modules · Zero to Production</small>
+                <small>20 Modules · Zero to Production</small>
               </a>
             </div>
           </div>`;

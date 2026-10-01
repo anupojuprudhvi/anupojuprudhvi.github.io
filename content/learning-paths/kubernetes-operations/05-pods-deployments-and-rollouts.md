@@ -7,7 +7,7 @@ order: 5
 module: 5
 summary: The objects you'll write every day. Pods wrap your containers, Deployments keep the right number running and replace them safely, and probes tell Kubernetes when a container is really ready. Plus configuration, and a rolling update step by step.
 level: Core concepts · Workloads
-readingTime: 10 min read
+readingTime: 11 min read
 stack: [Kubernetes, kubectl, Deployments, ReplicaSets, ConfigMaps]
 tags: [kubernetes, pods, deployments, rollouts, probes, fundamentals]
 redirectFrom: [pods-deployments-and-rollouts]
@@ -83,8 +83,34 @@ spec:
 ```
 
 - **`selector` and `labels`** are how Kubernetes connects objects. The Deployment owns every pod labelled `app: orders-api`, and a Service will find the pods by the same label in the next module.
-- **`resources.requests`** is what the scheduler uses to find a node with room. It matters so much for cost and scaling that [Scaling & Cost](17-scaling-requests-and-cost.html) is devoted to it.
+- **`resources`** says how much CPU and memory each container needs, and the most it may use. The next section explains it.
 - **The image is pinned by digest**, so every pod runs exactly the same bytes. [Container Delivery](15-container-delivery-to-eks.html) explains why.
+
+## Resources · Requests and limits
+
+Every container should say how much CPU and memory it needs. Kubernetes uses two numbers:
+
+- **Requests** are a reservation. The scheduler only places a pod on a node with that much unreserved CPU and memory left. If no node has room, the pod waits in `Pending`.
+- **Limits** are a ceiling. A container that uses more CPU than its limit is slowed down (throttled). A container that uses more memory than its limit is killed and restarted, shown as `OOMKilled`.
+
+CPU is measured in cores, so `250m` (250 millicores) is a quarter of a CPU. Memory uses binary units: `256Mi` is 256 mebibytes, `1Gi` is one gibibyte.
+
+| Setting | What happens | If it's wrong |
+| --- | --- | --- |
+| CPU request | Reserves CPU on a node for scheduling | Too high wastes nodes; too low packs pods onto busy nodes |
+| Memory request | Reserves memory on a node for scheduling | Too low lets nodes run out of memory and evict pods |
+| CPU limit | Throttles the container above it | Too low makes the app slow even when the node is idle |
+| Memory limit | Kills the container above it | Too low causes restarts under normal load |
+
+A good starting point is the one in the Deployment above: CPU and memory requests based on real usage, a memory limit, and often no CPU limit, so a busy pod can borrow idle CPU. Requests also drive autoscaling and most of the cloud bill, which is why [Scaling & Cost](17-scaling-requests-and-cost.html) comes back to them in depth.
+
+```text
+# Real usage per pod (needs metrics-server; see the add-ons module)
+kubectl top pods
+
+# Why is my pod Pending? The Events section names the missing resource
+kubectl describe pod <pod-name>
+```
 
 ## Probes · How Kubernetes knows your app is ready, and still alive
 
@@ -143,11 +169,7 @@ data:
 
 A Kubernetes **Secret** looks similar, but its values are only base64-encoded, not encrypted, so anyone who can read Secrets in that namespace can read the values. For real credentials, the better pattern is to keep them in AWS Secrets Manager and sync them in, covered in [Workload Identity & Secrets](13-workload-identity-and-secrets.html). One gotcha: pods read environment variables **once, at start-up**. Changing a ConfigMap doesn't change running pods until they restart (`kubectl rollout restart deployment/orders-api -n orders`).
 
-### Other workload types you'll meet
-
-- **StatefulSet:** like a Deployment, but each pod keeps a stable name and its own persistent disk. Used for databases and brokers, which on AWS you'll usually run as a managed service instead.
-- **DaemonSet:** exactly one pod on every node. Used by node-level agents such as log shippers and the VPC CNI itself.
-- **Job and CronJob:** run a task to completion, once or on a schedule, such as a migration or a nightly report.
+Deployments suit apps whose pods are interchangeable and keep no data of their own. Databases, node agents, and one-off or scheduled tasks need other controllers (StatefulSets, DaemonSets, Jobs, and CronJobs), covered in [Storage & Other Workload Types](07-storage-and-workload-types.html).
 
 ### Implementation notes
 

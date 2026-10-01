@@ -84,7 +84,7 @@ Keeping application code and deployment manifests in separate repositories is co
 
 ### Structuring many environments and apps
 
-- **One folder per environment**, using Kustomize overlays or per-environment Helm values, so the difference between QA and Production is a small, readable diff.
+- **One folder per environment**, using Kustomize overlays or per-environment Helm values (both covered in [Helm & Kustomize](09-helm-and-kustomize.html)), so the difference between QA and Production is a small, readable diff.
 - **The "app of apps" pattern** (or an `ApplicationSet`) lets one Argo CD application create the rest, so adding a service or a cluster is also just a pull request.
 - **Argo CD Projects** limit which repositories and namespaces each team's applications can use.
 

@@ -46,7 +46,9 @@
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/04-how-a-cluster-works.html</loc><lastmod>2026-10-01</lastmod></url>
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/05-pods-deployments-and-rollouts.html</loc><lastmod>2026-10-01</lastmod></url>
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/06-services-and-cluster-networking.html</loc><lastmod>2026-10-01</lastmod></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/07-storage-and-workload-types.html</loc><lastmod>2026-10-01</lastmod></url>
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/08-namespaces-rbac-and-cluster-access.html</loc><lastmod>2026-10-01</lastmod></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/09-helm-and-kustomize.html</loc><lastmod>2026-10-01</lastmod></url>
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/10-kubernetes-on-eks.html</loc><lastmod>2026-10-01</lastmod></url>
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/11-multi-environment-clusters-and-access-entries.html</loc><lastmod>2026-10-01</lastmod></url>
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/12-platform-add-ons.html</loc><lastmod>2026-10-01</lastmod></url>

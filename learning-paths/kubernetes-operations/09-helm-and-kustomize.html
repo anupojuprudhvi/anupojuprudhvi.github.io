@@ -6,26 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <title>Observability: Knowing Something's Wrong Before Users Do — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="What to collect from an EKS cluster (logs, metrics, and cluster state), which few signals deserve an alert, and how to set alerts that wake people for real problems only." />
-    <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/18-observability-and-alerting.html" />
+    <title>Packaging Apps with Helm and Kustomize — Prudhvi Raj Anupoju</title>
+    <meta name="description" content="Real apps need the same manifests in several environments, with small differences, and most cluster software ships as a package. How Kustomize layers environment changes over a shared base, how Helm installs and upgrades packaged charts, and when to use each." />
+    <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/09-helm-and-kustomize.html" />
     <meta property="og:type" content="article" />
-    <meta property="og:url" content="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/18-observability-and-alerting.html" />
-    <meta property="og:title" content="Observability: Knowing Something's Wrong Before Users Do — Prudhvi Raj Anupoju" />
-    <meta property="og:description" content="What to collect from an EKS cluster (logs, metrics, and cluster state), which few signals deserve an alert, and how to set alerts that wake people for real problems only." />
+    <meta property="og:url" content="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/09-helm-and-kustomize.html" />
+    <meta property="og:title" content="Packaging Apps with Helm and Kustomize — Prudhvi Raj Anupoju" />
+    <meta property="og:description" content="Real apps need the same manifests in several environments, with small differences, and most cluster software ships as a package. How Kustomize layers environment changes over a shared base, how Helm installs and upgrades packaged charts, and when to use each." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies &amp; Learning Paths" href="https://anupojuprudhvi.github.io/feed.xml" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://anupojuprudhvi.github.io/learning-paths/"},{"@type":"ListItem","position":3,"name":"Kubernetes from Zero to Production on Amazon EKS","item":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/index.html"},{"@type":"ListItem","position":4,"name":"Observability: Knowing Something's Wrong Before Users Do","item":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/18-observability-and-alerting.html"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://anupojuprudhvi.github.io/learning-paths/"},{"@type":"ListItem","position":3,"name":"Kubernetes from Zero to Production on Amazon EKS","item":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/index.html"},{"@type":"ListItem","position":4,"name":"Packaging Apps with Helm and Kustomize","item":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/09-helm-and-kustomize.html"}]}</script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "TechArticle",
-        "headline": "Observability: Knowing Something's Wrong Before Users Do",
-        "description": "What to collect from an EKS cluster (logs, metrics, and cluster state), which few signals deserve an alert, and how to set alerts that wake people for real problems only.",
+        "headline": "Packaging Apps with Helm and Kustomize",
+        "description": "Real apps need the same manifests in several environments, with small differences, and most cluster software ships as a package. How Kustomize layers environment changes over a shared base, how Helm installs and upgrades packaged charts, and when to use each.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -39,14 +39,14 @@
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju"
         },
-        "url": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/18-observability-and-alerting.html",
+        "url": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/09-helm-and-kustomize.html",
         "image": "https://anupojuprudhvi.github.io/og-image.png",
-        "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/18-observability-and-alerting.html",
-        "datePublished": "2026-09-28",
+        "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/09-helm-and-kustomize.html",
+        "datePublished": "2026-10-01",
         "dateModified": "2026-10-01",
         "isPartOf": {"@type":"CreativeWorkSeries","name":"Kubernetes from Zero to Production on Amazon EKS","url":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/index.html"},
-        "position": 18,
-        "keywords": "observability, monitoring, logging, alerting, eks, Amazon EKS, CloudWatch Container Insights, Fluent Bit, Prometheus, Amazon Managed Service for Prometheus, Grafana"
+        "position": 9,
+        "keywords": "kubernetes, helm, kustomize, packaging, fundamentals, Helm, Kustomize, kubectl, kind"
       }
     </script>
     <script src="../../assets/theme.js"></script>
@@ -140,9 +140,9 @@
         <div class="wrap">
           <div class="hero-split">
             <div>
-              <span class="lp-badge">Production · Monitoring</span>
-              <h1>Observability: Knowing Something's Wrong Before Users Do</h1>
-              <p class="sub">What to collect from an EKS cluster (logs, metrics, and cluster state), which few signals deserve an alert, and how to set alerts that wake people for real problems only.</p>
+              <span class="lp-badge">Core concepts · Packaging</span>
+              <h1>Packaging Apps with Helm and Kustomize</h1>
+              <p class="sub">Real apps need the same manifests in several environments, with small differences, and most cluster software ships as a package. How Kustomize layers environment changes over a shared base, how Helm installs and upgrades packaged charts, and when to use each.</p>
             </div>
             <svg class="motif motif-network" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <defs>
@@ -159,10 +159,10 @@
     </svg>
           </div>
           <div class="lp-meta-bar">
-            <span><b>Module:</b> 18 of 20</span>
-            <span><b>Level:</b> Production · Monitoring</span>
-            <span><b>Time:</b> 8 min read</span>
-            <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
+            <span><b>Module:</b> 09 of 20</span>
+            <span><b>Level:</b> Core concepts · Packaging</span>
+            <span><b>Time:</b> 9 min read</span>
+            <span><b>Published:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
       </header>
@@ -184,7 +184,8 @@
                 <li><a href="06-services-and-cluster-networking.html"><span class="lp-toc-num">06</span><span>Services &amp; Cluster Networking: How Traffic Finds Your Pods</span></a></li>
                 <li><a href="07-storage-and-workload-types.html"><span class="lp-toc-num">07</span><span>Storage &amp; Other Workload Types: Data That Outlives a Pod</span></a></li>
                 <li><a href="08-namespaces-rbac-and-cluster-access.html"><span class="lp-toc-num">08</span><span>Namespaces, RBAC &amp; Service Accounts: Who Can Do What</span></a></li>
-                <li><a href="09-helm-and-kustomize.html"><span class="lp-toc-num">09</span><span>Packaging Apps with Helm and Kustomize</span></a></li>
+                <li class="is-current"><a href="09-helm-and-kustomize.html" aria-current="page"><span class="lp-toc-num">09</span><span>Packaging Apps with Helm and Kustomize</span></a>
+                <ol class="lp-toc-sections"><li><a href="#one-app-many-environments-no-copy-paste">One app, many environments, no copy-paste</a></li><li><a href="#a-shared-base-plus-small-patches-per-environment">A shared base, plus small patches per environment</a></li><li><a href="#a-package-manager-for-kubernetes">A package manager for Kubernetes</a></li><li><a href="#helm-kustomize-or-both">Helm, Kustomize, or both</a></li><li><a href="#one-app-two-environments">One app, two environments</a></li></ol></li>
               </ol>
               <p class="lp-toc-part">Part 3 · Kubernetes on Amazon EKS</p>
               <ol class="lp-toc-list">
@@ -199,8 +200,7 @@
                 <li><a href="15-container-delivery-to-eks.html"><span class="lp-toc-num">15</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
                 <li><a href="16-gitops-with-argo-cd.html"><span class="lp-toc-num">16</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
                 <li><a href="17-scaling-requests-and-cost.html"><span class="lp-toc-num">17</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
-                <li class="is-current"><a href="18-observability-and-alerting.html" aria-current="page"><span class="lp-toc-num">18</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a>
-                <ol class="lp-toc-sections"><li><a href="#alert-on-what-users-feel-investigate-with-everything-else">Alert on what users feel, investigate with everything else</a></li><li><a href="#what-to-collect">What to collect</a></li><li><a href="#alerts-that-are-worth-waking-up-for">Alerts that are worth waking up for</a></li></ol></li>
+                <li><a href="18-observability-and-alerting.html"><span class="lp-toc-num">18</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
                 <li><a href="19-incident-triage.html"><span class="lp-toc-num">19</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
                 <li><a href="20-cluster-upgrades.html"><span class="lp-toc-num">20</span><span>Cluster Upgrades Without Drama</span></a></li>
               </ol>
@@ -224,7 +224,7 @@
                 <li><a href="06-services-and-cluster-networking.html"><span class="lp-toc-num">06</span><span>Services &amp; Cluster Networking: How Traffic Finds Your Pods</span></a></li>
                 <li><a href="07-storage-and-workload-types.html"><span class="lp-toc-num">07</span><span>Storage &amp; Other Workload Types: Data That Outlives a Pod</span></a></li>
                 <li><a href="08-namespaces-rbac-and-cluster-access.html"><span class="lp-toc-num">08</span><span>Namespaces, RBAC &amp; Service Accounts: Who Can Do What</span></a></li>
-                <li><a href="09-helm-and-kustomize.html"><span class="lp-toc-num">09</span><span>Packaging Apps with Helm and Kustomize</span></a></li>
+                <li class="is-current"><a href="09-helm-and-kustomize.html" aria-current="page"><span class="lp-toc-num">09</span><span>Packaging Apps with Helm and Kustomize</span></a></li>
               </ol>
               <p class="lp-toc-part">Part 3 · Kubernetes on Amazon EKS</p>
               <ol class="lp-toc-list">
@@ -239,7 +239,7 @@
                 <li><a href="15-container-delivery-to-eks.html"><span class="lp-toc-num">15</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
                 <li><a href="16-gitops-with-argo-cd.html"><span class="lp-toc-num">16</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
                 <li><a href="17-scaling-requests-and-cost.html"><span class="lp-toc-num">17</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
-                <li class="is-current"><a href="18-observability-and-alerting.html" aria-current="page"><span class="lp-toc-num">18</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
+                <li><a href="18-observability-and-alerting.html"><span class="lp-toc-num">18</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
                 <li><a href="19-incident-triage.html"><span class="lp-toc-num">19</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
                 <li><a href="20-cluster-upgrades.html"><span class="lp-toc-num">20</span><span>Cluster Upgrades Without Drama</span></a></li>
               </ol>
@@ -247,79 +247,171 @@
             </details>
           <section>
 <div class="wrap">
-<p><b>Before you start:</b> this module is about finding out that something is broken. <a href="19-incident-triage.html">Incident Triage</a> covers what to do next.</p>
+<p><b>Before you start:</b> this builds on the declarative <code>kubectl apply</code> workflow from <a href="03-kubernetes-yaml-and-kubectl.html">Reading Kubernetes YAML</a>. Have the kind cluster running, and install Helm (<code>brew install helm</code>, <code>winget install Helm.Helm</code>, or the script on helm.sh).</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2 id="alert-on-what-users-feel-investigate-with-everything-else">Alert on what users feel, investigate with everything else</h2>
-<p>A cluster can produce thousands of metrics. Paging someone for each one leads to alert fatigue, and then the alert that matters gets ignored. A simpler rule works better: <b>alert on symptoms users would notice</b> (errors, slowness, unavailability), and keep the detailed metrics for working out <em>why</em>.</p>
-<p>For most services, four signals cover the symptoms:</p>
+<h2 id="one-app-many-environments-no-copy-paste">One app, many environments, no copy-paste</h2>
+<p>So far each app has been a few YAML files. Two problems show up quickly in real work:</p>
 <ul>
-<li><b>Errors:</b> the share of requests that fail.</li>
-<li><b>Latency:</b> how long requests take, looking at the slow end (p95 or p99), not the average.</li>
-<li><b>Traffic:</b> how many requests are coming in, so a sudden drop to zero doesn't look like &quot;no errors&quot;.</li>
-<li><b>Saturation:</b> how close the service is to its limits, such as CPU throttling, memory near the limit, or a queue backing up.</li>
+<li><b>Environments differ a little.</b> Dev runs one replica, Production runs four; the image tag, namespace, and resource sizes change. Copying the whole folder per environment works until someone fixes a bug in one copy and forgets the others.</li>
+<li><b>Other people's software comes as a bundle.</b> An ingress controller or a monitoring stack is dozens of objects with hundreds of settings. You want to install a version, change a few settings, and upgrade it later, without editing their YAML.</li>
 </ul>
+<p>Kustomize solves the first problem. Helm solves both, in a different way. You'll meet each of them throughout the rest of this track.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
-<h2 id="what-to-collect">What to collect</h2>
-<ul>
-<li><b>Logs.</b> Containers write to stdout and stderr; a log agent on each node ships them somewhere searchable. Fluent Bit sending to CloudWatch Logs is the common AWS default. Log in a structured format (JSON) with a request ID, so one request can be followed across services.</li>
-<li><b>Metrics.</b> CloudWatch Container Insights (installed through the <code>amazon-cloudwatch-observability</code> add-on) gives node, pod, and container metrics with little setup. Prometheus, self-run or through Amazon Managed Service for Prometheus with Grafana, gives more control and is the usual choice when apps expose their own metrics.</li>
-<li><b>Cluster state.</b> <code>kube-state-metrics</code> turns Kubernetes objects into metrics: pods stuck in <code>Pending</code>, containers restarting, deployments with fewer ready replicas than desired. Many real incidents show up here first.</li>
-</ul>
-<figure class="flow">
-<figcaption class="flow-title">From a container to an on-call alert</figcaption>
-<div class="flow-body"><div class="flow-group"><span class="flow-group-label">EKS cluster</span><div class="flow-paths"><div class="flow-path"><span class="flow-path-label">Logs</span><div class="flow-node"><strong>App containers</strong><span>write JSON lines to stdout and stderr</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">collected on every node</span></div><div class="flow-node"><strong>Fluent Bit (DaemonSet)</strong><span>adds pod, namespace, and node labels</span></div></div><div class="flow-path"><span class="flow-path-label">Metrics</span><div class="flow-node"><strong>App and node metrics</strong><span>request counts, latency, CPU, memory</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">scraped every 30 to 60 seconds</span></div><div class="flow-node"><strong>Prometheus agent or CloudWatch agent</strong><span>also collects kube-state-metrics</span></div></div></div></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">shipped out of the cluster</span></div><div class="flow-paths"><div class="flow-path"><span class="flow-path-label">Search</span><div class="flow-node"><strong>CloudWatch Logs</strong><span>query by request ID across every service</span></div></div><div class="flow-path"><span class="flow-path-label">Dashboards and rules</span><div class="flow-node"><strong>Managed Prometheus or CloudWatch</strong><span>Grafana dashboards, and alert rules on the four signals</span></div></div></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">only symptoms users would feel</span></div><div class="flow-node is-key"><strong>Alert to on-call</strong><span>links to a runbook and the Incident Triage checklist</span></div></div>
-</figure>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Is anything restarting or stuck right now?
-kubectl get pods -A --field-selector=status.phase!=Running
-kubectl get pods -A --sort-by='.status.containerStatuses[0].restartCount'
+<div class="section-eyebrow">Kustomize</div>
+<h2 id="a-shared-base-plus-small-patches-per-environment">A shared base, plus small patches per environment</h2>
+<p>Kustomize is built into <code>kubectl</code>. You keep one <b>base</b> with the full manifests, and an <b>overlay</b> per environment that lists only what's different. There's no templating language: every file stays valid Kubernetes YAML.</p>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">hello/
+├── base/
+│   ├── deployment.yaml        # the Deployment from module 03
+│   ├── service.yaml
+│   └── kustomization.yaml
+└── overlays/
+    ├── dev/
+    │   └── kustomization.yaml
+    └── prod/
+        └── kustomization.yaml</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml"># base/kustomization.yaml: which files make up the app
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - deployment.yaml
+  - service.yaml</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml"># overlays/prod/kustomization.yaml: only what's different in Production
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+namespace: shop-prod
+images:
+  - name: nginx
+    newTag: &quot;1.27.2&quot;           # pin an exact version in Production
+patches:
+  - target:
+      kind: Deployment
+      name: hello
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 4</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml"># overlays/dev/kustomization.yaml: the base as it is, in its own namespace
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+namespace: shop-dev</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Print the final YAML for an environment, without applying it
+kubectl kustomize overlays/prod
 
-# Recent warnings across the whole cluster
-kubectl get events -A --field-selector=type=Warning --sort-by='.lastTimestamp'</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+# Apply an environment (-k instead of -f)
+kubectl create namespace shop-prod
+kubectl apply -k overlays/prod</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<figure class="flow">
+<figcaption class="flow-title">Kustomize builds each environment from one base</figcaption>
+<div class="flow-body"><div class="flow-node is-key"><strong>base</strong><span>the full Deployment and Service, shared by every environment</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">each overlay adds only its differences</span></div><div class="flow-paths"><div class="flow-path"><span class="flow-path-label">Dev</span><div class="flow-node"><strong>overlays/dev</strong><span>namespace shop-dev, the base's 2 replicas</span></div></div><div class="flow-path"><span class="flow-path-label">Prod</span><div class="flow-node"><strong>overlays/prod</strong><span>namespace shop-prod, 4 replicas, pinned image tag</span></div></div></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">kubectl apply -k</span></div><div class="flow-node"><strong>Cluster</strong><span>gets plain, complete YAML for that environment</span></div></div>
+</figure>
 </div>
 </section>
 <section>
 <div class="wrap">
-<h2 id="alerts-that-are-worth-waking-up-for">Alerts that are worth waking up for</h2>
-<p>A short list, each tied to something a user would feel or will soon feel:</p>
-<ul>
-<li><b>Error rate above a threshold for several minutes</b>, per service, not per pod.</li>
-<li><b>Slow requests (p99 latency) above the target for several minutes.</b></li>
-<li><b>A deployment with fewer ready replicas than desired for more than a few minutes.</b> This catches failed rollouts and crash loops.</li>
-<li><b>Pods stuck in <code>Pending</code></b>, which usually means the cluster is out of capacity or a node autoscaler is stuck.</li>
-<li><b>Nodes <code>NotReady</code></b>, and disks or subnets close to full (running out of pod IPs is a classic EKS surprise).</li>
-</ul>
-<p>Everything else goes on a dashboard or into a daily report rather than a pager.</p>
+<div class="section-eyebrow">Helm</div>
+<h2 id="a-package-manager-for-kubernetes">A package manager for Kubernetes</h2>
+<p>Helm works like a package manager (<code>apt</code>, <code>brew</code>, <code>npm</code>) for Kubernetes. A <b>chart</b> is a package: a folder of templated manifests plus a <code>values.yaml</code> file of settings with sensible defaults. Installing a chart creates a <b>release</b>, which Helm tracks so you can upgrade it, roll it back, or uninstall it as one unit.</p>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml"># Inside a chart: templates/deployment.yaml (an excerpt)
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: &quot;{{ .Values.image.repository }}:{{ .Values.image.tag }}&quot;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml"># my-values.yaml: your settings, overriding the chart's defaults
+replicaCount: 2</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<figure class="flow">
+<figcaption class="flow-title">From a chart to running objects</figcaption>
+<div class="flow-body"><div class="flow-node"><strong>Chart podinfo</strong><span>templates, plus default values.yaml</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">combined with your values file</span></div><div class="flow-node is-key"><strong>helm install / helm upgrade</strong><span>renders the templates into plain YAML</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">sends it to the API server, and records the release</span></div><div class="flow-node"><strong>Release my-podinfo</strong><span>revision 1, 2, 3... each one can be rolled back to</span></div></div>
+</figure>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Add a chart repository and look at what it offers
+helm repo add podinfo https://stefanprodan.github.io/podinfo
+helm repo update
+helm search repo podinfo --versions | head
+
+# See every setting the chart supports
+helm show values podinfo/podinfo
+
+# Install a specific version, with your values
+helm install my-podinfo podinfo/podinfo --version &lt;chart-version&gt; -f my-values.yaml
+
+# Change a setting, see the release history, roll back, and uninstall
+helm upgrade my-podinfo podinfo/podinfo --version &lt;chart-version&gt; --set replicaCount=3
+helm history my-podinfo
+helm rollback my-podinfo 1
+helm uninstall my-podinfo
+
+# Render the YAML without installing, to review what a chart will create
+helm template my-podinfo podinfo/podinfo -f my-values.yaml</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Choosing</div>
+<h2 id="helm-kustomize-or-both">Helm, Kustomize, or both</h2>
+<div class="table-wrap"><table class="md-table">
+<thead><tr><th scope="col"></th><th scope="col">Kustomize</th><th scope="col">Helm</th></tr></thead>
+<tbody>
+<tr><td data-label="">How it works</td><td data-label="Kustomize">Patches plain YAML</td><td data-label="Helm">Fills in templates from values</td></tr>
+<tr><td data-label="">Installed with</td><td data-label="Kustomize">Built into kubectl</td><td data-label="Helm">A separate CLI</td></tr>
+<tr><td data-label="">Best for</td><td data-label="Kustomize">Your own apps across environments</td><td data-label="Helm">Installing and upgrading third-party software</td></tr>
+<tr><td data-label="">Tracks releases and rollbacks</td><td data-label="Kustomize">No; Git history does that</td><td data-label="Helm">Yes, per release</td></tr>
+<tr><td data-label="">Learning curve</td><td data-label="Kustomize">Low: it's still just YAML</td><td data-label="Helm">Higher: Go templating for chart authors</td></tr>
+</tbody>
+</table></div>
+<p>A common split, and the one used later in this track: <b>Helm for third-party add-ons</b> (load balancer controller, ExternalDNS, metrics) in <a href="12-platform-add-ons.html">The Platform Add-on Layer</a>, and <b>Kustomize overlays (or Helm values files) for your own apps</b>, applied by Argo CD in <a href="16-gitops-with-argo-cd.html">GitOps with Argo CD</a>. Argo CD understands both natively.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Try it</div>
+<h2 id="one-app-two-environments">One app, two environments</h2>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Build the hello/ folder above, reusing deployment.yaml and service.yaml
+# from module 03, then compare the two environments
+kubectl kustomize hello/overlays/dev
+kubectl kustomize hello/overlays/prod
+
+# Apply both side by side on kind
+kubectl create namespace shop-dev
+kubectl create namespace shop-prod
+kubectl apply -k hello/overlays/dev
+kubectl apply -k hello/overlays/prod
+kubectl get deployments -A -l app=hello
+
+# Clean up
+kubectl delete -k hello/overlays/dev
+kubectl delete -k hello/overlays/prod</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
 <ul>
-<li><b>Always require &quot;for N minutes&quot;.</b> A single bad minute is noise. An alert that fires on one sample will train people to ignore it.</li>
-<li><b>Every alert needs an owner and a first step.</b> If nobody knows what to do when it fires, it isn't ready to page anyone. Link it to the triage checklist in <a href="19-incident-triage.html">Incident Triage</a>.</li>
-<li><b>Watch the cost of logs.</b> Log volume grows quietly. Set retention periods, drop noisy debug logs in production, and check the logging bill now and then.</li>
-<li><b>Test alerts on purpose.</b> Break something in a non-production cluster and confirm the alert fires, reaches the right person, and makes sense to them.</li>
+<li><b>Always pin chart versions.</b> <code>helm install</code> without <code>--version</code> installs whatever is newest today, so two environments installed a week apart can differ. The same lesson appears in <a href="12-platform-add-ons.html">The Platform Add-on Layer</a>.</li>
+<li><b>Keep your values files in Git.</b> <code>--set</code> on the command line is fine in a lab, but the settings then exist only in Helm's release history.</li>
+<li><b>Review what a chart creates before installing it.</b> <code>helm template</code> shows every object, including cluster-wide roles and permissions some charts ask for.</li>
+<li><b>Don't mix tools on the same objects.</b> If Helm installed something, change it with Helm. Editing a Helm-managed object with <code>kubectl</code> is undone at the next upgrade.</li>
 </ul>
 </details>
 </div>
 </section>
-          <section class="related-links" aria-label="See it in practice">
-          <h2>See it in practice</h2>
-          <ul>
-            <li><a href="../../case-studies/tolling/eks-ingress-incident-rca.html"><span class="related-eyebrow">Case study · Tolling Infrastructure</span><strong>Trace an EKS ingress incident</strong><small>A structured RCA pattern for an EKS ingress failure that separates DNS, load-balancer, routing, network-policy, and application causes, not just &quot;5xx.&quot;</small></a></li>
-          </ul>
-        </section>
-          <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/17-scaling-requests-and-cost.html">
-          <span class="lp-nav-label">← Module 17</span>
-          <span class="lp-nav-title">Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span>
+          <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/08-namespaces-rbac-and-cluster-access.html">
+          <span class="lp-nav-label">← Module 08</span>
+          <span class="lp-nav-title">Namespaces, RBAC &amp; Service Accounts: Who Can Do What</span>
         </a>
-<a class="lp-nav-link next" href="../../learning-paths/kubernetes-operations/19-incident-triage.html">
-          <span class="lp-nav-label">Module 19 →</span>
-          <span class="lp-nav-title">Day-2 Operations &amp; Incident Triage</span>
+<a class="lp-nav-link next" href="../../learning-paths/kubernetes-operations/10-kubernetes-on-eks.html">
+          <span class="lp-nav-label">Module 10 →</span>
+          <span class="lp-nav-title">Kubernetes on Amazon EKS: What AWS Runs, and What Changes</span>
         </a></nav>
           </div>
         </div>

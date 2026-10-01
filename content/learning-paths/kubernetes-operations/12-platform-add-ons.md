@@ -83,7 +83,7 @@ A few of these flags are there purely for safety:
 
 ## Storage classes that respect Availability Zones
 
-An EBS volume lives in one Availability Zone and can only attach to a node in that zone. If a volume is created before the pod is scheduled, it can end up in a zone where the pod can't run. `WaitForFirstConsumer` waits until the pod has a node, then creates the volume in that node's zone:
+StorageClasses, claims, and volumes are introduced in [Storage & Other Workload Types](07-storage-and-workload-types.html). An EBS volume lives in one Availability Zone and can only attach to a node in that zone. If a volume is created before the pod is scheduled, it can end up in a zone where the pod can't run. `WaitForFirstConsumer` waits until the pod has a node, then creates the volume in that node's zone:
 
 ```yaml
 apiVersion: storage.k8s.io/v1
@@ -114,5 +114,5 @@ spec:
 
 - **Make the install repeatable.** The original script checked whether each thing existed before creating it, so it could be re-run safely. Keep that property whatever tool you use.
 - **Give each piece one owner.** The OIDC provider was first created by the script and later moved into Terraform, and the script was changed to stop deleting it. Two tools managing the same resource will eventually fight.
-- **Prefer managed add-ons and pinned Helm charts over raw manifests.** EKS managed add-ons (VPC CNI, CoreDNS, kube-proxy, the EBS CSI driver, Pod Identity agent, and others) get versioned upgrades with the cluster. The rest can be pinned Helm releases, ideally managed through Argo CD (see [GitOps with Argo CD](16-gitops-with-argo-cd.html)) so every cluster gets the same set.
+- **Prefer managed add-ons and pinned Helm charts over raw manifests.** EKS managed add-ons (VPC CNI, CoreDNS, kube-proxy, the EBS CSI driver, Pod Identity agent, and others) get versioned upgrades with the cluster. The rest can be pinned Helm releases (see [Helm & Kustomize](09-helm-and-kustomize.html)), ideally managed through Argo CD (see [GitOps with Argo CD](16-gitops-with-argo-cd.html)) so every cluster gets the same set.
 - **Graviton nodes need ARM64 images.** If the node groups use AWS Graviton, every add-on and application image must be published for `arm64`. Most well-known add-ons are multi-architecture, but check anything custom before switching.

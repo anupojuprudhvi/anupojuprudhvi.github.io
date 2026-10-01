@@ -32,6 +32,22 @@
       <category>Kubernetes from Zero to Production on Amazon EKS</category>
     </item>
     <item>
+      <title>Storage &amp; Other Workload Types: Data That Outlives a Pod</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/07-storage-and-workload-types.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/07-storage-and-workload-types.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>A pod's files disappear with the pod. How volumes, PersistentVolumeClaims, and StorageClasses give an app storage that survives restarts, how StatefulSets run apps that need a stable identity, and when to use a DaemonSet, Job, or CronJob instead of a Deployment.</description>
+      <category>Kubernetes from Zero to Production on Amazon EKS</category>
+    </item>
+    <item>
+      <title>Packaging Apps with Helm and Kustomize</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/09-helm-and-kustomize.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/09-helm-and-kustomize.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Real apps need the same manifests in several environments, with small differences, and most cluster software ships as a package. How Kustomize layers environment changes over a shared base, how Helm installs and upgrades packaged charts, and when to use each.</description>
+      <category>Kubernetes from Zero to Production on Amazon EKS</category>
+    </item>
+    <item>
       <title>Kubernetes on Amazon EKS: What AWS Runs, and What Changes</title>
       <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/10-kubernetes-on-eks.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/10-kubernetes-on-eks.html</guid>

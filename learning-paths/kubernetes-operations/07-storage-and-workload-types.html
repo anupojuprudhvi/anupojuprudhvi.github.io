@@ -6,26 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <title>Observability: Knowing Something's Wrong Before Users Do — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="What to collect from an EKS cluster (logs, metrics, and cluster state), which few signals deserve an alert, and how to set alerts that wake people for real problems only." />
-    <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/18-observability-and-alerting.html" />
+    <title>Storage &amp; Other Workload Types: Data That Outlives a Pod — Prudhvi Raj Anupoju</title>
+    <meta name="description" content="A pod's files disappear with the pod. How volumes, PersistentVolumeClaims, and StorageClasses give an app storage that survives restarts, how StatefulSets run apps that need a stable identity, and when to use a DaemonSet, Job, or CronJob instead of a Deployment." />
+    <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/07-storage-and-workload-types.html" />
     <meta property="og:type" content="article" />
-    <meta property="og:url" content="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/18-observability-and-alerting.html" />
-    <meta property="og:title" content="Observability: Knowing Something's Wrong Before Users Do — Prudhvi Raj Anupoju" />
-    <meta property="og:description" content="What to collect from an EKS cluster (logs, metrics, and cluster state), which few signals deserve an alert, and how to set alerts that wake people for real problems only." />
+    <meta property="og:url" content="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/07-storage-and-workload-types.html" />
+    <meta property="og:title" content="Storage &amp; Other Workload Types: Data That Outlives a Pod — Prudhvi Raj Anupoju" />
+    <meta property="og:description" content="A pod's files disappear with the pod. How volumes, PersistentVolumeClaims, and StorageClasses give an app storage that survives restarts, how StatefulSets run apps that need a stable identity, and when to use a DaemonSet, Job, or CronJob instead of a Deployment." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies &amp; Learning Paths" href="https://anupojuprudhvi.github.io/feed.xml" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://anupojuprudhvi.github.io/learning-paths/"},{"@type":"ListItem","position":3,"name":"Kubernetes from Zero to Production on Amazon EKS","item":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/index.html"},{"@type":"ListItem","position":4,"name":"Observability: Knowing Something's Wrong Before Users Do","item":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/18-observability-and-alerting.html"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://anupojuprudhvi.github.io/learning-paths/"},{"@type":"ListItem","position":3,"name":"Kubernetes from Zero to Production on Amazon EKS","item":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/index.html"},{"@type":"ListItem","position":4,"name":"Storage & Other Workload Types: Data That Outlives a Pod","item":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/07-storage-and-workload-types.html"}]}</script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "TechArticle",
-        "headline": "Observability: Knowing Something's Wrong Before Users Do",
-        "description": "What to collect from an EKS cluster (logs, metrics, and cluster state), which few signals deserve an alert, and how to set alerts that wake people for real problems only.",
+        "headline": "Storage & Other Workload Types: Data That Outlives a Pod",
+        "description": "A pod's files disappear with the pod. How volumes, PersistentVolumeClaims, and StorageClasses give an app storage that survives restarts, how StatefulSets run apps that need a stable identity, and when to use a DaemonSet, Job, or CronJob instead of a Deployment.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -39,14 +39,14 @@
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju"
         },
-        "url": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/18-observability-and-alerting.html",
+        "url": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/07-storage-and-workload-types.html",
         "image": "https://anupojuprudhvi.github.io/og-image.png",
-        "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/18-observability-and-alerting.html",
-        "datePublished": "2026-09-28",
+        "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/07-storage-and-workload-types.html",
+        "datePublished": "2026-10-01",
         "dateModified": "2026-10-01",
         "isPartOf": {"@type":"CreativeWorkSeries","name":"Kubernetes from Zero to Production on Amazon EKS","url":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/index.html"},
-        "position": 18,
-        "keywords": "observability, monitoring, logging, alerting, eks, Amazon EKS, CloudWatch Container Insights, Fluent Bit, Prometheus, Amazon Managed Service for Prometheus, Grafana"
+        "position": 7,
+        "keywords": "kubernetes, storage, persistent-volumes, statefulset, jobs, fundamentals, Kubernetes, PersistentVolumes, StorageClass, StatefulSet, DaemonSet, Job, CronJob"
       }
     </script>
     <script src="../../assets/theme.js"></script>
@@ -140,9 +140,9 @@
         <div class="wrap">
           <div class="hero-split">
             <div>
-              <span class="lp-badge">Production · Monitoring</span>
-              <h1>Observability: Knowing Something's Wrong Before Users Do</h1>
-              <p class="sub">What to collect from an EKS cluster (logs, metrics, and cluster state), which few signals deserve an alert, and how to set alerts that wake people for real problems only.</p>
+              <span class="lp-badge">Core concepts · Storage &amp; workloads</span>
+              <h1>Storage &amp; Other Workload Types: Data That Outlives a Pod</h1>
+              <p class="sub">A pod's files disappear with the pod. How volumes, PersistentVolumeClaims, and StorageClasses give an app storage that survives restarts, how StatefulSets run apps that need a stable identity, and when to use a DaemonSet, Job, or CronJob instead of a Deployment.</p>
             </div>
             <svg class="motif motif-network" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <defs>
@@ -159,10 +159,10 @@
     </svg>
           </div>
           <div class="lp-meta-bar">
-            <span><b>Module:</b> 18 of 20</span>
-            <span><b>Level:</b> Production · Monitoring</span>
-            <span><b>Time:</b> 8 min read</span>
-            <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
+            <span><b>Module:</b> 07 of 20</span>
+            <span><b>Level:</b> Core concepts · Storage &amp; workloads</span>
+            <span><b>Time:</b> 10 min read</span>
+            <span><b>Published:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
       </header>
@@ -182,7 +182,8 @@
                 <li><a href="04-how-a-cluster-works.html"><span class="lp-toc-num">04</span><span>How a Kubernetes Cluster Actually Works</span></a></li>
                 <li><a href="05-pods-deployments-and-rollouts.html"><span class="lp-toc-num">05</span><span>Pods, Deployments &amp; Rollouts: How Your App Actually Runs</span></a></li>
                 <li><a href="06-services-and-cluster-networking.html"><span class="lp-toc-num">06</span><span>Services &amp; Cluster Networking: How Traffic Finds Your Pods</span></a></li>
-                <li><a href="07-storage-and-workload-types.html"><span class="lp-toc-num">07</span><span>Storage &amp; Other Workload Types: Data That Outlives a Pod</span></a></li>
+                <li class="is-current"><a href="07-storage-and-workload-types.html" aria-current="page"><span class="lp-toc-num">07</span><span>Storage &amp; Other Workload Types: Data That Outlives a Pod</span></a>
+                <ol class="lp-toc-sections"><li><a href="#a-container-s-files-die-with-the-pod">A container's files die with the pod</a></li><li><a href="#from-scratch-space-to-persistent-disks">From scratch space to persistent disks</a></li><li><a href="#three-objects-one-disk">Three objects, one disk</a></li><li><a href="#for-apps-that-need-a-stable-identity">For apps that need a stable identity</a></li><li><a href="#picking-the-right-controller">Picking the right controller</a></li><li><a href="#prove-the-data-survives">Prove the data survives</a></li></ol></li>
                 <li><a href="08-namespaces-rbac-and-cluster-access.html"><span class="lp-toc-num">08</span><span>Namespaces, RBAC &amp; Service Accounts: Who Can Do What</span></a></li>
                 <li><a href="09-helm-and-kustomize.html"><span class="lp-toc-num">09</span><span>Packaging Apps with Helm and Kustomize</span></a></li>
               </ol>
@@ -199,8 +200,7 @@
                 <li><a href="15-container-delivery-to-eks.html"><span class="lp-toc-num">15</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
                 <li><a href="16-gitops-with-argo-cd.html"><span class="lp-toc-num">16</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
                 <li><a href="17-scaling-requests-and-cost.html"><span class="lp-toc-num">17</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
-                <li class="is-current"><a href="18-observability-and-alerting.html" aria-current="page"><span class="lp-toc-num">18</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a>
-                <ol class="lp-toc-sections"><li><a href="#alert-on-what-users-feel-investigate-with-everything-else">Alert on what users feel, investigate with everything else</a></li><li><a href="#what-to-collect">What to collect</a></li><li><a href="#alerts-that-are-worth-waking-up-for">Alerts that are worth waking up for</a></li></ol></li>
+                <li><a href="18-observability-and-alerting.html"><span class="lp-toc-num">18</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
                 <li><a href="19-incident-triage.html"><span class="lp-toc-num">19</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
                 <li><a href="20-cluster-upgrades.html"><span class="lp-toc-num">20</span><span>Cluster Upgrades Without Drama</span></a></li>
               </ol>
@@ -222,7 +222,7 @@
                 <li><a href="04-how-a-cluster-works.html"><span class="lp-toc-num">04</span><span>How a Kubernetes Cluster Actually Works</span></a></li>
                 <li><a href="05-pods-deployments-and-rollouts.html"><span class="lp-toc-num">05</span><span>Pods, Deployments &amp; Rollouts: How Your App Actually Runs</span></a></li>
                 <li><a href="06-services-and-cluster-networking.html"><span class="lp-toc-num">06</span><span>Services &amp; Cluster Networking: How Traffic Finds Your Pods</span></a></li>
-                <li><a href="07-storage-and-workload-types.html"><span class="lp-toc-num">07</span><span>Storage &amp; Other Workload Types: Data That Outlives a Pod</span></a></li>
+                <li class="is-current"><a href="07-storage-and-workload-types.html" aria-current="page"><span class="lp-toc-num">07</span><span>Storage &amp; Other Workload Types: Data That Outlives a Pod</span></a></li>
                 <li><a href="08-namespaces-rbac-and-cluster-access.html"><span class="lp-toc-num">08</span><span>Namespaces, RBAC &amp; Service Accounts: Who Can Do What</span></a></li>
                 <li><a href="09-helm-and-kustomize.html"><span class="lp-toc-num">09</span><span>Packaging Apps with Helm and Kustomize</span></a></li>
               </ol>
@@ -239,7 +239,7 @@
                 <li><a href="15-container-delivery-to-eks.html"><span class="lp-toc-num">15</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
                 <li><a href="16-gitops-with-argo-cd.html"><span class="lp-toc-num">16</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
                 <li><a href="17-scaling-requests-and-cost.html"><span class="lp-toc-num">17</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
-                <li class="is-current"><a href="18-observability-and-alerting.html" aria-current="page"><span class="lp-toc-num">18</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
+                <li><a href="18-observability-and-alerting.html"><span class="lp-toc-num">18</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
                 <li><a href="19-incident-triage.html"><span class="lp-toc-num">19</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
                 <li><a href="20-cluster-upgrades.html"><span class="lp-toc-num">20</span><span>Cluster Upgrades Without Drama</span></a></li>
               </ol>
@@ -247,79 +247,195 @@
             </details>
           <section>
 <div class="wrap">
-<p><b>Before you start:</b> this module is about finding out that something is broken. <a href="19-incident-triage.html">Incident Triage</a> covers what to do next.</p>
+<p><b>Before you start:</b> this builds on <a href="05-pods-deployments-and-rollouts.html">Pods, Deployments &amp; Rollouts</a>, especially the idea that pods are disposable, and on <a href="06-services-and-cluster-networking.html">Services &amp; Cluster Networking</a> for headless Services.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2 id="alert-on-what-users-feel-investigate-with-everything-else">Alert on what users feel, investigate with everything else</h2>
-<p>A cluster can produce thousands of metrics. Paging someone for each one leads to alert fatigue, and then the alert that matters gets ignored. A simpler rule works better: <b>alert on symptoms users would notice</b> (errors, slowness, unavailability), and keep the detailed metrics for working out <em>why</em>.</p>
-<p>For most services, four signals cover the symptoms:</p>
-<ul>
-<li><b>Errors:</b> the share of requests that fail.</li>
-<li><b>Latency:</b> how long requests take, looking at the slow end (p95 or p99), not the average.</li>
-<li><b>Traffic:</b> how many requests are coming in, so a sudden drop to zero doesn't look like &quot;no errors&quot;.</li>
-<li><b>Saturation:</b> how close the service is to its limits, such as CPU throttling, memory near the limit, or a queue backing up.</li>
-</ul>
+<h2 id="a-container-s-files-die-with-the-pod">A container's files die with the pod</h2>
+<p>Everything a container writes to its own filesystem is lost when the container restarts or the pod is replaced. For most web services that's exactly right: they keep their data in a database, not on local disk, and that's what makes them easy to replace, move, and scale.</p>
+<p>Some workloads do need data to survive: a database you run yourself, a message broker, an app that stores uploaded files. Kubernetes handles that by keeping the <b>storage separate from the pod</b>, so a new pod can pick up the same disk the old one used.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
-<h2 id="what-to-collect">What to collect</h2>
+<div class="section-eyebrow">Volumes</div>
+<h2 id="from-scratch-space-to-persistent-disks">From scratch space to persistent disks</h2>
+<p>A <b>volume</b> is a directory that's mounted into a container. The volume type decides where the data actually lives and how long it lasts:</p>
+<div class="table-wrap"><table class="md-table">
+<thead><tr><th scope="col">Volume type</th><th scope="col">Where the data lives</th><th scope="col">Lasts as long as</th></tr></thead>
+<tbody>
+<tr><td data-label="Volume type"><code>emptyDir</code></td><td data-label="Where the data lives">The node's disk (or memory)</td><td data-label="Lasts as long as">The pod. Good for scratch space and sharing files between containers in one pod</td></tr>
+<tr><td data-label="Volume type"><code>configMap</code> / <code>secret</code></td><td data-label="Where the data lives">A ConfigMap or Secret in the cluster</td><td data-label="Lasts as long as">The ConfigMap or Secret. Used to mount config files</td></tr>
+<tr><td data-label="Volume type"><code>persistentVolumeClaim</code></td><td data-label="Where the data lives">A real disk, such as an EBS volume on AWS</td><td data-label="Lasts as long as">Until you delete the claim, through any number of pods</td></tr>
+</tbody>
+</table></div>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Persistent storage</div>
+<h2 id="three-objects-one-disk">Three objects, one disk</h2>
+<p>Persistent storage is split into three objects, so that the people writing apps don't need to know how disks are created:</p>
 <ul>
-<li><b>Logs.</b> Containers write to stdout and stderr; a log agent on each node ships them somewhere searchable. Fluent Bit sending to CloudWatch Logs is the common AWS default. Log in a structured format (JSON) with a request ID, so one request can be followed across services.</li>
-<li><b>Metrics.</b> CloudWatch Container Insights (installed through the <code>amazon-cloudwatch-observability</code> add-on) gives node, pod, and container metrics with little setup. Prometheus, self-run or through Amazon Managed Service for Prometheus with Grafana, gives more control and is the usual choice when apps expose their own metrics.</li>
-<li><b>Cluster state.</b> <code>kube-state-metrics</code> turns Kubernetes objects into metrics: pods stuck in <code>Pending</code>, containers restarting, deployments with fewer ready replicas than desired. Many real incidents show up here first.</li>
+<li><b>StorageClass:</b> <em>how</em> disks are made. Set up once per cluster by the platform team: which driver, which disk type, which zone rules.</li>
+<li><b>PersistentVolumeClaim (PVC):</b> <em>a request</em> for storage, written by the app team: &quot;10 GiB, readable and writable by one node&quot;.</li>
+<li><b>PersistentVolume (PV):</b> <em>the actual disk</em>, created automatically by the StorageClass's driver to satisfy the claim.</li>
 </ul>
 <figure class="flow">
-<figcaption class="flow-title">From a container to an on-call alert</figcaption>
-<div class="flow-body"><div class="flow-group"><span class="flow-group-label">EKS cluster</span><div class="flow-paths"><div class="flow-path"><span class="flow-path-label">Logs</span><div class="flow-node"><strong>App containers</strong><span>write JSON lines to stdout and stderr</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">collected on every node</span></div><div class="flow-node"><strong>Fluent Bit (DaemonSet)</strong><span>adds pod, namespace, and node labels</span></div></div><div class="flow-path"><span class="flow-path-label">Metrics</span><div class="flow-node"><strong>App and node metrics</strong><span>request counts, latency, CPU, memory</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">scraped every 30 to 60 seconds</span></div><div class="flow-node"><strong>Prometheus agent or CloudWatch agent</strong><span>also collects kube-state-metrics</span></div></div></div></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">shipped out of the cluster</span></div><div class="flow-paths"><div class="flow-path"><span class="flow-path-label">Search</span><div class="flow-node"><strong>CloudWatch Logs</strong><span>query by request ID across every service</span></div></div><div class="flow-path"><span class="flow-path-label">Dashboards and rules</span><div class="flow-node"><strong>Managed Prometheus or CloudWatch</strong><span>Grafana dashboards, and alert rules on the four signals</span></div></div></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">only symptoms users would feel</span></div><div class="flow-node is-key"><strong>Alert to on-call</strong><span>links to a runbook and the Incident Triage checklist</span></div></div>
+<figcaption class="flow-title">How a pod gets a persistent disk</figcaption>
+<div class="flow-body"><div class="flow-node"><strong>Pod orders-db</strong><span>mounts the volume from claim &quot;orders-data&quot;</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">the pod refers to the claim by name</span></div><div class="flow-node is-key"><strong>PersistentVolumeClaim orders-data</strong><span>asks for 10Gi, ReadWriteOnce, class gp3</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">the StorageClass's driver sees an unbound claim</span></div><div class="flow-node"><strong>StorageClass gp3</strong><span>provisioner: ebs.csi.aws.com on EKS, a local folder on kind</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">creates the disk and a PersistentVolume that records it</span></div><div class="flow-node"><strong>PersistentVolume</strong><span>a real 10Gi disk, now bound to the claim</span></div><div class="flow-loop"><span aria-hidden="true">↻</span> delete the pod and a new one mounts the same claim, with the same data</div></div>
 </figure>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Is anything restarting or stuck right now?
-kubectl get pods -A --field-selector=status.phase!=Running
-kubectl get pods -A --sort-by='.status.containerStatuses[0].restartCount'
-
-# Recent warnings across the whole cluster
-kubectl get events -A --field-selector=type=Warning --sort-by='.lastTimestamp'</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml">apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: orders-data
+spec:
+  accessModes: [ReadWriteOnce]   # one node at a time can mount it read-write
+  storageClassName: standard     # kind's built-in class; gp3 or similar on EKS
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: writer
+spec:
+  containers:
+    - name: app
+      image: busybox:1.36
+      command: [&quot;sh&quot;, &quot;-c&quot;, &quot;date &gt;&gt; /data/log.txt; sleep 3600&quot;]
+      volumeMounts:
+        - name: data
+          mountPath: /data
+  volumes:
+    - name: data
+      persistentVolumeClaim:
+        claimName: orders-data</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<p>The <b>access mode</b> matters more than it looks. <code>ReadWriteOnce</code> means one node at a time, which is what block disks such as Amazon EBS support. <code>ReadWriteMany</code> lets pods on many nodes share the volume, which needs a network file system such as Amazon EFS. On AWS, an EBS volume also lives in a single Availability Zone, which is why <a href="12-platform-add-ons.html">The Platform Add-on Layer</a> sets its StorageClass to wait until the pod is scheduled before creating the disk.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
-<h2 id="alerts-that-are-worth-waking-up-for">Alerts that are worth waking up for</h2>
-<p>A short list, each tied to something a user would feel or will soon feel:</p>
+<div class="section-eyebrow">StatefulSet</div>
+<h2 id="for-apps-that-need-a-stable-identity">For apps that need a stable identity</h2>
+<p>A Deployment treats its pods as identical and interchangeable: random names, any pod can be replaced by any other, and they all share one PVC if they mount one. Clustered software such as databases and brokers can't work like that. Each member needs its <b>own disk</b> and a <b>name that stays the same</b> when it restarts, so the others can find it.</p>
+<p>A <b>StatefulSet</b> provides both:</p>
 <ul>
-<li><b>Error rate above a threshold for several minutes</b>, per service, not per pod.</li>
-<li><b>Slow requests (p99 latency) above the target for several minutes.</b></li>
-<li><b>A deployment with fewer ready replicas than desired for more than a few minutes.</b> This catches failed rollouts and crash loops.</li>
-<li><b>Pods stuck in <code>Pending</code></b>, which usually means the cluster is out of capacity or a node autoscaler is stuck.</li>
-<li><b>Nodes <code>NotReady</code></b>, and disks or subnets close to full (running out of pod IPs is a classic EKS surprise).</li>
+<li>Pods are named in order, <code>orders-db-0</code>, <code>orders-db-1</code>, <code>orders-db-2</code>, and keep those names when they're replaced.</li>
+<li>Each pod gets its own PVC from a <code>volumeClaimTemplates</code> section, and gets the <em>same</em> PVC back after a restart.</li>
+<li>Pods start one at a time, in order, and stop in reverse order.</li>
+<li>With a headless Service, each pod gets its own DNS name, such as <code>orders-db-0.orders-db</code>.</li>
 </ul>
-<p>Everything else goes on a dashboard or into a daily report rather than a pager.</p>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml">apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: orders-db
+spec:
+  serviceName: orders-db         # a headless Service (clusterIP: None) with this name
+  replicas: 3
+  selector:
+    matchLabels: { app: orders-db }
+  template:
+    metadata:
+      labels: { app: orders-db }
+    spec:
+      containers:
+        - name: db
+          image: &lt;database-image&gt;
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/data
+  volumeClaimTemplates:          # one PVC per pod: data-orders-db-0, -1, -2
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ReadWriteOnce]
+        resources:
+          requests:
+            storage: 20Gi</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<p>Running a production database on Kubernetes is possible, but it makes backups, upgrades, and failover your job. On AWS, most teams use a managed service such as Amazon RDS or Aurora for the database, and keep the cluster for stateless apps. Learn StatefulSets anyway: plenty of add-ons and tools you'll install use them.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Other workload types</div>
+<h2 id="picking-the-right-controller">Picking the right controller</h2>
+<div class="table-wrap"><table class="md-table">
+<thead><tr><th scope="col">Controller</th><th scope="col">Runs</th><th scope="col">Use it for</th></tr></thead>
+<tbody>
+<tr><td data-label="Controller">Deployment</td><td data-label="Runs">N identical, interchangeable pods, forever</td><td data-label="Use it for">Web apps and APIs. The default choice</td></tr>
+<tr><td data-label="Controller">StatefulSet</td><td data-label="Runs">N pods with stable names and their own disks</td><td data-label="Use it for">Databases, brokers, clustered software</td></tr>
+<tr><td data-label="Controller">DaemonSet</td><td data-label="Runs">Exactly one pod on every node (or every matching node)</td><td data-label="Use it for">Node agents: log shippers, monitoring agents, network plugins</td></tr>
+<tr><td data-label="Controller">Job</td><td data-label="Runs">Pods that run until a task succeeds, then stop</td><td data-label="Use it for">Database migrations, one-off batch work</td></tr>
+<tr><td data-label="Controller">CronJob</td><td data-label="Runs">A Job, on a schedule</td><td data-label="Use it for">Nightly reports, clean-ups, periodic syncs</td></tr>
+</tbody>
+</table></div>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml"># A CronJob that runs a report every night at 02:00, in the control plane's
+# time zone (usually UTC) unless you set spec.timeZone
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: nightly-report
+spec:
+  schedule: &quot;0 2 * * *&quot;
+  concurrencyPolicy: Forbid      # don't start a new run while one is still going
+  jobTemplate:
+    spec:
+      backoffLimit: 2            # retry a failed run twice, then give up
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: report
+              image: busybox:1.36
+              command: [&quot;sh&quot;, &quot;-c&quot;, &quot;echo building report; sleep 5&quot;]</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Try it</div>
+<h2 id="prove-the-data-survives">Prove the data survives</h2>
+<p>On the kind cluster from <a href="02-your-first-cluster.html">Your First Cluster</a>, which comes with a <code>standard</code> StorageClass:</p>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Save the PVC and Pod from above as storage.yaml, then:
+kubectl apply -f storage.yaml
+kubectl get pvc,pv
+
+# Read the file, delete the pod, recreate it, and read it again:
+# the first line is still there, and a second one has been added
+kubectl exec writer -- cat /data/log.txt
+kubectl delete pod writer --now
+kubectl apply -f storage.yaml
+kubectl exec writer -- cat /data/log.txt
+
+# Run a Job once and read its output
+kubectl create job hello-job --image=busybox:1.36 -- echo &quot;job done&quot;
+kubectl get jobs
+kubectl logs job/hello-job
+
+# Clean up; deleting the claim deletes the disk with this StorageClass
+kubectl delete -f storage.yaml
+kubectl delete job hello-job</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
 <ul>
-<li><b>Always require &quot;for N minutes&quot;.</b> A single bad minute is noise. An alert that fires on one sample will train people to ignore it.</li>
-<li><b>Every alert needs an owner and a first step.</b> If nobody knows what to do when it fires, it isn't ready to page anyone. Link it to the triage checklist in <a href="19-incident-triage.html">Incident Triage</a>.</li>
-<li><b>Watch the cost of logs.</b> Log volume grows quietly. Set retention periods, drop noisy debug logs in production, and check the logging bill now and then.</li>
-<li><b>Test alerts on purpose.</b> Break something in a non-production cluster and confirm the alert fires, reaches the right person, and makes sense to them.</li>
+<li><b>Check the reclaim policy before deleting a claim.</b> With <code>Delete</code> (the usual default) the disk goes when the claim goes. Use a StorageClass with <code>Retain</code> for data you can't afford to lose by mistake, and back it up separately.</li>
+<li><b>Deleting a StatefulSet keeps its PVCs by default.</b> That protects the data, but abandoned volumes keep costing money until someone removes them.</li>
+<li><b>A pod stuck in <code>Pending</code> with a PVC</b> often means the claim can't be satisfied: no default StorageClass, a zone mismatch, or an access mode the driver doesn't support. <code>kubectl describe pvc</code> shows why.</li>
+<li><b>Jobs need <code>restartPolicy: OnFailure</code> or <code>Never</code>.</b> A Job's whole point is to finish; the <code>Always</code> policy that Deployments use isn't allowed.</li>
 </ul>
 </details>
 </div>
 </section>
-          <section class="related-links" aria-label="See it in practice">
-          <h2>See it in practice</h2>
-          <ul>
-            <li><a href="../../case-studies/tolling/eks-ingress-incident-rca.html"><span class="related-eyebrow">Case study · Tolling Infrastructure</span><strong>Trace an EKS ingress incident</strong><small>A structured RCA pattern for an EKS ingress failure that separates DNS, load-balancer, routing, network-policy, and application causes, not just &quot;5xx.&quot;</small></a></li>
-          </ul>
-        </section>
-          <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/17-scaling-requests-and-cost.html">
-          <span class="lp-nav-label">← Module 17</span>
-          <span class="lp-nav-title">Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span>
+          <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/06-services-and-cluster-networking.html">
+          <span class="lp-nav-label">← Module 06</span>
+          <span class="lp-nav-title">Services &amp; Cluster Networking: How Traffic Finds Your Pods</span>
         </a>
-<a class="lp-nav-link next" href="../../learning-paths/kubernetes-operations/19-incident-triage.html">
-          <span class="lp-nav-label">Module 19 →</span>
-          <span class="lp-nav-title">Day-2 Operations &amp; Incident Triage</span>
+<a class="lp-nav-link next" href="../../learning-paths/kubernetes-operations/08-namespaces-rbac-and-cluster-access.html">
+          <span class="lp-nav-label">Module 08 →</span>
+          <span class="lp-nav-title">Namespaces, RBAC &amp; Service Accounts: Who Can Do What</span>
         </a></nav>
           </div>
         </div>

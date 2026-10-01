@@ -161,7 +161,7 @@ Review | in a pull request, in a real team
 loop: the file in Git is the record of what should be running
 ```
 
-Later in the track, Helm and Kustomize handle the same files across several environments, and [GitOps with Argo CD](16-gitops-with-argo-cd.html) runs `apply` for you whenever Git changes.
+Later in the track, [Helm & Kustomize](09-helm-and-kustomize.html) handle the same files across several environments, and [GitOps with Argo CD](16-gitops-with-argo-cd.html) runs `apply` for you whenever Git changes.
 
 ## Cheat sheet · The kubectl commands you'll use every day
 

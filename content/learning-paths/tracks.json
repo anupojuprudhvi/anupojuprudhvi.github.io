@@ -30,7 +30,7 @@
     "motif": "network",
     "parts": [
       { "title": "Part 1 · Basics", "modules": [1, 2, 3] },
-      { "title": "Part 2 · Core concepts", "modules": [4, 5, 6, 8] },
+      { "title": "Part 2 · Core concepts", "modules": [4, 5, 6, 7, 8, 9] },
       { "title": "Part 3 · Kubernetes on Amazon EKS", "modules": [10, 11, 12, 13, 14] },
       { "title": "Part 4 · Operating in production", "modules": [15, 16, 17, 18, 19, 20] }
     ],
@@ -38,9 +38,9 @@
     "eyebrow": "Container Platform Engineering",
     "summary": "A path from never having used Kubernetes to running Amazon EKS in production. Part 1 covers the basics on a free local cluster. Part 2 teaches the core concepts: how a cluster works, workloads, networking, storage, access, and packaging. Part 3 moves to Amazon EKS and builds the platform. Part 4 covers the real challenges of operating it: delivery, GitOps, autoscaling, observability, incident triage, and upgrades.",
     "level": "Beginner to Advanced",
-    "duration": "18 Modules · 160 min read",
+    "duration": "20 Modules · 180 min read",
     "badge": "Zero to Production",
-    "stack": ["Kubernetes", "kind", "kubectl", "Amazon EKS", "AWS Load Balancer Controller", "Argo CD", "Karpenter"],
+    "stack": ["Kubernetes", "kind", "kubectl", "Helm", "Amazon EKS", "AWS Load Balancer Controller", "Argo CD", "Karpenter"],
     "closingQuestion": "Questions about this learning path?",
     "closingBody": "I'm happy to go into more detail on any of this: how the pieces fit together, ingress costs, RBAC design, or how I triage incidents."
   }
