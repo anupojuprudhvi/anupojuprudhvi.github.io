@@ -893,7 +893,7 @@ ${siteTopNav({ docs, up, active: "learning-paths" })}
           </div>
         </div>
       </header>
-      <article class="lp-content">
+      <article class="lp-content" data-track="${esc(track.id)}" data-total="${modules.length}"${isOverview ? "" : ` data-module="${d.module}" data-slug="${esc(d.slug)}"${next ? ` data-next-title="${esc(next.title)}"` : ""}`}>
         <div class="${withSidebar ? "lp-layout" : "wrap"}">${withSidebar ? `
           <aside class="lp-sidebar">
             ${moduleToc({ d, track, modules, sections, label: "Modules in this track" })}
@@ -934,6 +934,7 @@ ${siteTopNav({ docs, up, active: "learning-paths" })}
     <script src="${a("assets/assistant.js")}" defer></script>${bodyHtml.includes('<figure class="flow">') ? `
     <script src="${a("assets/flow-player.js")}" defer></script>` : ""}${bodyHtml.includes("data-quiz") ? `
     <script src="${a("assets/quiz.js")}" defer></script>` : ""}
+    <script src="${a("assets/reading-progress.js")}" defer></script>
   </body>
 </html>
 `;

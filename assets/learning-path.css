@@ -763,3 +763,217 @@
 .motion-paused .lp-confetti {
   display: none;
 }
+
+/* ---------------------------------------------------------------------------
+   Reading progress (reading-progress.js): a thin bar across the top, a ring
+   above the chat button with the percentage read and the track's count of
+   finished modules, and a short message at each milestone. It never takes
+   clicks, and it doesn't animate when motion is reduced or paused. */
+.lp-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 70;
+  height: 3px;
+  pointer-events: none;
+}
+.lp-progress-bar-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(var(--p, 0));
+  transform-origin: left center;
+}
+/* The "running" dot at the leading edge glows only while the reader scrolls. */
+.lp-progress-bar-dot {
+  position: absolute;
+  top: -3px;
+  left: calc(var(--p, 0) * 100%);
+  width: 9px;
+  height: 9px;
+  margin-left: -4.5px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.lp-progress-bar.is-moving .lp-progress-bar-dot {
+  opacity: 1;
+  animation: lp-progress-glow 0.9s ease-in-out infinite alternate;
+}
+@keyframes lp-progress-glow {
+  from {
+    box-shadow: 0 0 0 0 var(--accent);
+  }
+  to {
+    box-shadow: 0 0 10px 3px var(--accent);
+  }
+}
+
+.lp-progress {
+  position: fixed;
+  right: 22px;
+  bottom: 82px;
+  z-index: 60;
+  display: grid;
+  grid-template-columns: 44px;
+  align-items: center;
+  column-gap: 10px;
+  padding: 7px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-raised);
+  color: var(--text);
+  box-shadow: 0 12px 30px -14px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+}
+.lp-progress.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+.lp-progress-ring {
+  grid-column: 1;
+  grid-row: 1;
+  width: 44px;
+  height: 44px;
+  transform: rotate(-90deg);
+}
+.lp-progress-ring circle {
+  fill: none;
+  stroke-width: 4;
+}
+.lp-progress-track {
+  stroke: var(--border);
+}
+.lp-progress-fill {
+  stroke: var(--accent);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.25s ease-out;
+}
+.lp-progress-pct {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: center;
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+/* Compact by default: only the ring stays on screen, clear of the content.
+   The module label and count appear alongside a milestone message. */
+.lp-progress-text {
+  display: none;
+  flex-direction: column;
+  font-size: 12px;
+  line-height: 1.3;
+}
+.lp-progress.is-showing {
+  grid-template-columns: 44px auto;
+  padding-right: 14px;
+}
+.lp-progress.is-showing .lp-progress-text {
+  display: flex;
+}
+.lp-progress-text span {
+  color: var(--text-muted);
+}
+.lp-progress.is-complete .lp-progress-fill {
+  stroke: var(--accent);
+}
+.lp-progress.is-complete .lp-progress-text b::after {
+  content: " \2713";
+  color: var(--accent);
+}
+/* The milestone message slides out above the ring for a few seconds. */
+.lp-progress-msg {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 10px);
+  width: max-content;
+  max-width: min(280px, calc(100vw - 44px));
+  padding: 9px 13px;
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  background: var(--bg-raised);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.4;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.lp-progress-msg:empty {
+  display: none;
+}
+.lp-progress.is-showing .lp-progress-msg {
+  opacity: 1;
+  transform: none;
+}
+.lp-progress.is-celebrating .lp-progress-ring {
+  animation: lp-progress-pop 0.5s ease-out;
+}
+@keyframes lp-progress-pop {
+  0% {
+    transform: rotate(-90deg) scale(1);
+  }
+  45% {
+    transform: rotate(-90deg) scale(1.15);
+  }
+  100% {
+    transform: rotate(-90deg) scale(1);
+  }
+}
+
+/* Finished modules in the overview cards and the sidebar list. */
+.lp-done-mark {
+  margin-left: 8px;
+  color: var(--accent);
+  font-weight: 700;
+}
+.lp-module-card.is-done {
+  border-color: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .lp-progress,
+  .lp-progress.is-showing {
+    right: 14px;
+    bottom: 70px;
+    grid-template-columns: 40px;
+    padding: 6px;
+  }
+  .lp-progress-ring {
+    width: 40px;
+    height: 40px;
+  }
+  .lp-progress.is-showing .lp-progress-text {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-progress,
+  .lp-progress-msg,
+  .lp-progress-fill,
+  .lp-progress-bar-dot {
+    transition: none;
+  }
+  .lp-progress-bar.is-moving .lp-progress-bar-dot,
+  .lp-progress.is-celebrating .lp-progress-ring {
+    animation: none;
+  }
+}
+.motion-paused .lp-progress-bar.is-moving .lp-progress-bar-dot,
+.motion-paused .lp-progress.is-celebrating .lp-progress-ring {
+  animation: none;
+}
+@media print {
+  .lp-progress,
+  .lp-progress-bar {
+    display: none;
+  }
+}

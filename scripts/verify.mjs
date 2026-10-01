@@ -315,6 +315,33 @@ try {
     .catch(() => {});
   assert.equal(await learner.locator(".lp-quiz .lp-quiz-app").count(), 1, "closing puts the quiz back in the page");
   await quizContext.close();
+  // Reading progress: a module page shows how much has been read, announces
+  // milestones, remembers a finished module, and marks it done in the lists.
+  const progressPage = "learning-paths/linux-for-devops/07-systemd-and-services.html";
+  const progressContext = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+  const progressReader = await progressContext.newPage();
+  progressReader.on("pageerror", (e) => errors.push(`${progressPage} progress: ${e.message}`));
+  await progressReader.goto(`${base}/${progressPage}`);
+  const readTo = (fraction) =>
+    progressReader.evaluate((f) => {
+      const article = document.querySelector("article.lp-content");
+      const start = article.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: start + (article.offsetHeight - window.innerHeight) * f, behavior: "instant" });
+    }, fraction);
+  await readTo(0.52);
+  await progressReader.waitForFunction(() => {
+    const percent = parseInt(document.querySelector(".lp-progress-pct")?.textContent || "0", 10);
+    return percent >= 50 && percent < 75;
+  });
+  assert.match(await progressReader.locator(".lp-progress-msg").textContent(), /Halfway/, "the halfway milestone is announced");
+  await readTo(1);
+  await progressReader.waitForFunction(() => document.querySelector(".lp-progress-pct")?.textContent === "100%");
+  assert.match(await progressReader.locator(".lp-progress-msg").textContent(), /Module complete\. Next up:/);
+  assert.equal(await progressReader.locator(".lp-progress.is-complete").count(), 1, "the finished module is remembered");
+  await progressReader.goto(`${base}/learning-paths/linux-for-devops/index.html`);
+  assert.equal(await progressReader.locator(".lp-module-card.is-done").count(), 1, "the overview marks the finished module");
+  assert.equal(await progressReader.locator(".lp-progress").count(), 0, "overview pages have no reading widget");
+  await progressContext.close();
   // Toolbox: a tool chip opens the library filtered to exactly the case
   // studies its count promises, says which tool, and links back to all.
   const toolboxContext = await browser.newContext();
