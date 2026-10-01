@@ -308,6 +308,11 @@ try {
   );
   await learner.keyboard.press("Escape");
   assert.equal(await quizDialog.evaluate((d) => d.open), false);
+  // The dialog's "close" event, which moves the quiz back, fires asynchronously
+  // after the dialog closes, so wait for it rather than checking at once.
+  await learner
+    .waitForFunction(() => document.querySelectorAll(".lp-quiz .lp-quiz-app").length === 1, null, { timeout: 5000 })
+    .catch(() => {});
   assert.equal(await learner.locator(".lp-quiz .lp-quiz-app").count(), 1, "closing puts the quiz back in the page");
   await quizContext.close();
   // Toolbox: a tool chip opens the library filtered to exactly the case
