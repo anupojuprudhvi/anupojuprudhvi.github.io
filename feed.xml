@@ -216,6 +216,46 @@
       <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
     </item>
     <item>
+      <title>Incident Review: SSH Worked by Hand but Failed for the Service</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/21-incident-ssh-fails-for-service.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/21-incident-ssh-fails-for-service.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>A batch ETL job stopped fetching files over SSH after a move to RHEL 8, while SSH from a terminal on the same server worked fine. Four separate faults were stacked on top of each other inside the job's SSH library. How they were peeled back one at a time, without weakening the SSH server.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
+      <title>Incident Review: A Service Blocked by a Kernel Semaphore Limit</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/22-incident-kernel-semaphore-limit.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/22-incident-kernel-semaphore-limit.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>An application service refused to start on RHEL 8 because the kernel's semaphore limit was lower than it needed, and its start-up script wasn't allowed to raise the limit itself. Why that write failed, and why the right fix belongs in the operating system's configuration, not in the service.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
+      <title>Incident Review: PostgreSQL Locked Out of Its Own Config File</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/23-incident-postgresql-config-ownership.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/23-incident-postgresql-config-ownership.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>A PostgreSQL instance stopped at start-up with &quot;could not load pg_hba.conf - Permission denied&quot;. The cause was one flag in a start-up script, cp -p, faithfully copying the wrong owner from a template on every start. Why fixing only the live file would have brought the outage back.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
+      <title>Incident Review: Two Faults Behind One Failed Daemon</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/24-incident-two-faults-one-daemon.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/24-incident-two-faults-one-daemon.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>A back-end daemon wouldn't start, and there were two unrelated reasons at once. Its connection pooler was still pointing at another environment's database, and a change to run it as a non-root user left it unable to create shared memory. Why fixing only one of them would have looked like the fix didn't work.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
+      <title>Incident Review: &quot;trust&quot; Authentication Failed, Through a Unix Socket</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/25-incident-trust-authentication-failed.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/25-incident-trust-authentication-failed.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>After a database moved behind a connection pooler, a batch job's maintenance steps started failing with &quot;trust&quot; authentication failed. The job ran psql with no host and no user, so psql quietly chose a Unix socket and the job's Linux account name. How two silent defaults turned into an outage, and two tested ways to fix it.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
       <title>How a Kubernetes Cluster Actually Works</title>
       <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/04-how-a-cluster-works.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/04-how-a-cluster-works.html</guid>

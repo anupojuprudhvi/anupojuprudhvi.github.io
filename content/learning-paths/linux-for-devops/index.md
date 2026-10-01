@@ -4,7 +4,7 @@ date: 2026-10-01
 track: linux-for-devops
 summary: A hands-on Linux path for new graduates and associate engineers. Start with your first hour on a server, learn how Linux works underneath, then practise diagnosing the faults that show up on call. Every module ends with a break-fix lab on a throwaway VM.
 level: Beginner to Intermediate
-duration: 20 Modules · 287 min read
+duration: 25 Modules · 335 min read
 stack: [Ubuntu 24.04, Bash, systemd, LVM, nftables, tcpdump, strace, eBPF, Ansible, Docker]
 ---
 
@@ -26,7 +26,9 @@ Part 3 · Troubleshooting | a method, the tracing tools, logs and monitoring
 -> you can go from a symptom to a root cause
 Part 4 · Linux for DevOps | containers from scratch, hardening, automation, performance
 -> you understand the layer that Docker, Kubernetes, and CI run on
-* Part 5 · Capstone | an incident with several faults at once, and a written postmortem
+Part 5 · Capstone | an incident with several faults at once, and a written postmortem
+-> then see the same skills applied to real systems
+* Part 6 · Production Incident Reviews | real, anonymized incidents, from symptom to root cause
 ```
 
 ## Break-fix · How every lab ends
@@ -272,6 +274,63 @@ Everything at once, the way real incidents happen.
         <p>Build a three-tier shop, inject three random faults, restore service from the outside in, and write a blameless postmortem.</p>
       </div>
       <span class="lp-module-action">Start the capstone →</span>
+    </a>
+  </li>
+</ul>
+
+## Part 6 · Production Incident Reviews
+
+Real incidents from a production platform on RHEL 8 servers in AWS, written up as blameless incident reviews: symptom, investigation, root cause, fix, and prevention. Every server name, path, account, and product name is replaced with a generic one, and nothing is added beyond what the engineering notes record. Each review links back to the modules that teach the skills it needed.
+
+<ul class="lp-syllabus">
+  <li>
+    <a class="lp-module-card" href="21-incident-ssh-fails-for-service.html">
+      <span class="lp-module-num">21</span>
+      <div class="lp-module-body">
+        <h3>Incident Review: SSH Worked by Hand but Failed for the Service</h3>
+        <p>Four stacked faults in a job's own SSH library after a move to RHEL 8, fixed on the client without weakening the server.</p>
+      </div>
+      <span class="lp-module-action">Read review →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="22-incident-kernel-semaphore-limit.html">
+      <span class="lp-module-num">22</span>
+      <div class="lp-module-body">
+        <h3>Incident Review: A Service Blocked by a Kernel Semaphore Limit</h3>
+        <p>A start-up script that tried to change the kernel and was denied, and why kernel requirements belong in provisioning.</p>
+      </div>
+      <span class="lp-module-action">Read review →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="23-incident-postgresql-config-ownership.html">
+      <span class="lp-module-num">23</span>
+      <div class="lp-module-body">
+        <h3>Incident Review: PostgreSQL Locked Out of Its Own Config File</h3>
+        <p>How <code>cp -p</code> copied the wrong owner on every start, and why the template had to be fixed as well as the file.</p>
+      </div>
+      <span class="lp-module-action">Read review →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="24-incident-two-faults-one-daemon.html">
+      <span class="lp-module-num">24</span>
+      <div class="lp-module-body">
+        <h3>Incident Review: Two Faults Behind One Failed Daemon</h3>
+        <p>A pooler pointing at the wrong environment and a non-root change that broke shared memory, at the same time.</p>
+      </div>
+      <span class="lp-module-action">Read review →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="25-incident-trust-authentication-failed.html">
+      <span class="lp-module-num">25</span>
+      <div class="lp-module-body">
+        <h3>Incident Review: "trust" Authentication Failed, Through a Unix Socket</h3>
+        <p>Two silent <code>psql</code> defaults, a Unix socket and the Linux user name, exposed by a database migration.</p>
+      </div>
+      <span class="lp-module-action">Read review →</span>
     </a>
   </li>
 </ul>

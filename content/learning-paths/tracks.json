@@ -52,13 +52,14 @@
       { "title": "Part 2 · How Linux works", "modules": [6, 7, 8, 9, 10, 11, 12] },
       { "title": "Part 3 · Troubleshooting", "modules": [13, 14, 15] },
       { "title": "Part 4 · Linux for DevOps", "modules": [16, 17, 18, 19] },
-      { "title": "Part 5 · Capstone", "modules": [20] }
+      { "title": "Part 5 · Capstone", "modules": [20] },
+      { "title": "Part 6 · Production Incident Reviews", "modules": [21, 22, 23, 24, 25] }
     ],
     "title": "Linux for DevOps: From First Terminal to On-Call Troubleshooting",
     "eyebrow": "Linux Systems Engineering",
     "summary": "A hands-on path for new graduates and associate engineers: from your first hour on a Linux server to diagnosing real production faults. Every module ends with a break-fix lab: you break a throwaway VM on purpose, then find and fix the cause with the same tools used on call.",
     "level": "Beginner to Intermediate",
-    "duration": "20 Modules · 287 min read",
+    "duration": "25 Modules · 335 min read",
     "badge": "Break-Fix Labs",
     "stack": ["Ubuntu 24.04", "Bash", "systemd", "LVM", "nftables", "tcpdump", "strace", "eBPF", "Ansible", "Docker"],
     "closingQuestion": "Questions about this learning path?",
