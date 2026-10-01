@@ -868,6 +868,11 @@
                 Terraform, CI/CD, a clear account structure, networking, and
                 guardrails that make the safe option the easy one.
               </p>
+              <p class="in-practice">
+                <span>In practice</span>
+                <a href="case-studies/tolling/cloud-foundation.html">Standardize the cloud</a>
+                <a href="case-studies/tolling/cicd-delivery-engine.html">Build the delivery engine</a>
+              </p>
             </div>
             <div class="capability">
               <span class="index">[02]</span>
@@ -876,6 +881,11 @@
                 Moving old databases and monolithic apps in careful stages, so the
                 business keeps running while the new setup gains better recovery
                 options and gets easier to operate.
+              </p>
+              <p class="in-practice">
+                <span>In practice</span>
+                <a href="case-studies/telecom/aurora-global-database-modernization.html">Database migration and connection pooling</a>
+                <a href="case-studies/healthcare/clinical-platform-modernization-and-cost-optimization.html">Cut database read load</a>
               </p>
             </div>
             <div class="capability">
@@ -886,6 +896,11 @@
                 releases, and layering controls so security doesn't hinge on one
                 app or on someone remembering a manual step.
               </p>
+              <p class="in-practice">
+                <span>In practice</span>
+                <a href="case-studies/tolling/cloudtrail-tamper-protection.html">Protect CloudTrail evidence</a>
+                <a href="case-studies/tolling/entra-workspaces-saml.html">Federate WorkSpaces with Entra</a>
+              </p>
             </div>
             <div class="capability">
               <span class="index">[04]</span>
@@ -895,14 +910,171 @@
                 monitoring, and automatic recovery, so systems stay up and people
                 spend less time fighting fires.
               </p>
+              <p class="in-practice">
+                <span>In practice</span>
+                <a href="case-studies/enterprise-infrastructure/mail-disaster-recovery-automation.html">Mail disaster recovery</a>
+                <a href="case-studies/tolling/eks-ingress-incident-rca.html">Trace an EKS ingress incident</a>
+              </p>
             </div>
           </div>
         </div>
       </section>
-      <section id="background">
+      <section id="toolbox">
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">03 / Toolbox</p>
+              <h2>Every tool here is backed<br />by a case study.</h2>
+            </div>
+            <p>
+              Grouped by where it sits in the stack. The number is how many
+              case studies used it; select a tool to read them.
+            </p>
+          </div>
+          <p class="tool-hint" aria-hidden="true">Swipe for all 8 groups →</p>
+          <div class="toolbox" role="group" aria-label="Toolbox, 8 groups">
+            <div class="tool-layer">
+              <h3>Infrastructure as code &amp; delivery</h3>
+              <ul class="tool-list">
+                <li><a class="tool-chip" href="case-studies/index.html?tool=terraform" aria-label="Terraform, 10 case studies">Terraform<span class="tool-count" aria-hidden="true">10</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=github-actions" aria-label="GitHub Actions, 2 case studies">GitHub Actions<span class="tool-count" aria-hidden="true">2</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=argo-cd" aria-label="Argo CD, 1 case study">Argo CD<span class="tool-count" aria-hidden="true">1</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=jenkins" aria-label="Jenkins, 1 case study">Jenkins<span class="tool-count" aria-hidden="true">1</span></a></li>
+              </ul>
+              <details class="tool-more">
+                <summary>+1 more</summary>
+                <ul class="tool-list">
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=amazon-ecr" aria-label="Amazon ECR, 1 case study">Amazon ECR<span class="tool-count" aria-hidden="true">1</span></a></li>
+                </ul>
+              </details>
+            </div>
+            <div class="tool-layer">
+              <h3>Containers &amp; Kubernetes</h3>
+              <ul class="tool-list">
+                <li><a class="tool-chip" href="case-studies/index.html?tool=amazon-eks" aria-label="Amazon EKS, 7 case studies">Amazon EKS<span class="tool-count" aria-hidden="true">7</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=karpenter" aria-label="Karpenter, 1 case study">Karpenter<span class="tool-count" aria-hidden="true">1</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=aws-load-balancer-controller" aria-label="AWS Load Balancer Controller, 1 case study">AWS Load Balancer Controller<span class="tool-count" aria-hidden="true">1</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=external-secrets" aria-label="External Secrets, 1 case study">External Secrets<span class="tool-count" aria-hidden="true">1</span></a></li>
+              </ul>
+              <details class="tool-more">
+                <summary>+2 more</summary>
+                <ul class="tool-list">
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=docker-compose" aria-label="Docker Compose, 1 case study">Docker Compose<span class="tool-count" aria-hidden="true">1</span></a></li>
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=vmware-tanzu" aria-label="VMware Tanzu, 1 case study">VMware Tanzu<span class="tool-count" aria-hidden="true">1</span></a></li>
+                </ul>
+              </details>
+            </div>
+            <div class="tool-layer">
+              <h3>Networking &amp; edge</h3>
+              <ul class="tool-list">
+                <li><a class="tool-chip" href="case-studies/index.html?tool=amazon-vpc" aria-label="Amazon VPC, 4 case studies">Amazon VPC<span class="tool-count" aria-hidden="true">4</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=transit-gateway" aria-label="Transit Gateway, 3 case studies">Transit Gateway<span class="tool-count" aria-hidden="true">3</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=route-53" aria-label="Route 53, 3 case studies">Route 53<span class="tool-count" aria-hidden="true">3</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=cloudfront" aria-label="CloudFront, 3 case studies">CloudFront<span class="tool-count" aria-hidden="true">3</span></a></li>
+              </ul>
+              <details class="tool-more">
+                <summary>+5 more</summary>
+                <ul class="tool-list">
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=api-gateway" aria-label="API Gateway, 3 case studies">API Gateway<span class="tool-count" aria-hidden="true">3</span></a></li>
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=aws-waf" aria-label="AWS WAF, 2 case studies">AWS WAF<span class="tool-count" aria-hidden="true">2</span></a></li>
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=application-load-balancer" aria-label="Application Load Balancer, 1 case study">Application Load Balancer<span class="tool-count" aria-hidden="true">1</span></a></li>
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=aws-network-firewall" aria-label="AWS Network Firewall, 1 case study">AWS Network Firewall<span class="tool-count" aria-hidden="true">1</span></a></li>
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=aws-client-vpn" aria-label="AWS Client VPN, 1 case study">AWS Client VPN<span class="tool-count" aria-hidden="true">1</span></a></li>
+                </ul>
+              </details>
+            </div>
+            <div class="tool-layer">
+              <h3>Security &amp; identity</h3>
+              <ul class="tool-list">
+                <li><a class="tool-chip" href="case-studies/index.html?tool=aws-kms" aria-label="AWS KMS, 4 case studies">AWS KMS<span class="tool-count" aria-hidden="true">4</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=aws-iam" aria-label="AWS IAM, 3 case studies">AWS IAM<span class="tool-count" aria-hidden="true">3</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=aws-organizations" aria-label="AWS Organizations, 2 case studies">AWS Organizations<span class="tool-count" aria-hidden="true">2</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=secrets-manager" aria-label="Secrets Manager, 2 case studies">Secrets Manager<span class="tool-count" aria-hidden="true">2</span></a></li>
+              </ul>
+              <details class="tool-more">
+                <summary>+4 more</summary>
+                <ul class="tool-list">
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=saml-2-0" aria-label="SAML 2.0, 2 case studies">SAML 2.0<span class="tool-count" aria-hidden="true">2</span></a></li>
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=iam-identity-center" aria-label="IAM Identity Center, 1 case study">IAM Identity Center<span class="tool-count" aria-hidden="true">1</span></a></li>
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=cloudtrail" aria-label="CloudTrail, 1 case study">CloudTrail<span class="tool-count" aria-hidden="true">1</span></a></li>
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=microsoft-entra-id" aria-label="Microsoft Entra ID, 1 case study">Microsoft Entra ID<span class="tool-count" aria-hidden="true">1</span></a></li>
+                </ul>
+              </details>
+            </div>
+            <div class="tool-layer">
+              <h3>Compute &amp; serverless</h3>
+              <ul class="tool-list">
+                <li><a class="tool-chip" href="case-studies/index.html?tool=amazon-ec2" aria-label="Amazon EC2, 4 case studies">Amazon EC2<span class="tool-count" aria-hidden="true">4</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=amazon-ebs" aria-label="Amazon EBS, 2 case studies">Amazon EBS<span class="tool-count" aria-hidden="true">2</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=aws-lambda" aria-label="AWS Lambda, 2 case studies">AWS Lambda<span class="tool-count" aria-hidden="true">2</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=amazon-workspaces" aria-label="Amazon WorkSpaces, 1 case study">Amazon WorkSpaces<span class="tool-count" aria-hidden="true">1</span></a></li>
+              </ul>
+              <details class="tool-more">
+                <summary>+1 more</summary>
+                <ul class="tool-list">
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=aws-iot-core" aria-label="AWS IoT Core, 1 case study">AWS IoT Core<span class="tool-count" aria-hidden="true">1</span></a></li>
+                </ul>
+              </details>
+            </div>
+            <div class="tool-layer">
+              <h3>Data &amp; storage</h3>
+              <ul class="tool-list">
+                <li><a class="tool-chip" href="case-studies/index.html?tool=amazon-s3" aria-label="Amazon S3, 5 case studies">Amazon S3<span class="tool-count" aria-hidden="true">5</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=aurora" aria-label="Aurora, 3 case studies">Aurora<span class="tool-count" aria-hidden="true">3</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=postgresql" aria-label="PostgreSQL, 3 case studies">PostgreSQL<span class="tool-count" aria-hidden="true">3</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=dynamodb" aria-label="DynamoDB, 2 case studies">DynamoDB<span class="tool-count" aria-hidden="true">2</span></a></li>
+              </ul>
+              <details class="tool-more">
+                <summary>+6 more</summary>
+                <ul class="tool-list">
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=amazon-rds" aria-label="Amazon RDS, 1 case study">Amazon RDS<span class="tool-count" aria-hidden="true">1</span></a></li>
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=elasticache" aria-label="ElastiCache, 1 case study">ElastiCache<span class="tool-count" aria-hidden="true">1</span></a></li>
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=oracle-rac" aria-label="Oracle RAC, 1 case study">Oracle RAC<span class="tool-count" aria-hidden="true">1</span></a></li>
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=apache-kafka" aria-label="Apache Kafka, 1 case study">Apache Kafka<span class="tool-count" aria-hidden="true">1</span></a></li>
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=amazon-kinesis" aria-label="Amazon Kinesis, 1 case study">Amazon Kinesis<span class="tool-count" aria-hidden="true">1</span></a></li>
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=minio" aria-label="MinIO, 1 case study">MinIO<span class="tool-count" aria-hidden="true">1</span></a></li>
+                </ul>
+              </details>
+            </div>
+            <div class="tool-layer">
+              <h3>Operations &amp; observability</h3>
+              <ul class="tool-list">
+                <li><a class="tool-chip" href="case-studies/index.html?tool=linux" aria-label="Linux, 4 case studies">Linux<span class="tool-count" aria-hidden="true">4</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=cloudwatch" aria-label="CloudWatch, 3 case studies">CloudWatch<span class="tool-count" aria-hidden="true">3</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=bash" aria-label="Bash, 3 case studies">Bash<span class="tool-count" aria-hidden="true">3</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=systems-manager" aria-label="Systems Manager, 2 case studies">Systems Manager<span class="tool-count" aria-hidden="true">2</span></a></li>
+              </ul>
+              <details class="tool-more">
+                <summary>+2 more</summary>
+                <ul class="tool-list">
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=amazon-sns" aria-label="Amazon SNS, 1 case study">Amazon SNS<span class="tool-count" aria-hidden="true">1</span></a></li>
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=python" aria-label="Python, 1 case study">Python<span class="tool-count" aria-hidden="true">1</span></a></li>
+                </ul>
+              </details>
+            </div>
+            <div class="tool-layer">
+              <h3>Migration &amp; modernization</h3>
+              <ul class="tool-list">
+                <li><a class="tool-chip" href="case-studies/index.html?tool=aws-map" aria-label="AWS MAP, 3 case studies">AWS MAP<span class="tool-count" aria-hidden="true">3</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=aws-transform" aria-label="AWS Transform, 2 case studies">AWS Transform<span class="tool-count" aria-hidden="true">2</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=aws-dms" aria-label="AWS DMS, 2 case studies">AWS DMS<span class="tool-count" aria-hidden="true">2</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=rvtools" aria-label="RVTools, 2 case studies">RVTools<span class="tool-count" aria-hidden="true">2</span></a></li>
+              </ul>
+              <details class="tool-more">
+                <summary>+2 more</summary>
+                <ul class="tool-list">
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=aws-application-discovery" aria-label="AWS Application Discovery, 1 case study">AWS Application Discovery<span class="tool-count" aria-hidden="true">1</span></a></li>
+                  <li><a class="tool-chip" href="case-studies/index.html?tool=vmware-vcenter" aria-label="VMware vCenter, 1 case study">VMware vCenter<span class="tool-count" aria-hidden="true">1</span></a></li>
+                </ul>
+              </details>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="background" class="band">
         <div class="wrap background-grid">
           <div>
-            <p class="eyebrow">03 / About</p>
+            <p class="eyebrow">04 / About</p>
             <h2>Hands-on engineering.<br />A wider systems view.</h2>
             <p class="intro">
               I started in Linux systems engineering, moved into automation, and
@@ -950,11 +1122,11 @@
           </div>
         </div>
       </section>
-      <section id="credentials" class="band">
+      <section id="credentials">
         <div class="wrap">
           <div class="section-head">
             <div>
-              <p class="eyebrow">04 / Background &amp; credentials</p>
+              <p class="eyebrow">05 / Background &amp; credentials</p>
               <h2>Certifications and education.</h2>
             </div>
           </div>

@@ -178,6 +178,18 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
     fs.writeFileSync(file(testModule), quizModule("Q: No explanation?\n- One\n* Two"));
     assert.match(run().stderr, /quiz: add an explanation line/);
     fs.unlinkSync(file(testModule));
+
+    // Toolbox: every tool links to the library filtered to it, the library
+    // cards carry the matching tool slugs, and a tool with no case study fails.
+    succeeds();
+    assert.match(read("index.html"), /<a class="tool-chip" href="case-studies\/index\.html\?tool=terraform" aria-label="Terraform, \d+ case studies">/);
+    assert.match(read("case-studies/index.html"), /data-tools="[^"]*\bterraform\b/);
+    const toolboxSource = read("content/toolbox.json");
+    const toolboxData = JSON.parse(toolboxSource);
+    toolboxData.layers[0].tools.push({ name: "A tool no case study lists" });
+    fs.writeFileSync(file("content/toolbox.json"), JSON.stringify(toolboxData));
+    assert.match(run().stderr, /"A tool no case study lists" matches no case study stack/);
+    fs.writeFileSync(file("content/toolbox.json"), toolboxSource);
     succeeds();
     assert.equal(fs.existsSync(file("learning-paths/terraform/99-temporary-module.html")), false);
 

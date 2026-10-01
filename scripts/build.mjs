@@ -28,7 +28,7 @@ import { join, relative, dirname, basename } from "node:path";
 import { esc } from "./lib/html.mjs";
 import { parseFrontMatter, renderBody } from "./lib/markdown.mjs";
 import { MOTIF_NAMES, LAYER_MOTIF, motifSvg } from "./lib/motifs.mjs";
-import { SITE, HEAD_SECURITY, page, libraryPage, learningPathPage, redirectPage, siteTopNav, latestCaseStudies, LAYER_ORDER } from "./lib/render.mjs";
+import { SITE, HEAD_SECURITY, page, libraryPage, learningPathPage, redirectPage, siteTopNav, latestCaseStudies, toolboxSection, LAYER_ORDER } from "./lib/render.mjs";
 
 const ROOT = process.cwd();
 const CONTENT = join(ROOT, "content/case-studies");
@@ -175,7 +175,30 @@ const index = docs.map((d) => ({
 }));
 
 emit("assets/case-studies.json", JSON.stringify(index, null, 2) + "\n");
-emit("case-studies/index.html", libraryPage(index));
+
+// Toolbox: tools grouped by layer (content/toolbox.json), each matched to the
+// case studies whose `stack` lists it or one of its aliases. A listed tool that
+// no case study uses fails the build, so the homepage never claims a tool
+// without evidence behind it.
+const TOOLBOX_FILE = join(ROOT, "content/toolbox.json");
+const toolSlug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const toolbox = existsSync(TOOLBOX_FILE)
+  ? JSON.parse(readFileSync(TOOLBOX_FILE, "utf8")).layers.map((layer) => ({
+      name: layer.name,
+      tools: layer.tools.map((tool) => {
+        const aliases = new Set([tool.name, ...(tool.match || [])].map((s) => s.toLowerCase()));
+        const studies = docs.filter((d) => (d.stack || []).some((s) => aliases.has(String(s).trim().toLowerCase())));
+        if (!studies.length)
+          throw new Error(`content/toolbox.json: "${tool.name}" matches no case study stack; list only tools a case study shows`);
+        return { name: tool.name, slug: toolSlug(tool.name), studies };
+      }),
+    }))
+  : [];
+const toolSlugs = toolbox.flatMap((layer) => layer.tools.map((t) => t.slug));
+if (new Set(toolSlugs).size !== toolSlugs.length) throw new Error("content/toolbox.json: two tools share a name");
+const toolsByUrl = new Map(docs.map((d) => [d.url, toolbox.flatMap((l) => l.tools).filter((t) => t.studies.includes(d)).map((t) => t.slug)]));
+
+emit("case-studies/index.html", libraryPage(index, { toolbox, toolsByUrl }));
 
 const selectedWork = projects.map((project, projectIndex) => {
   const studies = docs.filter((d) => d.project === project.id);
@@ -258,6 +281,7 @@ emit(
     siteNav: siteTopNav({ docs, home: true }),
     headSecurity: HEAD_SECURITY,
     latestCaseStudies: latestCaseStudies(recentDocs),
+    toolbox: toolboxSection(toolbox),
   }),
 );
 

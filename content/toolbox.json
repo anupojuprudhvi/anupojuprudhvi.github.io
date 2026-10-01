@@ -1,0 +1,99 @@
+{
+  "layers": [
+    {
+      "name": "Infrastructure as code & delivery",
+      "tools": [
+        { "name": "Terraform" },
+        { "name": "GitHub Actions", "match": ["GitHub Environments"] },
+        { "name": "Argo CD", "match": ["ArgoCD", "ArgoCD GitOps"] },
+        { "name": "Jenkins" },
+        { "name": "Amazon ECR", "match": ["AWS ECR"] }
+      ]
+    },
+    {
+      "name": "Containers & Kubernetes",
+      "tools": [
+        { "name": "Amazon EKS", "match": ["EKS"] },
+        { "name": "Karpenter" },
+        { "name": "AWS Load Balancer Controller" },
+        { "name": "External Secrets" },
+        { "name": "Docker Compose" },
+        { "name": "VMware Tanzu" }
+      ]
+    },
+    {
+      "name": "Networking & edge",
+      "tools": [
+        { "name": "Amazon VPC", "match": ["VPC", "VPC endpoints", "VPC Link"] },
+        { "name": "Transit Gateway", "match": ["AWS Transit Gateway"] },
+        { "name": "Route 53", "match": ["Amazon Route 53", "Route 53 Resolver"] },
+        { "name": "CloudFront", "match": ["AWS CloudFront"] },
+        { "name": "API Gateway", "match": ["API Gateway HTTP API"] },
+        { "name": "Application Load Balancer" },
+        { "name": "AWS WAF" },
+        { "name": "AWS Network Firewall" },
+        { "name": "AWS Client VPN" }
+      ]
+    },
+    {
+      "name": "Security & identity",
+      "tools": [
+        { "name": "AWS KMS" },
+        { "name": "AWS IAM", "match": ["IAM", "AWS IAM OIDC", "AWS STS"] },
+        { "name": "IAM Identity Center", "match": ["AWS IAM Identity Center"] },
+        { "name": "AWS Organizations" },
+        { "name": "Secrets Manager", "match": ["AWS Secrets Manager"] },
+        { "name": "CloudTrail", "match": ["AWS CloudTrail"] },
+        { "name": "SAML 2.0", "match": ["Enterprise SAML IdP"] },
+        { "name": "Microsoft Entra ID" }
+      ]
+    },
+    {
+      "name": "Compute & serverless",
+      "tools": [
+        { "name": "Amazon EC2", "match": ["EC2", "AWS EC2"] },
+        { "name": "Amazon EBS", "match": ["AWS EBS"] },
+        { "name": "AWS Lambda", "match": ["Lambda authorizer"] },
+        { "name": "Amazon WorkSpaces" },
+        { "name": "AWS IoT Core" }
+      ]
+    },
+    {
+      "name": "Data & storage",
+      "tools": [
+        { "name": "Amazon S3", "match": ["AWS S3", "S3 Object Lock", "AWS S3 Glacier"] },
+        { "name": "Aurora", "match": ["Aurora PostgreSQL", "Amazon Aurora Global Database"] },
+        { "name": "PostgreSQL", "match": ["PostgreSQL 16"] },
+        { "name": "Amazon RDS", "match": ["RDS"] },
+        { "name": "DynamoDB" },
+        { "name": "ElastiCache" },
+        { "name": "Oracle RAC" },
+        { "name": "Apache Kafka", "match": ["Kafka"] },
+        { "name": "Amazon Kinesis" },
+        { "name": "MinIO" }
+      ]
+    },
+    {
+      "name": "Operations & observability",
+      "tools": [
+        { "name": "CloudWatch" },
+        { "name": "Systems Manager", "match": ["AWS Systems Manager"] },
+        { "name": "Amazon SNS" },
+        { "name": "Linux", "match": ["CentOS", "systemd"] },
+        { "name": "Bash" },
+        { "name": "Python", "match": ["Boto3"] }
+      ]
+    },
+    {
+      "name": "Migration & modernization",
+      "tools": [
+        { "name": "AWS MAP" },
+        { "name": "AWS Transform" },
+        { "name": "AWS DMS" },
+        { "name": "AWS Application Discovery" },
+        { "name": "RVTools" },
+        { "name": "VMware vCenter" }
+      ]
+    }
+  ]
+}

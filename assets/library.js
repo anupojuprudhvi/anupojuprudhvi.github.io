@@ -18,6 +18,31 @@
     }
   } catch {}
 
+  // ?tool=<slug> comes from the homepage toolbox: show only the case studies
+  // that used that tool, say so, and offer a way back to everything.
+  let activeTool = "";
+  let toolName = "";
+  try {
+    const names = JSON.parse(document.getElementById("ucToolNames")?.textContent || "{}");
+    const requested = new URLSearchParams(location.search).get("tool");
+    if (requested && Object.hasOwn(names, requested)) {
+      activeTool = requested;
+      toolName = names[requested];
+    }
+  } catch {}
+  const toolBanner = document.getElementById("ucToolFilter");
+  if (activeTool && toolBanner) {
+    toolBanner.append("Showing case studies that used ");
+    const strong = document.createElement("strong");
+    strong.textContent = toolName;
+    const clear = document.createElement("a");
+    clear.href = "index.html";
+    clear.textContent = "Show all case studies";
+    toolBanner.append(strong, ". ", clear);
+    toolBanner.hidden = false;
+  }
+  const usesTool = (card) => !activeTool || (card.dataset.tools || "").split(" ").includes(activeTool);
+
   const haystack = new Map(
     cards.map((c) => [c, c.textContent.toLowerCase() + " " + (c.dataset.tags || "")]),
   );
@@ -39,13 +64,13 @@
     for (const card of cards) {
       const text = haystack.get(card);
       const ok =
-        matchesFilter(card) && terms.every((t) => text.includes(t));
+        usesTool(card) && matchesFilter(card) && terms.every((t) => text.includes(t));
       card.hidden = !ok;
       if (ok) shown++;
     }
     status.textContent = `${shown} case stud${shown === 1 ? "y" : "ies"}${
-      q ? ` matching “${q}”` : ""
-    }`;
+      activeTool ? ` using ${toolName}` : ""
+    }${q ? ` matching “${q}”` : ""}`;
     if (empty) empty.hidden = shown !== 0;
   }
 

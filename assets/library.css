@@ -191,3 +191,16 @@
 .uc-head .filter-status {
   margin-top: 14px;
 }
+
+/* Arriving from the homepage toolbox (?tool=…): which tool, and a way back. */
+.uc-tool-filter {
+  margin: 18px 0 0;
+  padding: 10px 14px;
+  border-left: 3px solid var(--accent);
+  background: var(--bg-raised);
+  font-size: 13px;
+}
+.uc-tool-filter a {
+  margin-left: 6px;
+  color: var(--accent);
+}

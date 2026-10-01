@@ -310,6 +310,23 @@ try {
   assert.equal(await quizDialog.evaluate((d) => d.open), false);
   assert.equal(await learner.locator(".lp-quiz .lp-quiz-app").count(), 1, "closing puts the quiz back in the page");
   await quizContext.close();
+  // Toolbox: a tool chip opens the library filtered to exactly the case
+  // studies its count promises, says which tool, and links back to all.
+  const toolboxContext = await browser.newContext();
+  const visitor = await toolboxContext.newPage();
+  visitor.on("pageerror", (e) => errors.push(`toolbox: ${e.message}`));
+  await visitor.goto(base);
+  const eksChip = visitor.locator('#toolbox a.tool-chip[href$="?tool=amazon-eks"]');
+  const promised = Number(await eksChip.locator(".tool-count").textContent());
+  assert(promised > 0, "the toolbox shows how many case studies used a tool");
+  await Promise.all([visitor.waitForURL(/tool=amazon-eks/), eksChip.click()]);
+  assert.equal(await visitor.locator(".uc-card:visible").count(), promised);
+  assert.equal((await visitor.locator("#ucStatus").textContent()).trim(), `${promised} case studies using Amazon EKS`);
+  assert.equal(await visitor.locator("#ucToolFilter").isVisible(), true);
+  await visitor.getByRole("link", { name: "Show all case studies" }).click();
+  const allStudies = JSON.parse(fs.readFileSync(path.join(root, "assets/case-studies.json"), "utf8")).length;
+  assert.equal(await visitor.locator(".uc-card:visible").count(), allStudies);
+  await toolboxContext.close();
   // Branded 404 page renders with working root-relative assets.
   const notFound = await browser.newContext();
   const missing = await notFound.newPage();

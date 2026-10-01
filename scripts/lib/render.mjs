@@ -147,6 +147,62 @@ export function siteTopNav({
     </nav>`;
 }
 
+/* ------------------------------------------------------------ Homepage toolbox */
+/**
+ * Tools grouped by layer, each with the number of case studies that used it,
+ * linking to the case-study library filtered to that tool. Built from
+ * content/toolbox.json matched against case-study `stack` lists (build.mjs),
+ * so every tool shown has evidence behind it.
+ */
+export function toolboxSection(toolbox) {
+  if (!toolbox.length) return "";
+  // Keep the homepage light: each layer shows its most-used tools, the rest
+  // sit behind a native "+N more" toggle (works without JavaScript).
+  const SHOWN_PER_LAYER = 4;
+  const chip = (t) => {
+    const n = t.studies.length;
+    return `<li><a class="tool-chip" href="case-studies/index.html?tool=${esc(t.slug)}" aria-label="${esc(t.name)}, ${n} case ${n === 1 ? "study" : "studies"}">${esc(t.name)}<span class="tool-count" aria-hidden="true">${n}</span></a></li>`;
+  };
+  const layers = toolbox
+    .map((layer) => {
+      // Most-used first; ties keep the order written in toolbox.json.
+      const tools = layer.tools.map((t, i) => [t, i]).sort((a, b) => b[0].studies.length - a[0].studies.length || a[1] - b[1]).map(([t]) => t);
+      const shown = tools.slice(0, SHOWN_PER_LAYER);
+      const rest = tools.slice(SHOWN_PER_LAYER);
+      return `            <div class="tool-layer">
+              <h3>${esc(layer.name)}</h3>
+              <ul class="tool-list">
+                ${shown.map(chip).join("\n                ")}
+              </ul>${rest.length ? `
+              <details class="tool-more">
+                <summary>+${rest.length} more</summary>
+                <ul class="tool-list">
+                  ${rest.map(chip).join("\n                  ")}
+                </ul>
+              </details>` : ""}
+            </div>`;
+    })
+    .join("\n");
+  return `      <section id="toolbox">
+        <div class="wrap">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">03 / Toolbox</p>
+              <h2>Every tool here is backed<br />by a case study.</h2>
+            </div>
+            <p>
+              Grouped by where it sits in the stack. The number is how many
+              case studies used it; select a tool to read them.
+            </p>
+          </div>
+          <p class="tool-hint" aria-hidden="true">Swipe for all ${toolbox.length} groups →</p>
+          <div class="toolbox" role="group" aria-label="Toolbox, ${toolbox.length} groups">
+${layers}
+          </div>
+        </div>
+      </section>`;
+}
+
 /* ------------------------------------------------- "Latest case studies" strip */
 /**
  * The three most recent case studies, shown inline on the homepage right
@@ -500,7 +556,9 @@ export const LAYER_ORDER = [
   "Product engineering",
 ];
 
-export function libraryPage(items) {
+export function libraryPage(items, { toolbox = [], toolsByUrl = new Map() } = {}) {
+  // Tool slug → display name, for the ?tool= filter the homepage toolbox links to.
+  const toolNames = Object.fromEntries(toolbox.flatMap((l) => l.tools.map((t) => [t.slug, t.name])));
   const projects = [...new Set(items.map((i) => i.projectName))];
   // Capability filters in a fixed, meaningful order; any unknown layer is
   // appended so a new value is never silently hidden.
@@ -513,7 +571,7 @@ export function libraryPage(items) {
         i.project,
       )}" data-layer="${esc(i.layer || "")}" data-tags="${esc(
         (i.tags || []).join(" "),
-      )}">
+      )}" data-tools="${esc((toolsByUrl.get(i.url) || []).join(" "))}">
           <div class="uc-meta"><span>${esc(i.projectName)}</span><span>${esc(
             i.layer || "",
           )}</span></div>
@@ -616,9 +674,11 @@ ${siteTopNav({ docs: items, up: "../", active: "case-studies" })}
               </div>
             </div>
           </div>
+          <p class="uc-tool-filter" id="ucToolFilter" hidden></p>
           <p class="filter-status" id="ucStatus" role="status">
             ${items.length} case studies
           </p>
+          <script type="application/json" id="ucToolNames">${JSON.stringify(toolNames).replace(/</g, "\\u003c")}</script>
         </div>
       </section>
       <section class="uc-list" aria-labelledby="ucListTitle">
