@@ -13,7 +13,7 @@ tags: [kubernetes, control-plane, architecture, fundamentals]
 redirectFrom: [how-kubernetes-and-eks-work]
 ---
 
-**Before you start:** you've run a container and used `kubectl` against a cluster at least once. A free local cluster is all you need for this module.
+**Before you start:** finish Part 1, especially [Your First Cluster](02-your-first-cluster.html), where you watched Kubernetes replace a deleted pod. This module explains how that happened. Keep the kind cluster running; the commands at the end use it.
 
 ## Principle · You describe what you want, and Kubernetes keeps making it true
 

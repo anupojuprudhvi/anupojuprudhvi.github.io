@@ -6,26 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <title>Container Delivery — Build, Tag, Push, Promote — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command." />
-    <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/15-container-delivery-to-eks.html" />
+    <title>Why Kubernetes Exists, Starting from a Single Container — Prudhvi Raj Anupoju</title>
+    <meta name="description" content="Start here if Kubernetes is new to you. What a container is, in five minutes, then the problems that appear once you run many containers across many machines, and how Kubernetes solves them. Plus an honest look at when you don't need it." />
+    <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/01-why-kubernetes.html" />
     <meta property="og:type" content="article" />
-    <meta property="og:url" content="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/15-container-delivery-to-eks.html" />
-    <meta property="og:title" content="Container Delivery — Build, Tag, Push, Promote — Prudhvi Raj Anupoju" />
-    <meta property="og:description" content="Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command." />
+    <meta property="og:url" content="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/01-why-kubernetes.html" />
+    <meta property="og:title" content="Why Kubernetes Exists, Starting from a Single Container — Prudhvi Raj Anupoju" />
+    <meta property="og:description" content="Start here if Kubernetes is new to you. What a container is, in five minutes, then the problems that appear once you run many containers across many machines, and how Kubernetes solves them. Plus an honest look at when you don't need it." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies &amp; Learning Paths" href="https://anupojuprudhvi.github.io/feed.xml" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://anupojuprudhvi.github.io/learning-paths/"},{"@type":"ListItem","position":3,"name":"Kubernetes from Zero to Production on Amazon EKS","item":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/index.html"},{"@type":"ListItem","position":4,"name":"Container Delivery — Build, Tag, Push, Promote","item":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/15-container-delivery-to-eks.html"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://anupojuprudhvi.github.io/learning-paths/"},{"@type":"ListItem","position":3,"name":"Kubernetes from Zero to Production on Amazon EKS","item":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/index.html"},{"@type":"ListItem","position":4,"name":"Why Kubernetes Exists, Starting from a Single Container","item":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/01-why-kubernetes.html"}]}</script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "TechArticle",
-        "headline": "Container Delivery — Build, Tag, Push, Promote",
-        "description": "Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command.",
+        "headline": "Why Kubernetes Exists, Starting from a Single Container",
+        "description": "Start here if Kubernetes is new to you. What a container is, in five minutes, then the problems that appear once you run many containers across many machines, and how Kubernetes solves them. Plus an honest look at when you don't need it.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -39,14 +39,14 @@
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju"
         },
-        "url": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/15-container-delivery-to-eks.html",
+        "url": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/01-why-kubernetes.html",
         "image": "https://anupojuprudhvi.github.io/og-image.png",
-        "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/15-container-delivery-to-eks.html",
-        "datePublished": "2026-09-18",
+        "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/01-why-kubernetes.html",
+        "datePublished": "2026-10-01",
         "dateModified": "2026-10-01",
         "isPartOf": {"@type":"CreativeWorkSeries","name":"Kubernetes from Zero to Production on Amazon EKS","url":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/index.html"},
-        "position": 15,
-        "keywords": "ecr, ci-cd, container-delivery, eks, Amazon ECR, Docker, Amazon EKS, CI/CD"
+        "position": 1,
+        "keywords": "kubernetes, containers, docker, basics, beginner, Containers, Docker, Kubernetes"
       }
     </script>
     <script src="../../assets/theme.js"></script>
@@ -140,9 +140,9 @@
         <div class="wrap">
           <div class="hero-split">
             <div>
-              <span class="lp-badge">Production · Delivery</span>
-              <h1>Container Delivery — Build, Tag, Push, Promote</h1>
-              <p class="sub">Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command.</p>
+              <span class="lp-badge">Basics · Start here</span>
+              <h1>Why Kubernetes Exists, Starting from a Single Container</h1>
+              <p class="sub">Start here if Kubernetes is new to you. What a container is, in five minutes, then the problems that appear once you run many containers across many machines, and how Kubernetes solves them. Plus an honest look at when you don't need it.</p>
             </div>
             <svg class="motif motif-network" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <defs>
@@ -159,10 +159,10 @@
     </svg>
           </div>
           <div class="lp-meta-bar">
-            <span><b>Module:</b> 15 of 18</span>
-            <span><b>Level:</b> Production · Delivery</span>
+            <span><b>Module:</b> 01 of 18</span>
+            <span><b>Level:</b> Basics · Start here</span>
             <span><b>Time:</b> 8 min read</span>
-            <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
+            <span><b>Published:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
       </header>
@@ -173,7 +173,8 @@
               <a class="lp-toc-track" href="index.html">Kubernetes from Zero to Production on Amazon EKS</a>
               <p class="lp-toc-part">Part 1 · Basics</p>
               <ol class="lp-toc-list">
-                <li><a href="01-why-kubernetes.html"><span class="lp-toc-num">01</span><span>Why Kubernetes Exists, Starting from a Single Container</span></a></li>
+                <li class="is-current"><a href="01-why-kubernetes.html" aria-current="page"><span class="lp-toc-num">01</span><span>Why Kubernetes Exists, Starting from a Single Container</span></a>
+                <ol class="lp-toc-sections"><li><a href="#the-five-minute-version">The five-minute version</a></li><li><a href="#one-container-is-easy-hundreds-are-not">One container is easy, hundreds are not</a></li><li><a href="#what-kubernetes-does-for-you">What Kubernetes does for you</a></li><li><a href="#when-you-don-t-need-kubernetes">When you don't need Kubernetes</a></li><li><a href="#words-you-ll-meet-in-the-next-modules">Words you'll meet in the next modules</a></li><li><a href="#run-stop-and-inspect-a-container">Run, stop, and inspect a container</a></li></ol></li>
                 <li><a href="02-your-first-cluster.html"><span class="lp-toc-num">02</span><span>Your First Cluster: A Free Local Lab with kind</span></a></li>
                 <li><a href="03-kubernetes-yaml-and-kubectl.html"><span class="lp-toc-num">03</span><span>Reading Kubernetes YAML and Working with kubectl</span></a></li>
               </ol>
@@ -194,8 +195,7 @@
               </ol>
               <p class="lp-toc-part">Part 4 · Operating in production</p>
               <ol class="lp-toc-list">
-                <li class="is-current"><a href="15-container-delivery-to-eks.html" aria-current="page"><span class="lp-toc-num">15</span><span>Container Delivery — Build, Tag, Push, Promote</span></a>
-                <ol class="lp-toc-sections"><li><a href="#build-once-then-promote-the-same-image">Build once, then promote the same image</a></li><li><a href="#registry-login-breaks-in-headless-ci-cd">Registry login breaks in headless CI/CD</a></li></ol></li>
+                <li><a href="15-container-delivery-to-eks.html"><span class="lp-toc-num">15</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
                 <li><a href="16-gitops-with-argo-cd.html"><span class="lp-toc-num">16</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
                 <li><a href="17-scaling-requests-and-cost.html"><span class="lp-toc-num">17</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
                 <li><a href="18-observability-and-alerting.html"><span class="lp-toc-num">18</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
@@ -211,7 +211,7 @@
               <a class="lp-toc-track" href="index.html">Kubernetes from Zero to Production on Amazon EKS</a>
               <p class="lp-toc-part">Part 1 · Basics</p>
               <ol class="lp-toc-list">
-                <li><a href="01-why-kubernetes.html"><span class="lp-toc-num">01</span><span>Why Kubernetes Exists, Starting from a Single Container</span></a></li>
+                <li class="is-current"><a href="01-why-kubernetes.html" aria-current="page"><span class="lp-toc-num">01</span><span>Why Kubernetes Exists, Starting from a Single Container</span></a></li>
                 <li><a href="02-your-first-cluster.html"><span class="lp-toc-num">02</span><span>Your First Cluster: A Free Local Lab with kind</span></a></li>
                 <li><a href="03-kubernetes-yaml-and-kubectl.html"><span class="lp-toc-num">03</span><span>Reading Kubernetes YAML and Working with kubectl</span></a></li>
               </ol>
@@ -232,7 +232,7 @@
               </ol>
               <p class="lp-toc-part">Part 4 · Operating in production</p>
               <ol class="lp-toc-list">
-                <li class="is-current"><a href="15-container-delivery-to-eks.html" aria-current="page"><span class="lp-toc-num">15</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
+                <li><a href="15-container-delivery-to-eks.html"><span class="lp-toc-num">15</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
                 <li><a href="16-gitops-with-argo-cd.html"><span class="lp-toc-num">16</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
                 <li><a href="17-scaling-requests-and-cost.html"><span class="lp-toc-num">17</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
                 <li><a href="18-observability-and-alerting.html"><span class="lp-toc-num">18</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
@@ -243,83 +243,145 @@
             </details>
           <section>
 <div class="wrap">
-<p><b>Before you start:</b> you'll want Docker, the AWS CLI v2, an ECR repository, and a CI/CD system that can assume an AWS role.</p>
+<p><b>Before you start:</b> nothing. You only need to be comfortable typing commands into a terminal. Every other idea in this track is explained when it first comes up.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
-<div class="section-eyebrow">Principle</div>
-<h2 id="build-once-then-promote-the-same-image">Build once, then promote the same image</h2>
-<p>Building an image is the easy part. What matters in operation is being able to say exactly which image is running in which environment, and moving <em>that same image</em> forward instead of rebuilding it for each environment. Rebuilding from the same commit usually gives you the same thing, but &quot;usually&quot; isn't a guarantee: a base image or dependency can change in between.</p>
-<h3>How the original deployment tagged images</h3>
-<p>The deployment this track is based on put the environment and a build number in the tag, for example <code>qa1.0.42</code>, then retagged the image for production (<code>prod1.0.10</code>). It was readable at a glance and it kept the rule that the image isn't rebuilt. But the tag says nothing about what's <em>inside</em> the image, and a tag can be moved to point at a different image later.</p>
-<details class="implementation-notes">
-<summary>A sturdier approach: immutable tags and digests</summary>
+<div class="section-eyebrow">Containers</div>
+<h2 id="the-five-minute-version">The five-minute version</h2>
+<p>Kubernetes runs <b>containers</b>, so start there. A container is your application packaged together with everything it needs to run: the runtime (Python, Java, Node.js), libraries, and config files. Because it carries all of that with it, it runs the same way on your laptop, on a test server, and in production. &quot;It works on my machine&quot; stops being a problem.</p>
+<p>Three words cover most of it:</p>
 <ul>
-<li><b>Tag each build with something that never changes</b>, such as the git commit SHA (<code>sha-3f9c2e1</code>).</li>
-<li><b>Turn on tag immutability in ECR</b>, so a tag, once pushed, can never be overwritten.</li>
-<li><b>Deploy by digest.</b> Every image has a content hash (<code>sha256:...</code>). A manifest that references the digest will always run exactly that image, whatever happens to tags.</li>
+<li><b>Image:</b> the package. A read-only snapshot of your app and its dependencies, built once from a recipe called a <b>Dockerfile</b>.</li>
+<li><b>Container:</b> a running copy of an image. You can start many containers from one image, and each is isolated from the others.</li>
+<li><b>Registry:</b> where images are stored and shared, such as Docker Hub or Amazon ECR. Servers pull images from a registry, the way a phone downloads an app from a store.</li>
 </ul>
-</details>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Build and push once, tagged with the commit
-docker build -t &lt;registry&gt;/my-service:sha-3f9c2e1 .
-docker push &lt;registry&gt;/my-service:sha-3f9c2e1
-
-# Make tags permanent for this repository (one-time setup)
-aws ecr put-image-tag-mutability --repository-name my-service \
-  --image-tag-mutability IMMUTABLE
-
-# Look up the image's digest
-aws ecr describe-images --repository-name my-service \
-  --image-ids imageTag=sha-3f9c2e1 --query 'imageDetails[0].imageDigest'</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml"># Promotion means changing this one line in each environment, never rebuilding
-containers:
-  - name: my-service
-    image: &lt;registry&gt;/my-service@sha256:&lt;digest&gt;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-dockerfile"># A Dockerfile: the recipe for an image
+# Start from an image that already has Python
+FROM python:3.12-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+# The app listens on port 8080
+EXPOSE 8080
+# What runs when the container starts
+CMD [&quot;python&quot;, &quot;app.py&quot;]</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <figure class="flow">
-<figcaption class="flow-title">One image, built once, promoted through every environment</figcaption>
-<div class="flow-body"><div class="flow-node"><strong>CI pipeline</strong><span>builds from commit 3f9c2e1, runs the tests, pushes once</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">push my-service:sha-3f9c2e1 (tags can't be overwritten)</span></div><div class="flow-node is-key"><strong>Amazon ECR</strong><span>one image, identified by its digest sha256:9b1e...</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">each environment's manifest points at that same digest</span></div><div class="flow-paths"><div class="flow-path"><span class="flow-path-label">Dev</span><div class="flow-node"><strong>Dev cluster</strong><span>deployed automatically on merge</span></div></div><div class="flow-path"><span class="flow-path-label">QA</span><div class="flow-node"><strong>QA cluster</strong><span>tested here</span></div></div><div class="flow-path"><span class="flow-path-label">Production</span><div class="flow-node"><strong>Production cluster</strong><span>a reviewed one-line change to the same digest; nothing is rebuilt</span></div></div></div></div>
+<figcaption class="flow-title">From source code to a running container</figcaption>
+<div class="flow-body"><div class="flow-node"><strong>Dockerfile and code</strong><span>the recipe and your application</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">docker build</span></div><div class="flow-node"><strong>Image orders-api:1.4</strong><span>a read-only package, built once</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">docker push</span></div><div class="flow-node is-key"><strong>Registry</strong><span>stores the image so any machine can pull it</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">docker run, on any machine with a container runtime</span></div><div class="flow-node"><strong>Container</strong><span>a running, isolated copy of the image</span></div></div>
 </figure>
-<p>Promoting to Production is then a small, reviewable change that points Production at the digest QA already tested. You can still add a friendly tag such as <code>prod-2026-09-28</code> for people to read, but the digest is what guarantees the match.</p>
+<p>If you've never run a container, install <b>Docker Desktop</b> (or Docker Engine on Linux) and try <code>docker run -p 8080:80 nginx</code>, then open <code>http://localhost:8080</code>. You just ran a web server without installing one. That's the whole idea.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
-<div class="section-eyebrow">The gotcha</div>
-<h2 id="registry-login-breaks-in-headless-ci-cd">Registry login breaks in headless CI/CD</h2>
-<p><code>docker login</code> normally asks for a password at the terminal. That's invisible when you try the command by hand, because it just works. Then the same step runs in a CI/CD job, where there's no terminal to type into, and it fails with:</p>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">Error: Cannot perform an interactive login from a non-TTY device</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<h3>Fix</h3>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Prompts for a password, so it fails in a headless CI/CD job:
-docker login --username AWS &lt;registry&gt;
+<div class="section-eyebrow">Problem</div>
+<h2 id="one-container-is-easy-hundreds-are-not">One container is easy, hundreds are not</h2>
+<p>Running one container on one machine is simple. Now imagine a real system: twenty services, each needing three copies for reliability, spread over ten servers. Suddenly you have questions that <code>docker run</code> doesn't answer:</p>
+<ul>
+<li><b>Where should each container run?</b> Which server has enough free CPU and memory right now?</li>
+<li><b>What happens when one crashes,</b> or a whole server dies at 3 a.m.? Who restarts it, and where?</li>
+<li><b>How do services find each other</b> when containers move between servers and change IP addresses?</li>
+<li><b>How do you release a new version</b> without taking the service down?</li>
+<li><b>How do you handle more traffic?</b> Who starts more copies, and stops them again later?</li>
+<li><b>Where do passwords and settings go,</b> without baking them into every image?</li>
+</ul>
+<p>Answering these by hand, with scripts and spreadsheets of which container runs where, works for a while and then falls apart. A system that answers them for you is called a <b>container orchestrator</b>. Kubernetes is the one that won.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Solution</div>
+<h2 id="what-kubernetes-does-for-you">What Kubernetes does for you</h2>
+<p>Kubernetes turns a group of servers into one pool of capacity, called a <b>cluster</b>. You don't tell it which server to use. You describe what you want (&quot;three copies of <code>orders-api:1.4</code>, reachable at the name <code>orders-api</code>&quot;), and Kubernetes makes it happen and <em>keeps</em> it true.</p>
+<div class="table-wrap"><table class="md-table">
+<thead><tr><th scope="col">Problem</th><th scope="col">What Kubernetes gives you</th><th scope="col">Where this track covers it</th></tr></thead>
+<tbody>
+<tr><td data-label="Problem">Where should it run?</td><td data-label="What Kubernetes gives you">A scheduler that places each container on a server with room</td><td data-label="Where this track covers it"><a href="04-how-a-cluster-works.html">How a Cluster Works</a></td></tr>
+<tr><td data-label="Problem">It crashed</td><td data-label="What Kubernetes gives you">Automatic restarts and replacements, on another server if needed</td><td data-label="Where this track covers it"><a href="05-pods-deployments-and-rollouts.html">Pods, Deployments &amp; Rollouts</a></td></tr>
+<tr><td data-label="Problem">How do services find each other?</td><td data-label="What Kubernetes gives you">Stable names and built-in load balancing</td><td data-label="Where this track covers it"><a href="06-services-and-cluster-networking.html">Services &amp; Cluster Networking</a></td></tr>
+<tr><td data-label="Problem">Releasing without downtime</td><td data-label="What Kubernetes gives you">Rolling updates that stop if the new version is unhealthy</td><td data-label="Where this track covers it"><a href="05-pods-deployments-and-rollouts.html">Pods, Deployments &amp; Rollouts</a></td></tr>
+<tr><td data-label="Problem">More traffic</td><td data-label="What Kubernetes gives you">Autoscaling of containers and of servers</td><td data-label="Where this track covers it"><a href="17-scaling-requests-and-cost.html">Scaling &amp; Cost</a></td></tr>
+<tr><td data-label="Problem">Settings and secrets</td><td data-label="What Kubernetes gives you">Config and secrets kept separate from images</td><td data-label="Where this track covers it"><a href="05-pods-deployments-and-rollouts.html">Pods, Deployments &amp; Rollouts</a></td></tr>
+<tr><td data-label="Problem">Who may change what</td><td data-label="What Kubernetes gives you">Access control for people and programs</td><td data-label="Where this track covers it"><a href="08-namespaces-rbac-and-cluster-access.html">Namespaces, RBAC &amp; Service Accounts</a></td></tr>
+</tbody>
+</table></div>
+<figure class="flow">
+<figcaption class="flow-title">You describe the result, Kubernetes does the work</figcaption>
+<div class="flow-body"><div class="flow-node"><strong>You</strong><span>&quot;run 3 copies of orders-api:1.4&quot;</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">written down as a short YAML file and sent to the cluster</span></div><div class="flow-group"><span class="flow-group-label">Kubernetes cluster</span><div class="flow-node is-key"><strong>Control plane</strong><span>decides which servers run the copies, and watches them</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">starts containers on the servers it chose</span></div><div class="flow-paths"><div class="flow-path"><span class="flow-path-label">Server 1</span><div class="flow-node"><strong>orders-api copy 1</strong><span>running</span></div></div><div class="flow-path"><span class="flow-path-label">Server 2</span><div class="flow-node"><strong>orders-api copy 2</strong><span>running</span></div></div><div class="flow-path"><span class="flow-path-label">Server 3</span><div class="flow-node"><strong>orders-api copy 3</strong><span>crashed, so Kubernetes starts a new one</span></div></div></div></div></div>
+</figure>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Honest answer</div>
+<h2 id="when-you-don-t-need-kubernetes">When you don't need Kubernetes</h2>
+<p>Kubernetes is powerful, but it's also a platform you have to run and understand. It's not always the right choice:</p>
+<ul>
+<li><b>One or two small services:</b> a single virtual machine, or a simpler container service such as AWS App Runner or Amazon ECS, is less work.</li>
+<li><b>Event-driven tasks</b> that run for seconds at a time often fit serverless functions (AWS Lambda) better.</li>
+<li><b>A small team with no one to own the platform</b> may spend more time running Kubernetes than building the product.</li>
+</ul>
+<p>It earns its place when you have many services, several teams, a need for consistent deploys across environments, or the scale where automation stops being optional. That's the situation the later parts of this track describe.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Vocabulary</div>
+<h2 id="words-you-ll-meet-in-the-next-modules">Words you'll meet in the next modules</h2>
+<p>You don't need to memorise these. Each one gets its own explanation later; this is just so they look familiar.</p>
+<div class="table-wrap"><table class="md-table">
+<thead><tr><th scope="col">Term</th><th scope="col">One-line meaning</th></tr></thead>
+<tbody>
+<tr><td data-label="Term">Cluster</td><td data-label="One-line meaning">A group of machines that Kubernetes manages as one</td></tr>
+<tr><td data-label="Term">Node</td><td data-label="One-line meaning">One machine in the cluster that runs containers</td></tr>
+<tr><td data-label="Term">Control plane</td><td data-label="One-line meaning">The part of Kubernetes that makes decisions and stores the desired state</td></tr>
+<tr><td data-label="Term">Pod</td><td data-label="One-line meaning">The smallest thing Kubernetes runs: a wrapper around one (or a few) containers</td></tr>
+<tr><td data-label="Term">Deployment</td><td data-label="One-line meaning">Keeps a set number of identical pods running, and updates them safely</td></tr>
+<tr><td data-label="Term">Service</td><td data-label="One-line meaning">A stable name and address in front of a group of pods</td></tr>
+<tr><td data-label="Term">Namespace</td><td data-label="One-line meaning">A named section of a cluster, used to organise and separate things</td></tr>
+<tr><td data-label="Term"><code>kubectl</code></td><td data-label="One-line meaning">The command-line tool you use to talk to a cluster</td></tr>
+<tr><td data-label="Term">Manifest</td><td data-label="One-line meaning">A YAML file that describes an object you want to exist</td></tr>
+</tbody>
+</table></div>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Try it</div>
+<h2 id="run-stop-and-inspect-a-container">Run, stop, and inspect a container</h2>
+<p>With Docker installed, these commands show the image, container, and registry ideas from the top of this module:</p>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Pull an image from Docker Hub (a registry) and run it as a container
+docker run -d --name web -p 8080:80 nginx:1.27
 
-# Headless-safe: pipe a short-lived token in through stdin
-aws ecr get-login-password --region &lt;region&gt; \
-  | docker login --username AWS --password-stdin &lt;registry&gt;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<p>The fix passes a temporary token through standard input instead of a prompt, which is exactly what a job with no terminal needs. (Older scripts may use <code>aws ecr get-login</code>, which only existed in AWS CLI v1 and was removed in v2; replace it with the command above.) This kind of bug is worth calling out because it never shows up in local testing. It only appears once the pipeline runs for real, which is usually later than you'd like.</p>
+# See running containers, and the images you have locally
+docker ps
+docker images
+
+# Read the container's logs, then stop and remove it
+docker logs web
+docker stop web
+docker rm web</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<p>Now picture doing that by hand for sixty containers across ten machines, every day. The next module gives you a real Kubernetes cluster to do it for you, on your own laptop, for free.</p>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
 <ul>
-<li><b>Test registry login in a real headless job, not just locally.</b> A command that works in your shell isn't proof it works in CI. Run it in the same kind of non-interactive runner the pipeline uses.</li>
-<li><b>Registry tokens are short-lived.</b> A token from <code>aws ecr get-login-password</code> lasts 12 hours. A long pipeline that logs in at the start and pushes much later can fail with an expired token that doesn't look like a login problem at first.</li>
-<li><b>Being in the registry isn't the same as being pullable.</b> A cluster in a different network path, or without permission to that repository, can fail to pull an image that pushed perfectly well. Check the pull from the target environment.</li>
+<li><b>Containers aren't small virtual machines.</b> They share the host's operating system kernel, which is why they start in seconds and use far less memory than a VM.</li>
+<li><b>Images are immutable.</b> You never patch a running container; you build a new image and replace the container. Kubernetes is built entirely around that idea.</li>
+<li><b>Kubernetes doesn't build images.</b> It runs images that already exist in a registry. Building and publishing them is a separate step, covered in <a href="15-container-delivery-to-eks.html">Container Delivery</a>.</li>
 </ul>
 </details>
 </div>
 </section>
-          <section class="related-links" aria-label="See it in practice">
-          <h2>See it in practice</h2>
-          <ul>
-            <li><a href="../../case-studies/healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.html"><span class="related-eyebrow">Case study · Healthcare &amp; Cost Architecture</span><strong>Regulated CI/CD delivery</strong><small>A GitFlow-to-Kubernetes pipeline with per-branch promotion gates, headless registry authentication, and deployment lead time cut from hours to minutes.</small></a></li>
-          </ul>
-        </section>
-          <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/14-ingress-architecture-and-cost.html">
-          <span class="lp-nav-label">← Module 14</span>
-          <span class="lp-nav-title">Dual Ingress Architecture &amp; Its Cost Mechanics</span>
+          <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/index.html">
+          <span class="lp-nav-label">← Curriculum</span>
+          <span class="lp-nav-title">Track Overview</span>
         </a>
-<a class="lp-nav-link next" href="../../learning-paths/kubernetes-operations/16-gitops-with-argo-cd.html">
-          <span class="lp-nav-label">Module 16 →</span>
-          <span class="lp-nav-title">GitOps with Argo CD: Git as the Source of Truth</span>
+<a class="lp-nav-link next" href="../../learning-paths/kubernetes-operations/02-your-first-cluster.html">
+          <span class="lp-nav-label">Module 02 →</span>
+          <span class="lp-nav-title">Your First Cluster: A Free Local Lab with kind</span>
         </a></nav>
           </div>
         </div>

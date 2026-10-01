@@ -40,6 +40,9 @@
   <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/s3-large-scale-bucket-migration.html</loc><lastmod>2026-09-24</lastmod></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/tolling/transit-gateway-hub-and-spoke.html</loc><lastmod>2026-09-17</lastmod></url>
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/01-why-kubernetes.html</loc><lastmod>2026-10-01</lastmod></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/02-your-first-cluster.html</loc><lastmod>2026-10-01</lastmod></url>
+  <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/03-kubernetes-yaml-and-kubectl.html</loc><lastmod>2026-10-01</lastmod></url>
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/04-how-a-cluster-works.html</loc><lastmod>2026-10-01</lastmod></url>
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/05-pods-deployments-and-rollouts.html</loc><lastmod>2026-10-01</lastmod></url>
   <url><loc>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/06-services-and-cluster-networking.html</loc><lastmod>2026-10-01</lastmod></url>

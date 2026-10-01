@@ -8,6 +8,30 @@
     <atom:link href="https://anupojuprudhvi.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <lastBuildDate>Thu, 01 Oct 2026 00:00:00 GMT</lastBuildDate>
     <item>
+      <title>Why Kubernetes Exists, Starting from a Single Container</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/01-why-kubernetes.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/01-why-kubernetes.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Start here if Kubernetes is new to you. What a container is, in five minutes, then the problems that appear once you run many containers across many machines, and how Kubernetes solves them. Plus an honest look at when you don't need it.</description>
+      <category>Kubernetes from Zero to Production on Amazon EKS</category>
+    </item>
+    <item>
+      <title>Your First Cluster: A Free Local Lab with kind</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/02-your-first-cluster.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/02-your-first-cluster.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Build a real, multi-node Kubernetes cluster on your own laptop with kind, at no cost. Run an app, reach it from your browser, delete a pod and watch Kubernetes replace it, scale it up, look inside it, and clean up. This lab is used throughout Parts 1 and 2.</description>
+      <category>Kubernetes from Zero to Production on Amazon EKS</category>
+    </item>
+    <item>
+      <title>Reading Kubernetes YAML and Working with kubectl</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/03-kubernetes-yaml-and-kubectl.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/03-kubernetes-yaml-and-kubectl.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Every Kubernetes object is written the same way. Learn the four fields every manifest has, just enough YAML to read and write them, how labels and selectors connect objects, namespaces, the difference between imperative commands and kubectl apply, and the kubectl commands you'll use every day.</description>
+      <category>Kubernetes from Zero to Production on Amazon EKS</category>
+    </item>
+    <item>
       <title>Kubernetes on Amazon EKS: What AWS Runs, and What Changes</title>
       <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/10-kubernetes-on-eks.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/10-kubernetes-on-eks.html</guid>

@@ -6,26 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <title>Container Delivery — Build, Tag, Push, Promote — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command." />
-    <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/15-container-delivery-to-eks.html" />
+    <title>Your First Cluster: A Free Local Lab with kind — Prudhvi Raj Anupoju</title>
+    <meta name="description" content="Build a real, multi-node Kubernetes cluster on your own laptop with kind, at no cost. Run an app, reach it from your browser, delete a pod and watch Kubernetes replace it, scale it up, look inside it, and clean up. This lab is used throughout Parts 1 and 2." />
+    <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/02-your-first-cluster.html" />
     <meta property="og:type" content="article" />
-    <meta property="og:url" content="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/15-container-delivery-to-eks.html" />
-    <meta property="og:title" content="Container Delivery — Build, Tag, Push, Promote — Prudhvi Raj Anupoju" />
-    <meta property="og:description" content="Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command." />
+    <meta property="og:url" content="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/02-your-first-cluster.html" />
+    <meta property="og:title" content="Your First Cluster: A Free Local Lab with kind — Prudhvi Raj Anupoju" />
+    <meta property="og:description" content="Build a real, multi-node Kubernetes cluster on your own laptop with kind, at no cost. Run an app, reach it from your browser, delete a pod and watch Kubernetes replace it, scale it up, look inside it, and clean up. This lab is used throughout Parts 1 and 2." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies &amp; Learning Paths" href="https://anupojuprudhvi.github.io/feed.xml" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://anupojuprudhvi.github.io/learning-paths/"},{"@type":"ListItem","position":3,"name":"Kubernetes from Zero to Production on Amazon EKS","item":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/index.html"},{"@type":"ListItem","position":4,"name":"Container Delivery — Build, Tag, Push, Promote","item":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/15-container-delivery-to-eks.html"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://anupojuprudhvi.github.io/learning-paths/"},{"@type":"ListItem","position":3,"name":"Kubernetes from Zero to Production on Amazon EKS","item":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/index.html"},{"@type":"ListItem","position":4,"name":"Your First Cluster: A Free Local Lab with kind","item":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/02-your-first-cluster.html"}]}</script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "TechArticle",
-        "headline": "Container Delivery — Build, Tag, Push, Promote",
-        "description": "Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command.",
+        "headline": "Your First Cluster: A Free Local Lab with kind",
+        "description": "Build a real, multi-node Kubernetes cluster on your own laptop with kind, at no cost. Run an app, reach it from your browser, delete a pod and watch Kubernetes replace it, scale it up, look inside it, and clean up. This lab is used throughout Parts 1 and 2.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -39,14 +39,14 @@
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju"
         },
-        "url": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/15-container-delivery-to-eks.html",
+        "url": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/02-your-first-cluster.html",
         "image": "https://anupojuprudhvi.github.io/og-image.png",
-        "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/15-container-delivery-to-eks.html",
-        "datePublished": "2026-09-18",
+        "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/02-your-first-cluster.html",
+        "datePublished": "2026-10-01",
         "dateModified": "2026-10-01",
         "isPartOf": {"@type":"CreativeWorkSeries","name":"Kubernetes from Zero to Production on Amazon EKS","url":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/index.html"},
-        "position": 15,
-        "keywords": "ecr, ci-cd, container-delivery, eks, Amazon ECR, Docker, Amazon EKS, CI/CD"
+        "position": 2,
+        "keywords": "kubernetes, kind, kubectl, lab, basics, beginner, kind, kubectl, Docker, Kubernetes"
       }
     </script>
     <script src="../../assets/theme.js"></script>
@@ -140,9 +140,9 @@
         <div class="wrap">
           <div class="hero-split">
             <div>
-              <span class="lp-badge">Production · Delivery</span>
-              <h1>Container Delivery — Build, Tag, Push, Promote</h1>
-              <p class="sub">Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command.</p>
+              <span class="lp-badge">Basics · Hands-on lab</span>
+              <h1>Your First Cluster: A Free Local Lab with kind</h1>
+              <p class="sub">Build a real, multi-node Kubernetes cluster on your own laptop with kind, at no cost. Run an app, reach it from your browser, delete a pod and watch Kubernetes replace it, scale it up, look inside it, and clean up. This lab is used throughout Parts 1 and 2.</p>
             </div>
             <svg class="motif motif-network" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <defs>
@@ -159,10 +159,10 @@
     </svg>
           </div>
           <div class="lp-meta-bar">
-            <span><b>Module:</b> 15 of 18</span>
-            <span><b>Level:</b> Production · Delivery</span>
-            <span><b>Time:</b> 8 min read</span>
-            <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
+            <span><b>Module:</b> 02 of 18</span>
+            <span><b>Level:</b> Basics · Hands-on lab</span>
+            <span><b>Time:</b> 10 min read</span>
+            <span><b>Published:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
       </header>
@@ -174,7 +174,8 @@
               <p class="lp-toc-part">Part 1 · Basics</p>
               <ol class="lp-toc-list">
                 <li><a href="01-why-kubernetes.html"><span class="lp-toc-num">01</span><span>Why Kubernetes Exists, Starting from a Single Container</span></a></li>
-                <li><a href="02-your-first-cluster.html"><span class="lp-toc-num">02</span><span>Your First Cluster: A Free Local Lab with kind</span></a></li>
+                <li class="is-current"><a href="02-your-first-cluster.html" aria-current="page"><span class="lp-toc-num">02</span><span>Your First Cluster: A Free Local Lab with kind</span></a>
+                <ol class="lp-toc-sections"><li><a href="#learn-on-a-cluster-you-can-break-for-free">Learn on a cluster you can break for free</a></li><li><a href="#install-docker-kubectl-and-kind">Install Docker, kubectl, and kind</a></li><li><a href="#a-three-node-cluster">A three-node cluster</a></li><li><a href="#your-first-app-on-kubernetes">Your first app on Kubernetes</a></li><li><a href="#kubernetes-fixing-things-on-its-own">Kubernetes fixing things on its own</a></li><li><a href="#scale-look-inside-and-read-logs">Scale, look inside, and read logs</a></li><li><a href="#delete-and-recreate-whenever-you-like">Delete and recreate whenever you like</a></li></ol></li>
                 <li><a href="03-kubernetes-yaml-and-kubectl.html"><span class="lp-toc-num">03</span><span>Reading Kubernetes YAML and Working with kubectl</span></a></li>
               </ol>
               <p class="lp-toc-part">Part 2 · Core concepts</p>
@@ -194,8 +195,7 @@
               </ol>
               <p class="lp-toc-part">Part 4 · Operating in production</p>
               <ol class="lp-toc-list">
-                <li class="is-current"><a href="15-container-delivery-to-eks.html" aria-current="page"><span class="lp-toc-num">15</span><span>Container Delivery — Build, Tag, Push, Promote</span></a>
-                <ol class="lp-toc-sections"><li><a href="#build-once-then-promote-the-same-image">Build once, then promote the same image</a></li><li><a href="#registry-login-breaks-in-headless-ci-cd">Registry login breaks in headless CI/CD</a></li></ol></li>
+                <li><a href="15-container-delivery-to-eks.html"><span class="lp-toc-num">15</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
                 <li><a href="16-gitops-with-argo-cd.html"><span class="lp-toc-num">16</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
                 <li><a href="17-scaling-requests-and-cost.html"><span class="lp-toc-num">17</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
                 <li><a href="18-observability-and-alerting.html"><span class="lp-toc-num">18</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
@@ -212,7 +212,7 @@
               <p class="lp-toc-part">Part 1 · Basics</p>
               <ol class="lp-toc-list">
                 <li><a href="01-why-kubernetes.html"><span class="lp-toc-num">01</span><span>Why Kubernetes Exists, Starting from a Single Container</span></a></li>
-                <li><a href="02-your-first-cluster.html"><span class="lp-toc-num">02</span><span>Your First Cluster: A Free Local Lab with kind</span></a></li>
+                <li class="is-current"><a href="02-your-first-cluster.html" aria-current="page"><span class="lp-toc-num">02</span><span>Your First Cluster: A Free Local Lab with kind</span></a></li>
                 <li><a href="03-kubernetes-yaml-and-kubectl.html"><span class="lp-toc-num">03</span><span>Reading Kubernetes YAML and Working with kubectl</span></a></li>
               </ol>
               <p class="lp-toc-part">Part 2 · Core concepts</p>
@@ -232,7 +232,7 @@
               </ol>
               <p class="lp-toc-part">Part 4 · Operating in production</p>
               <ol class="lp-toc-list">
-                <li class="is-current"><a href="15-container-delivery-to-eks.html" aria-current="page"><span class="lp-toc-num">15</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
+                <li><a href="15-container-delivery-to-eks.html"><span class="lp-toc-num">15</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
                 <li><a href="16-gitops-with-argo-cd.html"><span class="lp-toc-num">16</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
                 <li><a href="17-scaling-requests-and-cost.html"><span class="lp-toc-num">17</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
                 <li><a href="18-observability-and-alerting.html"><span class="lp-toc-num">18</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
@@ -243,83 +243,160 @@
             </details>
           <section>
 <div class="wrap">
-<p><b>Before you start:</b> you'll want Docker, the AWS CLI v2, an ECR repository, and a CI/CD system that can assume an AWS role.</p>
+<p><b>Before you start:</b> read <a href="01-why-kubernetes.html">Why Kubernetes Exists</a>. You'll need a laptop with about 4 GB of free memory and permission to install software.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2 id="build-once-then-promote-the-same-image">Build once, then promote the same image</h2>
-<p>Building an image is the easy part. What matters in operation is being able to say exactly which image is running in which environment, and moving <em>that same image</em> forward instead of rebuilding it for each environment. Rebuilding from the same commit usually gives you the same thing, but &quot;usually&quot; isn't a guarantee: a base image or dependency can change in between.</p>
-<h3>How the original deployment tagged images</h3>
-<p>The deployment this track is based on put the environment and a build number in the tag, for example <code>qa1.0.42</code>, then retagged the image for production (<code>prod1.0.10</code>). It was readable at a glance and it kept the rule that the image isn't rebuilt. But the tag says nothing about what's <em>inside</em> the image, and a tag can be moved to point at a different image later.</p>
-<details class="implementation-notes">
-<summary>A sturdier approach: immutable tags and digests</summary>
-<ul>
-<li><b>Tag each build with something that never changes</b>, such as the git commit SHA (<code>sha-3f9c2e1</code>).</li>
-<li><b>Turn on tag immutability in ECR</b>, so a tag, once pushed, can never be overwritten.</li>
-<li><b>Deploy by digest.</b> Every image has a content hash (<code>sha256:...</code>). A manifest that references the digest will always run exactly that image, whatever happens to tags.</li>
-</ul>
-</details>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Build and push once, tagged with the commit
-docker build -t &lt;registry&gt;/my-service:sha-3f9c2e1 .
-docker push &lt;registry&gt;/my-service:sha-3f9c2e1
-
-# Make tags permanent for this repository (one-time setup)
-aws ecr put-image-tag-mutability --repository-name my-service \
-  --image-tag-mutability IMMUTABLE
-
-# Look up the image's digest
-aws ecr describe-images --repository-name my-service \
-  --image-ids imageTag=sha-3f9c2e1 --query 'imageDetails[0].imageDigest'</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml"># Promotion means changing this one line in each environment, never rebuilding
-containers:
-  - name: my-service
-    image: &lt;registry&gt;/my-service@sha256:&lt;digest&gt;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<h2 id="learn-on-a-cluster-you-can-break-for-free">Learn on a cluster you can break for free</h2>
+<p>The fastest way to learn Kubernetes is to use it, break it, and watch what happens. That needs a cluster you own, that costs nothing, and that you can delete and recreate in a minute.</p>
+<p><b>kind</b> (Kubernetes in Docker) gives you exactly that. It runs each Kubernetes node as a Docker container on your laptop. It's a real cluster, running the same Kubernetes that runs in the cloud, so every command in Parts 1 and 2 of this track works on it. The Kubernetes project itself uses kind to test Kubernetes.</p>
 <figure class="flow">
-<figcaption class="flow-title">One image, built once, promoted through every environment</figcaption>
-<div class="flow-body"><div class="flow-node"><strong>CI pipeline</strong><span>builds from commit 3f9c2e1, runs the tests, pushes once</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">push my-service:sha-3f9c2e1 (tags can't be overwritten)</span></div><div class="flow-node is-key"><strong>Amazon ECR</strong><span>one image, identified by its digest sha256:9b1e...</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">each environment's manifest points at that same digest</span></div><div class="flow-paths"><div class="flow-path"><span class="flow-path-label">Dev</span><div class="flow-node"><strong>Dev cluster</strong><span>deployed automatically on merge</span></div></div><div class="flow-path"><span class="flow-path-label">QA</span><div class="flow-node"><strong>QA cluster</strong><span>tested here</span></div></div><div class="flow-path"><span class="flow-path-label">Production</span><div class="flow-node"><strong>Production cluster</strong><span>a reviewed one-line change to the same digest; nothing is rebuilt</span></div></div></div></div>
+<figcaption class="flow-title">What kind builds on your laptop</figcaption>
+<div class="flow-body"><div class="flow-group"><span class="flow-group-label">Your laptop</span><div class="flow-node"><strong>You</strong><span>type kubectl commands in a terminal</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">kubectl reads ~/.kube/config to find the cluster and your credentials</span></div><div class="flow-group"><span class="flow-group-label">Docker</span><div class="flow-node is-key"><strong>lab-control-plane</strong><span>a container running the API server, etcd, and scheduler</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">tells the worker nodes what to run</span></div><div class="flow-paths"><div class="flow-path"><span class="flow-path-label">Node 1</span><div class="flow-node"><strong>lab-worker</strong><span>a container acting as a node; your pods run inside it</span></div></div><div class="flow-path"><span class="flow-path-label">Node 2</span><div class="flow-node"><strong>lab-worker2</strong><span>a second node, so you can see pods spread out</span></div></div></div></div></div></div>
 </figure>
-<p>Promoting to Production is then a small, reviewable change that points Production at the digest QA already tested. You can still add a friendly tag such as <code>prod-2026-09-28</code> for people to read, but the digest is what guarantees the match.</p>
+<p>Other local options exist, such as minikube and the Kubernetes switch in Docker Desktop. They work too; this track uses kind because it's light, quick to recreate, and makes multi-node clusters easy.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
-<div class="section-eyebrow">The gotcha</div>
-<h2 id="registry-login-breaks-in-headless-ci-cd">Registry login breaks in headless CI/CD</h2>
-<p><code>docker login</code> normally asks for a password at the terminal. That's invisible when you try the command by hand, because it just works. Then the same step runs in a CI/CD job, where there's no terminal to type into, and it fails with:</p>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">Error: Cannot perform an interactive login from a non-TTY device</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<h3>Fix</h3>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Prompts for a password, so it fails in a headless CI/CD job:
-docker login --username AWS &lt;registry&gt;
+<div class="section-eyebrow">Setup</div>
+<h2 id="install-docker-kubectl-and-kind">Install Docker, kubectl, and kind</h2>
+<p>You need three tools:</p>
+<ul>
+<li><b>Docker:</b> Docker Desktop on macOS and Windows (on Windows it uses WSL 2), or Docker Engine on Linux. kind needs it running.</li>
+<li><b>kubectl:</b> the Kubernetes command-line tool. It works with every cluster, local or cloud.</li>
+<li><b>kind:</b> creates and deletes the local cluster.</li>
+</ul>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># macOS, with Homebrew
+brew install kubectl kind
 
-# Headless-safe: pipe a short-lived token in through stdin
-aws ecr get-login-password --region &lt;region&gt; \
-  | docker login --username AWS --password-stdin &lt;registry&gt;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<p>The fix passes a temporary token through standard input instead of a prompt, which is exactly what a job with no terminal needs. (Older scripts may use <code>aws ecr get-login</code>, which only existed in AWS CLI v1 and was removed in v2; replace it with the command above.) This kind of bug is worth calling out because it never shows up in local testing. It only appears once the pipeline runs for real, which is usually later than you'd like.</p>
+# Windows, with winget (then restart the terminal)
+winget install -e --id Kubernetes.kubectl
+winget install -e --id Kubernetes.kind
+
+# Linux: follow the &quot;Installing from release binaries&quot; steps on
+# kind.sigs.k8s.io, and the kubectl install page on kubernetes.io
+
+# Check everything is installed
+docker version
+kubectl version --client
+kind version</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Create</div>
+<h2 id="a-three-node-cluster">A three-node cluster</h2>
+<p>Save this as <code>kind-lab.yaml</code>. It asks for one control-plane node and two workers, so you can see pods spread across machines:</p>
+<pre tabindex="0" class="code"><code class="language-yaml">kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+  - role: worker
+  - role: worker</code></pre>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Create the cluster (takes a minute or two the first time)
+kind create cluster --name lab --config kind-lab.yaml
+
+# kind points kubectl at the new cluster for you; check it worked
+kubectl cluster-info --context kind-lab
+kubectl get nodes
+
+# The &quot;nodes&quot; are really Docker containers
+docker ps --format &quot;table {{.Names}}\t{{.Status}}&quot;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<p>You should see three nodes, <code>lab-control-plane</code>, <code>lab-worker</code>, and <code>lab-worker2</code>, all <code>Ready</code>.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Run</div>
+<h2 id="your-first-app-on-kubernetes">Your first app on Kubernetes</h2>
+<p>Start two copies of the nginx web server, give them a stable address, and open it in your browser:</p>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Ask for 2 copies of nginx. Kubernetes picks the nodes.
+kubectl create deployment hello --image=nginx:1.27 --replicas=2
+
+# Watch them start; -o wide shows which node each pod landed on
+kubectl get pods -o wide
+
+# Put a stable address (a Service) in front of both copies
+kubectl expose deployment hello --port=80
+
+# Forward a port from your laptop to the Service, then open
+# http://localhost:8080 in a browser (Ctrl+C to stop)
+kubectl port-forward service/hello 8080:80</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<p>You just did, in four commands, what the last module described: scheduled containers onto machines, kept a set number running, and put a stable address in front of them.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Watch</div>
+<h2 id="kubernetes-fixing-things-on-its-own">Kubernetes fixing things on its own</h2>
+<p>This is the moment Kubernetes clicks for most people. Open a second terminal and watch the pods:</p>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Terminal 1: watch pods live
+kubectl get pods -w
+
+# Terminal 2: delete one of the pods (use a real name from the list)
+kubectl delete pod hello-&lt;random-suffix&gt;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<p>In terminal 1, the pod you deleted goes to <code>Terminating</code>, and a <b>new pod with a different name</b> appears and starts running within seconds. You didn't ask for that. You'd asked for two copies, there was one, so Kubernetes made another. That's the <b>reconciliation loop</b>, and <a href="04-how-a-cluster-works.html">How a Cluster Works</a> explains exactly how it works.</p>
+<figure class="flow">
+<figcaption class="flow-title">What happened when you deleted a pod</figcaption>
+<div class="flow-body"><div class="flow-node is-key"><strong>Desired state</strong><span>the Deployment says: 2 copies of hello</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">you deleted one pod</span></div><div class="flow-node"><strong>Actual state</strong><span>only 1 copy running</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">a controller notices the difference within a second</span></div><div class="flow-node"><strong>Fix</strong><span>a new pod is created and scheduled onto a node</span></div><div class="flow-loop"><span aria-hidden="true">↻</span> the cluster keeps checking, so this happens every time, without anyone watching</div></div>
+</figure>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Explore</div>
+<h2 id="scale-look-inside-and-read-logs">Scale, look inside, and read logs</h2>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Scale to 4 copies, then back to 2
+kubectl scale deployment hello --replicas=4
+kubectl get pods -o wide
+kubectl scale deployment hello --replicas=2
+
+# Read a pod's logs (each request you made through port-forward shows up)
+kubectl logs deployment/hello
+
+# The full story of one pod: node, IP, image, and recent events
+kubectl describe pod hello-&lt;random-suffix&gt;
+
+# Open a shell inside a running container, look around, then type exit
+kubectl exec -it deployment/hello -- sh</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<p>When you build your own image, kind can load it straight into the cluster without a registry:</p>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">docker build -t my-app:dev .
+kind load docker-image my-app:dev --name lab
+kubectl create deployment my-app --image=my-app:dev</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Clean up</div>
+<h2 id="delete-and-recreate-whenever-you-like">Delete and recreate whenever you like</h2>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Remove just the app
+kubectl delete service hello
+kubectl delete deployment hello
+
+# Or delete the whole cluster; recreating it takes a minute
+kind delete cluster --name lab</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<p>Get used to deleting the cluster. A fresh cluster is the quickest fix for a lab that's in a confusing state, and it costs nothing.</p>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
 <ul>
-<li><b>Test registry login in a real headless job, not just locally.</b> A command that works in your shell isn't proof it works in CI. Run it in the same kind of non-interactive runner the pipeline uses.</li>
-<li><b>Registry tokens are short-lived.</b> A token from <code>aws ecr get-login-password</code> lasts 12 hours. A long pipeline that logs in at the start and pushes much later can fail with an expired token that doesn't look like a login problem at first.</li>
-<li><b>Being in the registry isn't the same as being pullable.</b> A cluster in a different network path, or without permission to that repository, can fail to pull an image that pushed perfectly well. Check the pull from the target environment.</li>
+<li><b>Check which cluster you're talking to.</b> <code>kubectl config current-context</code> shows it. On a laptop with a lab cluster and real work clusters, running a command against the wrong one is the classic mistake. <a href="11-multi-environment-clusters-and-access-entries.html">Multi-Environment Clusters</a> returns to this.</li>
+<li><b>Pin image versions, even in a lab.</b> <code>nginx:1.27</code> behaves the same tomorrow; <code>nginx</code> (which means <code>nginx:latest</code>) might not.</li>
+<li><b><code>ImagePullBackOff</code> with a local image</b> usually means you forgot <code>kind load docker-image</code>, or the tag in the Deployment doesn't match the one you loaded.</li>
+<li><b>If Docker isn't running, kind can't create anything.</b> Most install problems come down to that, or to too little memory allocated to Docker Desktop.</li>
 </ul>
 </details>
 </div>
 </section>
-          <section class="related-links" aria-label="See it in practice">
-          <h2>See it in practice</h2>
-          <ul>
-            <li><a href="../../case-studies/healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.html"><span class="related-eyebrow">Case study · Healthcare &amp; Cost Architecture</span><strong>Regulated CI/CD delivery</strong><small>A GitFlow-to-Kubernetes pipeline with per-branch promotion gates, headless registry authentication, and deployment lead time cut from hours to minutes.</small></a></li>
-          </ul>
-        </section>
-          <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/14-ingress-architecture-and-cost.html">
-          <span class="lp-nav-label">← Module 14</span>
-          <span class="lp-nav-title">Dual Ingress Architecture &amp; Its Cost Mechanics</span>
+          <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/01-why-kubernetes.html">
+          <span class="lp-nav-label">← Module 01</span>
+          <span class="lp-nav-title">Why Kubernetes Exists, Starting from a Single Container</span>
         </a>
-<a class="lp-nav-link next" href="../../learning-paths/kubernetes-operations/16-gitops-with-argo-cd.html">
-          <span class="lp-nav-label">Module 16 →</span>
-          <span class="lp-nav-title">GitOps with Argo CD: Git as the Source of Truth</span>
+<a class="lp-nav-link next" href="../../learning-paths/kubernetes-operations/03-kubernetes-yaml-and-kubectl.html">
+          <span class="lp-nav-label">Module 03 →</span>
+          <span class="lp-nav-title">Reading Kubernetes YAML and Working with kubectl</span>
         </a></nav>
           </div>
         </div>
