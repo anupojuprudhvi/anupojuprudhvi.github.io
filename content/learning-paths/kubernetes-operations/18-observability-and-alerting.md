@@ -1,20 +1,20 @@
 ---
 title: Observability: Knowing Something's Wrong Before Users Do
 date: 2026-09-28
-updated: 2026-09-29
+updated: 2026-10-01
 track: kubernetes-operations
-order: 12
-module: 12
+order: 18
+module: 18
 summary: What to collect from an EKS cluster (logs, metrics, and cluster state), which few signals deserve an alert, and how to set alerts that wake people for real problems only.
 level: Production · Monitoring
 readingTime: 8 min read
 stack: [Amazon EKS, CloudWatch Container Insights, Fluent Bit, Prometheus, Amazon Managed Service for Prometheus, Grafana]
 tags: [observability, monitoring, logging, alerting, eks]
-redirectFrom: [08-observability]
+redirectFrom: [observability-and-alerting, 08-observability]
 related: [tolling/eks-ingress-incident-rca]
 ---
 
-**Before you start:** this module is about finding out that something is broken. [Incident Triage](incident-triage.html) covers what to do next.
+**Before you start:** this module is about finding out that something is broken. [Incident Triage](19-incident-triage.html) covers what to do next.
 
 ## Principle · Alert on what users feel, investigate with everything else
 
@@ -82,6 +82,6 @@ Everything else goes on a dashboard or into a daily report rather than a pager.
 ### Implementation notes
 
 - **Always require "for N minutes".** A single bad minute is noise. An alert that fires on one sample will train people to ignore it.
-- **Every alert needs an owner and a first step.** If nobody knows what to do when it fires, it isn't ready to page anyone. Link it to the triage checklist in [Incident Triage](incident-triage.html).
+- **Every alert needs an owner and a first step.** If nobody knows what to do when it fires, it isn't ready to page anyone. Link it to the triage checklist in [Incident Triage](19-incident-triage.html).
 - **Watch the cost of logs.** Log volume grows quietly. Set retention periods, drop noisy debug logs in production, and check the logging bill now and then.
 - **Test alerts on purpose.** Break something in a non-production cluster and confirm the alert fires, reaches the right person, and makes sense to them.

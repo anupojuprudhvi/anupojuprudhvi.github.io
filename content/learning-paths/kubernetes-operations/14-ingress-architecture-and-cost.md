@@ -1,20 +1,20 @@
 ---
 title: Dual Ingress Architecture & Its Cost Mechanics
 date: 2026-09-18
-updated: 2026-09-29
+updated: 2026-10-01
 track: kubernetes-operations
-order: 8
-module: 8
+order: 14
+module: 14
 summary: When to route traffic through a shared ALB versus a separate ingress controller, why grouping services onto one load balancer is a real saving, and where Gateway API fits now that ingress-nginx is retired.
 level: Platform · Networking
 readingTime: 9 min read
 stack: [Amazon EKS, AWS Load Balancer Controller, Nginx Ingress, Gateway API, AWS VPC CNI]
 tags: [ingress, alb, nginx, gateway-api, cost-optimization, eks]
-redirectFrom: [01-dual-ingress-architecture]
+redirectFrom: [ingress-architecture-and-cost, 01-dual-ingress-architecture]
 related: [tolling/eks-ingress-incident-rca, healthcare/zero-public-ingress-network-security]
 ---
 
-**Before you start:** you'll want an EKS cluster with the AWS Load Balancer Controller installed, and the basics from [Services & Cluster Networking](services-and-cluster-networking.html): what a Service and an Ingress are, and how the VPC CNI gives pods VPC IP addresses.
+**Before you start:** you'll want an EKS cluster with the AWS Load Balancer Controller installed, and the basics from [Services & Cluster Networking](06-services-and-cluster-networking.html): what a Service and an Ingress are, plus how the VPC CNI gives pods VPC IP addresses from [Kubernetes on Amazon EKS](10-kubernetes-on-eks.html).
 
 ## Principle · Share load balancers unless there's a reason not to
 

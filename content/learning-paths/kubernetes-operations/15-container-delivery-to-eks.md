@@ -1,16 +1,16 @@
 ---
 title: Container Delivery — Build, Tag, Push, Promote
 date: 2026-09-18
-updated: 2026-09-29
+updated: 2026-10-01
 track: kubernetes-operations
-order: 9
-module: 9
+order: 15
+module: 15
 summary: Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command.
 level: Production · Delivery
 readingTime: 8 min read
 stack: [Amazon ECR, Docker, Amazon EKS, CI/CD]
 tags: [ecr, ci-cd, container-delivery, eks]
-redirectFrom: [03-container-delivery-to-eks]
+redirectFrom: [container-delivery-to-eks, 03-container-delivery-to-eks]
 related: [healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare]
 ---
 

@@ -1,18 +1,20 @@
 ---
 title: Pods, Deployments & Rollouts: How Your App Actually Runs
 date: 2026-09-29
+updated: 2026-10-01
 track: kubernetes-operations
-order: 2
-module: 2
+order: 5
+module: 5
 summary: The objects you'll write every day. Pods wrap your containers, Deployments keep the right number running and replace them safely, and probes tell Kubernetes when a container is really ready. Plus configuration, and a rolling update step by step.
-level: Foundations · Workloads
+level: Core concepts · Workloads
 readingTime: 10 min read
 stack: [Kubernetes, kubectl, Deployments, ReplicaSets, ConfigMaps]
 tags: [kubernetes, pods, deployments, rollouts, probes, fundamentals]
+redirectFrom: [pods-deployments-and-rollouts]
 related: [healthcare/clinical-platform-modernization-and-cost-optimization]
 ---
 
-**Before you start:** read [How Kubernetes and EKS Actually Work](how-kubernetes-and-eks-work.html) first. This module assumes the idea of desired state and controllers, and that you know how to build and run a container image.
+**Before you start:** read [How a Cluster Works](04-how-a-cluster-works.html) first. This module assumes the idea of desired state and controllers, and that you know how to build and run a container image.
 
 ## Principle · A Pod is a wrapper around your container, and it's disposable
 
@@ -81,8 +83,8 @@ spec:
 ```
 
 - **`selector` and `labels`** are how Kubernetes connects objects. The Deployment owns every pod labelled `app: orders-api`, and a Service will find the pods by the same label in the next module.
-- **`resources.requests`** is what the scheduler uses to find a node with room. It matters so much for cost and scaling that [Scaling & Cost](scaling-requests-and-cost.html) is devoted to it.
-- **The image is pinned by digest**, so every pod runs exactly the same bytes. [Container Delivery](container-delivery-to-eks.html) explains why.
+- **`resources.requests`** is what the scheduler uses to find a node with room. It matters so much for cost and scaling that [Scaling & Cost](17-scaling-requests-and-cost.html) is devoted to it.
+- **The image is pinned by digest**, so every pod runs exactly the same bytes. [Container Delivery](15-container-delivery-to-eks.html) explains why.
 
 ## Probes · How Kubernetes knows your app is ready, and still alive
 
@@ -139,7 +141,7 @@ data:
   PAYMENTS_URL: http://payments.payments.svc.cluster.local
 ```
 
-A Kubernetes **Secret** looks similar, but its values are only base64-encoded, not encrypted, so anyone who can read Secrets in that namespace can read the values. For real credentials, the better pattern is to keep them in AWS Secrets Manager and sync them in, covered in [Workload Identity & Secrets](workload-identity-and-secrets.html). One gotcha: pods read environment variables **once, at start-up**. Changing a ConfigMap doesn't change running pods until they restart (`kubectl rollout restart deployment/orders-api -n orders`).
+A Kubernetes **Secret** looks similar, but its values are only base64-encoded, not encrypted, so anyone who can read Secrets in that namespace can read the values. For real credentials, the better pattern is to keep them in AWS Secrets Manager and sync them in, covered in [Workload Identity & Secrets](13-workload-identity-and-secrets.html). One gotcha: pods read environment variables **once, at start-up**. Changing a ConfigMap doesn't change running pods until they restart (`kubectl rollout restart deployment/orders-api -n orders`).
 
 ### Other workload types you'll meet
 

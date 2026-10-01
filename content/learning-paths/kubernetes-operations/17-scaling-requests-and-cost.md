@@ -1,20 +1,20 @@
 ---
 title: Scaling Without Surprises: Requests, Autoscaling & Cost
 date: 2026-09-28
-updated: 2026-09-29
+updated: 2026-10-01
 track: kubernetes-operations
-order: 11
-module: 11
+order: 17
+module: 17
 summary: Why resource requests drive almost everything in an EKS cluster — scheduling, autoscaling, and the bill — and how pod and node autoscaling fit together.
 level: Production · Capacity
 readingTime: 8 min read
 stack: [Amazon EKS, Kubernetes, Horizontal Pod Autoscaler, Karpenter, Cluster Autoscaler]
 tags: [autoscaling, cost, capacity, eks, kubernetes]
-redirectFrom: [05-scaling-requests-and-cost]
+redirectFrom: [scaling-requests-and-cost, 05-scaling-requests-and-cost]
 related: [partner-engagements/it-monitoring-tanzu-to-eks-map-assessment, healthcare/clinical-platform-modernization-and-cost-optimization]
 ---
 
-**Before you start:** you'll want metrics-server running in the cluster ([Platform Add-ons](platform-add-ons.html) covers installing it) and `kubectl top` working.
+**Before you start:** you'll want metrics-server running in the cluster ([Platform Add-ons](12-platform-add-ons.html) covers installing it) and `kubectl top` working.
 
 ## Principle · Requests are a promise, and the cluster plans around them
 

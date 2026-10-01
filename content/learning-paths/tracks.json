@@ -29,17 +29,17 @@
     "id": "kubernetes-operations",
     "motif": "network",
     "parts": [
-      { "title": "Part 1 · Foundations", "modules": [1, 2, 3, 4] },
-      { "title": "Part 2 · Build the platform", "modules": [5, 6, 7, 8] },
-      { "title": "Part 3 · Ship & run in production", "modules": [9, 10, 11, 12, 13, 14] }
+      { "title": "Part 2 · Core concepts", "modules": [4, 5, 6, 8] },
+      { "title": "Part 3 · Kubernetes on Amazon EKS", "modules": [10, 11, 12, 13, 14] },
+      { "title": "Part 4 · Operating in production", "modules": [15, 16, 17, 18, 19, 20] }
     ],
-    "title": "Kubernetes on Amazon EKS: Foundations to Production",
+    "title": "Kubernetes from Zero to Production on Amazon EKS",
     "eyebrow": "Container Platform Engineering",
-    "summary": "A structured path from how Kubernetes works to running Amazon EKS in production. Part 1 covers the fundamentals: the control plane, pods and deployments, Services and networking, and access control. Part 2 builds the platform: multi-environment clusters, add-ons, workload identity, and ingress. Part 3 ships and runs it: delivery, GitOps, autoscaling, observability, incident triage, and upgrades.",
-    "level": "Foundations to Advanced",
-    "duration": "14 Modules · 120 min read",
-    "badge": "Foundations to Production",
-    "stack": ["Kubernetes", "Amazon EKS", "kubectl", "AWS Load Balancer Controller", "Argo CD", "Karpenter", "Amazon ECR"],
+    "summary": "A path from never having used Kubernetes to running Amazon EKS in production. Part 1 covers the basics on a free local cluster. Part 2 teaches the core concepts: how a cluster works, workloads, networking, storage, access, and packaging. Part 3 moves to Amazon EKS and builds the platform. Part 4 covers the real challenges of operating it: delivery, GitOps, autoscaling, observability, incident triage, and upgrades.",
+    "level": "Beginner to Advanced",
+    "duration": "15 Modules · 130 min read",
+    "badge": "Zero to Production",
+    "stack": ["Kubernetes", "kind", "kubectl", "Amazon EKS", "AWS Load Balancer Controller", "Argo CD", "Karpenter"],
     "closingQuestion": "Questions about this learning path?",
     "closingBody": "I'm happy to go into more detail on any of this: how the pieces fit together, ingress costs, RBAC design, or how I triage incidents."
   }

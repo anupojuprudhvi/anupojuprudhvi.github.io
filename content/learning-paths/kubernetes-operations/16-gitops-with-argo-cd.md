@@ -1,20 +1,20 @@
 ---
 title: GitOps with Argo CD: Git as the Source of Truth
 date: 2026-09-28
-updated: 2026-09-29
+updated: 2026-10-01
 track: kubernetes-operations
-order: 10
-module: 10
+order: 16
+module: 16
 summary: Letting Argo CD keep each cluster matching what's in Git, so a deploy is a reviewed pull request, drift gets fixed automatically, and rolling back means reverting a commit.
 level: Production · Delivery
 readingTime: 8 min read
 stack: [Amazon EKS, Argo CD, Helm, Kustomize, GitHub]
 tags: [gitops, argo-cd, ci-cd, delivery, eks]
-redirectFrom: [09-gitops-with-argo-cd]
+redirectFrom: [gitops-with-argo-cd, 09-gitops-with-argo-cd]
 related: [healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare, tolling/cicd-delivery-engine]
 ---
 
-**Before you start:** this builds on [Container Delivery](container-delivery-to-eks.html). There, CI built and pushed an image. Here, a separate process decides what actually runs in each cluster.
+**Before you start:** this builds on [Container Delivery](15-container-delivery-to-eks.html). There, CI built and pushed an image. Here, a separate process decides what actually runs in each cluster.
 
 ## Principle · The cluster should match Git, and nothing else
 
@@ -53,7 +53,7 @@ spec:
 
 ## How a deploy flows
 
-1. CI builds and pushes the image, as in [Container Delivery](container-delivery-to-eks.html), and records its digest.
+1. CI builds and pushes the image, as in [Container Delivery](15-container-delivery-to-eks.html), and records its digest.
 2. CI (or a person) opens a pull request in the manifests repository that changes the image digest for one environment.
 3. The pull request is reviewed and merged. For Production, this is where approval happens.
 4. Argo CD notices the change and syncs the cluster to match.
@@ -90,7 +90,7 @@ Keeping application code and deployment manifests in separate repositories is co
 
 ### Implementation notes
 
-- **Keep secrets out of the manifests repo.** Use the External Secrets Operator from [Workload Identity & Secrets](workload-identity-and-secrets.html), so Git holds only a reference to each secret.
+- **Keep secrets out of the manifests repo.** Use the External Secrets Operator from [Workload Identity & Secrets](13-workload-identity-and-secrets.html), so Git holds only a reference to each secret.
 - **Turn on self-heal gradually.** Start with automated sync and no self-heal while teams get used to it, then enable it once nobody relies on hand edits.
-- **Watch for sync failures.** An application stuck "OutOfSync" or "Degraded" is an alert worth sending, as covered in [Observability](observability-and-alerting.html).
+- **Watch for sync failures.** An application stuck "OutOfSync" or "Degraded" is an alert worth sending, as covered in [Observability](18-observability-and-alerting.html).
 - **Protect Argo CD itself.** It can change everything in the cluster. Restrict who can use its UI and API, sign in through SSO, and keep its own configuration in Git as well.

@@ -1,20 +1,20 @@
 ---
 title: Workload Identity & Secrets: How Pods Get AWS Access
 date: 2026-09-28
-updated: 2026-09-29
+updated: 2026-10-01
 track: kubernetes-operations
-order: 7
-module: 7
+order: 13
+module: 13
 summary: Giving each workload its own narrowly scoped AWS permissions with EKS Pod Identity or IRSA, instead of sharing the node's role, and getting secrets into pods without putting them in Git or container images.
 level: Platform · Security
 readingTime: 9 min read
 stack: [Amazon EKS, EKS Pod Identity, IRSA, AWS IAM, AWS Secrets Manager, External Secrets Operator]
 tags: [security, iam, pod-identity, irsa, secrets, eks]
-redirectFrom: [07-workload-identity-and-secrets]
+redirectFrom: [workload-identity-and-secrets, 07-workload-identity-and-secrets]
 related: [tolling/cicd-delivery-engine]
 ---
 
-**Before you start:** this builds on [Namespaces, RBAC & Cluster Access](namespaces-rbac-and-cluster-access.html) and [Multi-Environment Clusters](multi-environment-clusters-and-access-entries.html), which covered how *people* get into a cluster. This module is about how *workloads* get into AWS.
+**Before you start:** this builds on [Namespaces, RBAC & Service Accounts](08-namespaces-rbac-and-cluster-access.html) and [Multi-Environment Clusters](11-multi-environment-clusters-and-access-entries.html), which covered how *people* get into a cluster. This module is about how *workloads* get into AWS.
 
 ## Principle · Every workload gets its own identity
 

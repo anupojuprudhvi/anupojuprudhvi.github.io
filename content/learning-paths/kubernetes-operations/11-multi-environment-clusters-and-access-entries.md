@@ -1,20 +1,20 @@
 ---
 title: Multi-Environment Clusters & EKS Access Entries
 date: 2026-09-18
-updated: 2026-09-29
+updated: 2026-10-01
 track: kubernetes-operations
-order: 5
-module: 5
+order: 11
+module: 11
 summary: Isolating Dev, QA, Staging, and Production as separate clusters, and granting people and pipelines cluster access with EKS access entries instead of a shared superuser.
 level: Platform · Access
 readingTime: 8 min read
 stack: [Amazon EKS, AWS IAM, Kubernetes RBAC, EKS access entries]
 tags: [rbac, iam, eks, multi-environment, security]
-redirectFrom: [02-multi-environment-clusters-and-rbac]
+redirectFrom: [multi-environment-clusters-and-access-entries, 02-multi-environment-clusters-and-rbac]
 related: [tolling/cloud-foundation]
 ---
 
-**Before you start:** you'll want the AWS CLI and `kubectl`, permission to manage EKS clusters, and the RBAC basics from [Namespaces, RBAC & Cluster Access](namespaces-rbac-and-cluster-access.html). This module takes those ideas across several clusters.
+**Before you start:** you'll want the AWS CLI and `kubectl`, permission to manage EKS clusters, the RBAC basics from [Namespaces, RBAC & Service Accounts](08-namespaces-rbac-and-cluster-access.html), and how access entries work from [Kubernetes on Amazon EKS](10-kubernetes-on-eks.html). This module takes those ideas across several clusters.
 
 ## Principle · Separate clusters, not separate namespaces, for hard environment boundaries
 

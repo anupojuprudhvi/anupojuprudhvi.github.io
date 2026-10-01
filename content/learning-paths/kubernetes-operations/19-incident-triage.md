@@ -1,20 +1,20 @@
 ---
 title: Day-2 Operations & Incident Triage
 date: 2026-09-18
-updated: 2026-09-29
+updated: 2026-10-01
 track: kubernetes-operations
-order: 13
-module: 13
+order: 19
+module: 19
 summary: Switching cluster context safely, verifying a rollout actually succeeded instead of assuming it did, and a repeatable sequence for triaging a stuck deployment.
 level: Production · Incidents
 readingTime: 8 min read
 stack: [Amazon EKS, kubectl, Kubernetes]
 tags: [operations, incident-response, kubectl, eks]
-redirectFrom: [04-day-2-operations-and-incident-triage]
+redirectFrom: [incident-triage, 04-day-2-operations-and-incident-triage]
 related: [tolling/eks-ingress-incident-rca]
 ---
 
-**Before you start:** you'll want `kubectl` access to a cluster (see [Multi-Environment Clusters](multi-environment-clusters-and-access-entries.html)) and a deployment you can safely break in a non-production environment.
+**Before you start:** you'll want `kubectl` access to a cluster (see [Multi-Environment Clusters](11-multi-environment-clusters-and-access-entries.html)) and a deployment you can safely break in a non-production environment.
 
 ## Principle · "It deployed" and "it's healthy" are different questions
 
@@ -36,7 +36,7 @@ kubectl logs <pod-name> -n <namespace> --previous
 
 ## A repeatable triage sequence for a stuck deployment
 
-Guessing under pressure is slower and less reliable than working a fixed sequence. It follows the same path a deploy takes through the cluster (see [How Kubernetes and EKS Actually Work](how-kubernetes-and-eks-work.html)), so each step rules out one stage:
+Guessing under pressure is slower and less reliable than working a fixed sequence. It follows the same path a deploy takes through the cluster (see [How a Cluster Works](04-how-a-cluster-works.html)), so each step rules out one stage:
 
 ```flow
 title: Triage a stuck deployment one layer at a time

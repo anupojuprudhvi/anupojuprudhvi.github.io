@@ -6,86 +6,94 @@
     <description>Enterprise cloud architecture case studies and hands-on learning paths covering governance, resilience, Kubernetes, Terraform, migration, and cost optimization.</description>
     <language>en</language>
     <atom:link href="https://anupojuprudhvi.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Tue, 29 Sep 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 01 Oct 2026 00:00:00 GMT</lastBuildDate>
     <item>
-      <title>How Kubernetes and Amazon EKS Actually Work</title>
-      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/how-kubernetes-and-eks-work.html</link>
-      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/how-kubernetes-and-eks-work.html</guid>
+      <title>Kubernetes on Amazon EKS: What AWS Runs, and What Changes</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/10-kubernetes-on-eks.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/10-kubernetes-on-eks.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Everything from the core concepts still applies on EKS. What changes is who runs the control plane, where pod IP addresses come from, how you sign in, and how traffic gets in from the internet. This module maps each of those, then walks through a small EKS lab you can create and delete.</description>
+      <category>Kubernetes from Zero to Production on Amazon EKS</category>
+    </item>
+    <item>
+      <title>How a Kubernetes Cluster Actually Works</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/04-how-a-cluster-works.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/04-how-a-cluster-works.html</guid>
       <pubDate>Tue, 29 Sep 2026 00:00:00 GMT</pubDate>
-      <description>The mental model everything else builds on. You declare the state you want, and controllers keep working to make it true. This module covers the parts of a cluster, what happens when you run kubectl apply, and exactly what AWS runs for you in EKS and what stays your job.</description>
-      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+      <description>The mental model everything else builds on. You declare the state you want, and controllers keep working to make it true. This module covers the parts of a cluster and what happens, step by step, when you run kubectl apply.</description>
+      <category>Kubernetes from Zero to Production on Amazon EKS</category>
     </item>
     <item>
       <title>Pods, Deployments &amp; Rollouts: How Your App Actually Runs</title>
-      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/pods-deployments-and-rollouts.html</link>
-      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/pods-deployments-and-rollouts.html</guid>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/05-pods-deployments-and-rollouts.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/05-pods-deployments-and-rollouts.html</guid>
       <pubDate>Tue, 29 Sep 2026 00:00:00 GMT</pubDate>
       <description>The objects you'll write every day. Pods wrap your containers, Deployments keep the right number running and replace them safely, and probes tell Kubernetes when a container is really ready. Plus configuration, and a rolling update step by step.</description>
-      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+      <category>Kubernetes from Zero to Production on Amazon EKS</category>
     </item>
     <item>
       <title>Services &amp; Cluster Networking: How Traffic Finds Your Pods</title>
-      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/services-and-cluster-networking.html</link>
-      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/services-and-cluster-networking.html</guid>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/06-services-and-cluster-networking.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/06-services-and-cluster-networking.html</guid>
       <pubDate>Tue, 29 Sep 2026 00:00:00 GMT</pubDate>
-      <description>Pods come and go with new IP addresses, so nothing should talk to a pod directly. How Services give a stable name and address, how cluster DNS and kube-proxy route each request, how EKS gives pods real VPC IPs, and how traffic from the internet reaches a pod.</description>
-      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+      <description>Pods come and go with new IP addresses, so nothing should talk to a pod directly. How Services give a stable name and address, how cluster DNS and kube-proxy route each request, the Service types, and how an Ingress brings traffic in from outside the cluster.</description>
+      <category>Kubernetes from Zero to Production on Amazon EKS</category>
     </item>
     <item>
-      <title>Namespaces, RBAC &amp; Cluster Access: Who Can Do What</title>
-      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/namespaces-rbac-and-cluster-access.html</link>
-      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/namespaces-rbac-and-cluster-access.html</guid>
+      <title>Namespaces, RBAC &amp; Service Accounts: Who Can Do What</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/08-namespaces-rbac-and-cluster-access.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/08-namespaces-rbac-and-cluster-access.html</guid>
       <pubDate>Tue, 29 Sep 2026 00:00:00 GMT</pubDate>
-      <description>How a kubectl command is checked before it's allowed. Your IAM identity signs you in, RBAC decides what you may do, and namespaces set the scope. Covers Roles and RoleBindings, how EKS maps IAM roles to Kubernetes groups, service accounts, and checking permissions safely.</description>
-      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+      <description>How a kubectl command is checked before it's allowed. Authentication says who you are, RBAC decides what you may do, and namespaces set the scope. Covers Roles and RoleBindings, the built-in roles, service accounts for pods, and checking permissions safely.</description>
+      <category>Kubernetes from Zero to Production on Amazon EKS</category>
     </item>
     <item>
       <title>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</title>
-      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/platform-add-ons.html</link>
-      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/platform-add-ons.html</guid>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/12-platform-add-ons.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/12-platform-add-ons.html</guid>
       <pubDate>Mon, 28 Sep 2026 00:00:00 GMT</pubDate>
       <description>The small set of add-ons a new EKS cluster needs before any application can run well (load balancing, DNS, metrics, autoscaling, logs, storage), each with its own IAM role, installed in a way you can repeat safely.</description>
-      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+      <category>Kubernetes from Zero to Production on Amazon EKS</category>
     </item>
     <item>
       <title>Workload Identity &amp; Secrets: How Pods Get AWS Access</title>
-      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/workload-identity-and-secrets.html</link>
-      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/workload-identity-and-secrets.html</guid>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/13-workload-identity-and-secrets.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/13-workload-identity-and-secrets.html</guid>
       <pubDate>Mon, 28 Sep 2026 00:00:00 GMT</pubDate>
       <description>Giving each workload its own narrowly scoped AWS permissions with EKS Pod Identity or IRSA, instead of sharing the node's role, and getting secrets into pods without putting them in Git or container images.</description>
-      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+      <category>Kubernetes from Zero to Production on Amazon EKS</category>
     </item>
     <item>
       <title>GitOps with Argo CD: Git as the Source of Truth</title>
-      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/gitops-with-argo-cd.html</link>
-      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/gitops-with-argo-cd.html</guid>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/16-gitops-with-argo-cd.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/16-gitops-with-argo-cd.html</guid>
       <pubDate>Mon, 28 Sep 2026 00:00:00 GMT</pubDate>
       <description>Letting Argo CD keep each cluster matching what's in Git, so a deploy is a reviewed pull request, drift gets fixed automatically, and rolling back means reverting a commit.</description>
-      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+      <category>Kubernetes from Zero to Production on Amazon EKS</category>
     </item>
     <item>
       <title>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</title>
-      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/scaling-requests-and-cost.html</link>
-      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/scaling-requests-and-cost.html</guid>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/17-scaling-requests-and-cost.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/17-scaling-requests-and-cost.html</guid>
       <pubDate>Mon, 28 Sep 2026 00:00:00 GMT</pubDate>
       <description>Why resource requests drive almost everything in an EKS cluster — scheduling, autoscaling, and the bill — and how pod and node autoscaling fit together.</description>
-      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+      <category>Kubernetes from Zero to Production on Amazon EKS</category>
     </item>
     <item>
       <title>Observability: Knowing Something's Wrong Before Users Do</title>
-      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/observability-and-alerting.html</link>
-      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/observability-and-alerting.html</guid>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/18-observability-and-alerting.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/18-observability-and-alerting.html</guid>
       <pubDate>Mon, 28 Sep 2026 00:00:00 GMT</pubDate>
       <description>What to collect from an EKS cluster (logs, metrics, and cluster state), which few signals deserve an alert, and how to set alerts that wake people for real problems only.</description>
-      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+      <category>Kubernetes from Zero to Production on Amazon EKS</category>
     </item>
     <item>
       <title>Cluster Upgrades Without Drama</title>
-      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/cluster-upgrades.html</link>
-      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/cluster-upgrades.html</guid>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/20-cluster-upgrades.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/20-cluster-upgrades.html</guid>
       <pubDate>Mon, 28 Sep 2026 00:00:00 GMT</pubDate>
       <description>How to upgrade EKS one version at a time — checking for removed APIs first, then the control plane, add-ons, and nodes, in an order that keeps workloads running.</description>
-      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+      <category>Kubernetes from Zero to Production on Amazon EKS</category>
     </item>
     <item>
       <title>Moving 1.48 million S3 objects in 54 minutes instead of 8+ hours</title>
@@ -169,35 +177,35 @@
     </item>
     <item>
       <title>Multi-Environment Clusters &amp; EKS Access Entries</title>
-      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/multi-environment-clusters-and-access-entries.html</link>
-      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/multi-environment-clusters-and-access-entries.html</guid>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/11-multi-environment-clusters-and-access-entries.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/11-multi-environment-clusters-and-access-entries.html</guid>
       <pubDate>Fri, 18 Sep 2026 00:00:00 GMT</pubDate>
       <description>Isolating Dev, QA, Staging, and Production as separate clusters, and granting people and pipelines cluster access with EKS access entries instead of a shared superuser.</description>
-      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+      <category>Kubernetes from Zero to Production on Amazon EKS</category>
     </item>
     <item>
       <title>Dual Ingress Architecture &amp; Its Cost Mechanics</title>
-      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/ingress-architecture-and-cost.html</link>
-      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/ingress-architecture-and-cost.html</guid>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/14-ingress-architecture-and-cost.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/14-ingress-architecture-and-cost.html</guid>
       <pubDate>Fri, 18 Sep 2026 00:00:00 GMT</pubDate>
       <description>When to route traffic through a shared ALB versus a separate ingress controller, why grouping services onto one load balancer is a real saving, and where Gateway API fits now that ingress-nginx is retired.</description>
-      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+      <category>Kubernetes from Zero to Production on Amazon EKS</category>
     </item>
     <item>
       <title>Container Delivery — Build, Tag, Push, Promote</title>
-      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/container-delivery-to-eks.html</link>
-      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/container-delivery-to-eks.html</guid>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/15-container-delivery-to-eks.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/15-container-delivery-to-eks.html</guid>
       <pubDate>Fri, 18 Sep 2026 00:00:00 GMT</pubDate>
       <description>Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command.</description>
-      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+      <category>Kubernetes from Zero to Production on Amazon EKS</category>
     </item>
     <item>
       <title>Day-2 Operations &amp; Incident Triage</title>
-      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/incident-triage.html</link>
-      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/incident-triage.html</guid>
+      <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/19-incident-triage.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/19-incident-triage.html</guid>
       <pubDate>Fri, 18 Sep 2026 00:00:00 GMT</pubDate>
       <description>Switching cluster context safely, verifying a rollout actually succeeded instead of assuming it did, and a repeatable sequence for triaging a stuck deployment.</description>
-      <category>Kubernetes on Amazon EKS: Foundations to Production</category>
+      <category>Kubernetes from Zero to Production on Amazon EKS</category>
     </item>
     <item>
       <title>Modernizing a telecom database with a controlled cutover</title>
