@@ -227,3 +227,25 @@ if (statsRow && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
   );
   io.observe(statsRow);
 }
+
+// "How a change reaches production": the five steps light up in order the
+// first time the strip scrolls into view. Without IntersectionObserver, or with
+// reduced motion or paused animations, the steps are simply shown.
+const changeFlow = document.querySelector(".change-flow");
+if (
+  changeFlow &&
+  "IntersectionObserver" in window &&
+  matchMedia("(prefers-reduced-motion: no-preference)").matches &&
+  !motionPaused()
+) {
+  changeFlow.classList.add("is-armed");
+  const reveal = new IntersectionObserver(
+    (entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      changeFlow.classList.add("is-visible");
+      reveal.disconnect();
+    },
+    { threshold: 0.25 },
+  );
+  reveal.observe(changeFlow);
+}

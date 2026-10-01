@@ -316,6 +316,12 @@ try {
   const visitor = await toolboxContext.newPage();
   visitor.on("pageerror", (e) => errors.push(`toolbox: ${e.message}`));
   await visitor.goto(base);
+  // The change-process steps animate in on scroll and must end fully visible.
+  await visitor.locator(".change-flow").scrollIntoViewIfNeeded();
+  await visitor.locator(".change-flow.is-visible").waitFor();
+  await visitor.waitForFunction(() =>
+    [...document.querySelectorAll(".change-step")].every((step) => getComputedStyle(step).opacity === "1"),
+  );
   const eksChip = visitor.locator('#toolbox a.tool-chip[href$="?tool=amazon-eks"]');
   const promised = Number(await eksChip.locator(".tool-count").textContent());
   assert(promised > 0, "the toolbox shows how many case studies used a tool");
