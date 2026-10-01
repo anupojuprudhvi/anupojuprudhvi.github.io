@@ -6,7 +6,7 @@ order: 10
 module: 10
 summary: Disks, partitions, filesystems, and mounts, and how to find what's filling a disk. Build an LVM volume and grow it while it's in use, then solve the classic puzzle where df says the disk is full but du can't find the files.
 level: How Linux works · Hands-on lab
-readingTime: 15 min read
+readingTime: 17 min read
 stack: [lsblk, df, du, mount, fstab, LVM, ext4, lsof]
 tags: [linux, storage, filesystems, lvm, fstab, disk-space, troubleshooting]
 ---
@@ -82,6 +82,35 @@ UUID=0a1b2c3d-1111-2222-3333-444455556666   /data        ext4  defaults,nofail  
 | Pass | The order `fsck` checks filesystems at boot: `1` for root, `2` for others, `0` to skip |
 
 After any change: `sudo findmnt --verify` and `sudo mount -a`, before you reboot.
+
+## Field note · A mount that stopped answering
+
+This one happened while this track was being written, on a workstation rather than a server, but the lesson is the same one production teams meet with NFS and EFS.
+
+A Linux terminal running under WSL (Linux on Windows) refused to open a project folder on the D: drive. It failed with `chdir(/mnt/d/...) failed 5` and dropped into `/` instead. Every path under `/mnt/d` returned `Input/output error`, even `ls /mnt/d` itself. Meanwhile Windows opened the same folder normally, and its permissions looked normal. So the disk and the files were fine. What had broken was the **mount**: WSL reaches Windows drives through a network-style filesystem mounted at `/mnt/d`, and that connection had failed.
+
+```text
+# Is the failing path inside a mount, and what is it?
+findmnt -T /mnt/d/project      # the mount that contains this path, its source and options
+ls /mnt/d                      # Input/output error: the mount is broken, not the files
+
+# Copy the options from a healthy mount of the same kind
+findmnt -o TARGET,SOURCE,FSTYPE,OPTIONS /mnt/c
+
+# Recover: detach the broken mount now, then mount it again
+sudo umount -l /mnt/d
+sudo mount -t drvfs D: /mnt/d -o uid=1000,gid=1000
+```
+
+`umount -l` is a **lazy unmount**: it detaches the mount from the directory tree immediately, and finishes cleaning up once no process is still using it. That's what lets you recover a mount that's too broken to unmount normally.
+
+The first remount used different options, and every file came back owned by `root` instead of the user. Git refuses to work in a repository owned by another user ("dubious ownership"), so that would have looked like a brand-new problem. Copying the options from the healthy C: drive mount (`uid=1000,gid=1000`) fixed it. For mounts listed in `/etc/fstab`, `sudo mount /path` remounts with the options recorded there, which avoids this mistake entirely.
+
+**On servers, the same pattern shows up with network filesystems.** An NFS or EFS mount can go stale after a network interruption or a change on the file server: commands fail with `Stale file handle`, or processes touching the mount hang in D state, as in [Processes, Signals & File Descriptors](08-processes-and-signals.html). The approach doesn't change:
+
+- **When every path under one directory fails and the rest of the system is fine, suspect the mount, not the files.** `findmnt -T <path>` shows which mount you're actually in.
+- **Check the other side first:** is the file server reachable, and is the export still there?
+- **Remount with the original options,** ideally from `/etc/fstab`, and check ownership afterwards. A remount that "works" with the wrong options causes the next problem.
 
 ## LVM · Volumes you can grow while they're in use
 
@@ -171,6 +200,7 @@ rm ~/disk1.img ~/disk2.img
 - **`df` and `du`:** space per filesystem, and space per directory.
 - **Inode exhaustion:** no inodes left for new files, while space remains.
 - **LVM (PV, VG, LV):** disks pooled into a group and carved into volumes you can grow.
+- **Lazy unmount (`umount -l`):** detach a mount now, and finish cleaning up once nothing is using it; the way to recover a broken mount.
 - **Deleted-but-open file:** a file with no name left, whose space stays used until the last process closes it.
 
 ## Check yourself · Pop quiz

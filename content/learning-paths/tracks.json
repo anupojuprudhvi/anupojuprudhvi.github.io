@@ -59,7 +59,7 @@
     "eyebrow": "Linux Systems Engineering",
     "summary": "A hands-on path for new graduates and associate engineers: from your first hour on a Linux server to diagnosing real production faults. Every module ends with a break-fix lab: you break a throwaway VM on purpose, then find and fix the cause with the same tools used on call.",
     "level": "Beginner to Intermediate",
-    "duration": "25 Modules · 335 min read",
+    "duration": "25 Modules · 337 min read",
     "badge": "Break-Fix Labs",
     "stack": ["Ubuntu 24.04", "Bash", "systemd", "LVM", "nftables", "tcpdump", "strace", "eBPF", "Ansible", "Docker"],
     "closingQuestion": "Questions about this learning path?",

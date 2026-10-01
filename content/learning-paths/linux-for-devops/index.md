@@ -4,7 +4,7 @@ date: 2026-10-01
 track: linux-for-devops
 summary: A hands-on Linux path for new graduates and associate engineers. Start with your first hour on a server, learn how Linux works underneath, then practise diagnosing the faults that show up on call. Every module ends with a break-fix lab on a throwaway VM.
 level: Beginner to Intermediate
-duration: 25 Modules · 335 min read
+duration: 25 Modules · 337 min read
 stack: [Ubuntu 24.04, Bash, systemd, LVM, nftables, tcpdump, strace, eBPF, Ansible, Docker]
 ---
 
@@ -150,7 +150,7 @@ What the system is doing underneath the commands. Every troubleshooting skill in
       <span class="lp-module-num">10</span>
       <div class="lp-module-body">
         <h3>Storage, Filesystems &amp; LVM</h3>
-        <p>Disks, filesystems, and mounts; finding what fills a disk; growing an LVM volume live; and space held by deleted files.</p>
+        <p>Disks, filesystems, and mounts; finding what fills a disk; recovering a broken mount; growing an LVM volume live; and space held by deleted files.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>

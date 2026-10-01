@@ -162,7 +162,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 10 of 25</span>
             <span><b>Level:</b> How Linux works · Hands-on lab</span>
-            <span><b>Time:</b> 15 min read</span>
+            <span><b>Time:</b> 17 min read</span>
             <span><b>Published:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
@@ -187,7 +187,7 @@
                 <li><a href="08-processes-and-signals.html"><span class="lp-toc-num">08</span><span>Processes, Signals &amp; File Descriptors</span></a></li>
                 <li><a href="09-memory-and-the-oom-killer.html"><span class="lp-toc-num">09</span><span>Memory, the Page Cache &amp; the OOM Killer</span></a></li>
                 <li class="is-current"><a href="10-storage-and-filesystems.html" aria-current="page"><span class="lp-toc-num">10</span><span>Storage, Filesystems &amp; LVM</span></a>
-                <ol class="lp-toc-sections"><li><a href="#from-a-disk-to-a-directory">From a disk to a directory</a></li><li><a href="#what-s-filling-the-disk">What's filling the disk</a></li><li><a href="#temporary-and-permanent">Temporary and permanent</a></li><li><a href="#volumes-you-can-grow-while-they-re-in-use">Volumes you can grow while they're in use</a></li><li><a href="#full-disk-empty-directory">Full disk, empty directory</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#from-a-disk-to-a-directory">From a disk to a directory</a></li><li><a href="#what-s-filling-the-disk">What's filling the disk</a></li><li><a href="#temporary-and-permanent">Temporary and permanent</a></li><li><a href="#a-mount-that-stopped-answering">A mount that stopped answering</a></li><li><a href="#volumes-you-can-grow-while-they-re-in-use">Volumes you can grow while they're in use</a></li><li><a href="#full-disk-empty-directory">Full disk, empty directory</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="11-networking-basics.html"><span class="lp-toc-num">11</span><span>Networking Basics: Addresses, Routes, Ports &amp; TCP</span></a></li>
                 <li><a href="12-dns-firewalls-and-packets.html"><span class="lp-toc-num">12</span><span>DNS, Firewalls &amp; Packet Capture</span></a></li>
               </ol>
@@ -333,6 +333,32 @@ UUID=0a1b2c3d-1111-2222-3333-444455556666   /data        ext4  defaults,nofail  
 </section>
 <section>
 <div class="wrap">
+<div class="section-eyebrow">Field note</div>
+<h2 id="a-mount-that-stopped-answering">A mount that stopped answering</h2>
+<p>This one happened while this track was being written, on a workstation rather than a server, but the lesson is the same one production teams meet with NFS and EFS.</p>
+<p>A Linux terminal running under WSL (Linux on Windows) refused to open a project folder on the D: drive. It failed with <code>chdir(/mnt/d/...) failed 5</code> and dropped into <code>/</code> instead. Every path under <code>/mnt/d</code> returned <code>Input/output error</code>, even <code>ls /mnt/d</code> itself. Meanwhile Windows opened the same folder normally, and its permissions looked normal. So the disk and the files were fine. What had broken was the <b>mount</b>: WSL reaches Windows drives through a network-style filesystem mounted at <code>/mnt/d</code>, and that connection had failed.</p>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Is the failing path inside a mount, and what is it?
+findmnt -T /mnt/d/project      # the mount that contains this path, its source and options
+ls /mnt/d                      # Input/output error: the mount is broken, not the files
+
+# Copy the options from a healthy mount of the same kind
+findmnt -o TARGET,SOURCE,FSTYPE,OPTIONS /mnt/c
+
+# Recover: detach the broken mount now, then mount it again
+sudo umount -l /mnt/d
+sudo mount -t drvfs D: /mnt/d -o uid=1000,gid=1000</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<p><code>umount -l</code> is a <b>lazy unmount</b>: it detaches the mount from the directory tree immediately, and finishes cleaning up once no process is still using it. That's what lets you recover a mount that's too broken to unmount normally.</p>
+<p>The first remount used different options, and every file came back owned by <code>root</code> instead of the user. Git refuses to work in a repository owned by another user (&quot;dubious ownership&quot;), so that would have looked like a brand-new problem. Copying the options from the healthy C: drive mount (<code>uid=1000,gid=1000</code>) fixed it. For mounts listed in <code>/etc/fstab</code>, <code>sudo mount /path</code> remounts with the options recorded there, which avoids this mistake entirely.</p>
+<p><b>On servers, the same pattern shows up with network filesystems.</b> An NFS or EFS mount can go stale after a network interruption or a change on the file server: commands fail with <code>Stale file handle</code>, or processes touching the mount hang in D state, as in <a href="08-processes-and-signals.html">Processes, Signals &amp; File Descriptors</a>. The approach doesn't change:</p>
+<ul>
+<li><b>When every path under one directory fails and the rest of the system is fine, suspect the mount, not the files.</b> <code>findmnt -T &lt;path&gt;</code> shows which mount you're actually in.</li>
+<li><b>Check the other side first:</b> is the file server reachable, and is the export still there?</li>
+<li><b>Remount with the original options,</b> ideally from <code>/etc/fstab</code>, and check ownership afterwards. A remount that &quot;works&quot; with the wrong options causes the next problem.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
 <div class="section-eyebrow">LVM</div>
 <h2 id="volumes-you-can-grow-while-they-re-in-use">Volumes you can grow while they're in use</h2>
 <p><b>LVM</b> (Logical Volume Manager) puts a flexible layer between disks and filesystems. Disks become <b>physical volumes</b> (PVs), PVs are pooled into a <b>volume group</b> (VG), and you carve <b>logical volumes</b> (LVs) out of the pool. When a volume fills up, you add a disk to the pool and grow the volume, with the filesystem still mounted.</p>
@@ -423,6 +449,7 @@ rm ~/disk1.img ~/disk2.img</code></pre>
 <li><b><code>df</code> and <code>du</code>:</b> space per filesystem, and space per directory.</li>
 <li><b>Inode exhaustion:</b> no inodes left for new files, while space remains.</li>
 <li><b>LVM (PV, VG, LV):</b> disks pooled into a group and carved into volumes you can grow.</li>
+<li><b>Lazy unmount (<code>umount -l</code>):</b> detach a mount now, and finish cleaning up once nothing is using it; the way to recover a broken mount.</li>
 <li><b>Deleted-but-open file:</b> a file with no name left, whose space stays used until the last process closes it.</li>
 </ul>
 </div>
