@@ -56,6 +56,46 @@
       <category>Kubernetes from Zero to Production on Amazon EKS</category>
     </item>
     <item>
+      <title>Shell Survival: Your First Hour on a Linux Server</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/01-shell-survival.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/01-shell-survival.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Start here. Set up a free Ubuntu lab VM you're allowed to break, then learn to move around, read files and logs, chain commands with pipes, and use exit codes to tell whether a command really worked.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
+      <title>Text Processing: grep, awk, sed, and Friends</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/02-text-processing.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/02-text-processing.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Logs, configs, and command output are all text, so the fastest way to answer questions on a server is to filter, count, and reshape text. Learn grep, awk, sed, sort, and uniq on a web server log, then find, xargs, and jq.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
+      <title>Files, Inodes &amp; Permissions</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/03-files-and-permissions.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/03-files-and-permissions.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Where things live on a Linux system, what a file really is underneath its name, and exactly how read, write, and execute work on files and on directories. Build a shared team folder, then fix a &quot;Permission denied&quot; that chmod 777 can't fix.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
+      <title>Users, sudo &amp; SSH</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/04-users-sudo-and-ssh.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/04-users-sudo-and-ssh.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Who you are on a Linux system and what you're allowed to do. Users and groups, narrow sudo rules, key-based SSH through a jump host, and changing the SSH server's settings without locking yourself out. Then fix a key login that the server keeps refusing.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
+      <title>Packages, Repositories &amp; Where Software Lives</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/05-packages-and-repositories.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/05-packages-and-repositories.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>How Linux installs software. What a package is, apt and dnf side by side, adding a signed third-party repository, finding which package owns a file, holding versions, and upgrading safely. Then fix a server where every apt command fails.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
       <title>How a Kubernetes Cluster Actually Works</title>
       <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/04-how-a-cluster-works.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/04-how-a-cluster-works.html</guid>

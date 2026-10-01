@@ -43,5 +43,21 @@
     "stack": ["Kubernetes", "kind", "kubectl", "Helm", "Amazon EKS", "AWS Load Balancer Controller", "Argo CD", "Karpenter"],
     "closingQuestion": "Questions about this learning path?",
     "closingBody": "I'm happy to go into more detail on any of this: how the pieces fit together, ingress costs, RBAC design, or how I triage incidents."
+  },
+  {
+    "id": "linux-for-devops",
+    "motif": "monitor",
+    "parts": [
+      { "title": "Part 1 · Foundations", "modules": [1, 2, 3, 4, 5] }
+    ],
+    "title": "Linux for DevOps: From First Terminal to On-Call Troubleshooting",
+    "eyebrow": "Linux Systems Engineering",
+    "summary": "A hands-on path for new graduates and associate engineers: from your first hour on a Linux server to diagnosing real production faults. Every module ends with a break-fix lab: you break a throwaway VM on purpose, then find and fix the cause with the same tools used on call.",
+    "level": "Beginner to Intermediate",
+    "duration": "5 Modules · 67 min read",
+    "badge": "Break-Fix Labs",
+    "stack": ["Ubuntu 24.04", "Bash", "Multipass", "OpenSSH", "apt", "grep · awk · sed"],
+    "closingQuestion": "Questions about this learning path?",
+    "closingBody": "I'm happy to go into more detail on any of this: how to practise troubleshooting safely, which fundamentals matter most early on, or how a break-fix lab is put together."
   }
 ]

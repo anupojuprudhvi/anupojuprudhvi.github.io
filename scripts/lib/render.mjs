@@ -105,6 +105,10 @@ function learningPathsNavDropdown({ prefix = "", current = false } = {}) {
                 <strong>Kubernetes on Amazon EKS</strong>
                 <small>20 Modules · Zero to Production</small>
               </a>
+              <a href="${prefix}linux-for-devops/index.html" role="menuitem" class="nav-dropdown-item">
+                <strong>Linux for DevOps</strong>
+                <small>Part 1 · Foundations &amp; Break-Fix Labs</small>
+              </a>
             </div>
           </div>`;
 }
