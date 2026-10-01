@@ -110,7 +110,7 @@
               <div class="nav-dropdown-divider" role="separator"></div>
               <a href="../../learning-paths/terraform/index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>Terraform for Enterprise</strong>
-                <small>6 Modules · Modules, State &amp; CI/CD</small>
+                <small>11 Modules · Modules, State &amp; Delivery</small>
               </a>
               <a href="../../learning-paths/migration-journey/index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>Cloud Migration Journey</strong>
@@ -393,7 +393,7 @@ sudo cp ~/.ssh/authorized_keys /home/dev/.ssh/
 sudo chown -R dev:dev /home/dev/.ssh
 sudo chmod 700 /home/dev/.ssh
 sudo chmod 600 /home/dev/.ssh/authorized_keys
-sudo chmod 775 /home/dev          # &quot;made it shareable&quot;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+sudo chmod 777 /home/dev          # &quot;made it shareable&quot;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <pre tabindex="0" class="code"><code class="language-text"># On your laptop
 ssh dev@app
 # dev@app: Permission denied (publickey).</code></pre>
@@ -413,7 +413,7 @@ ssh dev@app
 <details class="implementation-notes">
 <summary>Hint 3 · The cause and the fix</summary>
 <ul>
-<li><b>Cause:</b> sshd's <code>StrictModes</code> check refuses keys when the user's home directory, <code>~/.ssh</code>, or <code>authorized_keys</code> can be written by anyone other than the owner. With <code>/home/dev</code> group-writable, another user could swap in their own key, so sshd ignores the file. The log says &quot;bad ownership or modes for directory /home/dev&quot;.</li>
+<li><b>Cause:</b> sshd's <code>StrictModes</code> check refuses keys when the user's home directory, <code>~/.ssh</code>, or <code>authorized_keys</code> can be written by anyone other than the owner. With <code>/home/dev</code> writable by everyone, any user could swap in their own key, so sshd ignores the file. The log says &quot;bad ownership or modes for directory /home/dev&quot;. (Ubuntu's OpenSSH is slightly more lenient than upstream: it accepts a <em>group</em>-writable home when the group is the user's own private group, so <code>775</code> alone often still works there. Writable by others never does.)</li>
 <li><b>Fix:</b> <code>sudo chmod 755 /home/dev</code>, or <code>750</code> to keep it private. Then retry <code>ssh dev@app</code>.</li>
 <li><b>Prevent it:</b> home directory not writable by group or others, <code>~/.ssh</code> at <code>700</code>, <code>authorized_keys</code> at <code>600</code>, all owned by the user. Share files through a group folder like the one in the last module, never through someone's home directory.</li>
 </ul>

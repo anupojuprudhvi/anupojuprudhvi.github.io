@@ -168,7 +168,7 @@ sudo cp ~/.ssh/authorized_keys /home/dev/.ssh/
 sudo chown -R dev:dev /home/dev/.ssh
 sudo chmod 700 /home/dev/.ssh
 sudo chmod 600 /home/dev/.ssh/authorized_keys
-sudo chmod 775 /home/dev          # "made it shareable"
+sudo chmod 777 /home/dev          # "made it shareable"
 ```
 
 ```text
@@ -189,7 +189,7 @@ Your job: find out why the server refuses a key that is definitely in `authorize
 
 ### Hint 3 · The cause and the fix
 
-- **Cause:** sshd's `StrictModes` check refuses keys when the user's home directory, `~/.ssh`, or `authorized_keys` can be written by anyone other than the owner. With `/home/dev` group-writable, another user could swap in their own key, so sshd ignores the file. The log says "bad ownership or modes for directory /home/dev".
+- **Cause:** sshd's `StrictModes` check refuses keys when the user's home directory, `~/.ssh`, or `authorized_keys` can be written by anyone other than the owner. With `/home/dev` writable by everyone, any user could swap in their own key, so sshd ignores the file. The log says "bad ownership or modes for directory /home/dev". (Ubuntu's OpenSSH is slightly more lenient than upstream: it accepts a *group*-writable home when the group is the user's own private group, so `775` alone often still works there. Writable by others never does.)
 - **Fix:** `sudo chmod 755 /home/dev`, or `750` to keep it private. Then retry `ssh dev@app`.
 - **Prevent it:** home directory not writable by group or others, `~/.ssh` at `700`, `authorized_keys` at `600`, all owned by the user. Share files through a group folder like the one in the last module, never through someone's home directory.
 
