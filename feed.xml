@@ -152,6 +152,70 @@
       <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
     </item>
     <item>
+      <title>A Troubleshooting Method: From Symptom to Root Cause</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/13-troubleshooting-method.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/13-troubleshooting-method.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Guessing works until it doesn't. Learn a repeatable way to go from &quot;the server is slow&quot; to a root cause: define the symptom, ask what changed, check every resource with the USE method, and run a 60-second checklist that finds most problems. Then diagnose a high load average on a server whose CPUs are idle.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
+      <title>Seeing Inside a Process: strace, lsof &amp; eBPF</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/14-debugging-tools.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/14-debugging-tools.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>When logs say nothing, watch what the program actually does. Trace system calls with strace, list open files and connections with lsof, and get a first taste of eBPF tools that watch the whole system safely. Then find out why a service is &quot;running&quot; but has done nothing for ten minutes.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
+      <title>Logs, Log Rotation &amp; Monitoring</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/15-logs-and-monitoring.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/15-logs-and-monitoring.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Logs tell you what happened; metrics tell you something is about to. Query the journal well, keep logs from filling the disk with journald limits and logrotate, ship them off the server, and expose system metrics with node_exporter. Then fix a log that never rotates.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
+      <title>Containers from Scratch: Namespaces, cgroups &amp; Overlay Filesystems</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/16-containers-from-scratch.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/16-containers-from-scratch.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>A container isn't a small virtual machine. It's an ordinary Linux process with a restricted view of the system. Build one by hand with namespaces, a cgroup, and an overlay filesystem, then find the same pieces inside a real Docker container, and fix containers that suddenly can't reach the internet.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
+      <title>Security Hardening, AppArmor &amp; TLS</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/17-security-and-hardening.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/17-security-and-hardening.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Make a fresh server harder to break into and easier to investigate. Reduce what's exposed, set up a default-deny firewall, audit sensitive files, read AppArmor and SELinux denials instead of switching them off, and check TLS certificates and time sync. Then fix a server where every HTTPS call suddenly fails.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
+      <title>Automation: Safe Bash, cloud-init &amp; Ansible</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/18-automation-and-scripting.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/18-automation-and-scripting.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Anything you do on a server twice should be written down as code. Write Bash scripts that fail safely and can run again without harm, configure servers at first boot with cloud-init, and describe a server's desired state with Ansible. Then fix a script that works by hand but fails every night in cron.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
+      <title>Performance &amp; Kernel Tuning</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/19-performance-and-tuning.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/19-performance-and-tuning.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Tuning starts with measuring, not with a list of settings copied from the internet. Load-test a web server, change one thing at a time, and learn the kernel settings that genuinely matter for busy servers, container hosts, and Kubernetes nodes. Then find why connections drop at random under load.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
+      <title>Capstone: An Incident with Three Unknown Faults</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/20-capstone-incident.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/20-capstone-incident.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Put the whole track together. Build a three-tier shop (nginx, a Python app, and PostgreSQL), save a snapshot, then inject three random faults you haven't seen. Restore service working from the outside in, find every root cause, prove it survives a reboot, and write a blameless postmortem.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
       <title>How a Kubernetes Cluster Actually Works</title>
       <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/04-how-a-cluster-works.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/04-how-a-cluster-works.html</guid>

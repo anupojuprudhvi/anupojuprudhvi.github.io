@@ -17,7 +17,7 @@ tags: [kubernetes, containers, docker, basics, beginner]
 - Name the problems that appear when you run many containers on many machines
 - Describe what Kubernetes does about each one, and when you don't need it
 
-**Before you start:** nothing. You only need to be comfortable typing commands into a terminal. Every other idea in this track is explained when it first comes up.
+**Before you start:** nothing. You only need to be comfortable typing commands into a terminal. Every other idea in this track is explained when it first comes up. If the Linux side is new to you, the [Linux for DevOps](../linux-for-devops/index.html) track covers it, and its [Containers from Scratch](../linux-for-devops/16-containers-from-scratch.html) module shows what a container really is underneath.
 
 ## Containers · The five-minute version
 

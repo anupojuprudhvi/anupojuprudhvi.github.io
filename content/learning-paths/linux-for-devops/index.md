@@ -4,8 +4,8 @@ date: 2026-10-01
 track: linux-for-devops
 summary: A hands-on Linux path for new graduates and associate engineers. Start with your first hour on a server, learn how Linux works underneath, then practise diagnosing the faults that show up on call. Every module ends with a break-fix lab on a throwaway VM.
 level: Beginner to Intermediate
-duration: 12 Modules · 166 min read
-stack: [Ubuntu 24.04, Bash, Multipass, OpenSSH, systemd, LVM, nftables, tcpdump]
+duration: 20 Modules · 287 min read
+stack: [Ubuntu 24.04, Bash, systemd, LVM, nftables, tcpdump, strace, eBPF, Ansible, Docker]
 ---
 
 ## Overview · Learn how Linux works, then practise fixing it
@@ -14,7 +14,7 @@ Most Linux courses teach commands. This track teaches how the system behaves, so
 
 Every module is built to be worked through, not just read. Each one opens with what you'll learn, includes hands-on **Try it** commands, recaps the key terms, and ends with a five-question **pop quiz**: three questions on the ideas and two real-world scenarios, shuffled into a new order every time. Score 4 out of 5 to pass.
 
-<div class="callout"><b>Where to start.</b><ul><li><b>New to Linux, or only used it in college?</b> Start at <a href="01-shell-survival.html">Module 01</a> and read in order. It sets up the free lab VM that every module uses.</li><li><b>Use Linux at work already?</b> Take the pop quiz at the end of each Part 1 module. Pass all five, then start at <a href="06-boot-process.html">Part 2</a>, where most day-to-day troubleshooting knowledge lives.</li><li><b>Chasing a specific problem?</b> Go straight to the module for it: services in <a href="07-systemd-and-services.html">07</a>, memory in <a href="09-memory-and-the-oom-killer.html">09</a>, disks in <a href="10-storage-and-filesystems.html">10</a>, networking in <a href="11-networking-basics.html">11</a> and <a href="12-dns-firewalls-and-packets.html">12</a>.</li></ul></div>
+<div class="callout"><b>Where to start.</b><ul><li><b>New to Linux, or only used it in college?</b> Start at <a href="01-shell-survival.html">Module 01</a> and read in order. It sets up the free lab VM that every module uses.</li><li><b>Use Linux at work already?</b> Take the pop quiz at the end of each Part 1 module. Pass all five, then start at <a href="06-boot-process.html">Part 2</a>, where most day-to-day troubleshooting knowledge lives.</li><li><b>Chasing a specific problem?</b> Go straight to the module for it: services in <a href="07-systemd-and-services.html">07</a>, memory in <a href="09-memory-and-the-oom-killer.html">09</a>, disks in <a href="10-storage-and-filesystems.html">10</a>, networking in <a href="11-networking-basics.html">11</a> and <a href="12-dns-firewalls-and-packets.html">12</a>, a slow server in <a href="13-troubleshooting-method.html">13</a>.</li><li><b>Think you already know it all?</b> Try the <a href="20-capstone-incident.html">capstone incident</a> first, and come back for whatever slows you down.</li></ul></div>
 
 ```flow
 title: The route through this track
@@ -175,10 +175,107 @@ What the system is doing underneath the commands. Every troubleshooting skill in
   </li>
 </ul>
 
-## Coming next · Parts 3 to 5
+## Part 3 · Troubleshooting
 
-These parts are being written and will appear here as each one is published.
+Turning knowledge into a method. How to go from a vague report to a root cause, see inside a process, and know something is wrong before users do.
 
-- **Part 3 · Troubleshooting:** a repeatable troubleshooting method, debugging with strace and lsof, and logs and monitoring.
-- **Part 4 · Linux for DevOps:** building a container by hand from namespaces and cgroups, security hardening, automation and safe scripting, and performance tuning.
-- **Part 5 · Capstone:** an incident with three unknown faults across a web server, an app, and a database, finished with a blameless postmortem.
+<ul class="lp-syllabus">
+  <li>
+    <a class="lp-module-card" href="13-troubleshooting-method.html">
+      <span class="lp-module-num">13</span>
+      <div class="lp-module-body">
+        <h3>A Troubleshooting Method: From Symptom to Root Cause</h3>
+        <p>Symptom, change, scope, evidence, hypothesis; the USE method for every resource; and a 60-second checklist that finds most problems.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="14-debugging-tools.html">
+      <span class="lp-module-num">14</span>
+      <div class="lp-module-body">
+        <h3>Seeing Inside a Process: strace, lsof &amp; eBPF</h3>
+        <p>System calls traced with strace, open files and connections with lsof, and safe whole-system tracing with eBPF tools.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="15-logs-and-monitoring.html">
+      <span class="lp-module-num">15</span>
+      <div class="lp-module-body">
+        <h3>Logs, Log Rotation &amp; Monitoring</h3>
+        <p>Querying the journal, logrotate done right, shipping logs off the server, node_exporter metrics, and alerts worth having.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+</ul>
+
+## Part 4 · Linux for DevOps
+
+The Linux layer that containers, automation, and cloud platforms are built on.
+
+<ul class="lp-syllabus">
+  <li>
+    <a class="lp-module-card" href="16-containers-from-scratch.html">
+      <span class="lp-module-num">16</span>
+      <div class="lp-module-body">
+        <h3>Containers from Scratch: Namespaces, cgroups &amp; Overlay Filesystems</h3>
+        <p>Build a container by hand, then find the same namespaces, cgroup, and overlay filesystem inside a real Docker container.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="17-security-and-hardening.html">
+      <span class="lp-module-num">17</span>
+      <div class="lp-module-body">
+        <h3>Security Hardening, AppArmor &amp; TLS</h3>
+        <p>A practical hardening checklist, auditd, reading AppArmor and SELinux denials, and checking certificates and time sync.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="18-automation-and-scripting.html">
+      <span class="lp-module-num">18</span>
+      <div class="lp-module-body">
+        <h3>Automation: Safe Bash, cloud-init &amp; Ansible</h3>
+        <p>Scripts that fail safely and run twice without harm, first-boot configuration with cloud-init, and an idempotent Ansible playbook.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="19-performance-and-tuning.html">
+      <span class="lp-module-num">19</span>
+      <div class="lp-module-body">
+        <h3>Performance &amp; Kernel Tuning</h3>
+        <p>Load testing against a baseline, the kernel settings that matter for busy servers and Kubernetes nodes, and cloud limits.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+</ul>
+
+## Part 5 · Capstone
+
+Everything at once, the way real incidents happen.
+
+<ul class="lp-syllabus">
+  <li>
+    <a class="lp-module-card" href="20-capstone-incident.html">
+      <span class="lp-module-num">20</span>
+      <div class="lp-module-body">
+        <h3>Capstone: An Incident with Three Unknown Faults</h3>
+        <p>Build a three-tier shop, inject three random faults, restore service from the outside in, and write a blameless postmortem.</p>
+      </div>
+      <span class="lp-module-action">Start the capstone →</span>
+    </a>
+  </li>
+</ul>
+
+## Next · Where this track leads
+
+Finished the capstone? The [Kubernetes from Zero to Production on Amazon EKS](../kubernetes-operations/index.html) track builds directly on Parts 2 to 4: pods are the processes and cgroups from Modules 08, 09, and 16, and cluster networking relies on the routing, DNS, and connection tracking from Modules 11, 12, and 19.
