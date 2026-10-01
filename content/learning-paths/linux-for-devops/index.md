@@ -4,8 +4,8 @@ date: 2026-10-01
 track: linux-for-devops
 summary: A hands-on Linux path for new graduates and associate engineers. Start with your first hour on a server, learn how Linux works underneath, then practise diagnosing the faults that show up on call. Every module ends with a break-fix lab on a throwaway VM.
 level: Beginner to Intermediate
-duration: 5 Modules · 67 min read
-stack: [Ubuntu 24.04, Bash, Multipass, OpenSSH, apt, grep · awk · sed]
+duration: 12 Modules · 166 min read
+stack: [Ubuntu 24.04, Bash, Multipass, OpenSSH, systemd, LVM, nftables, tcpdump]
 ---
 
 ## Overview · Learn how Linux works, then practise fixing it
@@ -14,7 +14,7 @@ Most Linux courses teach commands. This track teaches how the system behaves, so
 
 Every module is built to be worked through, not just read. Each one opens with what you'll learn, includes hands-on **Try it** commands, recaps the key terms, and ends with a five-question **pop quiz**: three questions on the ideas and two real-world scenarios, shuffled into a new order every time. Score 4 out of 5 to pass.
 
-<div class="callout"><b>Where to start.</b><ul><li><b>New to Linux, or only used it in college?</b> Start at <a href="01-shell-survival.html">Module 01</a> and read in order. It sets up the free lab VM that every module uses.</li><li><b>Use Linux at work already?</b> Skim the recap and take the pop quiz at the end of each Part 1 module. Pass all five and you're ready for Part 2 as it's published.</li></ul></div>
+<div class="callout"><b>Where to start.</b><ul><li><b>New to Linux, or only used it in college?</b> Start at <a href="01-shell-survival.html">Module 01</a> and read in order. It sets up the free lab VM that every module uses.</li><li><b>Use Linux at work already?</b> Take the pop quiz at the end of each Part 1 module. Pass all five, then start at <a href="06-boot-process.html">Part 2</a>, where most day-to-day troubleshooting knowledge lives.</li><li><b>Chasing a specific problem?</b> Go straight to the module for it: services in <a href="07-systemd-and-services.html">07</a>, memory in <a href="09-memory-and-the-oom-killer.html">09</a>, disks in <a href="10-storage-and-filesystems.html">10</a>, networking in <a href="11-networking-basics.html">11</a> and <a href="12-dns-firewalls-and-packets.html">12</a>.</li></ul></div>
 
 ```flow
 title: The route through this track
@@ -98,11 +98,87 @@ No Linux experience needed. Get comfortable on a server: move around, find thing
   </li>
 </ul>
 
-## Coming next · Parts 2 to 5
+## Part 2 · How Linux works
+
+What the system is doing underneath the commands. Every troubleshooting skill in Part 3 depends on these, so read them in order.
+
+<ul class="lp-syllabus">
+  <li>
+    <a class="lp-module-card" href="06-boot-process.html">
+      <span class="lp-module-num">06</span>
+      <div class="lp-module-body">
+        <h3>The Boot Process: From Power-On to Login</h3>
+        <p>Firmware, GRUB, the kernel, initramfs, and systemd; reading boot history and timing; and catching a bad fstab line before a reboot.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="07-systemd-and-services.html">
+      <span class="lp-module-num">07</span>
+      <div class="lp-module-body">
+        <h3>systemd: Services, Timers &amp; Logs</h3>
+        <p>Turn a script into a hardened service, change it with drop-in overrides, replace cron with a timer, and read logs with journalctl.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="08-processes-and-signals.html">
+      <span class="lp-module-num">08</span>
+      <div class="lp-module-body">
+        <h3>Processes, Signals &amp; File Descriptors</h3>
+        <p>Process states including D and Z, stopping processes the right way, open files and their limits, and "Too many open files".</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="09-memory-and-the-oom-killer.html">
+      <span class="lp-module-num">09</span>
+      <div class="lp-module-body">
+        <h3>Memory, the Page Cache &amp; the OOM Killer</h3>
+        <p>Reading free correctly, the page cache, swap, memory limits for services and containers, and finding an out-of-memory kill.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="10-storage-and-filesystems.html">
+      <span class="lp-module-num">10</span>
+      <div class="lp-module-body">
+        <h3>Storage, Filesystems &amp; LVM</h3>
+        <p>Disks, filesystems, and mounts; finding what fills a disk; growing an LVM volume live; and space held by deleted files.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="11-networking-basics.html">
+      <span class="lp-module-num">11</span>
+      <div class="lp-module-body">
+        <h3>Networking Basics: Addresses, Routes, Ports &amp; TCP</h3>
+        <p>Addresses and routing, listening sockets, the TCP handshake and states, and telling "refused" from a timeout.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="12-dns-firewalls-and-packets.html">
+      <span class="lp-module-num">12</span>
+      <div class="lp-module-body">
+        <h3>DNS, Firewalls &amp; Packet Capture</h3>
+        <p>How a name becomes an address, dig versus getent, drop versus reject in nftables, and reading packets with tcpdump.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+</ul>
+
+## Coming next · Parts 3 to 5
 
 These parts are being written and will appear here as each one is published.
 
-- **Part 2 · How Linux works:** the boot process, systemd and services, processes and signals, memory and the OOM killer, storage and filesystems, networking, and DNS and firewalls.
 - **Part 3 · Troubleshooting:** a repeatable troubleshooting method, debugging with strace and lsof, and logs and monitoring.
 - **Part 4 · Linux for DevOps:** building a container by hand from namespaces and cgroups, security hardening, automation and safe scripting, and performance tuning.
 - **Part 5 · Capstone:** an incident with three unknown faults across a web server, an app, and a database, finished with a blameless postmortem.

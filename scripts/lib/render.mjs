@@ -107,7 +107,7 @@ function learningPathsNavDropdown({ prefix = "", current = false } = {}) {
               </a>
               <a href="${prefix}linux-for-devops/index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>Linux for DevOps</strong>
-                <small>Part 1 · Foundations &amp; Break-Fix Labs</small>
+                <small>12 Modules · Parts 1–2, Break-Fix Labs</small>
               </a>
             </div>
           </div>`;

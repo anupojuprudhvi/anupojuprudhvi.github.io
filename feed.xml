@@ -96,6 +96,62 @@
       <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
     </item>
     <item>
+      <title>The Boot Process: From Power-On to Login</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/06-boot-process.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/06-boot-process.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>What happens between pressing the power button and a login prompt: firmware, GRUB, the kernel, initramfs, and systemd. Read a server's boot history, find what slowed it down, and catch a bad /etc/fstab line before a reboot turns it into an outage.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
+      <title>systemd: Services, Timers &amp; Logs</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/07-systemd-and-services.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/07-systemd-and-services.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Almost everything long-running on a modern Linux server is a systemd service. Turn a small Python app into a hardened service, change it safely with drop-in overrides, replace a cron job with a timer, and read its logs with journalctl. Then fix a service that keeps restarting and failing.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
+      <title>Processes, Signals &amp; File Descriptors</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/08-processes-and-signals.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/08-processes-and-signals.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Every running program is a process with an ID, a parent, a state, and a set of open files. Learn to read process states (including the D and Z states that confuse people), stop processes the right way with signals, and fix a service that crashes with &quot;Too many open files&quot;.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
+      <title>Memory, the Page Cache &amp; the OOM Killer</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/09-memory-and-the-oom-killer.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/09-memory-and-the-oom-killer.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Why &quot;free memory&quot; is nearly always low on a healthy server, which number actually matters, how swap and memory limits work, and what the kernel does when memory runs out. Then find the out-of-memory kill behind a job that dies without leaving a single error in its own log.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
+      <title>Storage, Filesystems &amp; LVM</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/10-storage-and-filesystems.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/10-storage-and-filesystems.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Disks, partitions, filesystems, and mounts, and how to find what's filling a disk. Build an LVM volume and grow it while it's in use, then solve the classic puzzle where df says the disk is full but du can't find the files.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
+      <title>Networking Basics: Addresses, Routes, Ports &amp; TCP</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/11-networking-basics.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/11-networking-basics.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>How a Linux server talks to the network. IP addresses and CIDR, routing, ports and sockets, the TCP handshake and connection states, and the difference between &quot;connection refused&quot; and a timeout. Then fix a service that works locally but refuses every connection from outside.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
+      <title>DNS, Firewalls &amp; Packet Capture</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/12-dns-firewalls-and-packets.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/linux-for-devops/12-dns-firewalls-and-packets.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Follow a name lookup from an application through /etc/hosts and systemd-resolved to a DNS server, see how a firewall decides between a timeout and &quot;connection refused&quot;, and watch real packets with tcpdump. Then fix a lookup where dig gives the right answer but every application gets the wrong one.</description>
+      <category>Linux for DevOps: From First Terminal to On-Call Troubleshooting</category>
+    </item>
+    <item>
       <title>How a Kubernetes Cluster Actually Works</title>
       <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/04-how-a-cluster-works.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/04-how-a-cluster-works.html</guid>
