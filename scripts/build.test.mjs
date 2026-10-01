@@ -158,17 +158,17 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
     assert.doesNotMatch(read("case-studies/telecom/index.html"), /renamed-study/);
     assert.doesNotMatch(read("sitemap.xml"), /renamed-study/);
 
-    const testModule = "content/learning-paths/terraform/99-temporary-module.md";
-    fs.writeFileSync(file(testModule), "---\ntitle: Temporary Module\ntrack: terraform\nmodule: 99\nsummary: Temporary module test.\n---\n\n## Content\n\nTemporary.\n");
+    const testModule = "content/learning-paths/migration-journey/99-temporary-module.md";
+    fs.writeFileSync(file(testModule), "---\ntitle: Temporary Module\ntrack: migration-journey\nmodule: 99\nsummary: Temporary module test.\n---\n\n## Content\n\nTemporary.\n");
     succeeds();
-    assert.equal(fs.existsSync(file("learning-paths/terraform/99-temporary-module.html")), true);
-    assert.doesNotMatch(read("learning-paths/terraform/99-temporary-module.html"), /quiz\.js/, "quiz.js loads only on pages with a quiz");
+    assert.equal(fs.existsSync(file("learning-paths/migration-journey/99-temporary-module.html")), true);
+    assert.doesNotMatch(read("learning-paths/migration-journey/99-temporary-module.html"), /quiz\.js/, "quiz.js loads only on pages with a quiz");
 
     // A ```quiz block renders a no-script list and loads quiz.js; a malformed one fails the build.
-    const quizModule = (quiz) => `---\ntitle: Temporary Module\ntrack: terraform\nmodule: 99\nsummary: Temporary module test.\n---\n\n## Check yourself · Pop quiz\n\n\`\`\`quiz\n${quiz}\n\`\`\`\n`;
+    const quizModule = (quiz) => `---\ntitle: Temporary Module\ntrack: migration-journey\nmodule: 99\nsummary: Temporary module test.\n---\n\n## Check yourself · Pop quiz\n\n\`\`\`quiz\n${quiz}\n\`\`\`\n`;
     fs.writeFileSync(file(testModule), quizModule("Q: Which is right?\n- Wrong\n* Right\n= Because.\nS: A situation. What now?\n* Act\n- Wait\n= Acting fixes it."));
     succeeds();
-    const quizPage = read("learning-paths/terraform/99-temporary-module.html");
+    const quizPage = read("learning-paths/migration-journey/99-temporary-module.html");
     assert.match(quizPage, /<script src="\.\.\/\.\.\/assets\/quiz\.js" defer><\/script>/);
     assert.equal((quizPage.match(/class="lp-quiz-q"/g) || []).length, 2);
     assert.match(quizPage, /data-answer="1" data-kind="Concept"/);
@@ -191,7 +191,7 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
     assert.match(run().stderr, /"A tool no case study lists" matches no case study stack/);
     fs.writeFileSync(file("content/toolbox.json"), toolboxSource);
     succeeds();
-    assert.equal(fs.existsSync(file("learning-paths/terraform/99-temporary-module.html")), false);
+    assert.equal(fs.existsSync(file("learning-paths/migration-journey/99-temporary-module.html")), false);
 
     const homeSource = read("content/home.html");
     fs.writeFileSync(file("content/home.html"), homeSource.replace('rel="canonical"', 'rel="alternate"'));

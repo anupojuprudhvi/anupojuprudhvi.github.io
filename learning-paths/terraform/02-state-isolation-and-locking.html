@@ -43,7 +43,7 @@
         "image": "https://anupojuprudhvi.github.io/og-image.png",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/terraform/02-state-isolation-and-locking.html",
         "datePublished": "2026-09-17",
-        "dateModified": "2026-09-17",
+        "dateModified": "2026-10-01",
         "isPartOf": {"@type":"CreativeWorkSeries","name":"Terraform for Enterprise Production","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/index.html"},
         "position": 2,
         "keywords": "state-management, blast-radius, locking, security, isolation, Terraform, AWS S3, DynamoDB, AWS KMS, IAM"
@@ -110,7 +110,7 @@
               <div class="nav-dropdown-divider" role="separator"></div>
               <a href="../../learning-paths/terraform/index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>Terraform for Enterprise</strong>
-                <small>6 Modules · Modules, State &amp; CI/CD</small>
+                <small>11 Modules · Modules, State &amp; Delivery</small>
               </a>
               <a href="../../learning-paths/migration-journey/index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>Cloud Migration Journey</strong>
@@ -162,18 +162,19 @@
     </svg>
           </div>
           <div class="lp-meta-bar">
-            <span><b>Module:</b> 02 of 06</span>
+            <span><b>Module:</b> 02 of 11</span>
             <span><b>Level:</b> Core Architecture</span>
             <span><b>Time:</b> 8 min read</span>
-            <span><b>Published:</b> <time datetime="2026-09-17">17 Sep 2026</time></span>
+            <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
       </header>
-      <article class="lp-content" data-track="terraform" data-total="6" data-module="2" data-slug="02-state-isolation-and-locking" data-next-title="Modern HCL — Types, Validations &amp; Preconditions">
+      <article class="lp-content" data-track="terraform" data-total="11" data-module="2" data-slug="02-state-isolation-and-locking" data-next-title="Modern HCL — Types, Validations &amp; Preconditions">
         <div class="lp-layout">
           <aside class="lp-sidebar">
             <nav class="lp-toc" aria-label="Modules in this track">
               <a class="lp-toc-track" href="index.html">Terraform for Enterprise Production</a>
+              <p class="lp-toc-part">Part 1 · Production techniques</p>
               <ol class="lp-toc-list">
                 <li><a href="01-enterprise-module-design.html"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a></li>
                 <li class="is-current"><a href="02-state-isolation-and-locking.html" aria-current="page"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a>
@@ -183,13 +184,22 @@
                 <li><a href="05-refactoring-with-moved-blocks.html"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a></li>
                 <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a></li>
               </ol>
+              <p class="lp-toc-part">Part 2 · How a module is delivered: design to production</p>
+              <ol class="lp-toc-list">
+                <li><a href="07-base-composition-and-environment-modules.html"><span class="lp-toc-num">07</span><span>Base, Composition &amp; Environment: A Three-Layer Module Standard</span></a></li>
+                <li><a href="08-naming-tagging-and-provider-versions.html"><span class="lp-toc-num">08</span><span>Naming, Tagging &amp; Provider Versions Across a Module Tree</span></a></li>
+                <li><a href="09-change-workflow-and-module-testing.html"><span class="lp-toc-num">09</span><span>The Change Workflow &amp; Module Testing</span></a></li>
+                <li><a href="10-adrs-and-changelogs.html"><span class="lp-toc-num">10</span><span>ADRs &amp; Changelogs: Recording Why the Infrastructure Looks This Way</span></a></li>
+                <li><a href="11-module-promotion-gate.html"><span class="lp-toc-num">11</span><span>The Module Promotion Gate: Scan Before You Wire</span></a></li>
+              </ol>
             </nav>
           </aside>
           <div class="lp-main">
             <details class="lp-toc-mobile">
-              <summary>All modules in this track (6)</summary>
+              <summary>All modules in this track (11)</summary>
               <nav class="lp-toc" aria-label="All modules">
               <a class="lp-toc-track" href="index.html">Terraform for Enterprise Production</a>
+              <p class="lp-toc-part">Part 1 · Production techniques</p>
               <ol class="lp-toc-list">
                 <li><a href="01-enterprise-module-design.html"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a></li>
                 <li class="is-current"><a href="02-state-isolation-and-locking.html" aria-current="page"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a></li>
@@ -197,6 +207,14 @@
                 <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
                 <li><a href="05-refactoring-with-moved-blocks.html"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a></li>
                 <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a></li>
+              </ol>
+              <p class="lp-toc-part">Part 2 · How a module is delivered: design to production</p>
+              <ol class="lp-toc-list">
+                <li><a href="07-base-composition-and-environment-modules.html"><span class="lp-toc-num">07</span><span>Base, Composition &amp; Environment: A Three-Layer Module Standard</span></a></li>
+                <li><a href="08-naming-tagging-and-provider-versions.html"><span class="lp-toc-num">08</span><span>Naming, Tagging &amp; Provider Versions Across a Module Tree</span></a></li>
+                <li><a href="09-change-workflow-and-module-testing.html"><span class="lp-toc-num">09</span><span>The Change Workflow &amp; Module Testing</span></a></li>
+                <li><a href="10-adrs-and-changelogs.html"><span class="lp-toc-num">10</span><span>ADRs &amp; Changelogs: Recording Why the Infrastructure Looks This Way</span></a></li>
+                <li><a href="11-module-promotion-gate.html"><span class="lp-toc-num">11</span><span>The Module Promotion Gate: Scan Before You Wire</span></a></li>
               </ol>
             </nav>
             </details>
@@ -215,17 +233,20 @@
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
 <h2 id="secure-s3-dynamodb-backend-design">Secure S3 &amp; DynamoDB backend design</h2>
-<p>An enterprise S3 state backend must be locked down with multiple layers of defense:</p>
-<pre tabindex="0"><code># backend.tf
+<p>An enterprise S3 state backend must be locked down with multiple layers of defense. Since Terraform 1.10, the S3 backend can lock state by itself, using S3 conditional writes (<code>use_lockfile</code>), so a separate DynamoDB lock table is no longer needed:</p>
+<pre tabindex="0"><code># backend.tf (Terraform 1.10+)
 terraform {
   backend "s3" {
-    bucket         = "corp-terraform-state-us-east-1-prod"
-    key            = "networking/vpc/terraform.tfstate"
-    region         = "us-east-1"
-    encrypt        = true
-    dynamodb_table = "corp-terraform-locks-prod"
+    bucket       = "corp-terraform-state-us-east-1-prod"
+    key          = "networking/vpc/terraform.tfstate"
+    region       = "us-east-1"
+    encrypt      = true
+    kms_key_id   = "alias/corp-terraform-state"
+    use_lockfile = true # native S3 locking
   }
 }</code></pre>
+<h3>Older runners · DynamoDB locking</h3>
+<p>DynamoDB locking (<code>dynamodb_table</code>) is deprecated from Terraform 1.11, but runners still pinned below 1.10 need it. To migrate, set <b>both</b> <code>use_lockfile = true</code> and <code>dynamodb_table</code> for a while: Terraform then takes both locks, so old and new runners can't overlap. Once every runner is on 1.10 or later, remove <code>dynamodb_table</code> and decommission the table. A backend change like this affects every run, so record it as an ADR (Module 10).</p>
 <details class="implementation-notes">
 <summary>Backend Security Checklist:</summary>
 <ul>
@@ -233,9 +254,22 @@ terraform {
 <li><b>KMS Encryption:</b> Enforce customer-managed keys (CMK) with an IAM policy restricting <code>kms:Decrypt</code> to authorized CI/CD pipeline execution roles.</li>
 <li><b>Block Public Access:</b> All 4 public access block settings on the S3 bucket must be set to <code>true</code>.</li>
 <li><b>Enforce TLS:</b> Add an S3 bucket policy denying <code>s3:*</code> when <code>aws:SecureTransport == false</code>.</li>
-<li><b>DynamoDB State Locking:</b> The DynamoDB table must have a primary key named <code>LockID</code> of type String.</li>
+<li><b>Write access for the pipeline only:</b> Only the CI/CD role and break-glass admin roles may write state. Engineers get scoped read-only access, enough for <code>terraform plan</code> and <code>state show</code>.</li>
+<li><b>Legacy DynamoDB locking only:</b> The lock table must have a primary key named <code>LockID</code> of type String.</li>
 </ul>
 </details>
+<h3>State hygiene</h3>
+<p>Never commit state or the local provider cache. Do commit the provider lock file, <code>.terraform.lock.hcl</code>, in each root module, so every machine resolves the same provider versions (Module 08):</p>
+<pre tabindex="0"><code># .gitignore at the terraform/ root
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+# .terraform.lock.hcl is NOT ignored: commit it</code></pre>
 </div>
 </section>
 <section>
@@ -326,7 +360,7 @@ resource "aws_security_group" "app" {
         <div class="wrap">
           <h2>Questions about this learning path?</h2>
           <p>
-            I'm happy to go into more detail on any of this: module design trade-offs, moving state safely, or security scanning in CI/CD.
+            I'm happy to go into more detail on any of this: module design trade-offs, moving state safely, testing modules, or running a security gate in CI/CD.
           </p>
           <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
             >anupojuprudhvi@gmail.com</a

@@ -2,15 +2,19 @@
   {
     "id": "terraform",
     "motif": "pipeline",
+    "parts": [
+      { "title": "Part 1 · Production techniques", "modules": [1, 2, 3, 4, 5, 6] },
+      { "title": "Part 2 · How a module is delivered: design to production", "modules": [7, 8, 9, 10, 11] }
+    ],
     "title": "Terraform for Enterprise Production",
     "eyebrow": "Infrastructure as Code",
-    "summary": "A practical guide to building and running Terraform in enterprise AWS: how to structure modules, keep state safe, refactor without downtime, and add automated security checks.",
+    "summary": "A practical guide to building and running Terraform in enterprise AWS. Part 1 covers the techniques: module structure, safe state, validation, secrets, refactoring, and CI/CD checks. Part 2 puts them into one delivery process for a team codebase: base and composition modules, shared conventions, testing, decision records, and a security gate every module passes before it reaches an environment.",
     "level": "Intermediate to Advanced",
-    "duration": "6 Modules · 45 min read",
+    "duration": "11 Modules · 102 min read",
     "badge": "Production Playbook",
-    "stack": ["Terraform 1.5+", "AWS", "HCL", "Checkov", "TFLint", "S3 & DynamoDB"],
+    "stack": ["Terraform 1.10+", "AWS", "HCL", "terraform test", "Checkov", "TFLint", "ADRs"],
     "closingQuestion": "Questions about this learning path?",
-    "closingBody": "I'm happy to go into more detail on any of this: module design trade-offs, moving state safely, or security scanning in CI/CD."
+    "closingBody": "I'm happy to go into more detail on any of this: module design trade-offs, moving state safely, testing modules, or running a security gate in CI/CD."
   },
   {
     "id": "migration-journey",

@@ -7,12 +7,12 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Terraform for Enterprise Production — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="A playbook for building, scaling, and governing Terraform in enterprise AWS — modular design, remote state isolation, and security guardrails." />
+    <meta name="description" content="A playbook for building, scaling, and governing Terraform in enterprise AWS. Part 1 covers the production techniques; Part 2 turns them into one delivery process that takes a module from design to production." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/terraform/index.html" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://anupojuprudhvi.github.io/learning-paths/terraform/index.html" />
     <meta property="og:title" content="Terraform for Enterprise Production — Prudhvi Raj Anupoju" />
-    <meta property="og:description" content="A playbook for building, scaling, and governing Terraform in enterprise AWS — modular design, remote state isolation, and security guardrails." />
+    <meta property="og:description" content="A playbook for building, scaling, and governing Terraform in enterprise AWS. Part 1 covers the production techniques; Part 2 turns them into one delivery process that takes a module from design to production." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -25,7 +25,7 @@
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "Terraform for Enterprise Production",
-        "description": "A playbook for building, scaling, and governing Terraform in enterprise AWS — modular design, remote state isolation, and security guardrails.",
+        "description": "A playbook for building, scaling, and governing Terraform in enterprise AWS. Part 1 covers the production techniques; Part 2 turns them into one delivery process that takes a module from design to production.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -43,9 +43,9 @@
         "image": "https://anupojuprudhvi.github.io/og-image.png",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/terraform/index.html",
         "datePublished": "2026-09-17",
-        "dateModified": "2026-09-17",
-        "hasPart": [{"@type":"TechArticle","position":1,"name":"Enterprise Repository & Module Layout","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/01-enterprise-module-design.html"},{"@type":"TechArticle","position":2,"name":"State Isolation, Remote Locking & Blast Radius Control","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/02-state-isolation-and-locking.html"},{"@type":"TechArticle","position":3,"name":"Modern HCL — Types, Validations & Preconditions","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/03-variables-validation-and-types.html"},{"@type":"TechArticle","position":4,"name":"Zero-Plaintext Secret Architecture","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/04-secrets-and-sensitive-values.html"},{"@type":"TechArticle","position":5,"name":"Zero-Downtime Refactoring with Moved & Import Blocks","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/05-refactoring-with-moved-blocks.html"},{"@type":"TechArticle","position":6,"name":"CI/CD Guardrails — TFLint, Checkov & Plan Automation","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/06-ci-cd-security-linting-testing.html"}],
-        "keywords": "Terraform 1.5+, AWS, HCL, Checkov, TFLint, S3 & DynamoDB"
+        "dateModified": "2026-10-01",
+        "hasPart": [{"@type":"TechArticle","position":1,"name":"Enterprise Repository & Module Layout","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/01-enterprise-module-design.html"},{"@type":"TechArticle","position":2,"name":"State Isolation, Remote Locking & Blast Radius Control","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/02-state-isolation-and-locking.html"},{"@type":"TechArticle","position":3,"name":"Modern HCL — Types, Validations & Preconditions","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/03-variables-validation-and-types.html"},{"@type":"TechArticle","position":4,"name":"Zero-Plaintext Secret Architecture","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/04-secrets-and-sensitive-values.html"},{"@type":"TechArticle","position":5,"name":"Zero-Downtime Refactoring with Moved & Import Blocks","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/05-refactoring-with-moved-blocks.html"},{"@type":"TechArticle","position":6,"name":"CI/CD Guardrails — TFLint, Checkov & Plan Automation","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/06-ci-cd-security-linting-testing.html"},{"@type":"TechArticle","position":7,"name":"Base, Composition & Environment: A Three-Layer Module Standard","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/07-base-composition-and-environment-modules.html"},{"@type":"TechArticle","position":8,"name":"Naming, Tagging & Provider Versions Across a Module Tree","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/08-naming-tagging-and-provider-versions.html"},{"@type":"TechArticle","position":9,"name":"The Change Workflow & Module Testing","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/09-change-workflow-and-module-testing.html"},{"@type":"TechArticle","position":10,"name":"ADRs & Changelogs: Recording Why the Infrastructure Looks This Way","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/10-adrs-and-changelogs.html"},{"@type":"TechArticle","position":11,"name":"The Module Promotion Gate: Scan Before You Wire","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/11-module-promotion-gate.html"}],
+        "keywords": "Terraform 1.10+, AWS, HCL, terraform test, Checkov, TFLint, ADRs"
       }
     </script>
     <script src="../../assets/theme.js"></script>
@@ -109,7 +109,7 @@
               <div class="nav-dropdown-divider" role="separator"></div>
               <a href="../../learning-paths/terraform/index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>Terraform for Enterprise</strong>
-                <small>6 Modules · Modules, State &amp; CI/CD</small>
+                <small>11 Modules · Modules, State &amp; Delivery</small>
               </a>
               <a href="../../learning-paths/migration-journey/index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>Cloud Migration Journey</strong>
@@ -146,7 +146,7 @@
             <div>
               <span class="lp-badge">Intermediate to Advanced</span>
               <h1>Terraform for Enterprise Production</h1>
-              <p class="sub">A playbook for building, scaling, and governing Terraform in enterprise AWS — modular design, remote state isolation, and security guardrails.</p>
+              <p class="sub">A playbook for building, scaling, and governing Terraform in enterprise AWS. Part 1 covers the production techniques; Part 2 turns them into one delivery process that takes a module from design to production.</p>
             </div>
             <svg class="motif motif-pipeline" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <text class="m-start m-muted" x="4" y="40">git push → main</text>
@@ -162,12 +162,12 @@
           </div>
           <div class="lp-meta-bar">
             <span><b>Level:</b> Intermediate to Advanced</span>
-            <span><b>Duration:</b> 6 Modules · 45 min read</span>
-            <span><b>Published:</b> <time datetime="2026-09-17">17 Sep 2026</time></span>
+            <span><b>Duration:</b> 11 Modules · 102 min read</span>
+            <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
       </header>
-      <article class="lp-content" data-track="terraform" data-total="6">
+      <article class="lp-content" data-track="terraform" data-total="11">
         <div class="wrap">
           <section>
 <div class="wrap">
@@ -180,14 +180,22 @@
 <li>How do you partition state so a bug in application compute cannot destroy database or networking infrastructure?</li>
 <li>How do you refactor resources across module boundaries with zero downtime?</li>
 <li>How do you enforce security and prevent hardcoded secrets from leaking into Git or plaintext state?</li>
+<li>How does a team deliver every module the same way, from design through testing and review to production?</li>
 </ul>
 <p>This learning path is a distillation of lessons learned building and governing multi-account AWS platforms across telecom, tolling, and healthcare.</p>
+<p>The track has two parts. <b>Part 1</b> teaches the production techniques one at a time. <b>Part 2</b> puts them together as one delivery process: how a team designs, builds, tests, records, reviews, and promotes every module the same way. It follows a real codebase standard for an AWS Glue and S3 data platform, with every name removed. The new modules end with a five-question <b>pop quiz</b>; score 4 out of 5 to pass.</p>
+<div class="callout"><b>Which path do I take?</b><ul><li><b>Building or changing one module</b> in a codebase that already exists? Start at <a href="07-base-composition-and-environment-modules.html">Module 07</a> and follow Part 2 in order. Your environments and their state layers stay as they are.</li><li><b>Starting a platform from scratch?</b> Begin with <a href="01-enterprise-module-design.html">Module 01</a> and <a href="02-state-isolation-and-locking.html">Module 02</a> to split state into layers and bootstrap the backend. Then build each layer&#39;s code through the Part 2 process.</li><li><b>Already running Terraform in production?</b> Go straight to <a href="11-module-promotion-gate.html">Module 11</a> for the whole process on one page, then back to whichever step you&#39;re missing.</li></ul></div>
+<figure class="flow">
+<figcaption class="flow-title">The delivery process Part 2 builds, one module at a time</figcaption>
+<div class="flow-body"><div class="flow-node"><strong>Design</strong><span>base or composition, and which layer of state (Modules 01, 07)</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">following</span></div><div class="flow-node"><strong>Conventions</strong><span>names, tags, provider versions (Module 08)</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">then</span></div><div class="flow-node"><strong>Build and test</strong><span>bottom-up, with terraform test beside each module (Module 09)</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">decisions recorded as they're made</span></div><div class="flow-node"><strong>Record</strong><span>ADRs and CHANGELOG entries (Module 10)</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">then</span></div><div class="flow-node is-key"><strong>Gate</strong><span>scanned alone, findings justified, approved by a second person (Module 11)</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">merged</span></div><div class="flow-node is-key"><strong>Promote</strong><span>wired in, scanned again, applied to dev, then the same shape to every environment (Modules 07, 11)</span></div></div>
+</figure>
 </div>
 </section>
 <section>
 <div class="wrap">
-<div class="section-eyebrow">Curriculum</div>
-<h2>The 6 production modules</h2>
+<div class="section-eyebrow">Part 1</div>
+<h2>Production techniques</h2>
+<p>The patterns every enterprise Terraform codebase needs, each on its own: structure, state, validation, secrets, refactoring, and CI/CD.</p>
 <ul class="lp-syllabus">
   <li>
     <a class="lp-module-card" href="01-enterprise-module-design.html">
@@ -252,6 +260,65 @@
 </ul>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Part 2</div>
+<h2>How a module is delivered: design to production</h2>
+<p>One process for a team codebase, in the order the work happens. Each module is one step, and the last puts every step on one page.</p>
+<ul class="lp-syllabus">
+  <li>
+    <a class="lp-module-card" href="07-base-composition-and-environment-modules.html">
+      <span class="lp-module-num">07</span>
+      <div class="lp-module-body">
+        <h3>Base, Composition &amp; Environment: A Three-Layer Module Standard</h3>
+        <p>Base modules build one component, compositions join them with IAM and networking, and every environment keeps the same shape.</p>
+      </div>
+      <span class="lp-module-action">Start Part 2 →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="08-naming-tagging-and-provider-versions.html">
+      <span class="lp-module-num">08</span>
+      <div class="lp-module-body">
+        <h3>Naming, Tagging &amp; Provider Versions Across a Module Tree</h3>
+        <p>One naming pattern, tags split between provider default_tags and module inputs, and provider versions that agree all the way down.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="09-change-workflow-and-module-testing.html">
+      <span class="lp-module-num">09</span>
+      <div class="lp-module-body">
+        <h3>The Change Workflow &amp; Module Testing</h3>
+        <p>Apply only the saved plan you reviewed, change code bottom-up, and test modules with terraform test and Terratest.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="10-adrs-and-changelogs.html">
+      <span class="lp-module-num">10</span>
+      <div class="lp-module-body">
+        <h3>ADRs &amp; Changelogs: Recording Why the Infrastructure Looks This Way</h3>
+        <p>Decision records with real rejected options, the changes that must leave one behind, and a changelog per environment.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+  <li>
+    <a class="lp-module-card" href="11-module-promotion-gate.html">
+      <span class="lp-module-num">11</span>
+      <div class="lp-module-body">
+        <h3>The Module Promotion Gate: Scan Before You Wire</h3>
+        <p>Scan each module alone, justify every finding, get a second approval, then scan again once wired in. Plus the whole process end to end.</p>
+      </div>
+      <span class="lp-module-action">Read module →</span>
+    </a>
+  </li>
+</ul>
+</div>
+</section>
           
         </div>
       </article>
@@ -259,7 +326,7 @@
         <div class="wrap">
           <h2>Questions about this learning path?</h2>
           <p>
-            I'm happy to go into more detail on any of this: module design trade-offs, moving state safely, or security scanning in CI/CD.
+            I'm happy to go into more detail on any of this: module design trade-offs, moving state safely, testing modules, or running a security gate in CI/CD.
           </p>
           <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
             >anupojuprudhvi@gmail.com</a
@@ -278,6 +345,7 @@
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
+    <script src="../../assets/flow-player.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>
 </html>

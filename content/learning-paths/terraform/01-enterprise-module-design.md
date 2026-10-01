@@ -1,6 +1,7 @@
 ---
 title: Enterprise Repository & Module Layout
 date: 2026-09-17
+updated: 2026-10-01
 track: terraform
 order: 1
 module: 1
@@ -19,6 +20,8 @@ A clean architecture enforces strict boundaries between these two concerns:
 
 - **Child Modules (The Building Blocks):** Pure, parameterized blueprints. They do not declare backends, do not hardcode account IDs, and do not reference specific environments. They are published and versioned like software libraries.
 - **Root Modules (The Deployments):** Concrete instantiations. They define the S3/DynamoDB remote state backend, provider configurations with credentials/regions, instantiate child modules, and pass environment-specific `.tfvars`.
+
+<div class="callout"><b>Going further.</b> As a codebase grows, child modules split again: <b>base modules</b> that build one component, and <b>composition modules</b> that join them with IAM and networking. Part 2 of this track, starting at <a href="07-base-composition-and-environment-modules.html">Module 07</a>, takes that standard from design to production.</div>
 
 ## Structure · The canonical directory layout
 

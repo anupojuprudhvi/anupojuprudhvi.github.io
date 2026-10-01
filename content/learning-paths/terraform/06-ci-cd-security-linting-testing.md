@@ -1,6 +1,7 @@
 ---
 title: CI/CD Guardrails — TFLint, Checkov & Plan Automation
 date: 2026-09-17
+updated: 2026-10-01
 track: terraform
 order: 6
 module: 6
@@ -82,6 +83,49 @@ Run in CI:
 <pre><code>checkov -d . --framework terraform --compact --quiet</code></pre>
 
 If a developer opens a PR with an unencrypted S3 bucket or open SSH port, Checkov immediately fails the CI check and blocks the PR from merging.
+
+### One shared config for the whole tree
+
+Keep a single `.checkov.yaml` at the `terraform/` root, so base modules, compositions, and every environment are scanned the same way:
+
+<pre><code># terraform/.checkov.yaml
+framework:
+  - terraform
+compact: true
+download-external-modules: false
+soft-fail: false        # a failed check fails the build
+skip-check:
+  - CKV_AWS_144         # cross-region replication: see ADR-0005</code></pre>
+
+Every global skip carries a comment and, where it reflects a decision, an ADR number (Module 10). Prefer a skip scoped to one resource, with its reason, over a global one:
+
+<pre><code>resource "aws_s3_bucket" "this" {
+  # checkov:skip=CKV_AWS_18:Nonprod synthetic data only (ADR-0003)
+  bucket = var.bucket_name
+}</code></pre>
+
+Run the same checks before a commit ever reaches CI, with the `pre-commit-terraform` hooks:
+
+<pre><code># terraform/.pre-commit-config.yaml
+repos:
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.96.1
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_validate
+      - id: terraform_checkov
+        args: ["--args=--config-file __GIT_WORKING_DIR__/terraform/.checkov.yaml"]</code></pre>
+
+In CI, publish the results as a JUnit report so findings appear in the PR's checks: `checkov -d terraform/ --config-file terraform/.checkov.yaml -o junitxml > checkov-report.xml`.
+
+### When Checkov flags something
+
+1. **Fix it** if you can. This is always the preferred outcome.
+2. If it can't be fixed (cost, an environment constraint, an accepted risk), **write an ADR** explaining why, then add a scoped skip that names the ADR.
+3. **Log the exception** in the environment's `CHANGELOG.md`.
+4. **Re-run Checkov** and confirm every remaining finding is accounted for before merging.
+
+Never make a finding go away by disabling the pipeline step or setting `soft-fail: true`. [Module 11](11-module-promotion-gate.html) takes this further: each module is scanned and its findings justified *before* any environment is allowed to use it.
 
 ## Tier 3 · Automated plan posting in Pull Requests
 

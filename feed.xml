@@ -8,6 +8,46 @@
     <atom:link href="https://anupojuprudhvi.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <lastBuildDate>Thu, 01 Oct 2026 00:00:00 GMT</lastBuildDate>
     <item>
+      <title>Base, Composition &amp; Environment: A Three-Layer Module Standard</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/terraform/07-base-composition-and-environment-modules.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/terraform/07-base-composition-and-environment-modules.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Split reusable modules into base modules that build one component and composition modules that wire a whole solution together, so environments differ only in their values. Worked through on an AWS Glue and S3 data pipeline.</description>
+      <category>Terraform for Enterprise Production</category>
+    </item>
+    <item>
+      <title>Naming, Tagging &amp; Provider Versions Across a Module Tree</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/terraform/08-naming-tagging-and-provider-versions.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/terraform/08-naming-tagging-and-provider-versions.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>The conventions that make a module codebase look like one team wrote it. A naming pattern, a tagging standard split between provider default_tags and module inputs, and provider version constraints that agree all the way down the module tree.</description>
+      <category>Terraform for Enterprise Production</category>
+    </item>
+    <item>
+      <title>The Change Workflow &amp; Module Testing</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/terraform/09-change-workflow-and-module-testing.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/terraform/09-change-workflow-and-module-testing.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>How a change moves from a laptop to a running environment. Format, validate, a saved plan that is reviewed and then applied exactly, the order to touch base, composition, and environment code, and module tests with terraform test and Terratest.</description>
+      <category>Terraform for Enterprise Production</category>
+    </item>
+    <item>
+      <title>ADRs &amp; Changelogs: Recording Why the Infrastructure Looks This Way</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/terraform/10-adrs-and-changelogs.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/terraform/10-adrs-and-changelogs.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Code shows what the infrastructure is; it can't show why. Architecture decision records with a real Options Considered section, a changelog per environment, and the list of changes that must leave a decision behind.</description>
+      <category>Terraform for Enterprise Production</category>
+    </item>
+    <item>
+      <title>The Module Promotion Gate: Scan Before You Wire</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/terraform/11-module-promotion-gate.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/terraform/11-module-promotion-gate.html</guid>
+      <pubDate>Thu, 01 Oct 2026 00:00:00 GMT</pubDate>
+      <description>No module reaches an environment until it has been scanned on its own, every finding fixed or justified, and a second person has approved it. Then it is scanned again once wired in. The gate step by step, how CI enforces it, and the whole delivery process end to end.</description>
+      <category>Terraform for Enterprise Production</category>
+    </item>
+    <item>
       <title>Why Kubernetes Exists, Starting from a Single Container</title>
       <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/01-why-kubernetes.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/01-why-kubernetes.html</guid>

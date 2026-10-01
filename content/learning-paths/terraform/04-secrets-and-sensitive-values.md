@@ -1,6 +1,7 @@
 ---
 title: Zero-Plaintext Secret Architecture
 date: 2026-09-17
+updated: 2026-10-01
 track: terraform
 order: 4
 module: 4
@@ -69,6 +70,24 @@ resource "aws_rds_cluster" "primary" {
 }</code></pre>
 
 Applications then retrieve the credential at runtime using the AWS SDK, authenticated via their IAM Execution Role or EKS Pod Identity. No engineer ever needs to know or copy the database master password.
+
+## Pattern · Pass references, not values
+
+Reading a secret into Terraform puts it in state too. A `data "aws_secretsmanager_secret_version"` lookup stores the secret's value in the state file, exactly like a variable would. Where the consumer can fetch the secret itself, give it the secret's **ARN** and let it read the value at runtime:
+
+<pre><code># AVOID: the password lands in state and in the job's arguments
+default_arguments = {
+  "--db_password" = data.aws_secretsmanager_secret_version.db.secret_string
+}
+
+# PREFER: the job reads the secret at runtime with its own IAM role
+default_arguments = {
+  "--db_secret_arn" = aws_secretsmanager_secret.db_credentials.arn
+}</code></pre>
+
+The workload's IAM role is then granted `secretsmanager:GetSecretValue` on that one secret, and nothing secret passes through Terraform at all.
+
+The same rules hold everywhere: no secrets in `terraform.tfvars`, in variable defaults, or in any `.tf` file. Any variable that genuinely has to carry a sensitive value is declared `sensitive = true`, with the caveat above that this only hides it from output.
 
 ## Identity · Eliminate static AWS access keys
 

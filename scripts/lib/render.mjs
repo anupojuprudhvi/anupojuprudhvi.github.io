@@ -95,7 +95,7 @@ function learningPathsNavDropdown({ prefix = "", current = false } = {}) {
               <div class="nav-dropdown-divider" role="separator"></div>
               <a href="${prefix}terraform/index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>Terraform for Enterprise</strong>
-                <small>6 Modules · Modules, State &amp; CI/CD</small>
+                <small>11 Modules · Modules, State &amp; Delivery</small>
               </a>
               <a href="${prefix}migration-journey/index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>Cloud Migration Journey</strong>

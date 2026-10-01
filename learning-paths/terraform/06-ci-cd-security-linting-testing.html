@@ -43,7 +43,7 @@
         "image": "https://anupojuprudhvi.github.io/og-image.png",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/terraform/06-ci-cd-security-linting-testing.html",
         "datePublished": "2026-09-17",
-        "dateModified": "2026-09-17",
+        "dateModified": "2026-10-01",
         "isPartOf": {"@type":"CreativeWorkSeries","name":"Terraform for Enterprise Production","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/index.html"},
         "position": 6,
         "keywords": "ci-cd, checkov, tflint, drift-detection, pipeline, automation, Terraform, GitHub Actions, Checkov, TFLint, AWS"
@@ -110,7 +110,7 @@
               <div class="nav-dropdown-divider" role="separator"></div>
               <a href="../../learning-paths/terraform/index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>Terraform for Enterprise</strong>
-                <small>6 Modules · Modules, State &amp; CI/CD</small>
+                <small>11 Modules · Modules, State &amp; Delivery</small>
               </a>
               <a href="../../learning-paths/migration-journey/index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>Cloud Migration Journey</strong>
@@ -162,18 +162,19 @@
     </svg>
           </div>
           <div class="lp-meta-bar">
-            <span><b>Module:</b> 06 of 06</span>
+            <span><b>Module:</b> 06 of 11</span>
             <span><b>Level:</b> DevOps &amp; Governance</span>
             <span><b>Time:</b> 9 min read</span>
-            <span><b>Published:</b> <time datetime="2026-09-17">17 Sep 2026</time></span>
+            <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
       </header>
-      <article class="lp-content" data-track="terraform" data-total="6" data-module="6" data-slug="06-ci-cd-security-linting-testing">
+      <article class="lp-content" data-track="terraform" data-total="11" data-module="6" data-slug="06-ci-cd-security-linting-testing" data-next-title="Base, Composition &amp; Environment: A Three-Layer Module Standard">
         <div class="lp-layout">
           <aside class="lp-sidebar">
             <nav class="lp-toc" aria-label="Modules in this track">
               <a class="lp-toc-track" href="index.html">Terraform for Enterprise Production</a>
+              <p class="lp-toc-part">Part 1 · Production techniques</p>
               <ol class="lp-toc-list">
                 <li><a href="01-enterprise-module-design.html"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a></li>
                 <li><a href="02-state-isolation-and-locking.html"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a></li>
@@ -183,13 +184,22 @@
                 <li class="is-current"><a href="06-ci-cd-security-linting-testing.html" aria-current="page"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a>
                 <ol class="lp-toc-sections"><li><a href="#the-three-tier-verification-pipeline">The three-tier verification pipeline</a></li><li><a href="#code-quality-linting-with-tflint">Code quality &amp; linting with TFLint</a></li><li><a href="#security-scanning-with-checkov">Security scanning with Checkov</a></li><li><a href="#automated-plan-posting-in-pull-requests">Automated plan posting in Pull Requests</a></li><li><a href="#scheduled-drift-detection">Scheduled drift detection</a></li></ol></li>
               </ol>
+              <p class="lp-toc-part">Part 2 · How a module is delivered: design to production</p>
+              <ol class="lp-toc-list">
+                <li><a href="07-base-composition-and-environment-modules.html"><span class="lp-toc-num">07</span><span>Base, Composition &amp; Environment: A Three-Layer Module Standard</span></a></li>
+                <li><a href="08-naming-tagging-and-provider-versions.html"><span class="lp-toc-num">08</span><span>Naming, Tagging &amp; Provider Versions Across a Module Tree</span></a></li>
+                <li><a href="09-change-workflow-and-module-testing.html"><span class="lp-toc-num">09</span><span>The Change Workflow &amp; Module Testing</span></a></li>
+                <li><a href="10-adrs-and-changelogs.html"><span class="lp-toc-num">10</span><span>ADRs &amp; Changelogs: Recording Why the Infrastructure Looks This Way</span></a></li>
+                <li><a href="11-module-promotion-gate.html"><span class="lp-toc-num">11</span><span>The Module Promotion Gate: Scan Before You Wire</span></a></li>
+              </ol>
             </nav>
           </aside>
           <div class="lp-main">
             <details class="lp-toc-mobile">
-              <summary>All modules in this track (6)</summary>
+              <summary>All modules in this track (11)</summary>
               <nav class="lp-toc" aria-label="All modules">
               <a class="lp-toc-track" href="index.html">Terraform for Enterprise Production</a>
+              <p class="lp-toc-part">Part 1 · Production techniques</p>
               <ol class="lp-toc-list">
                 <li><a href="01-enterprise-module-design.html"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a></li>
                 <li><a href="02-state-isolation-and-locking.html"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a></li>
@@ -197,6 +207,14 @@
                 <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
                 <li><a href="05-refactoring-with-moved-blocks.html"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a></li>
                 <li class="is-current"><a href="06-ci-cd-security-linting-testing.html" aria-current="page"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a></li>
+              </ol>
+              <p class="lp-toc-part">Part 2 · How a module is delivered: design to production</p>
+              <ol class="lp-toc-list">
+                <li><a href="07-base-composition-and-environment-modules.html"><span class="lp-toc-num">07</span><span>Base, Composition &amp; Environment: A Three-Layer Module Standard</span></a></li>
+                <li><a href="08-naming-tagging-and-provider-versions.html"><span class="lp-toc-num">08</span><span>Naming, Tagging &amp; Provider Versions Across a Module Tree</span></a></li>
+                <li><a href="09-change-workflow-and-module-testing.html"><span class="lp-toc-num">09</span><span>The Change Workflow &amp; Module Testing</span></a></li>
+                <li><a href="10-adrs-and-changelogs.html"><span class="lp-toc-num">10</span><span>ADRs &amp; Changelogs: Recording Why the Infrastructure Looks This Way</span></a></li>
+                <li><a href="11-module-promotion-gate.html"><span class="lp-toc-num">11</span><span>The Module Promotion Gate: Scan Before You Wire</span></a></li>
               </ol>
             </nav>
             </details>
@@ -276,6 +294,40 @@ tflint --recursive</code></pre>
 <p>Run in CI:</p>
 <pre tabindex="0"><code>checkov -d . --framework terraform --compact --quiet</code></pre>
 <p>If a developer opens a PR with an unencrypted S3 bucket or open SSH port, Checkov immediately fails the CI check and blocks the PR from merging.</p>
+<h3>One shared config for the whole tree</h3>
+<p>Keep a single <code>.checkov.yaml</code> at the <code>terraform/</code> root, so base modules, compositions, and every environment are scanned the same way:</p>
+<pre tabindex="0"><code># terraform/.checkov.yaml
+framework:
+  - terraform
+compact: true
+download-external-modules: false
+soft-fail: false        # a failed check fails the build
+skip-check:
+  - CKV_AWS_144         # cross-region replication: see ADR-0005</code></pre>
+<p>Every global skip carries a comment and, where it reflects a decision, an ADR number (Module 10). Prefer a skip scoped to one resource, with its reason, over a global one:</p>
+<pre tabindex="0"><code>resource "aws_s3_bucket" "this" {
+  # checkov:skip=CKV_AWS_18:Nonprod synthetic data only (ADR-0003)
+  bucket = var.bucket_name
+}</code></pre>
+<p>Run the same checks before a commit ever reaches CI, with the <code>pre-commit-terraform</code> hooks:</p>
+<pre tabindex="0"><code># terraform/.pre-commit-config.yaml
+repos:
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.96.1
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_validate
+      - id: terraform_checkov
+        args: ["--args=--config-file __GIT_WORKING_DIR__/terraform/.checkov.yaml"]</code></pre>
+<p>In CI, publish the results as a JUnit report so findings appear in the PR's checks: <code>checkov -d terraform/ --config-file terraform/.checkov.yaml -o junitxml &gt; checkov-report.xml</code>.</p>
+<h3>When Checkov flags something</h3>
+<ol>
+<li><b>Fix it</b> if you can. This is always the preferred outcome.</li>
+<li>If it can't be fixed (cost, an environment constraint, an accepted risk), <b>write an ADR</b> explaining why, then add a scoped skip that names the ADR.</li>
+<li><b>Log the exception</b> in the environment's <code>CHANGELOG.md</code>.</li>
+<li><b>Re-run Checkov</b> and confirm every remaining finding is accounted for before merging.</li>
+</ol>
+<p>Never make a finding go away by disabling the pipeline step or setting <code>soft-fail: true</code>. <a href="11-module-promotion-gate.html">Module 11</a> takes this further: each module is scanned and its findings justified <em>before</em> any environment is allowed to use it.</p>
 </div>
 </section>
 <section>
@@ -328,9 +380,9 @@ terraform plan -detailed-exitcode</code></pre>
           <span class="lp-nav-label">← Module 05</span>
           <span class="lp-nav-title">Zero-Downtime Refactoring with Moved &amp; Import Blocks</span>
         </a>
-<a class="lp-nav-link next" href="../../learning-paths/index.html">
-          <span class="lp-nav-label">Track Complete →</span>
-          <span class="lp-nav-title">All Learning Paths</span>
+<a class="lp-nav-link next" href="../../learning-paths/terraform/07-base-composition-and-environment-modules.html">
+          <span class="lp-nav-label">Module 07 →</span>
+          <span class="lp-nav-title">Base, Composition &amp; Environment: A Three-Layer Module Standard</span>
         </a></nav>
           </div>
         </div>
@@ -339,7 +391,7 @@ terraform plan -detailed-exitcode</code></pre>
         <div class="wrap">
           <h2>Questions about this learning path?</h2>
           <p>
-            I'm happy to go into more detail on any of this: module design trade-offs, moving state safely, or security scanning in CI/CD.
+            I'm happy to go into more detail on any of this: module design trade-offs, moving state safely, testing modules, or running a security gate in CI/CD.
           </p>
           <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
             >anupojuprudhvi@gmail.com</a

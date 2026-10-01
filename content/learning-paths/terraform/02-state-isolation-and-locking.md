@@ -1,6 +1,7 @@
 ---
 title: State Isolation, Remote Locking & Blast Radius Control
 date: 2026-09-17
+updated: 2026-10-01
 track: terraform
 order: 2
 module: 2
@@ -20,25 +21,46 @@ Terraform state files map your declarative code to real-world cloud resources, t
 
 ## Architecture · Secure S3 & DynamoDB backend design
 
-An enterprise S3 state backend must be locked down with multiple layers of defense:
+An enterprise S3 state backend must be locked down with multiple layers of defense. Since Terraform 1.10, the S3 backend can lock state by itself, using S3 conditional writes (`use_lockfile`), so a separate DynamoDB lock table is no longer needed:
 
-<pre><code># backend.tf
+<pre><code># backend.tf (Terraform 1.10+)
 terraform {
   backend "s3" {
-    bucket         = "corp-terraform-state-us-east-1-prod"
-    key            = "networking/vpc/terraform.tfstate"
-    region         = "us-east-1"
-    encrypt        = true
-    dynamodb_table = "corp-terraform-locks-prod"
+    bucket       = "corp-terraform-state-us-east-1-prod"
+    key          = "networking/vpc/terraform.tfstate"
+    region       = "us-east-1"
+    encrypt      = true
+    kms_key_id   = "alias/corp-terraform-state"
+    use_lockfile = true # native S3 locking
   }
 }</code></pre>
+
+### Older runners · DynamoDB locking
+
+DynamoDB locking (`dynamodb_table`) is deprecated from Terraform 1.11, but runners still pinned below 1.10 need it. To migrate, set **both** `use_lockfile = true` and `dynamodb_table` for a while: Terraform then takes both locks, so old and new runners can't overlap. Once every runner is on 1.10 or later, remove `dynamodb_table` and decommission the table. A backend change like this affects every run, so record it as an ADR (Module 10).
 
 ### Backend Security Checklist:
 - **Bucket Versioning:** Must be enabled on the S3 bucket so corrupted states can be rolled back immediately.
 - **KMS Encryption:** Enforce customer-managed keys (CMK) with an IAM policy restricting `kms:Decrypt` to authorized CI/CD pipeline execution roles.
 - **Block Public Access:** All 4 public access block settings on the S3 bucket must be set to `true`.
 - **Enforce TLS:** Add an S3 bucket policy denying `s3:*` when `aws:SecureTransport == false`.
-- **DynamoDB State Locking:** The DynamoDB table must have a primary key named `LockID` of type String.
+- **Write access for the pipeline only:** Only the CI/CD role and break-glass admin roles may write state. Engineers get scoped read-only access, enough for `terraform plan` and `state show`.
+- **Legacy DynamoDB locking only:** The lock table must have a primary key named `LockID` of type String.
+
+### State hygiene
+
+Never commit state or the local provider cache. Do commit the provider lock file, `.terraform.lock.hcl`, in each root module, so every machine resolves the same provider versions (Module 08):
+
+<pre><code># .gitignore at the terraform/ root
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+# .terraform.lock.hcl is NOT ignored: commit it</code></pre>
 
 ## Strategy · Layering state to control blast radius
 
