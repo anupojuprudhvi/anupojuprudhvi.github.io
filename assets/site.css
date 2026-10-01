@@ -1770,3 +1770,147 @@ html.js .reveal-in {
 html {
   scroll-padding-bottom: 88px;
 }
+
+/* ------------------------------------------------------- Homepage polish
+   Alternating section bands, card-style credentials, a header call to action
+   with a LinkedIn shortcut, and a two-column contact section. Mobile
+   overrides sit at the end of this block so they win over the base rules. */
+section.band {
+  background: var(--bg-raised);
+}
+
+/* Header: "Let's connect" as an outlined pill, LinkedIn as an icon button. */
+.navlinks a.nav-cta {
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 7px 16px;
+  font-weight: 600;
+  transition: background 0.15s ease;
+}
+.navlinks a.nav-cta:hover {
+  background: var(--accent-soft);
+}
+.nav-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--text);
+  font: 700 15px/1 system-ui, sans-serif;
+  text-decoration: none;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.nav-icon:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Credentials: cards with a badge icon. */
+.credentials {
+  gap: 16px;
+}
+.cred {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 16px;
+  align-items: start;
+  padding: 20px 22px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  transition: border-color 0.2s ease;
+}
+.cred:hover {
+  border-color: var(--accent);
+}
+.cred-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.cred-icon svg {
+  width: 22px;
+  height: 22px;
+}
+.cred h3 {
+  font-size: 15px;
+}
+.cred p {
+  font-size: 12px;
+}
+
+/* Contact: text on the left, a card of direct actions on the right, over a
+   faint grid that echoes the hero's architecture panel. */
+.closing {
+  background-color: var(--accent-soft);
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--accent) 9%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--accent) 9%, transparent) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+.closing .wrap {
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 56px;
+}
+.contact-card {
+  justify-self: end;
+  width: 100%;
+  max-width: 380px;
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--bg);
+  box-shadow: 0 24px 50px -30px rgba(0, 0, 0, 0.6);
+}
+.closing .contact-card-label {
+  margin: 0 0 18px;
+  font:
+    600 11px ui-monospace,
+    monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.contact-card .button {
+  align-self: stretch;
+  text-align: center;
+}
+.contact-actions .email {
+  font-size: 13px;
+}
+
+@media (max-width: 900px) {
+  .closing .wrap {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .contact-card {
+    justify-self: stretch;
+    max-width: none;
+  }
+}
+@media (max-width: 640px) {
+  .nav-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+  }
+  .credentials {
+    grid-template-columns: 1fr;
+  }
+  /* Inside the opened mobile menu, the pill becomes a plain menu row. */
+  html.js .navlinks.is-open > a.nav-cta {
+    border: 0;
+    border-top: 1px solid var(--border);
+    border-radius: 0;
+    padding: 13px 2px;
+  }
+}

@@ -136,8 +136,9 @@ export function siteTopNav({
           <a href="${page}#work"${active === "work" ? ` aria-current="page"` : ""}>Selected work</a>
           ${caseStudiesNavDropdown(docs, { prefix: a("case-studies/"), current: active === "case-studies" })}
           ${learningPathsNavDropdown({ prefix: a("learning-paths/"), current: active === "learning-paths" })}${homeAnchors}
-          <a href="${page}#contact" class="nav-cta">Let's connect ↗</a>
+          <a href="${page}#contact" class="nav-cta">Let's connect</a>
         </div>
+        <a class="nav-icon" href="https://www.linkedin.com/in/prudhvi-raj-anupoju/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile (opens in a new tab)"><span aria-hidden="true">in</span></a>
         <button id="themeToggle" type="button" aria-label="Switch to light theme">☼</button>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNavLinks" aria-label="Open menu">
           <span class="nav-toggle-bars" aria-hidden="true"></span>
