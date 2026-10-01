@@ -6,10 +6,16 @@ order: 1
 module: 1
 summary: Start here if Kubernetes is new to you. What a container is, in five minutes, then the problems that appear once you run many containers across many machines, and how Kubernetes solves them. Plus an honest look at when you don't need it.
 level: Basics · Start here
-readingTime: 8 min read
+readingTime: 10 min read
 stack: [Containers, Docker, Kubernetes]
 tags: [kubernetes, containers, docker, basics, beginner]
 ---
+
+**In this module, you'll learn to:**
+
+- Explain what an image, a container, and a registry are
+- Name the problems that appear when you run many containers on many machines
+- Describe what Kubernetes does about each one, and when you don't need it
 
 **Before you start:** nothing. You only need to be comfortable typing commands into a terminal. Every other idea in this track is explained when it first comes up.
 
@@ -146,3 +152,48 @@ Now picture doing that by hand for sixty containers across ten machines, every d
 - **Containers aren't small virtual machines.** They share the host's operating system kernel, which is why they start in seconds and use far less memory than a VM.
 - **Images are immutable.** You never patch a running container; you build a new image and replace the container. Kubernetes is built entirely around that idea.
 - **Kubernetes doesn't build images.** It runs images that already exist in a registry. Building and publishing them is a separate step, covered in [Container Delivery](15-container-delivery-to-eks.html).
+
+## Recap · Key terms
+
+- **Image:** a read-only package of an app and everything it needs, built from a Dockerfile.
+- **Container:** a running, isolated copy of an image.
+- **Registry:** a store that machines pull images from, such as Docker Hub or Amazon ECR.
+- **Container orchestrator:** software that places, restarts, connects, and scales containers across many machines.
+- **Cluster:** a group of machines that Kubernetes manages as one pool of capacity.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+Q: What's the difference between an image and a container?
+- An image runs on a server; a container runs on a laptop
+* An image is the read-only package; a container is a running copy of it
+- A container is built from a Dockerfile; an image is pulled from a registry
+- They're two names for the same thing
+= You build an image once, from a Dockerfile, and start as many containers from it as you like. Each container is a running, isolated copy.
+S: A server running three copies of your API dies at 3 a.m. What does an orchestrator such as Kubernetes do?
+- Pages the on-call engineer to restart the containers by hand
+- Waits for the server to come back, then restarts them there
+* Notices the missing copies and starts replacements on servers that have room
+- Nothing until the next deploy
+= You declared that three copies should exist. When reality no longer matches, Kubernetes starts new copies on healthy machines, without waking anyone up.
+Q: Where do servers get container images from?
+* A registry, such as Docker Hub or Amazon ECR
+- The Dockerfile, which they build on startup
+- The Kubernetes control plane, which stores every image
+- Each developer's laptop
+= Images are pushed to a registry once, and every machine that needs one pulls it from there. Kubernetes runs images; it doesn't build or store them.
+S: Which situation is the weakest case for adopting Kubernetes?
+- Thirty services owned by five teams, deployed to four environments
+- A platform that needs the same deploy process across dev, test, and production
+* One small web app run by a two-person team with no one to own a platform
+- Workloads whose traffic swings widely during the day
+= Kubernetes pays off with many services, teams, and environments. For one small app, a VM or a simpler container service is usually less work.
+Q: How do you usually tell a Kubernetes cluster what to run?
+- You choose a server and start the container on it with a script
+* You describe the result you want, and Kubernetes works out how to get there
+- You log in to each node and run `docker run`
+- You upload the image directly to a node
+= You declare the desired state ("3 copies of this image") and Kubernetes decides where to run them and keeps them running. That idea runs through the whole track.
+```

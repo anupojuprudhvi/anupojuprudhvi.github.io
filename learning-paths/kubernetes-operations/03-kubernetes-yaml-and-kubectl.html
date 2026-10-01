@@ -161,7 +161,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 03 of 20</span>
             <span><b>Level:</b> Basics · Hands-on</span>
-            <span><b>Time:</b> 10 min read</span>
+            <span><b>Time:</b> 12 min read</span>
             <span><b>Published:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
@@ -176,7 +176,7 @@
                 <li><a href="01-why-kubernetes.html"><span class="lp-toc-num">01</span><span>Why Kubernetes Exists, Starting from a Single Container</span></a></li>
                 <li><a href="02-your-first-cluster.html"><span class="lp-toc-num">02</span><span>Your First Cluster: A Free Local Lab with kind</span></a></li>
                 <li class="is-current"><a href="03-kubernetes-yaml-and-kubectl.html" aria-current="page"><span class="lp-toc-num">03</span><span>Reading Kubernetes YAML and Working with kubectl</span></a>
-                <ol class="lp-toc-sections"><li><a href="#every-object-has-the-same-shape">Every object has the same shape</a></li><li><a href="#just-enough-to-read-and-write-manifests">Just enough to read and write manifests</a></li><li><a href="#how-objects-find-each-other">How objects find each other</a></li><li><a href="#sections-of-a-cluster">Sections of a cluster</a></li><li><a href="#imperative-commands-and-declarative-files">Imperative commands and declarative files</a></li><li><a href="#the-kubectl-commands-you-ll-use-every-day">The kubectl commands you'll use every day</a></li><li><a href="#deploy-an-app-and-its-service-from-one-file">Deploy an app and its Service from one file</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#every-object-has-the-same-shape">Every object has the same shape</a></li><li><a href="#just-enough-to-read-and-write-manifests">Just enough to read and write manifests</a></li><li><a href="#how-objects-find-each-other">How objects find each other</a></li><li><a href="#sections-of-a-cluster">Sections of a cluster</a></li><li><a href="#imperative-commands-and-declarative-files">Imperative commands and declarative files</a></li><li><a href="#the-kubectl-commands-you-ll-use-every-day">The kubectl commands you'll use every day</a></li><li><a href="#deploy-an-app-and-its-service-from-one-file">Deploy an app and its Service from one file</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
               </ol>
               <p class="lp-toc-part">Part 2 · Core concepts</p>
               <ol class="lp-toc-list">
@@ -247,6 +247,12 @@
             </details>
           <section>
 <div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Read any manifest using the four fields every object has</li>
+<li>Write valid YAML, and connect objects with labels and selectors</li>
+<li>Use namespaces, and work declaratively with <code>kubectl apply</code></li>
+</ul>
 <p><b>Before you start:</b> have the kind cluster from <a href="02-your-first-cluster.html">Your First Cluster</a> running. Every example here works on it.</p>
 </div>
 </section>
@@ -463,6 +469,62 @@ kubectl delete -f hello.yaml</code></pre><figcaption class="scroll-hint">Scroll 
 </details>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>Manifest:</b> a YAML file describing one or more objects you want to exist.</li>
+<li><b>spec and status:</b> what you want (you write it) and what is (the cluster writes it).</li>
+<li><b>Label:</b> a key/value tag on an object, such as <code>app: hello</code>.</li>
+<li><b>Selector:</b> a query that matches labels; how Deployments and Services find their pods.</li>
+<li><b>Namespace:</b> a named section of a cluster; names only need to be unique inside one.</li>
+<li><b>Declarative:</b> describing the desired state in files and applying them, rather than issuing one-off commands.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="2" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Which field of an object is written by the cluster, never by you?</p>
+<ol class="lp-quiz-options" type="A"><li><code>spec</code></li><li><code>metadata</code></li><li><code>status</code></li><li><code>apiVersion</code></li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b><code>status</code></b></p><p class="lp-quiz-why">You write <code>spec</code>, the desired state. Controllers write <code>status</code>, the actual state, and keep working until the two match.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">Your Service's selector says <code>app: web</code>, but your Deployment's pods are labelled <code>app: hello</code>. You apply both. What happens?</p>
+<ol class="lp-quiz-options" type="A"><li>kubectl rejects the Service with a validation error</li><li>The Service renames the pods' labels to match</li><li>Both are created, but the Service has no pods behind it, so requests fail</li><li>The Service sends traffic to every pod in the namespace instead</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Both are created, but the Service has no pods behind it, so requests fail</b></p><p class="lp-quiz-why">Objects find each other through labels and selectors. A mismatch isn't an error; the Service simply matches nothing, which is why &quot;no endpoints&quot; is the first thing to check.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">In a manifest, what does a line starting with <code>- </code> mean?</p>
+<ol class="lp-quiz-options" type="A"><li>A comment</li><li>An item in a list</li><li>A field that's been removed</li><li>The start of a new document</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>An item in a list</b></p><p class="lp-quiz-why">A dash starts a list item, such as each container under <code>containers:</code>. Comments start with <code>#</code>, and <code>---</code> separates documents in one file.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Why prefer <code>kubectl apply -f</code> with files in Git over commands like <code>kubectl create</code> and <code>kubectl scale</code>?</p>
+<ol class="lp-quiz-options" type="A"><li><code>apply</code> is faster</li><li>Imperative commands don't work on real clusters</li><li>The files are a reviewable, repeatable record of what should be running</li><li><code>apply</code> skips the API server's checks</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The files are a reviewable, repeatable record of what should be running</b></p><p class="lp-quiz-why">Imperative commands leave no record. Files in Git can be reviewed, diffed, and re-applied safely, which is the foundation for everything from Helm to GitOps.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">You run <code>kubectl get pods</code> and see nothing, but you know your app is running. What's the most likely reason?</p>
+<ol class="lp-quiz-options" type="A"><li>The pods are still being scheduled</li><li>The pods are in a different namespace from your current one</li><li>kubectl only shows pods you created yourself</li><li>The pods have no labels</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The pods are in a different namespace from your current one</b></p><p class="lp-quiz-why">Commands run against one namespace, <code>default</code> unless you say otherwise. Try <code>kubectl get pods -A</code>, or add <code>-n &lt;namespace&gt;</code>.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/02-your-first-cluster.html">
           <span class="lp-nav-label">← Module 02</span>
           <span class="lp-nav-title">Your First Cluster: A Free Local Lab with kind</span>
@@ -498,5 +560,6 @@ kubectl delete -f hello.yaml</code></pre><figcaption class="scroll-hint">Scroll 
     </footer>
     <script src="../../assets/assistant.js" defer></script>
     <script src="../../assets/flow-player.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
   </body>
 </html>

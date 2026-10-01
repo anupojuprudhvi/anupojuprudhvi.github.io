@@ -6,11 +6,18 @@ order: 10
 module: 10
 summary: Everything from the core concepts still applies on EKS. What changes is who runs the control plane, where pod IP addresses come from, how you sign in, and how traffic gets in from the internet. This module maps each of those, then walks through a small EKS lab you can create and delete.
 level: EKS platform · Concepts
-readingTime: 10 min read
+readingTime: 12 min read
 stack: [Amazon EKS, AWS VPC CNI, AWS IAM, EKS access entries, AWS Load Balancer Controller, eksctl]
 tags: [eks, kubernetes, vpc-cni, iam, architecture, fundamentals]
 related: [healthcare/clinical-platform-modernization-and-cost-optimization, partner-engagements/it-monitoring-tanzu-to-eks-map-assessment]
 ---
+
+**In this module, you'll learn to:**
+
+- Say exactly what AWS runs in EKS, and what stays your job
+- Explain what changes when pods get real VPC IP addresses
+- Follow how an IAM identity becomes a Kubernetes user, and how an ALB reaches a pod
+- Create, explore, and delete a small EKS lab cluster
 
 **Before you start:** this builds on the core concepts, especially [How a Cluster Works](04-how-a-cluster-works.html), [Services & Cluster Networking](06-services-and-cluster-networking.html), and [Namespaces, RBAC & Service Accounts](08-namespaces-rbac-and-cluster-access.html). You'll also want the basic AWS building blocks: a VPC and its subnets, and an IAM role.
 
@@ -151,3 +158,49 @@ In production, clusters are usually defined in Terraform rather than `eksctl`, s
 - **Plan subnet sizes before the first cluster.** Running out of pod IPs is painful to fix later, because it means new subnets and replacing node groups.
 - **The cluster creator gets admin access by default.** Whoever created the cluster can administer it until you change that. Give access deliberately through access entries instead of relying on who happened to create it.
 - **Delete practice clusters the same day.** Load balancers and volumes created from inside the cluster are AWS resources too. Delete Ingresses and PersistentVolumeClaims before the cluster, or check for leftovers afterwards.
+
+## Recap · Key terms
+
+- **Amazon EKS:** managed Kubernetes, where AWS runs the control plane.
+- **VPC CNI:** the network plugin that gives each pod an IP address from your VPC subnets.
+- **Access entry:** maps an IAM role to what it can do inside an EKS cluster.
+- **AWS Load Balancer Controller:** creates ALBs and NLBs from Ingress and Service objects.
+- **Target type ip:** the ALB sends traffic straight to pod IP addresses.
+- **eksctl:** a command-line tool for creating EKS clusters quickly.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+Q: On EKS, who patches the API server and backs up etcd?
+* AWS
+- You, through managed node groups
+- The VPC CNI add-on
+- Nobody; EKS doesn't use etcd
+= AWS runs the control plane across several Availability Zones. You choose the version and when to upgrade, but patching and backups are AWS's job.
+S: Your EKS nodes have plenty of free CPU, but new pods are stuck and the events mention IP addresses. What's the likely cause?
+- The control plane is overloaded
+* The subnets have run out of free IP addresses, because each pod uses one
+- The ALB has too many targets
+- The images are too large
+= With the VPC CNI, every pod takes a real subnet IP. Small subnets run out of IPs long before nodes run out of CPU. Size subnets generously, or use prefix delegation.
+S: An engineer gets `Unauthorized` from kubectl on an EKS cluster. What's the most likely cause?
+- Their RBAC Role is missing the `get` verb
+* Their IAM role has no access entry on this cluster, or their AWS credentials have expired
+- The namespace doesn't exist
+- The cluster has no nodes
+= `Unauthorized` is an authentication failure: EKS doesn't recognise the IAM identity. A missing RBAC permission gives `Forbidden` instead.
+Q: With `target-type: ip`, where does the Application Load Balancer send a request?
+- To a NodePort on every node
+- To kube-proxy, which picks a pod
+* Straight to a ready pod's VPC IP address
+- To the EKS control plane
+= Because pods have VPC IPs, the ALB can target them directly and skip a hop. Only ready pods are registered, so readiness probes still decide who gets traffic.
+Q: You've finished with your `eksctl` lab cluster. What should you do?
+- Scale the node group to zero and leave it
+- Nothing; idle clusters are free
+* Delete the Ingresses and PVCs that created AWS resources, then delete the cluster
+- Terminate the nodes from the EC2 console
+= The control plane, the NAT gateway, and any load balancers or volumes cost money while they exist. Remove what the cluster created, then the cluster itself.
+```

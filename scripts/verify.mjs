@@ -256,6 +256,60 @@ try {
   assert.equal(await phone.locator("#siteNavLinks").isVisible(), false);
   assert.equal(await phone.locator(".latest .recent-card-link").count(), 3);
   await mobile.close();
+  // Pop quiz: a card slides in near the end of a module and opens the quiz in a
+  // dialog; questions come in a new order each attempt; 4 of 5 passes and
+  // celebrates; a fail doesn't; closing puts the quiz back in the page.
+  const quizPage = "learning-paths/kubernetes-operations/05-pods-deployments-and-rollouts.html";
+  const quizContext = await browser.newContext({ viewport: { width: 1280, height: 480 } });
+  const learner = await quizContext.newPage();
+  learner.on("pageerror", (e) => errors.push(`${quizPage} quiz: ${e.message}`));
+  await learner.goto(`${base}/${quizPage}`);
+  const answerKey = await learner.locator(".lp-quiz-q").evaluateAll((items) =>
+    Object.fromEntries(items.map((item) => [
+      item.querySelector(".lp-quiz-prompt").textContent.trim(),
+      item.querySelectorAll(".lp-quiz-options > li")[Number(item.dataset.answer)].textContent.trim(),
+    ])),
+  );
+  assert.equal(Object.keys(answerKey).length, 5);
+  assert.equal(await learner.locator(".lp-quiz-nudge.is-open").count(), 0, "no quiz card before the end");
+  await learner.evaluate(() => document.getElementById("key-terms").scrollIntoView({ block: "start" }));
+  await learner.locator(".lp-quiz-nudge.is-open").waitFor({ state: "visible" });
+  await learner.getByRole("button", { name: "Take the quiz" }).click();
+  const quizDialog = learner.locator("dialog.lp-quiz-dialog");
+  assert.equal(await quizDialog.evaluate((d) => d.open), true);
+  async function takeQuiz(pickRight) {
+    const order = [];
+    for (let n = 0; n < 5; n++) {
+      const prompt = (await quizDialog.locator(".lp-quiz-qtext").textContent()).trim();
+      order.push(prompt);
+      const choices = (await quizDialog.locator(".lp-quiz-choice-text").allTextContents()).map((t) => t.trim());
+      const right = choices.indexOf(answerKey[prompt]);
+      assert(right >= 0, `the right answer is offered for "${prompt}"`);
+      await quizDialog.locator(".lp-quiz-choice").nth(pickRight ? right : (right + 1) % choices.length).click();
+      await quizDialog.locator(".lp-quiz-next").click();
+    }
+    return order;
+  }
+  const firstOrder = await takeQuiz(true);
+  assert.deepEqual([...firstOrder].sort(), Object.keys(answerKey).sort(), "every question is asked once");
+  assert.equal((await quizDialog.locator(".lp-quiz-result").textContent()).trim(), "You got 5 of 5.");
+  assert.equal(await quizDialog.locator(".lp-quiz-badge").isVisible(), true, "a pass shows the badge");
+  assert.equal(await quizDialog.locator(".lp-confetti").count(), 1, "a pass celebrates with confetti");
+  await quizDialog.getByRole("button", { name: /Try again/ }).click();
+  const secondOrder = await takeQuiz(false);
+  assert.equal((await quizDialog.locator(".lp-quiz-result").textContent()).trim(), "You got 0 of 5.");
+  assert.equal(await quizDialog.locator(".lp-quiz-badge").count(), 0, "a fail shows no badge");
+  assert.match(await quizDialog.locator(".lp-quiz-message").textContent(), /Not quite there yet/);
+  await quizDialog.getByRole("button", { name: /Try again/ }).click();
+  const thirdOrder = await takeQuiz(true);
+  assert(
+    new Set([firstOrder, secondOrder, thirdOrder].map((o) => o.join("|"))).size > 1,
+    "question order is reshuffled between attempts",
+  );
+  await learner.keyboard.press("Escape");
+  assert.equal(await quizDialog.evaluate((d) => d.open), false);
+  assert.equal(await learner.locator(".lp-quiz .lp-quiz-app").count(), 1, "closing puts the quiz back in the page");
+  await quizContext.close();
   // Branded 404 page renders with working root-relative assets.
   const notFound = await browser.newContext();
   const missing = await notFound.newPage();
@@ -281,6 +335,10 @@ try {
   }
   await plain.goto(`${base}/case-studies/index.html`);
   assert.equal(await plain.locator(".uc-card:visible").count(), index.length);
+  await plain.goto(`${base}/${quizPage}`);
+  assert.equal(await plain.locator(".lp-quiz-list .lp-quiz-q:visible").count(), 5, "the quiz is readable without JavaScript");
+  await plain.locator(".lp-quiz-answer summary").first().click();
+  assert.equal(await plain.locator(".lp-quiz-answer").first().getAttribute("open"), "");
   await nojs.close();
   assert.deepEqual(errors, []);
   console.log(

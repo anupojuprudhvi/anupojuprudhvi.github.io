@@ -6,10 +6,16 @@ order: 7
 module: 7
 summary: A pod's files disappear with the pod. How volumes, PersistentVolumeClaims, and StorageClasses give an app storage that survives restarts, how StatefulSets run apps that need a stable identity, and when to use a DaemonSet, Job, or CronJob instead of a Deployment.
 level: Core concepts · Storage & workloads
-readingTime: 10 min read
+readingTime: 12 min read
 stack: [Kubernetes, PersistentVolumes, StorageClass, StatefulSet, DaemonSet, Job, CronJob]
 tags: [kubernetes, storage, persistent-volumes, statefulset, jobs, fundamentals]
 ---
+
+**In this module, you'll learn to:**
+
+- Explain why a pod's files don't survive it, and when that matters
+- Give a pod persistent storage with a PersistentVolumeClaim and a StorageClass
+- Choose between a Deployment, StatefulSet, DaemonSet, Job, and CronJob
 
 **Before you start:** this builds on [Pods, Deployments & Rollouts](05-pods-deployments-and-rollouts.html), especially the idea that pods are disposable, and on [Services & Cluster Networking](06-services-and-cluster-networking.html) for headless Services.
 
@@ -188,3 +194,50 @@ kubectl delete job hello-job
 - **Deleting a StatefulSet keeps its PVCs by default.** That protects the data, but abandoned volumes keep costing money until someone removes them.
 - **A pod stuck in `Pending` with a PVC** often means the claim can't be satisfied: no default StorageClass, a zone mismatch, or an access mode the driver doesn't support. `kubectl describe pvc` shows why.
 - **Jobs need `restartPolicy: OnFailure` or `Never`.** A Job's whole point is to finish; the `Always` policy that Deployments use isn't allowed.
+
+## Recap · Key terms
+
+- **Volume:** a directory mounted into a container; its type decides how long the data lasts.
+- **PersistentVolumeClaim (PVC):** a request for storage of a given size and access mode.
+- **PersistentVolume (PV):** the actual disk that satisfies a claim.
+- **StorageClass:** how disks get created: the driver, the disk type, and binding rules.
+- **StatefulSet:** pods with stable names and their own disks.
+- **DaemonSet:** exactly one pod on every node.
+- **Job and CronJob:** pods that run to completion, once or on a schedule.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+S: A pod saves uploads to `/data` inside its container, with no volume. The pod is replaced during a deploy. What happens to the files?
+- They move to the new pod
+- They're saved to etcd
+* They're lost
+- They stay on the node for the next pod
+= A container's own filesystem lives and dies with it. Data that must survive needs a persistent volume, or better, a service outside the cluster such as a database or Amazon S3.
+Q: Who usually writes the StorageClass, and who writes the PVC?
+* The platform team writes the StorageClass; the app team writes the PVC
+- The app team writes both
+- Kubernetes creates both automatically
+- The cloud provider writes the PVC; the app team writes the StorageClass
+= The StorageClass hides how disks are made. App teams only ask for a size and access mode in a claim, and the StorageClass's driver creates the disk.
+S: Pods on three different nodes need to read and write the same files. Which access mode and AWS storage fit?
+- `ReadWriteOnce` on Amazon EBS
+* `ReadWriteMany` on Amazon EFS
+- `ReadOnlyMany` on Amazon EBS
+- An `emptyDir` volume
+= An EBS volume attaches to one node at a time (`ReadWriteOnce`). Sharing across nodes needs a network file system such as EFS, with `ReadWriteMany`.
+Q: You need a log-shipping agent on every node, including nodes added later. Which controller?
+- A Deployment with one replica per node
+- A StatefulSet
+* A DaemonSet
+- A CronJob
+= A DaemonSet runs exactly one pod per node, and adds one automatically when a node joins.
+Q: What does a StatefulSet give its pods that a Deployment doesn't?
+- More CPU
+- Automatic backups
+* Stable names such as `db-0`, and each pod's own persistent volume
+- Faster rolling updates
+= StatefulSet pods keep their names and get their own PVC back when they're replaced. Backups and failover are still your job, which is why managed databases are often the better choice.
+```

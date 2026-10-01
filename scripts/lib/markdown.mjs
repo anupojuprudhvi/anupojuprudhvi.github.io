@@ -232,6 +232,57 @@ function flowDiagram(source) {
 </figure>`;
 }
 
+/**
+ * A ```quiz fence becomes a self-check quiz. Without JavaScript it's a plain
+ * list of questions, each with its answer behind a "Show answer" toggle;
+ * assets/quiz.js turns it into a shuffled, one-question-at-a-time quiz that
+ * pops up as the reader nears the end of the page.
+ *
+ *   Q: Question text                a concept question...
+ *   S: A situation, then a question ...or a scenario question, labelled as one
+ *   - A wrong option                at least two options...
+ *   * The correct option            ...exactly one of them marked "*"
+ *   = Why the answer is right       an explanation, shown after answering
+ */
+function quizBlock(source) {
+  const questions = [];
+  const fail = (msg, line) => { throw new Error(`quiz: ${msg}${line ? ` ("${line.trim()}")` : ""}`); };
+  for (const raw of source) {
+    const line = raw.trim();
+    if (!line) continue;
+    const current = questions[questions.length - 1];
+    let m;
+    if ((m = line.match(/^([QS]):\s*(.+)$/)))
+      questions.push({ kind: m[1] === "S" ? "Scenario" : "Concept", prompt: m[2], options: [], why: "" });
+    else if (!current) fail("start each question with a Q: or S: line", line);
+    else if ((m = line.match(/^([-*])\s+(.+)$/))) current.options.push({ text: m[2], correct: m[1] === "*" });
+    else if ((m = line.match(/^=\s*(.+)$/))) current.why = current.why ? `${current.why} ${m[1]}` : m[1];
+    else fail("each line must start with Q:, S:, -, *, or =", line);
+  }
+  if (!questions.length) fail("add at least one question");
+  for (const q of questions) {
+    if (q.options.length < 2) fail("each question needs at least two options", q.prompt);
+    if (q.options.filter((o) => o.correct).length !== 1) fail("mark exactly one option correct with *", q.prompt);
+    if (!q.why) fail("add an explanation line starting with =", q.prompt);
+  }
+
+  const items = questions.map((q) => {
+    const answer = q.options.findIndex((o) => o.correct);
+    return `<li class="lp-quiz-q" data-answer="${answer}" data-kind="${q.kind}">
+<p class="lp-quiz-kind">${q.kind}</p>
+<p class="lp-quiz-prompt">${inline(q.prompt)}</p>
+<ol class="lp-quiz-options" type="A">${q.options.map((o) => `<li>${inline(o.text)}</li>`).join("")}</ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>${inline(q.options[answer].text)}</b></p><p class="lp-quiz-why">${inline(q.why)}</p></details>
+</li>`;
+  }).join("\n");
+  return `<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">${questions.length} questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+${items}
+</ol>
+</div>`;
+}
+
 /** Block-level markdown inside a section. */
 function renderBlocks(text) {
   const out = [];
@@ -266,6 +317,10 @@ function renderBlocks(text) {
       if (i < lines.length) i++; // consume the closing fence
       if (fence[1] === "flow") {
         out.push(flowDiagram(buf));
+        continue;
+      }
+      if (fence[1] === "quiz") {
+        out.push(quizBlock(buf));
         continue;
       }
       const lang = fence[1] ? ` class="language-${esc(fence[1])}"` : "";

@@ -7,12 +7,18 @@ order: 8
 module: 8
 summary: How a kubectl command is checked before it's allowed. Authentication says who you are, RBAC decides what you may do, and namespaces set the scope. Covers Roles and RoleBindings, the built-in roles, service accounts for pods, and checking permissions safely.
 level: Core concepts · Access
-readingTime: 9 min read
+readingTime: 11 min read
 stack: [Kubernetes RBAC, Namespaces, Service accounts, kubectl]
 tags: [kubernetes, rbac, namespaces, access-control, fundamentals]
 redirectFrom: [namespaces-rbac-and-cluster-access]
 related: [tolling/cloud-foundation]
 ---
+
+**In this module, you'll learn to:**
+
+- Name the three checks every API request passes, and read the error each one gives
+- Grant permissions with Roles, ClusterRoles, and bindings
+- Give pods their own identity with service accounts, and check permissions with `kubectl auth can-i`
 
 **Before you start:** this builds on [How a Cluster Works](04-how-a-cluster-works.html), in particular that every action goes through the API server.
 
@@ -128,3 +134,48 @@ kubectl auth whoami
 - **Start from `view` and add what's needed.** Wide permissions are easy to grant and hard to take back once pipelines and people depend on them.
 - **Treat `cluster-admin` and `secrets` access as sensitive.** Being able to read Secrets in a namespace means being able to read every credential in it.
 - **Keep RBAC in Git.** Roles and bindings are ordinary YAML, so they can be reviewed and deployed like everything else, as described in [GitOps with Argo CD](16-gitops-with-argo-cd.html).
+
+## Recap · Key terms
+
+- **Authentication:** proving who you are to the API server.
+- **Authorization (RBAC):** deciding what that identity may do.
+- **Role and ClusterRole:** a list of allowed verbs on resources, in one namespace or across the cluster.
+- **RoleBinding and ClusterRoleBinding:** give a role to users, groups, or service accounts.
+- **Service account:** the identity a pod runs as.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+S: kubectl says `pods is forbidden: User "dev" cannot list resource "pods"`. What's wrong?
+- Your credentials have expired
+* You're signed in, but RBAC doesn't allow that action
+- The pods don't exist
+- The API server is down
+= "Forbidden" means authentication worked and authorization refused, so you need a role binding. An authentication failure says "Unauthorized" instead.
+Q: How do you take away a permission that a RoleBinding granted?
+- Add a deny rule to the user's Role
+* Remove or change the binding, or the Role, that grants it
+- Create a NetworkPolicy
+- Delete the namespace
+= RBAC only adds permissions; there are no deny rules. Anything not granted is refused, so removing the grant removes the permission.
+S: A team needs read-only access to everything in the `orders` namespace, and nowhere else. What's the simplest correct setup?
+- A ClusterRoleBinding to the built-in `view` ClusterRole
+* A RoleBinding in `orders` to the built-in `view` ClusterRole
+- A ClusterRoleBinding to `cluster-admin`
+- A new namespace for the team
+= A RoleBinding limits whatever it grants to its own namespace, even when the role is a ClusterRole. A ClusterRoleBinding would grant it everywhere.
+Q: Your app never calls the Kubernetes API. Which service account setup is best?
+- The namespace's `default` service account, bound to `edit`
+* A dedicated service account with no permissions, and token mounting turned off
+- `cluster-admin`, so it never fails
+- No service account at all
+= Every pod runs as some service account. A dedicated one with no roles means a compromised container can't do anything in the cluster.
+Q: Why isn't a namespace enough to separate Production from Development?
+- Namespaces can't hold Deployments
+* A namespace blocks nothing by itself; cluster-wide permissions and resources reach across all of them
+- Namespaces are deleted on every upgrade
+- Pods in different namespaces can't talk to each other
+= Namespaces are a scope for permissions, quotas, and policies, not a wall. A hard boundary between environments needs separate clusters.
+```

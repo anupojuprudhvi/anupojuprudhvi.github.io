@@ -161,7 +161,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 09 of 20</span>
             <span><b>Level:</b> Core concepts · Packaging</span>
-            <span><b>Time:</b> 9 min read</span>
+            <span><b>Time:</b> 11 min read</span>
             <span><b>Published:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
@@ -185,7 +185,7 @@
                 <li><a href="07-storage-and-workload-types.html"><span class="lp-toc-num">07</span><span>Storage &amp; Other Workload Types: Data That Outlives a Pod</span></a></li>
                 <li><a href="08-namespaces-rbac-and-cluster-access.html"><span class="lp-toc-num">08</span><span>Namespaces, RBAC &amp; Service Accounts: Who Can Do What</span></a></li>
                 <li class="is-current"><a href="09-helm-and-kustomize.html" aria-current="page"><span class="lp-toc-num">09</span><span>Packaging Apps with Helm and Kustomize</span></a>
-                <ol class="lp-toc-sections"><li><a href="#one-app-many-environments-no-copy-paste">One app, many environments, no copy-paste</a></li><li><a href="#a-shared-base-plus-small-patches-per-environment">A shared base, plus small patches per environment</a></li><li><a href="#a-package-manager-for-kubernetes">A package manager for Kubernetes</a></li><li><a href="#helm-kustomize-or-both">Helm, Kustomize, or both</a></li><li><a href="#one-app-two-environments">One app, two environments</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#one-app-many-environments-no-copy-paste">One app, many environments, no copy-paste</a></li><li><a href="#a-shared-base-plus-small-patches-per-environment">A shared base, plus small patches per environment</a></li><li><a href="#a-package-manager-for-kubernetes">A package manager for Kubernetes</a></li><li><a href="#helm-kustomize-or-both">Helm, Kustomize, or both</a></li><li><a href="#one-app-two-environments">One app, two environments</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
               </ol>
               <p class="lp-toc-part">Part 3 · Kubernetes on Amazon EKS</p>
               <ol class="lp-toc-list">
@@ -247,6 +247,12 @@
             </details>
           <section>
 <div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Keep one app's manifests consistent across environments with Kustomize overlays</li>
+<li>Install, configure, upgrade, and roll back packaged software with Helm</li>
+<li>Decide which tool fits which job</li>
+</ul>
 <p><b>Before you start:</b> this builds on the declarative <code>kubectl apply</code> workflow from <a href="03-kubernetes-yaml-and-kubectl.html">Reading Kubernetes YAML</a>. Have the kind cluster running, and install Helm (<code>brew install helm</code>, <code>winget install Helm.Helm</code>, or the script on helm.sh).</p>
 </div>
 </section>
@@ -405,6 +411,61 @@ kubectl delete -k hello/overlays/prod</code></pre><figcaption class="scroll-hint
 </details>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>Kustomize:</b> builds per-environment YAML from a shared base plus patches; built into kubectl.</li>
+<li><b>Base and overlay:</b> the shared manifests, and one environment's differences from them.</li>
+<li><b>Helm chart:</b> a package of templated manifests with default settings.</li>
+<li><b>Values:</b> the settings you pass to a chart to override its defaults.</li>
+<li><b>Release:</b> one installed copy of a chart, with a revision history you can roll back.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">Dev and Production differ only in replica count, namespace, and image tag. What's the Kustomize way to handle that?</p>
+<ol class="lp-quiz-options" type="A"><li>Copy the whole folder for each environment</li><li>One base, plus a small overlay per environment listing only those differences</li><li>A separate Helm chart per environment</li><li>One file with if-statements for each environment</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>One base, plus a small overlay per environment listing only those differences</b></p><p class="lp-quiz-why">Overlays keep the shared manifests in one place, so a fix in the base reaches every environment, and each overlay stays a small, readable diff.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">What does <code>helm install</code> without <code>--version</code> install?</p>
+<ol class="lp-quiz-options" type="A"><li>The version you installed last time</li><li>Whatever the newest chart version is right now</li><li>The version pinned in the cluster</li><li>Nothing; the flag is required</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Whatever the newest chart version is right now</b></p><p class="lp-quiz-why">Without <code>--version</code> you get today's newest chart, so two environments installed a week apart can differ. Always pin chart versions.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Before installing a chart, you want to see every object it will create, including cluster-wide permissions. Which command?</p>
+<ol class="lp-quiz-options" type="A"><li><code>helm list</code></li><li><code>helm history</code></li><li><code>helm template</code></li><li><code>helm rollback</code></li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b><code>helm template</code></b></p><p class="lp-quiz-why"><code>helm template</code> renders the chart to plain YAML without touching the cluster, so you can review it first.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="0" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">Someone edits a Helm-managed Deployment with <code>kubectl edit</code>. What happens at the next <code>helm upgrade</code>?</p>
+<ol class="lp-quiz-options" type="A"><li>The change is overwritten by what the chart and values say</li><li>Helm keeps the manual change and merges it</li><li>The upgrade fails until the edit is reverted</li><li>Helm creates a second Deployment</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The change is overwritten by what the chart and values say</b></p><p class="lp-quiz-why">Helm applies what the chart and values describe. A manual edit isn't in either, so it's lost. Change Helm-managed objects through Helm.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Which split does this track use?</p>
+<ol class="lp-quiz-options" type="A"><li>Kustomize for everything</li><li>Helm for your own apps, Kustomize for add-ons</li><li>Helm for third-party add-ons; overlays or values files for your own apps</li><li>Neither; plain <code>kubectl apply</code> only</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Helm for third-party add-ons; overlays or values files for your own apps</b></p><p class="lp-quiz-why">Helm is good at installing and upgrading other people's software. Your own apps fit Kustomize overlays or per-environment Helm values, applied by Argo CD.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/08-namespaces-rbac-and-cluster-access.html">
           <span class="lp-nav-label">← Module 08</span>
           <span class="lp-nav-title">Namespaces, RBAC &amp; Service Accounts: Who Can Do What</span>
@@ -440,5 +501,6 @@ kubectl delete -k hello/overlays/prod</code></pre><figcaption class="scroll-hint
     </footer>
     <script src="../../assets/assistant.js" defer></script>
     <script src="../../assets/flow-player.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
   </body>
 </html>

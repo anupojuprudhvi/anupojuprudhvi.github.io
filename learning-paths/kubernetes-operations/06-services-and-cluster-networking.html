@@ -161,7 +161,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 06 of 20</span>
             <span><b>Level:</b> Core concepts · Networking</span>
-            <span><b>Time:</b> 9 min read</span>
+            <span><b>Time:</b> 11 min read</span>
             <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
@@ -182,7 +182,7 @@
                 <li><a href="04-how-a-cluster-works.html"><span class="lp-toc-num">04</span><span>How a Kubernetes Cluster Actually Works</span></a></li>
                 <li><a href="05-pods-deployments-and-rollouts.html"><span class="lp-toc-num">05</span><span>Pods, Deployments &amp; Rollouts: How Your App Actually Runs</span></a></li>
                 <li class="is-current"><a href="06-services-and-cluster-networking.html" aria-current="page"><span class="lp-toc-num">06</span><span>Services &amp; Cluster Networking: How Traffic Finds Your Pods</span></a>
-                <ol class="lp-toc-sections"><li><a href="#never-talk-to-a-pod-talk-to-a-service">Never talk to a pod, talk to a Service</a></li><li><a href="#one-request-from-one-pod-to-another-inside-the-cluster">One request from one pod to another, inside the cluster</a></li><li><a href="#choosing-how-a-service-is-exposed">Choosing how a Service is exposed</a></li><li><a href="#from-outside-the-cluster-to-a-pod">From outside the cluster to a pod</a></li><li><a href="#by-default-every-pod-can-reach-every-pod">By default, every pod can reach every pod</a></li><li><a href="#see-the-pieces-in-a-running-cluster">See the pieces in a running cluster</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#never-talk-to-a-pod-talk-to-a-service">Never talk to a pod, talk to a Service</a></li><li><a href="#one-request-from-one-pod-to-another-inside-the-cluster">One request from one pod to another, inside the cluster</a></li><li><a href="#choosing-how-a-service-is-exposed">Choosing how a Service is exposed</a></li><li><a href="#from-outside-the-cluster-to-a-pod">From outside the cluster to a pod</a></li><li><a href="#by-default-every-pod-can-reach-every-pod">By default, every pod can reach every pod</a></li><li><a href="#see-the-pieces-in-a-running-cluster">See the pieces in a running cluster</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="07-storage-and-workload-types.html"><span class="lp-toc-num">07</span><span>Storage &amp; Other Workload Types: Data That Outlives a Pod</span></a></li>
                 <li><a href="08-namespaces-rbac-and-cluster-access.html"><span class="lp-toc-num">08</span><span>Namespaces, RBAC &amp; Service Accounts: Who Can Do What</span></a></li>
                 <li><a href="09-helm-and-kustomize.html"><span class="lp-toc-num">09</span><span>Packaging Apps with Helm and Kustomize</span></a></li>
@@ -247,6 +247,12 @@
             </details>
           <section>
 <div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Explain why apps talk to Services, not to pods</li>
+<li>Follow one request through cluster DNS, a ClusterIP, and kube-proxy to a ready pod</li>
+<li>Choose a Service type, and bring outside traffic in with an Ingress</li>
+</ul>
 <p><b>Before you start:</b> this builds on <a href="05-pods-deployments-and-rollouts.html">Pods, Deployments &amp; Rollouts</a>, especially labels and readiness probes. A basic idea of IP addresses, ports, and DNS helps.</p>
 </div>
 </section>
@@ -377,6 +383,62 @@ kubectl port-forward -n orders service/orders-api 8080:80</code></pre><figcaptio
 </details>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>Service:</b> a stable name and address in front of a changing set of pods.</li>
+<li><b>ClusterIP:</b> a Service's virtual IP; really just routing rules on each node.</li>
+<li><b>EndpointSlice:</b> the current list of ready pod IPs behind a Service.</li>
+<li><b>CoreDNS:</b> the cluster's DNS server, which resolves names like <code>orders-api.orders</code>.</li>
+<li><b>Ingress:</b> HTTP routing rules for traffic from outside, made real by an ingress controller.</li>
+<li><b>NetworkPolicy:</b> a rule limiting which pods may connect to which.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">Code in the <code>checkout</code> namespace calls the <code>orders-api</code> Service in the <code>orders</code> namespace. Which name works?</p>
+<ol class="lp-quiz-options" type="A"><li><code>orders-api</code></li><li><code>orders-api.orders</code></li><li><code>orders.orders-api</code></li><li>The IP address of an <code>orders-api</code> pod</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b><code>orders-api.orders</code></b></p><p class="lp-quiz-why">Short names only resolve within the same namespace. Across namespaces, use <code>&lt;service&gt;.&lt;namespace&gt;</code>. Pod IPs change on every rollout, so never use them.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="0" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">A Service has no endpoints. What are the two most likely causes?</p>
+<ol class="lp-quiz-options" type="A"><li>Its selector doesn't match the pod labels, or no pod is passing readiness</li><li>The ClusterIP is wrong, or DNS is down</li><li>The Ingress is missing, or the load balancer is down</li><li>The namespace is full, or the node is out of memory</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Its selector doesn't match the pod labels, or no pod is passing readiness</b></p><p class="lp-quiz-why">Endpoints are the ready pods that match the selector. A label typo or a failing readiness probe leaves the list empty.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Why can't you ping a ClusterIP?</p>
+<ol class="lp-quiz-options" type="A"><li>A NetworkPolicy blocks it by default</li><li>It isn't a real machine, only routing rules that kube-proxy writes on each node</li><li>ClusterIPs only accept HTTPS</li><li>It's only reachable from outside the cluster</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>It isn't a real machine, only routing rules that kube-proxy writes on each node</b></p><p class="lp-quiz-why">Nothing listens on the ClusterIP. kube-proxy's rules send traffic for its ports to a ready pod, so a ping gets no answer.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">You want several HTTP services reachable from the internet under one hostname, routed by path. What do you use?</p>
+<ol class="lp-quiz-options" type="A"><li>A <code>LoadBalancer</code> Service for each one</li><li>A <code>NodePort</code> for each one</li><li>An Ingress (or Gateway API routes) handled by a controller</li><li>A headless Service</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>An Ingress (or Gateway API routes) handled by a controller</b></p><p class="lp-quiz-why">An Ingress routes HTTP by host and path to different Services through one entry point. A LoadBalancer Service per app costs one load balancer each.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">By default, which pods can connect to a pod in the <code>payments</code> namespace?</p>
+<ol class="lp-quiz-options" type="A"><li>Only pods in <code>payments</code></li><li>None, until you add a NetworkPolicy</li><li>Any pod in any namespace</li><li>Only pods with the same labels</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Any pod in any namespace</b></p><p class="lp-quiz-why">Kubernetes networking is flat by default. NetworkPolicies, enforced by the network plugin, are how you restrict it.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <section class="related-links" aria-label="See it in practice">
           <h2>See it in practice</h2>
           <ul>
@@ -419,5 +481,6 @@ kubectl port-forward -n orders service/orders-api 8080:80</code></pre><figcaptio
     </footer>
     <script src="../../assets/assistant.js" defer></script>
     <script src="../../assets/flow-player.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
   </body>
 </html>

@@ -161,7 +161,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 12 of 20</span>
             <span><b>Level:</b> Platform · Add-ons</span>
-            <span><b>Time:</b> 9 min read</span>
+            <span><b>Time:</b> 11 min read</span>
             <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
@@ -191,7 +191,7 @@
                 <li><a href="10-kubernetes-on-eks.html"><span class="lp-toc-num">10</span><span>Kubernetes on Amazon EKS: What AWS Runs, and What Changes</span></a></li>
                 <li><a href="11-multi-environment-clusters-and-access-entries.html"><span class="lp-toc-num">11</span><span>Multi-Environment Clusters &amp; EKS Access Entries</span></a></li>
                 <li class="is-current"><a href="12-platform-add-ons.html" aria-current="page"><span class="lp-toc-num">12</span><span>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span></a>
-                <ol class="lp-toc-sections"><li><a href="#a-new-cluster-is-an-empty-building">A new cluster is an empty building</a></li><li><a href="#each-add-on-gets-its-own-iam-role">Each add-on gets its own IAM role</a></li><li><a href="#externaldns-across-accounts-for-a-private-zone">ExternalDNS across accounts, for a private zone</a></li><li><a href="#storage-classes-that-respect-availability-zones">Storage classes that respect Availability Zones</a></li><li><a href="#two-gotchas-from-the-original-install-script">Two gotchas from the original install script</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#a-new-cluster-is-an-empty-building">A new cluster is an empty building</a></li><li><a href="#each-add-on-gets-its-own-iam-role">Each add-on gets its own IAM role</a></li><li><a href="#externaldns-across-accounts-for-a-private-zone">ExternalDNS across accounts, for a private zone</a></li><li><a href="#storage-classes-that-respect-availability-zones">Storage classes that respect Availability Zones</a></li><li><a href="#two-gotchas-from-the-original-install-script">Two gotchas from the original install script</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="13-workload-identity-and-secrets.html"><span class="lp-toc-num">13</span><span>Workload Identity &amp; Secrets: How Pods Get AWS Access</span></a></li>
                 <li><a href="14-ingress-architecture-and-cost.html"><span class="lp-toc-num">14</span><span>Dual Ingress Architecture &amp; Its Cost Mechanics</span></a></li>
               </ol>
@@ -247,6 +247,12 @@
             </details>
           <section>
 <div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>List the add-ons a new EKS cluster needs before apps arrive, and what each does</li>
+<li>Give every add-on its own narrowly scoped IAM role</li>
+<li>Configure ExternalDNS and storage classes safely, and avoid two install-script gotchas</li>
+</ul>
 <p><b>Before you start:</b> this builds on <a href="10-kubernetes-on-eks.html">Kubernetes on Amazon EKS</a>. It installs the pieces that later modules rely on: load balancing (see <a href="14-ingress-architecture-and-cost.html">Ingress Architecture &amp; Cost</a>), metrics and autoscaling (<a href="17-scaling-requests-and-cost.html">Scaling &amp; Cost</a>), and logs (<a href="18-observability-and-alerting.html">Observability</a>). It's based on the add-on setup used in the multi-environment deployment this track draws on, with every name, account, and domain replaced by a placeholder.</p>
 </div>
 </section>
@@ -345,6 +351,61 @@ volumeBindingMode: WaitForFirstConsumer</code></pre>
 </details>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>Add-on:</b> cluster software that adds a capability, such as load balancing, DNS, or logs.</li>
+<li><b>ExternalDNS:</b> creates DNS records for Services and Ingresses.</li>
+<li><b>metrics-server:</b> reports pod CPU and memory, used by <code>kubectl top</code> and the HPA.</li>
+<li><b>CSI driver:</b> connects Kubernetes volumes to a storage system, such as EBS or EFS.</li>
+<li><b>WaitForFirstConsumer:</b> creates a volume only once its pod has a node, in that node's zone.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Why does every add-on get its own IAM role?</p>
+<ol class="lp-quiz-options" type="A"><li>AWS limits each role to one service account</li><li>So a misbehaving or compromised add-on can only touch what it needs</li><li>It makes add-ons install faster</li><li>Helm requires it</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>So a misbehaving or compromised add-on can only touch what it needs</b></p><p class="lp-quiz-why">The autoscaler can resize node groups but can't edit DNS; ExternalDNS can edit one zone but can't create load balancers. Separate roles keep the damage small.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">A pod can't start because its EBS volume is in a different Availability Zone from its node. What prevents this?</p>
+<ol class="lp-quiz-options" type="A"><li>Using <code>ReadWriteMany</code></li><li>A StorageClass with <code>volumeBindingMode: WaitForFirstConsumer</code></li><li>Running more replicas</li><li>Pinning the add-on's version</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>A StorageClass with <code>volumeBindingMode: WaitForFirstConsumer</code></b></p><p class="lp-quiz-why"><code>WaitForFirstConsumer</code> waits until the pod has been scheduled, then creates the volume in that node's zone.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">The install script annotated the Cluster Autoscaler Deployment with <code>safe-to-evict: &quot;false&quot;</code>. What effect did that have?</p>
+<ol class="lp-quiz-options" type="A"><li>It stopped the autoscaler removing its own node</li><li>None, because the autoscaler reads that annotation from pods, not Deployments</li><li>It made the autoscaler crash</li><li>It disabled scale-down entirely</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>None, because the autoscaler reads that annotation from pods, not Deployments</b></p><p class="lp-quiz-why">The command succeeded but did nothing. The annotation has to go in the pod template, so it lands on the pods themselves.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">Two clusters run ExternalDNS against the same zone with the same <code>--txt-owner-id</code>. What's the risk?</p>
+<ol class="lp-quiz-options" type="A"><li>None; that's the recommended setup</li><li>They can overwrite each other's records</li><li>ExternalDNS refuses to start</li><li>Every record is created twice</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>They can overwrite each other's records</b></p><p class="lp-quiz-why">The owner ID marks which records a cluster manages. Shared IDs make clusters fight over records, so make it unique per cluster.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Why is installing add-ons from <code>.../releases/latest/...</code> URLs a problem?</p>
+<ol class="lp-quiz-options" type="A"><li>Latest releases are always unstable</li><li>Runs on different days can install different versions, so environments drift apart</li><li>GitHub blocks those URLs</li><li>They download more slowly</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Runs on different days can install different versions, so environments drift apart</b></p><p class="lp-quiz-why">&quot;Latest&quot; changes over time. Pin every add-on version, and change versions on purpose, one environment at a time.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/11-multi-environment-clusters-and-access-entries.html">
           <span class="lp-nav-label">← Module 11</span>
           <span class="lp-nav-title">Multi-Environment Clusters &amp; EKS Access Entries</span>
@@ -380,5 +441,6 @@ volumeBindingMode: WaitForFirstConsumer</code></pre>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
     <script src="../../assets/flow-player.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
   </body>
 </html>

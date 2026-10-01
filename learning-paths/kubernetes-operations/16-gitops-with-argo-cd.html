@@ -161,7 +161,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 16 of 20</span>
             <span><b>Level:</b> Production · Delivery</span>
-            <span><b>Time:</b> 8 min read</span>
+            <span><b>Time:</b> 10 min read</span>
             <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
@@ -198,7 +198,7 @@
               <ol class="lp-toc-list">
                 <li><a href="15-container-delivery-to-eks.html"><span class="lp-toc-num">15</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
                 <li class="is-current"><a href="16-gitops-with-argo-cd.html" aria-current="page"><span class="lp-toc-num">16</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a>
-                <ol class="lp-toc-sections"><li><a href="#the-cluster-should-match-git-and-nothing-else">The cluster should match Git, and nothing else</a></li><li><a href="#setting-up-an-application">Setting up an application</a></li><li><a href="#how-a-deploy-flows">How a deploy flows</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#the-cluster-should-match-git-and-nothing-else">The cluster should match Git, and nothing else</a></li><li><a href="#setting-up-an-application">Setting up an application</a></li><li><a href="#how-a-deploy-flows">How a deploy flows</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="17-scaling-requests-and-cost.html"><span class="lp-toc-num">17</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
                 <li><a href="18-observability-and-alerting.html"><span class="lp-toc-num">18</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
                 <li><a href="19-incident-triage.html"><span class="lp-toc-num">19</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
@@ -247,6 +247,12 @@
             </details>
           <section>
 <div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Explain how GitOps differs from a pipeline that runs <code>kubectl apply</code></li>
+<li>Define an Argo CD Application with automated sync, prune, and self-heal</li>
+<li>Deploy and roll back through pull requests, across many environments</li>
+</ul>
 <p><b>Before you start:</b> this builds on <a href="15-container-delivery-to-eks.html">Container Delivery</a>. There, CI built and pushed an image. Here, a separate process decides what actually runs in each cluster.</p>
 </div>
 </section>
@@ -319,6 +325,62 @@ spec:
 </details>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>GitOps:</b> a controller in the cluster keeps it matching what's in Git.</li>
+<li><b>Argo CD Application:</b> says which repository path should run in which cluster and namespace.</li>
+<li><b>Sync:</b> applying Git's desired state to the cluster.</li>
+<li><b>Self-heal:</b> undoing changes made directly in the cluster.</li>
+<li><b>Prune:</b> deleting cluster resources that were removed from Git.</li>
+<li><b>Drift:</b> any difference between Git and the cluster.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">With GitOps, what does the CI pipeline do to the cluster?</p>
+<ol class="lp-quiz-options" type="A"><li>Runs <code>kubectl apply</code> with admin credentials</li><li>Nothing directly: it pushes an image and changes Git, and Argo CD applies the change from inside the cluster</li><li>Restarts every pod</li><li>Runs <code>helm upgrade</code></li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Nothing directly: it pushes an image and changes Git, and Argo CD applies the change from inside the cluster</b></p><p class="lp-quiz-why">Argo CD pulls from Git and applies. CI never needs cluster credentials, which removes a powerful secret from the pipeline.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">Someone scales a Deployment by hand, and the Application has <code>selfHeal: true</code>. What happens?</p>
+<ol class="lp-quiz-options" type="A"><li>The change stays until the next commit</li><li>Argo CD puts it back to what Git says</li><li>Argo CD commits the change to Git</li><li>The Application is deleted</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Argo CD puts it back to what Git says</b></p><p class="lp-quiz-why">Self-heal treats manual changes as drift and reverts them, so Git stays the single source of truth.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">How do you roll back a bad release in a GitOps setup?</p>
+<ol class="lp-quiz-options" type="A"><li><code>kubectl rollout undo</code> in every cluster</li><li>Revert the commit that changed the image, and let Argo CD sync the cluster back</li><li>Delete the Argo CD Application</li><li>Rebuild the previous image</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Revert the commit that changed the image, and let Argo CD sync the cluster back</b></p><p class="lp-quiz-why">The Git history is the deploy history, so a revert is a reviewed, recorded rollback. A kubectl undo would be put back by self-heal anyway.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="0" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">You delete a manifest from Git, and the Application has <code>prune: true</code>. What happens to that object in the cluster?</p>
+<ol class="lp-quiz-options" type="A"><li>Argo CD deletes it</li><li>It stays, unmanaged</li><li>Argo CD restores the file in Git</li><li>The sync fails</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Argo CD deletes it</b></p><p class="lp-quiz-why">Prune removes cluster resources that no longer exist in Git. Without it, deleted manifests leave orphaned objects behind.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Why keep deployment manifests in a separate repository from application code?</p>
+<ol class="lp-quiz-options" type="A"><li>Argo CD can't read application repositories</li><li>So the group allowed to change what runs in Production can be smaller than the group allowed to change code</li><li>Git limits repository size</li><li>It makes builds faster</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>So the group allowed to change what runs in Production can be smaller than the group allowed to change code</b></p><p class="lp-quiz-why">Separating them lets you protect the manifests repository, where a merge is a Production deploy, more tightly than the code.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <section class="related-links" aria-label="See it in practice">
           <h2>See it in practice</h2>
           <ul>
@@ -361,5 +423,6 @@ spec:
     </footer>
     <script src="../../assets/assistant.js" defer></script>
     <script src="../../assets/flow-player.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
   </body>
 </html>

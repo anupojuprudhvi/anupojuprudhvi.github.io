@@ -7,12 +7,18 @@ order: 18
 module: 18
 summary: What to collect from an EKS cluster (logs, metrics, and cluster state), which few signals deserve an alert, and how to set alerts that wake people for real problems only.
 level: Production · Monitoring
-readingTime: 8 min read
+readingTime: 10 min read
 stack: [Amazon EKS, CloudWatch Container Insights, Fluent Bit, Prometheus, Amazon Managed Service for Prometheus, Grafana]
 tags: [observability, monitoring, logging, alerting, eks]
 redirectFrom: [observability-and-alerting, 08-observability]
 related: [tolling/eks-ingress-incident-rca]
 ---
+
+**In this module, you'll learn to:**
+
+- Separate what deserves an alert from what belongs on a dashboard
+- Collect logs, metrics, and cluster state from an EKS cluster
+- Write alerts that wake people for real, user-facing problems only
 
 **Before you start:** this module is about finding out that something is broken. [Incident Triage](19-incident-triage.html) covers what to do next.
 
@@ -85,3 +91,48 @@ Everything else goes on a dashboard or into a daily report rather than a pager.
 - **Every alert needs an owner and a first step.** If nobody knows what to do when it fires, it isn't ready to page anyone. Link it to the triage checklist in [Incident Triage](19-incident-triage.html).
 - **Watch the cost of logs.** Log volume grows quietly. Set retention periods, drop noisy debug logs in production, and check the logging bill now and then.
 - **Test alerts on purpose.** Break something in a non-production cluster and confirm the alert fires, reaches the right person, and makes sense to them.
+
+## Recap · Key terms
+
+- **The four signals:** errors, latency, traffic, and saturation.
+- **p99 latency:** the time within which 99% of requests finish.
+- **Fluent Bit:** a log agent that runs on every node as a DaemonSet.
+- **kube-state-metrics:** turns Kubernetes object state into metrics, such as Pending or restarting pods.
+- **Alert fatigue:** people ignoring alerts because too many of them are noise.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+S: Which of these should page someone at night?
+- CPU on one node above 80% for one minute
+* A service's error rate above its threshold for 5 minutes
+- A pod that restarted once
+- A new deployment starting
+= Page on symptoms users feel, sustained for several minutes. Single-sample, per-pod, or internal signals belong on dashboards.
+Q: Why look at p99 latency rather than the average?
+- Averages are harder to compute
+* Averages hide the slow requests that some users actually get
+- p99 is always lower
+- Kubernetes only reports p99
+= A healthy-looking average can hide a long tail of slow requests. p95 and p99 show what the slowest users experience.
+S: Your dashboards show a 0% error rate and normal latency, but customers report the site is down. Which signal would have caught it?
+* Traffic: requests have dropped to zero, so there are no errors to count
+- CPU saturation on the nodes
+- The p99 latency
+- The number of pod restarts
+= If requests stop arriving, perhaps because DNS or the load balancer broke upstream, the error rate is zero and everything looks healthy. Alert on traffic dropping as well as on errors.
+Q: Which source tells you that a deployment has fewer ready replicas than it should?
+- Container logs
+- Node CPU metrics
+* kube-state-metrics, which reports cluster state
+- The load balancer's access logs
+= kube-state-metrics turns object state (desired versus ready replicas, Pending pods, restarts) into metrics you can alert on.
+Q: What should every paging alert come with?
+- A screenshot
+- A CPU graph
+* An owner and a first step, such as a link to a runbook
+- At least three recipients
+= If nobody knows what to do when it fires, it isn't ready to page anyone. Link each alert to a runbook or the triage checklist.
+```

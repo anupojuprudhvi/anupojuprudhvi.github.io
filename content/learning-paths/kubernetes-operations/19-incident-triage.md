@@ -7,12 +7,18 @@ order: 19
 module: 19
 summary: Switching cluster context safely, verifying a rollout actually succeeded instead of assuming it did, and a repeatable sequence for triaging a stuck deployment.
 level: Production · Incidents
-readingTime: 8 min read
+readingTime: 10 min read
 stack: [Amazon EKS, kubectl, Kubernetes]
 tags: [operations, incident-response, kubectl, eks]
 redirectFrom: [incident-triage, 04-day-2-operations-and-incident-triage]
 related: [tolling/eks-ingress-incident-rca]
 ---
+
+**In this module, you'll learn to:**
+
+- Check that a rollout actually succeeded, instead of assuming it did
+- Work a fixed triage sequence: context, then events, then pod status
+- Decide between rolling back and rolling forward
 
 **Before you start:** you'll want `kubectl` access to a cluster (see [Multi-Environment Clusters](11-multi-environment-clusters-and-access-entries.html)) and a deployment you can safely break in a non-production environment.
 
@@ -86,3 +92,47 @@ Rolling back is the right call when the previous revision is known-good and rest
 - **A stuck rollout and a failing rollout look identical from the outside at first.** `kubectl rollout status` distinguishes them for you rather than requiring you to infer it from pod counts.
 - **Recording *why* a rollback happened, not just that it did, is what makes the next on-call engineer's job easier.** An undocumented rollback just moves the unknown failure mode to the next deployment attempt.
 - **The single most common root cause of "it worked in QA, not in Production" is an environment-specific config or IAM permission difference, not the code.** Checking that first is usually faster than re-reading application logs from the top.
+
+## Recap · Key terms
+
+- **CrashLoopBackOff:** a container keeps crashing, and Kubernetes waits longer between each restart.
+- **ImagePullBackOff:** the node can't pull the image.
+- **Events:** the cluster's recent record of what happened to objects, and why.
+- **Roll back and roll forward:** returning to the last good version, or shipping a fix.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+Q: During an incident, what's the very first step before touching anything?
+- Delete the failing pods
+* Confirm you're on the right cluster and namespace
+- Roll back the deployment
+- Read the application logs from the top
+= `kubectl config current-context` first, always. Fixing the wrong cluster makes an incident worse.
+S: A pod is in `CrashLoopBackOff`. Which command shows why it crashed?
+- `kubectl get nodes`
+* `kubectl logs <pod> --previous`
+- `kubectl rollout status`
+- `kubectl get svc`
+= The current container has just restarted and has nothing useful in its logs yet. `--previous` shows the output of the run that crashed.
+S: Pods show `ImagePullBackOff`, but the image exists in the registry. What should you check next?
+* The tag or digest, the registry permissions, and the network path from that cluster
+- The readiness probe path
+- The HPA settings
+- The Service selector
+= The node can't fetch the image. A wrong tag, missing pull permissions, or no route to the registry all look the same from the pod.
+Q: Why should a pipeline run `kubectl rollout status` instead of stopping after `kubectl apply`?
+- It's faster
+* It waits until the rollout really finishes or fails, so the pipeline knows the result
+- It rolls back automatically
+- `apply` doesn't work in pipelines
+= `apply` only confirms the API server stored the change. `rollout status` reports whether the new pods actually came up healthy.
+Q: "It works in QA but not in Production." With the same image promoted by digest, what's the first thing to check?
+- A bug in the code
+* An environment-specific config or IAM permission difference
+- A Kubernetes bug
+- Whether the image is different
+= The code is identical when the digest is the same. Configuration and permissions are what usually differ between environments.
+```

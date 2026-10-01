@@ -161,7 +161,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 15 of 20</span>
             <span><b>Level:</b> Production · Delivery</span>
-            <span><b>Time:</b> 8 min read</span>
+            <span><b>Time:</b> 10 min read</span>
             <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
@@ -197,7 +197,7 @@
               <p class="lp-toc-part">Part 4 · Operating in production</p>
               <ol class="lp-toc-list">
                 <li class="is-current"><a href="15-container-delivery-to-eks.html" aria-current="page"><span class="lp-toc-num">15</span><span>Container Delivery — Build, Tag, Push, Promote</span></a>
-                <ol class="lp-toc-sections"><li><a href="#build-once-then-promote-the-same-image">Build once, then promote the same image</a></li><li><a href="#registry-login-breaks-in-headless-ci-cd">Registry login breaks in headless CI/CD</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#build-once-then-promote-the-same-image">Build once, then promote the same image</a></li><li><a href="#registry-login-breaks-in-headless-ci-cd">Registry login breaks in headless CI/CD</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="16-gitops-with-argo-cd.html"><span class="lp-toc-num">16</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
                 <li><a href="17-scaling-requests-and-cost.html"><span class="lp-toc-num">17</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
                 <li><a href="18-observability-and-alerting.html"><span class="lp-toc-num">18</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
@@ -247,6 +247,12 @@
             </details>
           <section>
 <div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Build an image once, and promote that same image through every environment</li>
+<li>Use immutable tags and digests, so you always know what's running</li>
+<li>Log in to a registry in a way that works in headless CI</li>
+</ul>
 <p><b>Before you start:</b> you'll want Docker, the AWS CLI v2, an ECR repository, and a CI/CD system that can assume an AWS role.</p>
 </div>
 </section>
@@ -311,6 +317,60 @@ aws ecr get-login-password --region &lt;region&gt; \
 </details>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>Promotion:</b> moving the same tested image to the next environment, without rebuilding it.</li>
+<li><b>Digest:</b> an image's content hash (<code>sha256:...</code>); the same digest is always the same bytes.</li>
+<li><b>Immutable tags:</b> a registry setting that stops a tag from being overwritten.</li>
+<li><b>Headless:</b> running without a terminal, as CI jobs do.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Why promote the same image, instead of rebuilding from the same commit for each environment?</p>
+<ol class="lp-quiz-options" type="A"><li>Rebuilding is slower</li><li>A rebuild can pick up a changed base image or dependency, so Production might not run what QA tested</li><li>Registries charge per build</li><li>Kubernetes can't run rebuilt images</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>A rebuild can pick up a changed base image or dependency, so Production might not run what QA tested</b></p><p class="lp-quiz-why">Building once and promoting by digest guarantees that Production runs exactly the bytes that were tested.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">What does deploying by digest (<code>image@sha256:...</code>) guarantee that a tag doesn't?</p>
+<ol class="lp-quiz-options" type="A"><li>Faster pulls</li><li>It always means exactly the same image, even if tags move</li><li>The image has been scanned for vulnerabilities</li><li>It works without a registry</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>It always means exactly the same image, even if tags move</b></p><p class="lp-quiz-why">A tag is a label that can be moved, unless the registry makes tags immutable. A digest is the image's content hash, so it can't point anywhere else.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">A CI job fails with <code>Cannot perform an interactive login from a non-TTY device</code>. What's the fix?</p>
+<ol class="lp-quiz-options" type="A"><li>Run the job as root</li><li>Pipe a token into <code>docker login --password-stdin</code>, for example from <code>aws ecr get-login-password</code></li><li>Add a pause before the login</li><li>Put a long-lived access key in the Dockerfile</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Pipe a token into <code>docker login --password-stdin</code>, for example from <code>aws ecr get-login-password</code></b></p><p class="lp-quiz-why">CI has no terminal to type a password into. Passing a short-lived token through standard input works without one.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="0" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">A long pipeline logs in to ECR at the start and pushes 13 hours later. What's likely to happen?</p>
+<ol class="lp-quiz-options" type="A"><li>The push fails because the registry token has expired</li><li>It works; the tokens never expire</li><li>The image goes to the wrong repository</li><li>The tag becomes immutable</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The push fails because the registry token has expired</b></p><p class="lp-quiz-why">Tokens from <code>aws ecr get-login-password</code> last 12 hours. Log in close to the push, or again just before it.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">An image pushed fine, but the Production cluster can't pull it. What should you check?</p>
+<ol class="lp-quiz-options" type="A"><li>Whether the Dockerfile has a CMD</li><li>The network path and pull permissions from that cluster to the repository</li><li>Whether the tag is lower case</li><li>The size of the image</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The network path and pull permissions from that cluster to the repository</b></p><p class="lp-quiz-why">Being in the registry isn't the same as being pullable from everywhere. Test the pull from the environment that needs it.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <section class="related-links" aria-label="See it in practice">
           <h2>See it in practice</h2>
           <ul>
@@ -352,5 +412,6 @@ aws ecr get-login-password --region &lt;region&gt; \
     </footer>
     <script src="../../assets/assistant.js" defer></script>
     <script src="../../assets/flow-player.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
   </body>
 </html>

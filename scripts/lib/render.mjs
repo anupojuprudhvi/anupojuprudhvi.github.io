@@ -867,7 +867,8 @@ ${siteTopNav({ docs, up, active: "learning-paths" })}
       </div>
     </footer>
     <script src="${a("assets/assistant.js")}" defer></script>${bodyHtml.includes('<figure class="flow">') ? `
-    <script src="${a("assets/flow-player.js")}" defer></script>` : ""}
+    <script src="${a("assets/flow-player.js")}" defer></script>` : ""}${bodyHtml.includes("data-quiz") ? `
+    <script src="${a("assets/quiz.js")}" defer></script>` : ""}
   </body>
 </html>
 `;

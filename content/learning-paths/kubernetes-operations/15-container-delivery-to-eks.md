@@ -7,12 +7,18 @@ order: 15
 module: 15
 summary: Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command.
 level: Production · Delivery
-readingTime: 8 min read
+readingTime: 10 min read
 stack: [Amazon ECR, Docker, Amazon EKS, CI/CD]
 tags: [ecr, ci-cd, container-delivery, eks]
 redirectFrom: [container-delivery-to-eks, 03-container-delivery-to-eks]
 related: [healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare]
 ---
+
+**In this module, you'll learn to:**
+
+- Build an image once, and promote that same image through every environment
+- Use immutable tags and digests, so you always know what's running
+- Log in to a registry in a way that works in headless CI
 
 **Before you start:** you'll want Docker, the AWS CLI v2, an ECR repository, and a CI/CD system that can assume an AWS role.
 
@@ -95,3 +101,47 @@ The fix passes a temporary token through standard input instead of a prompt, whi
 - **Test registry login in a real headless job, not just locally.** A command that works in your shell isn't proof it works in CI. Run it in the same kind of non-interactive runner the pipeline uses.
 - **Registry tokens are short-lived.** A token from `aws ecr get-login-password` lasts 12 hours. A long pipeline that logs in at the start and pushes much later can fail with an expired token that doesn't look like a login problem at first.
 - **Being in the registry isn't the same as being pullable.** A cluster in a different network path, or without permission to that repository, can fail to pull an image that pushed perfectly well. Check the pull from the target environment.
+
+## Recap · Key terms
+
+- **Promotion:** moving the same tested image to the next environment, without rebuilding it.
+- **Digest:** an image's content hash (`sha256:...`); the same digest is always the same bytes.
+- **Immutable tags:** a registry setting that stops a tag from being overwritten.
+- **Headless:** running without a terminal, as CI jobs do.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+Q: Why promote the same image, instead of rebuilding from the same commit for each environment?
+- Rebuilding is slower
+* A rebuild can pick up a changed base image or dependency, so Production might not run what QA tested
+- Registries charge per build
+- Kubernetes can't run rebuilt images
+= Building once and promoting by digest guarantees that Production runs exactly the bytes that were tested.
+Q: What does deploying by digest (`image@sha256:...`) guarantee that a tag doesn't?
+- Faster pulls
+* It always means exactly the same image, even if tags move
+- The image has been scanned for vulnerabilities
+- It works without a registry
+= A tag is a label that can be moved, unless the registry makes tags immutable. A digest is the image's content hash, so it can't point anywhere else.
+S: A CI job fails with `Cannot perform an interactive login from a non-TTY device`. What's the fix?
+- Run the job as root
+* Pipe a token into `docker login --password-stdin`, for example from `aws ecr get-login-password`
+- Add a pause before the login
+- Put a long-lived access key in the Dockerfile
+= CI has no terminal to type a password into. Passing a short-lived token through standard input works without one.
+S: A long pipeline logs in to ECR at the start and pushes 13 hours later. What's likely to happen?
+* The push fails because the registry token has expired
+- It works; the tokens never expire
+- The image goes to the wrong repository
+- The tag becomes immutable
+= Tokens from `aws ecr get-login-password` last 12 hours. Log in close to the push, or again just before it.
+Q: An image pushed fine, but the Production cluster can't pull it. What should you check?
+- Whether the Dockerfile has a CMD
+* The network path and pull permissions from that cluster to the repository
+- Whether the tag is lower case
+- The size of the image
+= Being in the registry isn't the same as being pullable from everywhere. Test the pull from the environment that needs it.
+```

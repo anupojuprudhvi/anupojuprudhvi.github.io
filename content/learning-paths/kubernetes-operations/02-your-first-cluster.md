@@ -6,10 +6,16 @@ order: 2
 module: 2
 summary: Build a real, multi-node Kubernetes cluster on your own laptop with kind, at no cost. Run an app, reach it from your browser, delete a pod and watch Kubernetes replace it, scale it up, look inside it, and clean up. This lab is used throughout Parts 1 and 2.
 level: Basics · Hands-on lab
-readingTime: 10 min read
+readingTime: 12 min read
 stack: [kind, kubectl, Docker, Kubernetes]
 tags: [kubernetes, kind, kubectl, lab, basics, beginner]
 ---
+
+**In this module, you'll learn to:**
+
+- Install Docker, kubectl, and kind, and create a three-node cluster on your laptop
+- Run, expose, scale, and inspect an app with kubectl
+- Watch Kubernetes replace a pod you delete, then clean everything up
 
 **Before you start:** read [Why Kubernetes Exists](01-why-kubernetes.html). You'll need a laptop with about 4 GB of free memory and permission to install software.
 
@@ -181,3 +187,48 @@ Get used to deleting the cluster. A fresh cluster is the quickest fix for a lab 
 - **Pin image versions, even in a lab.** `nginx:1.27` behaves the same tomorrow; `nginx` (which means `nginx:latest`) might not.
 - **`ImagePullBackOff` with a local image** usually means you forgot `kind load docker-image`, or the tag in the Deployment doesn't match the one you loaded.
 - **If Docker isn't running, kind can't create anything.** Most install problems come down to that, or to too little memory allocated to Docker Desktop.
+
+## Recap · Key terms
+
+- **kind:** a tool that runs a Kubernetes cluster as Docker containers on your machine.
+- **kubectl:** the command-line tool for talking to any Kubernetes cluster.
+- **kubeconfig:** the file (`~/.kube/config`) that tells kubectl which clusters exist and how to sign in to them.
+- **Context:** one cluster-plus-credentials entry in your kubeconfig; `kubectl config current-context` shows the active one.
+- **Port-forward:** a temporary tunnel from your laptop to something inside the cluster, for testing.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+Q: In a kind cluster, what is each Kubernetes node?
+- A virtual machine created by kind
+* A Docker container on your laptop
+- A process running directly on your operating system
+- A cloud server that kind rents for you
+= kind runs each node, including the control plane, as a Docker container. That's why Docker must be running, and why `docker ps` lists the nodes.
+S: You delete one pod of a Deployment that asks for 2 replicas. What happens?
+- The Deployment runs 1 replica until you scale it again
+- The pod restarts with the same name and IP address
+* A new pod with a new name is created to get back to 2
+- The whole Deployment is deleted
+= The desired state is 2 copies. A controller sees only 1 and creates a replacement, with a new name and IP. Pods are never repaired in place.
+Q: How does kubectl know which cluster to send commands to?
+- It asks Docker for the nearest cluster
+* It reads the current context from your kubeconfig file
+- It always uses the cluster you created most recently
+- You pass the cluster's IP address with every command
+= `kind create cluster` writes a context into `~/.kube/config` and makes it current. `kubectl config current-context` shows which one is active, a habit worth keeping once you have real clusters too.
+Q: What's `kubectl port-forward service/hello 8080:80` for?
+- Publishing the Service to the internet on port 8080
+- Changing the Service's port from 80 to 8080
+* Reaching the Service from your own laptop while the command runs
+- Forwarding traffic between two pods
+= Port-forward opens a temporary tunnel from your machine, through the API server, to the Service. It stops when you press Ctrl+C, and it isn't a way to serve real users.
+S: Your Deployment uses an image you built locally, and on kind its pods show `ImagePullBackOff`. What's the most likely fix?
+- Restart Docker Desktop
+* Run `kind load docker-image` so the image is inside the cluster's nodes
+- Recreate the Deployment with more replicas
+- Push the image to the control plane
+= kind's nodes can't see images in your laptop's Docker until you load them in. Without that, or a registry, the node tries to pull the image and fails.
+```

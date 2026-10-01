@@ -6,10 +6,16 @@ order: 3
 module: 3
 summary: Every Kubernetes object is written the same way. Learn the four fields every manifest has, just enough YAML to read and write them, how labels and selectors connect objects, namespaces, the difference between imperative commands and kubectl apply, and the kubectl commands you'll use every day.
 level: Basics · Hands-on
-readingTime: 10 min read
+readingTime: 12 min read
 stack: [Kubernetes, kubectl, YAML, kind]
 tags: [kubernetes, yaml, kubectl, labels, namespaces, basics, beginner]
 ---
+
+**In this module, you'll learn to:**
+
+- Read any manifest using the four fields every object has
+- Write valid YAML, and connect objects with labels and selectors
+- Use namespaces, and work declaratively with `kubectl apply`
 
 **Before you start:** have the kind cluster from [Your First Cluster](02-your-first-cluster.html) running. Every example here works on it.
 
@@ -235,3 +241,49 @@ kubectl delete -f hello.yaml
 - **Don't copy `status` or generated fields back into your files.** `kubectl get -o yaml` output includes `status`, `uid`, `resourceVersion`, and timestamps. Strip them before saving a manifest.
 - **Use the same label keys everywhere.** The common convention is `app.kubernetes.io/name` and `app.kubernetes.io/instance`; short labels like `app` work fine as long as everyone agrees on them.
 - **`kubectl edit` changes the live object only.** It's handy in a lab, but the change isn't in any file, so the next `apply` from Git quietly undoes it.
+
+## Recap · Key terms
+
+- **Manifest:** a YAML file describing one or more objects you want to exist.
+- **spec and status:** what you want (you write it) and what is (the cluster writes it).
+- **Label:** a key/value tag on an object, such as `app: hello`.
+- **Selector:** a query that matches labels; how Deployments and Services find their pods.
+- **Namespace:** a named section of a cluster; names only need to be unique inside one.
+- **Declarative:** describing the desired state in files and applying them, rather than issuing one-off commands.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+Q: Which field of an object is written by the cluster, never by you?
+- `spec`
+- `metadata`
+* `status`
+- `apiVersion`
+= You write `spec`, the desired state. Controllers write `status`, the actual state, and keep working until the two match.
+S: Your Service's selector says `app: web`, but your Deployment's pods are labelled `app: hello`. You apply both. What happens?
+- kubectl rejects the Service with a validation error
+- The Service renames the pods' labels to match
+* Both are created, but the Service has no pods behind it, so requests fail
+- The Service sends traffic to every pod in the namespace instead
+= Objects find each other through labels and selectors. A mismatch isn't an error; the Service simply matches nothing, which is why "no endpoints" is the first thing to check.
+Q: In a manifest, what does a line starting with `- ` mean?
+- A comment
+* An item in a list
+- A field that's been removed
+- The start of a new document
+= A dash starts a list item, such as each container under `containers:`. Comments start with `#`, and `---` separates documents in one file.
+Q: Why prefer `kubectl apply -f` with files in Git over commands like `kubectl create` and `kubectl scale`?
+- `apply` is faster
+- Imperative commands don't work on real clusters
+* The files are a reviewable, repeatable record of what should be running
+- `apply` skips the API server's checks
+= Imperative commands leave no record. Files in Git can be reviewed, diffed, and re-applied safely, which is the foundation for everything from Helm to GitOps.
+S: You run `kubectl get pods` and see nothing, but you know your app is running. What's the most likely reason?
+- The pods are still being scheduled
+* The pods are in a different namespace from your current one
+- kubectl only shows pods you created yourself
+- The pods have no labels
+= Commands run against one namespace, `default` unless you say otherwise. Try `kubectl get pods -A`, or add `-n <namespace>`.
+```

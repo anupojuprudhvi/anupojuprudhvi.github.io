@@ -161,7 +161,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 11 of 20</span>
             <span><b>Level:</b> Platform · Access</span>
-            <span><b>Time:</b> 8 min read</span>
+            <span><b>Time:</b> 10 min read</span>
             <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
@@ -190,7 +190,7 @@
               <ol class="lp-toc-list">
                 <li><a href="10-kubernetes-on-eks.html"><span class="lp-toc-num">10</span><span>Kubernetes on Amazon EKS: What AWS Runs, and What Changes</span></a></li>
                 <li class="is-current"><a href="11-multi-environment-clusters-and-access-entries.html" aria-current="page"><span class="lp-toc-num">11</span><span>Multi-Environment Clusters &amp; EKS Access Entries</span></a>
-                <ol class="lp-toc-sections"><li><a href="#separate-clusters-not-separate-namespaces-for-hard-environment-boundaries">Separate clusters, not separate namespaces, for hard environment boundaries</a></li><li><a href="#iam-identities-become-kubernetes-identities-through-access-entries">IAM identities become Kubernetes identities through access entries</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#separate-clusters-not-separate-namespaces-for-hard-environment-boundaries">Separate clusters, not separate namespaces, for hard environment boundaries</a></li><li><a href="#iam-identities-become-kubernetes-identities-through-access-entries">IAM identities become Kubernetes identities through access entries</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="12-platform-add-ons.html"><span class="lp-toc-num">12</span><span>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span></a></li>
                 <li><a href="13-workload-identity-and-secrets.html"><span class="lp-toc-num">13</span><span>Workload Identity &amp; Secrets: How Pods Get AWS Access</span></a></li>
                 <li><a href="14-ingress-architecture-and-cost.html"><span class="lp-toc-num">14</span><span>Dual Ingress Architecture &amp; Its Cost Mechanics</span></a></li>
@@ -247,6 +247,12 @@
             </details>
           <section>
 <div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Decide when environments need separate clusters rather than namespaces</li>
+<li>Grant people and pipelines access with EKS access entries and access policies</li>
+<li>Move off the deprecated <code>aws-auth</code> ConfigMap, and switch contexts safely</li>
+</ul>
 <p><b>Before you start:</b> you'll want the AWS CLI and <code>kubectl</code>, permission to manage EKS clusters, the RBAC basics from <a href="08-namespaces-rbac-and-cluster-access.html">Namespaces, RBAC &amp; Service Accounts</a>, and how access entries work from <a href="10-kubernetes-on-eks.html">Kubernetes on Amazon EKS</a>. This module takes those ideas across several clusters.</p>
 </div>
 </section>
@@ -310,6 +316,61 @@ kubectl config set-context --current --namespace=&lt;namespace&gt;</code></pre><
 <p>Separate clusters per environment cost more than namespaces on one shared cluster, since each has its own control plane and minimum set of nodes. When a mistake in Development must never be able to reach Production data or traffic, that's a deliberate trade, not waste. For lower-stakes workloads, namespaces on fewer clusters are a reasonable, cheaper option.</p>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>Access policy:</b> an EKS-managed permission set, such as cluster admin or edit, attached to an access entry.</li>
+<li><b>Access scope:</b> whether an access policy applies to the whole cluster or to named namespaces.</li>
+<li><b>aws-auth:</b> the older, deprecated ConfigMap that mapped IAM roles to Kubernetes groups.</li>
+<li><b>Authentication mode:</b> whether a cluster reads access entries (<code>API</code>), <code>aws-auth</code>, or both.</li>
+<li><b>system:masters:</b> a group that bypasses RBAC entirely; avoid it.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Why give each environment its own cluster, rather than a namespace on one shared cluster?</p>
+<ol class="lp-quiz-options" type="A"><li>Namespaces can't run more than one app</li><li>Cluster-wide resources and permissions reach across namespaces, so only separate clusters give a hard boundary</li><li>Separate clusters are cheaper</li><li>EKS allows only one namespace per cluster</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Cluster-wide resources and permissions reach across namespaces, so only separate clusters give a hard boundary</b></p><p class="lp-quiz-why">CRDs, webhooks, node settings, and cluster-wide roles span every namespace. When a mistake in Dev must never reach Production, the boundary has to be a cluster.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">A CI pipeline should deploy only to the <code>orders</code> namespace in Production. What's the right access entry setup?</p>
+<ol class="lp-quiz-options" type="A"><li>Add the pipeline's role to <code>system:masters</code></li><li>Attach <code>AmazonEKSClusterAdminPolicy</code> with a cluster scope</li><li>Attach <code>AmazonEKSEditPolicy</code> with a namespace scope of <code>orders</code></li><li>Share an engineer's admin credentials with the pipeline</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Attach <code>AmazonEKSEditPolicy</code> with a namespace scope of <code>orders</code></b></p><p class="lp-quiz-why">Scope access to exactly what the pipeline deploys. Admin rights for a pipeline turn a compromised build into a compromised cluster.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">An engineer is cluster admin in Dev. What access do they have in Production?</p>
+<ol class="lp-quiz-options" type="A"><li>The same, because they use the same IAM role</li><li>Only what Production's own access entries grant them</li><li>Read-only, automatically</li><li>None, ever</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Only what Production's own access entries grant them</b></p><p class="lp-quiz-why">Each cluster has its own access entries. Admin in one grants nothing in another, which is exactly the point of separate clusters.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">What's the safe order for migrating from <code>aws-auth</code> to access entries?</p>
+<ol class="lp-quiz-options" type="A"><li>Switch to <code>API</code> mode, then recreate the mappings</li><li>Switch to <code>API_AND_CONFIG_MAP</code>, recreate each mapping as an access entry, check access, then switch to <code>API</code></li><li>Delete <code>aws-auth</code>, then create access entries</li><li>They can't be migrated; build a new cluster</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Switch to <code>API_AND_CONFIG_MAP</code>, recreate each mapping as an access entry, check access, then switch to <code>API</code></b></p><p class="lp-quiz-why">Running both modes first means nobody is locked out while you recreate the mappings. Drop <code>aws-auth</code> only once everyone can still get in.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="0" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">What's the cheapest habit that prevents running a QA command against Production?</p>
+<ol class="lp-quiz-options" type="A"><li>Running <code>kubectl config current-context</code> before anything destructive</li><li>Using the same context name for every cluster</li><li>Giving everyone admin in every cluster</li><li>Keeping a single kubeconfig entry</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Running <code>kubectl config current-context</code> before anything destructive</b></p><p class="lp-quiz-why">A terminal left on the wrong context is the classic multi-cluster mistake, and checking takes a second.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <section class="related-links" aria-label="See it in practice">
           <h2>See it in practice</h2>
           <ul>
@@ -351,5 +412,6 @@ kubectl config set-context --current --namespace=&lt;namespace&gt;</code></pre><
     </footer>
     <script src="../../assets/assistant.js" defer></script>
     <script src="../../assets/flow-player.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
   </body>
 </html>

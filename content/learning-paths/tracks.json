@@ -38,7 +38,7 @@
     "eyebrow": "Container Platform Engineering",
     "summary": "A path from never having used Kubernetes to running Amazon EKS in production. Part 1 covers the basics on a free local cluster. Part 2 teaches the core concepts: how a cluster works, workloads, networking, storage, access, and packaging. Part 3 moves to Amazon EKS and builds the platform. Part 4 covers the real challenges of operating it: delivery, GitOps, autoscaling, observability, incident triage, and upgrades.",
     "level": "Beginner to Advanced",
-    "duration": "20 Modules · 180 min read",
+    "duration": "20 Modules · 220 min read",
     "badge": "Zero to Production",
     "stack": ["Kubernetes", "kind", "kubectl", "Helm", "Amazon EKS", "AWS Load Balancer Controller", "Argo CD", "Karpenter"],
     "closingQuestion": "Questions about this learning path?",

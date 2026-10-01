@@ -7,11 +7,17 @@ order: 4
 module: 4
 summary: The mental model everything else builds on. You declare the state you want, and controllers keep working to make it true. This module covers the parts of a cluster and what happens, step by step, when you run kubectl apply.
 level: Core concepts · Architecture
-readingTime: 8 min read
+readingTime: 10 min read
 stack: [Kubernetes, kubectl, containerd, etcd]
 tags: [kubernetes, control-plane, architecture, fundamentals]
 redirectFrom: [how-kubernetes-and-eks-work]
 ---
+
+**In this module, you'll learn to:**
+
+- Explain the reconciliation loop: desired state, actual state, and controllers
+- Name the parts of the control plane and of a worker node, and what each does
+- Trace what happens between `kubectl apply` and a running container
 
 **Before you start:** finish Part 1, especially [Your First Cluster](02-your-first-cluster.html), where you watched Kubernetes replace a deleted pod. This module explains how that happened. Keep the kind cluster running; the commands at the end use it.
 
@@ -123,3 +129,49 @@ kubectl get pods -w
 - **Everything is an API object.** Pods, Services, even the rules about who can do what, are records stored through the API server. Tools like Terraform, Helm, and Argo CD are just different ways of writing those records.
 - **Nobody talks to etcd or the nodes directly.** Even the kubelet on each node gets its instructions from the API server. If the API server is unreachable, running pods keep running, but nothing new can be changed.
 - **Keep the model in your head when debugging.** A pod stuck in `Pending` is a scheduler problem, meaning no node has room. `ImagePullBackOff` happens at the containerd step. A pod that runs but gets no traffic is a readiness or Service problem. The diagram above is the map.
+
+## Recap · Key terms
+
+- **Desired state:** what you've declared should exist.
+- **Controller:** a loop that compares desired and actual state, and acts on any difference.
+- **API server:** the only way in to the cluster, for people, tools, nodes, and controllers.
+- **etcd:** the database that stores every object.
+- **Scheduler:** chooses a node for each new pod, based on what the pod requests.
+- **kubelet:** the agent on each node that starts and watches the pods assigned to it.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+S: `kubectl apply` returns successfully. What does that prove?
+- The new pods are running and serving traffic
+* The API server accepted and stored the change
+- The image was pulled successfully
+- The scheduler found room on a node
+= `apply` returns once the API server has stored the desired state. Scheduling, pulling the image, and starting containers all happen afterwards, and any of them can still fail.
+Q: Which component chooses the node a new pod runs on?
+- The kubelet
+- etcd
+* The scheduler
+- kube-proxy
+= The scheduler picks a node with enough unreserved capacity for the pod's requests. The kubelet on that node then starts it.
+S: A pod stays in `Pending`. Where in the flow should you look first?
+- The container runtime pulling the image
+* The scheduler, which can't find a node with room
+- The readiness probe
+- The API server's authentication
+= `Pending` means the pod hasn't been placed on a node yet, usually because no node has the CPU or memory it requests. An image problem shows up later, as `ImagePullBackOff`.
+Q: How does a kubelet learn which pods it should run?
+* It watches the API server for pods assigned to its node
+- The scheduler connects to the node and starts them
+- It reads etcd directly
+- Someone runs kubectl on the node
+= Every component goes through the API server, including the kubelet. Nothing but the API server talks to etcd.
+Q: Which of these is the reconciliation loop at work?
+- `kubectl logs` streaming a container's output
+* A Deployment replacing a crashed pod without anyone asking
+- An engineer restarting a server by hand
+- CI building a new image
+= A controller saw that the actual state (one pod fewer) didn't match the desired state, and fixed it. The same loop drives Deployments, load balancer controllers, and Argo CD.
+```

@@ -161,7 +161,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 14 of 20</span>
             <span><b>Level:</b> Platform · Networking</span>
-            <span><b>Time:</b> 9 min read</span>
+            <span><b>Time:</b> 11 min read</span>
             <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
@@ -193,7 +193,7 @@
                 <li><a href="12-platform-add-ons.html"><span class="lp-toc-num">12</span><span>The Platform Add-on Layer: What Every Cluster Needs Before Apps Arrive</span></a></li>
                 <li><a href="13-workload-identity-and-secrets.html"><span class="lp-toc-num">13</span><span>Workload Identity &amp; Secrets: How Pods Get AWS Access</span></a></li>
                 <li class="is-current"><a href="14-ingress-architecture-and-cost.html" aria-current="page"><span class="lp-toc-num">14</span><span>Dual Ingress Architecture &amp; Its Cost Mechanics</span></a>
-                <ol class="lp-toc-sections"><li><a href="#share-load-balancers-unless-there-s-a-reason-not-to">Share load balancers unless there's a reason not to</a></li><li><a href="#two-ingress-paths-each-used-for-what-it-s-good-at">Two ingress paths, each used for what it's good at</a></li><li><a href="#ingress-nginx-is-retired-so-plan-the-next-step">ingress-nginx is retired, so plan the next step</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#share-load-balancers-unless-there-s-a-reason-not-to">Share load balancers unless there's a reason not to</a></li><li><a href="#two-ingress-paths-each-used-for-what-it-s-good-at">Two ingress paths, each used for what it's good at</a></li><li><a href="#ingress-nginx-is-retired-so-plan-the-next-step">ingress-nginx is retired, so plan the next step</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
               </ol>
               <p class="lp-toc-part">Part 4 · Operating in production</p>
               <ol class="lp-toc-list">
@@ -247,6 +247,12 @@
             </details>
           <section>
 <div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Explain why one ALB per service gets expensive, and share one with ingress groups</li>
+<li>Decide when a second ingress controller is worth running</li>
+<li>Plan the move off the retired ingress-nginx, toward the Gateway API</li>
+</ul>
 <p><b>Before you start:</b> you'll want an EKS cluster with the AWS Load Balancer Controller installed, and the basics from <a href="06-services-and-cluster-networking.html">Services &amp; Cluster Networking</a>: what a Service and an Ingress are, plus how the VPC CNI gives pods VPC IP addresses from <a href="10-kubernetes-on-eks.html">Kubernetes on Amazon EKS</a>.</p>
 </div>
 </section>
@@ -383,6 +389,61 @@ spec:
 <p>A few situations call for a dedicated load balancer: a service with clearly different security-group or WAF needs from the rest of the group, or one whose traffic makes shared connection draining or health-check settings impractical. Share by default and make an exception when one of these applies. That's easier to defend than one ALB per service by default.</p>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>Ingress group:</b> several Ingresses sharing one ALB through the same <code>group.name</code>.</li>
+<li><b>IngressClass:</b> says which controller handles an Ingress, through <code>spec.ingressClassName</code>.</li>
+<li><b>Rewrite:</b> changing a request's path before it reaches the app.</li>
+<li><b>Gateway API:</b> the successor to Ingress, splitting Gateways (platform) from routes (apps).</li>
+<li><b>HTTPRoute:</b> a Gateway API object holding one app's routing rules.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">Ten APIs each have their own Ingress, and each gets its own ALB. What's the problem?</p>
+<ol class="lp-quiz-options" type="A"><li>ALBs can't route by path</li><li>Each ALB has a fixed monthly cost, so ten cost far more than one shared ALB</li><li>Kubernetes allows only one Ingress per namespace</li><li>The APIs can't reach each other</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Each ALB has a fixed monthly cost, so ten cost far more than one shared ALB</b></p><p class="lp-quiz-why">Every ALB carries a fixed charge however little traffic it gets. Sharing one ALB across services through an ingress group removes most of that.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">How do two Ingresses end up on the same ALB?</p>
+<ol class="lp-quiz-options" type="A"><li>They must be in the same file</li><li>They use the same <code>alb.ingress.kubernetes.io/group.name</code> annotation</li><li>They point at the same Service</li><li>They must be in the same namespace</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>They use the same <code>alb.ingress.kubernetes.io/group.name</code> annotation</b></p><p class="lp-quiz-why">The AWS Load Balancer Controller merges every Ingress with the same group name into one ALB, adding a rule for each. <code>group.order</code> sets the rule priority.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">For a single-page app at <code>/portal</code>, what goes wrong with <code>rewrite-target: /</code> instead of <code>/$2</code>?</p>
+<ol class="lp-quiz-options" type="A"><li>Nothing; they're equivalent</li><li>Every request, including CSS and JavaScript files, reaches the app as <code>/</code>, so it breaks</li><li>The Ingress is rejected</li><li>Only the home page loads slowly</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Every request, including CSS and JavaScript files, reaches the app as <code>/</code>, so it breaks</b></p><p class="lp-quiz-why"><code>/$2</code> keeps the part of the path after <code>/portal</code>. A plain <code>/</code> throws it away, so every asset request gets the HTML page back.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Why should new clusters avoid the community ingress-nginx controller?</p>
+<ol class="lp-quiz-options" type="A"><li>It doesn't support HTTPS</li><li>It's been retired, so it no longer gets releases or security fixes</li><li>It only runs on kind</li><li>It can't share load balancers</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>It's been retired, so it no longer gets releases or security fixes</b></p><p class="lp-quiz-why">The Kubernetes project retired it, with best-effort maintenance ending in March 2026. New setups should pick a maintained controller, ideally one that implements the Gateway API.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="0" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">In the Gateway API, who usually owns the Gateway, and who owns the HTTPRoutes?</p>
+<ol class="lp-quiz-options" type="A"><li>The platform team owns the Gateway; app teams own their HTTPRoutes</li><li>App teams own both</li><li>AWS owns the Gateway</li><li>The Gateway API has no ownership model</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The platform team owns the Gateway; app teams own their HTTPRoutes</b></p><p class="lp-quiz-why">Splitting the load balancer (the Gateway) from each app's rules (HTTPRoutes) lets teams change their routes without touching shared infrastructure.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <section class="related-links" aria-label="See it in practice">
           <h2>See it in practice</h2>
           <ul>
@@ -425,5 +486,6 @@ spec:
     </footer>
     <script src="../../assets/assistant.js" defer></script>
     <script src="../../assets/flow-player.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
   </body>
 </html>

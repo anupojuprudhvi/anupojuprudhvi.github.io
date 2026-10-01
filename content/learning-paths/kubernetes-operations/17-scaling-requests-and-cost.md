@@ -7,12 +7,18 @@ order: 17
 module: 17
 summary: Why resource requests drive almost everything in an EKS cluster — scheduling, autoscaling, and the bill — and how pod and node autoscaling fit together.
 level: Production · Capacity
-readingTime: 8 min read
+readingTime: 10 min read
 stack: [Amazon EKS, Kubernetes, Horizontal Pod Autoscaler, Karpenter, Cluster Autoscaler]
 tags: [autoscaling, cost, capacity, eks, kubernetes]
 redirectFrom: [scaling-requests-and-cost, 05-scaling-requests-and-cost]
 related: [partner-engagements/it-monitoring-tanzu-to-eks-map-assessment, healthcare/clinical-platform-modernization-and-cost-optimization]
 ---
+
+**In this module, you'll learn to:**
+
+- Explain why resource requests drive scheduling, autoscaling, and cost
+- Combine pod autoscaling (HPA) with node autoscaling (Cluster Autoscaler or Karpenter)
+- Protect workloads during scale-down with PodDisruptionBudgets
 
 **Before you start:** you'll want metrics-server running in the cluster ([Platform Add-ons](12-platform-add-ons.html) covers installing it) and `kubectl top` working.
 
@@ -112,3 +118,48 @@ A PDB only protects against *voluntary* disruptions: drains, scale-downs, upgrad
 - **A PDB with `minAvailable` equal to the replica count blocks every drain.** It looks safe, but it quietly stops node upgrades and scale-down until someone notices.
 - **Idle capacity is the most common hidden cost.** Nodes sized for requests that nobody uses cost exactly the same as busy ones. Check the gap between requested and used resources regularly.
 - **Spot suits stateless, replicated workloads.** Keep anything that can't tolerate a two-minute eviction on On-Demand capacity.
+
+## Recap · Key terms
+
+- **HPA:** the Horizontal Pod Autoscaler, which changes replica counts based on a metric.
+- **Cluster Autoscaler:** grows and shrinks node groups when pods can't be placed or nodes sit idle.
+- **Karpenter:** launches right-sized EC2 instances directly for waiting pods.
+- **PodDisruptionBudget (PDB):** how many replicas must stay up during voluntary disruptions.
+- **Throttling:** slowing down a container that goes over its CPU limit.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+Q: An HPA targets 70% CPU utilization. 70% of what?
+- The node's CPU
+* The pods' CPU request
+- The pods' CPU limit
+- The cluster's total CPU
+= The HPA measures usage as a percentage of the request. Without a CPU request there's nothing to calculate against, so it won't scale on CPU.
+S: The HPA adds pods, but some stay `Pending`. What adds capacity for them?
+- The HPA itself
+- The scheduler
+* The node autoscaler (Cluster Autoscaler or Karpenter), reacting to the Pending pods
+- metrics-server
+= Pod autoscaling and node autoscaling are separate layers. Pending pods are the signal for the node autoscaler to add a node.
+S: A PDB sets `minAvailable` equal to the Deployment's replica count. What's the side effect?
+- Faster rollouts
+* Node drains, upgrades, and scale-down are blocked, because no pod may ever be evicted
+- More replicas are created
+- Nothing; it's the safest setting
+= A budget that allows zero disruptions stalls every voluntary eviction. It looks safe, but it quietly stops upgrades and scale-down.
+Q: Requests are set far higher than what pods actually use. What's the main effect?
+* You pay for nodes that sit mostly empty
+- Pods get OOMKilled
+- The HPA scales too slowly
+- Pods are throttled
+= The scheduler reserves what's requested, so nodes fill up on paper while staying idle in reality. That idle capacity is a common hidden cost.
+Q: What doesn't a PodDisruptionBudget protect against?
+- Node drains during an upgrade
+- Scale-down by the node autoscaler
+* A node that crashes outright
+- `kubectl drain`
+= PDBs only cover voluntary disruptions. For crashes you still need several replicas, spread across Availability Zones.
+```

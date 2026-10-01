@@ -161,7 +161,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 01 of 20</span>
             <span><b>Level:</b> Basics · Start here</span>
-            <span><b>Time:</b> 8 min read</span>
+            <span><b>Time:</b> 10 min read</span>
             <span><b>Published:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
@@ -174,7 +174,7 @@
               <p class="lp-toc-part">Part 1 · Basics</p>
               <ol class="lp-toc-list">
                 <li class="is-current"><a href="01-why-kubernetes.html" aria-current="page"><span class="lp-toc-num">01</span><span>Why Kubernetes Exists, Starting from a Single Container</span></a>
-                <ol class="lp-toc-sections"><li><a href="#the-five-minute-version">The five-minute version</a></li><li><a href="#one-container-is-easy-hundreds-are-not">One container is easy, hundreds are not</a></li><li><a href="#what-kubernetes-does-for-you">What Kubernetes does for you</a></li><li><a href="#when-you-don-t-need-kubernetes">When you don't need Kubernetes</a></li><li><a href="#words-you-ll-meet-in-the-next-modules">Words you'll meet in the next modules</a></li><li><a href="#run-stop-and-inspect-a-container">Run, stop, and inspect a container</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#the-five-minute-version">The five-minute version</a></li><li><a href="#one-container-is-easy-hundreds-are-not">One container is easy, hundreds are not</a></li><li><a href="#what-kubernetes-does-for-you">What Kubernetes does for you</a></li><li><a href="#when-you-don-t-need-kubernetes">When you don't need Kubernetes</a></li><li><a href="#words-you-ll-meet-in-the-next-modules">Words you'll meet in the next modules</a></li><li><a href="#run-stop-and-inspect-a-container">Run, stop, and inspect a container</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="02-your-first-cluster.html"><span class="lp-toc-num">02</span><span>Your First Cluster: A Free Local Lab with kind</span></a></li>
                 <li><a href="03-kubernetes-yaml-and-kubectl.html"><span class="lp-toc-num">03</span><span>Reading Kubernetes YAML and Working with kubectl</span></a></li>
               </ol>
@@ -247,6 +247,12 @@
             </details>
           <section>
 <div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Explain what an image, a container, and a registry are</li>
+<li>Name the problems that appear when you run many containers on many machines</li>
+<li>Describe what Kubernetes does about each one, and when you don't need it</li>
+</ul>
 <p><b>Before you start:</b> nothing. You only need to be comfortable typing commands into a terminal. Every other idea in this track is explained when it first comes up.</p>
 </div>
 </section>
@@ -379,6 +385,61 @@ docker rm web</code></pre><figcaption class="scroll-hint">Scroll sideways to see
 </details>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>Image:</b> a read-only package of an app and everything it needs, built from a Dockerfile.</li>
+<li><b>Container:</b> a running, isolated copy of an image.</li>
+<li><b>Registry:</b> a store that machines pull images from, such as Docker Hub or Amazon ECR.</li>
+<li><b>Container orchestrator:</b> software that places, restarts, connects, and scales containers across many machines.</li>
+<li><b>Cluster:</b> a group of machines that Kubernetes manages as one pool of capacity.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">What's the difference between an image and a container?</p>
+<ol class="lp-quiz-options" type="A"><li>An image runs on a server; a container runs on a laptop</li><li>An image is the read-only package; a container is a running copy of it</li><li>A container is built from a Dockerfile; an image is pulled from a registry</li><li>They're two names for the same thing</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>An image is the read-only package; a container is a running copy of it</b></p><p class="lp-quiz-why">You build an image once, from a Dockerfile, and start as many containers from it as you like. Each container is a running, isolated copy.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">A server running three copies of your API dies at 3 a.m. What does an orchestrator such as Kubernetes do?</p>
+<ol class="lp-quiz-options" type="A"><li>Pages the on-call engineer to restart the containers by hand</li><li>Waits for the server to come back, then restarts them there</li><li>Notices the missing copies and starts replacements on servers that have room</li><li>Nothing until the next deploy</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Notices the missing copies and starts replacements on servers that have room</b></p><p class="lp-quiz-why">You declared that three copies should exist. When reality no longer matches, Kubernetes starts new copies on healthy machines, without waking anyone up.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="0" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Where do servers get container images from?</p>
+<ol class="lp-quiz-options" type="A"><li>A registry, such as Docker Hub or Amazon ECR</li><li>The Dockerfile, which they build on startup</li><li>The Kubernetes control plane, which stores every image</li><li>Each developer's laptop</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>A registry, such as Docker Hub or Amazon ECR</b></p><p class="lp-quiz-why">Images are pushed to a registry once, and every machine that needs one pulls it from there. Kubernetes runs images; it doesn't build or store them.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">Which situation is the weakest case for adopting Kubernetes?</p>
+<ol class="lp-quiz-options" type="A"><li>Thirty services owned by five teams, deployed to four environments</li><li>A platform that needs the same deploy process across dev, test, and production</li><li>One small web app run by a two-person team with no one to own a platform</li><li>Workloads whose traffic swings widely during the day</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>One small web app run by a two-person team with no one to own a platform</b></p><p class="lp-quiz-why">Kubernetes pays off with many services, teams, and environments. For one small app, a VM or a simpler container service is usually less work.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">How do you usually tell a Kubernetes cluster what to run?</p>
+<ol class="lp-quiz-options" type="A"><li>You choose a server and start the container on it with a script</li><li>You describe the result you want, and Kubernetes works out how to get there</li><li>You log in to each node and run <code>docker run</code></li><li>You upload the image directly to a node</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>You describe the result you want, and Kubernetes works out how to get there</b></p><p class="lp-quiz-why">You declare the desired state (&quot;3 copies of this image&quot;) and Kubernetes decides where to run them and keeps them running. That idea runs through the whole track.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/index.html">
           <span class="lp-nav-label">← Curriculum</span>
           <span class="lp-nav-title">Track Overview</span>
@@ -414,5 +475,6 @@ docker rm web</code></pre><figcaption class="scroll-hint">Scroll sideways to see
     </footer>
     <script src="../../assets/assistant.js" defer></script>
     <script src="../../assets/flow-player.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
   </body>
 </html>

@@ -7,12 +7,18 @@ order: 11
 module: 11
 summary: Isolating Dev, QA, Staging, and Production as separate clusters, and granting people and pipelines cluster access with EKS access entries instead of a shared superuser.
 level: Platform · Access
-readingTime: 8 min read
+readingTime: 10 min read
 stack: [Amazon EKS, AWS IAM, Kubernetes RBAC, EKS access entries]
 tags: [rbac, iam, eks, multi-environment, security]
 redirectFrom: [multi-environment-clusters-and-access-entries, 02-multi-environment-clusters-and-rbac]
 related: [tolling/cloud-foundation]
 ---
+
+**In this module, you'll learn to:**
+
+- Decide when environments need separate clusters rather than namespaces
+- Grant people and pipelines access with EKS access entries and access policies
+- Move off the deprecated `aws-auth` ConfigMap, and switch contexts safely
 
 **Before you start:** you'll want the AWS CLI and `kubectl`, permission to manage EKS clusters, the RBAC basics from [Namespaces, RBAC & Service Accounts](08-namespaces-rbac-and-cluster-access.html), and how access entries work from [Kubernetes on Amazon EKS](10-kubernetes-on-eks.html). This module takes those ideas across several clusters.
 
@@ -95,3 +101,48 @@ Running `kubectl config current-context` before anything destructive is a cheap 
 ### Trade-offs
 
 Separate clusters per environment cost more than namespaces on one shared cluster, since each has its own control plane and minimum set of nodes. When a mistake in Development must never be able to reach Production data or traffic, that's a deliberate trade, not waste. For lower-stakes workloads, namespaces on fewer clusters are a reasonable, cheaper option.
+
+## Recap · Key terms
+
+- **Access policy:** an EKS-managed permission set, such as cluster admin or edit, attached to an access entry.
+- **Access scope:** whether an access policy applies to the whole cluster or to named namespaces.
+- **aws-auth:** the older, deprecated ConfigMap that mapped IAM roles to Kubernetes groups.
+- **Authentication mode:** whether a cluster reads access entries (`API`), `aws-auth`, or both.
+- **system:masters:** a group that bypasses RBAC entirely; avoid it.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+Q: Why give each environment its own cluster, rather than a namespace on one shared cluster?
+- Namespaces can't run more than one app
+* Cluster-wide resources and permissions reach across namespaces, so only separate clusters give a hard boundary
+- Separate clusters are cheaper
+- EKS allows only one namespace per cluster
+= CRDs, webhooks, node settings, and cluster-wide roles span every namespace. When a mistake in Dev must never reach Production, the boundary has to be a cluster.
+S: A CI pipeline should deploy only to the `orders` namespace in Production. What's the right access entry setup?
+- Add the pipeline's role to `system:masters`
+- Attach `AmazonEKSClusterAdminPolicy` with a cluster scope
+* Attach `AmazonEKSEditPolicy` with a namespace scope of `orders`
+- Share an engineer's admin credentials with the pipeline
+= Scope access to exactly what the pipeline deploys. Admin rights for a pipeline turn a compromised build into a compromised cluster.
+S: An engineer is cluster admin in Dev. What access do they have in Production?
+- The same, because they use the same IAM role
+* Only what Production's own access entries grant them
+- Read-only, automatically
+- None, ever
+= Each cluster has its own access entries. Admin in one grants nothing in another, which is exactly the point of separate clusters.
+Q: What's the safe order for migrating from `aws-auth` to access entries?
+- Switch to `API` mode, then recreate the mappings
+* Switch to `API_AND_CONFIG_MAP`, recreate each mapping as an access entry, check access, then switch to `API`
+- Delete `aws-auth`, then create access entries
+- They can't be migrated; build a new cluster
+= Running both modes first means nobody is locked out while you recreate the mappings. Drop `aws-auth` only once everyone can still get in.
+Q: What's the cheapest habit that prevents running a QA command against Production?
+* Running `kubectl config current-context` before anything destructive
+- Using the same context name for every cluster
+- Giving everyone admin in every cluster
+- Keeping a single kubeconfig entry
+= A terminal left on the wrong context is the classic multi-cluster mistake, and checking takes a second.
+```

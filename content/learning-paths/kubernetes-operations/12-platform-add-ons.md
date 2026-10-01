@@ -7,11 +7,17 @@ order: 12
 module: 12
 summary: The small set of add-ons a new EKS cluster needs before any application can run well (load balancing, DNS, metrics, autoscaling, logs, storage), each with its own IAM role, installed in a way you can repeat safely.
 level: Platform · Add-ons
-readingTime: 9 min read
+readingTime: 11 min read
 stack: [Amazon EKS, AWS Load Balancer Controller, ExternalDNS, metrics-server, Cluster Autoscaler, Fluent Bit, EBS CSI, EFS CSI, Helm]
 tags: [eks, add-ons, external-dns, irsa, storage, platform]
 redirectFrom: [platform-add-ons, 10-platform-add-ons]
 ---
+
+**In this module, you'll learn to:**
+
+- List the add-ons a new EKS cluster needs before apps arrive, and what each does
+- Give every add-on its own narrowly scoped IAM role
+- Configure ExternalDNS and storage classes safely, and avoid two install-script gotchas
 
 **Before you start:** this builds on [Kubernetes on Amazon EKS](10-kubernetes-on-eks.html). It installs the pieces that later modules rely on: load balancing (see [Ingress Architecture & Cost](14-ingress-architecture-and-cost.html)), metrics and autoscaling ([Scaling & Cost](17-scaling-requests-and-cost.html)), and logs ([Observability](18-observability-and-alerting.html)). It's based on the add-on setup used in the multi-environment deployment this track draws on, with every name, account, and domain replaced by a placeholder.
 
@@ -116,3 +122,48 @@ spec:
 - **Give each piece one owner.** The OIDC provider was first created by the script and later moved into Terraform, and the script was changed to stop deleting it. Two tools managing the same resource will eventually fight.
 - **Prefer managed add-ons and pinned Helm charts over raw manifests.** EKS managed add-ons (VPC CNI, CoreDNS, kube-proxy, the EBS CSI driver, Pod Identity agent, and others) get versioned upgrades with the cluster. The rest can be pinned Helm releases (see [Helm & Kustomize](09-helm-and-kustomize.html)), ideally managed through Argo CD (see [GitOps with Argo CD](16-gitops-with-argo-cd.html)) so every cluster gets the same set.
 - **Graviton nodes need ARM64 images.** If the node groups use AWS Graviton, every add-on and application image must be published for `arm64`. Most well-known add-ons are multi-architecture, but check anything custom before switching.
+
+## Recap · Key terms
+
+- **Add-on:** cluster software that adds a capability, such as load balancing, DNS, or logs.
+- **ExternalDNS:** creates DNS records for Services and Ingresses.
+- **metrics-server:** reports pod CPU and memory, used by `kubectl top` and the HPA.
+- **CSI driver:** connects Kubernetes volumes to a storage system, such as EBS or EFS.
+- **WaitForFirstConsumer:** creates a volume only once its pod has a node, in that node's zone.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+Q: Why does every add-on get its own IAM role?
+- AWS limits each role to one service account
+* So a misbehaving or compromised add-on can only touch what it needs
+- It makes add-ons install faster
+- Helm requires it
+= The autoscaler can resize node groups but can't edit DNS; ExternalDNS can edit one zone but can't create load balancers. Separate roles keep the damage small.
+S: A pod can't start because its EBS volume is in a different Availability Zone from its node. What prevents this?
+- Using `ReadWriteMany`
+* A StorageClass with `volumeBindingMode: WaitForFirstConsumer`
+- Running more replicas
+- Pinning the add-on's version
+= `WaitForFirstConsumer` waits until the pod has been scheduled, then creates the volume in that node's zone.
+Q: The install script annotated the Cluster Autoscaler Deployment with `safe-to-evict: "false"`. What effect did that have?
+- It stopped the autoscaler removing its own node
+* None, because the autoscaler reads that annotation from pods, not Deployments
+- It made the autoscaler crash
+- It disabled scale-down entirely
+= The command succeeded but did nothing. The annotation has to go in the pod template, so it lands on the pods themselves.
+S: Two clusters run ExternalDNS against the same zone with the same `--txt-owner-id`. What's the risk?
+- None; that's the recommended setup
+* They can overwrite each other's records
+- ExternalDNS refuses to start
+- Every record is created twice
+= The owner ID marks which records a cluster manages. Shared IDs make clusters fight over records, so make it unique per cluster.
+Q: Why is installing add-ons from `.../releases/latest/...` URLs a problem?
+- Latest releases are always unstable
+* Runs on different days can install different versions, so environments drift apart
+- GitHub blocks those URLs
+- They download more slowly
+= "Latest" changes over time. Pin every add-on version, and change versions on purpose, one environment at a time.
+```

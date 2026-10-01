@@ -161,7 +161,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 18 of 20</span>
             <span><b>Level:</b> Production · Monitoring</span>
-            <span><b>Time:</b> 8 min read</span>
+            <span><b>Time:</b> 10 min read</span>
             <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
@@ -200,7 +200,7 @@
                 <li><a href="16-gitops-with-argo-cd.html"><span class="lp-toc-num">16</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
                 <li><a href="17-scaling-requests-and-cost.html"><span class="lp-toc-num">17</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
                 <li class="is-current"><a href="18-observability-and-alerting.html" aria-current="page"><span class="lp-toc-num">18</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a>
-                <ol class="lp-toc-sections"><li><a href="#alert-on-what-users-feel-investigate-with-everything-else">Alert on what users feel, investigate with everything else</a></li><li><a href="#what-to-collect">What to collect</a></li><li><a href="#alerts-that-are-worth-waking-up-for">Alerts that are worth waking up for</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#alert-on-what-users-feel-investigate-with-everything-else">Alert on what users feel, investigate with everything else</a></li><li><a href="#what-to-collect">What to collect</a></li><li><a href="#alerts-that-are-worth-waking-up-for">Alerts that are worth waking up for</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="19-incident-triage.html"><span class="lp-toc-num">19</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
                 <li><a href="20-cluster-upgrades.html"><span class="lp-toc-num">20</span><span>Cluster Upgrades Without Drama</span></a></li>
               </ol>
@@ -247,6 +247,12 @@
             </details>
           <section>
 <div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Separate what deserves an alert from what belongs on a dashboard</li>
+<li>Collect logs, metrics, and cluster state from an EKS cluster</li>
+<li>Write alerts that wake people for real, user-facing problems only</li>
+</ul>
 <p><b>Before you start:</b> this module is about finding out that something is broken. <a href="19-incident-triage.html">Incident Triage</a> covers what to do next.</p>
 </div>
 </section>
@@ -307,6 +313,61 @@ kubectl get events -A --field-selector=type=Warning --sort-by='.lastTimestamp'</
 </details>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>The four signals:</b> errors, latency, traffic, and saturation.</li>
+<li><b>p99 latency:</b> the time within which 99% of requests finish.</li>
+<li><b>Fluent Bit:</b> a log agent that runs on every node as a DaemonSet.</li>
+<li><b>kube-state-metrics:</b> turns Kubernetes object state into metrics, such as Pending or restarting pods.</li>
+<li><b>Alert fatigue:</b> people ignoring alerts because too many of them are noise.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">Which of these should page someone at night?</p>
+<ol class="lp-quiz-options" type="A"><li>CPU on one node above 80% for one minute</li><li>A service's error rate above its threshold for 5 minutes</li><li>A pod that restarted once</li><li>A new deployment starting</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>A service's error rate above its threshold for 5 minutes</b></p><p class="lp-quiz-why">Page on symptoms users feel, sustained for several minutes. Single-sample, per-pod, or internal signals belong on dashboards.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Why look at p99 latency rather than the average?</p>
+<ol class="lp-quiz-options" type="A"><li>Averages are harder to compute</li><li>Averages hide the slow requests that some users actually get</li><li>p99 is always lower</li><li>Kubernetes only reports p99</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Averages hide the slow requests that some users actually get</b></p><p class="lp-quiz-why">A healthy-looking average can hide a long tail of slow requests. p95 and p99 show what the slowest users experience.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="0" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">Your dashboards show a 0% error rate and normal latency, but customers report the site is down. Which signal would have caught it?</p>
+<ol class="lp-quiz-options" type="A"><li>Traffic: requests have dropped to zero, so there are no errors to count</li><li>CPU saturation on the nodes</li><li>The p99 latency</li><li>The number of pod restarts</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Traffic: requests have dropped to zero, so there are no errors to count</b></p><p class="lp-quiz-why">If requests stop arriving, perhaps because DNS or the load balancer broke upstream, the error rate is zero and everything looks healthy. Alert on traffic dropping as well as on errors.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Which source tells you that a deployment has fewer ready replicas than it should?</p>
+<ol class="lp-quiz-options" type="A"><li>Container logs</li><li>Node CPU metrics</li><li>kube-state-metrics, which reports cluster state</li><li>The load balancer's access logs</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>kube-state-metrics, which reports cluster state</b></p><p class="lp-quiz-why">kube-state-metrics turns object state (desired versus ready replicas, Pending pods, restarts) into metrics you can alert on.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">What should every paging alert come with?</p>
+<ol class="lp-quiz-options" type="A"><li>A screenshot</li><li>A CPU graph</li><li>An owner and a first step, such as a link to a runbook</li><li>At least three recipients</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>An owner and a first step, such as a link to a runbook</b></p><p class="lp-quiz-why">If nobody knows what to do when it fires, it isn't ready to page anyone. Link each alert to a runbook or the triage checklist.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <section class="related-links" aria-label="See it in practice">
           <h2>See it in practice</h2>
           <ul>
@@ -348,5 +409,6 @@ kubectl get events -A --field-selector=type=Warning --sort-by='.lastTimestamp'</
     </footer>
     <script src="../../assets/assistant.js" defer></script>
     <script src="../../assets/flow-player.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
   </body>
 </html>

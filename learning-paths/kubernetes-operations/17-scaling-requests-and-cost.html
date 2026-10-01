@@ -161,7 +161,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 17 of 20</span>
             <span><b>Level:</b> Production · Capacity</span>
-            <span><b>Time:</b> 8 min read</span>
+            <span><b>Time:</b> 10 min read</span>
             <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
@@ -199,7 +199,7 @@
                 <li><a href="15-container-delivery-to-eks.html"><span class="lp-toc-num">15</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
                 <li><a href="16-gitops-with-argo-cd.html"><span class="lp-toc-num">16</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
                 <li class="is-current"><a href="17-scaling-requests-and-cost.html" aria-current="page"><span class="lp-toc-num">17</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a>
-                <ol class="lp-toc-sections"><li><a href="#requests-are-a-promise-and-the-cluster-plans-around-them">Requests are a promise, and the cluster plans around them</a></li><li><a href="#two-layers-of-autoscaling">Two layers of autoscaling</a></li><li><a href="#keeping-scale-down-from-hurting-you">Keeping scale-down from hurting you</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#requests-are-a-promise-and-the-cluster-plans-around-them">Requests are a promise, and the cluster plans around them</a></li><li><a href="#two-layers-of-autoscaling">Two layers of autoscaling</a></li><li><a href="#keeping-scale-down-from-hurting-you">Keeping scale-down from hurting you</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="18-observability-and-alerting.html"><span class="lp-toc-num">18</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
                 <li><a href="19-incident-triage.html"><span class="lp-toc-num">19</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
                 <li><a href="20-cluster-upgrades.html"><span class="lp-toc-num">20</span><span>Cluster Upgrades Without Drama</span></a></li>
@@ -247,6 +247,12 @@
             </details>
           <section>
 <div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Explain why resource requests drive scheduling, autoscaling, and cost</li>
+<li>Combine pod autoscaling (HPA) with node autoscaling (Cluster Autoscaler or Karpenter)</li>
+<li>Protect workloads during scale-down with PodDisruptionBudgets</li>
+</ul>
 <p><b>Before you start:</b> you'll want metrics-server running in the cluster (<a href="12-platform-add-ons.html">Platform Add-ons</a> covers installing it) and <code>kubectl top</code> working.</p>
 </div>
 </section>
@@ -332,6 +338,61 @@ spec:
 </details>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>HPA:</b> the Horizontal Pod Autoscaler, which changes replica counts based on a metric.</li>
+<li><b>Cluster Autoscaler:</b> grows and shrinks node groups when pods can't be placed or nodes sit idle.</li>
+<li><b>Karpenter:</b> launches right-sized EC2 instances directly for waiting pods.</li>
+<li><b>PodDisruptionBudget (PDB):</b> how many replicas must stay up during voluntary disruptions.</li>
+<li><b>Throttling:</b> slowing down a container that goes over its CPU limit.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">An HPA targets 70% CPU utilization. 70% of what?</p>
+<ol class="lp-quiz-options" type="A"><li>The node's CPU</li><li>The pods' CPU request</li><li>The pods' CPU limit</li><li>The cluster's total CPU</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The pods' CPU request</b></p><p class="lp-quiz-why">The HPA measures usage as a percentage of the request. Without a CPU request there's nothing to calculate against, so it won't scale on CPU.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">The HPA adds pods, but some stay <code>Pending</code>. What adds capacity for them?</p>
+<ol class="lp-quiz-options" type="A"><li>The HPA itself</li><li>The scheduler</li><li>The node autoscaler (Cluster Autoscaler or Karpenter), reacting to the Pending pods</li><li>metrics-server</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The node autoscaler (Cluster Autoscaler or Karpenter), reacting to the Pending pods</b></p><p class="lp-quiz-why">Pod autoscaling and node autoscaling are separate layers. Pending pods are the signal for the node autoscaler to add a node.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">A PDB sets <code>minAvailable</code> equal to the Deployment's replica count. What's the side effect?</p>
+<ol class="lp-quiz-options" type="A"><li>Faster rollouts</li><li>Node drains, upgrades, and scale-down are blocked, because no pod may ever be evicted</li><li>More replicas are created</li><li>Nothing; it's the safest setting</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Node drains, upgrades, and scale-down are blocked, because no pod may ever be evicted</b></p><p class="lp-quiz-why">A budget that allows zero disruptions stalls every voluntary eviction. It looks safe, but it quietly stops upgrades and scale-down.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="0" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Requests are set far higher than what pods actually use. What's the main effect?</p>
+<ol class="lp-quiz-options" type="A"><li>You pay for nodes that sit mostly empty</li><li>Pods get OOMKilled</li><li>The HPA scales too slowly</li><li>Pods are throttled</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>You pay for nodes that sit mostly empty</b></p><p class="lp-quiz-why">The scheduler reserves what's requested, so nodes fill up on paper while staying idle in reality. That idle capacity is a common hidden cost.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">What doesn't a PodDisruptionBudget protect against?</p>
+<ol class="lp-quiz-options" type="A"><li>Node drains during an upgrade</li><li>Scale-down by the node autoscaler</li><li>A node that crashes outright</li><li><code>kubectl drain</code></li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>A node that crashes outright</b></p><p class="lp-quiz-why">PDBs only cover voluntary disruptions. For crashes you still need several replicas, spread across Availability Zones.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <section class="related-links" aria-label="See it in practice">
           <h2>See it in practice</h2>
           <ul>
@@ -374,5 +435,6 @@ spec:
     </footer>
     <script src="../../assets/assistant.js" defer></script>
     <script src="../../assets/flow-player.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
   </body>
 </html>

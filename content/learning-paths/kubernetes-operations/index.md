@@ -5,13 +5,15 @@ updated: 2026-10-01
 track: kubernetes-operations
 summary: A path from never having used Kubernetes to running Amazon EKS in production. Start with the basics on a free local cluster, learn the core concepts, move to EKS and build the platform, then work through the real challenges of operating it.
 level: Beginner to Advanced
-duration: 20 Modules · 180 min read
+duration: 20 Modules · 220 min read
 stack: [Kubernetes, kind, kubectl, Helm, Amazon EKS, AWS Load Balancer Controller, Argo CD, Karpenter]
 ---
 
 ## Overview · Learn the basics, then the concepts, then how to run it
 
 Most EKS guides start with a cluster already running and jump straight to production tricks. This track starts at the very beginning, and assumes no Kubernetes experience at all. It explains why Kubernetes exists and gets you running it on your own laptop for free. Then it teaches the core concepts one at a time, moves to Amazon EKS to build a real platform, and finishes with the challenges that only show up once you're operating it. Each module builds on the ones before it, and each has diagrams that show how requests, permissions, and deploys flow through the system.
+
+Every module is built to be worked through, not just read. Each one opens with what you'll learn, includes hands-on **Try it** commands, recaps the key terms, and ends with a five-question **pop quiz**: three questions on the ideas and two real-world scenarios, shuffled into a new order every time. Score 4 out of 5 to pass.
 
 <div class="callout"><b>Where to start.</b><ul><li><b>New to Kubernetes, or to containers?</b> Start at <a href="01-why-kubernetes.html">Module 01</a> and read in order. Parts 1 and 2 run on a free cluster on your laptop.</li><li><b>Know Kubernetes, new to Amazon EKS?</b> Skim Part 2, then start at <a href="10-kubernetes-on-eks.html">Module 10</a>.</li><li><b>Already run EKS?</b> Go straight to Part 4, <a href="15-container-delivery-to-eks.html">Operating in production</a>, or to whichever challenge you're facing.</li></ul></div>
 

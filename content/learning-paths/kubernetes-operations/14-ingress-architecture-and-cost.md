@@ -7,12 +7,18 @@ order: 14
 module: 14
 summary: When to route traffic through a shared ALB versus a separate ingress controller, why grouping services onto one load balancer is a real saving, and where Gateway API fits now that ingress-nginx is retired.
 level: Platform · Networking
-readingTime: 9 min read
+readingTime: 11 min read
 stack: [Amazon EKS, AWS Load Balancer Controller, Nginx Ingress, Gateway API, AWS VPC CNI]
 tags: [ingress, alb, nginx, gateway-api, cost-optimization, eks]
 redirectFrom: [ingress-architecture-and-cost, 01-dual-ingress-architecture]
 related: [tolling/eks-ingress-incident-rca, healthcare/zero-public-ingress-network-security]
 ---
+
+**In this module, you'll learn to:**
+
+- Explain why one ALB per service gets expensive, and share one with ingress groups
+- Decide when a second ingress controller is worth running
+- Plan the move off the retired ingress-nginx, toward the Gateway API
 
 **Before you start:** you'll want an EKS cluster with the AWS Load Balancer Controller installed, and the basics from [Services & Cluster Networking](06-services-and-cluster-networking.html): what a Service and an Ingress are, plus how the VPC CNI gives pods VPC IP addresses from [Kubernetes on Amazon EKS](10-kubernetes-on-eks.html).
 
@@ -170,3 +176,48 @@ Several maintained controllers implement Gateway API, and the AWS Load Balancer 
 ### When not to share an ALB
 
 A few situations call for a dedicated load balancer: a service with clearly different security-group or WAF needs from the rest of the group, or one whose traffic makes shared connection draining or health-check settings impractical. Share by default and make an exception when one of these applies. That's easier to defend than one ALB per service by default.
+
+## Recap · Key terms
+
+- **Ingress group:** several Ingresses sharing one ALB through the same `group.name`.
+- **IngressClass:** says which controller handles an Ingress, through `spec.ingressClassName`.
+- **Rewrite:** changing a request's path before it reaches the app.
+- **Gateway API:** the successor to Ingress, splitting Gateways (platform) from routes (apps).
+- **HTTPRoute:** a Gateway API object holding one app's routing rules.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+S: Ten APIs each have their own Ingress, and each gets its own ALB. What's the problem?
+- ALBs can't route by path
+* Each ALB has a fixed monthly cost, so ten cost far more than one shared ALB
+- Kubernetes allows only one Ingress per namespace
+- The APIs can't reach each other
+= Every ALB carries a fixed charge however little traffic it gets. Sharing one ALB across services through an ingress group removes most of that.
+Q: How do two Ingresses end up on the same ALB?
+- They must be in the same file
+* They use the same `alb.ingress.kubernetes.io/group.name` annotation
+- They point at the same Service
+- They must be in the same namespace
+= The AWS Load Balancer Controller merges every Ingress with the same group name into one ALB, adding a rule for each. `group.order` sets the rule priority.
+S: For a single-page app at `/portal`, what goes wrong with `rewrite-target: /` instead of `/$2`?
+- Nothing; they're equivalent
+* Every request, including CSS and JavaScript files, reaches the app as `/`, so it breaks
+- The Ingress is rejected
+- Only the home page loads slowly
+= `/$2` keeps the part of the path after `/portal`. A plain `/` throws it away, so every asset request gets the HTML page back.
+Q: Why should new clusters avoid the community ingress-nginx controller?
+- It doesn't support HTTPS
+* It's been retired, so it no longer gets releases or security fixes
+- It only runs on kind
+- It can't share load balancers
+= The Kubernetes project retired it, with best-effort maintenance ending in March 2026. New setups should pick a maintained controller, ideally one that implements the Gateway API.
+Q: In the Gateway API, who usually owns the Gateway, and who owns the HTTPRoutes?
+* The platform team owns the Gateway; app teams own their HTTPRoutes
+- App teams own both
+- AWS owns the Gateway
+- The Gateway API has no ownership model
+= Splitting the load balancer (the Gateway) from each app's rules (HTTPRoutes) lets teams change their routes without touching shared infrastructure.
+```

@@ -161,7 +161,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 04 of 20</span>
             <span><b>Level:</b> Core concepts · Architecture</span>
-            <span><b>Time:</b> 8 min read</span>
+            <span><b>Time:</b> 10 min read</span>
             <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
@@ -180,7 +180,7 @@
               <p class="lp-toc-part">Part 2 · Core concepts</p>
               <ol class="lp-toc-list">
                 <li class="is-current"><a href="04-how-a-cluster-works.html" aria-current="page"><span class="lp-toc-num">04</span><span>How a Kubernetes Cluster Actually Works</span></a>
-                <ol class="lp-toc-sections"><li><a href="#you-describe-what-you-want-and-kubernetes-keeps-making-it-true">You describe what you want, and Kubernetes keeps making it true</a></li><li><a href="#the-control-plane-decides-the-nodes-do-the-work">The control plane decides, the nodes do the work</a></li><li><a href="#what-really-happens-when-you-run-kubectl-apply">What really happens when you run kubectl apply</a></li><li><a href="#look-around-a-cluster">Look around a cluster</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#you-describe-what-you-want-and-kubernetes-keeps-making-it-true">You describe what you want, and Kubernetes keeps making it true</a></li><li><a href="#the-control-plane-decides-the-nodes-do-the-work">The control plane decides, the nodes do the work</a></li><li><a href="#what-really-happens-when-you-run-kubectl-apply">What really happens when you run kubectl apply</a></li><li><a href="#look-around-a-cluster">Look around a cluster</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="05-pods-deployments-and-rollouts.html"><span class="lp-toc-num">05</span><span>Pods, Deployments &amp; Rollouts: How Your App Actually Runs</span></a></li>
                 <li><a href="06-services-and-cluster-networking.html"><span class="lp-toc-num">06</span><span>Services &amp; Cluster Networking: How Traffic Finds Your Pods</span></a></li>
                 <li><a href="07-storage-and-workload-types.html"><span class="lp-toc-num">07</span><span>Storage &amp; Other Workload Types: Data That Outlives a Pod</span></a></li>
@@ -247,6 +247,12 @@
             </details>
           <section>
 <div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Explain the reconciliation loop: desired state, actual state, and controllers</li>
+<li>Name the parts of the control plane and of a worker node, and what each does</li>
+<li>Trace what happens between <code>kubectl apply</code> and a running container</li>
+</ul>
 <p><b>Before you start:</b> finish Part 1, especially <a href="02-your-first-cluster.html">Your First Cluster</a>, where you watched Kubernetes replace a deleted pod. This module explains how that happened. Keep the kind cluster running; the commands at the end use it.</p>
 </div>
 </section>
@@ -331,6 +337,62 @@ kubectl get pods -w</code></pre><figcaption class="scroll-hint">Scroll sideways 
 </details>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>Desired state:</b> what you've declared should exist.</li>
+<li><b>Controller:</b> a loop that compares desired and actual state, and acts on any difference.</li>
+<li><b>API server:</b> the only way in to the cluster, for people, tools, nodes, and controllers.</li>
+<li><b>etcd:</b> the database that stores every object.</li>
+<li><b>Scheduler:</b> chooses a node for each new pod, based on what the pod requests.</li>
+<li><b>kubelet:</b> the agent on each node that starts and watches the pods assigned to it.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt"><code>kubectl apply</code> returns successfully. What does that prove?</p>
+<ol class="lp-quiz-options" type="A"><li>The new pods are running and serving traffic</li><li>The API server accepted and stored the change</li><li>The image was pulled successfully</li><li>The scheduler found room on a node</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The API server accepted and stored the change</b></p><p class="lp-quiz-why"><code>apply</code> returns once the API server has stored the desired state. Scheduling, pulling the image, and starting containers all happen afterwards, and any of them can still fail.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Which component chooses the node a new pod runs on?</p>
+<ol class="lp-quiz-options" type="A"><li>The kubelet</li><li>etcd</li><li>The scheduler</li><li>kube-proxy</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The scheduler</b></p><p class="lp-quiz-why">The scheduler picks a node with enough unreserved capacity for the pod's requests. The kubelet on that node then starts it.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">A pod stays in <code>Pending</code>. Where in the flow should you look first?</p>
+<ol class="lp-quiz-options" type="A"><li>The container runtime pulling the image</li><li>The scheduler, which can't find a node with room</li><li>The readiness probe</li><li>The API server's authentication</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The scheduler, which can't find a node with room</b></p><p class="lp-quiz-why"><code>Pending</code> means the pod hasn't been placed on a node yet, usually because no node has the CPU or memory it requests. An image problem shows up later, as <code>ImagePullBackOff</code>.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="0" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">How does a kubelet learn which pods it should run?</p>
+<ol class="lp-quiz-options" type="A"><li>It watches the API server for pods assigned to its node</li><li>The scheduler connects to the node and starts them</li><li>It reads etcd directly</li><li>Someone runs kubectl on the node</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>It watches the API server for pods assigned to its node</b></p><p class="lp-quiz-why">Every component goes through the API server, including the kubelet. Nothing but the API server talks to etcd.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Which of these is the reconciliation loop at work?</p>
+<ol class="lp-quiz-options" type="A"><li><code>kubectl logs</code> streaming a container's output</li><li>A Deployment replacing a crashed pod without anyone asking</li><li>An engineer restarting a server by hand</li><li>CI building a new image</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>A Deployment replacing a crashed pod without anyone asking</b></p><p class="lp-quiz-why">A controller saw that the actual state (one pod fewer) didn't match the desired state, and fixed it. The same loop drives Deployments, load balancer controllers, and Argo CD.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/03-kubernetes-yaml-and-kubectl.html">
           <span class="lp-nav-label">← Module 03</span>
           <span class="lp-nav-title">Reading Kubernetes YAML and Working with kubectl</span>
@@ -366,5 +428,6 @@ kubectl get pods -w</code></pre><figcaption class="scroll-hint">Scroll sideways 
     </footer>
     <script src="../../assets/assistant.js" defer></script>
     <script src="../../assets/flow-player.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
   </body>
 </html>

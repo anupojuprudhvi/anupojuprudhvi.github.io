@@ -7,12 +7,18 @@ order: 6
 module: 6
 summary: Pods come and go with new IP addresses, so nothing should talk to a pod directly. How Services give a stable name and address, how cluster DNS and kube-proxy route each request, the Service types, and how an Ingress brings traffic in from outside the cluster.
 level: Core concepts · Networking
-readingTime: 9 min read
+readingTime: 11 min read
 stack: [Kubernetes, CoreDNS, kube-proxy, Services, Ingress, NetworkPolicy]
 tags: [kubernetes, services, networking, dns, ingress, fundamentals]
 redirectFrom: [services-and-cluster-networking]
 related: [tolling/eks-ingress-incident-rca, healthcare/zero-public-ingress-network-security]
 ---
+
+**In this module, you'll learn to:**
+
+- Explain why apps talk to Services, not to pods
+- Follow one request through cluster DNS, a ClusterIP, and kube-proxy to a ready pod
+- Choose a Service type, and bring outside traffic in with an Ingress
 
 **Before you start:** this builds on [Pods, Deployments & Rollouts](05-pods-deployments-and-rollouts.html), especially labels and readiness probes. A basic idea of IP addresses, ports, and DNS helps.
 
@@ -157,3 +163,49 @@ kubectl port-forward -n orders service/orders-api 8080:80
 - **`port` and `targetPort` are different things.** Callers use `port`; the container must be listening on `targetPort`. A mismatch gives connection errors even though everything looks healthy.
 - **`kubectl port-forward` is a debugging tool, not a way to serve users.** It tunnels through the API server from your machine only, and stops when you close the terminal.
 - **Debug layer by layer.** DNS, then Service, then endpoints, then pod. The [EKS ingress incident](../../case-studies/tolling/eks-ingress-incident-rca.html) case study applies exactly this order to a real outage.
+
+## Recap · Key terms
+
+- **Service:** a stable name and address in front of a changing set of pods.
+- **ClusterIP:** a Service's virtual IP; really just routing rules on each node.
+- **EndpointSlice:** the current list of ready pod IPs behind a Service.
+- **CoreDNS:** the cluster's DNS server, which resolves names like `orders-api.orders`.
+- **Ingress:** HTTP routing rules for traffic from outside, made real by an ingress controller.
+- **NetworkPolicy:** a rule limiting which pods may connect to which.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+S: Code in the `checkout` namespace calls the `orders-api` Service in the `orders` namespace. Which name works?
+- `orders-api`
+* `orders-api.orders`
+- `orders.orders-api`
+- The IP address of an `orders-api` pod
+= Short names only resolve within the same namespace. Across namespaces, use `<service>.<namespace>`. Pod IPs change on every rollout, so never use them.
+S: A Service has no endpoints. What are the two most likely causes?
+* Its selector doesn't match the pod labels, or no pod is passing readiness
+- The ClusterIP is wrong, or DNS is down
+- The Ingress is missing, or the load balancer is down
+- The namespace is full, or the node is out of memory
+= Endpoints are the ready pods that match the selector. A label typo or a failing readiness probe leaves the list empty.
+Q: Why can't you ping a ClusterIP?
+- A NetworkPolicy blocks it by default
+* It isn't a real machine, only routing rules that kube-proxy writes on each node
+- ClusterIPs only accept HTTPS
+- It's only reachable from outside the cluster
+= Nothing listens on the ClusterIP. kube-proxy's rules send traffic for its ports to a ready pod, so a ping gets no answer.
+Q: You want several HTTP services reachable from the internet under one hostname, routed by path. What do you use?
+- A `LoadBalancer` Service for each one
+- A `NodePort` for each one
+* An Ingress (or Gateway API routes) handled by a controller
+- A headless Service
+= An Ingress routes HTTP by host and path to different Services through one entry point. A LoadBalancer Service per app costs one load balancer each.
+Q: By default, which pods can connect to a pod in the `payments` namespace?
+- Only pods in `payments`
+- None, until you add a NetworkPolicy
+* Any pod in any namespace
+- Only pods with the same labels
+= Kubernetes networking is flat by default. NetworkPolicies, enforced by the network plugin, are how you restrict it.
+```

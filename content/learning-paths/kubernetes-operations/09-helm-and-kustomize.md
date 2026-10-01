@@ -6,10 +6,16 @@ order: 9
 module: 9
 summary: Real apps need the same manifests in several environments, with small differences, and most cluster software ships as a package. How Kustomize layers environment changes over a shared base, how Helm installs and upgrades packaged charts, and when to use each.
 level: Core concepts · Packaging
-readingTime: 9 min read
+readingTime: 11 min read
 stack: [Helm, Kustomize, kubectl, kind]
 tags: [kubernetes, helm, kustomize, packaging, fundamentals]
 ---
+
+**In this module, you'll learn to:**
+
+- Keep one app's manifests consistent across environments with Kustomize overlays
+- Install, configure, upgrade, and roll back packaged software with Helm
+- Decide which tool fits which job
 
 **Before you start:** this builds on the declarative `kubectl apply` workflow from [Reading Kubernetes YAML](03-kubernetes-yaml-and-kubectl.html). Have the kind cluster running, and install Helm (`brew install helm`, `winget install Helm.Helm`, or the script on helm.sh).
 
@@ -189,3 +195,48 @@ kubectl delete -k hello/overlays/prod
 - **Keep your values files in Git.** `--set` on the command line is fine in a lab, but the settings then exist only in Helm's release history.
 - **Review what a chart creates before installing it.** `helm template` shows every object, including cluster-wide roles and permissions some charts ask for.
 - **Don't mix tools on the same objects.** If Helm installed something, change it with Helm. Editing a Helm-managed object with `kubectl` is undone at the next upgrade.
+
+## Recap · Key terms
+
+- **Kustomize:** builds per-environment YAML from a shared base plus patches; built into kubectl.
+- **Base and overlay:** the shared manifests, and one environment's differences from them.
+- **Helm chart:** a package of templated manifests with default settings.
+- **Values:** the settings you pass to a chart to override its defaults.
+- **Release:** one installed copy of a chart, with a revision history you can roll back.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+S: Dev and Production differ only in replica count, namespace, and image tag. What's the Kustomize way to handle that?
+- Copy the whole folder for each environment
+* One base, plus a small overlay per environment listing only those differences
+- A separate Helm chart per environment
+- One file with if-statements for each environment
+= Overlays keep the shared manifests in one place, so a fix in the base reaches every environment, and each overlay stays a small, readable diff.
+Q: What does `helm install` without `--version` install?
+- The version you installed last time
+* Whatever the newest chart version is right now
+- The version pinned in the cluster
+- Nothing; the flag is required
+= Without `--version` you get today's newest chart, so two environments installed a week apart can differ. Always pin chart versions.
+Q: Before installing a chart, you want to see every object it will create, including cluster-wide permissions. Which command?
+- `helm list`
+- `helm history`
+* `helm template`
+- `helm rollback`
+= `helm template` renders the chart to plain YAML without touching the cluster, so you can review it first.
+S: Someone edits a Helm-managed Deployment with `kubectl edit`. What happens at the next `helm upgrade`?
+* The change is overwritten by what the chart and values say
+- Helm keeps the manual change and merges it
+- The upgrade fails until the edit is reverted
+- Helm creates a second Deployment
+= Helm applies what the chart and values describe. A manual edit isn't in either, so it's lost. Change Helm-managed objects through Helm.
+Q: Which split does this track use?
+- Kustomize for everything
+- Helm for your own apps, Kustomize for add-ons
+* Helm for third-party add-ons; overlays or values files for your own apps
+- Neither; plain `kubectl apply` only
+= Helm is good at installing and upgrading other people's software. Your own apps fit Kustomize overlays or per-environment Helm values, applied by Argo CD.
+```

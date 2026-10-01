@@ -7,12 +7,18 @@ order: 16
 module: 16
 summary: Letting Argo CD keep each cluster matching what's in Git, so a deploy is a reviewed pull request, drift gets fixed automatically, and rolling back means reverting a commit.
 level: Production · Delivery
-readingTime: 8 min read
+readingTime: 10 min read
 stack: [Amazon EKS, Argo CD, Helm, Kustomize, GitHub]
 tags: [gitops, argo-cd, ci-cd, delivery, eks]
 redirectFrom: [gitops-with-argo-cd, 09-gitops-with-argo-cd]
 related: [healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare, tolling/cicd-delivery-engine]
 ---
+
+**In this module, you'll learn to:**
+
+- Explain how GitOps differs from a pipeline that runs `kubectl apply`
+- Define an Argo CD Application with automated sync, prune, and self-heal
+- Deploy and roll back through pull requests, across many environments
 
 **Before you start:** this builds on [Container Delivery](15-container-delivery-to-eks.html). There, CI built and pushed an image. Here, a separate process decides what actually runs in each cluster.
 
@@ -94,3 +100,49 @@ Keeping application code and deployment manifests in separate repositories is co
 - **Turn on self-heal gradually.** Start with automated sync and no self-heal while teams get used to it, then enable it once nobody relies on hand edits.
 - **Watch for sync failures.** An application stuck "OutOfSync" or "Degraded" is an alert worth sending, as covered in [Observability](18-observability-and-alerting.html).
 - **Protect Argo CD itself.** It can change everything in the cluster. Restrict who can use its UI and API, sign in through SSO, and keep its own configuration in Git as well.
+
+## Recap · Key terms
+
+- **GitOps:** a controller in the cluster keeps it matching what's in Git.
+- **Argo CD Application:** says which repository path should run in which cluster and namespace.
+- **Sync:** applying Git's desired state to the cluster.
+- **Self-heal:** undoing changes made directly in the cluster.
+- **Prune:** deleting cluster resources that were removed from Git.
+- **Drift:** any difference between Git and the cluster.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+Q: With GitOps, what does the CI pipeline do to the cluster?
+- Runs `kubectl apply` with admin credentials
+* Nothing directly: it pushes an image and changes Git, and Argo CD applies the change from inside the cluster
+- Restarts every pod
+- Runs `helm upgrade`
+= Argo CD pulls from Git and applies. CI never needs cluster credentials, which removes a powerful secret from the pipeline.
+S: Someone scales a Deployment by hand, and the Application has `selfHeal: true`. What happens?
+- The change stays until the next commit
+* Argo CD puts it back to what Git says
+- Argo CD commits the change to Git
+- The Application is deleted
+= Self-heal treats manual changes as drift and reverts them, so Git stays the single source of truth.
+Q: How do you roll back a bad release in a GitOps setup?
+- `kubectl rollout undo` in every cluster
+* Revert the commit that changed the image, and let Argo CD sync the cluster back
+- Delete the Argo CD Application
+- Rebuild the previous image
+= The Git history is the deploy history, so a revert is a reviewed, recorded rollback. A kubectl undo would be put back by self-heal anyway.
+S: You delete a manifest from Git, and the Application has `prune: true`. What happens to that object in the cluster?
+* Argo CD deletes it
+- It stays, unmanaged
+- Argo CD restores the file in Git
+- The sync fails
+= Prune removes cluster resources that no longer exist in Git. Without it, deleted manifests leave orphaned objects behind.
+Q: Why keep deployment manifests in a separate repository from application code?
+- Argo CD can't read application repositories
+* So the group allowed to change what runs in Production can be smaller than the group allowed to change code
+- Git limits repository size
+- It makes builds faster
+= Separating them lets you protect the manifests repository, where a merge is a Production deploy, more tightly than the code.
+```

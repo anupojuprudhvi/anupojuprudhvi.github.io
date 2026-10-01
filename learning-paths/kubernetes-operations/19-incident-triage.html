@@ -161,7 +161,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 19 of 20</span>
             <span><b>Level:</b> Production · Incidents</span>
-            <span><b>Time:</b> 8 min read</span>
+            <span><b>Time:</b> 10 min read</span>
             <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
@@ -201,7 +201,7 @@
                 <li><a href="17-scaling-requests-and-cost.html"><span class="lp-toc-num">17</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
                 <li><a href="18-observability-and-alerting.html"><span class="lp-toc-num">18</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
                 <li class="is-current"><a href="19-incident-triage.html" aria-current="page"><span class="lp-toc-num">19</span><span>Day-2 Operations &amp; Incident Triage</span></a>
-                <ol class="lp-toc-sections"><li><a href="#it-deployed-and-it-s-healthy-are-different-questions">&quot;It deployed&quot; and &quot;it's healthy&quot; are different questions</a></li><li><a href="#a-repeatable-triage-sequence-for-a-stuck-deployment">A repeatable triage sequence for a stuck deployment</a></li><li><a href="#when-to-roll-back-versus-roll-forward">When to roll back versus roll forward</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#it-deployed-and-it-s-healthy-are-different-questions">&quot;It deployed&quot; and &quot;it's healthy&quot; are different questions</a></li><li><a href="#a-repeatable-triage-sequence-for-a-stuck-deployment">A repeatable triage sequence for a stuck deployment</a></li><li><a href="#when-to-roll-back-versus-roll-forward">When to roll back versus roll forward</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="20-cluster-upgrades.html"><span class="lp-toc-num">20</span><span>Cluster Upgrades Without Drama</span></a></li>
               </ol>
             </nav>
@@ -247,6 +247,12 @@
             </details>
           <section>
 <div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Check that a rollout actually succeeded, instead of assuming it did</li>
+<li>Work a fixed triage sequence: context, then events, then pod status</li>
+<li>Decide between rolling back and rolling forward</li>
+</ul>
 <p><b>Before you start:</b> you'll want <code>kubectl</code> access to a cluster (see <a href="11-multi-environment-clusters-and-access-entries.html">Multi-Environment Clusters</a>) and a deployment you can safely break in a non-production environment.</p>
 </div>
 </section>
@@ -308,6 +314,60 @@ kubectl rollout undo deployment/&lt;name&gt; -n &lt;namespace&gt; --to-revision=
 </details>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>CrashLoopBackOff:</b> a container keeps crashing, and Kubernetes waits longer between each restart.</li>
+<li><b>ImagePullBackOff:</b> the node can't pull the image.</li>
+<li><b>Events:</b> the cluster's recent record of what happened to objects, and why.</li>
+<li><b>Roll back and roll forward:</b> returning to the last good version, or shipping a fix.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">During an incident, what's the very first step before touching anything?</p>
+<ol class="lp-quiz-options" type="A"><li>Delete the failing pods</li><li>Confirm you're on the right cluster and namespace</li><li>Roll back the deployment</li><li>Read the application logs from the top</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Confirm you're on the right cluster and namespace</b></p><p class="lp-quiz-why"><code>kubectl config current-context</code> first, always. Fixing the wrong cluster makes an incident worse.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">A pod is in <code>CrashLoopBackOff</code>. Which command shows why it crashed?</p>
+<ol class="lp-quiz-options" type="A"><li><code>kubectl get nodes</code></li><li><code>kubectl logs &lt;pod&gt; --previous</code></li><li><code>kubectl rollout status</code></li><li><code>kubectl get svc</code></li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b><code>kubectl logs &lt;pod&gt; --previous</code></b></p><p class="lp-quiz-why">The current container has just restarted and has nothing useful in its logs yet. <code>--previous</code> shows the output of the run that crashed.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="0" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">Pods show <code>ImagePullBackOff</code>, but the image exists in the registry. What should you check next?</p>
+<ol class="lp-quiz-options" type="A"><li>The tag or digest, the registry permissions, and the network path from that cluster</li><li>The readiness probe path</li><li>The HPA settings</li><li>The Service selector</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The tag or digest, the registry permissions, and the network path from that cluster</b></p><p class="lp-quiz-why">The node can't fetch the image. A wrong tag, missing pull permissions, or no route to the registry all look the same from the pod.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Why should a pipeline run <code>kubectl rollout status</code> instead of stopping after <code>kubectl apply</code>?</p>
+<ol class="lp-quiz-options" type="A"><li>It's faster</li><li>It waits until the rollout really finishes or fails, so the pipeline knows the result</li><li>It rolls back automatically</li><li><code>apply</code> doesn't work in pipelines</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>It waits until the rollout really finishes or fails, so the pipeline knows the result</b></p><p class="lp-quiz-why"><code>apply</code> only confirms the API server stored the change. <code>rollout status</code> reports whether the new pods actually came up healthy.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">&quot;It works in QA but not in Production.&quot; With the same image promoted by digest, what's the first thing to check?</p>
+<ol class="lp-quiz-options" type="A"><li>A bug in the code</li><li>An environment-specific config or IAM permission difference</li><li>A Kubernetes bug</li><li>Whether the image is different</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>An environment-specific config or IAM permission difference</b></p><p class="lp-quiz-why">The code is identical when the digest is the same. Configuration and permissions are what usually differ between environments.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <section class="related-links" aria-label="See it in practice">
           <h2>See it in practice</h2>
           <ul>
@@ -349,5 +409,6 @@ kubectl rollout undo deployment/&lt;name&gt; -n &lt;namespace&gt; --to-revision=
     </footer>
     <script src="../../assets/assistant.js" defer></script>
     <script src="../../assets/flow-player.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
   </body>
 </html>

@@ -7,12 +7,18 @@ order: 5
 module: 5
 summary: The objects you'll write every day. Pods wrap your containers, Deployments keep the right number running and replace them safely, and probes tell Kubernetes when a container is really ready. Plus configuration, and a rolling update step by step.
 level: Core concepts · Workloads
-readingTime: 11 min read
+readingTime: 13 min read
 stack: [Kubernetes, kubectl, Deployments, ReplicaSets, ConfigMaps]
 tags: [kubernetes, pods, deployments, rollouts, probes, fundamentals]
 redirectFrom: [pods-deployments-and-rollouts]
 related: [healthcare/clinical-platform-modernization-and-cost-optimization]
 ---
+
+**In this module, you'll learn to:**
+
+- Explain why pods are disposable, and why you create Deployments rather than pods
+- Set resource requests and limits, and readiness and liveness probes
+- Follow a rolling update step by step, and roll back
 
 **Before you start:** read [How a Cluster Works](04-how-a-cluster-works.html) first. This module assumes the idea of desired state and controllers, and that you know how to build and run a container image.
 
@@ -177,3 +183,50 @@ Deployments suit apps whose pods are interchangeable and keep no data of their o
 - **Always set memory requests, and a memory limit.** A container that goes over its memory limit is killed (`OOMKilled`). Without a limit, one leaking pod can starve every other pod on the node.
 - **Run at least two replicas of anything users depend on.** A single pod means every deploy, node replacement, or crash is an outage.
 - **Use `kubectl explain` to learn any field.** For example, `kubectl explain deployment.spec.strategy` prints the documentation for that field, straight from your cluster's version.
+
+## Recap · Key terms
+
+- **Pod:** the smallest unit Kubernetes runs; one container, occasionally a few, sharing one IP address.
+- **Deployment:** keeps a set number of identical pods running, and replaces them safely.
+- **ReplicaSet:** the object a Deployment creates for each version, to hold the pod count.
+- **Request and limit:** the CPU and memory reserved for scheduling, and the most a container may use.
+- **Readiness probe:** "can this pod take traffic?" Failing removes it from its Services.
+- **Liveness probe:** "is this container stuck?" Failing restarts it.
+- **ConfigMap:** plain settings injected into pods as environment variables or files.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+S: Your liveness probe checks the database, and the database has a 30-second blip. What happens?
+- Nothing; probes only run at start-up
+- Pods stop receiving traffic until the database recovers
+* Every pod fails liveness and is restarted, making the outage worse
+- Kubernetes fails over to another database
+= Liveness failures restart containers, so a shared dependency failing restarts everything at once. Put dependency checks in readiness, and keep liveness to the process itself.
+S: During a rolling update with `maxUnavailable: 0`, the new version's pods never pass readiness. What do users see?
+* Nothing changes: the old pods keep serving and the rollout stops
+- An outage until someone rolls back
+- Half the requests fail
+- The new pods get traffic anyway after a timeout
+= New pods only replace old ones once they're ready. If they never become ready, the rollout stalls and the old version keeps serving. That's the safety net probes give you.
+Q: A container goes over its memory limit. What happens?
+- It's slowed down until usage drops
+* It's killed and restarted, shown as `OOMKilled`
+- The pod moves to a bigger node
+- Nothing; memory limits are only advisory
+= Going over a memory limit kills the container; going over a CPU limit only throttles it. That difference is why memory limits need care.
+Q: What does the scheduler use to decide whether a pod fits on a node?
+- The pod's limits
+- The pod's actual usage over the last hour
+* The pod's requests
+- Only the number of pods already on the node
+= Requests are a reservation. The scheduler places a pod only where its requested CPU and memory are still unreserved, whatever the pod actually uses.
+Q: You change a ConfigMap value that pods read as an environment variable. When do running pods see it?
+- Immediately
+- Within a minute, automatically
+* Only after they restart, for example with `kubectl rollout restart`
+- Never; you must create a new ConfigMap
+= Environment variables are read once, when the container starts. Restart the Deployment to pick up the new value.
+```

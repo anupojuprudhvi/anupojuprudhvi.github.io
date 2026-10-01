@@ -161,7 +161,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 07 of 20</span>
             <span><b>Level:</b> Core concepts · Storage &amp; workloads</span>
-            <span><b>Time:</b> 10 min read</span>
+            <span><b>Time:</b> 12 min read</span>
             <span><b>Published:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
@@ -183,7 +183,7 @@
                 <li><a href="05-pods-deployments-and-rollouts.html"><span class="lp-toc-num">05</span><span>Pods, Deployments &amp; Rollouts: How Your App Actually Runs</span></a></li>
                 <li><a href="06-services-and-cluster-networking.html"><span class="lp-toc-num">06</span><span>Services &amp; Cluster Networking: How Traffic Finds Your Pods</span></a></li>
                 <li class="is-current"><a href="07-storage-and-workload-types.html" aria-current="page"><span class="lp-toc-num">07</span><span>Storage &amp; Other Workload Types: Data That Outlives a Pod</span></a>
-                <ol class="lp-toc-sections"><li><a href="#a-container-s-files-die-with-the-pod">A container's files die with the pod</a></li><li><a href="#from-scratch-space-to-persistent-disks">From scratch space to persistent disks</a></li><li><a href="#three-objects-one-disk">Three objects, one disk</a></li><li><a href="#for-apps-that-need-a-stable-identity">For apps that need a stable identity</a></li><li><a href="#picking-the-right-controller">Picking the right controller</a></li><li><a href="#prove-the-data-survives">Prove the data survives</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#a-container-s-files-die-with-the-pod">A container's files die with the pod</a></li><li><a href="#from-scratch-space-to-persistent-disks">From scratch space to persistent disks</a></li><li><a href="#three-objects-one-disk">Three objects, one disk</a></li><li><a href="#for-apps-that-need-a-stable-identity">For apps that need a stable identity</a></li><li><a href="#picking-the-right-controller">Picking the right controller</a></li><li><a href="#prove-the-data-survives">Prove the data survives</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="08-namespaces-rbac-and-cluster-access.html"><span class="lp-toc-num">08</span><span>Namespaces, RBAC &amp; Service Accounts: Who Can Do What</span></a></li>
                 <li><a href="09-helm-and-kustomize.html"><span class="lp-toc-num">09</span><span>Packaging Apps with Helm and Kustomize</span></a></li>
               </ol>
@@ -247,6 +247,12 @@
             </details>
           <section>
 <div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Explain why a pod's files don't survive it, and when that matters</li>
+<li>Give a pod persistent storage with a PersistentVolumeClaim and a StorageClass</li>
+<li>Choose between a Deployment, StatefulSet, DaemonSet, Job, and CronJob</li>
+</ul>
 <p><b>Before you start:</b> this builds on <a href="05-pods-deployments-and-rollouts.html">Pods, Deployments &amp; Rollouts</a>, especially the idea that pods are disposable, and on <a href="06-services-and-cluster-networking.html">Services &amp; Cluster Networking</a> for headless Services.</p>
 </div>
 </section>
@@ -429,6 +435,63 @@ kubectl delete job hello-job</code></pre><figcaption class="scroll-hint">Scroll 
 </details>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>Volume:</b> a directory mounted into a container; its type decides how long the data lasts.</li>
+<li><b>PersistentVolumeClaim (PVC):</b> a request for storage of a given size and access mode.</li>
+<li><b>PersistentVolume (PV):</b> the actual disk that satisfies a claim.</li>
+<li><b>StorageClass:</b> how disks get created: the driver, the disk type, and binding rules.</li>
+<li><b>StatefulSet:</b> pods with stable names and their own disks.</li>
+<li><b>DaemonSet:</b> exactly one pod on every node.</li>
+<li><b>Job and CronJob:</b> pods that run to completion, once or on a schedule.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="2" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">A pod saves uploads to <code>/data</code> inside its container, with no volume. The pod is replaced during a deploy. What happens to the files?</p>
+<ol class="lp-quiz-options" type="A"><li>They move to the new pod</li><li>They're saved to etcd</li><li>They're lost</li><li>They stay on the node for the next pod</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>They're lost</b></p><p class="lp-quiz-why">A container's own filesystem lives and dies with it. Data that must survive needs a persistent volume, or better, a service outside the cluster such as a database or Amazon S3.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="0" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Who usually writes the StorageClass, and who writes the PVC?</p>
+<ol class="lp-quiz-options" type="A"><li>The platform team writes the StorageClass; the app team writes the PVC</li><li>The app team writes both</li><li>Kubernetes creates both automatically</li><li>The cloud provider writes the PVC; the app team writes the StorageClass</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The platform team writes the StorageClass; the app team writes the PVC</b></p><p class="lp-quiz-why">The StorageClass hides how disks are made. App teams only ask for a size and access mode in a claim, and the StorageClass's driver creates the disk.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">Pods on three different nodes need to read and write the same files. Which access mode and AWS storage fit?</p>
+<ol class="lp-quiz-options" type="A"><li><code>ReadWriteOnce</code> on Amazon EBS</li><li><code>ReadWriteMany</code> on Amazon EFS</li><li><code>ReadOnlyMany</code> on Amazon EBS</li><li>An <code>emptyDir</code> volume</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b><code>ReadWriteMany</code> on Amazon EFS</b></p><p class="lp-quiz-why">An EBS volume attaches to one node at a time (<code>ReadWriteOnce</code>). Sharing across nodes needs a network file system such as EFS, with <code>ReadWriteMany</code>.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">You need a log-shipping agent on every node, including nodes added later. Which controller?</p>
+<ol class="lp-quiz-options" type="A"><li>A Deployment with one replica per node</li><li>A StatefulSet</li><li>A DaemonSet</li><li>A CronJob</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>A DaemonSet</b></p><p class="lp-quiz-why">A DaemonSet runs exactly one pod per node, and adds one automatically when a node joins.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">What does a StatefulSet give its pods that a Deployment doesn't?</p>
+<ol class="lp-quiz-options" type="A"><li>More CPU</li><li>Automatic backups</li><li>Stable names such as <code>db-0</code>, and each pod's own persistent volume</li><li>Faster rolling updates</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Stable names such as <code>db-0</code>, and each pod's own persistent volume</b></p><p class="lp-quiz-why">StatefulSet pods keep their names and get their own PVC back when they're replaced. Backups and failover are still your job, which is why managed databases are often the better choice.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/06-services-and-cluster-networking.html">
           <span class="lp-nav-label">← Module 06</span>
           <span class="lp-nav-title">Services &amp; Cluster Networking: How Traffic Finds Your Pods</span>
@@ -464,5 +527,6 @@ kubectl delete job hello-job</code></pre><figcaption class="scroll-hint">Scroll 
     </footer>
     <script src="../../assets/assistant.js" defer></script>
     <script src="../../assets/flow-player.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
   </body>
 </html>

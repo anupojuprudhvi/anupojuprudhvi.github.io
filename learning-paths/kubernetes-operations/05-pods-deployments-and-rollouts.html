@@ -161,7 +161,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 05 of 20</span>
             <span><b>Level:</b> Core concepts · Workloads</span>
-            <span><b>Time:</b> 11 min read</span>
+            <span><b>Time:</b> 13 min read</span>
             <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
@@ -181,7 +181,7 @@
               <ol class="lp-toc-list">
                 <li><a href="04-how-a-cluster-works.html"><span class="lp-toc-num">04</span><span>How a Kubernetes Cluster Actually Works</span></a></li>
                 <li class="is-current"><a href="05-pods-deployments-and-rollouts.html" aria-current="page"><span class="lp-toc-num">05</span><span>Pods, Deployments &amp; Rollouts: How Your App Actually Runs</span></a>
-                <ol class="lp-toc-sections"><li><a href="#a-pod-is-a-wrapper-around-your-container-and-it-s-disposable">A Pod is a wrapper around your container, and it's disposable</a></li><li><a href="#a-deployment-you-can-actually-run-in-production">A Deployment you can actually run in production</a></li><li><a href="#requests-and-limits">Requests and limits</a></li><li><a href="#how-kubernetes-knows-your-app-is-ready-and-still-alive">How Kubernetes knows your app is ready, and still alive</a></li><li><a href="#a-rolling-update-step-by-step">A rolling update, step by step</a></li><li><a href="#configmaps-and-secrets">ConfigMaps and Secrets</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#a-pod-is-a-wrapper-around-your-container-and-it-s-disposable">A Pod is a wrapper around your container, and it's disposable</a></li><li><a href="#a-deployment-you-can-actually-run-in-production">A Deployment you can actually run in production</a></li><li><a href="#requests-and-limits">Requests and limits</a></li><li><a href="#how-kubernetes-knows-your-app-is-ready-and-still-alive">How Kubernetes knows your app is ready, and still alive</a></li><li><a href="#a-rolling-update-step-by-step">A rolling update, step by step</a></li><li><a href="#configmaps-and-secrets">ConfigMaps and Secrets</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="06-services-and-cluster-networking.html"><span class="lp-toc-num">06</span><span>Services &amp; Cluster Networking: How Traffic Finds Your Pods</span></a></li>
                 <li><a href="07-storage-and-workload-types.html"><span class="lp-toc-num">07</span><span>Storage &amp; Other Workload Types: Data That Outlives a Pod</span></a></li>
                 <li><a href="08-namespaces-rbac-and-cluster-access.html"><span class="lp-toc-num">08</span><span>Namespaces, RBAC &amp; Service Accounts: Who Can Do What</span></a></li>
@@ -247,6 +247,12 @@
             </details>
           <section>
 <div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Explain why pods are disposable, and why you create Deployments rather than pods</li>
+<li>Set resource requests and limits, and readiness and liveness probes</li>
+<li>Follow a rolling update step by step, and roll back</li>
+</ul>
 <p><b>Before you start:</b> read <a href="04-how-a-cluster-works.html">How a Cluster Works</a> first. This module assumes the idea of desired state and controllers, and that you know how to build and run a container image.</p>
 </div>
 </section>
@@ -400,6 +406,63 @@ data:
 </details>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>Pod:</b> the smallest unit Kubernetes runs; one container, occasionally a few, sharing one IP address.</li>
+<li><b>Deployment:</b> keeps a set number of identical pods running, and replaces them safely.</li>
+<li><b>ReplicaSet:</b> the object a Deployment creates for each version, to hold the pod count.</li>
+<li><b>Request and limit:</b> the CPU and memory reserved for scheduling, and the most a container may use.</li>
+<li><b>Readiness probe:</b> &quot;can this pod take traffic?&quot; Failing removes it from its Services.</li>
+<li><b>Liveness probe:</b> &quot;is this container stuck?&quot; Failing restarts it.</li>
+<li><b>ConfigMap:</b> plain settings injected into pods as environment variables or files.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="2" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">Your liveness probe checks the database, and the database has a 30-second blip. What happens?</p>
+<ol class="lp-quiz-options" type="A"><li>Nothing; probes only run at start-up</li><li>Pods stop receiving traffic until the database recovers</li><li>Every pod fails liveness and is restarted, making the outage worse</li><li>Kubernetes fails over to another database</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Every pod fails liveness and is restarted, making the outage worse</b></p><p class="lp-quiz-why">Liveness failures restart containers, so a shared dependency failing restarts everything at once. Put dependency checks in readiness, and keep liveness to the process itself.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="0" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">During a rolling update with <code>maxUnavailable: 0</code>, the new version's pods never pass readiness. What do users see?</p>
+<ol class="lp-quiz-options" type="A"><li>Nothing changes: the old pods keep serving and the rollout stops</li><li>An outage until someone rolls back</li><li>Half the requests fail</li><li>The new pods get traffic anyway after a timeout</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Nothing changes: the old pods keep serving and the rollout stops</b></p><p class="lp-quiz-why">New pods only replace old ones once they're ready. If they never become ready, the rollout stalls and the old version keeps serving. That's the safety net probes give you.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">A container goes over its memory limit. What happens?</p>
+<ol class="lp-quiz-options" type="A"><li>It's slowed down until usage drops</li><li>It's killed and restarted, shown as <code>OOMKilled</code></li><li>The pod moves to a bigger node</li><li>Nothing; memory limits are only advisory</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>It's killed and restarted, shown as <code>OOMKilled</code></b></p><p class="lp-quiz-why">Going over a memory limit kills the container; going over a CPU limit only throttles it. That difference is why memory limits need care.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">What does the scheduler use to decide whether a pod fits on a node?</p>
+<ol class="lp-quiz-options" type="A"><li>The pod's limits</li><li>The pod's actual usage over the last hour</li><li>The pod's requests</li><li>Only the number of pods already on the node</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The pod's requests</b></p><p class="lp-quiz-why">Requests are a reservation. The scheduler places a pod only where its requested CPU and memory are still unreserved, whatever the pod actually uses.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">You change a ConfigMap value that pods read as an environment variable. When do running pods see it?</p>
+<ol class="lp-quiz-options" type="A"><li>Immediately</li><li>Within a minute, automatically</li><li>Only after they restart, for example with <code>kubectl rollout restart</code></li><li>Never; you must create a new ConfigMap</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Only after they restart, for example with <code>kubectl rollout restart</code></b></p><p class="lp-quiz-why">Environment variables are read once, when the container starts. Restart the Deployment to pick up the new value.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <section class="related-links" aria-label="See it in practice">
           <h2>See it in practice</h2>
           <ul>
@@ -441,5 +504,6 @@ data:
     </footer>
     <script src="../../assets/assistant.js" defer></script>
     <script src="../../assets/flow-player.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
   </body>
 </html>

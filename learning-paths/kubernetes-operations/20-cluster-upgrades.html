@@ -161,7 +161,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 20 of 20</span>
             <span><b>Level:</b> Production · Upgrades</span>
-            <span><b>Time:</b> 8 min read</span>
+            <span><b>Time:</b> 10 min read</span>
             <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
           </div>
         </div>
@@ -202,7 +202,7 @@
                 <li><a href="18-observability-and-alerting.html"><span class="lp-toc-num">18</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>
                 <li><a href="19-incident-triage.html"><span class="lp-toc-num">19</span><span>Day-2 Operations &amp; Incident Triage</span></a></li>
                 <li class="is-current"><a href="20-cluster-upgrades.html" aria-current="page"><span class="lp-toc-num">20</span><span>Cluster Upgrades Without Drama</span></a>
-                <ol class="lp-toc-sections"><li><a href="#upgrades-are-routine-work-so-make-them-boring">Upgrades are routine work, so make them boring</a></li><li><a href="#find-what-the-new-version-removes">Find what the new version removes</a></li><li><a href="#control-plane-then-add-ons-then-nodes">Control plane, then add-ons, then nodes</a></li><li><a href="#prove-it-on-a-non-production-cluster-first">Prove it on a non-production cluster first</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#upgrades-are-routine-work-so-make-them-boring">Upgrades are routine work, so make them boring</a></li><li><a href="#find-what-the-new-version-removes">Find what the new version removes</a></li><li><a href="#control-plane-then-add-ons-then-nodes">Control plane, then add-ons, then nodes</a></li><li><a href="#prove-it-on-a-non-production-cluster-first">Prove it on a non-production cluster first</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
               </ol>
             </nav>
           </aside>
@@ -247,6 +247,12 @@
             </details>
           <section>
 <div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Explain why small, regular upgrades are safer than rare, big ones</li>
+<li>Find APIs the new version removes before you upgrade</li>
+<li>Upgrade the control plane, add-ons, and nodes in the right order, rehearsed outside Production</li>
+</ul>
 <p><b>Before you start:</b> you'll want a non-production cluster to rehearse on, and your cluster version defined in code (Terraform or similar).</p>
 </div>
 </section>
@@ -314,6 +320,60 @@ kubectl get nodes -L eks.amazonaws.com/nodegroup \
 </details>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>Minor version:</b> a Kubernetes release such as 1.32 or 1.33; upgrades go one at a time.</li>
+<li><b>Standard and extended support:</b> EKS's support window for a version, and the more expensive period after it.</li>
+<li><b>Upgrade insights:</b> EKS checks that flag deprecated APIs your cluster has actually used.</li>
+<li><b>Cordon and drain:</b> stop new pods landing on a node, then evict the pods already on it.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Can you upgrade an EKS cluster from 1.30 straight to 1.33?</p>
+<ol class="lp-quiz-options" type="A"><li>Yes, in one step</li><li>No; the control plane moves one minor version at a time</li><li>Only with Karpenter</li><li>Only if the nodes are upgraded first</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>No; the control plane moves one minor version at a time</b></p><p class="lp-quiz-why">Each minor version is its own upgrade, so going from 1.30 to 1.33 takes three.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">What's the right order for an upgrade?</p>
+<ol class="lp-quiz-options" type="A"><li>Nodes, then the control plane, then add-ons</li><li>Control plane, then core add-ons, then nodes, then other controllers</li><li>Add-ons, then nodes, then the control plane</li><li>Everything at once</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Control plane, then core add-ons, then nodes, then other controllers</b></p><p class="lp-quiz-why">Nodes may lag behind the control plane but never lead it, so the control plane goes first. Then bring add-ons and nodes up to match.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">The control plane upgrade finishes cleanly. The next deploy fails with <code>no matches for kind &quot;...&quot; in version &quot;...&quot;</code>. What happened?</p>
+<ol class="lp-quiz-options" type="A"><li>AWS rolled back the upgrade</li><li>A manifest or chart uses an API version that the new release removed</li><li>The nodes haven't been upgraded yet</li><li>The image registry is unreachable</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>A manifest or chart uses an API version that the new release removed</b></p><p class="lp-quiz-why">Removed APIs are the most common upgrade failure: the cluster is fine, but old manifests no longer match. Upgrade insights and tools such as pluto find them before you start.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">A node group update hangs while draining nodes. What should you check first?</p>
+<ol class="lp-quiz-options" type="A"><li>The control plane version</li><li>PodDisruptionBudgets that allow zero disruptions</li><li>The registry login</li><li>The Ingress rules</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>PodDisruptionBudgets that allow zero disruptions</b></p><p class="lp-quiz-why">Draining respects PDBs, and a budget that can never be met stalls the rollout. Check PDBs before the upgrade.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="0" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Why upgrade every few months, rather than waiting for the end of standard support?</p>
+<ol class="lp-quiz-options" type="A"><li>Small, regular upgrades are less risky, and extended support costs much more</li><li>AWS charges per upgrade</li><li>New versions are always faster</li><li>Upgrades delete old workloads</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Small, regular upgrades are less risky, and extended support costs much more</b></p><p class="lp-quiz-why">Teams that upgrade rarely face big jumps under deadline pressure. A routine upgrade every few months is cheaper and calmer.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/kubernetes-operations/19-incident-triage.html">
           <span class="lp-nav-label">← Module 19</span>
           <span class="lp-nav-title">Day-2 Operations &amp; Incident Triage</span>
@@ -349,5 +409,6 @@ kubectl get nodes -L eks.amazonaws.com/nodegroup \
     </footer>
     <script src="../../assets/assistant.js" defer></script>
     <script src="../../assets/flow-player.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
   </body>
 </html>

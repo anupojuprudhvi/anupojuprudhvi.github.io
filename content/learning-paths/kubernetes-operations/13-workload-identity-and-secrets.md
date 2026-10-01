@@ -7,12 +7,18 @@ order: 13
 module: 13
 summary: Giving each workload its own narrowly scoped AWS permissions with EKS Pod Identity or IRSA, instead of sharing the node's role, and getting secrets into pods without putting them in Git or container images.
 level: Platform · Security
-readingTime: 9 min read
+readingTime: 11 min read
 stack: [Amazon EKS, EKS Pod Identity, IRSA, AWS IAM, AWS Secrets Manager, External Secrets Operator]
 tags: [security, iam, pod-identity, irsa, secrets, eks]
 redirectFrom: [workload-identity-and-secrets, 07-workload-identity-and-secrets]
 related: [tolling/cicd-delivery-engine]
 ---
+
+**In this module, you'll learn to:**
+
+- Explain why pods shouldn't use the node's IAM role
+- Give a workload its own AWS role with EKS Pod Identity or IRSA
+- Get secrets into pods from AWS Secrets Manager without putting them in Git
 
 **Before you start:** this builds on [Namespaces, RBAC & Service Accounts](08-namespaces-rbac-and-cluster-access.html) and [Multi-Environment Clusters](11-multi-environment-clusters-and-access-entries.html), which covered how *people* get into a cluster. This module is about how *workloads* get into AWS.
 
@@ -118,3 +124,48 @@ The Secrets Store CSI Driver with the AWS provider is an alternative that mounts
 - **Keep the node role minimal.** Nodes need permissions to join the cluster and pull images, not to reach application data. If an app only works with the node role, that's a sign its own identity is missing.
 - **Scope policies to specific resources.** `s3:GetObject` on one bucket prefix, not `s3:*` on `*`. Workload roles are easy to over-grant because nobody logs in with them.
 - **Rotate at the source.** When a secret changes in Secrets Manager, the operator picks it up on its next refresh. Make sure the app re-reads it (or restarts) rather than caching the old value forever.
+
+## Recap · Key terms
+
+- **Workload identity:** an AWS identity tied to one Kubernetes service account.
+- **EKS Pod Identity:** links an IAM role to a service account with one API call and an agent add-on.
+- **IRSA:** IAM Roles for Service Accounts, using the cluster's OIDC provider and a service account annotation.
+- **External Secrets Operator:** syncs secrets from a store such as Secrets Manager into Kubernetes Secrets.
+- **Envelope encryption:** encrypting Kubernetes Secrets at rest with a KMS key.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+S: To unblock a release, a teammate adds S3 read access for one app's bucket to the nodes' IAM role. It works. What's the risk?
+- Nodes can't call S3, so it will break on the next restart
+* Every pod on those nodes can now read that bucket, including pods that shouldn't
+- It only works for one pod per node
+- The app will be slower than with Pod Identity
+= Node permissions are shared by everything on the node. A role per workload means one compromised container can't use another app's access.
+Q: With EKS Pod Identity, what links a pod to its IAM role?
+- An annotation on the pod
+- The node's instance profile
+* A pod identity association for the pod's namespace and service account
+- An environment variable holding access keys
+= You create an association for a namespace and service account. Any pod running as that service account gets short-lived credentials for the role.
+Q: Why aren't plain Kubernetes Secret manifests safe to commit to Git?
+- Git can't store YAML
+* Their values are only base64-encoded, so anyone who can read the repo can read them
+- Kubernetes rejects Secrets that come from Git
+- They expire after an hour
+= Base64 is encoding, not encryption. Keep the value in Secrets Manager and commit only a reference to it, such as an ExternalSecret.
+Q: When is IRSA still a reasonable choice?
+* When it's already working in your clusters; there's no rush to switch
+- Never; it no longer works
+- Only for pods without service accounts
+- Only on Windows nodes
+= Pod Identity is simpler for new setups, but IRSA is widely used and works well. Its trust policies are tied to one cluster's OIDC provider, which makes adding clusters more work.
+S: A secret is rotated in Secrets Manager. What else has to happen before the app uses the new value?
+- Nothing; the app sees it instantly
+* The operator syncs it on its next refresh, and the app must re-read it or restart
+- You must delete the namespace
+- You must rebuild the image
+= The External Secrets Operator updates the Kubernetes Secret on its refresh interval. An app that caches the old value keeps using it until it reloads or restarts.
+```
