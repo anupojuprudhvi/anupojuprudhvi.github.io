@@ -175,7 +175,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 03 of 06</span>
             <span><b>Level:</b> Financial Architecture</span>
-            <span><b>Time:</b> 8 min read</span>
+            <span><b>Time:</b> 9 min read</span>
             <span><b>Updated:</b> <time datetime="2026-10-06">6 Oct 2026</time></span>
           </div>
         </div>
@@ -189,7 +189,7 @@
                 <li><a href="01-assessment-paths-rapid-vs-deep.html"><span class="lp-toc-num">01</span><span>Assessment Frameworks · Rapid vs. Deep Enterprise</span></a></li>
                 <li><a href="02-discovery-telemetry-and-inventory.html"><span class="lp-toc-num">02</span><span>Discovery Telemetry · RVTools, AWS Transform &amp; Sizing</span></a></li>
                 <li class="is-current"><a href="03-financial-engineering-tco-and-licensing.html" aria-current="page"><span class="lp-toc-num">03</span><span>Financial Engineering · 3-Year TCO &amp; Licensing</span></a>
-                <ol class="lp-toc-sections"><li><a href="#leadership-decides-on-cash-flow">Leadership decides on cash flow</a></li><li><a href="#three-ways-to-pay-for-compute">Three ways to pay for compute</a></li><li><a href="#windows-server-and-sql-server">Windows Server and SQL Server</a></li><li><a href="#where-map-fits">Where MAP fits</a></li><li><a href="#what-goes-into-the-business-case">What goes into the business case</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#leadership-decides-on-cash-flow">Leadership decides on cash flow</a></li><li><a href="#three-ways-to-pay-for-compute">Three ways to pay for compute</a></li><li><a href="#windows-server-and-sql-server">Windows Server and SQL Server</a></li><li><a href="#where-map-fits">Where MAP fits</a></li><li><a href="#what-goes-into-the-business-case">What goes into the business case</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="04-target-architecture-and-landing-zone.html"><span class="lp-toc-num">04</span><span>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</span></a></li>
                 <li><a href="05-mobilize-wave-planning-and-pilot.html"><span class="lp-toc-num">05</span><span>The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot</span></a></li>
                 <li><a href="06-migrate-and-modernize-strategies.html"><span class="lp-toc-num">06</span><span>Migrate &amp; Modernize · In-Flight vs. Sequential Factory</span></a></li>
@@ -212,6 +212,17 @@
             </nav>
             </details>
           <section>
+<div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Compare On-Demand with 1-year and 3-year Savings Plans, and blend them</li>
+<li>Weigh bringing your own licence against licence-included for Windows Server and SQL Server</li>
+<li>Assemble a business case that separates measured numbers from assumptions</li>
+</ul>
+<p><b>Before you start:</b> read <a href="02-discovery-telemetry-and-inventory.html">Discovery Telemetry</a>. The cost model is built on its right-sized estimate.</p>
+</div>
+</section>
+<section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
 <h2 id="leadership-decides-on-cash-flow">Leadership decides on cash flow</h2>
@@ -298,6 +309,62 @@
 <div class="callout"><b>Keep it honest.</b> A business case is a model, not a result. Say which numbers come from measured usage and which are assumptions, so nobody mistakes a projection for a promise.</div>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>TCO:</b> total cost of ownership, compared over three years for today's estate and the right-sized AWS one.</li>
+<li><b>Savings Plan:</b> a commitment to an amount of compute spend per hour, for one or three years, in exchange for a discount.</li>
+<li><b>Blended commitment:</b> for example about 60% on 3-year plans, 25% on 1-year plans, and 15% On-Demand or Spot, set from discovery data.</li>
+<li><b>BYOL:</b> using licences you own. Windows Server needs Dedicated Hosts; SQL Server with Software Assurance can use License Mobility on shared instances.</li>
+<li><b>Licence included:</b> AWS supplies the Windows Server or SQL Server licence, billed per second with the instance.</li>
+<li><b>Directional Business Case:</b> AWS's name for the business case that ends the Assess phase.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="0" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Which workloads belong under a 3-year Savings Plan?</p>
+<ol class="lp-quiz-options" type="A"><li>The steady core that will still be there in three years, such as core databases and ERP systems</li><li>Test environments</li><li>Workloads you plan to modernize next year</li><li>Short bursts of traffic</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The steady core that will still be there in three years, such as core databases and ERP systems</b></p><p class="lp-quiz-why">The longest commitment gets the biggest discount, so it goes on what certainly won't change.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">What does bringing your own Windows Server licence to AWS generally require?</p>
+<ol class="lp-quiz-options" type="A"><li>Nothing; any licence works on shared instances</li><li>EC2 Dedicated Hosts, with licences generally bought before 1 October 2019</li><li>Only active Software Assurance</li><li>AWS License Manager instead of a Microsoft agreement</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>EC2 Dedicated Hosts, with licences generally bought before 1 October 2019</b></p><p class="lp-quiz-why">License Mobility with Software Assurance applies to SQL Server, not to Windows Server itself.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">What should a business case say about its numbers?</p>
+<ol class="lp-quiz-options" type="A"><li>Present every figure as a confirmed saving</li><li>Which numbers come from measured usage and which are assumptions</li><li>Only the 3-year total</li><li>Only the MAP funding amount</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Which numbers come from measured usage and which are assumptions</b></p><p class="lp-quiz-why">A business case is a model, not a result. Labelling assumptions stops a projection being read as a promise.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">The team wants to commit the whole estate to 3-year Savings Plans on day one, to show the biggest saving. What's the risk, and what's safer?</p>
+<ol class="lp-quiz-options" type="A"><li>No risk; Savings Plans can be cancelled at any time</li><li>The estate will change as you migrate and modernize; blend 3-year, 1-year, and On-Demand, and review after each wave</li><li>Put everything on 1-year plans instead</li><li>Commit nothing until every wave is finished</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The estate will change as you migrate and modernize; blend 3-year, 1-year, and On-Demand, and review after each wave</b></p><p class="lp-quiz-why">Commitments made before the estate settles can end up paying for capacity you no longer run.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">After right-sizing, a SQL Server Enterprise database fits within Standard edition limits. What does that mean for the cost model?</p>
+<ol class="lp-quiz-options" type="A"><li>Nothing; both editions cost the same per core</li><li>A large licensing saving, because Standard costs much less per core</li><li>It must move to Aurora PostgreSQL</li><li>It now needs Dedicated Hosts</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>A large licensing saving, because Standard costs much less per core</b></p><p class="lp-quiz-why">Changing the edition, or the database engine, is often where the biggest licensing savings come from.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/migration-journey/02-discovery-telemetry-and-inventory.html">
           <span class="lp-nav-label">← Module 02</span>
           <span class="lp-nav-title">Discovery Telemetry · RVTools, AWS Transform &amp; Sizing</span>
@@ -332,6 +399,7 @@
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>
 </html>

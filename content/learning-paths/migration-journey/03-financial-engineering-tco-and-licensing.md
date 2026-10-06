@@ -7,10 +7,18 @@ order: 3
 module: 3
 summary: Building the cost case. On-Demand vs. 1-year and 3-year Savings Plans, a blended commitment strategy, Windows Server and SQL Server licensing choices, how MAP funding fits in, and what goes into the business case leadership signs.
 level: Financial Architecture
-readingTime: 8 min read
+readingTime: 9 min read
 stack: [TCO Modeling, AWS Pricing, Savings Plans, Microsoft Licensing, AWS MAP]
 tags: [finops, tco, savings-plans, byol, licensing, business-case]
 ---
+
+**In this module, you'll learn to:**
+
+- Compare On-Demand with 1-year and 3-year Savings Plans, and blend them
+- Weigh bringing your own licence against licence-included for Windows Server and SQL Server
+- Assemble a business case that separates measured numbers from assumptions
+
+**Before you start:** read [Discovery Telemetry](02-discovery-telemetry-and-inventory.html). The cost model is built on its right-sized estimate.
 
 ## Principle · Leadership decides on cash flow
 
@@ -90,3 +98,49 @@ The **AWS Migration Acceleration Program (MAP)** can help pay for the migration,
 - **Payback:** a month-by-month view showing when the move breaks even, usually after the datacenter is closed.
 
 <div class="callout"><b>Keep it honest.</b> A business case is a model, not a result. Say which numbers come from measured usage and which are assumptions, so nobody mistakes a projection for a promise.</div>
+
+## Recap · Key terms
+
+- **TCO:** total cost of ownership, compared over three years for today's estate and the right-sized AWS one.
+- **Savings Plan:** a commitment to an amount of compute spend per hour, for one or three years, in exchange for a discount.
+- **Blended commitment:** for example about 60% on 3-year plans, 25% on 1-year plans, and 15% On-Demand or Spot, set from discovery data.
+- **BYOL:** using licences you own. Windows Server needs Dedicated Hosts; SQL Server with Software Assurance can use License Mobility on shared instances.
+- **Licence included:** AWS supplies the Windows Server or SQL Server licence, billed per second with the instance.
+- **Directional Business Case:** AWS's name for the business case that ends the Assess phase.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+Q: Which workloads belong under a 3-year Savings Plan?
+* The steady core that will still be there in three years, such as core databases and ERP systems
+- Test environments
+- Workloads you plan to modernize next year
+- Short bursts of traffic
+= The longest commitment gets the biggest discount, so it goes on what certainly won't change.
+Q: What does bringing your own Windows Server licence to AWS generally require?
+- Nothing; any licence works on shared instances
+* EC2 Dedicated Hosts, with licences generally bought before 1 October 2019
+- Only active Software Assurance
+- AWS License Manager instead of a Microsoft agreement
+= License Mobility with Software Assurance applies to SQL Server, not to Windows Server itself.
+Q: What should a business case say about its numbers?
+- Present every figure as a confirmed saving
+* Which numbers come from measured usage and which are assumptions
+- Only the 3-year total
+- Only the MAP funding amount
+= A business case is a model, not a result. Labelling assumptions stops a projection being read as a promise.
+S: The team wants to commit the whole estate to 3-year Savings Plans on day one, to show the biggest saving. What's the risk, and what's safer?
+- No risk; Savings Plans can be cancelled at any time
+* The estate will change as you migrate and modernize; blend 3-year, 1-year, and On-Demand, and review after each wave
+- Put everything on 1-year plans instead
+- Commit nothing until every wave is finished
+= Commitments made before the estate settles can end up paying for capacity you no longer run.
+S: After right-sizing, a SQL Server Enterprise database fits within Standard edition limits. What does that mean for the cost model?
+- Nothing; both editions cost the same per core
+* A large licensing saving, because Standard costs much less per core
+- It must move to Aurora PostgreSQL
+- It now needs Dedicated Hosts
+= Changing the edition, or the database engine, is often where the biggest licensing savings come from.
+```

@@ -5,7 +5,7 @@ updated: 2026-10-06
 track: terraform
 summary: A playbook for building, scaling, and governing Terraform in enterprise AWS. Part 1 covers the production techniques; Part 2 turns them into one delivery process that takes a module from design to production.
 level: Intermediate to Advanced
-duration: 11 Modules · 102 min read
+duration: 11 Modules · 108 min read
 stack: [Terraform 1.11+, AWS, HCL, terraform test, Checkov, TFLint, ADRs]
 ---
 

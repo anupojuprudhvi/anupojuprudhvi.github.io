@@ -7,10 +7,18 @@ order: 1
 module: 1
 summary: Choosing between a rapid 4–6 week assessment driven by tools and a deep 3–4 month study of the organization across the six AWS Cloud Adoption Framework (CAF) perspectives, and the signs that tell you which one you need.
 level: Strategic Assessment
-readingTime: 6 min read
+readingTime: 7 min read
 stack: [AWS MAP, AWS CAF, RVTools, Discovery Strategy]
 tags: [assessment, discovery, caf, migration-strategy, governance]
 ---
+
+**In this module, you'll learn to:**
+
+- Choose between a rapid 4–6 week assessment and a deep 3–4 month one
+- Name the six AWS Cloud Adoption Framework (CAF) perspectives a deep assessment covers
+- Spot the signs that a rapid assessment won't be enough
+
+**Before you start:** nothing beyond a general idea of how servers and applications run in a datacenter. This is the first module of the track.
 
 ## Principle · Two ways to assess
 
@@ -54,3 +62,47 @@ In a deep assessment, the server inventory is only half the picture. Workshops c
 - The estate includes many physical servers, mainframe links, or several different hypervisors.
 - Compliance requires documented data flows and a formal security review before any cloud networking is approved.
 - The way teams are organized has to change, for example from separate sysadmin teams to a platform team.
+
+## Recap · Key terms
+
+- **Rapid assessment:** 4–6 weeks, driven by tools such as RVTools and a short collector run. It produces a business case and a first strategy per workload.
+- **Deep assessment:** 3–4 months. It adds 30–90 days of usage data and workshops across the organization.
+- **AWS CAF:** the Cloud Adoption Framework's six perspectives: business, people, governance, platform, security, and operations.
+- **MAP:** the AWS Migration Acceleration Program, in three phases: assess, mobilize, and migrate and modernize.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+Q: What does a rapid assessment mainly produce?
+* A business case with a 3-year cost model and a first strategy for each workload
+- A full readiness assessment of the whole organization
+- A finished landing zone
+- The first migrated wave
+= A rapid assessment answers what you have, what it will cost on AWS, and what licensing problems are waiting. The deeper organizational work comes with a deep assessment.
+Q: Which of these is one of the six AWS CAF perspectives?
+- Procurement
+* Operations
+- Marketing
+- Hardware
+= The six are business, people, governance, platform, security, and operations.
+Q: Why does a deep assessment collect 30–90 days of usage data?
+- MAP requires exactly 90 days
+* To catch month-end and quarter-end peaks
+- Collectors take that long to install
+- To match the licence renewal cycle
+= A short sample can miss the busiest days. A longer one shows the peaks the estate really has to handle.
+S: The datacenter lease ends in 90 days, and the estate is mostly well-documented VMware. Which assessment fits?
+* Rapid
+- Deep
+- Neither; skip the assessment
+- Deep first, then rapid
+= A three-month study would leave no time to move. A well-run VMware estate with a near deadline is what a rapid assessment is for.
+S: A heavily regulated bank needs documented data flows and a formal security review before any cloud networking is approved. Which assessment fits?
+- Rapid, because it's faster
+* Deep, with the security and operations teams involved from the start
+- Rapid, adding security after the business case
+- None until the review is done
+= A quick tool scan without security and operations on board produces a plan that stalls in Mobilize.
+```

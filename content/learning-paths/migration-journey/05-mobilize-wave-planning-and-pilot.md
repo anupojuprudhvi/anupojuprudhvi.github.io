@@ -7,10 +7,18 @@ order: 5
 module: 5
 summary: From plan to practice. Working as one team with the client's engineers, grouping servers into migration waves, and moving one real application first, the pilot, to prove the cutover and rollback before the rest follow.
 level: Migration Engineering
-readingTime: 7 min read
+readingTime: 8 min read
 stack: [AWS MGN, AWS DMS, Wave Planning, Lighthouse Pilot, CCoE]
 tags: [mobilize, wave-planning, migration-factory, pilot, operational-readiness]
 ---
+
+**In this module, you'll learn to:**
+
+- Organize the partner's and the client's engineers as one team with clear ownership
+- Group servers into waves by dependencies, criticality, change windows, and tooling
+- Run a pilot cutover with a tested rollback, and use what it measures
+
+**Before you start:** read [Financial Engineering](03-financial-engineering-tco-and-licensing.html) and [Target State Blueprint](04-target-architecture-and-landing-zone.html). Mobilize starts once that business case is approved, and builds that landing zone.
 
 ## Principle · From "why" to "how"
 
@@ -91,3 +99,49 @@ Mobilize ends with:
 4. **The MAP Mobilize reporting** that AWS or your partner requires.
 
 With the platform built, the runbook proven, and the internal teams trained, the remaining waves can move steadily and repeatably.
+
+## Recap · Key terms
+
+- **Mobilize:** the phase after the business case is approved: build the landing zone, plan the waves, and run the pilot.
+- **CCoE:** a cloud center of excellence, the partner's and client's people working as one team.
+- **Migration wave:** a small, ordered batch of servers grouped by what talks to what, criticality, change windows, and tooling.
+- **MGN and DMS:** AWS Application Migration Service moves whole servers; AWS Database Migration Service moves databases.
+- **Pilot (lighthouse, Wave 0):** the first real application moved end to end, to prove the cutover and the rollback.
+- **Reverse replication:** replication from AWS back to the original database, so a rollback doesn't lose data written after the switch.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+Q: Why do an application and its database move in the same wave?
+* Split across waves, every call between them crosses the link to the datacenter, and the application slows down
+- MGN can't move them separately
+- Licensing requires it
+- DNS can only be switched once
+= Network flow data from discovery shows which servers talk to each other constantly.
+Q: Which application makes a good pilot?
+- The most critical customer-facing system, to prove the most
+* A low-risk, typical three-tier application whose owner is keen to help
+- The smallest server in the estate
+- A system in a change freeze
+= The pilot should be safe to delay, representative of the estate, and properly tested by its owner.
+Q: Which tool moves whole servers?
+* AWS Application Migration Service (MGN)
+- AWS Database Migration Service (DMS)
+- AWS Schema Conversion Tool
+- RVTools
+= MGN replicates servers continuously until the cutover. Databases usually move with DMS or native replication.
+S: In the pilot, users wrote orders in AWS for an hour before a problem showed up, and you point DNS back. What happens to those orders?
+- They replicate back automatically
+* They're lost, unless reverse replication to the original database was set up before the cutover
+- MGN keeps a copy
+- The DNS change copies them
+= Pointing DNS back is quick, but the data written in AWS stays there. Plan and test the rollback before the window starts.
+S: The pilot's database switch took 20 minutes instead of the three hours planned. What's the right use of that?
+- Ignore it; pilots aren't representative
+* Correct the runbook, and plan later waves' maintenance windows from the measured time
+- Give every later wave a 20-minute window, whatever its size
+- Skip testing in later waves
+= Measuring how long the cutover really takes is one of the pilot's main jobs. The corrected runbook is what every later wave follows.
+```
