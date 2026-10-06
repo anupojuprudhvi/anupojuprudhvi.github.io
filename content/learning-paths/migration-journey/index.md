@@ -1,54 +1,53 @@
 ---
 title: Enterprise Cloud Migration · Assess, Mobilize & Modernize
 date: 2026-09-17
+updated: 2026-10-06
 track: migration-journey
-summary: A guide to enterprise cloud migrations — rapid vs. deep assessments, 3-year TCO modeling, Landing Zone design, and Mobilize wave planning.
+summary: A practical guide to large cloud migrations on AWS. Choosing a rapid or deep assessment, sizing from real usage, building the cost case, designing the landing zone, planning waves, and deciding what to modernize along the way.
 level: Intermediate to Executive
-duration: 6 Modules · 50 min read
-stack: [AWS MAP, AWS Transform, RVTools, TCO Modeling, Landing Zone, Well-Architected, Amazon EKS]
+duration: 6 Modules · 41 min read
+stack: [AWS MAP, RVTools, TCO Modeling, Landing Zone, AWS MGN, Amazon EKS]
 ---
 
-## Overview · The enterprise migration & modernization journey
+## Overview · What a large migration really involves
 
-Cloud migration at enterprise scale is rarely just an infrastructure project — it is a joint financial, operational, and architectural transformation. Organizations migrating legacy VMware estates, bare-metal datacenters, or colocation facilities to AWS have to get through strict governance, executive financial justification, and strict risk mitigation before moving a single production workload.
+A large cloud migration is rarely just an infrastructure project. It's a financial decision, an operating-model change, and an architecture project at the same time. Before a single production server moves, leadership wants to know what it will cost, the security team wants to know it will be safe, and the people who run the systems want to know what changes for them.
 
-The **AWS Migration Acceleration Program (MAP)** provides a structured, phased methodology to de-risk this transition across three distinct stages:
+The **AWS Migration Acceleration Program (MAP)** splits this into three phases:
 
-1. **Assess Phase:** Quantifying the technical estate, evaluating organizational readiness across the 6 Cloud Adoption Framework (CAF) pillars, and authoring a defensible 3–5 year Directional Business Case (DBC) that qualifies for AWS co-funding grants.
-2. **Mobilize Phase:** Bridging the business case to hands-on engineering — building the secure Multi-Account Landing Zone, mapping cross-application dependencies, refining 7Rs modernization strategies, and executing a lighthouse migration pilot.
-3. **Migrate & Modernize Phase:** Industrialized factory execution across sequenced migration waves, retiring legacy datacenter leases while executing in-flight modernization (containers on EKS, managed Aurora databases, serverless integration).
+1. **Assess:** find out what you have, how ready the organization is, and what it will cost on AWS. The result is a business case leadership can approve.
+2. **Mobilize:** build the AWS foundation (the landing zone), plan the migration waves, and prove the process by moving one real application first.
+3. **Migrate and modernize:** move the rest, wave by wave, and modernize the parts where it pays off.
 
-## Rigorous Deliverables · Milestone outputs per phase
+## Deliverables · What each phase produces
 
-A successful enterprise engagement is measured by the quality, auditability, and rigor of its milestone deliverables:
+### Assess
+- **Readiness assessment:** how ready the organization is, across the six perspectives of the AWS Cloud Adoption Framework (CAF): business, people, governance, platform, security, and operations.
+- **Cost model:** a 3-year comparison of today's costs with AWS On-Demand and Savings Plans, including Windows Server and SQL Server licensing choices.
+- **Target architecture:** the multi-account landing zone, network design, hybrid connectivity, security guardrails, and a migration strategy for each workload.
+- **Business case:** the cost model turned into cash flow and payback, and the basis for MAP funding.
 
-### 1. MAP Assess Phase Deliverables
-- **Migration Readiness Assessment (MRA):** An audited evaluation across the 6 AWS CAF pillars (Business, People, Governance, Platform, Security, Operations), delivering the organizational readiness scorecard, capability gap analysis, and executive risk mitigation matrix.
-- **Total Cost of Ownership (TCO) & Financial Model:** A 3-year financial model contrasting current on-premises run costs against AWS On-Demand, 1-Year Savings Plans, and 3-Year Savings Plans (All/Partial Upfront), complete with Microsoft Windows Server and SQL Server licensing optimization (BYOL vs. License-Included).
-- **Target State Architecture Blueprint:** A Well-Architected technical layout detailing the multi-account Landing Zone, Transit Gateway network topology, hybrid connectivity (Direct Connect / VPN), security guardrails, and the 7Rs Workload Placement Matrix.
-- **Directional Business Case (DBC):** The executive C-level justification document providing cash-flow projections, ROI timelines, payback periods, and qualifying the program for AWS MAP co-funding credits.
+### Mobilize
+- **A working landing zone,** built as code, with single sign-on, guardrails, and central logging.
+- **A wave plan:** applications grouped into waves by what talks to what, how critical each one is, and when it's allowed to change.
+- **Tested runbooks:** step-by-step cutover and rollback procedures, proven on the pilot.
+- **A pilot report:** what really happened when the first application moved: replication speed, downtime, and performance.
+- **Team readiness:** who owns what after the move, and the training the internal teams need.
 
-### 2. MAP Mobilize Phase Deliverables
-- **Production-Ready Landing Zone:** A fully automated multi-account AWS environment provisioned via Infrastructure as Code (Terraform/Control Tower), complete with IAM Identity Center federation, SCP guardrails, and centralized logging.
-- **Migration Wave Plan & Dependency Matrix:** Network communication dependency graphs clustered into discrete, risk-managed cutover waves aligned with corporate release cycles.
-- **Validated Cutover Runbooks & Rollback Playbooks:** Detailed minute-by-minute operational runbooks with verified RTO/RPO recovery time objectives and zero-data-loss rollback mechanisms.
-- **Wave 0 Lighthouse Pilot Package:** Production cutover execution report validating replication throughput, real-world downtime windows, and application performance benchmarks.
-- **Skills Enablement & CCoE Operating Charter:** Cloud Center of Excellence governance structure, RACI operational boundaries, and training curriculum for internal engineering squads.
+### Migrate and modernize
+- **A repeatable migration process,** using AWS Application Migration Service (MGN) for servers and AWS Database Migration Service (DMS) for databases.
+- **Modernized targets** where they pay off: containers on Amazon EKS, managed databases on Amazon Aurora, and managed messaging.
+- **Sign-off and close-out:** each wave accepted by its application owners, and the old hardware retired.
 
-### 3. Migrate & Modernize Phase Deliverables
-- **Migration factory pipelines:** Fast, repeatable replication workflows using AWS Application Migration Service (MGN) and AWS Database Migration Service (DMS).
-- **Modernization Blueprints:** Cloud-native target architectures containerizing workloads onto Amazon EKS with Karpenter, replatforming databases to Amazon Aurora PostgreSQL, and serverless messaging.
-- **MAP Customer Sign-Off & Decommissioning Package:** Audited milestone completion packages submitted to AWS partner governance to release financial incentive credits, accompanied by official datacenter asset decommissioning certificates.
-
-## Curriculum · The 6 delivery modules
+## Curriculum · The 6 modules
 
 <ul class="lp-syllabus">
   <li>
     <a class="lp-module-card" href="01-assessment-paths-rapid-vs-deep.html">
       <span class="lp-module-num">01</span>
       <div class="lp-module-body">
-        <h3>Assessment Frameworks — Rapid (4–6 Wks) vs. Deep Enterprise (3–4 Mo)</h3>
-        <p>Evaluating discovery timelines, Cloud Adoption Framework (CAF) stakeholder alignment, and choosing between rapid tooling assessments and deep organizational evaluations.</p>
+        <h3>Assessment: Rapid vs. Deep</h3>
+        <p>When a fast, tool-driven assessment is enough, and when you also need a deeper study of the organization.</p>
       </div>
       <span class="lp-module-action">Start module →</span>
     </a>
@@ -57,8 +56,8 @@ A successful enterprise engagement is measured by the quality, auditability, and
     <a class="lp-module-card" href="02-discovery-telemetry-and-inventory.html">
       <span class="lp-module-num">02</span>
       <div class="lp-module-body">
-        <h3>Discovery Telemetry — RVTools, AWS Transform &amp; Agentless Profiling</h3>
-        <p>Extracting hypervisor inventory, continuous utilization percentiles, and applying right-sizing algorithms to avoid naive 1:1 lift-and-shift over-provisioning.</p>
+        <h3>Discovery: Inventory, Usage Data &amp; Right-Sizing</h3>
+        <p>Collecting what you have and how much of it is really used, so the AWS estimate isn't built on oversized VMs.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>
@@ -67,8 +66,8 @@ A successful enterprise engagement is measured by the quality, auditability, and
     <a class="lp-module-card" href="03-financial-engineering-tco-and-licensing.html">
       <span class="lp-module-num">03</span>
       <div class="lp-module-body">
-        <h3>Financial Engineering — 3-Year TCO Modeling &amp; Licensing Optimization</h3>
-        <p>Modeling On-Demand vs. 1-Yr/3-Yr Savings Plans, Microsoft Windows and SQL Server BYOL vs. License-Included scenarios, and passing MAP milestone audits.</p>
+        <h3>The Cost Case: 3-Year TCO &amp; Licensing</h3>
+        <p>On-Demand vs. Savings Plans, Windows and SQL Server licensing, MAP funding, and the business case leadership signs.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>
@@ -77,8 +76,8 @@ A successful enterprise engagement is measured by the quality, auditability, and
     <a class="lp-module-card" href="04-target-architecture-and-landing-zone.html">
       <span class="lp-module-num">04</span>
       <div class="lp-module-body">
-        <h3>Target State Blueprint — Landing Zone Foundation &amp; 7Rs Categorization</h3>
-        <p>Architecting multi-account AWS Organizations, IAM Identity Center federation, Transit Gateway networking, and classifying workloads into 7Rs pathways.</p>
+        <h3>Target Architecture: Landing Zone &amp; the 7Rs</h3>
+        <p>The multi-account foundation, single sign-on, hub networking, and a migration strategy for every workload.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>
@@ -87,8 +86,8 @@ A successful enterprise engagement is measured by the quality, auditability, and
     <a class="lp-module-card" href="05-mobilize-wave-planning-and-pilot.html">
       <span class="lp-module-num">05</span>
       <div class="lp-module-body">
-        <h3>The Mobilize Phase — Engineering Alignment, Wave Planning &amp; Lighthouse Pilot</h3>
-        <p>Partnering with enterprise engineering teams, clustering dependency graphs into migration waves, executing a lighthouse pilot cutover, and team enablement.</p>
+        <h3>Mobilize: Wave Planning &amp; the Pilot</h3>
+        <p>Working with the client's teams, grouping servers into waves, and moving one real application first to prove the process.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>
@@ -97,8 +96,8 @@ A successful enterprise engagement is measured by the quality, auditability, and
     <a class="lp-module-card" href="06-migrate-and-modernize-strategies.html">
       <span class="lp-module-num">06</span>
       <div class="lp-module-body">
-        <h3>Migrate &amp; Modernize — In-Flight vs. Sequential Factory</h3>
-        <p>Deciding between sequential 2-step lift-and-shift vs. in-flight modernization during Mobilize, architecting cloud-native target platforms, and executing the migration factory.</p>
+        <h3>Migrate &amp; Modernize: Move First, or Modernize on the Way?</h3>
+        <p>When to lift and shift now and improve later, when to modernize during the move, and what the common targets look like.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>

@@ -1,94 +1,93 @@
 ---
 title: The Mobilize Phase · Wave Planning & Lighthouse Pilot
 date: 2026-09-17
+updated: 2026-10-06
 track: migration-journey
 order: 5
 module: 5
-summary: Partnering with enterprise engineering teams, clustering dependency graphs into migration waves, executing a lighthouse pilot cutover, and team enablement.
+summary: From plan to practice. Working as one team with the client's engineers, grouping servers into migration waves, and moving one real application first, the pilot, to prove the cutover and rollback before the rest follow.
 level: Migration Engineering
-readingTime: 9 min read
-stack: [AWS Mobilize, AWS MGN, Wave Planning, Lighthouse Pilot, CCoE]
+readingTime: 7 min read
+stack: [AWS MGN, AWS DMS, Wave Planning, Lighthouse Pilot, CCoE]
 tags: [mobilize, wave-planning, migration-factory, pilot, operational-readiness]
 ---
 
-## Principle · Shifting from strategy to factory engineering
+## Principle · From "why" to "how"
 
-Securing executive sign-off on the Directional Business Case (DBC) and qualifying for AWS MAP co-funding marks the successful conclusion of the **Assess** phase. The initiative now transitions into **Mobilize**.
+Once leadership approves the business case, the Assess phase is done and **Mobilize** begins.
 
-Where Assess answered *"Why should we migrate and what will it cost?"*, Mobilize answers *"How do we build the target platform, validate cutover runbooks, and train our engineering teams to operate it safely?"*
+Assess answered *"why should we migrate, and what will it cost?"* Mobilize answers *"how do we build the platform, prove the cutover works, and get our teams ready to run it?"* It has three workstreams:
 
-Mobilize bridges high-level architecture to industrialized execution through three critical workstreams:
-1. **Landing Zone Deployment:** Standing up the multi-account foundation, security guardrails, and hybrid connectivity designed in Assess.
-2. **Dependency Mapping & Wave Planning:** Clustering hundreds of interdependent servers into sequenced, manageable cutover waves.
-3. **The Lighthouse Pilot (Wave 0):** Migrating a representative production workload end-to-end to validate replication pipelines, prove cutover timing, and exercise rollback procedures.
+1. **Build the landing zone:** the accounts, guardrails, and hybrid connectivity designed in Assess (Module 04).
+2. **Plan the waves:** group servers into small, ordered batches.
+3. **Run the pilot:** move one real application end to end, to prove the process before anything else moves.
 
-## Collaboration · Partnering with client engineering teams
+## Teamwork · One team, not two
 
-Mobilize succeeds or fails on organizational alignment. A migration cannot be executed in isolation by external consultants; it requires a joint delivery model partnering consulting architects with the client's internal engineering squads:
+A migration can't be done *to* an organization by outside consultants. It works when the partner's people and the client's people work as one team, often called a cloud center of excellence (CCoE):
 
-<pre><code>[ Joint Cloud Center of Excellence (CCoE) ]
-  ├── Consulting Migration Lead &amp; Client Program Manager (Pacing, scope, MAP governance)
-  ├── Lead Cloud Architect &amp; Client Principal Architect (Landing zone, networking, security)
-  ├── Migration Platform Engineers (AWS MGN/DMS replication, automation pipelines, IaC)
-  └── Application Tier Owners &amp; QA Leads (Cutover testing, data validation, sign-off)</code></pre>
+- **Program leads, one from each side:** pace, scope, and MAP reporting.
+- **Architects, one from each side:** the landing zone, networking, and security.
+- **Migration engineers:** replication tooling (MGN and DMS), automation, and infrastructure as code.
+- **Application owners and testers:** cutover testing, data checks, and final sign-off.
 
-### Establishing the Joint Cadence
-- **Weekly Sprint Planning:** Tracking landing zone milestones, replication agent deployments, and network connectivity tests.
-- **RACI Operational Matrix:** Defining clear boundaries: platform engineers manage replication infrastructure (AWS MGN), security engineers approve IAM roles and SCPs, while application owners retain final sign-off on cutover acceptance testing.
+Agree early **who does what**. For example, migration engineers run the replication, security engineers approve IAM roles and SCPs, and application owners decide whether a cutover is accepted. A weekly planning meeting keeps the landing zone, replication, and connectivity work moving together.
 
-## Methodology · Dependency clustering into migration waves
+## Planning · Grouping servers into waves
 
-Attempting to migrate an enterprise estate in one massive "big bang" weekend is an unacceptably high operational risk. Instead, workloads are sequenced into **discrete migration waves** (typically 15 to 40 servers per wave) based on four structural criteria:
+Moving everything in one "big bang" weekend is far too risky. Instead, servers move in **waves**, small batches (often a few dozen servers), grouped by four things:
 
-1. **Network Communication Affinity:** Ingesting network connection telemetry (source/destination IP traffic from hypervisors or netflow logs). Servers that exchange high-volume synchronous RPC or database queries must migrate in the **same wave** to avoid high-latency cross-datacenter application degradation.
-2. **Business Criticality & Tiering:** 
-   - Non-production (Dev/Test) environments migrate first to exercise tools with zero revenue risk.
-   - Internal Tier-2 corporate tooling (reporting, staging utilities) migrate next.
-   - Core Tier-1 customer-facing transaction platforms migrate in later, highly refined waves.
-3. **Change Freeze & Compliance Windows:** Aligning wave schedules with corporate blackout periods (e.g., month-end financial book closings or peak seasonal retail windows).
-4. **Target Modernization Strategy:** Grouping servers that use the same migration tooling (e.g., block-level replication via **AWS Application Migration Service [MGN]** vs. database replication via **AWS Database Migration Service [DMS]**).
+1. **What talks to what.** Servers that constantly call each other, such as an application and its database, move in the **same wave**. Split them, and every call crosses the link between the datacenter and AWS, which slows the application down. Network flow data from discovery shows these links.
+2. **How critical it is.** Development and test environments go first, to practise with no business risk. Internal tools come next. Customer-facing systems move later, once the process is well proven.
+3. **When change is allowed.** Avoid month-end close, peak trading seasons, and other freeze periods.
+4. **Which tool moves it.** Group servers that move the same way: whole servers with **AWS Application Migration Service (MGN)**, databases with **AWS Database Migration Service (DMS)** or native replication.
 
-## Execution · The Wave 0 Lighthouse Pilot
+## The pilot · Wave 0
 
-The most vital milestone in Mobilize is the **Lighthouse Pilot (Wave 0)**.
+The most important milestone in Mobilize is the **pilot**, sometimes called the lighthouse or Wave 0. Pick an application that is:
 
-The pilot application must meet three specific criteria:
-- It must be **low business risk** (so unexpected delays do not impact revenue or customers).
-- It must be **architecturally representative** (e.g., a three-tier web application with a web frontend, application tier, and relational database).
-- It must have an **engaged, supportive application owner** willing to participate actively in testing.
+- **low risk,** so a delay doesn't hurt customers or revenue;
+- **typical of the estate,** for example a three-tier application with a web front end, an application tier, and a relational database;
+- **owned by someone keen to help,** who will test it properly and give honest feedback.
 
-### What the Lighthouse Pilot Proves
+### A full dress rehearsal
 
-The pilot is a full dress rehearsal. It tests every operational boundary:
-
-```
-[ Pre-Cutover Preparation ]
-  ├── Continuous block-level replication established via AWS MGN
-  └── Relational data synchronization established via AWS DMS / native replication
-          │
-[ The Cutover Maintenance Window ]
-  ├── Step 1: Drain active application traffic and pause background queue processing
-  ├── Step 2: Final incremental storage synchronization (flushing dirty disk blocks)
-  ├── Step 3: EC2 instance launch in target VPC with automated post-launch scripts
-  ├── Step 4: Internal DNS / Route 53 record updates pointing to the new cloud endpoint
-  └── Step 5: QA validation test suite execution (smoke tests, synthetic transactions)
-          │
-[ Decision Gate: Commit or Rollback ]
-  ├── Success ──► Point public traffic to AWS; release maintenance window
-  └── Abort   ──► Revert DNS back to on-premises IP; zero data loss rollback
+```flow
+title: A pilot cutover, step by step
+Before the window | MGN replicates the servers continuously; DMS or native replication keeps the database in sync
+-> maintenance window starts
+Stop the traffic | drain users and pause background jobs
+-> then
+Final sync | the last changes are copied across
+-> then
+Launch in AWS | instances start in the target VPC, with post-launch scripts
+-> then
+Switch DNS | internal DNS records point to the new servers
+-> then
+* Test | smoke tests and test transactions
+paths
+path: Success
+Go live | send real traffic to AWS and close the window
+path: Problem
+Roll back | point DNS back to the original servers
+end
 ```
 
-### Key Metrics Captured During Pilot
-- **Actual Cutover Duration:** Validates whether the maintenance window can fit within scheduled downtime (e.g., proving a database switchover takes 12 minutes rather than a projected 2 hours).
-- **Network Latency & Performance:** Measuring real-world application response times across AWS subnets vs. legacy physical racks.
-- **Rollback SLA:** Verifying that should an unforeseen defect occur, reverting traffic back to the on-premise baseline takes less than 15 minutes.
+<div class="callout"><b>Plan the rollback before the cutover.</b> Pointing DNS back is quick, but any data written in AWS after the switch would be lost, unless reverse replication from AWS back to the original database was set up in advance. Decide how you'll roll back, and test it, before the window starts.</div>
 
-## Outcome · Passing the Mobilize gate to begin Migration Factory
+### What the pilot measures
 
-The Mobilize phase concludes with formal delivery of:
-1. **The Production Landing Zone:** Validated multi-account AWS environment with enforced security guardrails, centralized logging, and active hybrid connectivity.
-2. **The Industrialized Migration Wave Plan:** Sequenced roadmap scheduling all remaining application waves through the Migrate & Modernize phase.
-3. **The Validated Migration Runbook:** Standardized operational procedure refined during the lighthouse cutover, ready for automated factory execution.
-4. **AWS MAP Mobilize Completion Package:** Submitted to AWS partner governance to release Mobilize co-funding credits and approve migration-phase incentive allocations.
+- **How long the cutover really takes,** to know whether real waves will fit their maintenance windows. A database switch may take minutes rather than the hours planned, or the other way round.
+- **Performance:** how the application responds in AWS compared with the datacenter.
+- **Rollback time:** how long it really takes to go back if something goes wrong.
 
-With the platform built, runbooks proven, and internal teams enabled, the organization is fully equipped to run fast, repeatable workload migrations with confidence.
+## Outcome · Ready for the waves
+
+Mobilize ends with:
+
+1. **A production-ready landing zone,** with guardrails, central logging, and working hybrid connectivity.
+2. **The full wave plan** for every remaining application.
+3. **A proven runbook,** corrected after the pilot, that every later wave follows.
+4. **The MAP Mobilize reporting** that AWS or your partner requires.
+
+With the platform built, the runbook proven, and the internal teams trained, the remaining waves can move steadily and repeatably.

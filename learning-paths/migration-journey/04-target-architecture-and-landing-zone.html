@@ -7,12 +7,12 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="Architecting multi-account AWS Organizations, IAM Identity Center federation, Transit Gateway networking, and classifying workloads into 7Rs pathways." />
+    <meta name="description" content="The foundation to build before anything moves. A multi-account landing zone with guardrails, single sign-on, and hub networking, and the 7Rs, the strategy that decides what happens to each workload." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/migration-journey/04-target-architecture-and-landing-zone.html" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://anupojuprudhvi.github.io/learning-paths/migration-journey/04-target-architecture-and-landing-zone.html" />
     <meta property="og:title" content="Target State Blueprint · Landing Zone &amp; 7Rs Roadmap — Prudhvi Raj Anupoju" />
-    <meta property="og:description" content="Architecting multi-account AWS Organizations, IAM Identity Center federation, Transit Gateway networking, and classifying workloads into 7Rs pathways." />
+    <meta property="og:description" content="The foundation to build before anything moves. A multi-account landing zone with guardrails, single sign-on, and hub networking, and the 7Rs, the strategy that decides what happens to each workload." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -25,7 +25,7 @@
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "Target State Blueprint · Landing Zone & 7Rs Roadmap",
-        "description": "Architecting multi-account AWS Organizations, IAM Identity Center federation, Transit Gateway networking, and classifying workloads into 7Rs pathways.",
+        "description": "The foundation to build before anything moves. A multi-account landing zone with guardrails, single sign-on, and hub networking, and the 7Rs, the strategy that decides what happens to each workload.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -43,7 +43,7 @@
         "image": "https://anupojuprudhvi.github.io/og-image.png",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/migration-journey/04-target-architecture-and-landing-zone.html",
         "datePublished": "2026-09-17",
-        "dateModified": "2026-09-17",
+        "dateModified": "2026-10-06",
         "isPartOf": {"@type":"CreativeWorkSeries","name":"Enterprise Cloud Migration: Assess, Mobilize & Modernize","url":"https://anupojuprudhvi.github.io/learning-paths/migration-journey/index.html"},
         "position": 4,
         "keywords": "landing-zone, architecture, 7rs, networking, governance, AWS Organizations, Landing Zone, Transit Gateway, 7Rs Framework"
@@ -151,7 +151,7 @@
             <div>
               <span class="lp-badge">Solution Architecture</span>
               <h1>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</h1>
-              <p class="sub">Architecting multi-account AWS Organizations, IAM Identity Center federation, Transit Gateway networking, and classifying workloads into 7Rs pathways.</p>
+              <p class="sub">The foundation to build before anything moves. A multi-account landing zone with guardrails, single sign-on, and hub networking, and the 7Rs, the strategy that decides what happens to each workload.</p>
             </div>
             <svg class="motif motif-migration" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <defs><path id="mM" d="M84 90 C 108 44, 132 44, 156 90" /></defs>
@@ -172,8 +172,8 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 04 of 06</span>
             <span><b>Level:</b> Solution Architecture</span>
-            <span><b>Time:</b> 8 min read</span>
-            <span><b>Published:</b> <time datetime="2026-09-17">17 Sep 2026</time></span>
+            <span><b>Time:</b> 7 min read</span>
+            <span><b>Updated:</b> <time datetime="2026-10-06">6 Oct 2026</time></span>
           </div>
         </div>
       </header>
@@ -187,7 +187,7 @@
                 <li><a href="02-discovery-telemetry-and-inventory.html"><span class="lp-toc-num">02</span><span>Discovery Telemetry · RVTools, AWS Transform &amp; Sizing</span></a></li>
                 <li><a href="03-financial-engineering-tco-and-licensing.html"><span class="lp-toc-num">03</span><span>Financial Engineering · 3-Year TCO &amp; Licensing</span></a></li>
                 <li class="is-current"><a href="04-target-architecture-and-landing-zone.html" aria-current="page"><span class="lp-toc-num">04</span><span>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</span></a>
-                <ol class="lp-toc-sections"><li><a href="#the-target-foundation-must-precede-workload-migration">The target foundation must precede workload migration</a></li><li><a href="#multi-account-organizational-blueprint">Multi-Account Organizational Blueprint</a></li><li><a href="#the-7rs-workload-migration-framework">The 7Rs workload migration framework</a></li><li><a href="#the-workload-placement-matrix">The Workload Placement Matrix</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#build-the-foundation-first">Build the foundation first</a></li><li><a href="#the-multi-account-layout">The multi-account layout</a></li><li><a href="#the-7rs">The 7Rs</a></li><li><a href="#the-workload-placement-list">The workload placement list</a></li></ol></li>
                 <li><a href="05-mobilize-wave-planning-and-pilot.html"><span class="lp-toc-num">05</span><span>The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot</span></a></li>
                 <li><a href="06-migrate-and-modernize-strategies.html"><span class="lp-toc-num">06</span><span>Migrate &amp; Modernize · In-Flight vs. Sequential Factory</span></a></li>
               </ol>
@@ -211,107 +211,69 @@
           <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2 id="the-target-foundation-must-precede-workload-migration">The target foundation must precede workload migration</h2>
-<p>Before moving application servers, an enterprise must establish its <b>target operational foundation</b>. Migrating into an ad-hoc, single-account AWS setup creates unmanageable security risks, routing bottlenecks, and sprawl that takes years to untangle.</p>
-<p>The target state architecture blueprint delivers two essential components:</p>
+<h2 id="build-the-foundation-first">Build the foundation first</h2>
+<p>Before any application server moves, the target environment needs to exist. Migrating into a single, ad-hoc AWS account creates security gaps, tangled networking, and sprawl that takes years to undo.</p>
+<p>The target architecture has two parts:</p>
 <ol>
-<li><b>The Multi-Account Landing Zone:</b> A governed, secure multi-account environment provisioned via AWS Control Tower or Infrastructure as Code (Terraform/CDK).</li>
-<li><b>The 7Rs Portfolio Categorization:</b> A structured decision framework assigning every discovered workload to an explicit migration strategy.</li>
+<li><b>The landing zone:</b> a multi-account AWS environment with guardrails, built with AWS Control Tower or infrastructure as code (Terraform or CDK).</li>
+<li><b>The 7Rs plan:</b> a decision, for every workload found in discovery, about how it will move, or whether it moves at all.</li>
 </ol>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2 id="multi-account-organizational-blueprint">Multi-Account Organizational Blueprint</h2>
-<p>A Well-Architected enterprise landing zone partitions responsibilities across isolated AWS accounts grouped into Organizational Units (OUs):</p>
-<pre tabindex="0"><code>[ AWS Organization Root ]
-  ├── [ Core / Governance OU ]
-  │     ├── Management Account      (Consolidated billing, SCP management, Org formation)
-  │     ├── Log Archive Account     (Centralized immutable S3 storage for CloudTrail &amp; Flow Logs)
-  │     └── Security Tooling Account(Amazon GuardDuty, Security Hub, IAM Identity Center, KMS)
+<h2 id="the-multi-account-layout">The multi-account layout</h2>
+<p>A landing zone separates responsibilities into AWS accounts, grouped into organizational units (OUs):</p>
+<pre tabindex="0"><code>[ AWS Organization ]
+  ├── [ Core OU ]
+  │     ├── Management account     billing, organization settings, SCPs
+  │     ├── Log archive account    central, write-once CloudTrail and VPC flow logs
+  │     └── Security account       GuardDuty, Security Hub, KMS
   │
   ├── [ Infrastructure OU ]
-  │     ├── Network Hub Account     (Transit Gateway, Inspection VPC, Direct Connect / VPN)
-  │     └── Shared Services Account (Enterprise DNS Route 53, CI/CD runners, AD domain controllers)
+  │     ├── Network account        Transit Gateway, inspection VPC, Direct Connect / VPN
+  │     └── Shared services        DNS, CI/CD runners, directory services
   │
   └── [ Workloads OU ]
-        ├── Development Account     (Isolated non-prod developer sandbox and testing)
-        ├── Staging Account         (Pre-production environment with production configuration parity)
-        └── Production Account      (Zero developer write access, automated deployment only)</code></pre>
+        ├── Development            sandboxes and testing
+        ├── Staging                same configuration as production
+        └── Production             no manual changes; deployed by pipeline only</code></pre>
 <details class="implementation-notes">
-<summary>Essential Guardrails</summary>
+<summary>The guardrails that matter most</summary>
 <ul>
-<li><b>Service Control Policies (SCPs):</b> Top-down preventative guardrails enforced at the OU level. SCPs block unapproved AWS regions, deny creation of unencrypted EBS volumes or S3 buckets, and prevent tampering with CloudTrail logs or security agent roles.</li>
-<li><b>Identity Federation:</b> Corporate SAML 2.0 / SCIM integration via <b>AWS IAM Identity Center</b>, eliminating long-lived IAM user access keys in favor of short-lived STS credentials with Multi-Factor Authentication (MFA).</li>
-<li><b>Centralized Hybrid Networking:</b> An <b>AWS Transit Gateway (TGW)</b> deployed in the Network Hub account. Workload VPCs connect via VPC attachments, while dedicated <b>Direct Connect (DX)</b> or redundant IPsec VPN tunnels link cloud subnets directly to on-premises datacenters for dual-run hybrid operations.</li>
+<li><b>Service control policies (SCPs):</b> rules set at the OU level that no account can override. Typical ones block unapproved regions, require encryption, and stop anyone switching off CloudTrail or security tooling.</li>
+<li><b>Single sign-on:</b> people sign in through the company identity provider using <b>AWS IAM Identity Center</b> (SAML and SCIM), and get short-lived credentials with MFA. No long-lived IAM user keys.</li>
+<li><b>Hub networking:</b> an <b>AWS Transit Gateway</b> in the network account connects every workload VPC. <b>Direct Connect</b> or redundant site-to-site VPN links AWS to the datacenter, so old and new environments can talk during the migration.</li>
 </ul>
 </details>
 </div>
 </section>
 <section>
 <div class="wrap">
-<div class="section-eyebrow">Methodology</div>
-<h2 id="the-7rs-workload-migration-framework">The 7Rs workload migration framework</h2>
-<p>Every server, service, and database identified during discovery is classified across the <b>7Rs migration strategies</b>:</p>
+<div class="section-eyebrow">Strategy</div>
+<h2 id="the-7rs">The 7Rs</h2>
+<p>Every server, service, and database found in discovery gets one of seven strategies:</p>
 <ol>
-<li><b>Rehost (Lift &amp; Shift):</b></li>
+<li><b>Rehost (lift and shift):</b> copy the server as it is to EC2 with <b>AWS Application Migration Service (MGN)</b>. Best for tight deadlines, or vendor software you can't change.</li>
+<li><b>Replatform (lift and reshape):</b> move to a managed service without changing the application's code. Databases to <b>Amazon RDS or Aurora</b>, file servers to <b>Amazon EFS or FSx</b>, apps into containers on <b>Amazon EKS or ECS</b>.</li>
+<li><b>Refactor (re-architect):</b> rebuild parts of the application to be cloud-native, for example as event-driven services with Amazon EventBridge and AWS Lambda. Worth it for systems that change often or need to scale a lot.</li>
+<li><b>Repurchase (drop and shop):</b> replace a home-grown system with a SaaS product, such as moving an on-premises ticketing tool to a SaaS one.</li>
+<li><b>Retain (keep for now):</b> leave it on-premises for the time being, for example because it depends on a mainframe, data must stay in-country, or it needs very low latency to something that can't move yet.</li>
+<li><b>Retire (switch off):</b> turn it off for good. Assessments regularly turn up forgotten test servers, unowned development boxes, and abandoned projects. Retiring them saves money with no migration effort at all.</li>
+<li><b>Relocate:</b> move VMware VMs as they are to a VMware environment running on AWS, without changing how they're run.</li>
 </ol>
-<ul>
-<li><em>Pattern:</em> Block-level replication of running servers directly into Amazon EC2 using <b>AWS Application Migration Service (MGN)</b>.</li>
-<li><em>When to use:</em> Strict cutover timelines (e.g., immediate datacenter evacuation) or commercial off-the-shelf (COTS) software where application source code cannot be modified.</li>
-</ul>
-<ol>
-<li><b>Replatform (Lift &amp; Reshape):</b></li>
-</ol>
-<ul>
-<li><em>Pattern:</em> Moving compute or data tiers to managed cloud equivalents without altering core application code.</li>
-<li><em>When to use:</em> Replacing self-managed VM databases with <b>Amazon RDS / Aurora</b>, migrating file servers to <b>Amazon EFS / FSx</b>, or containerizing applications on <b>Amazon EKS / ECS</b>.</li>
-</ul>
-<ol>
-<li><b>Refactor / Rearchitect (Cloud Native):</b></li>
-</ol>
-<ul>
-<li><em>Pattern:</em> Rewriting monolithic application layers into decoupled microservices, event-driven architectures (Amazon EventBridge, AWS Lambda), or distributed NoSQL databases (Amazon DynamoDB).</li>
-<li><em>When to use:</em> Workloads requiring extreme scalability, high continuous development velocity, or high licensing cost reduction.</li>
-</ul>
-<ol>
-<li><b>Repurchase (Drop &amp; Shop):</b></li>
-</ol>
-<ul>
-<li><em>Pattern:</em> Retiring custom on-premises applications in favor of modern cloud SaaS platforms (e.g., migrating legacy on-prem email or ticketing to SaaS).</li>
-</ul>
-<ol>
-<li><b>Retain (Keep On-Premises):</b></li>
-</ol>
-<ul>
-<li><em>Pattern:</em> Leaving workloads in the on-premises datacenter temporarily.</li>
-<li><em>When to use:</em> Systems tied to legacy mainframe hardware, active regulatory data sovereignty blockers, or applications with high cross-rack latency dependencies that cannot be separated.</li>
-</ul>
-<ol>
-<li><b>Retire (Decommission):</b></li>
-</ol>
-<ul>
-<li><em>Pattern:</em> Turning off servers permanently.</li>
-<li><em>When to use:</em> In almost every enterprise assessment, <b>10% to 20% of discovered VMs are orphaned test environments, unowned dev boxes, or abandoned projects</b>. Identifying and retiring these servers delivers immediate cost elimination with zero migration effort.</li>
-</ul>
-<ol>
-<li><b>Relocate (Hypervisor Mobility):</b></li>
-</ol>
-<ul>
-<li><em>Pattern:</em> Relocating virtual machine workloads to VMware Cloud on AWS (VMC) without modifying configuration or operational tooling.</li>
-</ul>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Deliverable</div>
-<h2 id="the-workload-placement-matrix">The Workload Placement Matrix</h2>
-<p>At the conclusion of Assess, the architectural blueprint delivers a unified <b>Workload Placement Matrix</b>:</p>
+<h2 id="the-workload-placement-list">The workload placement list</h2>
+<p>The architecture work ends with one list that covers every application:</p>
 <ul>
-<li>Lists each discovered application suite and its constituent servers.</li>
-<li>Details mapped source-to-target specifications (e.g., <code>VM-PROD-APP01</code> [8 vCPU / 32 GB] ──► <code>m7g.large</code> [2 vCPU / 8 GB Graviton3]).</li>
-<li>Defines assigned 7Rs pathway, target AWS account, target subnet/VPC, and estimated migration wave sequence.</li>
+<li>the application and the servers that belong to it;</li>
+<li>each server's current size and its right-sized AWS target, for example <code>APP01</code> at 8 vCPU / 32 GB becoming an <code>m7g.large</code> at 2 vCPU / 8 GB (Module 02);</li>
+<li>its 7R strategy, its target account and VPC, and its planned migration wave.</li>
 </ul>
 </div>
 </section>

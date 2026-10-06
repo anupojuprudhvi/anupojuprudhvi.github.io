@@ -7,12 +7,12 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="Partnering with enterprise engineering teams, clustering dependency graphs into migration waves, executing a lighthouse pilot cutover, and team enablement." />
+    <meta name="description" content="From plan to practice. Working as one team with the client's engineers, grouping servers into migration waves, and moving one real application first, the pilot, to prove the cutover and rollback before the rest follow." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/migration-journey/05-mobilize-wave-planning-and-pilot.html" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://anupojuprudhvi.github.io/learning-paths/migration-journey/05-mobilize-wave-planning-and-pilot.html" />
     <meta property="og:title" content="The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot — Prudhvi Raj Anupoju" />
-    <meta property="og:description" content="Partnering with enterprise engineering teams, clustering dependency graphs into migration waves, executing a lighthouse pilot cutover, and team enablement." />
+    <meta property="og:description" content="From plan to practice. Working as one team with the client's engineers, grouping servers into migration waves, and moving one real application first, the pilot, to prove the cutover and rollback before the rest follow." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -25,7 +25,7 @@
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "The Mobilize Phase · Wave Planning & Lighthouse Pilot",
-        "description": "Partnering with enterprise engineering teams, clustering dependency graphs into migration waves, executing a lighthouse pilot cutover, and team enablement.",
+        "description": "From plan to practice. Working as one team with the client's engineers, grouping servers into migration waves, and moving one real application first, the pilot, to prove the cutover and rollback before the rest follow.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -43,10 +43,10 @@
         "image": "https://anupojuprudhvi.github.io/og-image.png",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/migration-journey/05-mobilize-wave-planning-and-pilot.html",
         "datePublished": "2026-09-17",
-        "dateModified": "2026-09-17",
+        "dateModified": "2026-10-06",
         "isPartOf": {"@type":"CreativeWorkSeries","name":"Enterprise Cloud Migration: Assess, Mobilize & Modernize","url":"https://anupojuprudhvi.github.io/learning-paths/migration-journey/index.html"},
         "position": 5,
-        "keywords": "mobilize, wave-planning, migration-factory, pilot, operational-readiness, AWS Mobilize, AWS MGN, Wave Planning, Lighthouse Pilot, CCoE"
+        "keywords": "mobilize, wave-planning, migration-factory, pilot, operational-readiness, AWS MGN, AWS DMS, Wave Planning, Lighthouse Pilot, CCoE"
       }
     </script>
     <script src="../../assets/theme.js"></script>
@@ -151,7 +151,7 @@
             <div>
               <span class="lp-badge">Migration Engineering</span>
               <h1>The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot</h1>
-              <p class="sub">Partnering with enterprise engineering teams, clustering dependency graphs into migration waves, executing a lighthouse pilot cutover, and team enablement.</p>
+              <p class="sub">From plan to practice. Working as one team with the client's engineers, grouping servers into migration waves, and moving one real application first, the pilot, to prove the cutover and rollback before the rest follow.</p>
             </div>
             <svg class="motif motif-migration" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <defs><path id="mM" d="M84 90 C 108 44, 132 44, 156 90" /></defs>
@@ -172,8 +172,8 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 05 of 06</span>
             <span><b>Level:</b> Migration Engineering</span>
-            <span><b>Time:</b> 9 min read</span>
-            <span><b>Published:</b> <time datetime="2026-09-17">17 Sep 2026</time></span>
+            <span><b>Time:</b> 7 min read</span>
+            <span><b>Updated:</b> <time datetime="2026-10-06">6 Oct 2026</time></span>
           </div>
         </div>
       </header>
@@ -188,7 +188,7 @@
                 <li><a href="03-financial-engineering-tco-and-licensing.html"><span class="lp-toc-num">03</span><span>Financial Engineering · 3-Year TCO &amp; Licensing</span></a></li>
                 <li><a href="04-target-architecture-and-landing-zone.html"><span class="lp-toc-num">04</span><span>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</span></a></li>
                 <li class="is-current"><a href="05-mobilize-wave-planning-and-pilot.html" aria-current="page"><span class="lp-toc-num">05</span><span>The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot</span></a>
-                <ol class="lp-toc-sections"><li><a href="#shifting-from-strategy-to-factory-engineering">Shifting from strategy to factory engineering</a></li><li><a href="#partnering-with-client-engineering-teams">Partnering with client engineering teams</a></li><li><a href="#dependency-clustering-into-migration-waves">Dependency clustering into migration waves</a></li><li><a href="#the-wave-0-lighthouse-pilot">The Wave 0 Lighthouse Pilot</a></li><li><a href="#passing-the-mobilize-gate-to-begin-migration-factory">Passing the Mobilize gate to begin Migration Factory</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#from-why-to-how">From &quot;why&quot; to &quot;how&quot;</a></li><li><a href="#one-team-not-two">One team, not two</a></li><li><a href="#grouping-servers-into-waves">Grouping servers into waves</a></li><li><a href="#wave-0">Wave 0</a></li><li><a href="#ready-for-the-waves">Ready for the waves</a></li></ol></li>
                 <li><a href="06-migrate-and-modernize-strategies.html"><span class="lp-toc-num">06</span><span>Migrate &amp; Modernize · In-Flight vs. Sequential Factory</span></a></li>
               </ol>
             </nav>
@@ -211,89 +211,65 @@
           <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2 id="shifting-from-strategy-to-factory-engineering">Shifting from strategy to factory engineering</h2>
-<p>Securing executive sign-off on the Directional Business Case (DBC) and qualifying for AWS MAP co-funding marks the successful conclusion of the <b>Assess</b> phase. The initiative now transitions into <b>Mobilize</b>.</p>
-<p>Where Assess answered <em>&quot;Why should we migrate and what will it cost?&quot;</em>, Mobilize answers <em>&quot;How do we build the target platform, validate cutover runbooks, and train our engineering teams to operate it safely?&quot;</em></p>
-<p>Mobilize bridges high-level architecture to industrialized execution through three critical workstreams:</p>
+<h2 id="from-why-to-how">From &quot;why&quot; to &quot;how&quot;</h2>
+<p>Once leadership approves the business case, the Assess phase is done and <b>Mobilize</b> begins.</p>
+<p>Assess answered <em>&quot;why should we migrate, and what will it cost?&quot;</em> Mobilize answers <em>&quot;how do we build the platform, prove the cutover works, and get our teams ready to run it?&quot;</em> It has three workstreams:</p>
 <ol>
-<li><b>Landing Zone Deployment:</b> Standing up the multi-account foundation, security guardrails, and hybrid connectivity designed in Assess.</li>
-<li><b>Dependency Mapping &amp; Wave Planning:</b> Clustering hundreds of interdependent servers into sequenced, manageable cutover waves.</li>
-<li><b>The Lighthouse Pilot (Wave 0):</b> Migrating a representative production workload end-to-end to validate replication pipelines, prove cutover timing, and exercise rollback procedures.</li>
+<li><b>Build the landing zone:</b> the accounts, guardrails, and hybrid connectivity designed in Assess (Module 04).</li>
+<li><b>Plan the waves:</b> group servers into small, ordered batches.</li>
+<li><b>Run the pilot:</b> move one real application end to end, to prove the process before anything else moves.</li>
 </ol>
 </div>
 </section>
 <section>
 <div class="wrap">
-<div class="section-eyebrow">Collaboration</div>
-<h2 id="partnering-with-client-engineering-teams">Partnering with client engineering teams</h2>
-<p>Mobilize succeeds or fails on organizational alignment. A migration cannot be executed in isolation by external consultants; it requires a joint delivery model partnering consulting architects with the client's internal engineering squads:</p>
-<pre tabindex="0"><code>[ Joint Cloud Center of Excellence (CCoE) ]
-  ├── Consulting Migration Lead &amp; Client Program Manager (Pacing, scope, MAP governance)
-  ├── Lead Cloud Architect &amp; Client Principal Architect (Landing zone, networking, security)
-  ├── Migration Platform Engineers (AWS MGN/DMS replication, automation pipelines, IaC)
-  └── Application Tier Owners &amp; QA Leads (Cutover testing, data validation, sign-off)</code></pre>
+<div class="section-eyebrow">Teamwork</div>
+<h2 id="one-team-not-two">One team, not two</h2>
+<p>A migration can't be done <em>to</em> an organization by outside consultants. It works when the partner's people and the client's people work as one team, often called a cloud center of excellence (CCoE):</p>
+<ul>
+<li><b>Program leads, one from each side:</b> pace, scope, and MAP reporting.</li>
+<li><b>Architects, one from each side:</b> the landing zone, networking, and security.</li>
+<li><b>Migration engineers:</b> replication tooling (MGN and DMS), automation, and infrastructure as code.</li>
+<li><b>Application owners and testers:</b> cutover testing, data checks, and final sign-off.</li>
+</ul>
+<p>Agree early <b>who does what</b>. For example, migration engineers run the replication, security engineers approve IAM roles and SCPs, and application owners decide whether a cutover is accepted. A weekly planning meeting keeps the landing zone, replication, and connectivity work moving together.</p>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Planning</div>
+<h2 id="grouping-servers-into-waves">Grouping servers into waves</h2>
+<p>Moving everything in one &quot;big bang&quot; weekend is far too risky. Instead, servers move in <b>waves</b>, small batches (often a few dozen servers), grouped by four things:</p>
+<ol>
+<li><b>What talks to what.</b> Servers that constantly call each other, such as an application and its database, move in the <b>same wave</b>. Split them, and every call crosses the link between the datacenter and AWS, which slows the application down. Network flow data from discovery shows these links.</li>
+<li><b>How critical it is.</b> Development and test environments go first, to practise with no business risk. Internal tools come next. Customer-facing systems move later, once the process is well proven.</li>
+<li><b>When change is allowed.</b> Avoid month-end close, peak trading seasons, and other freeze periods.</li>
+<li><b>Which tool moves it.</b> Group servers that move the same way: whole servers with <b>AWS Application Migration Service (MGN)</b>, databases with <b>AWS Database Migration Service (DMS)</b> or native replication.</li>
+</ol>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">The pilot</div>
+<h2 id="wave-0">Wave 0</h2>
+<p>The most important milestone in Mobilize is the <b>pilot</b>, sometimes called the lighthouse or Wave 0. Pick an application that is:</p>
+<ul>
+<li><b>low risk,</b> so a delay doesn't hurt customers or revenue;</li>
+<li><b>typical of the estate,</b> for example a three-tier application with a web front end, an application tier, and a relational database;</li>
+<li><b>owned by someone keen to help,</b> who will test it properly and give honest feedback.</li>
+</ul>
+<h3>A full dress rehearsal</h3>
+<figure class="flow">
+<figcaption class="flow-title">A pilot cutover, step by step</figcaption>
+<div class="flow-body"><div class="flow-node"><strong>Before the window</strong><span>MGN replicates the servers continuously; DMS or native replication keeps the database in sync</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">maintenance window starts</span></div><div class="flow-node"><strong>Stop the traffic</strong><span>drain users and pause background jobs</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">then</span></div><div class="flow-node"><strong>Final sync</strong><span>the last changes are copied across</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">then</span></div><div class="flow-node"><strong>Launch in AWS</strong><span>instances start in the target VPC, with post-launch scripts</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">then</span></div><div class="flow-node"><strong>Switch DNS</strong><span>internal DNS records point to the new servers</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">then</span></div><div class="flow-node is-key"><strong>Test</strong><span>smoke tests and test transactions</span></div><div class="flow-paths"><div class="flow-path"><span class="flow-path-label">Success</span><div class="flow-node"><strong>Go live</strong><span>send real traffic to AWS and close the window</span></div></div><div class="flow-path"><span class="flow-path-label">Problem</span><div class="flow-node"><strong>Roll back</strong><span>point DNS back to the original servers</span></div></div></div></div>
+</figure>
+<div class="callout"><b>Plan the rollback before the cutover.</b> Pointing DNS back is quick, but any data written in AWS after the switch would be lost, unless reverse replication from AWS back to the original database was set up in advance. Decide how you'll roll back, and test it, before the window starts.</div>
 <details class="implementation-notes">
-<summary>Establishing the Joint Cadence</summary>
+<summary>What the pilot measures</summary>
 <ul>
-<li><b>Weekly Sprint Planning:</b> Tracking landing zone milestones, replication agent deployments, and network connectivity tests.</li>
-<li><b>RACI Operational Matrix:</b> Defining clear boundaries: platform engineers manage replication infrastructure (AWS MGN), security engineers approve IAM roles and SCPs, while application owners retain final sign-off on cutover acceptance testing.</li>
-</ul>
-</details>
-</div>
-</section>
-<section>
-<div class="wrap">
-<div class="section-eyebrow">Methodology</div>
-<h2 id="dependency-clustering-into-migration-waves">Dependency clustering into migration waves</h2>
-<p>Attempting to migrate an enterprise estate in one massive &quot;big bang&quot; weekend is an unacceptably high operational risk. Instead, workloads are sequenced into <b>discrete migration waves</b> (typically 15 to 40 servers per wave) based on four structural criteria:</p>
-<ol>
-<li><b>Network Communication Affinity:</b> Ingesting network connection telemetry (source/destination IP traffic from hypervisors or netflow logs). Servers that exchange high-volume synchronous RPC or database queries must migrate in the <b>same wave</b> to avoid high-latency cross-datacenter application degradation.</li>
-<li><b>Business Criticality &amp; Tiering:</b></li>
-</ol>
-<ul>
-<li>Non-production (Dev/Test) environments migrate first to exercise tools with zero revenue risk.</li>
-<li>Internal Tier-2 corporate tooling (reporting, staging utilities) migrate next.</li>
-<li>Core Tier-1 customer-facing transaction platforms migrate in later, highly refined waves.</li>
-</ul>
-<ol>
-<li><b>Change Freeze &amp; Compliance Windows:</b> Aligning wave schedules with corporate blackout periods (e.g., month-end financial book closings or peak seasonal retail windows).</li>
-<li><b>Target Modernization Strategy:</b> Grouping servers that use the same migration tooling (e.g., block-level replication via <b>AWS Application Migration Service [MGN]</b> vs. database replication via <b>AWS Database Migration Service [DMS]</b>).</li>
-</ol>
-</div>
-</section>
-<section>
-<div class="wrap">
-<div class="section-eyebrow">Execution</div>
-<h2 id="the-wave-0-lighthouse-pilot">The Wave 0 Lighthouse Pilot</h2>
-<p>The most vital milestone in Mobilize is the <b>Lighthouse Pilot (Wave 0)</b>.</p>
-<p>The pilot application must meet three specific criteria:</p>
-<ul>
-<li>It must be <b>low business risk</b> (so unexpected delays do not impact revenue or customers).</li>
-<li>It must be <b>architecturally representative</b> (e.g., a three-tier web application with a web frontend, application tier, and relational database).</li>
-<li>It must have an <b>engaged, supportive application owner</b> willing to participate actively in testing.</li>
-</ul>
-<h3>What the Lighthouse Pilot Proves</h3>
-<p>The pilot is a full dress rehearsal. It tests every operational boundary:</p>
-<figure class="wide-block"><pre tabindex="0" class="code"><code>[ Pre-Cutover Preparation ]
-  ├── Continuous block-level replication established via AWS MGN
-  └── Relational data synchronization established via AWS DMS / native replication
-          │
-[ The Cutover Maintenance Window ]
-  ├── Step 1: Drain active application traffic and pause background queue processing
-  ├── Step 2: Final incremental storage synchronization (flushing dirty disk blocks)
-  ├── Step 3: EC2 instance launch in target VPC with automated post-launch scripts
-  ├── Step 4: Internal DNS / Route 53 record updates pointing to the new cloud endpoint
-  └── Step 5: QA validation test suite execution (smoke tests, synthetic transactions)
-          │
-[ Decision Gate: Commit or Rollback ]
-  ├── Success ──► Point public traffic to AWS; release maintenance window
-  └── Abort   ──► Revert DNS back to on-premises IP; zero data loss rollback</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<details class="implementation-notes">
-<summary>Key Metrics Captured During Pilot</summary>
-<ul>
-<li><b>Actual Cutover Duration:</b> Validates whether the maintenance window can fit within scheduled downtime (e.g., proving a database switchover takes 12 minutes rather than a projected 2 hours).</li>
-<li><b>Network Latency &amp; Performance:</b> Measuring real-world application response times across AWS subnets vs. legacy physical racks.</li>
-<li><b>Rollback SLA:</b> Verifying that should an unforeseen defect occur, reverting traffic back to the on-premise baseline takes less than 15 minutes.</li>
+<li><b>How long the cutover really takes,</b> to know whether real waves will fit their maintenance windows. A database switch may take minutes rather than the hours planned, or the other way round.</li>
+<li><b>Performance:</b> how the application responds in AWS compared with the datacenter.</li>
+<li><b>Rollback time:</b> how long it really takes to go back if something goes wrong.</li>
 </ul>
 </details>
 </div>
@@ -301,15 +277,15 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Outcome</div>
-<h2 id="passing-the-mobilize-gate-to-begin-migration-factory">Passing the Mobilize gate to begin Migration Factory</h2>
-<p>The Mobilize phase concludes with formal delivery of:</p>
+<h2 id="ready-for-the-waves">Ready for the waves</h2>
+<p>Mobilize ends with:</p>
 <ol>
-<li><b>The Production Landing Zone:</b> Validated multi-account AWS environment with enforced security guardrails, centralized logging, and active hybrid connectivity.</li>
-<li><b>The Industrialized Migration Wave Plan:</b> Sequenced roadmap scheduling all remaining application waves through the Migrate &amp; Modernize phase.</li>
-<li><b>The Validated Migration Runbook:</b> Standardized operational procedure refined during the lighthouse cutover, ready for automated factory execution.</li>
-<li><b>AWS MAP Mobilize Completion Package:</b> Submitted to AWS partner governance to release Mobilize co-funding credits and approve migration-phase incentive allocations.</li>
+<li><b>A production-ready landing zone,</b> with guardrails, central logging, and working hybrid connectivity.</li>
+<li><b>The full wave plan</b> for every remaining application.</li>
+<li><b>A proven runbook,</b> corrected after the pilot, that every later wave follows.</li>
+<li><b>The MAP Mobilize reporting</b> that AWS or your partner requires.</li>
 </ol>
-<p>With the platform built, runbooks proven, and internal teams enabled, the organization is fully equipped to run fast, repeatable workload migrations with confidence.</p>
+<p>With the platform built, the runbook proven, and the internal teams trained, the remaining waves can move steadily and repeatably.</p>
 </div>
 </section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/migration-journey/04-target-architecture-and-landing-zone.html">
@@ -346,6 +322,7 @@
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
+    <script src="../../assets/flow-player.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>
 </html>

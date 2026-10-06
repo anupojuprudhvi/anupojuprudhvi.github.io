@@ -764,7 +764,7 @@
       <link>https://anupojuprudhvi.github.io/learning-paths/migration-journey/01-assessment-paths-rapid-vs-deep.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/migration-journey/01-assessment-paths-rapid-vs-deep.html</guid>
       <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
-      <description>Comparing rapid 4–6 week tooling-driven assessments with 3–4 month organizational evaluations across the 6 AWS Cloud Adoption Framework (CAF) pillars.</description>
+      <description>Choosing between a rapid 4–6 week assessment driven by tools and a deep 3–4 month study of the organization across the six AWS Cloud Adoption Framework (CAF) perspectives, and the signs that tell you which one you need.</description>
       <category>Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</category>
     </item>
     <item>
@@ -772,7 +772,7 @@
       <link>https://anupojuprudhvi.github.io/learning-paths/migration-journey/02-discovery-telemetry-and-inventory.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/migration-journey/02-discovery-telemetry-and-inventory.html</guid>
       <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
-      <description>Extracting hypervisor inventory, continuous utilization percentiles, and applying right-sizing algorithms to avoid naive 1:1 lift-and-shift over-provisioning.</description>
+      <description>Collecting what you have and how much of it is really used. RVTools for a quick inventory, an agentless collector for usage over time, and right-sizing compute, storage, and processor type so the AWS estimate isn't built on oversized VMs.</description>
       <category>Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</category>
     </item>
     <item>
@@ -780,7 +780,7 @@
       <link>https://anupojuprudhvi.github.io/learning-paths/migration-journey/03-financial-engineering-tco-and-licensing.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/migration-journey/03-financial-engineering-tco-and-licensing.html</guid>
       <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
-      <description>Modeling On-Demand vs. 1-Yr/3-Yr Savings Plans, Microsoft Windows and SQL Server BYOL vs. License-Included scenarios, and passing MAP milestone audits.</description>
+      <description>Building the cost case. On-Demand vs. 1-year and 3-year Savings Plans, a blended commitment strategy, Windows Server and SQL Server licensing choices, how MAP funding fits in, and what goes into the business case leadership signs.</description>
       <category>Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</category>
     </item>
     <item>
@@ -788,7 +788,7 @@
       <link>https://anupojuprudhvi.github.io/learning-paths/migration-journey/04-target-architecture-and-landing-zone.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/migration-journey/04-target-architecture-and-landing-zone.html</guid>
       <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
-      <description>Architecting multi-account AWS Organizations, IAM Identity Center federation, Transit Gateway networking, and classifying workloads into 7Rs pathways.</description>
+      <description>The foundation to build before anything moves. A multi-account landing zone with guardrails, single sign-on, and hub networking, and the 7Rs, the strategy that decides what happens to each workload.</description>
       <category>Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</category>
     </item>
     <item>
@@ -796,7 +796,7 @@
       <link>https://anupojuprudhvi.github.io/learning-paths/migration-journey/05-mobilize-wave-planning-and-pilot.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/migration-journey/05-mobilize-wave-planning-and-pilot.html</guid>
       <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
-      <description>Partnering with enterprise engineering teams, clustering dependency graphs into migration waves, executing a lighthouse pilot cutover, and team enablement.</description>
+      <description>From plan to practice. Working as one team with the client's engineers, grouping servers into migration waves, and moving one real application first, the pilot, to prove the cutover and rollback before the rest follow.</description>
       <category>Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</category>
     </item>
     <item>
@@ -804,7 +804,7 @@
       <link>https://anupojuprudhvi.github.io/learning-paths/migration-journey/06-migrate-and-modernize-strategies.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/migration-journey/06-migrate-and-modernize-strategies.html</guid>
       <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
-      <description>Deciding between sequential lift-and-shift and in-flight modernization during Mobilize, architecting cloud-native targets, and running the migration factory.</description>
+      <description>Move first and improve later, or modernize during the move? When each approach fits, the common modernization targets (containers on EKS, Aurora, and managed messaging), and what the final phase hands over.</description>
       <category>Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</category>
     </item>
     <item>

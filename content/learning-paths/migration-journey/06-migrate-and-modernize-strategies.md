@@ -1,76 +1,75 @@
 ---
 title: Migrate & Modernize · In-Flight vs. Sequential Factory
 date: 2026-09-17
+updated: 2026-10-06
 track: migration-journey
 order: 6
 module: 6
-summary: Deciding between sequential lift-and-shift and in-flight modernization during Mobilize, architecting cloud-native targets, and running the migration factory.
+summary: Move first and improve later, or modernize during the move? When each approach fits, the common modernization targets (containers on EKS, Aurora, and managed messaging), and what the final phase hands over.
 level: Modernization Architecture
-readingTime: 9 min read
-stack: [AWS MAP, Amazon EKS, Amazon Aurora, Karpenter, AWS MGN, Refactoring]
+readingTime: 6 min read
+stack: [AWS MGN, Amazon EKS, Karpenter, Amazon Aurora, AWS DMS, Amazon EventBridge]
 tags: [modernization, migrate, eks, aurora, serverless, migration-factory]
 ---
 
-## Principle · The modernization dilemma: sequential vs. in-flight
+## Principle · Move first, or modernize on the way?
 
-In traditional cloud adoption, enterprise migrations were treated as a strict sequential two-step process:
-1. **Step 1 (Migrate):** Lift-and-shift VMs to Amazon EC2 as quickly as possible with minimal changes (Rehost).
-2. **Step 2 (Modernize):** Refactor applications to cloud-native managed services post-migration.
+Migrations used to be done in two separate steps:
 
-While sequential migration offers the lowest cognitive load during initial datacenter evacuation, it introduces a severe business penalty known as the **"migration tax"**:
-- The enterprise spends substantial capital to replicate legacy operational patterns, OS licenses, and VM patch maintenance in the cloud.
-- Once in AWS, teams face operational fatigue, leaving workloads in an unoptimized, expensive state for years.
+1. **Migrate:** lift and shift every VM to EC2 as quickly as possible (rehost).
+2. **Modernize:** improve the applications later, once they're in AWS.
 
-Consequently, forward-leaning enterprise clients actively demand a **hybrid dual-track approach**: mixing **Mobilize** and **Modernize** together. By modernizing strategic tiers *during* the migration cutover, organizations achieve immediate elasticity, eliminate hypervisor/database licensing liabilities, and bypass the migration tax entirely.
+Doing it in that order keeps the move simple. But it has a cost, sometimes called the **migration tax**: you pay to recreate the old setup in the cloud (the same VM sizes, operating system licences, and patching work), and "later" often never comes once the deadline pressure is gone.
 
-## Comparison · Sequential Factory vs. In-Flight Modernization
+So many migrations now mix the two: most servers are rehosted, while the parts where modernizing pays off most are changed **during** the move.
 
-Choosing the optimal modernization strategy depends on workload criticality, technical debt, and business deadlines:
+## Comparison · Two approaches
 
-- **Sequential Factory (Rehost First, Modernize Later):**
-  - **Core Mechanism:** Block-level server replication via **AWS Application Migration Service (MGN)** directly to Amazon EC2.
-  - **Best For:** Hard datacenter lease termination dates (e.g. 60–90 day hard exit), complex monolithic third-party COTS applications, or organizations with nascent cloud engineering skills.
-  - **Core Benefit:** Fast cutover velocity with minimal application code disturbance.
-  - **Trade-Off:** Carries legacy technical debt into AWS; delays managed service cost savings.
+**Move first, modernize later (rehost)**
+- **How:** copy servers as they are to EC2 with **AWS Application Migration Service (MGN)**.
+- **Best for:** a hard deadline such as a datacenter exit in 60–90 days, complex vendor software you can't change, or teams new to AWS.
+- **Strength:** fast, with very little change to the applications.
+- **Weakness:** old problems and costs move with you, and the savings from managed services are delayed.
 
-- **In-Flight Modernization (Modernize During Cutover):**
-  - **Core Mechanism:** Replatforming or refactoring workloads directly into managed AWS primitives during the migration wave.
-  - **Best For:** Core proprietary applications, workloads facing punitive commercial database licensing renewals, or continuous integration/developer runner fleets.
-  - **Core Benefit:** Immediate cost reduction (up to 40%–60%), serverless elasticity, and zero dual-migration operational tax.
-  - **Trade-Off:** Requires higher upfront engineering effort, thorough regression testing, and active application team engagement.
+**Modernize during the move**
+- **How:** move straight to managed AWS services (replatform or refactor) as part of the wave.
+- **Best for:** your own core applications, databases facing an expensive licence renewal, and CI/CD runner fleets.
+- **Strength:** lower running costs sooner, better scaling, and no second migration later.
+- **Weakness:** more engineering effort up front, more testing, and the application team must be closely involved.
 
-## Architecture · In-Flight Modernization Patterns
+## Patterns · Common modernization targets
 
-The diagram below illustrates how enterprise estates decouple workloads during in-flight modernization:
+A typical mix, workload by workload:
 
-<pre><code>[ On-Premises Legacy Footprint ]
-  ├── Monolithic VM Web/API Tier   ──► In-Flight Modernization ──► Amazon EKS + Karpenter (Graviton3 ARM64)
-  ├── Self-Managed SQL Server VMs  ──► In-Flight Modernization ──► Amazon Aurora PostgreSQL (Multi-AZ)
-  ├── Legacy File Servers (NFS)    ──► Replatforming           ──► Amazon EFS / FSx for Windows
-  └── Legacy COTS / Batch Servers  ──► Rehost (AWS MGN)        ──► Amazon EC2 (Scheduled for later review)</code></pre>
+- **Web and API tiers on VMs:** into containers on **Amazon EKS**, with Karpenter.
+- **Self-managed SQL Server VMs:** to **Amazon Aurora PostgreSQL**, where the application can be changed and tested.
+- **File servers:** to **Amazon EFS** (Linux) or **Amazon FSx for Windows File Server**.
+- **Vendor software and batch servers:** rehosted to EC2 with MGN, and reviewed again later.
 
-### 1. Compute: VMs to Amazon EKS with Karpenter
-Rather than provisioning static EC2 instances that match legacy VM specs, containerized workloads transition directly to **Amazon EKS**:
-- **Dynamic Node Provisioning:** Using **Karpenter** to provision right-sized compute nodes just-in-time based on actual pod resource requests, eliminating idle worker node waste.
-- **Architecture Shift to ARM64:** Deploying microservices onto **AWS Graviton3** processors, delivering 25% better compute performance and 20% lower cost compared to x86 equivalents.
-- **Spot Fleet Offloading:** Routing ephemeral workloads (CI/CD build runners, background queue workers) to EC2 Spot instances, saving up to 90% off On-Demand rates with automated graceful draining.
+### 1. Compute: from VMs to Amazon EKS
 
-### 2. Database: Commercial Engines to Amazon Aurora
-Relational database tiers represent the highest ongoing licensing expense:
-- **Replatforming to Aurora Multi-AZ:** Migrating self-hosted PostgreSQL/MySQL VMs to **Amazon Aurora**, replacing manual backup scripts and hypervisor maintenance with automated cross-AZ replication, 1-day point-in-time recovery, and storage autoscaling up to 128 TiB.
-- **Heterogeneous Database Migration:** Using the **AWS Schema Conversion Tool (SCT)** and **AWS Database Migration Service (DMS)** to convert proprietary Oracle or Microsoft SQL Server schemas into open-source compatible Amazon Aurora PostgreSQL, eliminating commercial database core licensing permanently.
+Instead of fixed EC2 instances sized like the old VMs, containerized workloads run on **Amazon EKS**:
 
-### 3. Messaging & Integration: Monolith Queues to EventBridge
-Replacing fragile host-bound message brokers with managed serverless primitives:
-- **Amazon EventBridge & SQS:** Decoupling inter-service communication to prevent cascading failures during cutovers.
-- **API Gateway & Lambda:** Offloading low-frequency administrative and webhook endpoints to serverless architectures, paying only for executed requests.
+- **Karpenter adds nodes to fit the pods** that are actually waiting, and removes them when they're empty, so you're not paying for idle capacity. (The [Kubernetes track](../kubernetes-operations/17-scaling-requests-and-cost.html) covers this in depth.)
+- **AWS Graviton (ARM64) nodes,** where the container images are built for ARM64, for better price-performance (Module 02).
+- **Spot Instances** for interruptible work such as CI/CD build runners and queue workers. AWS quotes savings of up to 90% off On-Demand, in exchange for capacity that can be taken back at short notice.
 
-## Deliverables · The Migrate & Modernize Milestone Package
+### 2. Databases: to Amazon Aurora
 
-The Migrate & Modernize phase concludes with formal enterprise delivery artifacts:
+Databases are often the biggest licence cost, and the most work to look after:
 
-1. **Industrialized Migration Factory Runbooks:** Standardized, automated pipelines orchestrating block-level and database cutovers across sequenced waves.
-2. **Modernization Target Blueprints:** Production-hardened Helm charts, Terraform infrastructure modules for EKS/Aurora, and CI/CD deployment workflows.
-3. **Cutover Validation & Sign-Off Reports:** Real-time post-cutover performance metrics, SLA compliance records, and business acceptance sign-offs.
-4. **AWS MAP Post-Migration Governance Package:** Formal proof of migration submitted to AWS partner governance, which releases cloud credits and ARR rebates.
-5. **Datacenter Asset Decommissioning Certificates:** Verification of clean data wiping and decommissioning of on-premises physical hardware, securing final datacenter lease termination.
+- **Self-managed PostgreSQL or MySQL to Aurora:** the backups, replication across Availability Zones, point-in-time recovery, and storage growth are handled for you, instead of by scripts and maintenance windows.
+- **SQL Server or Oracle to Aurora PostgreSQL:** the **AWS Schema Conversion Tool (SCT)** converts the schema, and **AWS Database Migration Service (DMS)** moves the data. This removes the commercial database licence, but stored procedures and application queries usually need real changes and careful testing.
+
+### 3. Messaging: from self-hosted brokers to managed services
+
+- **Amazon SQS and EventBridge** replace message brokers running on VMs, so one slow service doesn't take others down with it.
+- **API Gateway and Lambda** suit small, occasional endpoints such as admin tools and webhooks, where you pay only when they're called.
+
+## Deliverables · What the final phase hands over
+
+1. **Repeatable migration runbooks** for servers and databases, used wave after wave.
+2. **The code for the new platform:** Terraform modules for EKS and Aurora, Helm charts, and CI/CD pipelines.
+3. **Cutover reports and sign-off:** performance after each cutover, and acceptance by the application owners.
+4. **MAP close-out reporting,** as required by AWS or your partner.
+5. **Datacenter exit:** old hardware securely wiped and retired, so the lease or colocation contract can end.

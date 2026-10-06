@@ -7,12 +7,12 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Discovery Telemetry · RVTools, AWS Transform &amp; Sizing — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="Extracting hypervisor inventory, continuous utilization percentiles, and applying right-sizing algorithms to avoid naive 1:1 lift-and-shift over-provisioning." />
+    <meta name="description" content="Collecting what you have and how much of it is really used. RVTools for a quick inventory, an agentless collector for usage over time, and right-sizing compute, storage, and processor type so the AWS estimate isn't built on oversized VMs." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/migration-journey/02-discovery-telemetry-and-inventory.html" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://anupojuprudhvi.github.io/learning-paths/migration-journey/02-discovery-telemetry-and-inventory.html" />
     <meta property="og:title" content="Discovery Telemetry · RVTools, AWS Transform &amp; Sizing — Prudhvi Raj Anupoju" />
-    <meta property="og:description" content="Extracting hypervisor inventory, continuous utilization percentiles, and applying right-sizing algorithms to avoid naive 1:1 lift-and-shift over-provisioning." />
+    <meta property="og:description" content="Collecting what you have and how much of it is really used. RVTools for a quick inventory, an agentless collector for usage over time, and right-sizing compute, storage, and processor type so the AWS estimate isn't built on oversized VMs." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -25,7 +25,7 @@
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "Discovery Telemetry · RVTools, AWS Transform & Sizing",
-        "description": "Extracting hypervisor inventory, continuous utilization percentiles, and applying right-sizing algorithms to avoid naive 1:1 lift-and-shift over-provisioning.",
+        "description": "Collecting what you have and how much of it is really used. RVTools for a quick inventory, an agentless collector for usage over time, and right-sizing compute, storage, and processor type so the AWS estimate isn't built on oversized VMs.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -43,10 +43,10 @@
         "image": "https://anupojuprudhvi.github.io/og-image.png",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/migration-journey/02-discovery-telemetry-and-inventory.html",
         "datePublished": "2026-09-17",
-        "dateModified": "2026-09-17",
+        "dateModified": "2026-10-06",
         "isPartOf": {"@type":"CreativeWorkSeries","name":"Enterprise Cloud Migration: Assess, Mobilize & Modernize","url":"https://anupojuprudhvi.github.io/learning-paths/migration-journey/index.html"},
         "position": 2,
-        "keywords": "discovery, telemetry, vmware, right-sizing, inventory, AWS Transform, VMware vCenter, RVTools, Right-Sizing"
+        "keywords": "discovery, telemetry, vmware, right-sizing, inventory, RVTools, VMware vCenter, AWS Transform, Right-Sizing"
       }
     </script>
     <script src="../../assets/theme.js"></script>
@@ -151,7 +151,7 @@
             <div>
               <span class="lp-badge">Technical Discovery</span>
               <h1>Discovery Telemetry · RVTools, AWS Transform &amp; Sizing</h1>
-              <p class="sub">Extracting hypervisor inventory, continuous utilization percentiles, and applying right-sizing algorithms to avoid naive 1:1 lift-and-shift over-provisioning.</p>
+              <p class="sub">Collecting what you have and how much of it is really used. RVTools for a quick inventory, an agentless collector for usage over time, and right-sizing compute, storage, and processor type so the AWS estimate isn't built on oversized VMs.</p>
             </div>
             <svg class="motif motif-migration" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <defs><path id="mM" d="M84 90 C 108 44, 132 44, 156 90" /></defs>
@@ -172,8 +172,8 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 02 of 06</span>
             <span><b>Level:</b> Technical Discovery</span>
-            <span><b>Time:</b> 8 min read</span>
-            <span><b>Published:</b> <time datetime="2026-09-17">17 Sep 2026</time></span>
+            <span><b>Time:</b> 7 min read</span>
+            <span><b>Updated:</b> <time datetime="2026-10-06">6 Oct 2026</time></span>
           </div>
         </div>
       </header>
@@ -185,7 +185,7 @@
               <ol class="lp-toc-list">
                 <li><a href="01-assessment-paths-rapid-vs-deep.html"><span class="lp-toc-num">01</span><span>Assessment Frameworks · Rapid vs. Deep Enterprise</span></a></li>
                 <li class="is-current"><a href="02-discovery-telemetry-and-inventory.html" aria-current="page"><span class="lp-toc-num">02</span><span>Discovery Telemetry · RVTools, AWS Transform &amp; Sizing</span></a>
-                <ol class="lp-toc-sections"><li><a href="#the-trap-of-1-1-infrastructure-translation">The trap of 1:1 infrastructure translation</a></li><li><a href="#the-dual-path-discovery-architecture">The dual-path discovery architecture</a></li><li><a href="#agentless-discovery-pipeline">Agentless discovery pipeline</a></li><li><a href="#the-right-sizing-algorithm">The right-sizing algorithm</a></li><li><a href="#handling-air-gapped-and-restricted-environments">Handling air-gapped and restricted environments</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#don-t-copy-vm-sizes-one-to-one">Don't copy VM sizes one-to-one</a></li><li><a href="#two-kinds-of-data">Two kinds of data</a></li><li><a href="#compute-storage-and-processor">Compute, storage, and processor</a></li></ol></li>
                 <li><a href="03-financial-engineering-tco-and-licensing.html"><span class="lp-toc-num">03</span><span>Financial Engineering · 3-Year TCO &amp; Licensing</span></a></li>
                 <li><a href="04-target-architecture-and-landing-zone.html"><span class="lp-toc-num">04</span><span>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</span></a></li>
                 <li><a href="05-mobilize-wave-planning-and-pilot.html"><span class="lp-toc-num">05</span><span>The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot</span></a></li>
@@ -211,82 +211,53 @@
           <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2 id="the-trap-of-1-1-infrastructure-translation">The trap of 1:1 infrastructure translation</h2>
-<p>The single most expensive mistake in cloud migration is <b>naive 1:1 translation</b> — taking an on-premises VM configured with 16 vCPUs and 64 GB RAM and blindly matching it to an <code>m5.4xlarge</code> EC2 instance.</p>
-<p>On-premises infrastructure is chronically over-provisioned. Systems engineers historically purchased physical hosts with 3–5 year capacity buffers to avoid procurement lead times. In practice, enterprise VMware estates frequently operate at <b>average CPU utilization below 10%</b> and <b>RAM utilization below 35%</b>.</p>
-<p>Translating provisioned hardware 1:1 into AWS results in inflated cloud bills that destroy the business case. Precision discovery must capture <b>actual utilization curves</b> to calculate right-sized instance recommendations.</p>
+<h2 id="don-t-copy-vm-sizes-one-to-one">Don't copy VM sizes one-to-one</h2>
+<p>The most expensive mistake in a migration estimate is copying sizes straight across: a VM with 16 vCPUs and 64 GB of memory becomes an <code>m5.4xlarge</code> with the same, without asking how much of it is ever used.</p>
+<p>On-premises servers are usually oversized. Hardware was bought with years of headroom, because ordering more took months. It's common to find VMware estates where most VMs use only a small share of their CPU and memory most of the time.</p>
+<p>Copy those sizes to AWS, and the cloud bill looks far higher than it needs to, which can sink the business case. Good discovery captures <b>how much is really used</b>, over time, and sizes from that.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Tooling</div>
-<h2 id="the-dual-path-discovery-architecture">The dual-path discovery architecture</h2>
-<p>Discovery today uses two data sources that complement each other:</p>
+<h2 id="two-kinds-of-data">Two kinds of data</h2>
+<p>Discovery normally combines two sources:</p>
 <ol>
-<li><b>Point-in-Time Hypervisor Snapshots (RVTools):</b></li>
+<li><b>A point-in-time inventory: RVTools.</b></li>
 </ol>
 <ul>
-<li><b>How it works:</b> A read-only vSphere client utility connects to vCenter and exports an <code>.xlsx</code> multi-sheet workbook containing hardware configuration for every VM: provisioned vCPUs, memory, disk datastores, OS labels, and power states.</li>
-<li><b>Best for:</b> Immediate sanity checks within 48 hours, sizing baseline estimates, and inventory reconciliation against CMDB records.</li>
-<li><b>Limitation:</b> Does not capture continuous time-series utilization metrics or network dependency flows.</li>
+<li><b>What it is:</b> a free, read-only tool that connects to vCenter and exports a spreadsheet of every VM: vCPUs, memory, disks, operating system, and power state.</li>
+<li><b>Good for:</b> a first inventory within a day or two, early sizing estimates, and checking against the CMDB.</li>
+<li><b>Limit:</b> it's a snapshot of what's <em>allocated</em>. It doesn't show usage over time, or which servers talk to each other.</li>
 </ul>
 <ol>
-<li><b>Continuous Telemetry Collectors (AWS Transform Agentless OVA):</b></li>
+<li><b>Usage over time: an agentless collector.</b></li>
 </ol>
 <ul>
-<li><b>How it works:</b> An Open Virtual Appliance (OVA) virtual machine deployed directly inside the private VMware cluster. It queries the vCenter API using a read-only service account every 15–60 minutes.</li>
-<li><b>Best for:</b> Capturing 24/7 time-series performance metrics: 95th and 99th percentile CPU utilization, active memory consumption, disk IOPS, and network throughput.</li>
-<li><b>Advantage:</b> Completely agentless — requires zero software installed inside guest operating systems, satisfying strict financial and healthcare compliance boundaries.</li>
+<li><b>What it is:</b> a small virtual appliance (an OVA) deployed inside the VMware environment. It reads performance data from vCenter with a read-only account, and sends it to AWS over outbound HTTPS. AWS Transform and the AWS Application Discovery Service both offer collectors like this.</li>
+<li><b>Good for:</b> usage curves over weeks: peak and 95th-percentile CPU, memory, disk activity, and network traffic.</li>
+<li><b>Why agentless helps:</b> nothing is installed inside the servers themselves, which is often what gets security and compliance teams to say yes.</li>
 </ul>
+<div class="callout"><b>Locked-down networks.</b> If the datacenter can't send data out to AWS, check what your chosen collector supports. Some can export collected data as a file, for the security team to review and upload by hand.</div>
 </div>
 </section>
 <section>
 <div class="wrap">
-<div class="section-eyebrow">Architecture</div>
-<h2 id="agentless-discovery-pipeline">Agentless discovery pipeline</h2>
-<p>The diagram below illustrates the secure telemetry flow from private on-premises hypervisors to the AWS assessment analytics engine:</p>
-<pre tabindex="0"><code>[ VMware vCenter Cluster ]
-       │
-       ▼ (Read-only API queries: vCPU, RAM, IOPS, Network)
-[ AWS Transform Collector OVA Appliance ]
-       │
-       ▼ (Encrypted HTTPS TLS 1.3 / Port 443 outbound only)
-[ AWS Transform Workspace / Migration Hub ]
-       │
-       ▼ (Normalization, 95th-percentile curve fitting, Graviton mapping)
-[ Directional Business Case (DBC) &amp; Sizing Engine ]</code></pre>
-</div>
-</section>
-<section>
-<div class="wrap">
-<div class="section-eyebrow">Analytics</div>
-<h2 id="the-right-sizing-algorithm">The right-sizing algorithm</h2>
-<p>Once telemetry is ingested into AWS Transform, right-sizing algorithms evaluate server performance across three primary dimensions:</p>
-<h3>1. Compute Right-Sizing (95th Percentile Rule)</h3>
-<p>Rather than sizing for absolute maximum spikes (which may represent a one-off backup or patch cycle), compute is sized against the <b>95th percentile CPU and memory demand</b> plus a 20–30% operational headroom buffer:</p>
-<p>$$\text{Target EC2 Cores} = \lceil (\text{Observed vCPUs} \times \text{P95 CPU Utilization} \times 1.25) \rceil$$</p>
-<p>A VM provisioned with 8 vCPUs whose 95th percentile CPU never exceeds 18% can safely migrate to a 2-vCPU instance (<code>c6g.large</code> or <code>m6g.large</code>), reducing compute costs by up to 70% immediately.</p>
-<h3>2. Storage Right-Sizing (Provisioned vs. Consumed)</h3>
-<p>On-premise VMDK disks are frequently formatted with thick provisioning. A 1 TB disk allocation may contain only 85 GB of active data:</p>
+<div class="section-eyebrow">Right-sizing</div>
+<h2 id="compute-storage-and-processor">Compute, storage, and processor</h2>
+<p>Once usage data has been collected for long enough, each server is sized in three ways.</p>
+<h3>1. Compute: size for the 95th percentile, not the peak</h3>
+<p>Sizing for the single highest spike usually means sizing for a nightly backup or a patch run. Instead, size for the <b>95th percentile</b> of CPU and memory use, plus some headroom:</p>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">target vCPUs = current vCPUs × 95th-percentile CPU use × 1.25 (headroom), rounded up</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<p><b>Example:</b> a VM with 8 vCPUs whose 95th-percentile CPU use is 18%: 8 × 0.18 × 1.25 = 1.8, so 2 vCPUs. Moving from 8 vCPUs to 2 cuts the compute for that server by about three quarters. Check memory the same way before choosing an instance type.</p>
+<h3>2. Storage: size for what's used, not what's allocated</h3>
+<p>On-premises disks are often allocated far bigger than the data on them. A 1 TB disk may hold 85 GB.</p>
 <ul>
-<li><b>Capacity Adjustment:</b> Target EBS volumes (typically <code>gp3</code>) are sized based on <b>consumed disk space</b> plus a 25% growth buffer, rather than provisioned allocations.</li>
-<li><b>Performance Decoupling:</b> AWS <code>gp3</code> volumes provide a baseline of 3,000 IOPS and 125 MB/s throughput regardless of volume size, allowing low-capacity high-IOPS workloads to operate cost-effectively without provisioning expensive <code>io2</code> storage.</li>
+<li><b>Size the EBS volume (usually <code>gp3</code>) for the data actually used,</b> plus room to grow.</li>
+<li><b>Performance doesn't depend on size with <code>gp3</code>.</b> Every <code>gp3</code> volume gets a baseline of 3,000 IOPS and 125 MB/s, so a small volume can still be fast, without paying for expensive <code>io2</code> storage.</li>
 </ul>
-<h3>3. Architecture Modernization (x86 to AWS Graviton)</h3>
-<p>Workloads running Linux distributions (Ubuntu, RHEL, Amazon Linux) are mapped directly to <b>AWS Graviton3 (ARM64)</b> instance families (<code>c7g</code>, <code>m7g</code>, <code>r7g</code>). Graviton processors provide up to <b>40% better price-performance</b> over equivalent x86-based instances, compounding the savings surfaced through right-sizing.</p>
-</div>
-</section>
-<section>
-<div class="wrap">
-<div class="section-eyebrow">Security</div>
-<h2 id="handling-air-gapped-and-restricted-environments">Handling air-gapped and restricted environments</h2>
-<p>In zero-trust or air-gapped datacenters where outbound HTTPS traffic to AWS public endpoints is strictly blocked:</p>
-<ul>
-<li>The AWS Transform collector can operate in <b>offline collection mode</b>.</li>
-<li>Telemetry is gathered and stored locally on the appliance.</li>
-<li>At the end of the collection window, the administrator exports an encrypted, obfuscated archive (<code>.tar.gz</code>).</li>
-<li>The archive is reviewed by corporate security and manually uploaded to the AWS Transform console via an administrator workstation, ensuring full compliance without compromising discovery fidelity.</li>
-</ul>
+<h3>3. Processor: consider AWS Graviton</h3>
+<p>Linux workloads whose software runs on ARM64 can often move to <b>AWS Graviton</b> instances (such as <code>m7g</code> or <code>c7g</code>). AWS quotes up to 40% better price-performance than comparable x86 instances. It isn't automatic: check that every package and agent has an ARM64 build, and test before you commit. Windows workloads stay on x86.</p>
 </div>
 </section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/migration-journey/01-assessment-paths-rapid-vs-deep.html">

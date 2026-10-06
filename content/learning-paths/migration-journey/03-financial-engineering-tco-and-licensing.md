@@ -1,82 +1,92 @@
 ---
 title: Financial Engineering · 3-Year TCO & Licensing
 date: 2026-09-17
+updated: 2026-10-06
 track: migration-journey
 order: 3
 module: 3
-summary: Modeling On-Demand vs. 1-Yr/3-Yr Savings Plans, Microsoft Windows and SQL Server BYOL vs. License-Included scenarios, and passing MAP milestone audits.
+summary: Building the cost case. On-Demand vs. 1-year and 3-year Savings Plans, a blended commitment strategy, Windows Server and SQL Server licensing choices, how MAP funding fits in, and what goes into the business case leadership signs.
 level: Financial Architecture
-readingTime: 9 min read
+readingTime: 8 min read
 stack: [TCO Modeling, AWS Pricing, Savings Plans, Microsoft Licensing, AWS MAP]
 tags: [finops, tco, savings-plans, byol, licensing, business-case]
 ---
 
-## Principle · The language of the C-suite is cash flow
+## Principle · Leadership decides on cash flow
 
-Engineering teams often pitch cloud migration around agility, autoscaling, and modern APIs. Chief Financial Officers (CFOs) evaluate cloud migration through three pragmatic metrics: **Total Cost of Ownership (TCO)**, **net cash-flow timing**, and **payback period**.
+Engineers often argue for the cloud with agility, autoscaling, and modern services. Finance leaders decide with three numbers: **total cost of ownership (TCO)**, **when the money goes out**, and **how long until it pays back**.
 
-A successful Assess phase culminates in the **Directional Business Case (DBC)**. The DBC translates raw server telemetry into an audited 3-year financial comparison, contrasting current on-premises capital and operational expenditures (CapEx/OpEx) against right-sized AWS run costs under diverse commitment models.
+So the Assess phase ends with a **business case** (AWS calls it a Directional Business Case). It turns the discovery data into a 3-year comparison: what the current estate costs to run, against the right-sized AWS cost under different commitment options.
 
-## Framework · Sizing the 3 commitment tiers
+## Pricing · Three ways to pay for compute
 
-The financial model projects target AWS infrastructure spend across three pricing horizons:
+### 1. On-Demand
 
-### 1. On-Demand Pricing (The Baseline Ceiling)
-- **Characteristics:** Pay-per-second with zero long-term commitment.
-- **Role in Model:** Represents the maximum cost envelope. Useful during initial migration waves before usage patterns stabilize.
-- **Financial Metric:** Full list price — serves as the baseline from which all optimization savings are calculated.
+The baseline.
 
-### 2. 1-Year Commitments (Moderate Flexibility)
-- **Characteristics:** 1-Year Compute Savings Plans or EC2 Instance Savings Plans.
-- **Discounts:** ~25% to 40% discount off On-Demand rates.
-- **Role in Model:** Ideal for transient workloads, applications slated for major refactoring within 18 months, or organizations cautious about multi-year commitments.
+- **What it is:** pay by the second, no commitment.
+- **In the model:** the most expensive case, and the baseline every saving is measured against. Useful in the first waves, before usage settles down.
 
-### 3. 3-Year Commitments (Maximum Efficiency)
-- **Characteristics:** 3-Year Compute Savings Plans (No Upfront, Partial Upfront, or All Upfront).
-- **Discounts:** Up to **66% to 72% discount** off On-Demand rates.
-- **Role in Model:** Applied to predictable baseline core infrastructure (core database servers, continuous enterprise ERP/CRM services, domain controllers).
+### 2. 1-year Savings Plans
 
-### The Recommended Blended Commitment Strategy
-Enterprise financial models avoid committing 100% of an estate to 3-year reservations on Day 1. Instead, they structure a **blended portfolio commitment**:
+A middle ground.
 
-<pre><code>Enterprise Cloud Spend Allocation:
-├── 60% Baseline Workloads   ───► 3-Year Compute Savings Plans (Max discount, covers immutable core)
-├── 25% Medium-Term Workloads ───► 1-Year Compute Savings Plans (Moderate discount, covers refactoring horizon)
-└── 15% Variable / Ephemeral ───► On-Demand &amp; EC2 Spot (Zero commitment, covers test farms &amp; bursts)</code></pre>
+- **What it is:** commit to a set amount of compute spend per hour for one year.
+- **In the model:** a solid discount for workloads you expect to change, shrink, or modernize within a year or two.
 
-## Licensing · The Microsoft Windows & SQL Server optimization curve
+### 3. 3-year Savings Plans
 
-In enterprise VMware environments, commercial software licensing — specifically **Microsoft Windows Server** and **Microsoft SQL Server** — frequently costs more than the physical compute hardware it runs on.
+The biggest saving, for the longest commitment.
 
-The assessment must model two competing licensing pathways:
+- **What it is:** the same commitment for three years, paid with no upfront, partial upfront, or all upfront.
+- **In the model:** the biggest discount. AWS quotes up to 66% off On-Demand for Compute Savings Plans, and up to 72% for EC2 Instance Savings Plans. Use it for the steady core that will still be there in three years: core databases, ERP and CRM systems, domain controllers.
 
-### Option A: Bring Your Own License (BYOL)
-- **Prerequisites:** Active Microsoft Software Assurance (SA) or eligible licenses purchased before October 1, 2019.
-- **Execution:** Deployed onto **Amazon EC2 Dedicated Hosts** or shared EC2 instances using AWS License Manager to track physical socket and core allocations.
-- **Financial Impact:** Eliminates the per-hour OS and SQL licensing charge on AWS. However, the organization remains responsible for ongoing Microsoft Enterprise Agreement (EA) renewal fees.
+### Blend the commitments
 
-### Option B: AWS License-Included (LI)
-- **Execution:** Instances are provisioned with Amazon-provided Windows Server and SQL Server licenses billed per second on standard multi-tenant EC2.
-- **Financial Impact:** Converts upfront annual software capital expenditures into utility operating expenses. Allows organizations to retire expensive Microsoft Enterprise Agreements upon contract expiration.
+Committing the whole estate to three years on day one is risky, because the estate will change as you migrate and modernize. A blended plan is safer, for example:
 
-### Modernization Pathway: Replatforming SQL Server
-The DBC evaluates replatforming commercial SQL Server databases to managed cloud alternatives:
-- **SQL Server Enterprise to Standard:** Right-sizing database vCPUs often brings workloads within SQL Server Standard limits, cutting per-core licensing fees by ~70%.
-- **Commercial to Open Source:** Mapping relational databases to **Amazon Aurora PostgreSQL** eliminates proprietary database licensing liabilities entirely.
+- **Steady core, about 60%:** 3-year Savings Plans.
+- **Likely to change, about 25%:** 1-year Savings Plans.
+- **Variable or short-lived, about 15%:** On-Demand and Spot (test environments, bursts).
 
-## Funding · Qualifying for AWS MAP partner co-funding
+The percentages are a starting point. Set them from the discovery data, and review them after each wave.
 
-The AWS Migration Acceleration Program (MAP) provides substantial financial incentives to offset migration costs:
+## Licensing · Windows Server and SQL Server
 
-1. **Assess Phase Funding:** Fixed partner cash or cloud credits (typically $15,000 to $60,000 depending on estate size) to fund the partner's discovery and business case delivery.
-2. **Mobilize Phase Funding:** Cash and credit subsidies (often covering up to 50% of the partner's professional services fees to build the landing zone and migration tooling).
-3. **Migrate Phase Funding:** AWS cloud credits calculated as a percentage of post-cutover annual recurring revenue (ARR), typically offsetting 15% to 25% of Year 1 cloud spend.
+In many VMware estates, Microsoft licensing costs more than the hardware it runs on. The cost model needs to compare two ways of licensing on AWS.
 
-## Delivery · The Directional Business Case (DBC) package
+### Option A: bring your own licence (BYOL)
 
-Passing the Assess phase milestone gate requires presenting a validated DBC package to executive leadership:
+Use the licences you already own.
 
-- **Executive Summary:** Projected 3-year TCO savings percentage (typically 25%–45% lower than current on-prem run costs).
-- **Cash Flow Comparison:** Side-by-side annual expenditure breakdown: On-Prem (hardware depreciation, colocation leases, power, cooling, hypervisor licenses) vs. AWS (compute, storage, data transfer, support).
-- **Migration Investment:** Mobilize consulting costs, temporary dual-run licensing during cutover, and AWS MAP incentive offsets.
-- **Payback Period & ROI:** Month-by-month payback timeline showing the break-even point post-datacenter exit.
+- **Windows Server:** BYOL needs **EC2 Dedicated Hosts**, and generally only licences bought before 1 October 2019 (or added as a true-up under an agreement active then) are eligible.
+- **SQL Server:** with active Software Assurance, License Mobility lets you run it on normal shared EC2 instances.
+- **AWS License Manager** tracks cores and sockets so you stay within your licence terms.
+- **The catch:** you keep paying Microsoft for the agreements and Software Assurance.
+
+### Option B: licence included
+
+Pay for the licence as part of the instance.
+
+- **What it is:** AWS supplies the Windows Server or SQL Server licence, billed by the second as part of the instance price.
+- **The benefit:** no upfront licence purchase, and fewer licences to renew when your Microsoft agreement comes up.
+
+### Bigger savings: change the database
+
+The largest licensing savings usually come from changing the database itself.
+
+- **SQL Server Enterprise to Standard:** after right-sizing, many databases fit within Standard edition limits, which costs much less per core.
+- **SQL Server to Aurora PostgreSQL:** moving to an open-source engine removes the database licence altogether, but needs real migration and testing work (Module 06).
+
+## Funding · Where MAP fits
+
+The **AWS Migration Acceleration Program (MAP)** can help pay for the migration, typically in three ways: funding toward the assessment, support for Mobilize work, and credits linked to the AWS spend that the migration creates. The amounts, rules, and eligibility change over time and differ from deal to deal, so confirm the current terms with AWS or your AWS partner before you put any figure in the business case.
+
+## Delivery · What goes into the business case
+
+- **Summary:** the projected 3-year saving, and the main reasons for it.
+- **Cost comparison, year by year:** on-premises (hardware depreciation, colocation, power and cooling, hypervisor licences) against AWS (compute, storage, data transfer, support).
+- **Migration costs:** partner and internal effort, a period of running both environments at once, and any MAP funding that offsets them.
+- **Payback:** a month-by-month view showing when the move breaks even, usually after the datacenter is closed.
+
+<div class="callout"><b>Keep it honest.</b> A business case is a model, not a result. Say which numbers come from measured usage and which are assumptions, so nobody mistakes a projection for a promise.</div>
