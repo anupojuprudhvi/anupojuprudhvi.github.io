@@ -203,12 +203,10 @@ outcomes:
                 />
 
                 <text
-                  x="630"
-                  y="-58"
-                  text-anchor="middle"
-                  font-size="10.5"
-                  fill="var(--muted)"
-                  font-family="Inter,sans-serif"
+                  class="hub-edge-label"
+                  x="622"
+                  y="-50"
+                  text-anchor="end"
                 >
                   CloudFront + WAF → Route 53
                 </text>
