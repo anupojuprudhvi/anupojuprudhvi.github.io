@@ -321,6 +321,8 @@ if (existsSync(join(LEARNING_PATHS_DIR, "tracks.json"))) {
   }
 
   for (const track of tracks) {
+    // One social image per track, shared by its overview and every module.
+    track.ogImage = socialImage("learning-paths", track.id);
     if (track.motif !== undefined && !MOTIF_NAMES.includes(track.motif))
       throw new Error(`tracks.json ${track.id}: motif "${track.motif}" must be one of: ${MOTIF_NAMES.join(", ")}`);
     const trackDir = join(LEARNING_PATHS_DIR, track.id);

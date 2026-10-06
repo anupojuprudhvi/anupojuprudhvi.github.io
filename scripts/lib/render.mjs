@@ -8,6 +8,25 @@ export const SITE = "https://anupojuprudhvi.github.io";
  *  in January doesn't change every page) yet still moves on with the site. */
 export const SITE_META = { year: "2026" };
 
+/** <title>: search results show about 60 characters, so the name is added
+ *  only when it fits; a long title stands alone rather than being cut off. */
+export function docTitle(title) {
+  const full = `${title} — Prudhvi Raj Anupoju`;
+  return full.length <= 60 ? full : title;
+}
+
+/** Meta and social descriptions: search results show about 160 characters.
+ *  A longer summary (still shown in full on the page) ends at the last
+ *  sentence that fits, or else at a word boundary with an ellipsis. */
+export function metaDescription(text = "") {
+  const t = String(text).replace(/\s+/g, " ").trim();
+  if (t.length <= 160) return t;
+  const head = t.slice(0, 160);
+  const sentence = head.match(/^.*[.!?](?=\s|$)/);
+  if (sentence && sentence[0].length >= 90) return sentence[0];
+  return `${head.slice(0, head.lastIndexOf(" ", 157)).replace(/[\s,;:—–-]+$/, "")}…`;
+}
+
 /**
  * Security policy for every page. GitHub Pages can't send custom response
  * headers, so the Content-Security-Policy is delivered as a <meta> tag: scripts
@@ -443,13 +462,13 @@ ${enables}
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     ${HEAD_SECURITY}
-    <title>${esc(d.title)} — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="${esc(d.summary || "")}" />
+    <title>${esc(docTitle(d.title))}</title>
+    <meta name="description" content="${esc(metaDescription(d.summary))}" />
     <link rel="canonical" href="${canonical}" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="${canonical}" />
     <meta property="og:title" content="${esc(d.title)}" />
-    <meta property="og:description" content="${esc(d.summary || "")}" />
+    <meta property="og:description" content="${esc(metaDescription(d.summary))}" />
     <meta property="og:image" content="${ogImage}" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -834,14 +853,14 @@ export function learningPathPage(d, bodyHtml, { up, url, prev, next, track, docs
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     ${HEAD_SECURITY}
-    <title>${esc(d.title)} — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="${esc(d.summary || "")}" />
+    <title>${esc(docTitle(d.title))}</title>
+    <meta name="description" content="${esc(metaDescription(d.summary))}" />
     <link rel="canonical" href="${canonical}" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="${canonical}" />
     <meta property="og:title" content="${esc(d.title)} — Prudhvi Raj Anupoju" />
-    <meta property="og:description" content="${esc(d.summary || "")}" />
-    <meta property="og:image" content="${SITE}/og-image.png" />
+    <meta property="og:description" content="${esc(metaDescription(d.summary))}" />
+    <meta property="og:image" content="${SITE}/${track.ogImage || "og-image.png"}" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -868,7 +887,7 @@ export function learningPathPage(d, bodyHtml, { up, url, prev, next, track, docs
           "name": "Prudhvi Raj Anupoju"
         },
         "url": "${canonical}",
-        "image": "${SITE}/og-image.png",
+        "image": "${SITE}/${track.ogImage || "og-image.png"}",
         "mainEntityOfPage": "${canonical}",${articleDates(d)}${structure}
         "keywords": ${jsonLd((d.tags || []).concat(d.stack || []).join(", "))}
       }
