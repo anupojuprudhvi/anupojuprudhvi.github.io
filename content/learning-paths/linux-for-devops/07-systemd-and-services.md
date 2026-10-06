@@ -221,7 +221,7 @@ Your job: find out why the service won't start, fix it, and get it running again
 ### Implementation notes
 
 - **Exit codes 200 and above come from systemd itself,** not your app. 203/EXEC means the program in `ExecStart` wasn't found or isn't executable, 217/USER a missing user, 226/NAMESPACE a protection setting that refers to a missing path.
-- **`ExecStart=` needs an absolute path.** systemd doesn't search `PATH` the way your shell does, so `ExecStart=python3 app.py` fails, or runs something unexpected.
+- **Use absolute paths in `ExecStart=`.** systemd doesn't use your shell's `PATH`. It looks for a bare program name only in a fixed list of system directories, so `python3` may run a different copy than the one you tested, and a relative file such as `app.py` is looked for in `/`, not where you saved it.
 - **Services don't read `/etc/security/limits.conf`.** Resource limits for a service go in its unit, such as `LimitNOFILE=`, which the next module needs.
 - **Prefer the journal over log files the app writes itself.** Anything a service prints goes to the journal with a timestamp and the unit name, ready to ship off the server.
 

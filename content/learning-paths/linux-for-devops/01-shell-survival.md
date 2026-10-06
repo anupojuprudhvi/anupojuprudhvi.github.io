@@ -60,17 +60,6 @@ multipass restore --destructive lab.fresh
 multipass delete --purge lab
 ```
 
-```flow
-title: Your lab setup
-group: Your laptop
-You | type commands in a terminal
--> multipass shell lab
-group: Multipass
-* lab | an Ubuntu 24.04 VM: break it, restore the snapshot, carry on
-end
-end
-```
-
 ## Orientation · Reading the prompt and moving around
 
 When the shell opens, you see a **prompt** like `ubuntu@lab:~$`. It tells you three things: you're the user `ubuntu`, on the machine `lab`, in the directory `~` (your home directory). The `$` means you're a normal user. A `#` means you're **root**, the all-powerful administrator, so slow down when you see one.

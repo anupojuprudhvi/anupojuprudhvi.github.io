@@ -82,17 +82,6 @@ cat /var/lib/logrotate/status                # when each file was last rotated
 
 Logs that live only on the server disappear with it: after an autoscaling group replaces an instance, after a disk failure, or when an attacker cleans up after themselves. And searching ten servers one by one doesn't scale. So production systems run an agent, such as Fluent Bit, Vector, the OpenTelemetry Collector, or the Amazon CloudWatch agent, that reads the journal and log files and sends them to a central store you can search and alert on.
 
-```flow
-title: From a log line to an alert
-Service | writes a line to stdout or a log file
--> journald or the file captures it
-Agent on the server | Fluent Bit, Vector, or the CloudWatch agent reads and forwards it
--> sent over the network, with the hostname and service attached
-Central log store | CloudWatch Logs, Loki, Elasticsearch: searchable across every server
--> a rule matches, such as more than 50 errors a minute
-* Alert | someone is notified, with a link to the matching logs
-```
-
 ## Metrics · Numbers over time
 
 Logs answer *what happened*. **Metrics** are numbers sampled over time, such as CPU use, memory available, or disk free, and they show trends: the disk that will be full by Thursday. **Prometheus node_exporter** exposes hundreds of system metrics over HTTP for a monitoring server to collect:

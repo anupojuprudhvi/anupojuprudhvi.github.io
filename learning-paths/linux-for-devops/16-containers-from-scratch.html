@@ -299,10 +299,6 @@
 </tbody>
 </table></div>
 <p>There's no separate kernel, as there would be in a VM. Every container shares the host's kernel, which is why containers start in milliseconds and why a kernel vulnerability matters to all of them.</p>
-<figure class="flow">
-<figcaption class="flow-title">What docker run sets up, using plain Linux features</figcaption>
-<div class="flow-body"><div class="flow-node"><strong>Image</strong><span>read-only layers pulled from a registry</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">overlayfs stacks the layers and adds a writable layer on top</span></div><div class="flow-node"><strong>Root filesystem</strong><span>what the container sees as /</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">namespaces give it its own PIDs, network, mounts, and hostname</span></div><div class="flow-node"><strong>Isolated view</strong><span>it sees only its own processes and interfaces</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">a cgroup applies the --memory and --cpus limits</span></div><div class="flow-node"><strong>Limits</strong><span>the kernel enforces them; going over memory means an OOM kill</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">capabilities are dropped and a seccomp filter is applied</span></div><div class="flow-node is-key"><strong>Container process</strong><span>an ordinary process on the host, with a restricted view</span></div></div>
-</figure>
 </div>
 </section>
 <section>
@@ -526,7 +522,6 @@ sudo docker run --rm alpine wget -qO- -T 5 http://example.com</code></pre><figca
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
-    <script src="../../assets/flow-player.js" defer></script>
     <script src="../../assets/quiz.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>

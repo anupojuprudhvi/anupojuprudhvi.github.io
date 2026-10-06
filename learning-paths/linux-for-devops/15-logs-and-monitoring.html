@@ -340,10 +340,6 @@ cat /var/lib/logrotate/status                # when each file was last rotated</
 <div class="section-eyebrow">Ship</div>
 <h2 id="get-logs-off-the-server">Get logs off the server</h2>
 <p>Logs that live only on the server disappear with it: after an autoscaling group replaces an instance, after a disk failure, or when an attacker cleans up after themselves. And searching ten servers one by one doesn't scale. So production systems run an agent, such as Fluent Bit, Vector, the OpenTelemetry Collector, or the Amazon CloudWatch agent, that reads the journal and log files and sends them to a central store you can search and alert on.</p>
-<figure class="flow">
-<figcaption class="flow-title">From a log line to an alert</figcaption>
-<div class="flow-body"><div class="flow-node"><strong>Service</strong><span>writes a line to stdout or a log file</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">journald or the file captures it</span></div><div class="flow-node"><strong>Agent on the server</strong><span>Fluent Bit, Vector, or the CloudWatch agent reads and forwards it</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">sent over the network, with the hostname and service attached</span></div><div class="flow-node"><strong>Central log store</strong><span>CloudWatch Logs, Loki, Elasticsearch: searchable across every server</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">a rule matches, such as more than 50 errors a minute</span></div><div class="flow-node is-key"><strong>Alert</strong><span>someone is notified, with a link to the matching logs</span></div></div>
-</figure>
 </div>
 </section>
 <section>
@@ -506,7 +502,6 @@ ls -lh /var/log/myapp            # still one 200 MB file</code></pre><figcaption
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
-    <script src="../../assets/flow-player.js" defer></script>
     <script src="../../assets/quiz.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>

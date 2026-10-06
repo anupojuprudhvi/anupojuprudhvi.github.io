@@ -33,19 +33,6 @@ On the host, a container's main process is just another process: you can see it 
 
 There's no separate kernel, as there would be in a VM. Every container shares the host's kernel, which is why containers start in milliseconds and why a kernel vulnerability matters to all of them.
 
-```flow
-title: What docker run sets up, using plain Linux features
-Image | read-only layers pulled from a registry
--> overlayfs stacks the layers and adds a writable layer on top
-Root filesystem | what the container sees as /
--> namespaces give it its own PIDs, network, mounts, and hostname
-Isolated view | it sees only its own processes and interfaces
--> a cgroup applies the --memory and --cpus limits
-Limits | the kernel enforces them; going over memory means an OOM kill
--> capabilities are dropped and a seccomp filter is applied
-* Container process | an ordinary process on the host, with a restricted view
-```
-
 ## Namespaces · Build the isolation by hand
 
 First, a tiny root filesystem. `busybox` is a single static program that acts as `sh`, `ls`, `ps`, and hundreds of other commands:
