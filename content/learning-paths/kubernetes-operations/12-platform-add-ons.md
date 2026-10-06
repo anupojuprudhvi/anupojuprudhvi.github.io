@@ -27,15 +27,6 @@ Terraform can create an EKS cluster and its node groups, but a fresh cluster can
 
 It helps to treat these as their own layer: installed right after the cluster exists, the same way in every environment, before any application team deploys anything.
 
-```flow
-title: The three layers of an EKS platform, installed in this order
-Layer 1 · Cluster | VPC, EKS control plane, node groups, created by Terraform
--> an empty cluster: it runs pods, but can't reach AWS services for you
-* Layer 2 · Platform add-ons | load balancing, DNS, metrics, autoscaling, logs, storage; each with its own IAM role
--> the same set, the same way, in every environment
-Layer 3 · Applications | team workloads deployed through CI/CD or Argo CD
-```
-
 ### The add-on set in the original deployment
 
 | Add-on | What it does | Covered in |

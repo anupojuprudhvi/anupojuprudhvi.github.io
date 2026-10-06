@@ -17,19 +17,6 @@ Every module is built to be worked through, not just read. Each one opens with w
 
 <div class="callout"><b>Where to start.</b><ul><li><b>New to Kubernetes, or to containers?</b> Start at <a href="01-why-kubernetes.html">Module 01</a> and read in order. Parts 1 and 2 run on a free cluster on your laptop.</li><li><b>Know Kubernetes, new to Amazon EKS?</b> Skim Part 2, then start at <a href="10-kubernetes-on-eks.html">Module 10</a>.</li><li><b>Already run EKS?</b> Go straight to Part 4, <a href="15-container-delivery-to-eks.html">Operating in production</a>, or to whichever challenge you're facing.</li></ul></div>
 
-```flow
-title: The route through this track
-Part 1 · Basics | why Kubernetes exists, a free local cluster, YAML and kubectl
--> you can run an app on a cluster and read its manifests
-Part 2 · Core concepts | how a cluster works, workloads, networking, storage, access, packaging
--> you can read and reason about any cluster
-Part 3 · Kubernetes on Amazon EKS | what AWS runs, separate environments, add-ons, workload identity, ingress
--> you have an EKS platform ready for applications
-Part 4 · Operating in production | delivery, GitOps, scaling, monitoring, incidents, upgrades
--> you can deploy to it safely and keep it healthy
-* Production-ready EKS | every step drawn from a real multi-environment deployment
-```
-
 Parts 1 and 2 need nothing but a laptop. Parts 3 and 4 draw on running Amazon EKS across four separate environments (Development, QA, Staging, Production) for a single platform, with every name and account removed. Where a module links to a case study, that's the real engagement the pattern came from.
 
 ## Part 1 · Basics

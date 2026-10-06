@@ -344,10 +344,6 @@ spec:
           image: &quot;{{ .Values.image.repository }}:{{ .Values.image.tag }}&quot;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml"># my-values.yaml: your settings, overriding the chart's defaults
 replicaCount: 2</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<figure class="flow">
-<figcaption class="flow-title">From a chart to running objects</figcaption>
-<div class="flow-body"><div class="flow-node"><strong>Chart podinfo</strong><span>templates, plus default values.yaml</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">combined with your values file</span></div><div class="flow-node is-key"><strong>helm install / helm upgrade</strong><span>renders the templates into plain YAML</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">sends it to the API server, and records the release</span></div><div class="flow-node"><strong>Release my-podinfo</strong><span>revision 1, 2, 3... each one can be rolled back to</span></div></div>
-</figure>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Add a chart repository and look at what it offers
 helm repo add podinfo https://stefanprodan.github.io/podinfo
 helm repo update
@@ -505,7 +501,6 @@ kubectl delete -k hello/overlays/prod</code></pre><figcaption class="scroll-hint
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
-    <script src="../../assets/flow-player.js" defer></script>
     <script src="../../assets/quiz.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>

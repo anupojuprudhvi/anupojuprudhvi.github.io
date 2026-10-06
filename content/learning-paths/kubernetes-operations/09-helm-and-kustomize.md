@@ -113,15 +113,6 @@ spec:
 replicaCount: 2
 ```
 
-```flow
-title: From a chart to running objects
-Chart podinfo | templates, plus default values.yaml
--> combined with your values file
-* helm install / helm upgrade | renders the templates into plain YAML
--> sends it to the API server, and records the release
-Release my-podinfo | revision 1, 2, 3... each one can be rolled back to
-```
-
 ```text
 # Add a chart repository and look at what it offers
 helm repo add podinfo https://stefanprodan.github.io/podinfo
