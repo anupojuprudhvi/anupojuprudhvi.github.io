@@ -7,12 +7,12 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="Building a three-tier verification pipeline for Terraform — pre-merge formatting, deep linting, Checkov security scanning, plan reviews, and drift detection." />
+    <meta name="description" content="A three-tier pipeline for Terraform: fast format and lint checks, Checkov security scanning, a plan posted on every pull request, and a nightly check for drift." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/terraform/06-ci-cd-security-linting-testing.html" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://anupojuprudhvi.github.io/learning-paths/terraform/06-ci-cd-security-linting-testing.html" />
     <meta property="og:title" content="CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation — Prudhvi Raj Anupoju" />
-    <meta property="og:description" content="Building a three-tier verification pipeline for Terraform — pre-merge formatting, deep linting, Checkov security scanning, plan reviews, and drift detection." />
+    <meta property="og:description" content="A three-tier pipeline for Terraform: fast format and lint checks, Checkov security scanning, a plan posted on every pull request, and a nightly check for drift." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -25,7 +25,7 @@
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "CI/CD Guardrails — TFLint, Checkov & Plan Automation",
-        "description": "Building a three-tier verification pipeline for Terraform — pre-merge formatting, deep linting, Checkov security scanning, plan reviews, and drift detection.",
+        "description": "A three-tier pipeline for Terraform: fast format and lint checks, Checkov security scanning, a plan posted on every pull request, and a nightly check for drift.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -151,7 +151,7 @@
             <div>
               <span class="lp-badge">DevOps &amp; Governance</span>
               <h1>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</h1>
-              <p class="sub">Building a three-tier verification pipeline for Terraform — pre-merge formatting, deep linting, Checkov security scanning, plan reviews, and drift detection.</p>
+              <p class="sub">A three-tier pipeline for Terraform: fast format and lint checks, Checkov security scanning, a plan posted on every pull request, and a nightly check for drift.</p>
             </div>
             <svg class="motif motif-pipeline" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <text class="m-start m-muted" x="4" y="40">git push → main</text>
@@ -226,39 +226,22 @@
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
 <h2 id="the-three-tier-verification-pipeline">The three-tier verification pipeline</h2>
-<p>Never allow engineers to run <code>terraform apply</code> directly from their local laptops in production. All changes must pass through an automated, audited, and locked-down CI/CD pipeline.</p>
-<p>A production pipeline structures checks into three distinct tiers:</p>
-<pre tabindex="0"><code>Production CI/CD Gateways:
-┌────────────────────────────────────────────────────────┐
-│  Tier 1: Fast Feedback (< 30s)                         │
-│  terraform fmt · terraform validate · tflint           │
-└──────────────────────────┬─────────────────────────────┘
-                           ▼
-┌────────────────────────────────────────────────────────┐
-│  Tier 2: Security & Compliance Scanning (< 2 min)      │
-│  Checkov / Trivy static analysis against CIS benchmarks │
-└──────────────────────────┬─────────────────────────────┘
-                           ▼
-┌────────────────────────────────────────────────────────┐
-│  Tier 3: Speculative Plan & Review                     │
-│  terraform plan -out=tfplan · PR Plan Summary Comment  │
-└──────────────────────────┬─────────────────────────────┘
-                           ▼
-┌────────────────────────────────────────────────────────┐
-│  Apply Gate: Merge to main branch + OIDC execution     │
-│  terraform apply tfplan · State unlock verification    │
-└────────────────────────────────────────────────────────┘</code></pre>
+<p>Production changes shouldn't be applied from anyone's laptop. Every change goes through a CI/CD pipeline that checks it, records it, and applies it with a controlled role.</p>
+<p>The checks run in three tiers, fastest first:</p>
+<figure class="flow">
+<figcaption class="flow-title">The pipeline, fastest checks first</figcaption>
+<div class="flow-body"><div class="flow-node"><strong>Tier 1 · Fast feedback</strong><span>terraform fmt, terraform validate, tflint (seconds)</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">pass</span></div><div class="flow-node"><strong>Tier 2 · Security scan</strong><span>Checkov or Trivy against security policies (a minute or two)</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">pass</span></div><div class="flow-node"><strong>Tier 3 · Plan and review</strong><span>terraform plan -out=tfplan, posted on the pull request</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">approved and merged</span></div><div class="flow-node is-key"><strong>Apply</strong><span>the saved plan, applied by the pipeline through an OIDC role</span></div></div>
+</figure>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Tier 1</div>
 <h2 id="code-quality-linting-with-tflint">Code quality &amp; linting with TFLint</h2>
-<p>While <code>terraform validate</code> checks basic syntax, <b>TFLint</b> analyzes provider-specific rules, invalid instance types, unreferenced variables, and naming conventions.</p>
+<p><code>terraform validate</code> checks that the code is valid Terraform. <b>TFLint</b> goes further: provider-specific mistakes such as invalid instance types, unused variables, and naming conventions.</p>
 <pre tabindex="0"><code># .tflint.hcl
 config {
-  module = true
-  force  = false
+  call_module_type = "local" # also lint the local modules this code calls
 }
 
 plugin "aws" {
@@ -284,20 +267,20 @@ tflint --recursive</code></pre>
 <div class="wrap">
 <div class="section-eyebrow">Tier 2</div>
 <h2 id="security-scanning-with-checkov">Security scanning with Checkov</h2>
-<p><b>Checkov</b> is an industry-standard static code analysis tool for infrastructure as code. It scans your code against hundreds of security policies before cloud resources are provisioned.</p>
+<p><b>Checkov</b> scans infrastructure code against hundreds of security policies before anything is deployed.</p>
 <details class="implementation-notes">
-<summary>Example Checkov rules enforced in CI:</summary>
+<summary>Example Checkov checks</summary>
 <ul>
 <li><code>CKV_AWS_18</code>: Ensure S3 bucket has access logging enabled.</li>
 <li><code>CKV_AWS_19</code>: Ensure all data stored in S3 is encrypted.</li>
-<li><code>CKV_AWS_20</code>: Ensure S3 bucket has public access blocks enabled.</li>
+<li><code>CKV_AWS_20</code>: Ensure the S3 bucket ACL doesn't allow public read access.</li>
 <li><code>CKV_AWS_24</code>: Ensure security groups do not allow ingress from 0.0.0.0/0 to port 22 (SSH).</li>
 <li><code>CKV_AWS_130</code>: Ensure VPC subnets do not assign public IPs by default.</li>
 </ul>
 </details>
 <p>Run in CI:</p>
 <pre tabindex="0"><code>checkov -d . --framework terraform --compact --quiet</code></pre>
-<p>If a developer opens a PR with an unencrypted S3 bucket or open SSH port, Checkov immediately fails the CI check and blocks the PR from merging.</p>
+<p>If a pull request adds an unencrypted bucket or opens SSH to the world, the Checkov check fails. Make it a required check in branch protection, and the pull request can't be merged until it's fixed.</p>
 <h3>One shared config for the whole tree</h3>
 <p>Keep a single <code>.checkov.yaml</code> at the <code>terraform/</code> root, so base modules, compositions, and every environment are scanned the same way:</p>
 <pre tabindex="0"><code># terraform/.checkov.yaml
@@ -338,11 +321,12 @@ repos:
 <div class="wrap">
 <div class="section-eyebrow">Tier 3</div>
 <h2 id="automated-plan-posting-in-pull-requests">Automated plan posting in Pull Requests</h2>
-<p>When a PR is opened, the pipeline runs <code>terraform plan</code> and posts a formatted summary as a comment on the GitHub PR:</p>
+<p>When a pull request is opened, the pipeline runs <code>terraform plan</code> and posts the result as a comment:</p>
 <pre tabindex="0"><code># Example GitHub Actions Workflow snippet
 - name: Terraform Plan
   id: plan
   run: |
+    set -o pipefail # without this, a failed plan would still pass because of the pipe
     terraform plan -no-color -out=tfplan 2>&1 | tee plan_output.txt
 
 - name: Post Plan to Pull Request
@@ -362,21 +346,21 @@ repos:
         repo: context.repo.repo,
         body: comment
       });</code></pre>
-<p>Team members review the exact diff before hitting <b>Merge</b>. Once merged to <code>main</code>, a separate deployment job applies the planned artifact.</p>
+<p>Reviewers read the exact changes before merging. After the merge, a separate deploy job applies that saved plan. If the state has changed since the plan was made, Terraform refuses to apply it, and a fresh plan is needed.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Operational Control</div>
 <h2 id="scheduled-drift-detection">Scheduled drift detection</h2>
-<p>Even in strictly governed environments, emergency manual changes or out-of-band updates in the AWS Console happen.</p>
-<p>Set up a scheduled cron job (e.g. every weekday at 02:00 UTC) that runs a read-only plan:</p>
+<p>Even with a strict pipeline, someone will eventually change something by hand in the AWS console, usually in an emergency.</p>
+<p>Run a scheduled plan (for example every weekday at 02:00 UTC) that only reports, never applies:</p>
 <pre tabindex="0"><code># Run in scheduled CI
 terraform plan -detailed-exitcode</code></pre>
 <ul>
-<li><b>Exit code 0:</b> Succeeded, 0 changes (Infrastructure is 100% in sync).</li>
-<li><b>Exit code 2:</b> Succeeded, <b>drift detected</b>! Route an alert to your SRE Slack channel or PagerDuty to reconcile the unmanaged change immediately.</li>
-<li><b>Exit code 1:</b> Plan failed with error.</li>
+<li><b>Exit code 0:</b> no changes. Real infrastructure matches the code.</li>
+<li><b>Exit code 2:</b> <b>drift found.</b> Send an alert to the team's channel or on-call tool, and decide whether to bring the change into code or undo it.</li>
+<li><b>Exit code 1:</b> the plan itself failed.</li>
 </ul>
 </div>
 </section>
@@ -414,6 +398,7 @@ terraform plan -detailed-exitcode</code></pre>
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
+    <script src="../../assets/flow-player.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>
 </html>

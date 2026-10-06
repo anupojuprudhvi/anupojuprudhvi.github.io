@@ -716,7 +716,7 @@
       <link>https://anupojuprudhvi.github.io/learning-paths/terraform/01-enterprise-module-design.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/terraform/01-enterprise-module-design.html</guid>
       <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
-      <description>The enterprise pattern for structuring Terraform codebases — separating reusable child modules from root deployment environments, with strict version pinning.</description>
+      <description>How to lay out a Terraform codebase for a team: reusable child modules kept apart from the root deployments that use them, state split into layers, and versions pinned so plans don't change by surprise.</description>
       <category>Terraform for Enterprise Production</category>
     </item>
     <item>
@@ -724,7 +724,7 @@
       <link>https://anupojuprudhvi.github.io/learning-paths/terraform/02-state-isolation-and-locking.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/terraform/02-state-isolation-and-locking.html</guid>
       <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
-      <description>Architecting remote state backends with S3 and DynamoDB, reducing blast radius via state layering, and replacing remote_state with parameter contracts.</description>
+      <description>A secure S3 state backend with native locking, state split into layers so one mistake can't reach everything, and SSM parameters instead of remote_state for sharing values between layers.</description>
       <category>Terraform for Enterprise Production</category>
     </item>
     <item>
@@ -732,7 +732,7 @@
       <link>https://anupojuprudhvi.github.io/learning-paths/terraform/03-variables-validation-and-types.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/terraform/03-variables-validation-and-types.html</guid>
       <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
-      <description>Writing Terraform that checks its own inputs, using rich object schemas, custom validation blocks, lifecycle preconditions, and deterministic for_each key mapping.</description>
+      <description>Modules that check their own inputs: typed variables, validation blocks, preconditions and postconditions, and for_each with stable keys so removing one item doesn't replace the others.</description>
       <category>Terraform for Enterprise Production</category>
     </item>
     <item>
@@ -740,7 +740,7 @@
       <link>https://anupojuprudhvi.github.io/learning-paths/terraform/04-secrets-and-sensitive-values.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/terraform/04-secrets-and-sensitive-values.html</guid>
       <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
-      <description>The hard realities of secret management in Terraform — state file plaintext vulnerabilities, dynamic credentials, and replacing static API keys with IAM roles.</description>
+      <description>Why sensitive = true doesn't protect secrets in state, how to keep database passwords out of Terraform entirely, passing secret ARNs instead of values, and replacing static access keys with OIDC roles.</description>
       <category>Terraform for Enterprise Production</category>
     </item>
     <item>
@@ -748,7 +748,7 @@
       <link>https://anupojuprudhvi.github.io/learning-paths/terraform/05-refactoring-with-moved-blocks.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/terraform/05-refactoring-with-moved-blocks.html</guid>
       <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
-      <description>Safely evolving production infrastructure without outages, using moved, import, and removed blocks to refactor Terraform state with zero downtime.</description>
+      <description>Rename, restructure, adopt, and let go of resources without outages, using moved, import, and removed blocks that are reviewed in a pull request like any other code.</description>
       <category>Terraform for Enterprise Production</category>
     </item>
     <item>
@@ -756,7 +756,7 @@
       <link>https://anupojuprudhvi.github.io/learning-paths/terraform/06-ci-cd-security-linting-testing.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/terraform/06-ci-cd-security-linting-testing.html</guid>
       <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
-      <description>Building a three-tier verification pipeline for Terraform — pre-merge formatting, deep linting, Checkov security scanning, plan reviews, and drift detection.</description>
+      <description>A three-tier pipeline for Terraform: fast format and lint checks, Checkov security scanning, a plan posted on every pull request, and a nightly check for drift.</description>
       <category>Terraform for Enterprise Production</category>
     </item>
     <item>

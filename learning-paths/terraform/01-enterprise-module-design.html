@@ -7,12 +7,12 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Enterprise Repository &amp; Module Layout — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="The enterprise pattern for structuring Terraform codebases — separating reusable child modules from root deployment environments, with strict version pinning." />
+    <meta name="description" content="How to lay out a Terraform codebase for a team: reusable child modules kept apart from the root deployments that use them, state split into layers, and versions pinned so plans don't change by surprise." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/terraform/01-enterprise-module-design.html" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://anupojuprudhvi.github.io/learning-paths/terraform/01-enterprise-module-design.html" />
     <meta property="og:title" content="Enterprise Repository &amp; Module Layout — Prudhvi Raj Anupoju" />
-    <meta property="og:description" content="The enterprise pattern for structuring Terraform codebases — separating reusable child modules from root deployment environments, with strict version pinning." />
+    <meta property="og:description" content="How to lay out a Terraform codebase for a team: reusable child modules kept apart from the root deployments that use them, state split into layers, and versions pinned so plans don't change by surprise." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -25,7 +25,7 @@
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "Enterprise Repository & Module Layout",
-        "description": "The enterprise pattern for structuring Terraform codebases — separating reusable child modules from root deployment environments, with strict version pinning.",
+        "description": "How to lay out a Terraform codebase for a team: reusable child modules kept apart from the root deployments that use them, state split into layers, and versions pinned so plans don't change by surprise.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -151,7 +151,7 @@
             <div>
               <span class="lp-badge">Core Architecture</span>
               <h1>Enterprise Repository &amp; Module Layout</h1>
-              <p class="sub">The enterprise pattern for structuring Terraform codebases — separating reusable child modules from root deployment environments, with strict version pinning.</p>
+              <p class="sub">How to lay out a Terraform codebase for a team: reusable child modules kept apart from the root deployments that use them, state split into layers, and versions pinned so plans don't change by surprise.</p>
             </div>
             <svg class="motif motif-pipeline" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <text class="m-start m-muted" x="4" y="40">git push → main</text>
@@ -181,7 +181,7 @@
               <p class="lp-toc-part">Part 1 · Production techniques</p>
               <ol class="lp-toc-list">
                 <li class="is-current"><a href="01-enterprise-module-design.html" aria-current="page"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a>
-                <ol class="lp-toc-sections"><li><a href="#the-two-types-of-terraform-modules">The two types of Terraform modules</a></li><li><a href="#the-canonical-directory-layout">The canonical directory layout</a></li><li><a href="#strict-root-pinning-vs-optimistic-module-constraints">Strict root pinning vs optimistic module constraints</a></li><li><a href="#anti-patterns-to-avoid">Anti-patterns to avoid</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#the-two-types-of-terraform-modules">The two types of Terraform modules</a></li><li><a href="#the-canonical-directory-layout">The canonical directory layout</a></li><li><a href="#exact-pins-in-roots-ranges-in-modules">Exact pins in roots, ranges in modules</a></li><li><a href="#anti-patterns-to-avoid">Anti-patterns to avoid</a></li></ol></li>
                 <li><a href="02-state-isolation-and-locking.html"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a></li>
                 <li><a href="03-variables-validation-and-types.html"><span class="lp-toc-num">03</span><span>Modern HCL — Types, Validations &amp; Preconditions</span></a></li>
                 <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
@@ -226,11 +226,11 @@
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
 <h2 id="the-two-types-of-terraform-modules">The two types of Terraform modules</h2>
-<p>In enterprise environments, confusing a <b>reusable child module</b> with a <b>root deployment module</b> is the primary reason codebases become unmaintainable spaghetti.</p>
-<p>A clean architecture enforces strict boundaries between these two concerns:</p>
+<p>Mixing up a <b>reusable child module</b> and a <b>root deployment module</b> is one of the most common reasons a Terraform codebase becomes hard to maintain.</p>
+<p>Keep the two apart:</p>
 <ul>
-<li><b>Child Modules (The Building Blocks):</b> Pure, parameterized blueprints. They do not declare backends, do not hardcode account IDs, and do not reference specific environments. They are published and versioned like software libraries.</li>
-<li><b>Root Modules (The Deployments):</b> Concrete instantiations. They define the S3/DynamoDB remote state backend, provider configurations with credentials/regions, instantiate child modules, and pass environment-specific <code>.tfvars</code>.</li>
+<li><b>Child modules (the building blocks):</b> reusable blueprints driven by inputs. They don't declare a backend, hardcode account IDs, or mention a specific environment. They're versioned and released like software libraries.</li>
+<li><b>Root modules (the deployments):</b> the real environments. They set the S3 state backend and the provider (account, region, credentials), call the child modules, and pass in environment-specific values from <code>.tfvars</code>.</li>
 </ul>
 <div class="callout"><b>Going further.</b> As a codebase grows, child modules split again: <b>base modules</b> that build one component, and <b>composition modules</b> that join them with IAM and networking. Part 2 of this track, starting at <a href="07-base-composition-and-environment-modules.html">Module 07</a>, takes that standard from design to production.</div>
 </div>
@@ -239,7 +239,7 @@
 <div class="wrap">
 <div class="section-eyebrow">Structure</div>
 <h2 id="the-canonical-directory-layout">The canonical directory layout</h2>
-<p>For enterprise AWS delivery, organize your Terraform repositories into clear layers of responsibility:</p>
+<p>Organize the repository into clear layers of responsibility:</p>
 <pre tabindex="0"><code>terraform-root/
 ├── modules/                         # Reusable child modules (pure blueprints, versioned)
 │   ├── vpc/
@@ -253,11 +253,11 @@
 │
 └── environments/                    # Root execution environments (where state lives)
     ├── prod/
-    │   ├── 00-bootstrap/            # S3 state bucket, DynamoDB lock table, KMS CMKs
+    │   ├── 00-bootstrap/            # S3 state bucket and KMS keys
     │   │   ├── backend.tf           # (Local backend during first run, then migrated)
     │   │   └── main.tf
     │   ├── 01-networking/           # Foundation: VPC, Transit Gateway, Route 53
-    │   │   ├── backend.tf           # S3 + DynamoDB state lock configuration
+    │   │   ├── backend.tf           # S3 backend with native locking (use_lockfile)
     │   │   ├── main.tf              # Calls modules/vpc with prod parameters
     │   │   ├── providers.tf         # Provider with exact version pin
     │   │   ├── terraform.tfvars     # Prod CIDRs, tags, AZs
@@ -294,7 +294,7 @@
   <tbody>
     <tr>
       <td class="gnum">00-bootstrap</td>
-      <td>S3 state bucket, DynamoDB lock table, KMS CMKs</td>
+      <td>S3 state bucket and KMS keys</td>
       <td><strong>Once</strong> (Creation only)</td>
       <td>Highest — Platform Admin / Security Lead</td>
     </tr>
@@ -326,11 +326,11 @@
 </table>
 </div>
 <details class="implementation-notes">
-<summary>Three architectural guarantees of environment layering:</summary>
+<summary>What layering gives you</summary>
 <ul>
-<li><b>State File &amp; Lock Isolation:</b> Running <code>terraform apply</code> in <code>04-compute</code> locks <em>only</em> the compute state file. Database and networking states remain 100% unlocked and completely immune to accidental modifications.</li>
-<li><b>Role-Based Access Control (RBAC):</b> In your CI/CD pipeline (e.g. GitHub Actions with AWS OIDC), application teams only assume an IAM role scoped to execute in <code>04-compute</code>. They physically cannot destroy <code>01-networking</code> or <code>03-data</code>.</li>
-<li><b>Fast Plans (&lt; 30 seconds):</b> Because each layer contains 20-40 resources instead of 500+, <code>terraform plan</code> executes in seconds instead of timing out.</li>
+<li><b>Separate state and locks:</b> running <code>terraform apply</code> in <code>04-compute</code> locks only the compute state. The database and networking states aren't touched, so a compute change can't accidentally modify them.</li>
+<li><b>Separate permissions:</b> in CI/CD (for example GitHub Actions with AWS OIDC), application teams assume an IAM role scoped to <code>04-compute</code> only. That role can't change <code>01-networking</code> or <code>03-data</code>.</li>
+<li><b>Faster plans:</b> each layer holds tens of resources instead of hundreds, so <code>terraform plan</code> finishes much faster.</li>
 </ul>
 </details>
 <details class="implementation-notes">
@@ -346,10 +346,10 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Versioning</div>
-<h2 id="strict-root-pinning-vs-optimistic-module-constraints">Strict root pinning vs optimistic module constraints</h2>
-<p>A subtle but critical rule in enterprise Terraform is how version constraints are declared:</p>
-<h3>1. In Reusable Child Modules: Use pessimistic operators (<code>~&gt;</code>)</h3>
-<p>Child modules should allow safe backward-compatible minor updates:</p>
+<h2 id="exact-pins-in-roots-ranges-in-modules">Exact pins in roots, ranges in modules</h2>
+<p>Where you declare a version matters as much as which version you pick:</p>
+<h3>1. In child modules: allow a range with <code>~&gt;</code></h3>
+<p>The pessimistic constraint operator <code>~&gt;</code> lets a module accept compatible minor updates, so it works in more places:</p>
 <pre tabindex="0"><code># modules/vpc/versions.tf
 terraform {
   required_version = ">= 1.5.0, < 2.0.0"
@@ -361,11 +361,11 @@ terraform {
     }
   }
 }</code></pre>
-<h3>2. In Production Root Deployments: Strictly pin exact versions (<code>=</code>)</h3>
-<p>Production plans must be <b>100% deterministic</b>. If a provider releases a breaking change at 2 AM, your CI pipeline must not break unexpectedly:</p>
+<h3>2. In production roots: pin exact versions with <code>=</code></h3>
+<p>A production plan should give the same result every time. If a provider release changes behaviour overnight, your pipeline shouldn't pick it up by surprise:</p>
 <pre tabindex="0"><code># environments/prod/01-networking/versions.tf
 terraform {
-  required_version = "= 1.8.5"
+  required_version = "= 1.11.4" # 1.11+: native S3 state locking is generally available
 
   required_providers {
     aws = {
@@ -383,20 +383,20 @@ terraform {
 <h3>Anti-Pattern 1: The &quot;Monolithic State Monster&quot;</h3>
 <p>Putting VPC networking, Aurora clusters, IAM roles, and EKS deployments in a single <code>main.tf</code> file.</p>
 <ul>
-<li><b>Why it fails:</b> A single typo in an IAM policy risks destroying or re-planning the database. <code>terraform plan</code> takes 15 minutes to run across hundreds of resources.</li>
-<li><b>Production Solution:</b> Split state boundaries into isolated layers (<code>01-networking</code>, <code>02-security</code>, <code>03-data</code>, <code>04-apps</code>).</li>
+<li><b>Why it fails:</b> one typo in an IAM policy can put the database in the same plan, and <code>terraform plan</code> gets slow across hundreds of resources.</li>
+<li><b>Fix:</b> split state into separate layers (<code>01-networking</code>, <code>02-security</code>, <code>03-data</code>, <code>04-compute</code>).</li>
 </ul>
 <h3>Anti-Pattern 2: Hardcoding Environment Logic Inside Modules</h3>
 <p>Writing <code>if var.env == &quot;prod&quot;</code> inside a reusable module.</p>
 <ul>
-<li><b>Why it fails:</b> Child modules should be agnostic to environments.</li>
-<li><b>Production Solution:</b> Pass feature flags or resource specifications as variables (e.g., <code>retention_in_days = var.log_retention_days</code>).</li>
+<li><b>Why it fails:</b> the module now only works for the environments it knows about, and every new environment means editing the module.</li>
+<li><b>Fix:</b> pass the setting in as a variable instead (for example <code>retention_in_days = var.log_retention_days</code>).</li>
 </ul>
 <h3>Anti-Pattern 3: Unpinned Modules in Git</h3>
 <p>Referencing modules using <code>source = &quot;git::https://github.com/.../my-module.git&quot;</code> without a tag or commit ref.</p>
 <ul>
 <li><b>Why it fails:</b> Any push to <code>main</code> in the module repo immediately changes future plans in production.</li>
-<li><b>Production Solution:</b> Always pin releases with <code>?ref=v1.4.2</code> or a Git commit SHA.</li>
+<li><b>Fix:</b> always pin to a release tag such as <code>?ref=v1.4.2</code>, or a commit SHA.</li>
 </ul>
 </div>
 </section>

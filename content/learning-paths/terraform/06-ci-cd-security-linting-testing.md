@@ -5,7 +5,7 @@ updated: 2026-10-01
 track: terraform
 order: 6
 module: 6
-summary: Building a three-tier verification pipeline for Terraform — pre-merge formatting, deep linting, Checkov security scanning, plan reviews, and drift detection.
+summary: A three-tier pipeline for Terraform: fast format and lint checks, Checkov security scanning, a plan posted on every pull request, and a nightly check for drift.
 level: DevOps & Governance
 readingTime: 9 min read
 stack: [Terraform, GitHub Actions, Checkov, TFLint, AWS]
@@ -14,39 +14,28 @@ tags: [ci-cd, checkov, tflint, drift-detection, pipeline, automation]
 
 ## Principle · The three-tier verification pipeline
 
-Never allow engineers to run `terraform apply` directly from their local laptops in production. All changes must pass through an automated, audited, and locked-down CI/CD pipeline.
+Production changes shouldn't be applied from anyone's laptop. Every change goes through a CI/CD pipeline that checks it, records it, and applies it with a controlled role.
 
-A production pipeline structures checks into three distinct tiers:
+The checks run in three tiers, fastest first:
 
-<pre><code>Production CI/CD Gateways:
-┌────────────────────────────────────────────────────────┐
-│  Tier 1: Fast Feedback (< 30s)                         │
-│  terraform fmt · terraform validate · tflint           │
-└──────────────────────────┬─────────────────────────────┘
-                           ▼
-┌────────────────────────────────────────────────────────┐
-│  Tier 2: Security & Compliance Scanning (< 2 min)      │
-│  Checkov / Trivy static analysis against CIS benchmarks │
-└──────────────────────────┬─────────────────────────────┘
-                           ▼
-┌────────────────────────────────────────────────────────┐
-│  Tier 3: Speculative Plan & Review                     │
-│  terraform plan -out=tfplan · PR Plan Summary Comment  │
-└──────────────────────────┬─────────────────────────────┘
-                           ▼
-┌────────────────────────────────────────────────────────┐
-│  Apply Gate: Merge to main branch + OIDC execution     │
-│  terraform apply tfplan · State unlock verification    │
-└────────────────────────────────────────────────────────┘</code></pre>
+```flow
+title: The pipeline, fastest checks first
+Tier 1 · Fast feedback | terraform fmt, terraform validate, tflint (seconds)
+-> pass
+Tier 2 · Security scan | Checkov or Trivy against security policies (a minute or two)
+-> pass
+Tier 3 · Plan and review | terraform plan -out=tfplan, posted on the pull request
+-> approved and merged
+* Apply | the saved plan, applied by the pipeline through an OIDC role
+```
 
 ## Tier 1 · Code quality & linting with TFLint
 
-While `terraform validate` checks basic syntax, **TFLint** analyzes provider-specific rules, invalid instance types, unreferenced variables, and naming conventions.
+`terraform validate` checks that the code is valid Terraform. **TFLint** goes further: provider-specific mistakes such as invalid instance types, unused variables, and naming conventions.
 
 <pre><code># .tflint.hcl
 config {
-  module = true
-  force  = false
+  call_module_type = "local" # also lint the local modules this code calls
 }
 
 plugin "aws" {
@@ -70,19 +59,19 @@ tflint --recursive</code></pre>
 
 ## Tier 2 · Security scanning with Checkov
 
-**Checkov** is an industry-standard static code analysis tool for infrastructure as code. It scans your code against hundreds of security policies before cloud resources are provisioned.
+**Checkov** scans infrastructure code against hundreds of security policies before anything is deployed.
 
-### Example Checkov rules enforced in CI:
+### Example Checkov checks
 - `CKV_AWS_18`: Ensure S3 bucket has access logging enabled.
 - `CKV_AWS_19`: Ensure all data stored in S3 is encrypted.
-- `CKV_AWS_20`: Ensure S3 bucket has public access blocks enabled.
+- `CKV_AWS_20`: Ensure the S3 bucket ACL doesn't allow public read access.
 - `CKV_AWS_24`: Ensure security groups do not allow ingress from 0.0.0.0/0 to port 22 (SSH).
 - `CKV_AWS_130`: Ensure VPC subnets do not assign public IPs by default.
 
 Run in CI:
 <pre><code>checkov -d . --framework terraform --compact --quiet</code></pre>
 
-If a developer opens a PR with an unencrypted S3 bucket or open SSH port, Checkov immediately fails the CI check and blocks the PR from merging.
+If a pull request adds an unencrypted bucket or opens SSH to the world, the Checkov check fails. Make it a required check in branch protection, and the pull request can't be merged until it's fixed.
 
 ### One shared config for the whole tree
 
@@ -129,12 +118,13 @@ Never make a finding go away by disabling the pipeline step or setting `soft-fai
 
 ## Tier 3 · Automated plan posting in Pull Requests
 
-When a PR is opened, the pipeline runs `terraform plan` and posts a formatted summary as a comment on the GitHub PR:
+When a pull request is opened, the pipeline runs `terraform plan` and posts the result as a comment:
 
 <pre><code># Example GitHub Actions Workflow snippet
 - name: Terraform Plan
   id: plan
   run: |
+    set -o pipefail # without this, a failed plan would still pass because of the pipe
     terraform plan -no-color -out=tfplan 2>&1 | tee plan_output.txt
 
 - name: Post Plan to Pull Request
@@ -155,17 +145,17 @@ When a PR is opened, the pipeline runs `terraform plan` and posts a formatted su
         body: comment
       });</code></pre>
 
-Team members review the exact diff before hitting **Merge**. Once merged to `main`, a separate deployment job applies the planned artifact.
+Reviewers read the exact changes before merging. After the merge, a separate deploy job applies that saved plan. If the state has changed since the plan was made, Terraform refuses to apply it, and a fresh plan is needed.
 
 ## Operational Control · Scheduled drift detection
 
-Even in strictly governed environments, emergency manual changes or out-of-band updates in the AWS Console happen. 
+Even with a strict pipeline, someone will eventually change something by hand in the AWS console, usually in an emergency.
 
-Set up a scheduled cron job (e.g. every weekday at 02:00 UTC) that runs a read-only plan:
+Run a scheduled plan (for example every weekday at 02:00 UTC) that only reports, never applies:
 
 <pre><code># Run in scheduled CI
 terraform plan -detailed-exitcode</code></pre>
 
-- **Exit code 0:** Succeeded, 0 changes (Infrastructure is 100% in sync).
-- **Exit code 2:** Succeeded, **drift detected**! Route an alert to your SRE Slack channel or PagerDuty to reconcile the unmanaged change immediately.
-- **Exit code 1:** Plan failed with error.
+- **Exit code 0:** no changes. Real infrastructure matches the code.
+- **Exit code 2:** **drift found.** Send an alert to the team's channel or on-call tool, and decide whether to bring the change into code or undo it.
+- **Exit code 1:** the plan itself failed.

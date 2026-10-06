@@ -78,6 +78,7 @@ modules/base/s3/
 ├── main.tf
 ├── variables.tf
 ├── outputs.tf
+├── versions.tf
 ├── README.md
 └── tests/
     └── s3_basic.tftest.hcl

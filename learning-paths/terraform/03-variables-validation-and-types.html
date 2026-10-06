@@ -7,12 +7,12 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Modern HCL — Types, Validations &amp; Preconditions — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="Writing Terraform that checks its own inputs, using rich object schemas, custom validation blocks, lifecycle preconditions, and deterministic for_each key mapping." />
+    <meta name="description" content="Modules that check their own inputs: typed variables, validation blocks, preconditions and postconditions, and for_each with stable keys so removing one item doesn't replace the others." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/terraform/03-variables-validation-and-types.html" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://anupojuprudhvi.github.io/learning-paths/terraform/03-variables-validation-and-types.html" />
     <meta property="og:title" content="Modern HCL — Types, Validations &amp; Preconditions — Prudhvi Raj Anupoju" />
-    <meta property="og:description" content="Writing Terraform that checks its own inputs, using rich object schemas, custom validation blocks, lifecycle preconditions, and deterministic for_each key mapping." />
+    <meta property="og:description" content="Modules that check their own inputs: typed variables, validation blocks, preconditions and postconditions, and for_each with stable keys so removing one item doesn't replace the others." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -25,7 +25,7 @@
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "Modern HCL — Types, Validations & Preconditions",
-        "description": "Writing Terraform that checks its own inputs, using rich object schemas, custom validation blocks, lifecycle preconditions, and deterministic for_each key mapping.",
+        "description": "Modules that check their own inputs: typed variables, validation blocks, preconditions and postconditions, and for_each with stable keys so removing one item doesn't replace the others.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -151,7 +151,7 @@
             <div>
               <span class="lp-badge">Core Architecture</span>
               <h1>Modern HCL — Types, Validations &amp; Preconditions</h1>
-              <p class="sub">Writing Terraform that checks its own inputs, using rich object schemas, custom validation blocks, lifecycle preconditions, and deterministic for_each key mapping.</p>
+              <p class="sub">Modules that check their own inputs: typed variables, validation blocks, preconditions and postconditions, and for_each with stable keys so removing one item doesn't replace the others.</p>
             </div>
             <svg class="motif motif-pipeline" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <text class="m-start m-muted" x="4" y="40">git push → main</text>
@@ -183,7 +183,7 @@
                 <li><a href="01-enterprise-module-design.html"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a></li>
                 <li><a href="02-state-isolation-and-locking.html"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a></li>
                 <li class="is-current"><a href="03-variables-validation-and-types.html" aria-current="page"><span class="lp-toc-num">03</span><span>Modern HCL — Types, Validations &amp; Preconditions</span></a>
-                <ol class="lp-toc-sections"><li><a href="#make-invalid-states-unrepresentable">Make invalid states unrepresentable</a></li><li><a href="#custom-variable-validation-blocks">Custom variable validation blocks</a></li><li><a href="#lifecycle-preconditions-postconditions">Lifecycle preconditions &amp; postconditions</a></li><li><a href="#the-catastrophic-count-index-shift-trap">The catastrophic count index-shift trap</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#catch-bad-inputs-before-they-reach-aws">Catch bad inputs before they reach AWS</a></li><li><a href="#custom-variable-validation-blocks">Custom variable validation blocks</a></li><li><a href="#lifecycle-preconditions-postconditions">Lifecycle preconditions &amp; postconditions</a></li><li><a href="#the-count-index-shift-trap">The count index-shift trap</a></li></ol></li>
                 <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
                 <li><a href="05-refactoring-with-moved-blocks.html"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a></li>
                 <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a></li>
@@ -225,16 +225,16 @@
           <section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
-<h2 id="make-invalid-states-unrepresentable">Make invalid states unrepresentable</h2>
-<p>In production, human errors often stem from invalid variable inputs passed to modules (e.g. invalid CIDR blocks, illegal naming characters, or out-of-range retention windows).</p>
-<p>Modern Terraform (1.5+) allows you to build <b>self-defending modules</b> that fail fast during <code>terraform plan</code> before any API calls are made to AWS.</p>
+<h2 id="catch-bad-inputs-before-they-reach-aws">Catch bad inputs before they reach AWS</h2>
+<p>Many production mistakes start as a bad input to a module: an invalid CIDR block, a name with characters AWS won't accept, a retention period out of range.</p>
+<p>Terraform can check these for you. A module with typed, validated inputs fails at <code>terraform plan</code> with a clear message, before anything is changed.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Validation</div>
 <h2 id="custom-variable-validation-blocks">Custom variable validation blocks</h2>
-<p>Always pair input variables with explicit types, descriptions, and custom <code>validation {}</code> blocks:</p>
+<p>Give every input a type, a description, and a <code>validation {}</code> block where a wrong value is possible:</p>
 <pre tabindex="0"><code># variables.tf
 
 variable "environment" {
@@ -257,8 +257,9 @@ variable "vpc_cidr" {
   }
 
   validation {
-    condition     = tonumber(split("/", var.vpc_cidr)[1]) <= 20
-    error_message = "The VPC CIDR prefix must be /20 or larger (/16 to /20) to ensure adequate subnet capacity."
+    # try() turns a malformed value into false, so the error message shows instead of a crash
+    condition     = try(contains(range(16, 21), tonumber(split("/", var.vpc_cidr)[1])), false)
+    error_message = "The VPC CIDR prefix must be between /16 and /20, so there's room for subnets."
   }
 }</code></pre>
 </div>
@@ -267,7 +268,7 @@ variable "vpc_cidr" {
 <div class="wrap">
 <div class="section-eyebrow">Guardrails</div>
 <h2 id="lifecycle-preconditions-postconditions">Lifecycle preconditions &amp; postconditions</h2>
-<p>While variable validation checks inputs in isolation, <code>lifecycle { precondition {} }</code> and <code>postcondition {}</code> assert architectural assumptions against real resource attributes and data sources during the plan and apply phases.</p>
+<p>Variable validation checks one input on its own. A <code>precondition</code> checks an assumption before a resource is created, using data sources and other values. A <code>postcondition</code> checks the result after it's created.</p>
 <pre tabindex="0"><code># main.tf
 
 data "aws_ami" "ubuntu" {
@@ -285,13 +286,13 @@ resource "aws_instance" "app" {
   instance_type = var.instance_type
 
   lifecycle {
-    # Assert that the selected AMI is EBS-backed and modern before launching
+    # Before launch: the chosen AMI must be EBS-backed
     precondition {
       condition     = data.aws_ami.ubuntu.root_device_type == "ebs"
       error_message = "The selected AMI must use EBS storage for root persistence."
     }
 
-    # Assert that the instance receives an approved private IP post-creation
+    # After launch: the instance must get a private IP in 10.0.0.0/8
     postcondition {
       condition     = can(regex("^10\\.", self.private_ip))
       error_message = "The instance was allocated a non-compliant IP outside the 10.0.0.0/8 enterprise range."
@@ -303,26 +304,27 @@ resource "aws_instance" "app" {
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Mechanics</div>
-<h2 id="the-catastrophic-count-index-shift-trap">The catastrophic <code>count</code> index-shift trap</h2>
-<p>One of the most dangerous patterns in Terraform is using <code>count</code> on a list of resources instead of <code>for_each</code> with a map.</p>
-<h3>The Problem with <code>count</code>:</h3>
-<pre tabindex="0"><code># DANGEROUS: Using count with a list
-variable "subnets" {
-  default = ["subnet-a", "subnet-b", "subnet-c"]
+<h2 id="the-count-index-shift-trap">The <code>count</code> index-shift trap</h2>
+<p>Using <code>count</code> over a list, instead of <code>for_each</code> over a map, is one of the easiest ways to replace resources by accident.</p>
+<h3>The problem with <code>count</code></h3>
+<pre tabindex="0"><code># RISKY: count over a list
+variable "subnet_cidrs" {
+  default = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
 }
 
 resource "aws_subnet" "this" {
-  count      = length(var.subnets)
-  cidr_block = "10.0.${count.index}.0/24"
+  count      = length(var.subnet_cidrs)
+  vpc_id     = var.vpc_id
+  cidr_block = var.subnet_cidrs[count.index]
 }</code></pre>
-<p>If an engineer deletes <code>&quot;subnet-a&quot;</code> from the beginning of <code>var.subnets</code>:</p>
+<p>Each subnet is known by its position: <code>this[0]</code>, <code>this[1]</code>, <code>this[2]</code>. Now remove the first CIDR from the list:</p>
 <ul>
-<li>Index <code>0</code> is now <code>&quot;subnet-b&quot;</code> (Terraform forces <b>destruction and re-creation</b> of subnet B!).</li>
-<li>Index <code>1</code> is now <code>&quot;subnet-c&quot;</code> (Terraform forces destruction of subnet C!).</li>
-<li>Index <code>2</code> is deleted.</li>
+<li><code>this[0]</code> now gets <code>10.0.2.0/24</code>, so Terraform replaces it.</li>
+<li><code>this[1]</code> now gets <code>10.0.3.0/24</code>, so Terraform replaces it too.</li>
+<li><code>this[2]</code> no longer exists, so Terraform destroys it.</li>
 </ul>
-<p><b>Result:</b> A simple removal of one unused subnet destroys all active subnets in your infrastructure!</p>
-<h3>The Production Solution: Use <code>for_each</code> with deterministic keys</h3>
+<p><b>Result:</b> removing one subnet destroys and re-creates the other two as well.</p>
+<h3>The fix: <code>for_each</code> with stable keys</h3>
 <pre tabindex="0"><code># SAFE: Using for_each with a map
 variable "subnets" {
   type = map(object({
@@ -338,14 +340,15 @@ variable "subnets" {
 
 resource "aws_subnet" "this" {
   for_each          = var.subnets
+  vpc_id            = var.vpc_id
   cidr_block        = each.value.cidr_block
   availability_zone = each.value.availability_zone
 
   tags = {
-    Name = each.key # Identity is bound to key, not an array index!
+    Name = each.key # each subnet is known by its key, not its position
   }
 }</code></pre>
-<p>When using <code>for_each</code>, deleting <code>&quot;app-us-east-1a&quot;</code> targets <b>only</b> that specific resource for destruction. The remaining subnets are completely unaffected.</p>
+<p>With <code>for_each</code>, removing <code>&quot;app-us-east-1a&quot;</code> destroys only that subnet. The other two keep their keys, so nothing else changes.</p>
 </div>
 </section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/terraform/02-state-isolation-and-locking.html">

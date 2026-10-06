@@ -4,7 +4,7 @@ date: 2026-09-17
 track: terraform
 order: 5
 module: 5
-summary: Safely evolving production infrastructure without outages, using moved, import, and removed blocks to refactor Terraform state with zero downtime.
+summary: Rename, restructure, adopt, and let go of resources without outages, using moved, import, and removed blocks that are reviewed in a pull request like any other code.
 level: Advanced Refactoring
 readingTime: 8 min read
 stack: [Terraform 1.5+, HCL, AWS]
@@ -18,15 +18,15 @@ In the early days of Terraform, renaming a resource or moving it into a child mo
 <pre><code># DANGEROUS LEGACY APPROACH: Manual CLI state manipulation
 terraform state mv aws_s3_bucket.logs module.logging.aws_s3_bucket.this</code></pre>
 
-### Why manual state commands fail in production:
-- **Zero Reviewability:** Not tracked in Git or code review; cannot be inspected in a pull request.
-- **Race Conditions:** If another engineer or CI pipeline runs before the command executes, Terraform attempts to **destroy and recreate** the production resource.
+### Why manual state commands are risky
+- **Nobody reviews them:** they aren't in Git, so they can't be checked in a pull request.
+- **Timing:** the code change and the state command happen separately. If the pipeline applies the new code before someone runs the command, Terraform sees a "new" resource and plans to **destroy and re-create** the real one.
 
-Modern Terraform solves this by making state refactoring **declarative and version-controlled**.
+Modern Terraform fixes this by putting the move in the code itself, so it's reviewed and applied together with the change.
 
 ## Pattern 1 · Refactoring with declarative `moved` blocks
 
-Terraform 1.1+ introduced the `moved {}` block. When Terraform encounters a `moved` block during `terraform plan`, it updates the state file in memory without destroying or modifying the physical cloud resource.
+Terraform 1.1 added the `moved {}` block. It tells Terraform that a resource has a new address. The plan shows the move, and the apply updates state, without touching the real resource.
 
 ### Scenario A: Moving an existing resource into a module
 
@@ -45,7 +45,7 @@ moved {
 }</code></pre>
 
 When you run `terraform plan`, Terraform prints:
-`aws_s3_bucket.data_lake has moved to module.storage.aws_s3_bucket.this` with **0 to add, 0 to change, 0 to destroy**.
+`aws_s3_bucket.data_lake has moved to module.storage.aws_s3_bucket.this` with **0 to add, 0 to change, 0 to destroy**, as long as the module configures the bucket the same way the old resource did. If the plan shows changes, compare the module's settings with the old ones before applying.
 
 ### Scenario B: Migrating from a single resource to `for_each`
 
@@ -82,7 +82,7 @@ You can even ask Terraform to write the initial HCL for you:
 
 <pre><code>terraform plan -generate-config-out=generated_sg.tf</code></pre>
 
-Review the generated file, clean up redundant default parameters, commit it to Git, and run `terraform apply`. The resource is now under state management with zero manual CLI commands.
+Review the generated file, remove arguments that only repeat defaults, commit it, and run `terraform apply`. The resource is now managed by Terraform, with no manual state commands.
 
 ## Pattern 3 · Safely detaching resources with `removed` blocks
 
@@ -99,8 +99,8 @@ removed {
   }
 }</code></pre>
 
-## Checklist · The Zero-Downtime Refactoring Protocol
+## Checklist · Refactoring without downtime
 
-1. **Never delete code before declaring `moved`:** Add the new module or resource structure alongside the `moved {}` block in the same commit.
-2. **Review the plan diff religiously:** Verify that `terraform plan` outputs `Plan: 0 to add, 0 to change, 0 to destroy`. If the plan shows `Destroy`, stop immediately — your `from` or `to` path is misaligned.
-3. **Leave `moved` blocks in place:** Keep `moved` blocks committed for at least 1-2 release cycles so all team members and feature branches migrate their state cleanly before removing the block.
+1. **Change the code and add `moved` in the same commit.** Never remove the old resource in one commit and add the move in another.
+2. **Read the plan.** You want `Plan: 0 to add, 0 to change, 0 to destroy`. If it shows a destroy, stop: the `from` or `to` address is wrong.
+3. **Keep `moved` blocks until everyone has applied them.** Remove one only after every environment and every open branch using this code has applied it. In a shared module that other teams use, keep them for good.

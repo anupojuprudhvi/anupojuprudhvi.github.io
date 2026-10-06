@@ -87,7 +87,7 @@ resource "aws_s3_bucket" "this" {
 | CKV_AWS_18 | aws_s3_bucket.this    | Nonprod synthetic data only  | ADR-0003 |
 ```
 
-**No blanket skips at this stage.** A global `skip-check` in `.checkov.yaml` would hide the finding from every module, including ones where it really matters. Exceptions are scoped to one resource and justified one at a time.
+**No blanket skips to get a module through.** A global `skip-check` in `.checkov.yaml` hides the finding from every module, including ones where it really matters. It's only for a platform-wide decision that already has its own ADR, like the cross-region replication example in [Module 06](06-ci-cd-security-linting-testing.html). Everything else is scoped to one resource and justified one at a time.
 
 ## Step 4 · A second person approves
 

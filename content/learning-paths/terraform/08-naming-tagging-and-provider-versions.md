@@ -130,9 +130,9 @@ terraform {
 **2. The environment pins the version it applies with**, and that version must sit inside every module's range:
 
 ```hcl
-# environments/nonprod/version.tf
+# environments/nonprod/versions.tf
 terraform {
-  required_version = "1.10.5"
+  required_version = "1.11.4"
 
   required_providers {
     aws = {

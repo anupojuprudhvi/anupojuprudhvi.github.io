@@ -7,12 +7,12 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Zero-Downtime Refactoring with Moved &amp; Import Blocks — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="Safely evolving production infrastructure without outages, using moved, import, and removed blocks to refactor Terraform state with zero downtime." />
+    <meta name="description" content="Rename, restructure, adopt, and let go of resources without outages, using moved, import, and removed blocks that are reviewed in a pull request like any other code." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/terraform/05-refactoring-with-moved-blocks.html" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://anupojuprudhvi.github.io/learning-paths/terraform/05-refactoring-with-moved-blocks.html" />
     <meta property="og:title" content="Zero-Downtime Refactoring with Moved &amp; Import Blocks — Prudhvi Raj Anupoju" />
-    <meta property="og:description" content="Safely evolving production infrastructure without outages, using moved, import, and removed blocks to refactor Terraform state with zero downtime." />
+    <meta property="og:description" content="Rename, restructure, adopt, and let go of resources without outages, using moved, import, and removed blocks that are reviewed in a pull request like any other code." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -25,7 +25,7 @@
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "Zero-Downtime Refactoring with Moved & Import Blocks",
-        "description": "Safely evolving production infrastructure without outages, using moved, import, and removed blocks to refactor Terraform state with zero downtime.",
+        "description": "Rename, restructure, adopt, and let go of resources without outages, using moved, import, and removed blocks that are reviewed in a pull request like any other code.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -151,7 +151,7 @@
             <div>
               <span class="lp-badge">Advanced Refactoring</span>
               <h1>Zero-Downtime Refactoring with Moved &amp; Import Blocks</h1>
-              <p class="sub">Safely evolving production infrastructure without outages, using moved, import, and removed blocks to refactor Terraform state with zero downtime.</p>
+              <p class="sub">Rename, restructure, adopt, and let go of resources without outages, using moved, import, and removed blocks that are reviewed in a pull request like any other code.</p>
             </div>
             <svg class="motif motif-pipeline" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <text class="m-start m-muted" x="4" y="40">git push → main</text>
@@ -185,7 +185,7 @@
                 <li><a href="03-variables-validation-and-types.html"><span class="lp-toc-num">03</span><span>Modern HCL — Types, Validations &amp; Preconditions</span></a></li>
                 <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
                 <li class="is-current"><a href="05-refactoring-with-moved-blocks.html" aria-current="page"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a>
-                <ol class="lp-toc-sections"><li><a href="#code-refactoring-must-not-cause-resource-recreation">Code refactoring must not cause resource recreation</a></li><li><a href="#refactoring-with-declarative-moved-blocks">Refactoring with declarative moved blocks</a></li><li><a href="#declarative-adoption-with-import-blocks">Declarative adoption with import blocks</a></li><li><a href="#safely-detaching-resources-with-removed-blocks">Safely detaching resources with removed blocks</a></li><li><a href="#the-zero-downtime-refactoring-protocol">The Zero-Downtime Refactoring Protocol</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#code-refactoring-must-not-cause-resource-recreation">Code refactoring must not cause resource recreation</a></li><li><a href="#refactoring-with-declarative-moved-blocks">Refactoring with declarative moved blocks</a></li><li><a href="#declarative-adoption-with-import-blocks">Declarative adoption with import blocks</a></li><li><a href="#safely-detaching-resources-with-removed-blocks">Safely detaching resources with removed blocks</a></li><li><a href="#refactoring-without-downtime">Refactoring without downtime</a></li></ol></li>
                 <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a></li>
               </ol>
               <p class="lp-toc-part">Part 2 · How a module is delivered: design to production</p>
@@ -230,20 +230,20 @@
 <pre tabindex="0"><code># DANGEROUS LEGACY APPROACH: Manual CLI state manipulation
 terraform state mv aws_s3_bucket.logs module.logging.aws_s3_bucket.this</code></pre>
 <details class="implementation-notes">
-<summary>Why manual state commands fail in production:</summary>
+<summary>Why manual state commands are risky</summary>
 <ul>
-<li><b>Zero Reviewability:</b> Not tracked in Git or code review; cannot be inspected in a pull request.</li>
-<li><b>Race Conditions:</b> If another engineer or CI pipeline runs before the command executes, Terraform attempts to <b>destroy and recreate</b> the production resource.</li>
+<li><b>Nobody reviews them:</b> they aren't in Git, so they can't be checked in a pull request.</li>
+<li><b>Timing:</b> the code change and the state command happen separately. If the pipeline applies the new code before someone runs the command, Terraform sees a &quot;new&quot; resource and plans to <b>destroy and re-create</b> the real one.</li>
 </ul>
 </details>
-<p>Modern Terraform solves this by making state refactoring <b>declarative and version-controlled</b>.</p>
+<p>Modern Terraform fixes this by putting the move in the code itself, so it's reviewed and applied together with the change.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Pattern 1</div>
 <h2 id="refactoring-with-declarative-moved-blocks">Refactoring with declarative <code>moved</code> blocks</h2>
-<p>Terraform 1.1+ introduced the <code>moved {}</code> block. When Terraform encounters a <code>moved</code> block during <code>terraform plan</code>, it updates the state file in memory without destroying or modifying the physical cloud resource.</p>
+<p>Terraform 1.1 added the <code>moved {}</code> block. It tells Terraform that a resource has a new address. The plan shows the move, and the apply updates state, without touching the real resource.</p>
 <h3>Scenario A: Moving an existing resource into a module</h3>
 <pre tabindex="0"><code># In environments/prod/main.tf
 
@@ -258,7 +258,7 @@ moved {
   from = aws_s3_bucket.data_lake
   to   = module.storage.aws_s3_bucket.this
 }</code></pre>
-<p>When you run <code>terraform plan</code>, Terraform prints: <code>aws_s3_bucket.data_lake has moved to module.storage.aws_s3_bucket.this</code> with <b>0 to add, 0 to change, 0 to destroy</b>.</p>
+<p>When you run <code>terraform plan</code>, Terraform prints: <code>aws_s3_bucket.data_lake has moved to module.storage.aws_s3_bucket.this</code> with <b>0 to add, 0 to change, 0 to destroy</b>, as long as the module configures the bucket the same way the old resource did. If the plan shows changes, compare the module's settings with the old ones before applying.</p>
 <h3>Scenario B: Migrating from a single resource to <code>for_each</code></h3>
 <pre tabindex="0"><code># Before: Single resource
 # resource "aws_subnet" "public" { ... }
@@ -291,7 +291,7 @@ import {
 }</code></pre>
 <p>You can even ask Terraform to write the initial HCL for you:</p>
 <pre tabindex="0"><code>terraform plan -generate-config-out=generated_sg.tf</code></pre>
-<p>Review the generated file, clean up redundant default parameters, commit it to Git, and run <code>terraform apply</code>. The resource is now under state management with zero manual CLI commands.</p>
+<p>Review the generated file, remove arguments that only repeat defaults, commit it, and run <code>terraform apply</code>. The resource is now managed by Terraform, with no manual state commands.</p>
 </div>
 </section>
 <section>
@@ -314,11 +314,11 @@ removed {
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Checklist</div>
-<h2 id="the-zero-downtime-refactoring-protocol">The Zero-Downtime Refactoring Protocol</h2>
+<h2 id="refactoring-without-downtime">Refactoring without downtime</h2>
 <ol>
-<li><b>Never delete code before declaring <code>moved</code>:</b> Add the new module or resource structure alongside the <code>moved {}</code> block in the same commit.</li>
-<li><b>Review the plan diff religiously:</b> Verify that <code>terraform plan</code> outputs <code>Plan: 0 to add, 0 to change, 0 to destroy</code>. If the plan shows <code>Destroy</code>, stop immediately — your <code>from</code> or <code>to</code> path is misaligned.</li>
-<li><b>Leave <code>moved</code> blocks in place:</b> Keep <code>moved</code> blocks committed for at least 1-2 release cycles so all team members and feature branches migrate their state cleanly before removing the block.</li>
+<li><b>Change the code and add <code>moved</code> in the same commit.</b> Never remove the old resource in one commit and add the move in another.</li>
+<li><b>Read the plan.</b> You want <code>Plan: 0 to add, 0 to change, 0 to destroy</code>. If it shows a destroy, stop: the <code>from</code> or <code>to</code> address is wrong.</li>
+<li><b>Keep <code>moved</code> blocks until everyone has applied them.</b> Remove one only after every environment and every open branch using this code has applied it. In a shared module that other teams use, keep them for good.</li>
 </ol>
 </div>
 </section>

@@ -5,7 +5,7 @@ updated: 2026-10-01
 track: terraform
 order: 1
 module: 1
-summary: The enterprise pattern for structuring Terraform codebases — separating reusable child modules from root deployment environments, with strict version pinning.
+summary: How to lay out a Terraform codebase for a team: reusable child modules kept apart from the root deployments that use them, state split into layers, and versions pinned so plans don't change by surprise.
 level: Core Architecture
 readingTime: 8 min read
 stack: [Terraform, HCL, AWS]
@@ -14,18 +14,18 @@ tags: [architecture, module-design, repo-structure, best-practices]
 
 ## Principle · The two types of Terraform modules
 
-In enterprise environments, confusing a **reusable child module** with a **root deployment module** is the primary reason codebases become unmaintainable spaghetti.
+Mixing up a **reusable child module** and a **root deployment module** is one of the most common reasons a Terraform codebase becomes hard to maintain.
 
-A clean architecture enforces strict boundaries between these two concerns:
+Keep the two apart:
 
-- **Child Modules (The Building Blocks):** Pure, parameterized blueprints. They do not declare backends, do not hardcode account IDs, and do not reference specific environments. They are published and versioned like software libraries.
-- **Root Modules (The Deployments):** Concrete instantiations. They define the S3/DynamoDB remote state backend, provider configurations with credentials/regions, instantiate child modules, and pass environment-specific `.tfvars`.
+- **Child modules (the building blocks):** reusable blueprints driven by inputs. They don't declare a backend, hardcode account IDs, or mention a specific environment. They're versioned and released like software libraries.
+- **Root modules (the deployments):** the real environments. They set the S3 state backend and the provider (account, region, credentials), call the child modules, and pass in environment-specific values from `.tfvars`.
 
 <div class="callout"><b>Going further.</b> As a codebase grows, child modules split again: <b>base modules</b> that build one component, and <b>composition modules</b> that join them with IAM and networking. Part 2 of this track, starting at <a href="07-base-composition-and-environment-modules.html">Module 07</a>, takes that standard from design to production.</div>
 
 ## Structure · The canonical directory layout
 
-For enterprise AWS delivery, organize your Terraform repositories into clear layers of responsibility:
+Organize the repository into clear layers of responsibility:
 
 <pre><code>terraform-root/
 ├── modules/                         # Reusable child modules (pure blueprints, versioned)
@@ -40,11 +40,11 @@ For enterprise AWS delivery, organize your Terraform repositories into clear lay
 │
 └── environments/                    # Root execution environments (where state lives)
     ├── prod/
-    │   ├── 00-bootstrap/            # S3 state bucket, DynamoDB lock table, KMS CMKs
+    │   ├── 00-bootstrap/            # S3 state bucket and KMS keys
     │   │   ├── backend.tf           # (Local backend during first run, then migrated)
     │   │   └── main.tf
     │   ├── 01-networking/           # Foundation: VPC, Transit Gateway, Route 53
-    │   │   ├── backend.tf           # S3 + DynamoDB state lock configuration
+    │   │   ├── backend.tf           # S3 backend with native locking (use_lockfile)
     │   │   ├── main.tf              # Calls modules/vpc with prod parameters
     │   │   ├── providers.tf         # Provider with exact version pin
     │   │   ├── terraform.tfvars     # Prod CIDRs, tags, AZs
@@ -84,7 +84,7 @@ Why slice environments into numbered layers instead of one monolithic deployment
   <tbody>
     <tr>
       <td class="gnum">00-bootstrap</td>
-      <td>S3 state bucket, DynamoDB lock table, KMS CMKs</td>
+      <td>S3 state bucket and KMS keys</td>
       <td><strong>Once</strong> (Creation only)</td>
       <td>Highest — Platform Admin / Security Lead</td>
     </tr>
@@ -116,11 +116,11 @@ Why slice environments into numbered layers instead of one monolithic deployment
 </table>
 </div>
 
-### Three architectural guarantees of environment layering:
+### What layering gives you
 
-- **State File & Lock Isolation:** Running `terraform apply` in `04-compute` locks *only* the compute state file. Database and networking states remain 100% unlocked and completely immune to accidental modifications.
-- **Role-Based Access Control (RBAC):** In your CI/CD pipeline (e.g. GitHub Actions with AWS OIDC), application teams only assume an IAM role scoped to execute in `04-compute`. They physically cannot destroy `01-networking` or `03-data`.
-- **Fast Plans (< 30 seconds):** Because each layer contains 20-40 resources instead of 500+, `terraform plan` executes in seconds instead of timing out.
+- **Separate state and locks:** running `terraform apply` in `04-compute` locks only the compute state. The database and networking states aren't touched, so a compute change can't accidentally modify them.
+- **Separate permissions:** in CI/CD (for example GitHub Actions with AWS OIDC), application teams assume an IAM role scoped to `04-compute` only. That role can't change `01-networking` or `03-data`.
+- **Faster plans:** each layer holds tens of resources instead of hundreds, so `terraform plan` finishes much faster.
 
 ### Key rules for the standard module layout
 
@@ -128,12 +128,12 @@ Why slice environments into numbered layers instead of one monolithic deployment
 - **Always output resource IDs and ARNs:** A module that creates an S3 bucket or IAM role must output both `.id` and `.arn` so downstream modules can bind policies without querying data sources.
 - **One primary job per module:** A module should represent a single logical system boundary (e.g. `vpc`, `aurora-cluster`, `eks-cluster`), not an entire datacenter in one file.
 
-## Versioning · Strict root pinning vs optimistic module constraints
+## Versioning · Exact pins in roots, ranges in modules
 
-A subtle but critical rule in enterprise Terraform is how version constraints are declared:
+Where you declare a version matters as much as which version you pick:
 
-### 1. In Reusable Child Modules: Use pessimistic operators (`~>`)
-Child modules should allow safe backward-compatible minor updates:
+### 1. In child modules: allow a range with `~>`
+The pessimistic constraint operator `~>` lets a module accept compatible minor updates, so it works in more places:
 
 <pre><code># modules/vpc/versions.tf
 terraform {
@@ -147,12 +147,12 @@ terraform {
   }
 }</code></pre>
 
-### 2. In Production Root Deployments: Strictly pin exact versions (`=`)
-Production plans must be **100% deterministic**. If a provider releases a breaking change at 2 AM, your CI pipeline must not break unexpectedly:
+### 2. In production roots: pin exact versions with `=`
+A production plan should give the same result every time. If a provider release changes behaviour overnight, your pipeline shouldn't pick it up by surprise:
 
 <pre><code># environments/prod/01-networking/versions.tf
 terraform {
-  required_version = "= 1.8.5"
+  required_version = "= 1.11.4" # 1.11+: native S3 state locking is generally available
 
   required_providers {
     aws = {
@@ -166,15 +166,15 @@ terraform {
 
 ### Anti-Pattern 1: The "Monolithic State Monster"
 Putting VPC networking, Aurora clusters, IAM roles, and EKS deployments in a single `main.tf` file.
-- **Why it fails:** A single typo in an IAM policy risks destroying or re-planning the database. `terraform plan` takes 15 minutes to run across hundreds of resources.
-- **Production Solution:** Split state boundaries into isolated layers (`01-networking`, `02-security`, `03-data`, `04-apps`).
+- **Why it fails:** one typo in an IAM policy can put the database in the same plan, and `terraform plan` gets slow across hundreds of resources.
+- **Fix:** split state into separate layers (`01-networking`, `02-security`, `03-data`, `04-compute`).
 
 ### Anti-Pattern 2: Hardcoding Environment Logic Inside Modules
 Writing `if var.env == "prod"` inside a reusable module.
-- **Why it fails:** Child modules should be agnostic to environments.
-- **Production Solution:** Pass feature flags or resource specifications as variables (e.g., `retention_in_days = var.log_retention_days`).
+- **Why it fails:** the module now only works for the environments it knows about, and every new environment means editing the module.
+- **Fix:** pass the setting in as a variable instead (for example `retention_in_days = var.log_retention_days`).
 
 ### Anti-Pattern 3: Unpinned Modules in Git
 Referencing modules using `source = "git::https://github.com/.../my-module.git"` without a tag or commit ref.
 - **Why it fails:** Any push to `main` in the module repo immediately changes future plans in production.
-- **Production Solution:** Always pin releases with `?ref=v1.4.2` or a Git commit SHA.
+- **Fix:** always pin to a release tag such as `?ref=v1.4.2`, or a commit SHA.

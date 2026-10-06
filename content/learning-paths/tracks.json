@@ -12,7 +12,7 @@
     "level": "Intermediate to Advanced",
     "duration": "11 Modules · 102 min read",
     "badge": "Production Playbook",
-    "stack": ["Terraform 1.10+", "AWS", "HCL", "terraform test", "Checkov", "TFLint", "ADRs"],
+    "stack": ["Terraform 1.11+", "AWS", "HCL", "terraform test", "Checkov", "TFLint", "ADRs"],
     "closingQuestion": "Questions about this learning path?",
     "closingBody": "I'm happy to go into more detail on any of this: module design trade-offs, moving state safely, testing modules, or running a security gate in CI/CD."
   },

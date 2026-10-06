@@ -4,22 +4,22 @@ date: 2026-09-17
 track: terraform
 order: 3
 module: 3
-summary: Writing Terraform that checks its own inputs, using rich object schemas, custom validation blocks, lifecycle preconditions, and deterministic for_each key mapping.
+summary: Modules that check their own inputs: typed variables, validation blocks, preconditions and postconditions, and for_each with stable keys so removing one item doesn't replace the others.
 level: Core Architecture
 readingTime: 7 min read
 stack: [Terraform 1.5+, HCL, AWS]
 tags: [hcl, validations, preconditions, types, for-each]
 ---
 
-## Principle · Make invalid states unrepresentable
+## Principle · Catch bad inputs before they reach AWS
 
-In production, human errors often stem from invalid variable inputs passed to modules (e.g. invalid CIDR blocks, illegal naming characters, or out-of-range retention windows).
+Many production mistakes start as a bad input to a module: an invalid CIDR block, a name with characters AWS won't accept, a retention period out of range.
 
-Modern Terraform (1.5+) allows you to build **self-defending modules** that fail fast during `terraform plan` before any API calls are made to AWS.
+Terraform can check these for you. A module with typed, validated inputs fails at `terraform plan` with a clear message, before anything is changed.
 
 ## Validation · Custom variable validation blocks
 
-Always pair input variables with explicit types, descriptions, and custom `validation {}` blocks:
+Give every input a type, a description, and a `validation {}` block where a wrong value is possible:
 
 <pre><code># variables.tf
 
@@ -43,14 +43,15 @@ variable "vpc_cidr" {
   }
 
   validation {
-    condition     = tonumber(split("/", var.vpc_cidr)[1]) <= 20
-    error_message = "The VPC CIDR prefix must be /20 or larger (/16 to /20) to ensure adequate subnet capacity."
+    # try() turns a malformed value into false, so the error message shows instead of a crash
+    condition     = try(contains(range(16, 21), tonumber(split("/", var.vpc_cidr)[1])), false)
+    error_message = "The VPC CIDR prefix must be between /16 and /20, so there's room for subnets."
   }
 }</code></pre>
 
 ## Guardrails · Lifecycle preconditions & postconditions
 
-While variable validation checks inputs in isolation, `lifecycle { precondition {} }` and `postcondition {}` assert architectural assumptions against real resource attributes and data sources during the plan and apply phases.
+Variable validation checks one input on its own. A `precondition` checks an assumption before a resource is created, using data sources and other values. A `postcondition` checks the result after it's created.
 
 <pre><code># main.tf
 
@@ -69,13 +70,13 @@ resource "aws_instance" "app" {
   instance_type = var.instance_type
 
   lifecycle {
-    # Assert that the selected AMI is EBS-backed and modern before launching
+    # Before launch: the chosen AMI must be EBS-backed
     precondition {
       condition     = data.aws_ami.ubuntu.root_device_type == "ebs"
       error_message = "The selected AMI must use EBS storage for root persistence."
     }
 
-    # Assert that the instance receives an approved private IP post-creation
+    # After launch: the instance must get a private IP in 10.0.0.0/8
     postcondition {
       condition     = can(regex("^10\\.", self.private_ip))
       error_message = "The instance was allocated a non-compliant IP outside the 10.0.0.0/8 enterprise range."
@@ -83,29 +84,30 @@ resource "aws_instance" "app" {
   }
 }</code></pre>
 
-## Mechanics · The catastrophic `count` index-shift trap
+## Mechanics · The `count` index-shift trap
 
-One of the most dangerous patterns in Terraform is using `count` on a list of resources instead of `for_each` with a map.
+Using `count` over a list, instead of `for_each` over a map, is one of the easiest ways to replace resources by accident.
 
-### The Problem with `count`:
-<pre><code># DANGEROUS: Using count with a list
-variable "subnets" {
-  default = ["subnet-a", "subnet-b", "subnet-c"]
+### The problem with `count`
+<pre><code># RISKY: count over a list
+variable "subnet_cidrs" {
+  default = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
 }
 
 resource "aws_subnet" "this" {
-  count      = length(var.subnets)
-  cidr_block = "10.0.${count.index}.0/24"
+  count      = length(var.subnet_cidrs)
+  vpc_id     = var.vpc_id
+  cidr_block = var.subnet_cidrs[count.index]
 }</code></pre>
 
-If an engineer deletes `"subnet-a"` from the beginning of `var.subnets`:
-- Index `0` is now `"subnet-b"` (Terraform forces **destruction and re-creation** of subnet B!).
-- Index `1` is now `"subnet-c"` (Terraform forces destruction of subnet C!).
-- Index `2` is deleted.
+Each subnet is known by its position: `this[0]`, `this[1]`, `this[2]`. Now remove the first CIDR from the list:
+- `this[0]` now gets `10.0.2.0/24`, so Terraform replaces it.
+- `this[1]` now gets `10.0.3.0/24`, so Terraform replaces it too.
+- `this[2]` no longer exists, so Terraform destroys it.
 
-**Result:** A simple removal of one unused subnet destroys all active subnets in your infrastructure!
+**Result:** removing one subnet destroys and re-creates the other two as well.
 
-### The Production Solution: Use `for_each` with deterministic keys
+### The fix: `for_each` with stable keys
 
 <pre><code># SAFE: Using for_each with a map
 variable "subnets" {
@@ -122,12 +124,13 @@ variable "subnets" {
 
 resource "aws_subnet" "this" {
   for_each          = var.subnets
+  vpc_id            = var.vpc_id
   cidr_block        = each.value.cidr_block
   availability_zone = each.value.availability_zone
 
   tags = {
-    Name = each.key # Identity is bound to key, not an array index!
+    Name = each.key # each subnet is known by its key, not its position
   }
 }</code></pre>
 
-When using `for_each`, deleting `"app-us-east-1a"` targets **only** that specific resource for destruction. The remaining subnets are completely unaffected.
+With `for_each`, removing `"app-us-east-1a"` destroys only that subnet. The other two keep their keys, so nothing else changes.

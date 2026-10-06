@@ -5,7 +5,7 @@ updated: 2026-10-01
 track: terraform
 order: 4
 module: 4
-summary: The hard realities of secret management in Terraform — state file plaintext vulnerabilities, dynamic credentials, and replacing static API keys with IAM roles.
+summary: Why sensitive = true doesn't protect secrets in state, how to keep database passwords out of Terraform entirely, passing secret ARNs instead of values, and replacing static access keys with OIDC roles.
 level: Security & Compliance
 readingTime: 7 min read
 stack: [Terraform, AWS Secrets Manager, AWS KMS, IAM]
@@ -26,50 +26,29 @@ output "connection_string" {
   sensitive = true
 }</code></pre>
 
-### The Critical Caveat:
-Marking a value as `sensitive = true` **only hides it from the CLI terminal and CI execution logs**.
+### The catch
+Marking a value `sensitive = true` **only hides it from the terminal and CI logs**.
 
-It **DOES NOT** encrypt the value in the Terraform state file. If you inspect `terraform.tfstate`, the database password is stored in **100% plaintext JSON**. 
+It does **not** protect it in the state file. Open `terraform.tfstate` and the password is there in plain JSON. Anyone who can read the state bucket can read every secret Terraform has touched.
 
-Anyone with read permissions to your remote S3 state bucket can read every secret your infrastructure manages.
+So the goal is simple: keep secrets out of Terraform altogether wherever you can.
 
-## Pattern · Generating secrets dynamically inside AWS
+## Pattern · Let AWS create and keep the password
 
-Never accept production passwords as manual inputs via `terraform.tfvars`. Generate them dynamically and store them directly in AWS Secrets Manager:
+Never pass production passwords in through `terraform.tfvars`. For RDS and Aurora, let AWS create the master password and keep it in Secrets Manager for you:
 
-<pre><code># 1. Generate an unguessable password
-resource "random_password" "master" {
-  length           = 32
-  special          = true
-  override_special = "!#$%&*()-_=+[]{}<>:?"
-}
-
-# 2. Store the secret in AWS Secrets Manager with KMS encryption
-resource "aws_secretsmanager_secret" "db_credentials" {
-  name                    = "prod/database/master-credentials"
-  description             = "Master credentials for production Aurora database"
-  kms_key_id              = aws_kms_key.secrets.arn
-  recovery_window_in_days = 0 # Enforce immediate deletion if destroyed
-}
-
-resource "aws_secretsmanager_secret_version" "db_credentials" {
-  secret_id = aws_secretsmanager_secret.db_credentials.id
-  secret_string = jsonencode({
-    username = "dbadmin"
-    password = random_password.master.result
-  })
-}
-
-# 3. Reference the random password in the database resource
-resource "aws_rds_cluster" "primary" {
-  cluster_identifier = "prod-aurora-cluster"
-  engine             = "aurora-postgresql"
-  master_username    = "dbadmin"
-  master_password    = random_password.master.result
+<pre><code>resource "aws_rds_cluster" "primary" {
+  cluster_identifier            = "prod-aurora-cluster"
+  engine                        = "aurora-postgresql"
+  master_username               = "dbadmin"
+  manage_master_user_password   = true # RDS creates and rotates it in Secrets Manager
+  master_user_secret_kms_key_id = aws_kms_key.secrets.arn
   # ...
 }</code></pre>
 
-Applications then retrieve the credential at runtime using the AWS SDK, authenticated via their IAM Execution Role or EKS Pod Identity. No engineer ever needs to know or copy the database master password.
+Terraform never sees the password, so it never reaches state. Applications read it at runtime from Secrets Manager with their own IAM role (or EKS Pod Identity), and no engineer needs to know it.
+
+<div class="callout"><b>Why not random_password?</b> A <code>random_password</code> resource is better than a typed-in password, but its result is still stored in state. Use it only where the service can't manage its own secret, and protect the state bucket as in <a href="02-state-isolation-and-locking.html">Module 02</a>.</div>
 
 ## Pattern · Pass references, not values
 
@@ -91,7 +70,7 @@ The same rules hold everywhere: no secrets in `terraform.tfvars`, in variable de
 
 ## Identity · Eliminate static AWS access keys
 
-A common antipattern is creating static `aws_iam_access_key` resources to give services or CI/CD pipelines access to AWS:
+A common anti-pattern is creating static `aws_iam_access_key` resources to give services or CI/CD pipelines access to AWS:
 
 <pre><code># ANTI-PATTERN: Generating static keys in Terraform
 resource "aws_iam_user" "ci" {
@@ -102,9 +81,9 @@ resource "aws_iam_access_key" "ci" { # Stored in plaintext state!
   user = aws_iam_user.ci.name
 }</code></pre>
 
-### The Production Alternative: OpenID Connect (OIDC) Federation
+### The alternative: OIDC federation
 
-Modern CI pipelines (GitHub Actions, GitLab CI, CircleCI) should assume temporary AWS IAM roles using **OIDC Federation** with zero long-lived credentials:
+CI pipelines such as GitHub Actions, GitLab CI, and CircleCI can assume a temporary IAM role through **OIDC federation**, with no long-lived keys at all:
 
 <pre><code># Secure OIDC Trust Policy for GitHub Actions
 resource "aws_iam_role" "ci_deployer" {
@@ -122,8 +101,7 @@ resource "aws_iam_role" "ci_deployer" {
         Condition = {
           StringEquals = {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
-          }
-          StringLike = {
+            # only the main branch of this one repository can assume the role
             "token.actions.githubusercontent.com:sub" = "repo:my-org/my-repo:ref:refs/heads/main"
           }
         }
@@ -134,8 +112,8 @@ resource "aws_iam_role" "ci_deployer" {
 
 ## State Defense · Hardening remote state access
 
-Because state files contain sensitive values, lock down the S3 bucket with strict IAM conditions:
+Some sensitive values will always end up in state, so protect the bucket as well (the full checklist is in [Module 02](02-state-isolation-and-locking.html)):
 
-- **Customer-Managed KMS Keys:** Encrypt state objects with a dedicated KMS key. Deny access to everyone except the dedicated CI/CD execution role.
-- **VPC Endpoint Enforcement:** Restrict S3 state access so objects can only be retrieved from inside your corporate VPC or approved CI runner IP ranges.
-- **Access Logging:** Enable S3 Data Event logging in AWS CloudTrail to alert on unauthorized `GetObject` attempts against `*.tfstate`.
+- **A dedicated KMS key:** only the CI/CD roles and the read-only plan roles may decrypt state.
+- **Network limits:** allow state reads only through your VPC endpoint or from approved CI runners.
+- **Access logging:** turn on S3 data events in CloudTrail, and alert on unexpected `GetObject` calls to `*.tfstate`.

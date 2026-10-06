@@ -262,7 +262,7 @@
 │       ├── variables.tf
 │       ├── outputs.tf
 │       ├── providers.tf
-│       ├── version.tf
+│       ├── versions.tf
 │       ├── terraform.tfvars
 │       ├── .terraform.lock.hcl
 │       └── docs/
@@ -274,6 +274,7 @@
     │   │   ├── main.tf
     │   │   ├── variables.tf
     │   │   ├── outputs.tf
+    │   │   ├── versions.tf
     │   │   ├── README.md
     │   │   └── tests/          # terraform test (Module 09)
     │   ├── glue-etl/
@@ -286,6 +287,7 @@
             ├── locals.tf
             ├── iam.tf
             ├── networking.tf
+            ├── versions.tf
             └── README.md</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <p>Calls only ever go down this tree. An environment calls a composition, a composition calls base modules, and a base module calls nothing.</p>
 <figure class="flow">
@@ -318,7 +320,7 @@
 <tr><td data-label="File"><code>networking.tf</code></td><td data-label="Found in">composition</td><td data-label="Purpose">VPC, subnet, and security group wiring</td></tr>
 <tr><td data-label="File"><code>data.tf</code></td><td data-label="Found in">environment</td><td data-label="Purpose">Lookups of things that already exist: the VPC, a KMS key, the account</td></tr>
 <tr><td data-label="File"><code>providers.tf</code></td><td data-label="Found in">environment</td><td data-label="Purpose">Provider and backend configuration</td></tr>
-<tr><td data-label="File"><code>version.tf</code></td><td data-label="Found in">environment</td><td data-label="Purpose">The exact Terraform and provider versions used to apply</td></tr>
+<tr><td data-label="File"><code>versions.tf</code></td><td data-label="Found in">all three layers</td><td data-label="Purpose">In modules, the provider versions they accept. In an environment, the exact versions it applies with (Module 08)</td></tr>
 <tr><td data-label="File"><code>terraform.tfvars</code></td><td data-label="Found in">environment</td><td data-label="Purpose">This environment's values</td></tr>
 <tr><td data-label="File"><code>README.md</code></td><td data-label="Found in">base, composition</td><td data-label="Purpose">Purpose, inputs and outputs table, and a usage example</td></tr>
 </tbody>
@@ -416,7 +418,7 @@ module &quot;glue_s3&quot; {
 <div class="section-eyebrow">Workflow</div>
 <h2 id="adding-a-new-component">Adding a new component</h2>
 <ol>
-<li>Create <code>modules/base/&lt;component&gt;/</code> with <code>main.tf</code>, <code>variables.tf</code>, <code>outputs.tf</code>, and <code>README.md</code>.</li>
+<li>Create <code>modules/base/&lt;component&gt;/</code> with <code>main.tf</code>, <code>variables.tf</code>, <code>outputs.tf</code>, <code>versions.tf</code>, and <code>README.md</code>.</li>
 <li>Put it through the promotion gate on its own, before anything references it (Module 11).</li>
 <li>Call it from the composition: add the <code>module</code> block, add any IAM or networking it needs, and expose new outputs.</li>
 <li>If the environment has new inputs to supply, add them to its <code>variables.tf</code> and <code>terraform.tfvars</code>.</li>

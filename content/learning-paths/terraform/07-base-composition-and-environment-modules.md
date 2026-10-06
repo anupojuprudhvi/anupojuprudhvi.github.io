@@ -45,7 +45,7 @@ terraform/
 │       ├── variables.tf
 │       ├── outputs.tf
 │       ├── providers.tf
-│       ├── version.tf
+│       ├── versions.tf
 │       ├── terraform.tfvars
 │       ├── .terraform.lock.hcl
 │       └── docs/
@@ -57,6 +57,7 @@ terraform/
     │   │   ├── main.tf
     │   │   ├── variables.tf
     │   │   ├── outputs.tf
+    │   │   ├── versions.tf
     │   │   ├── README.md
     │   │   └── tests/          # terraform test (Module 09)
     │   ├── glue-etl/
@@ -69,6 +70,7 @@ terraform/
             ├── locals.tf
             ├── iam.tf
             ├── networking.tf
+            ├── versions.tf
             └── README.md
 ```
 
@@ -112,7 +114,7 @@ Every file has one job, and the same file name means the same thing wherever it 
 | `networking.tf` | composition | VPC, subnet, and security group wiring |
 | `data.tf` | environment | Lookups of things that already exist: the VPC, a KMS key, the account |
 | `providers.tf` | environment | Provider and backend configuration |
-| `version.tf` | environment | The exact Terraform and provider versions used to apply |
+| `versions.tf` | all three layers | In modules, the provider versions they accept. In an environment, the exact versions it applies with (Module 08) |
 | `terraform.tfvars` | environment | This environment's values |
 | `README.md` | base, composition | Purpose, inputs and outputs table, and a usage example |
 
@@ -205,7 +207,7 @@ Sometimes an environment genuinely needs a different shape, not just different v
 
 ## Workflow · Adding a new component
 
-1. Create `modules/base/<component>/` with `main.tf`, `variables.tf`, `outputs.tf`, and `README.md`.
+1. Create `modules/base/<component>/` with `main.tf`, `variables.tf`, `outputs.tf`, `versions.tf`, and `README.md`.
 2. Put it through the promotion gate on its own, before anything references it (Module 11).
 3. Call it from the composition: add the `module` block, add any IAM or networking it needs, and expose new outputs.
 4. If the environment has new inputs to supply, add them to its `variables.tf` and `terraform.tfvars`.

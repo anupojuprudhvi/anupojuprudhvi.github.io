@@ -45,7 +45,7 @@
         "datePublished": "2026-09-17",
         "dateModified": "2026-10-01",
         "hasPart": [{"@type":"TechArticle","position":1,"name":"Enterprise Repository & Module Layout","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/01-enterprise-module-design.html"},{"@type":"TechArticle","position":2,"name":"State Isolation, Remote Locking & Blast Radius Control","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/02-state-isolation-and-locking.html"},{"@type":"TechArticle","position":3,"name":"Modern HCL — Types, Validations & Preconditions","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/03-variables-validation-and-types.html"},{"@type":"TechArticle","position":4,"name":"Zero-Plaintext Secret Architecture","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/04-secrets-and-sensitive-values.html"},{"@type":"TechArticle","position":5,"name":"Zero-Downtime Refactoring with Moved & Import Blocks","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/05-refactoring-with-moved-blocks.html"},{"@type":"TechArticle","position":6,"name":"CI/CD Guardrails — TFLint, Checkov & Plan Automation","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/06-ci-cd-security-linting-testing.html"},{"@type":"TechArticle","position":7,"name":"Base, Composition & Environment: A Three-Layer Module Standard","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/07-base-composition-and-environment-modules.html"},{"@type":"TechArticle","position":8,"name":"Naming, Tagging & Provider Versions Across a Module Tree","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/08-naming-tagging-and-provider-versions.html"},{"@type":"TechArticle","position":9,"name":"The Change Workflow & Module Testing","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/09-change-workflow-and-module-testing.html"},{"@type":"TechArticle","position":10,"name":"ADRs & Changelogs: Recording Why the Infrastructure Looks This Way","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/10-adrs-and-changelogs.html"},{"@type":"TechArticle","position":11,"name":"The Module Promotion Gate: Scan Before You Wire","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/11-module-promotion-gate.html"}],
-        "keywords": "Terraform 1.10+, AWS, HCL, terraform test, Checkov, TFLint, ADRs"
+        "keywords": "Terraform 1.11+, AWS, HCL, terraform test, Checkov, TFLint, ADRs"
       }
     </script>
     <script src="../../assets/theme.js"></script>
@@ -177,22 +177,17 @@
 <div class="wrap">
 <div class="section-eyebrow">Overview</div>
 <h2>Beyond the basics</h2>
-<p>Most tutorials teach you how to write an <code>aws_instance</code> block. In real enterprise production, compute is the easy part.</p>
-<p>The difficult challenges are:</p>
+<p>Most tutorials teach you how to write an <code>aws_instance</code> block. In real production, that's the easy part. The hard questions are:</p>
 <ul>
-<li>How do you structure repositories so 20+ engineers can contribute without creating state lock contention?</li>
-<li>How do you partition state so a bug in application compute cannot destroy database or networking infrastructure?</li>
-<li>How do you refactor resources across module boundaries with zero downtime?</li>
-<li>How do you enforce security and prevent hardcoded secrets from leaking into Git or plaintext state?</li>
-<li>How does a team deliver every module the same way, from design through testing and review to production?</li>
+<li>How do you lay out a repository so 20 engineers can work in it without blocking each other?</li>
+<li>How do you split state so a mistake in compute can't touch the database or the network?</li>
+<li>How do you restructure code without destroying and re-creating resources?</li>
+<li>How do you keep secrets out of Git and out of state?</li>
+<li>How does a team deliver every module the same way, from design to production?</li>
 </ul>
-<p>This learning path is a distillation of lessons learned building and governing multi-account AWS platforms across telecom, tolling, and healthcare.</p>
-<p>The track has two parts. <b>Part 1</b> teaches the production techniques one at a time. <b>Part 2</b> puts them together as one delivery process: how a team designs, builds, tests, records, reviews, and promotes every module the same way. It follows a real codebase standard for an AWS Glue and S3 data platform, with every name removed. The new modules end with a five-question <b>pop quiz</b>; score 4 out of 5 to pass.</p>
+<p>This track comes from building and running multi-account AWS platforms in telecom, tolling, and healthcare.</p>
+<p>The track has two parts. <b>Part 1</b> teaches the production techniques one at a time. <b>Part 2</b> puts them together as one delivery process: how a team designs, builds, tests, records, reviews, and promotes every module the same way. It follows a real codebase standard for an AWS Glue and S3 data platform, with every name removed. Each Part 2 module ends with a five-question <b>pop quiz</b>; score 4 out of 5 to pass.</p>
 <div class="callout"><b>Which path do I take?</b><ul><li><b>Building or changing one module</b> in a codebase that already exists? Start at <a href="07-base-composition-and-environment-modules.html">Module 07</a> and follow Part 2 in order. Your environments and their state layers stay as they are.</li><li><b>Starting a platform from scratch?</b> Begin with <a href="01-enterprise-module-design.html">Module 01</a> and <a href="02-state-isolation-and-locking.html">Module 02</a> to split state into layers and bootstrap the backend. Then build each layer&#39;s code through the Part 2 process.</li><li><b>Already running Terraform in production?</b> Go straight to <a href="11-module-promotion-gate.html">Module 11</a> for the whole process on one page, then back to whichever step you&#39;re missing.</li></ul></div>
-<figure class="flow">
-<figcaption class="flow-title">The delivery process Part 2 builds, one module at a time</figcaption>
-<div class="flow-body"><div class="flow-node"><strong>Design</strong><span>base or composition, and which layer of state (Modules 01, 07)</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">following</span></div><div class="flow-node"><strong>Conventions</strong><span>names, tags, provider versions (Module 08)</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">then</span></div><div class="flow-node"><strong>Build and test</strong><span>bottom-up, with terraform test beside each module (Module 09)</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">decisions recorded as they're made</span></div><div class="flow-node"><strong>Record</strong><span>ADRs and CHANGELOG entries (Module 10)</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">then</span></div><div class="flow-node is-key"><strong>Gate</strong><span>scanned alone, findings justified, approved by a second person (Module 11)</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">merged</span></div><div class="flow-node is-key"><strong>Promote</strong><span>wired in, scanned again, applied to dev, then the same shape to every environment (Modules 07, 11)</span></div></div>
-</figure>
 </div>
 </section>
 <section>
@@ -206,7 +201,7 @@
       <span class="lp-module-num">01</span>
       <div class="lp-module-body">
         <h3>Enterprise Repository &amp; Module Layout</h3>
-        <p>Distinguishing reusable child modules from root deployment environments and establishing strict version pinning.</p>
+        <p>Reusable child modules kept apart from the root deployments that use them, state split into layers, and exact version pins.</p>
       </div>
       <span class="lp-module-action">Start module →</span>
     </a>
@@ -216,7 +211,7 @@
       <span class="lp-module-num">02</span>
       <div class="lp-module-body">
         <h3>State Isolation, Remote Locking &amp; Blast Radius Control</h3>
-        <p>Hardening S3 &amp; DynamoDB backends, state layering strategies, and replacing remote_state traps with decoupled SSM contracts.</p>
+        <p>A secure S3 backend with native locking, state split into layers, and SSM parameters instead of remote_state.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>
@@ -226,7 +221,7 @@
       <span class="lp-module-num">03</span>
       <div class="lp-module-body">
         <h3>Modern HCL — Types, Validations &amp; Preconditions</h3>
-        <p>Building self-defending modules with rich object validation, lifecycle preconditions, and avoiding count index-shift catastrophes.</p>
+        <p>Modules that reject bad inputs at plan time, preconditions and postconditions, and why for_each beats count.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>
@@ -236,7 +231,7 @@
       <span class="lp-module-num">04</span>
       <div class="lp-module-body">
         <h3>Zero-Plaintext Secret Architecture</h3>
-        <p>Addressing state plaintext realities, generating dynamic database credentials, and replacing static access keys with OIDC roles.</p>
+        <p>Why sensitive = true doesn't protect state, letting AWS manage database passwords, and OIDC roles instead of access keys.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>
@@ -246,7 +241,7 @@
       <span class="lp-module-num">05</span>
       <div class="lp-module-body">
         <h3>Zero-Downtime Refactoring with Moved &amp; Import Blocks</h3>
-        <p>Safely restructuring state in code using declarative moved, import, and removed blocks with zero resource recreation.</p>
+        <p>Rename, restructure, adopt, and let go of resources with moved, import, and removed blocks, without re-creating anything.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>
@@ -256,7 +251,7 @@
       <span class="lp-module-num">06</span>
       <div class="lp-module-body">
         <h3>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</h3>
-        <p>Building a three-tier automated verification pipeline with static security scanning, PR plan comments, and scheduled drift detection.</p>
+        <p>Fast lint checks, Checkov security scanning, a plan posted on every pull request, and a nightly drift check.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
     </a>
@@ -349,7 +344,6 @@
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
-    <script src="../../assets/flow-player.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>
 </html>
