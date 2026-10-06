@@ -336,13 +336,14 @@ aws eks create-access-entry --cluster-name dev \
 </section>
 <section>
 <div class="wrap">
-<div class="section-eyebrow">Flow</div>
+<div class="section-eyebrow">Traffic</div>
 <h2 id="from-the-internet-to-a-pod-on-eks">From the internet to a pod on EKS</h2>
-<p>On EKS, the <b>AWS Load Balancer Controller</b> is the usual ingress controller. It watches Ingress objects and creates and configures an Application Load Balancer to match. Because pods have VPC IP addresses, the ALB can send each request straight to a pod.</p>
-<figure class="flow">
-<figcaption class="flow-title">A request from a user's browser to a pod on EKS</figcaption>
-<div class="flow-body"><div class="flow-group"><span class="flow-group-label">Internet</span><div class="flow-node"><strong>User</strong><span>https://api.example.com/orders</span></div></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">DNS resolves the name to the load balancer (Route 53, often kept in sync by ExternalDNS)</span></div><div class="flow-group"><span class="flow-group-label">Your VPC</span><div class="flow-node"><strong>Application Load Balancer</strong><span>terminates TLS with an ACM certificate, applies the Ingress rules</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">path /orders matches; target type &quot;ip&quot; sends the request straight to pod IPs</span></div><div class="flow-group"><span class="flow-group-label">EKS cluster</span><div class="flow-node is-key"><strong>orders-api pods</strong><span>only ready pods are registered as targets in the ALB's target group</span></div></div></div></div>
-</figure>
+<p>The request path is the same one you followed in <a href="06-services-and-cluster-networking.html">Services &amp; Cluster Networking</a>. On EKS, each step is an AWS service:</p>
+<ul>
+<li><b>DNS:</b> Route 53 resolves the name to the load balancer. ExternalDNS often keeps that record in sync.</li>
+<li><b>Load balancer:</b> the <b>AWS Load Balancer Controller</b>, the usual ingress controller on EKS, watches Ingress objects and creates an Application Load Balancer to match. The ALB ends TLS with an ACM certificate.</li>
+<li><b>Pods:</b> because pods have VPC IP addresses, target type <code>ip</code> lets the ALB send each request straight to a pod. Only ready pods are registered as targets.</li>
+</ul>
 <p>The AWS Load Balancer Controller, ExternalDNS, and the rest of what a cluster needs before apps arrive are installed in <a href="12-platform-add-ons.html">The Platform Add-on Layer</a>. How many ALBs to run is covered in <a href="14-ingress-architecture-and-cost.html">Ingress Architecture &amp; Cost</a>.</p>
 </div>
 </section>

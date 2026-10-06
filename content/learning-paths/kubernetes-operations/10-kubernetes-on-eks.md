@@ -85,24 +85,13 @@ aws eks create-access-entry --cluster-name dev \
 
 The two errors from the RBAC module mean specific things here. `Unauthorized` means your IAM identity has no access entry on this cluster, or your AWS credentials have expired. `forbidden` means you got in, but RBAC or the access policy doesn't allow that action. [Multi-Environment Clusters](11-multi-environment-clusters-and-access-entries.html) uses access entries to give each environment its own, separate set of permissions.
 
-## Flow · From the internet to a pod on EKS
+## Traffic · From the internet to a pod on EKS
 
-On EKS, the **AWS Load Balancer Controller** is the usual ingress controller. It watches Ingress objects and creates and configures an Application Load Balancer to match. Because pods have VPC IP addresses, the ALB can send each request straight to a pod.
+The request path is the same one you followed in [Services & Cluster Networking](06-services-and-cluster-networking.html). On EKS, each step is an AWS service:
 
-```flow
-title: A request from a user's browser to a pod on EKS
-group: Internet
-User | https://api.example.com/orders
-end
--> DNS resolves the name to the load balancer (Route 53, often kept in sync by ExternalDNS)
-group: Your VPC
-Application Load Balancer | terminates TLS with an ACM certificate, applies the Ingress rules
--> path /orders matches; target type "ip" sends the request straight to pod IPs
-group: EKS cluster
-* orders-api pods | only ready pods are registered as targets in the ALB's target group
-end
-end
-```
+- **DNS:** Route 53 resolves the name to the load balancer. ExternalDNS often keeps that record in sync.
+- **Load balancer:** the **AWS Load Balancer Controller**, the usual ingress controller on EKS, watches Ingress objects and creates an Application Load Balancer to match. The ALB ends TLS with an ACM certificate.
+- **Pods:** because pods have VPC IP addresses, target type `ip` lets the ALB send each request straight to a pod. Only ready pods are registered as targets.
 
 The AWS Load Balancer Controller, ExternalDNS, and the rest of what a cluster needs before apps arrive are installed in [The Platform Add-on Layer](12-platform-add-ons.html). How many ALBs to run is covered in [Ingress Architecture & Cost](14-ingress-architecture-and-cost.html).
 
