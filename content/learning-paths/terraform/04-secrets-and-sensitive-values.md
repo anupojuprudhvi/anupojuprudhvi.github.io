@@ -1,16 +1,24 @@
 ---
 title: Zero-Plaintext Secret Architecture
 date: 2026-09-17
-updated: 2026-10-01
+updated: 2026-10-06
 track: terraform
 order: 4
 module: 4
 summary: Why sensitive = true doesn't protect secrets in state, how to keep database passwords out of Terraform entirely, passing secret ARNs instead of values, and replacing static access keys with OIDC roles.
 level: Security & Compliance
-readingTime: 7 min read
+readingTime: 8 min read
 stack: [Terraform, AWS Secrets Manager, AWS KMS, IAM]
 tags: [security, secrets, sensitive-values, encryption, state-security]
 ---
+
+**In this module, you'll learn to:**
+
+- Explain why `sensitive = true` doesn't keep a secret out of state
+- Keep database passwords out of Terraform, and pass secret ARNs instead of values
+- Replace static access keys with OIDC roles, and harden access to state
+
+**Before you start:** read [State Isolation, Remote Locking & Blast Radius Control](02-state-isolation-and-locking.html). This module builds on its state bucket protections.
 
 ## Principle · The `sensitive = true` misconception
 
@@ -117,3 +125,48 @@ Some sensitive values will always end up in state, so protect the bucket as well
 - **A dedicated KMS key:** only the CI/CD roles and the read-only plan roles may decrypt state.
 - **Network limits:** allow state reads only through your VPC endpoint or from approved CI runners.
 - **Access logging:** turn on S3 data events in CloudTrail, and alert on unexpected `GetObject` calls to `*.tfstate`.
+
+## Recap · Key terms
+
+- **`sensitive = true`:** hides a value in CLI and CI output only. It's still plain text in state.
+- **`manage_master_user_password`:** RDS or Aurora creates the master password and keeps it in Secrets Manager. Terraform never sees it.
+- **`random_password`:** better than a typed-in password, but its result is still stored in state.
+- **Secret reference:** a secret's ARN, passed instead of its value. The workload reads the value at runtime with its own IAM role.
+- **OIDC federation:** a pipeline assumes a short-lived IAM role, limited by audience and subject, instead of using access keys.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+Q: A variable is marked `sensitive = true`. Where can its value still be read?
+- Nowhere; it's encrypted
+* In the state file, in plain text
+- Only in the plan output
+- Only in CloudTrail
+= `sensitive` only hides the value from terminal and CI output. Anyone who can read the state can read it.
+Q: How does `manage_master_user_password = true` keep the database password out of state?
+* RDS creates the password and keeps it in Secrets Manager, so Terraform never handles it
+- Terraform encrypts it before writing state
+- It moves the password to SSM Parameter Store
+- It marks the password as sensitive
+= A value Terraform never receives can't end up in state. Applications read it from Secrets Manager at runtime.
+Q: In the GitHub Actions OIDC trust policy, what does the `sub` condition limit?
+- The AWS region
+* Which repository and branch may assume the role
+- How long the session lasts
+- Which IAM user created the role
+= `repo:my-org/my-repo:ref:refs/heads/main` means only the main branch of that one repository can assume the role.
+S: A Glue job gets its database password from `data "aws_secretsmanager_secret_version"`, passed in `default_arguments`. What's wrong, and what's the fix?
+- Nothing; a data source only reads
+- Mark the argument `sensitive = true`
+* The password lands in state; pass the secret's ARN and let the job's role read it at runtime
+- Move the password into `terraform.tfvars`
+= Reading a secret into Terraform stores its value in state. Pass the ARN and grant the job's role `secretsmanager:GetSecretValue` on that one secret.
+S: A pipeline deploys with an IAM user whose `aws_iam_access_key` is created in Terraform. What do you replace it with?
+- The same key, rotated every 90 days
+- The key stored as a CI secret
+* An IAM role the pipeline assumes through OIDC, with no long-lived keys
+- The key output marked `sensitive`
+= The access key sits in state in plain text and never expires. OIDC gives the pipeline short-lived credentials instead.
+```

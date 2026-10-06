@@ -43,7 +43,7 @@
         "image": "https://anupojuprudhvi.github.io/assets/og/learning-paths/terraform.jpg",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/terraform/02-state-isolation-and-locking.html",
         "datePublished": "2026-09-17",
-        "dateModified": "2026-10-01",
+        "dateModified": "2026-10-06",
         "isPartOf": {"@type":"CreativeWorkSeries","name":"Terraform for Enterprise Production","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/index.html"},
         "position": 2,
         "keywords": "state-management, blast-radius, locking, security, isolation, Terraform, AWS S3, AWS KMS, IAM, SSM Parameter Store"
@@ -171,8 +171,8 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 02 of 11</span>
             <span><b>Level:</b> Core Architecture</span>
-            <span><b>Time:</b> 8 min read</span>
-            <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
+            <span><b>Time:</b> 9 min read</span>
+            <span><b>Updated:</b> <time datetime="2026-10-06">6 Oct 2026</time></span>
           </div>
         </div>
       </header>
@@ -185,7 +185,7 @@
               <ol class="lp-toc-list">
                 <li><a href="01-enterprise-module-design.html"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a></li>
                 <li class="is-current"><a href="02-state-isolation-and-locking.html" aria-current="page"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a>
-                <ol class="lp-toc-sections"><li><a href="#state-is-both-your-source-of-truth-and-a-risk">State is both your source of truth and a risk</a></li><li><a href="#a-secure-s3-backend-with-native-locking">A secure S3 backend with native locking</a></li><li><a href="#layering-state-to-control-blast-radius">Layering state to control blast radius</a></li><li><a href="#avoiding-the-terraform-remote-state-trap">Avoiding the terraform_remote_state trap</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#state-is-both-your-source-of-truth-and-a-risk">State is both your source of truth and a risk</a></li><li><a href="#a-secure-s3-backend-with-native-locking">A secure S3 backend with native locking</a></li><li><a href="#layering-state-to-control-blast-radius">Layering state to control blast radius</a></li><li><a href="#avoiding-the-terraform-remote-state-trap">Avoiding the terraform_remote_state trap</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="03-variables-validation-and-types.html"><span class="lp-toc-num">03</span><span>Modern HCL — Types, Validations &amp; Preconditions</span></a></li>
                 <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
                 <li><a href="05-refactoring-with-moved-blocks.html"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a></li>
@@ -226,6 +226,17 @@
             </nav>
             </details>
           <section>
+<div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Set up an S3 state backend with native locking, encryption, and least-privilege access</li>
+<li>Give every layer its own state, so a mistake in one can't reach the others</li>
+<li>Share values between layers through SSM Parameter Store instead of <code>terraform_remote_state</code></li>
+</ul>
+<p><b>Before you start:</b> read <a href="01-enterprise-module-design.html">Enterprise Repository &amp; Module Layout</a>. This module gives each of its layers a state of its own.</p>
+</div>
+</section>
+<section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
 <h2 id="state-is-both-your-source-of-truth-and-a-risk">State is both your source of truth and a risk</h2>
@@ -332,6 +343,62 @@ resource "aws_security_group" "app" {
 <p>Now each layer reads only the values it needs, IAM can grant access per parameter, and the parameter names form a clear, written contract between layers.</p>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>State file:</b> Terraform's record of which real resources belong to the code. It can hold secrets, so it's protected like one.</li>
+<li><b><code>use_lockfile</code>:</b> native S3 state locking, generally available from Terraform 1.11. It replaces the DynamoDB lock table.</li>
+<li><b>Blast radius:</b> how much one run can change. One state per layer keeps it to that layer.</li>
+<li><b><code>terraform_remote_state</code>:</b> reads another state's outputs, but needs read access to that whole state file.</li>
+<li><b>SSM parameter contract:</b> values one layer publishes by name and another reads, with IAM access per parameter.</li>
+<li><b><code>.terraform.lock.hcl</code>:</b> committed to Git. <code>.terraform/</code> and <code>*.tfstate</code> never are.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="0" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">From Terraform 1.11, what does <code>use_lockfile = true</code> on the S3 backend replace?</p>
+<ol class="lp-quiz-options" type="A"><li>The DynamoDB lock table</li><li>Bucket versioning</li><li>KMS encryption of the state</li><li>The <code>.terraform.lock.hcl</code> file</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The DynamoDB lock table</b></p><p class="lp-quiz-why">Native S3 locking uses conditional writes, so a separate DynamoDB table is no longer needed. The lock file is about provider versions, not state.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Why is <code>data &quot;terraform_remote_state&quot;</code> discouraged for sharing values between layers?</p>
+<ol class="lp-quiz-options" type="A"><li>It doesn't work with the S3 backend</li><li>The reader needs access to the whole other state file, and a renamed output breaks it</li><li>It's slower than reading SSM</li><li>It can read only one output</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The reader needs access to the whole other state file, and a renamed output breaks it</b></p><p class="lp-quiz-why">It couples layers tightly. SSM parameters expose only the values each layer needs, with access granted per parameter.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Which of these should be committed to Git?</p>
+<ol class="lp-quiz-options" type="A"><li><code>terraform.tfstate</code></li><li>The <code>.terraform/</code> directory</li><li><code>.terraform.lock.hcl</code></li><li><code>crash.log</code></li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b><code>.terraform.lock.hcl</code></b></p><p class="lp-quiz-why">The lock file makes every machine resolve the same provider versions. State and the local provider cache stay out of Git.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">Some CI runners still use the DynamoDB lock table, while others have moved to Terraform 1.11. How do you switch to native S3 locking safely?</p>
+<ol class="lp-quiz-options" type="A"><li>Switch every runner to <code>use_lockfile</code> today and delete the table</li><li>Set both <code>use_lockfile = true</code> and <code>dynamodb_table</code> until every runner is on 1.11 or later, then remove the table</li><li>Keep DynamoDB locking for good</li><li>Turn locking off during the migration</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Set both <code>use_lockfile = true</code> and <code>dynamodb_table</code> until every runner is on 1.11 or later, then remove the table</b></p><p class="lp-quiz-why">With both set, Terraform takes both locks, so old and new runners can't overlap. A backend change like this is recorded in an ADR.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">An engineer needs to run <code>terraform plan</code> for the <code>03-data</code> layer. What access should they get?</p>
+<ol class="lp-quiz-options" type="A"><li>Write access to the state bucket</li><li>Read-only access to that state, including <code>kms:Decrypt</code> on the state key</li><li>Full admin, because plan changes nothing</li><li>None; only CI may read state</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Read-only access to that state, including <code>kms:Decrypt</code> on the state key</b></p><p class="lp-quiz-why">Engineers get read-only access, enough for <code>terraform plan</code> and <code>terraform state show</code>. Only the pipeline and break-glass roles write state.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/terraform/01-enterprise-module-design.html">
           <span class="lp-nav-label">← Module 01</span>
           <span class="lp-nav-title">Enterprise Repository &amp; Module Layout</span>
@@ -366,6 +433,7 @@ resource "aws_security_group" "app" {
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>
 </html>

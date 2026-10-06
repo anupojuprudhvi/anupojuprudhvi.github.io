@@ -43,7 +43,7 @@
         "image": "https://anupojuprudhvi.github.io/assets/og/learning-paths/terraform.jpg",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/terraform/01-enterprise-module-design.html",
         "datePublished": "2026-09-17",
-        "dateModified": "2026-10-01",
+        "dateModified": "2026-10-06",
         "isPartOf": {"@type":"CreativeWorkSeries","name":"Terraform for Enterprise Production","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/index.html"},
         "position": 1,
         "keywords": "architecture, module-design, repo-structure, best-practices, Terraform, HCL, AWS"
@@ -171,8 +171,8 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 01 of 11</span>
             <span><b>Level:</b> Core Architecture</span>
-            <span><b>Time:</b> 8 min read</span>
-            <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
+            <span><b>Time:</b> 9 min read</span>
+            <span><b>Updated:</b> <time datetime="2026-10-06">6 Oct 2026</time></span>
           </div>
         </div>
       </header>
@@ -184,7 +184,7 @@
               <p class="lp-toc-part">Part 1 · Production techniques</p>
               <ol class="lp-toc-list">
                 <li class="is-current"><a href="01-enterprise-module-design.html" aria-current="page"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a>
-                <ol class="lp-toc-sections"><li><a href="#the-two-types-of-terraform-modules">The two types of Terraform modules</a></li><li><a href="#the-canonical-directory-layout">The canonical directory layout</a></li><li><a href="#exact-pins-in-roots-ranges-in-modules">Exact pins in roots, ranges in modules</a></li><li><a href="#anti-patterns-to-avoid">Anti-patterns to avoid</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#the-two-types-of-terraform-modules">The two types of Terraform modules</a></li><li><a href="#the-canonical-directory-layout">The canonical directory layout</a></li><li><a href="#exact-pins-in-roots-ranges-in-modules">Exact pins in roots, ranges in modules</a></li><li><a href="#anti-patterns-to-avoid">Anti-patterns to avoid</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="02-state-isolation-and-locking.html"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a></li>
                 <li><a href="03-variables-validation-and-types.html"><span class="lp-toc-num">03</span><span>Modern HCL — Types, Validations &amp; Preconditions</span></a></li>
                 <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
@@ -226,6 +226,17 @@
             </nav>
             </details>
           <section>
+<div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Keep reusable child modules apart from the root modules that deploy them</li>
+<li>Split each environment into numbered state layers, and explain what that protects</li>
+<li>Pin versions exactly in production roots and as ranges in child modules</li>
+</ul>
+<p><b>Before you start:</b> you should be comfortable writing basic Terraform: resources, variables, <code>terraform plan</code>, and <code>terraform apply</code>. This is the first module of the track.</p>
+</div>
+</section>
+<section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
 <h2 id="the-two-types-of-terraform-modules">The two types of Terraform modules</h2>
@@ -403,6 +414,61 @@ terraform {
 </ul>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>Child module:</b> a reusable blueprint driven by inputs. No backend, no account IDs, no environment names.</li>
+<li><b>Root module:</b> a real deployment. It sets the backend and provider, calls child modules, and passes in each environment's values.</li>
+<li><b>State layer:</b> a numbered root (<code>00-bootstrap</code> to <code>04-compute</code>) with its own state, its own lock, and its own CI role.</li>
+<li><b><code>~&gt;</code> constraint:</b> accepts compatible updates within a major version. <code>~&gt; 5.30</code> allows 5.30 and later 5.x, but not 6.0.</li>
+<li><b>Exact pin (<code>=</code>):</b> used in production roots, so a new provider release can't change a plan by surprise.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="0" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Which of these belongs in a root module, not in a reusable child module?</p>
+<ol class="lp-quiz-options" type="A"><li>The S3 backend configuration</li><li>A <code>variable</code> for the VPC CIDR</li><li>An <code>output</code> for the bucket ARN</li><li>A <code>versions.tf</code> with a provider range</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The S3 backend configuration</b></p><p class="lp-quiz-why">Root modules decide where state lives and which account and region to use. Child modules only take inputs and return outputs.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Why does an application team's CI role get access to <code>04-compute</code> only?</p>
+<ol class="lp-quiz-options" type="A"><li>Compute plans are faster</li><li>A mistake or a compromised pipeline can't change the networking or data layers</li><li>Terraform allows only one role per state file</li><li><code>04-compute</code> doesn't use a backend</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>A mistake or a compromised pipeline can't change the networking or data layers</b></p><p class="lp-quiz-why">Each layer has its own state and its own role, so a compute change can't reach the network or the database.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">A child module declares <code>version = &quot;~&gt; 5.30&quot;</code> for the AWS provider. Which version does it reject?</p>
+<ol class="lp-quiz-options" type="A"><li>5.30.2</li><li>5.48.0</li><li>6.0.0</li><li>5.99.0</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>6.0.0</b></p><p class="lp-quiz-why"><code>~&gt; 5.30</code> accepts 5.30 and any later 5.x release, but not the next major version.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">A teammate adds <code>var.env == &quot;prod&quot; ? 365 : 30</code> inside the shared <code>vpc</code> module to keep flow logs longer in production. What do you suggest instead?</p>
+<ol class="lp-quiz-options" type="A"><li>Keep it; it's the simplest change</li><li>A <code>flow_log_retention_days</code> input, set per environment in <code>.tfvars</code></li><li>A separate <code>vpc-prod</code> copy of the module</li><li>The longest retention for every environment</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>A <code>flow_log_retention_days</code> input, set per environment in <code>.tfvars</code></b></p><p class="lp-quiz-why">A module that checks environment names only works for the environments it knows. An input keeps it reusable, and each root decides its own value.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="0" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">Production plans suddenly show changes nobody made, right after someone pushed to a module repository's main branch. The root uses <code>source = &quot;git::https://.../vpc.git&quot;</code>. What's the fix?</p>
+<ol class="lp-quiz-options" type="A"><li>Pin the module source to a release tag such as <code>?ref=v1.4.2</code>, or a commit SHA</li><li>Run <code>terraform init -upgrade</code> before every plan</li><li>Pin the AWS provider version</li><li>Copy the module into the root</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Pin the module source to a release tag such as <code>?ref=v1.4.2</code>, or a commit SHA</b></p><p class="lp-quiz-why">Without a ref, every push to the module repository changes what production plans. Pin it, and upgrade on purpose.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/terraform/index.html">
           <span class="lp-nav-label">← Curriculum</span>
           <span class="lp-nav-title">Track Overview</span>
@@ -437,6 +503,7 @@ terraform {
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>
 </html>

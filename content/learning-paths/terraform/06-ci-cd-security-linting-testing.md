@@ -1,16 +1,24 @@
 ---
 title: CI/CD Guardrails — TFLint, Checkov & Plan Automation
 date: 2026-09-17
-updated: 2026-10-01
+updated: 2026-10-06
 track: terraform
 order: 6
 module: 6
 summary: A three-tier pipeline for Terraform: fast format and lint checks, Checkov security scanning, a plan posted on every pull request, and a nightly check for drift.
 level: DevOps & Governance
-readingTime: 9 min read
+readingTime: 10 min read
 stack: [Terraform, GitHub Actions, Checkov, TFLint, AWS]
 tags: [ci-cd, checkov, tflint, drift-detection, pipeline, automation]
 ---
+
+**In this module, you'll learn to:**
+
+- Order pipeline checks from fastest to slowest: format and lint, security scan, then plan
+- Configure TFLint and Checkov, and handle a finding with a fix or a recorded exception
+- Post plans on pull requests, apply the saved plan, and detect drift on a schedule
+
+**Before you start:** read [Zero-Plaintext Secret Architecture](04-secrets-and-sensitive-values.html). The pipeline here deploys through the OIDC role it describes.
 
 ## Principle · The three-tier verification pipeline
 
@@ -159,3 +167,48 @@ terraform plan -detailed-exitcode</code></pre>
 - **Exit code 0:** no changes. Real infrastructure matches the code.
 - **Exit code 2:** **drift found.** Send an alert to the team's channel or on-call tool, and decide whether to bring the change into code or undo it.
 - **Exit code 1:** the plan itself failed.
+
+## Recap · Key terms
+
+- **TFLint:** a linter that knows the AWS provider, catching mistakes `terraform validate` can't, such as invalid instance types.
+- **Checkov:** a security scanner for infrastructure code. A required check in branch protection blocks the merge on a finding.
+- **Scoped skip:** `checkov:skip=<ID>:<reason>` on one resource, naming its ADR. Preferred over a global skip.
+- **Saved plan:** `terraform plan -out=tfplan`, reviewed on the pull request and applied as-is. Terraform refuses it if the state has changed since.
+- **Drift detection:** a scheduled `terraform plan -detailed-exitcode`. Exit code 2 means the real infrastructure differs from the code.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+Q: Why do `terraform fmt`, `terraform validate`, and TFLint run before the plan?
+* They take seconds and catch simple mistakes before the slower steps run
+- The plan needs their output
+- Checkov requires them
+- They need AWS credentials first
+= Fastest checks first: a formatting slip fails in seconds instead of after a full scan and plan.
+Q: A scheduled `terraform plan -detailed-exitcode` returns 2. What does that mean?
+- The plan failed
+- No changes
+* Drift: the real infrastructure differs from the code
+- Another run holds the state lock
+= 0 means no changes, 1 means the plan failed, and 2 means there are changes to bring into code or undo.
+Q: Checkov flags a nonprod bucket without access logging, and the team accepts the risk. How should it pass?
+- Set `soft-fail: true`
+- Remove the Checkov step for nonprod
+* Write an ADR, add a scoped `checkov:skip` that names it, and log it in the CHANGELOG
+- Add the check to the global skip list
+= A finding that can't be fixed is accepted on the record, for that one resource, and never by switching the check off.
+S: The plan step pipes its output into `tee`, and a broken plan still shows a green check. What's missing?
+* `set -o pipefail`, so the plan's failure isn't hidden by the pipe
+- `-no-color`
+- `-detailed-exitcode`
+- A longer PR comment
+= Without `pipefail`, the step's exit code is `tee`'s, which succeeds even when the plan fails.
+S: A pull request's plan was approved yesterday. Overnight, another change was applied to the same state. What happens when the deploy job applies the saved plan?
+- It applies anyway
+- It merges both changes
+* Terraform refuses the stale plan, and a fresh plan has to be made and reviewed
+- It undoes the overnight change
+= A saved plan applies only to the state it was made from. If the state has moved on, Terraform rejects it.
+```

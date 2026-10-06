@@ -43,7 +43,7 @@
         "image": "https://anupojuprudhvi.github.io/assets/og/learning-paths/terraform.jpg",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/terraform/03-variables-validation-and-types.html",
         "datePublished": "2026-09-17",
-        "dateModified": "2026-09-17",
+        "dateModified": "2026-10-06",
         "isPartOf": {"@type":"CreativeWorkSeries","name":"Terraform for Enterprise Production","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/index.html"},
         "position": 3,
         "keywords": "hcl, validations, preconditions, types, for-each, Terraform 1.5+, HCL, AWS"
@@ -171,8 +171,8 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 03 of 11</span>
             <span><b>Level:</b> Core Architecture</span>
-            <span><b>Time:</b> 7 min read</span>
-            <span><b>Published:</b> <time datetime="2026-09-17">17 Sep 2026</time></span>
+            <span><b>Time:</b> 8 min read</span>
+            <span><b>Updated:</b> <time datetime="2026-10-06">6 Oct 2026</time></span>
           </div>
         </div>
       </header>
@@ -186,7 +186,7 @@
                 <li><a href="01-enterprise-module-design.html"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a></li>
                 <li><a href="02-state-isolation-and-locking.html"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a></li>
                 <li class="is-current"><a href="03-variables-validation-and-types.html" aria-current="page"><span class="lp-toc-num">03</span><span>Modern HCL — Types, Validations &amp; Preconditions</span></a>
-                <ol class="lp-toc-sections"><li><a href="#catch-bad-inputs-before-they-reach-aws">Catch bad inputs before they reach AWS</a></li><li><a href="#custom-variable-validation-blocks">Custom variable validation blocks</a></li><li><a href="#lifecycle-preconditions-postconditions">Lifecycle preconditions &amp; postconditions</a></li><li><a href="#the-count-index-shift-trap">The count index-shift trap</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#catch-bad-inputs-before-they-reach-aws">Catch bad inputs before they reach AWS</a></li><li><a href="#custom-variable-validation-blocks">Custom variable validation blocks</a></li><li><a href="#lifecycle-preconditions-postconditions">Lifecycle preconditions &amp; postconditions</a></li><li><a href="#the-count-index-shift-trap">The count index-shift trap</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
                 <li><a href="05-refactoring-with-moved-blocks.html"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a></li>
                 <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a></li>
@@ -226,6 +226,17 @@
             </nav>
             </details>
           <section>
+<div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Give module inputs types and validation blocks, so bad values fail at <code>terraform plan</code></li>
+<li>Check assumptions around a resource with preconditions and postconditions</li>
+<li>Choose <code>for_each</code> with stable keys over <code>count</code>, so removing one item doesn't replace the others</li>
+</ul>
+<p><b>Before you start:</b> read <a href="01-enterprise-module-design.html">Enterprise Repository &amp; Module Layout</a>. The checks here go into its child modules.</p>
+</div>
+</section>
+<section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
 <h2 id="catch-bad-inputs-before-they-reach-aws">Catch bad inputs before they reach AWS</h2>
@@ -354,6 +365,62 @@ resource "aws_subnet" "this" {
 <p>With <code>for_each</code>, removing <code>&quot;app-us-east-1a&quot;</code> destroys only that subnet. The other two keep their keys, so nothing else changes.</p>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>Validation block:</b> a <code>condition</code> and an <code>error_message</code> on a variable. A bad value fails the plan with that message.</li>
+<li><b><code>can()</code> and <code>try()</code>:</b> turn an error into <code>false</code> or a fallback, so a malformed value shows your message instead of a crash.</li>
+<li><b>Precondition:</b> checks an assumption before a resource is created, using data sources and other values.</li>
+<li><b>Postcondition:</b> checks the result after the resource is created, through <code>self</code>.</li>
+<li><b><code>count</code> index shift:</b> resources known by position are replaced when an item earlier in the list is removed.</li>
+<li><b><code>for_each</code>:</b> resources known by a stable key, so removing one item touches only that item.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="0" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">When does a failing variable <code>validation</code> block stop a change?</p>
+<ol class="lp-quiz-options" type="A"><li>At <code>terraform plan</code>, before anything is changed</li><li>At apply, after some resources exist</li><li>When the AWS API rejects the request</li><li>During <code>terraform fmt</code></li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>At <code>terraform plan</code>, before anything is changed</b></p><p class="lp-quiz-why">Validation runs while Terraform evaluates the inputs, so the plan fails with your message and nothing reaches AWS.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">What's the difference between a precondition and a postcondition?</p>
+<ol class="lp-quiz-options" type="A"><li>Preconditions are for variables, postconditions for outputs</li><li>A precondition checks an assumption before the resource is created; a postcondition checks the result after</li><li>Postconditions only run in CI</li><li>None; they're two names for the same check</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>A precondition checks an assumption before the resource is created; a postcondition checks the result after</b></p><p class="lp-quiz-why">Both live in a resource's <code>lifecycle</code> block. One guards the inputs to the resource, the other its outcome.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Why is the CIDR prefix check wrapped in <code>try(..., false)</code>?</p>
+<ol class="lp-quiz-options" type="A"><li>To make the plan faster</li><li>To let any CIDR through</li><li>So a malformed value fails with the validation's own error message instead of a crash</li><li>Every validation must use <code>try()</code></li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>So a malformed value fails with the validation's own error message instead of a crash</b></p><p class="lp-quiz-why">Splitting a malformed CIDR would raise an error of its own. <code>try()</code> turns that into <code>false</code>, so the clear message shows instead.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">Three subnets are created with <code>count</code> over a list. You remove the first CIDR. What does the plan show?</p>
+<ol class="lp-quiz-options" type="A"><li>One subnet destroyed, nothing else</li><li>Two subnets replaced and one destroyed</li><li>No changes</li><li>An error</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Two subnets replaced and one destroyed</b></p><p class="lp-quiz-why">Every subnet after the removed one shifts down a position and gets a different CIDR, so it's replaced. The last position no longer exists, so it's destroyed.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">You need to switch that resource from <code>count</code> to <code>for_each</code> in production without replacing any subnet. What's the safe way?</p>
+<ol class="lp-quiz-options" type="A"><li>Destroy the subnets and let <code>for_each</code> create new ones</li><li>Run <code>terraform state rm</code> on each subnet</li><li>Switch to <code>for_each</code> with stable keys and add <code>moved</code> blocks from each index to its key (Module 05)</li><li>Apply one subnet at a time with <code>-target</code></li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Switch to <code>for_each</code> with stable keys and add <code>moved</code> blocks from each index to its key (Module 05)</b></p><p class="lp-quiz-why">A <code>moved</code> block from <code>aws_subnet.this[0]</code> to <code>aws_subnet.this[&quot;app-us-east-1a&quot;]</code> tells Terraform it's the same subnet, so the plan shows a move, not a replacement.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/terraform/02-state-isolation-and-locking.html">
           <span class="lp-nav-label">← Module 02</span>
           <span class="lp-nav-title">State Isolation, Remote Locking &amp; Blast Radius Control</span>
@@ -388,6 +455,7 @@ resource "aws_subnet" "this" {
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>
 </html>

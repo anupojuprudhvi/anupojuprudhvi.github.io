@@ -1,16 +1,24 @@
 ---
 title: Enterprise Repository & Module Layout
 date: 2026-09-17
-updated: 2026-10-01
+updated: 2026-10-06
 track: terraform
 order: 1
 module: 1
 summary: How to lay out a Terraform codebase for a team: reusable child modules kept apart from the root deployments that use them, state split into layers, and versions pinned so plans don't change by surprise.
 level: Core Architecture
-readingTime: 8 min read
+readingTime: 9 min read
 stack: [Terraform, HCL, AWS]
 tags: [architecture, module-design, repo-structure, best-practices]
 ---
+
+**In this module, you'll learn to:**
+
+- Keep reusable child modules apart from the root modules that deploy them
+- Split each environment into numbered state layers, and explain what that protects
+- Pin versions exactly in production roots and as ranges in child modules
+
+**Before you start:** you should be comfortable writing basic Terraform: resources, variables, `terraform plan`, and `terraform apply`. This is the first module of the track.
 
 ## Principle · The two types of Terraform modules
 
@@ -178,3 +186,48 @@ Writing `if var.env == "prod"` inside a reusable module.
 Referencing modules using `source = "git::https://github.com/.../my-module.git"` without a tag or commit ref.
 - **Why it fails:** Any push to `main` in the module repo immediately changes future plans in production.
 - **Fix:** always pin to a release tag such as `?ref=v1.4.2`, or a commit SHA.
+
+## Recap · Key terms
+
+- **Child module:** a reusable blueprint driven by inputs. No backend, no account IDs, no environment names.
+- **Root module:** a real deployment. It sets the backend and provider, calls child modules, and passes in each environment's values.
+- **State layer:** a numbered root (`00-bootstrap` to `04-compute`) with its own state, its own lock, and its own CI role.
+- **`~>` constraint:** accepts compatible updates within a major version. `~> 5.30` allows 5.30 and later 5.x, but not 6.0.
+- **Exact pin (`=`):** used in production roots, so a new provider release can't change a plan by surprise.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+Q: Which of these belongs in a root module, not in a reusable child module?
+* The S3 backend configuration
+- A `variable` for the VPC CIDR
+- An `output` for the bucket ARN
+- A `versions.tf` with a provider range
+= Root modules decide where state lives and which account and region to use. Child modules only take inputs and return outputs.
+Q: Why does an application team's CI role get access to `04-compute` only?
+- Compute plans are faster
+* A mistake or a compromised pipeline can't change the networking or data layers
+- Terraform allows only one role per state file
+- `04-compute` doesn't use a backend
+= Each layer has its own state and its own role, so a compute change can't reach the network or the database.
+Q: A child module declares `version = "~> 5.30"` for the AWS provider. Which version does it reject?
+- 5.30.2
+- 5.48.0
+* 6.0.0
+- 5.99.0
+= `~> 5.30` accepts 5.30 and any later 5.x release, but not the next major version.
+S: A teammate adds `var.env == "prod" ? 365 : 30` inside the shared `vpc` module to keep flow logs longer in production. What do you suggest instead?
+- Keep it; it's the simplest change
+* A `flow_log_retention_days` input, set per environment in `.tfvars`
+- A separate `vpc-prod` copy of the module
+- The longest retention for every environment
+= A module that checks environment names only works for the environments it knows. An input keeps it reusable, and each root decides its own value.
+S: Production plans suddenly show changes nobody made, right after someone pushed to a module repository's main branch. The root uses `source = "git::https://.../vpc.git"`. What's the fix?
+* Pin the module source to a release tag such as `?ref=v1.4.2`, or a commit SHA
+- Run `terraform init -upgrade` before every plan
+- Pin the AWS provider version
+- Copy the module into the root
+= Without a ref, every push to the module repository changes what production plans. Pin it, and upgrade on purpose.
+```
