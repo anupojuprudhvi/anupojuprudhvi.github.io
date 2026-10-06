@@ -60,6 +60,7 @@ export function serve(port = 4173) {
             ".svg": "image/svg+xml",
             ".png": "image/png",
             ".jpg": "image/jpeg",
+            ".woff2": "font/woff2",
             ".xml": "application/xml; charset=utf-8",
             ".txt": "text/plain; charset=utf-8",
           }[path.extname(filename)] || "application/octet-stream",
