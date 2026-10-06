@@ -480,6 +480,7 @@ ${enables}
       }
     </script>
     <script src="${a("assets/theme.js")}"></script>
+    <link rel="preload" href="${a("assets/fonts/inter-latin-wght-normal.woff2")}" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="${a("assets/site.css")}" />
     <link rel="stylesheet" href="${a("assets/deepdive.css")}" />
     <link rel="stylesheet" href="${a("assets/case-study.css")}" />
@@ -632,6 +633,7 @@ export function libraryPage(items, { toolbox = [], toolsByUrl = new Map() } = {}
     }).replace(/</g, "\\u003c")}</script>
     <script type="application/ld+json">${breadcrumbLd([["Home", `${SITE}/`], ["Case studies", `${SITE}/case-studies/`]])}</script>
     <script src="../assets/theme.js"></script>
+    <link rel="preload" href="../assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="../assets/site.css" />
     <link rel="stylesheet" href="../assets/library.css" />
     <link rel="stylesheet" href="../assets/assistant.css" />
@@ -868,6 +870,7 @@ export function learningPathPage(d, bodyHtml, { up, url, prev, next, track, docs
       }
     </script>
     <script src="${a("assets/theme.js")}"></script>
+    <link rel="preload" href="${a("assets/fonts/inter-latin-wght-normal.woff2")}" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="${a("assets/site.css")}" />
     <link rel="stylesheet" href="${a("assets/deepdive.css")}" />
     <link rel="stylesheet" href="${a("assets/learning-path.css")}" />
