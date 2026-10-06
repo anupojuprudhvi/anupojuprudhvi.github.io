@@ -3,6 +3,11 @@ import { motifFor, motifSvg } from "./motifs.mjs";
 
 export const SITE = "https://anupojuprudhvi.github.io";
 
+/** The footer's copyright year. scripts/build.mjs sets it to the year of the
+ *  newest content date, so the output never depends on the clock (a rebuild
+ *  in January doesn't change every page) yet still moves on with the site. */
+export const SITE_META = { year: "2026" };
+
 /**
  * Security policy for every page. GitHub Pages can't send custom response
  * headers, so the Content-Security-Policy is delivered as a <meta> tag: scripts
@@ -119,8 +124,9 @@ function learningPathsNavDropdown({ prefix = "", current = false } = {}) {
 
 /* ------------------------------------------------- Unified Site Top Navigation */
 /**
- * One navigation bar for every page. `home: true` swaps in the homepage's
- * in-page anchors (Approach, About). On small screens the links collapse
+ * One navigation bar for every page, with the same links everywhere. On the
+ * homepage (`home: true`) they're in-page anchors; elsewhere they point back
+ * to the homepage sections. On small screens the links collapse
  * behind a Menu button (wired in assets/theme.js); without JavaScript the
  * links simply stay visible, so navigation never depends on scripts.
  */
@@ -132,11 +138,9 @@ export function siteTopNav({
 } = {}) {
   const a = (p) => `${up}${p}`;
   const page = home ? "" : a("index.html");
-  const homeAnchors = home
-    ? `
-          <a href="#approach">Approach</a>
-          <a href="#background">About</a>`
-    : "";
+  const homeAnchors = `
+          <a href="${page}#approach">Approach</a>
+          <a href="${page}#background">About</a>`;
   return `    <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
         <a class="brand" href="${home ? "#top" : a("index.html")}">Prudhvi Raj Anupoju</a>
@@ -146,7 +150,7 @@ export function siteTopNav({
           ${learningPathsNavDropdown({ prefix: a("learning-paths/"), current: active === "learning-paths" })}${homeAnchors}
           <a href="${page}#contact" class="nav-cta">Let's connect</a>
         </div>
-        <a class="nav-icon" href="https://www.linkedin.com/in/prudhvi-raj-anupoju/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile (opens in a new tab)"><span aria-hidden="true">in</span></a>
+        <a class="nav-icon" href="https://www.linkedin.com/in/prudhvi-raj-anupoju/" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">in</span><span class="sr-only">LinkedIn profile (opens in a new tab)</span></a>
         <button id="themeToggle" type="button" aria-label="Switch to light theme">☼</button>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNavLinks" aria-label="Open menu">
           <span class="nav-toggle-bars" aria-hidden="true"></span>
@@ -169,7 +173,7 @@ export function toolboxSection(toolbox) {
   const SHOWN_PER_LAYER = 4;
   const chip = (t) => {
     const n = t.studies.length;
-    return `<li><a class="tool-chip" href="case-studies/index.html?tool=${esc(t.slug)}" aria-label="${esc(t.name)}, ${n} case ${n === 1 ? "study" : "studies"}">${esc(t.name)}<span class="tool-count" aria-hidden="true">${n}</span></a></li>`;
+    return `<li><a class="tool-chip" href="case-studies/index.html?tool=${esc(t.slug)}">${esc(t.name)}<span class="sr-only">, </span><span class="tool-count">${n}</span><span class="sr-only"> case ${n === 1 ? "study" : "studies"}</span></a></li>`;
   };
   const layers = toolbox
     .map((layer) => {
@@ -535,7 +539,7 @@ ${rest.replace(/<pre(?![^>]*tabindex)/g, '<pre tabindex="0"')}${learning.length 
     </main>
     <footer>
       <div class="wrap footer-inner">
-        <span>© 2026 Prudhvi Raj Anupoju</span
+        <span>© ${SITE_META.year} Prudhvi Raj Anupoju</span
         ><a href="${a("learning-paths/index.html")}">Learning paths ↗</a
         ><a href="${a("case-studies/index.html")}">Case studies ↗</a
         ><a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a
@@ -705,7 +709,7 @@ ${cards}
     </main>
     <footer>
       <div class="wrap footer-inner">
-        <span>© 2026 Prudhvi Raj Anupoju</span
+        <span>© ${SITE_META.year} Prudhvi Raj Anupoju</span
         ><a href="../learning-paths/index.html">Learning paths ↗</a
         ><a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a
         ><a href="../index.html#work">Selected work ↗</a
@@ -930,7 +934,7 @@ ${siteTopNav({ docs, up, active: "learning-paths" })}
     </main>
     <footer>
       <div class="wrap footer-inner">
-        <span>© 2026 Prudhvi Raj Anupoju</span>
+        <span>© ${SITE_META.year} Prudhvi Raj Anupoju</span>
         <a href="${a("learning-paths/index.html")}">Learning paths ↗</a>
         <a href="${a("case-studies/index.html")}">Case studies ↗</a>
         <a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a>

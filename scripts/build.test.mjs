@@ -182,7 +182,7 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
     // Toolbox: every tool links to the library filtered to it, the library
     // cards carry the matching tool slugs, and a tool with no case study fails.
     succeeds();
-    assert.match(read("index.html"), /<a class="tool-chip" href="case-studies\/index\.html\?tool=terraform" aria-label="Terraform, \d+ case studies">/);
+    assert.match(read("index.html"), /<a class="tool-chip" href="case-studies\/index\.html\?tool=terraform">Terraform<span class="sr-only">, <\/span><span class="tool-count">\d+<\/span><span class="sr-only"> case studies<\/span><\/a>/);
     assert.match(read("case-studies/index.html"), /data-tools="[^"]*\bterraform\b/);
     const toolboxSource = read("content/toolbox.json");
     const toolboxData = JSON.parse(toolboxSource);

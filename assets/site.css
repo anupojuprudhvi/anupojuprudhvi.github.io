@@ -168,6 +168,24 @@ summary {
     opacity: 0;
   }
 }
+/* Text for screen readers only. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+/* Keep screen-reader text inside its link, so it can't stretch a scrolling
+   row (the toolbox) or the page sideways. */
+.tool-chip,
+.nav-icon {
+  position: relative;
+}
 .skip-link {
   position: fixed;
   left: 20px;
@@ -1329,10 +1347,10 @@ footer {
     gap: 24px;
   }
 }
-@media (max-width: 640px) {
-  .wrap {
-    padding: 0 22px;
-  }
+/* Below 1024px the full row of links no longer fits beside the name, so
+   they collapse behind the Menu button (the same as on phones) instead of
+   wrapping onto two or three lines. */
+@media (max-width: 1023px) {
   .nav-inner {
     gap: 12px;
     min-height: 72px;
@@ -1418,6 +1436,11 @@ footer {
   .nav-dropdown:focus-within .nav-dropdown-menu,
   .nav-dropdown.is-open .nav-dropdown-menu {
     transform: none;
+  }
+}
+@media (max-width: 640px) {
+  .wrap {
+    padding: 0 22px;
   }
   .hero {
     padding-top: 45px;
