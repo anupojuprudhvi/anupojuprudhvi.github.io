@@ -108,6 +108,9 @@
 }
 .hubwrap {
   margin: 28px 0;
+  /* The SVG scales with its box; on wide pages keep it at reading width so
+     its labels stay close to the size they were drawn at. */
+  max-width: var(--measure, 860px);
 }
 .hub-svg {
   width: 100%;
@@ -371,8 +374,15 @@ pre.code {
 .lg-internal {
   border-top-style: solid;
 }
+/* Reading pages share the homepage width (--maxw from site.css), so the
+   logo, breadcrumb, title, and content line up on every page. Running text
+   keeps a comfortable line length (--measure); figures, tables, cards, and
+   diagrams use the full width. */
 .deepdive {
-  --maxw: 920px;
+  --measure: 860px;
+}
+.deepdive main :is(p, ul:not([class]), ol:not([class]), dl, blockquote, h2, h3, h4, .callout) {
+  max-width: var(--measure);
 }
 .deepdive .topnav .wrap {
   max-width: var(--site-maxw);
