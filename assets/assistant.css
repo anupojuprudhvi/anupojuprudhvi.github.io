@@ -39,6 +39,33 @@
 .ask-launcher:hover {
   background: var(--accent-soft);
 }
+.ask-launcher-icon {
+  display: none;
+  flex: none;
+}
+/* Below 1760px the full pill would cover the right edge of the content
+   column (cards, tables, links), so it shrinks to a round icon button. The
+   label is kept for screen readers; the title attribute shows it on hover. */
+@media (max-width: 1759px) {
+  .ask-launcher {
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    justify-content: center;
+  }
+  .ask-launcher-icon {
+    display: block;
+  }
+  .ask-launcher-label,
+  .ask-launcher kbd {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
 .ask-launcher kbd {
   font:
     10px ui-monospace,
@@ -484,11 +511,6 @@
   .ask-launcher {
     right: 14px;
     bottom: 14px;
-    padding: 11px 15px;
-    font-size: 12px;
-  }
-  .ask-launcher kbd {
-    display: none;
   }
   .ask-backdrop {
     padding: 0;
