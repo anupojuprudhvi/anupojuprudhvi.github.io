@@ -42,9 +42,12 @@
   const launcher = document.createElement("button");
   launcher.className = "ask-launcher";
   launcher.type = "button";
-  launcher.innerHTML = `Ask or message me <kbd>${
+  // The icon shows on its own below 1760px (CSS), where the full pill would
+  // sit on top of page content; the label stays as the accessible name.
+  launcher.innerHTML = `<svg class="ask-launcher-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.2 3.6c-.5.4-1.3.1-1.3-.6V16A2.5 2.5 0 0 1 4 13.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span class="ask-launcher-label">Ask or message me</span> <kbd>${
     navigator.platform.toLowerCase().includes("mac") ? "⌘" : "Ctrl"
   } K</kbd>`;
+  launcher.title = "Ask or message me";
   launcher.setAttribute("aria-haspopup", "dialog");
 
   const backdrop = document.createElement("div");
