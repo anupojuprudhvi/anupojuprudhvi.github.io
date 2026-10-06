@@ -5,7 +5,6 @@
       "tools": [
         { "name": "Terraform" },
         { "name": "GitHub Actions", "match": ["GitHub Environments"] },
-        { "name": "Argo CD", "match": ["ArgoCD", "ArgoCD GitOps"] },
         { "name": "Jenkins" },
         { "name": "Amazon ECR", "match": ["AWS ECR"] }
       ]
@@ -16,7 +15,6 @@
         { "name": "Amazon EKS", "match": ["EKS"] },
         { "name": "Karpenter" },
         { "name": "AWS Load Balancer Controller" },
-        { "name": "External Secrets" },
         { "name": "Docker Compose" },
         { "name": "VMware Tanzu" }
       ]

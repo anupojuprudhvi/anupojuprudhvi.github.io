@@ -1,11 +1,11 @@
 [
   {
-    "slug": "nexuscore-ai-workforce-operating-system",
+    "slug": "ai-assisted-hrms-tool",
     "project": "independent-products",
-    "tag": "AI platform",
+    "tag": "AI-assisted product",
     "badge": "Latest",
-    "title": "NexusCore AI: joiners, movers & leavers",
-    "desc": "Account and access changes for joiners, movers, and leavers, run as reliable Temporal workflows, with offboarding in under 5 seconds and a policy assistant that cites its sources."
+    "title": "An AI-assisted HRMS tool",
+    "desc": "Leave, attendance, shifts, timesheets, and policy documents in one simple tool, with an assistant that quotes the handbook and the page."
   },
   {
     "slug": "s3-large-scale-bucket-migration",

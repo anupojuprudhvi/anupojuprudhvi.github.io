@@ -6,7 +6,7 @@
     <description>Enterprise cloud architecture case studies and hands-on learning paths covering governance, resilience, Kubernetes, Terraform, migration, and cost optimization.</description>
     <language>en</language>
     <atom:link href="https://anupojuprudhvi.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Thu, 01 Oct 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 06 Oct 2026 00:00:00 GMT</lastBuildDate>
     <item>
       <title>Base, Composition &amp; Environment: A Three-Layer Module Standard</title>
       <link>https://anupojuprudhvi.github.io/learning-paths/terraform/07-base-composition-and-environment-modules.html</link>
@@ -384,11 +384,11 @@
       <category>Data &amp; storage</category>
     </item>
     <item>
-      <title>NexusCore AI: one system for workforce identity, access, and HR policy</title>
-      <link>https://anupojuprudhvi.github.io/case-studies/independent-products/nexuscore-ai-workforce-operating-system.html</link>
-      <guid>https://anupojuprudhvi.github.io/case-studies/independent-products/nexuscore-ai-workforce-operating-system.html</guid>
+      <title>An AI-assisted HRMS tool: leave, attendance, timesheets, and policy answers in one place</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/independent-products/ai-assisted-hrms-tool.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/independent-products/ai-assisted-hrms-tool.html</guid>
       <pubDate>Thu, 24 Sep 2026 00:00:00 GMT</pubDate>
-      <description>Bringing account access, joiner-mover-leaver (JML) automation, attendance, and HR policy answers into one platform, with offboarding in under 5 seconds. It targets the modelled ~$1,400 per employee that scattered identity tooling costs.</description>
+      <description>A simple HR management tool I built with AI coding tools. It covers leave, attendance, shifts, timesheets, the org chart, company assets, and policy documents, and a built-in assistant handles everyday requests in plain language and answers policy questions by quoting the handbook, with the page.</description>
       <category>Product engineering</category>
     </item>
     <item>

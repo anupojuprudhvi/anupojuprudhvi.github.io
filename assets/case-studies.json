@@ -754,34 +754,27 @@
     "solution": "A single Bash script that automates the entire failover sequence end to end — instance metadata lookup, elastic IP reassociation, EBS volume attachment with a polling wait loop, filesystem mount (including NVMe device-mapping for newer instance types), and a service restart — plus a tiered S3 backup pipeline and full SPF/DKIM/DMARC DNS hardening."
   },
   {
-    "title": "NexusCore AI: one system for workforce identity, access, and HR policy",
-    "nav": "NexusCore AI",
-    "summary": "Bringing account access, joiner-mover-leaver (JML) automation, attendance, and HR policy answers into one platform, with offboarding in under 5 seconds. It targets the modelled ~$1,400 per employee that scattered identity tooling costs.",
+    "title": "An AI-assisted HRMS tool: leave, attendance, timesheets, and policy answers in one place",
+    "nav": "AI-Assisted HRMS",
+    "summary": "A simple HR management tool I built with AI coding tools. It covers leave, attendance, shifts, timesheets, the org chart, company assets, and policy documents, and a built-in assistant handles everyday requests in plain language and answers policy questions by quoting the handbook, with the page.",
     "project": "independent-products",
     "projectName": "Independent Products & AI-Assisted Engineering",
     "layer": "Product engineering",
     "stack": [
       "FastAPI",
-      "Next.js 15",
-      "Temporal SDK",
-      "PostgreSQL 16",
-      "Amazon EKS",
-      "ArgoCD GitOps",
-      "External Secrets",
-      "Terraform"
+      "Next.js",
+      "PostgreSQL"
     ],
     "tags": [
-      "identity-governance",
-      "distributed-systems",
-      "agentic-ai",
-      "temporal",
-      "security",
-      "finops",
-      "kubernetes"
+      "hrms",
+      "assistant",
+      "policy-search",
+      "multi-tenant",
+      "ai-assisted-engineering"
     ],
-    "url": "case-studies/independent-products/nexuscore-ai-workforce-operating-system.html",
-    "problem": "Companies run dozens of SaaS apps per employee, spread across HR systems, identity tools, and cloud accounts that don't talk to each other. That costs an estimated $1,400 per employee a year in forgotten licences, slow onboarding, and IT tickets. When offboarding misses an account, it leaves a security gap and a compliance problem (including the SEC's cybersecurity disclosure rules), and HR spends its days answering questions that are already in a PDF handbook nobody reads.",
-    "solution": "I designed and built NexusCore AI: separate services around a PostgreSQL identity graph, Temporal workflows that complete joiner-mover-leaver changes in under 5 seconds and undo themselves if a step fails, a SHA-256 audit trail that shows any tampering, and policy search that cites the exact PDF page."
+    "url": "case-studies/independent-products/ai-assisted-hrms-tool.html",
+    "problem": "In many small and mid-sized companies, everyday HR work lives in spreadsheets, email threads, and a PDF handbook nobody reads. Employees don't know their leave balance, managers approve requests by replying to emails, and HR answers the same policy questions again and again.",
+    "solution": "I built a simple HRMS: one place for leave, attendance, shifts, timesheets, the org chart, assets, and policy documents. A built-in assistant takes plain-language requests such as \"how much leave do I have?\" and answers policy questions by quoting the company's own documents, with the page. I built it with AI coding tools under written working rules."
   },
   {
     "title": "Hardening a solo SaaS product, end to end, with AI-agent-assisted engineering",

@@ -440,13 +440,13 @@
           </div>
           <ul class="recent-list">
             <li class="recent-card-item">
-              <a href="case-studies/independent-products/nexuscore-ai-workforce-operating-system.html" class="recent-card-link">
+              <a href="case-studies/independent-products/ai-assisted-hrms-tool.html" class="recent-card-link">
                 <span class="recent-card-meta">
-                  <span class="recent-card-tag">AI platform</span>
+                  <span class="recent-card-tag">AI-assisted product</span>
                   <span class="recent-card-badge">Latest</span>
                 </span>
-                <strong class="recent-card-title">NexusCore AI: joiners, movers &amp; leavers</strong>
-                <span class="recent-card-desc">Account and access changes for joiners, movers, and leavers, run as reliable Temporal workflows, with offboarding in under 5 seconds and a policy assistant that cites its sources.</span>
+                <strong class="recent-card-title">An AI-assisted HRMS tool</strong>
+                <span class="recent-card-desc">Leave, attendance, shifts, timesheets, and policy documents in one simple tool, with an assistant that quotes the handbook and the page.</span>
                 <span class="recent-card-cta">Read the case study <span aria-hidden="true">→</span></span>
               </a>
             </li>
@@ -783,61 +783,55 @@
               >
             </div>
           </article>
-          <article class="case" data-tags="platform finops resilience governance ai-assisted-engineering">
+          <article class="case" data-tags="platform governance ai-assisted-engineering">
             <div class="case-grid">
               <div>
                 <div class="tag">06 / Independent Products &amp; AI-Assisted Engineering</div>
                 <h3>
                   <a href="case-studies/independent-products/index.html"
-                    >NexusCore AI: one system for joiners, movers &amp; leavers.<br />Reliable workflows, cited policy answers, sub-5s offboarding.</a
+                    >An AI-assisted HRMS tool and a hardened PDF product.<br />Two products built alone, with AI under written rules.</a
                   >
                 </h3>
                 <p class="ctx">
-                  A platform that brings account access, joiner-mover-leaver (JML) automation,
-                  attendance, and HR policy answers into one place, instead of a dozen
-                  disconnected tools. It runs on Temporal workflows, keeps a tamper-evident
-                  (SHA-256) audit trail, and keeps each customer's data separate. It targets
-                  the modelled ~$1,400 per employee that scattered identity tooling costs.
+                  A simple HR management tool for leave, attendance, shifts, timesheets,
+                  assets, and policy documents, with an assistant that takes plain-language
+                  requests and quotes the handbook with the page. And a PDF product taken
+                  from a broken serverless deployment to a security-reviewed WebAssembly
+                  engine. Both built with AI coding tools under written working rules.
                 </p>
                 <p class="case-stack">
-                  FastAPI · Next.js 15 · Temporal SDK · PostgreSQL 16 · Amazon EKS · ArgoCD · Terraform
+                  Next.js · FastAPI · PostgreSQL · WebAssembly · Supabase
                 </p>
               </div>
               <div class="case-result">
-                <strong>$240K/yr</strong>
-                <p>Modelled net TCO savings (66.7% for a 500-employee company)</p>
-                <small>Sub-5s de-provisioning · 509 passing tests · 89% modelled ticket deflection</small>
+                <strong>~93%</strong>
+                <p>Smaller first load on the PDF product (1.47 MB to 106 KB)</p>
+                <small>Nine security findings fixed · policy answers cite document and page</small>
               </div>
             </div>
             <details>
               <summary>Architectural contribution</summary>
               <ul>
                 <li>
-                  <b>Built joiner, mover, and leaver workflows on Temporal:</b>
-                  multi-step account changes across SaaS tools that retry with backoff and
-                  undo earlier steps if a later one fails, so no half-removed accounts are
-                  left behind.
+                  <b>Built a simple HRMS:</b>
+                  leave with balances and approvals, attendance and shifts, timesheets,
+                  an org chart that refuses reporting loops, assets, and policy documents.
                 </li>
                 <li>
-                  <b>Built policy answers that cite their source:</b>
-                  keyword (BM25) plus vector search that quotes the exact clause heading and
-                  handbook page, with each customer's documents kept strictly separate.
+                  <b>Built an assistant that shows its sources:</b>
+                  plain-language requests run through the API as the signed-in user, and
+                  policy answers quote the company's own documents with the page, without
+                  sending data to an outside AI service.
                 </li>
                 <li>
-                  <b>Added per-team access profiles:</b>
-                  ready-made access bundles for teams such as SecOps, DevOps, and Tier-2
-                  Support, with a checklist HR works through before anything is provisioned.
-                </li>
-                <li>
-                  <b>Set up GitOps delivery on AWS:</b>
-                  six services in separate repos, deployed with Helm to Amazon EKS and kept in
-                  sync by ArgoCD, with secrets from External Secrets Operator (and a simpler
-                  single-EC2 Docker option).
+                  <b>Kept each company's data separate:</b>
+                  every record is tagged with its company, and tests check that one company
+                  can't read or change another's data.
                 </li>
                 <li>
                   <b>Put AI-assisted development on a short leash:</b>
-                  written working rules, 509 automated tests across 5 suites (all passing),
-                  and guardrails that block raw HTML controls.
+                  an AGENTS.md in each repository, a written handover for every HRMS task,
+                  and security checks that are never switched off to get a change through.
                 </li>
               </ul>
             </details>
@@ -997,30 +991,23 @@
             <div class="tool-layer">
               <h3>Infrastructure as code &amp; delivery</h3>
               <ul class="tool-list">
-                <li><a class="tool-chip" href="case-studies/index.html?tool=terraform" aria-label="Terraform, 10 case studies">Terraform<span class="tool-count" aria-hidden="true">10</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=terraform" aria-label="Terraform, 9 case studies">Terraform<span class="tool-count" aria-hidden="true">9</span></a></li>
                 <li><a class="tool-chip" href="case-studies/index.html?tool=github-actions" aria-label="GitHub Actions, 2 case studies">GitHub Actions<span class="tool-count" aria-hidden="true">2</span></a></li>
-                <li><a class="tool-chip" href="case-studies/index.html?tool=argo-cd" aria-label="Argo CD, 1 case study">Argo CD<span class="tool-count" aria-hidden="true">1</span></a></li>
                 <li><a class="tool-chip" href="case-studies/index.html?tool=jenkins" aria-label="Jenkins, 1 case study">Jenkins<span class="tool-count" aria-hidden="true">1</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=amazon-ecr" aria-label="Amazon ECR, 1 case study">Amazon ECR<span class="tool-count" aria-hidden="true">1</span></a></li>
               </ul>
-              <details class="tool-more">
-                <summary>+1 more</summary>
-                <ul class="tool-list">
-                  <li><a class="tool-chip" href="case-studies/index.html?tool=amazon-ecr" aria-label="Amazon ECR, 1 case study">Amazon ECR<span class="tool-count" aria-hidden="true">1</span></a></li>
-                </ul>
-              </details>
             </div>
             <div class="tool-layer">
               <h3>Containers &amp; Kubernetes</h3>
               <ul class="tool-list">
-                <li><a class="tool-chip" href="case-studies/index.html?tool=amazon-eks" aria-label="Amazon EKS, 7 case studies">Amazon EKS<span class="tool-count" aria-hidden="true">7</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=amazon-eks" aria-label="Amazon EKS, 6 case studies">Amazon EKS<span class="tool-count" aria-hidden="true">6</span></a></li>
                 <li><a class="tool-chip" href="case-studies/index.html?tool=karpenter" aria-label="Karpenter, 1 case study">Karpenter<span class="tool-count" aria-hidden="true">1</span></a></li>
                 <li><a class="tool-chip" href="case-studies/index.html?tool=aws-load-balancer-controller" aria-label="AWS Load Balancer Controller, 1 case study">AWS Load Balancer Controller<span class="tool-count" aria-hidden="true">1</span></a></li>
-                <li><a class="tool-chip" href="case-studies/index.html?tool=external-secrets" aria-label="External Secrets, 1 case study">External Secrets<span class="tool-count" aria-hidden="true">1</span></a></li>
+                <li><a class="tool-chip" href="case-studies/index.html?tool=docker-compose" aria-label="Docker Compose, 1 case study">Docker Compose<span class="tool-count" aria-hidden="true">1</span></a></li>
               </ul>
               <details class="tool-more">
-                <summary>+2 more</summary>
+                <summary>+1 more</summary>
                 <ul class="tool-list">
-                  <li><a class="tool-chip" href="case-studies/index.html?tool=docker-compose" aria-label="Docker Compose, 1 case study">Docker Compose<span class="tool-count" aria-hidden="true">1</span></a></li>
                   <li><a class="tool-chip" href="case-studies/index.html?tool=vmware-tanzu" aria-label="VMware Tanzu, 1 case study">VMware Tanzu<span class="tool-count" aria-hidden="true">1</span></a></li>
                 </ul>
               </details>

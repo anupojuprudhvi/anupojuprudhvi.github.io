@@ -7,12 +7,12 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Two products I built and run myself, with AI as a closely supervised helper — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="A workforce identity platform built on reliable Temporal workflows, and a serverless PDF product taken from broken to audited, both built under a strict, written way of working with AI coding tools." />
+    <meta name="description" content="A simple HR management tool with a plain-language assistant, and a serverless PDF product taken from broken to audited, both built under a strict, written way of working with AI coding tools." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/case-studies/independent-products/" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://anupojuprudhvi.github.io/case-studies/independent-products/" />
     <meta property="og:title" content="Two products I built and run myself, with AI as a closely supervised helper" />
-    <meta property="og:description" content="A workforce identity platform built on reliable Temporal workflows, and a serverless PDF product taken from broken to audited, both built under a strict, written way of working with AI coding tools." />
+    <meta property="og:description" content="A simple HR management tool with a plain-language assistant, and a serverless PDF product taken from broken to audited, both built under a strict, written way of working with AI coding tools." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/assets/og/independent-products/index.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -26,7 +26,7 @@
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "Two products I built and run myself, with AI as a closely supervised helper",
-        "description": "A workforce identity platform built on reliable Temporal workflows, and a serverless PDF product taken from broken to audited, both built under a strict, written way of working with AI coding tools.",
+        "description": "A simple HR management tool with a plain-language assistant, and a serverless PDF product taken from broken to audited, both built under a strict, written way of working with AI coding tools.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -144,7 +144,7 @@
             <div>
               <div class="eyebrow">Independent Products &amp; AI-Assisted Engineering</div>
               <h1>Two products I built and run myself, with AI as a closely supervised helper</h1>
-              <p class="sub">A workforce identity platform built on reliable Temporal workflows, and a serverless PDF product taken from broken to audited, both built under a strict, written way of working with AI coding tools.</p>
+              <p class="sub">A simple HR management tool with a plain-language assistant, and a serverless PDF product taken from broken to audited, both built under a strict, written way of working with AI coding tools.</p>
             </div>
             <svg class="motif motif-pipeline" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <text class="m-start m-muted" x="4" y="40">git push → main</text>
@@ -159,8 +159,8 @@
     </svg>
           </div>
           <div class="meta">
-            <div><b>Role</b><br />Platform Architect, Systems Engineer &amp; Solo Product Builder</div>
-            <div><b>Scope</b><br />Temporal workflows, cited policy search, splitting a monorepo into services, WebAssembly, security review, and automated CI/CD checks</div>
+            <div><b>Role</b><br />Solo Product Builder</div>
+            <div><b>Scope</b><br />HR modules, cited policy search, keeping each company's data separate, WebAssembly, security review, and automated CI/CD checks</div>
           </div>
         </div>
       </header>
@@ -170,8 +170,7 @@
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
 <h2>Big ambitions, small team</h2>
-<p>Independent products run into two problems. Enterprise software usually needs a large team to keep its integrations with identity providers, HR systems, and cloud infrastructure working. Products built by one person tend to collect shortcuts that break once real users arrive.</p>
-<p>Companies spend a lot on identity tools that don't talk to each other and on SaaS licences nobody remembered to cancel. A solo engineer, meanwhile, has to move quickly without letting security, test coverage, or careful root-cause work slip.</p>
+<p>Products built by one person tend to collect shortcuts that break once real users arrive. A solo engineer has to move quickly without letting security, test coverage, or careful root-cause work slip, and AI coding tools make it easy to move quickly and easy to let those things slip.</p>
 </div>
 </section>
 <section>
@@ -180,7 +179,7 @@
 <h2>Two products, one set of standards</h2>
 <p>This section covers two products, both built with AI coding tools working under clear rules:</p>
 <ol>
-<li><b>NexusCore AI:</b> one system for workforce identity and policy. It brings together account access (IAM), joiner-mover-leaver (JML) automation, attendance, and answers to handbook questions. It runs on Temporal, Next.js 15, FastAPI, and PostgreSQL 16, and is designed to replace five separate subscriptions and remove a departing employee's access in under five seconds.</li>
+<li><b>An AI-assisted HRMS tool:</b> one place for leave, attendance, shifts, timesheets, the org chart, assets, and policy documents. A built-in assistant takes plain-language requests and answers policy questions by quoting the company's own documents, with the page. It runs on Next.js, FastAPI, and PostgreSQL.</li>
 <li><b>Solo SaaS hardening:</b> a PDF processing product I took from a serverless deployment that didn't work to a security-reviewed WebAssembly engine about 93% lighter, with Supabase Postgres and verified payment handling. I built it alone, following a written working protocol.</li>
 </ol>
 </div>
@@ -188,16 +187,13 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>Workflows that finish or undo themselves</h2>
-<p>In NexusCore AI, multi-step employee changes don't rely on webhooks or loose Lambda scripts that can fail quietly when a third-party API starts rate-limiting. Each change runs as a Temporal workflow. If a downstream SaaS API fails, the workflow retries with backoff, and if it still can't finish, it undoes the earlier steps. Nobody is left with half-configured access.</p>
-<p>Every security-sensitive action (creating a user, raising privileges, changing a manager, changing a tenant's status) is written to an append-only audit log protected with SHA-256 hashing, so it's ready for SOC 2 Type II and SOX reviews.</p>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">       NexusCore AI (workforce &amp; identity platform)
+<h2>Simple pieces, clear boundaries</h2>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">       AI-assisted HRMS tool
        ─────────────────────────────────────────────────
-       • 6 separate services: web, API, AI, worker, infra, manifests
-       • Temporal workflows with automatic undo on failure
-       • Policy search: in-memory BM25 + S3 vectors, with page citations
-       • Amazon EKS + ArgoCD GitOps delivery
-       • 509 automated tests, all passing
+       • Next.js web app, FastAPI API, PostgreSQL
+       • Leave, attendance, shifts, timesheets, org chart, assets, documents
+       • Assistant acts through the API as the signed-in user
+       • Policy answers quote the source document and page
 
        Solo SaaS hardening (PDF engine)
        ─────────────────────────────────────────────────────
@@ -208,10 +204,9 @@
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
 <ul>
-<li><b>Each customer's data stays separate.</b> Every table is scoped by <code>organization_id</code> and checked with foreign keys. Handbooks loaded into the policy search are kept apart in memory and in storage, so one company's question can never pull in another company's documents.</li>
-<li><b>Policy answers must show their source.</b> Instead of letting a language model guess at company policy, every answer quotes the exact clause and PDF page. Questions that don't match anything closely enough go to the HR team instead.</li>
-<li><b>Infrastructure in code, delivered through Git.</b> Infrastructure is built with four layers of Terraform, the services run on Amazon EKS managed by ArgoCD, and secrets come from AWS Secrets Manager through the External Secrets Operator.</li>
-<li><b>Two ways to deploy.</b> It runs either on an autoscaling EKS cluster with ArgoCD, or on a single EC2 instance with Docker Compose and ports bound to localhost, for a quick trial without Kubernetes.</li>
+<li><b>Each company's data stays separate.</b> In the HRMS, every record carries an <code>organization_id</code>, and tests check that one company can't read or change another's records.</li>
+<li><b>Policy answers must show their source.</b> Instead of letting an AI model guess at company policy, the HRMS assistant quotes the matching passage and names the document and page. When nothing matches, it says so.</li>
+<li><b>No outside AI service in the HRMS.</b> Requests and policy questions are handled inside the app, so company documents aren't sent anywhere else.</li>
 </ul>
 </details>
 </div>
@@ -222,8 +217,8 @@
 <h2>How I work with AI coding tools</h2>
 <p>I built and run both products with AI coding tools, under written rules rather than ad-hoc autocomplete:</p>
 <ul>
-<li><b>Explain, propose, then change.</b> Every fix or new feature starts with a written root-cause explanation and a list of files to touch, before any code changes.</li>
-<li><b>Tests only ratchet up.</b> Automated test suites (509 tests in NexusCore AI, 10 suites in the PDF product) block changes that would break something.</li>
+<li><b>Rules written down for the AI.</b> Each repository has an AGENTS.md that sets out how changes are made. In the HRMS, every task also leaves a written handover.</li>
+<li><b>Reproduce first, then fix.</b> In the HRMS, a bug is reproduced before it's fixed, and the fix comes with a test that would have caught it.</li>
 <li><b>Nothing is taken on trust.</b> Claims, endpoints, and architecture are checked against the test suites and code reviews.</li>
 </ul>
 </div>
@@ -231,11 +226,9 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Outcome</div>
-<h2>What the numbers say</h2>
+<h2>What changed</h2>
 <ul>
-<li><b>$240,000 a year in modelled net savings</b> for a 500-employee company using NexusCore AI: a 66.7% cut in identity costs with a 3.8-month payback. This is a projection, not a measured result.</li>
-<li><b>Access changes in under 5 seconds</b> for joiners, movers, and leavers, compared with the multi-day onboarding waits the case study describes.</li>
-<li><b>89% modelled drop in IT tickets</b>, from self-service manager approvals and policy answers people can check.</li>
+<li><b>Everyday HR in one simple tool,</b> with policy answers anyone can check against the source document.</li>
 <li><b>About 93% less to download on first load</b>, and nine security findings fixed, on the PDF product.</li>
 </ul>
 </div>
@@ -245,7 +238,7 @@
 <div class="section-eyebrow">Case studies</div>
 <h2>2 detailed write-ups</h2>
 <div class="case-study-links">
-            <a href="nexuscore-ai-workforce-operating-system.html"><span>01 / Product engineering</span><strong>NexusCore AI</strong><small>Bringing account access, joiner-mover-leaver (JML) automation, attendance, and HR policy answers into one platform, with offboarding in under 5 seconds. It targets the modelled ~$1,400 per employee that scattered identity tooling costs. →</small></a>
+            <a href="ai-assisted-hrms-tool.html"><span>01 / Product engineering</span><strong>AI-Assisted HRMS</strong><small>A simple HR management tool I built with AI coding tools. It covers leave, attendance, shifts, timesheets, the org chart, company assets, and policy documents, and a built-in assistant handles everyday requests in plain language and answers policy questions by quoting the handbook, with the page. →</small></a>
             <a href="solo-saas-hardening-ai-agentic-engineering.html"><span>02 / Product engineering</span><strong>Solo SaaS hardening</strong><small>Taking a PDF SaaS product I built alone from a serverless deployment that didn't run to a security-reviewed app about 93% lighter, using AI coding tools under strict written rules. →</small></a>
 </div>
 </div>
