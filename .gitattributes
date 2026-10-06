@@ -1,3 +1,8 @@
+# Store text files with LF in the repository, whatever the checkout does.
+# Without this, a Windows checkout (CRLF) looks fully modified to a git that
+# has core.autocrlf unset, such as git inside WSL.
+* text=auto
+
 # Files executed inside Linux containers must keep LF endings on Windows checkouts.
 *.sh text eol=lf
 .githooks/* text eol=lf
