@@ -42,15 +42,6 @@ Linux treats almost everything as a file: devices, kernel settings, even running
 
 A file name is just a label. The file itself is an **inode**: a record that holds the file's owner, permissions, size, timestamps, and where its data sits on the disk. A directory is a list that maps names to inode numbers.
 
-```flow
-title: From a name to the data
-Directory /home/ubuntu | a list of names, each pointing to an inode number
--> notes.txt points to inode 524301
-* Inode 524301 | owner, group, permissions, size, timestamps, link count
--> the inode records where the data blocks are
-Data blocks | the file's actual contents on disk
-```
-
 ```text
 echo "hello" > notes.txt
 ls -i notes.txt          # the inode number

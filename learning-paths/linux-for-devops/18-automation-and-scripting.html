@@ -288,10 +288,11 @@
 <div class="section-eyebrow">Principle</div>
 <h2 id="from-commands-to-code">From commands to code</h2>
 <p>Typing the same commands on every server doesn't scale, and it drifts: one server gets a slightly different setting, and nobody remembers why. Automation turns those commands into code you can review, test, and run again. Three tools cover most of it, each at a different stage of a server's life:</p>
-<figure class="flow">
-<figcaption class="flow-title">Where each automation tool fits</figcaption>
-<div class="flow-body"><div class="flow-node"><strong>Image</strong><span>Packer or a cloud image: the base OS, baked in advance</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">a new server boots from the image</span></div><div class="flow-node"><strong>cloud-init</strong><span>runs once at first boot: users, keys, packages, a bootstrap command</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">the server joins the fleet</span></div><div class="flow-node is-key"><strong>Configuration management</strong><span>Ansible keeps every server in the desired state, run after run</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">small fixes and checks between runs</span></div><div class="flow-node"><strong>Scripts</strong><span>Bash for glue: one-off tasks, health checks, and small jobs</span></div></div>
-</figure>
+<ul>
+<li><b>cloud-init</b> runs once, at first boot: users, keys, packages, and a bootstrap command.</li>
+<li><b>Ansible</b> keeps every server in the desired state, run after run.</li>
+<li><b>Bash</b> is the glue for one-off tasks, health checks, and small jobs in between.</li>
+</ul>
 </div>
 </section>
 <section>
@@ -546,7 +547,6 @@ nightly-report.sh &amp;&amp; cat ~/reports/last-run.txt          # works by hand
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
-    <script src="../../assets/flow-player.js" defer></script>
     <script src="../../assets/quiz.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>
