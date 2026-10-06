@@ -327,10 +327,6 @@ CMD [&quot;python&quot;, &quot;app.py&quot;]</code></pre><figcaption class="scro
 <tr><td data-label="Problem">Who may change what</td><td data-label="What Kubernetes gives you">Access control for people and programs</td><td data-label="Where this track covers it"><a href="08-namespaces-rbac-and-cluster-access.html">Namespaces, RBAC &amp; Service Accounts</a></td></tr>
 </tbody>
 </table></div>
-<figure class="flow">
-<figcaption class="flow-title">You describe the result, Kubernetes does the work</figcaption>
-<div class="flow-body"><div class="flow-node"><strong>You</strong><span>&quot;run 3 copies of orders-api:1.4&quot;</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">written down as a short YAML file and sent to the cluster</span></div><div class="flow-group"><span class="flow-group-label">Kubernetes cluster</span><div class="flow-node is-key"><strong>Control plane</strong><span>decides which servers run the copies, and watches them</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">starts containers on the servers it chose</span></div><div class="flow-paths"><div class="flow-path"><span class="flow-path-label">Server 1</span><div class="flow-node"><strong>orders-api copy 1</strong><span>running</span></div></div><div class="flow-path"><span class="flow-path-label">Server 2</span><div class="flow-node"><strong>orders-api copy 2</strong><span>running</span></div></div><div class="flow-path"><span class="flow-path-label">Server 3</span><div class="flow-node"><strong>orders-api copy 3</strong><span>crashed, so Kubernetes starts a new one</span></div></div></div></div></div>
-</figure>
 </div>
 </section>
 <section>

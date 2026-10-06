@@ -83,24 +83,6 @@ Kubernetes turns a group of servers into one pool of capacity, called a **cluste
 | Settings and secrets | Config and secrets kept separate from images | [Pods, Deployments & Rollouts](05-pods-deployments-and-rollouts.html) |
 | Who may change what | Access control for people and programs | [Namespaces, RBAC & Service Accounts](08-namespaces-rbac-and-cluster-access.html) |
 
-```flow
-title: You describe the result, Kubernetes does the work
-You | "run 3 copies of orders-api:1.4"
--> written down as a short YAML file and sent to the cluster
-group: Kubernetes cluster
-* Control plane | decides which servers run the copies, and watches them
--> starts containers on the servers it chose
-paths
-path: Server 1
-orders-api copy 1 | running
-path: Server 2
-orders-api copy 2 | running
-path: Server 3
-orders-api copy 3 | crashed, so Kubernetes starts a new one
-end
-end
-```
-
 ## Honest answer · When you don't need Kubernetes
 
 Kubernetes is powerful, but it's also a platform you have to run and understand. It's not always the right choice:

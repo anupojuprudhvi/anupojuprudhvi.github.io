@@ -393,10 +393,6 @@ kubectl apply -f hello.yaml
 
 # Delete everything the file describes
 kubectl delete -f hello.yaml</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<figure class="flow">
-<figcaption class="flow-title">The declarative workflow you'll use from here on</figcaption>
-<div class="flow-body"><div class="flow-node"><strong>Edit a YAML file</strong><span>change the desired state, such as replicas or the image tag</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">kubectl diff shows exactly what will change</span></div><div class="flow-node"><strong>Review</strong><span>in a pull request, in a real team</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">kubectl apply -f</span></div><div class="flow-node is-key"><strong>Cluster</strong><span>controllers make the actual state match the file</span></div><div class="flow-loop"><span aria-hidden="true">↻</span> the file in Git is the record of what should be running</div></div>
-</figure>
 <p>Later in the track, <a href="09-helm-and-kustomize.html">Helm &amp; Kustomize</a> handle the same files across several environments, and <a href="16-gitops-with-argo-cd.html">GitOps with Argo CD</a> runs <code>apply</code> for you whenever Git changes.</p>
 </div>
 </section>

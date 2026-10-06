@@ -322,10 +322,6 @@
 <div class="section-eyebrow">Access</div>
 <h2 id="your-iam-identity-is-your-login">Your IAM identity is your login</h2>
 <p>Kubernetes has no user accounts of its own, so on EKS your AWS IAM identity is the login. <code>kubectl</code> asks the AWS CLI for a short-lived token signed with your IAM credentials, and the cluster checks that signature. An <b>access entry</b> then says what that IAM role becomes inside the cluster: either an EKS access policy (such as admin, or edit in one namespace), or a set of Kubernetes groups that your own RBAC bindings grant permissions to.</p>
-<figure class="flow">
-<figcaption class="flow-title">From an IAM role to a Kubernetes permission</figcaption>
-<div class="flow-body"><div class="flow-node"><strong>Engineer</strong><span>signed in to AWS with an IAM role, for example through SSO</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">kubectl calls &quot;aws eks get-token&quot;, which signs a token with that identity</span></div><div class="flow-group"><span class="flow-group-label">EKS control plane</span><div class="flow-node"><strong>Authentication</strong><span>EKS checks the signature and finds the role's access entry</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">the role becomes a Kubernetes user, in the groups the access entry lists</span></div><div class="flow-node is-key"><strong>RBAC</strong><span>the same Roles and RoleBindings as on any cluster decide what's allowed</span></div></div></div>
-</figure>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Anyone who signs in with this IAM role joins the &quot;orders-readers&quot; group,
 # so a RoleBinding for that group applies to them
 aws eks create-access-entry --cluster-name dev \
@@ -480,7 +476,6 @@ eksctl delete cluster --name lab --region &lt;region&gt;</code></pre><figcaption
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
-    <script src="../../assets/flow-player.js" defer></script>
     <script src="../../assets/quiz.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>

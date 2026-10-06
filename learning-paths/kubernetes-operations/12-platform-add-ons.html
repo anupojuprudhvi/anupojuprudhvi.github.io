@@ -271,10 +271,6 @@
 <h2 id="a-new-cluster-is-an-empty-building">A new cluster is an empty building</h2>
 <p>Terraform can create an EKS cluster and its node groups, but a fresh cluster can't do much yet. It can't create a load balancer for an Ingress, publish DNS names, report pod CPU to an autoscaler, add nodes when it runs out of room, ship logs anywhere, or give pods persistent disks. Each of those is a separate add-on.</p>
 <p>It helps to treat these as their own layer: installed right after the cluster exists, the same way in every environment, before any application team deploys anything.</p>
-<figure class="flow">
-<figcaption class="flow-title">The three layers of an EKS platform, installed in this order</figcaption>
-<div class="flow-body"><div class="flow-node"><strong>Layer 1 · Cluster</strong><span>VPC, EKS control plane, node groups, created by Terraform</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">an empty cluster: it runs pods, but can't reach AWS services for you</span></div><div class="flow-node is-key"><strong>Layer 2 · Platform add-ons</strong><span>load balancing, DNS, metrics, autoscaling, logs, storage; each with its own IAM role</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">the same set, the same way, in every environment</span></div><div class="flow-node"><strong>Layer 3 · Applications</strong><span>team workloads deployed through CI/CD or Argo CD</span></div></div>
-</figure>
 <h3>The add-on set in the original deployment</h3>
 <div class="table-wrap"><table class="md-table">
 <thead><tr><th scope="col">Add-on</th><th scope="col">What it does</th><th scope="col">Covered in</th></tr></thead>
@@ -449,7 +445,6 @@ volumeBindingMode: WaitForFirstConsumer</code></pre>
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
-    <script src="../../assets/flow-player.js" defer></script>
     <script src="../../assets/quiz.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>

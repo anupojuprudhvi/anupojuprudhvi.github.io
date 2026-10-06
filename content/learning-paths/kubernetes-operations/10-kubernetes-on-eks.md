@@ -64,17 +64,6 @@ On EKS, the **Amazon VPC CNI** plugin gives each pod an IP address from your VPC
 
 Kubernetes has no user accounts of its own, so on EKS your AWS IAM identity is the login. `kubectl` asks the AWS CLI for a short-lived token signed with your IAM credentials, and the cluster checks that signature. An **access entry** then says what that IAM role becomes inside the cluster: either an EKS access policy (such as admin, or edit in one namespace), or a set of Kubernetes groups that your own RBAC bindings grant permissions to.
 
-```flow
-title: From an IAM role to a Kubernetes permission
-Engineer | signed in to AWS with an IAM role, for example through SSO
--> kubectl calls "aws eks get-token", which signs a token with that identity
-group: EKS control plane
-Authentication | EKS checks the signature and finds the role's access entry
--> the role becomes a Kubernetes user, in the groups the access entry lists
-* RBAC | the same Roles and RoleBindings as on any cluster decide what's allowed
-end
-```
-
 ```text
 # Anyone who signs in with this IAM role joins the "orders-readers" group,
 # so a RoleBinding for that group applies to them

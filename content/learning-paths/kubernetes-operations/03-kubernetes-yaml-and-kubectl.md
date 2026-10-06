@@ -157,16 +157,6 @@ kubectl apply -f hello.yaml
 kubectl delete -f hello.yaml
 ```
 
-```flow
-title: The declarative workflow you'll use from here on
-Edit a YAML file | change the desired state, such as replicas or the image tag
--> kubectl diff shows exactly what will change
-Review | in a pull request, in a real team
--> kubectl apply -f
-* Cluster | controllers make the actual state match the file
-loop: the file in Git is the record of what should be running
-```
-
 Later in the track, [Helm & Kustomize](09-helm-and-kustomize.html) handle the same files across several environments, and [GitOps with Argo CD](16-gitops-with-argo-cd.html) runs `apply` for you whenever Git changes.
 
 ## Cheat sheet · The kubectl commands you'll use every day

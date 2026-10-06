@@ -319,7 +319,7 @@ spec:
 </section>
 <section>
 <div class="wrap">
-<div class="section-eyebrow">Flow</div>
+<div class="section-eyebrow">Ingress</div>
 <h2 id="from-outside-the-cluster-to-a-pod">From outside the cluster to a pod</h2>
 <p>An <b>Ingress</b> is a set of HTTP routing rules (&quot;requests for <code>api.example.com/orders</code> go to the <code>orders-api</code> Service&quot;). On its own it does nothing. An <b>ingress controller</b> makes it real: it watches Ingress objects and configures a proxy or a cloud load balancer to match, using the same reconciliation loop from <a href="04-how-a-cluster-works.html">How a Cluster Works</a>.</p>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml">apiVersion: networking.k8s.io/v1
@@ -340,10 +340,6 @@ spec:
                 name: orders-api
                 port:
                   number: 80</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<figure class="flow">
-<figcaption class="flow-title">A request from a user's browser to a pod, through an Ingress</figcaption>
-<div class="flow-body"><div class="flow-group"><span class="flow-group-label">Outside the cluster</span><div class="flow-node"><strong>User</strong><span>https://api.example.com/orders</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">DNS resolves the name to the load balancer</span></div><div class="flow-node"><strong>Load balancer or proxy</strong><span>configured by the ingress controller; TLS usually ends here</span></div></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">the /orders rule matches, so the request goes to the orders-api Service's pods</span></div><div class="flow-group"><span class="flow-group-label">Cluster</span><div class="flow-node is-key"><strong>orders-api pods</strong><span>only ready pods receive traffic</span></div></div></div>
-</figure>
 <p>The Service still matters here. The controller reads the Service's endpoints to know which pods to send to, so readiness probes control what the load balancer sends traffic to as well. On Amazon EKS the controller is usually the AWS Load Balancer Controller, and the load balancer is an Application Load Balancer. <a href="10-kubernetes-on-eks.html">Kubernetes on Amazon EKS</a> follows that exact path, and <a href="14-ingress-architecture-and-cost.html">Ingress Architecture &amp; Cost</a> covers how many load balancers to run and Ingress's successor, the Gateway API.</p>
 </div>
 </section>

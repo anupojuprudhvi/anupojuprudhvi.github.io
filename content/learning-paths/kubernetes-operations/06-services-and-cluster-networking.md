@@ -82,7 +82,7 @@ Where do the pod IP addresses themselves come from? A **network plugin** (CNI) o
 
 For HTTP and HTTPS from outside, you don't expose each Service as a load balancer. You use an **Ingress**, which the next section shows.
 
-## Flow · From outside the cluster to a pod
+## Ingress · From outside the cluster to a pod
 
 An **Ingress** is a set of HTTP routing rules ("requests for `api.example.com/orders` go to the `orders-api` Service"). On its own it does nothing. An **ingress controller** makes it real: it watches Ingress objects and configures a proxy or a cloud load balancer to match, using the same reconciliation loop from [How a Cluster Works](04-how-a-cluster-works.html).
 
@@ -105,19 +105,6 @@ spec:
                 name: orders-api
                 port:
                   number: 80
-```
-
-```flow
-title: A request from a user's browser to a pod, through an Ingress
-group: Outside the cluster
-User | https://api.example.com/orders
--> DNS resolves the name to the load balancer
-Load balancer or proxy | configured by the ingress controller; TLS usually ends here
-end
--> the /orders rule matches, so the request goes to the orders-api Service's pods
-group: Cluster
-* orders-api pods | only ready pods receive traffic
-end
 ```
 
 The Service still matters here. The controller reads the Service's endpoints to know which pods to send to, so readiness probes control what the load balancer sends traffic to as well. On Amazon EKS the controller is usually the AWS Load Balancer Controller, and the load balancer is an Application Load Balancer. [Kubernetes on Amazon EKS](10-kubernetes-on-eks.html) follows that exact path, and [Ingress Architecture & Cost](14-ingress-architecture-and-cost.html) covers how many load balancers to run and Ingress's successor, the Gateway API.
