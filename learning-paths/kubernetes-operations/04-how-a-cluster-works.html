@@ -294,12 +294,8 @@
 <ul>
 <li><b>kubelet:</b> the node's agent. It asks the API server which pods belong on its node, and makes sure they're running.</li>
 <li><b>Container runtime</b> (usually containerd): pulls images and starts containers, the same job Docker does on your laptop.</li>
-<li><b>kube-proxy</b> and a <b>network plugin (CNI):</b> give each pod an IP address and route traffic to it. The networking module covers these.</li>
+<li><b>A network plugin (CNI)</b> gives each pod its own IP address, and <b>kube-proxy</b> routes traffic sent to a Service on to the right pods. The networking module covers both.</li>
 </ul>
-<figure class="flow">
-<figcaption class="flow-title">The two halves of every cluster</figcaption>
-<div class="flow-body"><div class="flow-group"><span class="flow-group-label">Control plane</span><div class="flow-node is-key"><strong>API server</strong><span>the only way in, for people, tools, nodes, and controllers</span></div><div class="flow-node"><strong>etcd</strong><span>stores every object</span></div><div class="flow-node"><strong>Scheduler and controllers</strong><span>decide where pods go, and keep fixing differences</span></div></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">nodes ask the API server what they should be running</span></div><div class="flow-group"><span class="flow-group-label">Worker nodes</span><div class="flow-node"><strong>kubelet</strong><span>starts and watches the pods assigned to this node</span></div><div class="flow-node"><strong>containerd</strong><span>pulls images and runs containers</span></div><div class="flow-node"><strong>kube-proxy and CNI</strong><span>pod IP addresses and routing</span></div></div></div>
-</figure>
 </div>
 </section>
 <section>

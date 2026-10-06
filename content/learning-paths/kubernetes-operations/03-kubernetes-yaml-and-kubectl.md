@@ -215,6 +215,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: hello
+  labels:
+    app: hello
 spec:
   selector:
     app: hello
@@ -227,11 +229,14 @@ spec:
 kubectl apply -f hello.yaml
 kubectl get deployment,service,pods -l app=hello
 
-# Break the link on purpose: change the Service selector to app: hellooo,
-# apply, and see the Service lose its pods
+# The pod IPs behind the Service
 kubectl get endpointslices -l kubernetes.io/service-name=hello
 
-# Put it back, apply again, and clean up
+# Break the link on purpose: in hello.yaml, change the Service's selector
+# to app: hellooo, apply again, and re-run the endpointslices command.
+# The Service now has no pods behind it. Change it back and apply again.
+
+# Clean up
 kubectl delete -f hello.yaml
 ```
 

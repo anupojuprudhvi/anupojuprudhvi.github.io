@@ -5,7 +5,7 @@ updated: 2026-10-01
 track: kubernetes-operations
 order: 17
 module: 17
-summary: Why resource requests drive almost everything in an EKS cluster — scheduling, autoscaling, and the bill — and how pod and node autoscaling fit together.
+summary: Why resource requests drive almost everything in an EKS cluster (scheduling, autoscaling, and the bill), how pod and node autoscaling work together, and how to keep scale-down safe.
 level: Production · Capacity
 readingTime: 10 min read
 stack: [Amazon EKS, Kubernetes, Horizontal Pod Autoscaler, Karpenter, Cluster Autoscaler]
@@ -28,16 +28,7 @@ Every scaling decision in Kubernetes starts from resource requests. The schedule
 
 So when requests are wrong, everything built on top of them is wrong too. Set them too high and you pay for nodes that sit half-empty. Set them too low, or leave them out, and pods get packed onto nodes that can't actually carry them.
 
-```yaml
-resources:
-  requests:
-    cpu: 250m        # what the scheduler reserves for this pod
-    memory: 256Mi
-  limits:
-    memory: 512Mi    # hard ceiling: going over gets the container OOMKilled
-```
-
-Limits behave differently for CPU and memory. Going over a CPU limit slows the container down (it gets throttled). Going over a memory limit kills it. That's why many teams set a memory limit but leave CPU unlimited, so a busy pod can borrow idle CPU instead of being throttled while the node has spare capacity.
+[Pods, Deployments & Rollouts](05-pods-deployments-and-rollouts.html) explains requests and limits in full. The short version: requests reserve capacity, a CPU limit throttles, and a memory limit kills.
 
 ## Two layers of autoscaling
 

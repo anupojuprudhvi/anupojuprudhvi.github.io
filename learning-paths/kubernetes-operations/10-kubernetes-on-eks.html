@@ -272,10 +272,6 @@
 <h2 id="eks-is-kubernetes-with-the-control-plane-run-for-you">EKS is Kubernetes with the control plane run for you</h2>
 <p>Amazon EKS is Kubernetes where AWS runs the control plane. You don't install etcd, patch the API server, or back anything up; AWS runs the control plane across several Availability Zones and scales it for you. The control plane lives in an AWS-managed account, and it reaches your nodes through network interfaces that EKS places in your own subnets.</p>
 <p>The objects, the YAML, and <code>kubectl</code> are exactly the same as on a local cluster. What you learned on kind carries over unchanged.</p>
-<figure class="flow">
-<figcaption class="flow-title">Where each part of an EKS cluster lives</figcaption>
-<div class="flow-body"><div class="flow-group"><span class="flow-group-label">AWS-managed account (run and patched by AWS)</span><div class="flow-node is-key"><strong>EKS control plane</strong><span>API server, etcd, scheduler, and controllers across several AZs</span></div></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">reaches your nodes through network interfaces EKS creates in your subnets</span></div><div class="flow-group"><span class="flow-group-label">Your AWS account and VPC (your responsibility)</span><div class="flow-paths"><div class="flow-path"><span class="flow-path-label">Nodes</span><div class="flow-node"><strong>Managed node groups or Karpenter</strong><span>EC2 instances running kubelet and containerd</span></div></div><div class="flow-path"><span class="flow-path-label">Add-ons</span><div class="flow-node"><strong>Cluster add-ons</strong><span>VPC CNI, CoreDNS, kube-proxy, load balancer controller</span></div></div><div class="flow-path"><span class="flow-path-label">Workloads</span><div class="flow-node"><strong>Your applications</strong><span>Deployments, Services, config, and their IAM roles</span></div></div></div></div></div>
-</figure>
 <div class="table-wrap"><table class="md-table">
 <thead><tr><th scope="col">Part</th><th scope="col">Who runs it on EKS</th><th scope="col">What that means for you</th></tr></thead>
 <tbody>

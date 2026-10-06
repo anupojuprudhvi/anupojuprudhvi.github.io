@@ -136,7 +136,7 @@ The regex captures everything after `/portal`, and `rewrite-target: /$2` passes 
 
 ## Update · ingress-nginx is retired, so plan the next step
 
-The community **ingress-nginx** controller used in this design is being retired. In November 2025 the Kubernetes project announced it would get only best-effort maintenance until March 2026, and no further releases or security fixes after that. The pattern above (a separate controller for rewrite-heavy frontends) still makes sense, but new clusters shouldn't start on ingress-nginx, and existing ones need a migration plan.
+The community **ingress-nginx** controller used in this design has been retired. In November 2025 the Kubernetes project announced it would get only best-effort maintenance until March 2026, with no further releases or security fixes after that. The pattern above (a separate controller for rewrite-heavy frontends) still makes sense, but new clusters shouldn't start on ingress-nginx, and existing ones need a migration plan.
 
 The long-term direction is the **Gateway API**, the successor to Ingress. It splits the job into a `Gateway` (the load balancer, owned by the platform team) and `HTTPRoute`s (routing rules, owned by each app team), and it supports path rewrites without controller-specific annotations:
 

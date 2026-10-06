@@ -7,12 +7,12 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Scaling Without Surprises: Requests, Autoscaling &amp; Cost — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="Why resource requests drive almost everything in an EKS cluster — scheduling, autoscaling, and the bill — and how pod and node autoscaling fit together." />
+    <meta name="description" content="Why resource requests drive almost everything in an EKS cluster (scheduling, autoscaling, and the bill), how pod and node autoscaling work together, and how to keep scale-down safe." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/17-scaling-requests-and-cost.html" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/17-scaling-requests-and-cost.html" />
     <meta property="og:title" content="Scaling Without Surprises: Requests, Autoscaling &amp; Cost — Prudhvi Raj Anupoju" />
-    <meta property="og:description" content="Why resource requests drive almost everything in an EKS cluster — scheduling, autoscaling, and the bill — and how pod and node autoscaling fit together." />
+    <meta property="og:description" content="Why resource requests drive almost everything in an EKS cluster (scheduling, autoscaling, and the bill), how pod and node autoscaling work together, and how to keep scale-down safe." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -25,7 +25,7 @@
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "Scaling Without Surprises: Requests, Autoscaling & Cost",
-        "description": "Why resource requests drive almost everything in an EKS cluster — scheduling, autoscaling, and the bill — and how pod and node autoscaling fit together.",
+        "description": "Why resource requests drive almost everything in an EKS cluster (scheduling, autoscaling, and the bill), how pod and node autoscaling work together, and how to keep scale-down safe.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -151,7 +151,7 @@
             <div>
               <span class="lp-badge">Production · Capacity</span>
               <h1>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</h1>
-              <p class="sub">Why resource requests drive almost everything in an EKS cluster — scheduling, autoscaling, and the bill — and how pod and node autoscaling fit together.</p>
+              <p class="sub">Why resource requests drive almost everything in an EKS cluster (scheduling, autoscaling, and the bill), how pod and node autoscaling work together, and how to keep scale-down safe.</p>
             </div>
             <svg class="motif motif-network" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <defs>
@@ -271,13 +271,7 @@
 <h2 id="requests-are-a-promise-and-the-cluster-plans-around-them">Requests are a promise, and the cluster plans around them</h2>
 <p>Every scaling decision in Kubernetes starts from resource requests. The scheduler places a pod on a node only if the node has room for what the pod <em>requests</em>, not what it actually uses. Node autoscalers add nodes when pods can't be placed. The Horizontal Pod Autoscaler measures CPU as a percentage of the request.</p>
 <p>So when requests are wrong, everything built on top of them is wrong too. Set them too high and you pay for nodes that sit half-empty. Set them too low, or leave them out, and pods get packed onto nodes that can't actually carry them.</p>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-yaml">resources:
-  requests:
-    cpu: 250m        # what the scheduler reserves for this pod
-    memory: 256Mi
-  limits:
-    memory: 512Mi    # hard ceiling: going over gets the container OOMKilled</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<p>Limits behave differently for CPU and memory. Going over a CPU limit slows the container down (it gets throttled). Going over a memory limit kills it. That's why many teams set a memory limit but leave CPU unlimited, so a busy pod can borrow idle CPU instead of being throttled while the node has spare capacity.</p>
+<p><a href="05-pods-deployments-and-rollouts.html">Pods, Deployments &amp; Rollouts</a> explains requests and limits in full. The short version: requests reserve capacity, a CPU limit throttles, and a memory limit kills.</p>
 </div>
 </section>
 <section>

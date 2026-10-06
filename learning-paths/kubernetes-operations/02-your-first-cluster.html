@@ -357,11 +357,7 @@ kubectl get pods -w
 
 # Terminal 2: delete one of the pods (use a real name from the list)
 kubectl delete pod hello-&lt;random-suffix&gt;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<p>In terminal 1, the pod you deleted goes to <code>Terminating</code>, and a <b>new pod with a different name</b> appears and starts running within seconds. You didn't ask for that. You'd asked for two copies, there was one, so Kubernetes made another. That's the <b>reconciliation loop</b>, and <a href="04-how-a-cluster-works.html">How a Cluster Works</a> explains exactly how it works.</p>
-<figure class="flow">
-<figcaption class="flow-title">What happened when you deleted a pod</figcaption>
-<div class="flow-body"><div class="flow-node is-key"><strong>Desired state</strong><span>the Deployment says: 2 copies of hello</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">you deleted one pod</span></div><div class="flow-node"><strong>Actual state</strong><span>only 1 copy running</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">a controller notices the difference within a second</span></div><div class="flow-node"><strong>Fix</strong><span>a new pod is created and scheduled onto a node</span></div><div class="flow-loop"><span aria-hidden="true">↻</span> the cluster keeps checking, so this happens every time, without anyone watching</div></div>
-</figure>
+<p>In terminal 1, the pod you deleted goes to <code>Terminating</code>, and a <b>new pod with a different name</b> appears and starts running within seconds. You didn't ask for that. You'd asked for two copies, there was one, so Kubernetes made another. That's the <b>reconciliation loop</b>: the desired state said 2, the actual state was 1, so a controller fixed the difference. <a href="04-how-a-cluster-works.html">How a Cluster Works</a> explains exactly how it works.</p>
 </div>
 </section>
 <section>

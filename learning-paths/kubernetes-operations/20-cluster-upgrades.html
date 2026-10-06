@@ -7,12 +7,12 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Cluster Upgrades Without Drama — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="How to upgrade EKS one version at a time — checking for removed APIs first, then the control plane, add-ons, and nodes, in an order that keeps workloads running." />
+    <meta name="description" content="How to upgrade EKS one version at a time: check for removed APIs first, then upgrade the control plane, add-ons, and nodes, in an order that keeps workloads running." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/20-cluster-upgrades.html" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/20-cluster-upgrades.html" />
     <meta property="og:title" content="Cluster Upgrades Without Drama — Prudhvi Raj Anupoju" />
-    <meta property="og:description" content="How to upgrade EKS one version at a time — checking for removed APIs first, then the control plane, add-ons, and nodes, in an order that keeps workloads running." />
+    <meta property="og:description" content="How to upgrade EKS one version at a time: check for removed APIs first, then upgrade the control plane, add-ons, and nodes, in an order that keeps workloads running." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -25,7 +25,7 @@
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "Cluster Upgrades Without Drama",
-        "description": "How to upgrade EKS one version at a time — checking for removed APIs first, then the control plane, add-ons, and nodes, in an order that keeps workloads running.",
+        "description": "How to upgrade EKS one version at a time: check for removed APIs first, then upgrade the control plane, add-ons, and nodes, in an order that keeps workloads running.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -151,7 +151,7 @@
             <div>
               <span class="lp-badge">Production · Upgrades</span>
               <h1>Cluster Upgrades Without Drama</h1>
-              <p class="sub">How to upgrade EKS one version at a time — checking for removed APIs first, then the control plane, add-ons, and nodes, in an order that keeps workloads running.</p>
+              <p class="sub">How to upgrade EKS one version at a time: check for removed APIs first, then upgrade the control plane, add-ons, and nodes, in an order that keeps workloads running.</p>
             </div>
             <svg class="motif motif-network" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <defs>
@@ -295,19 +295,14 @@ kubectl api-versions</code></pre><figcaption class="scroll-hint">Scroll sideways
 <div class="wrap">
 <div class="section-eyebrow">Step 2</div>
 <h2 id="control-plane-then-add-ons-then-nodes">Control plane, then add-ons, then nodes</h2>
-<figure class="flow">
-<figcaption class="flow-title">One minor-version upgrade, for example 1.32 to 1.33</figcaption>
-<div class="flow-body"><div class="flow-node"><strong>Pre-flight</strong><span>upgrade insights clean, removed APIs fixed, rehearsed on a non-production cluster</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">aws eks update-cluster-version, or the version in Terraform</span></div><div class="flow-node is-key"><strong>Control plane on 1.33</strong><span>AWS replaces the API servers; workloads keep running</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">nodes are still on 1.32, which is allowed: nodes may lag, never lead</span></div><div class="flow-node"><strong>Core add-ons</strong><span>VPC CNI, CoreDNS, kube-proxy moved to versions for 1.33</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">then the nodes</span></div><div class="flow-node"><strong>Nodes</strong><span>new nodes on 1.33 join; old ones are cordoned, drained, and removed one at a time</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">then everything else that talks to the API</span></div><div class="flow-node"><strong>Other controllers</strong><span>load balancer controller, ingress, Argo CD checked against 1.33</span></div><div class="flow-loop"><span aria-hidden="true">↻</span> repeat for the next minor version; you can't skip one</div></div>
-</figure>
-<details class="implementation-notes">
-<summary>Upgrade order</summary>
-<ul>
-<li><b>Control plane.</b> <code>aws eks update-cluster-version</code> (or change the version in Terraform). EKS runs the API servers across several Availability Zones and replaces them in the background; running workloads keep going.</li>
-<li><b>Core add-ons.</b> Bring the VPC CNI, CoreDNS, and kube-proxy up to versions that match the new release. Managed add-ons make this a version bump; self-managed ones need their manifests updated.</li>
-<li><b>Nodes.</b> For managed node groups, start a version update and EKS replaces nodes in a rolling fashion, cordoning and draining each one. With Karpenter, updating the AMI or the node class causes it to replace nodes gradually.</li>
-<li><b>Everything else.</b> Controllers that talk to the Kubernetes API, such as the AWS Load Balancer Controller or an ingress controller, often have their own compatibility ranges. Check them against the new version.</li>
-</ul>
-</details>
+<p>Upgrade one minor version at a time (for example 1.32 to 1.33), in this order:</p>
+<ol>
+<li><b>Control plane.</b> Run <code>aws eks update-cluster-version</code>, or change the version in Terraform. EKS replaces the API servers in the background, and running workloads keep going.</li>
+<li><b>Core add-ons.</b> Move the VPC CNI, CoreDNS, and kube-proxy to versions made for the new release. For managed add-ons this is a version bump; self-managed ones need their manifests updated.</li>
+<li><b>Nodes.</b> For managed node groups, start a version update, and EKS replaces the nodes one at a time, cordoning and draining each. With Karpenter, updating the AMI or the node class makes it replace nodes gradually. Until this step finishes, the nodes run one version behind the control plane, which is allowed.</li>
+<li><b>Everything else.</b> Controllers that talk to the Kubernetes API, such as the AWS Load Balancer Controller, an ingress controller, or Argo CD, have their own supported version ranges. Check each against the new version.</li>
+</ol>
+<p>Then repeat for the next minor version if you're more than one behind.</p>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># Watch nodes come up on the new version as the rollout proceeds
 kubectl get nodes -L eks.amazonaws.com/nodegroup \
   -o custom-columns=NAME:.metadata.name,VERSION:.status.nodeInfo.kubeletVersion</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
@@ -417,7 +412,6 @@ kubectl get nodes -L eks.amazonaws.com/nodegroup \
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
-    <script src="../../assets/flow-player.js" defer></script>
     <script src="../../assets/quiz.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>

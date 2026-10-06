@@ -291,7 +291,7 @@ CMD [&quot;python&quot;, &quot;app.py&quot;]</code></pre><figcaption class="scro
 <figcaption class="flow-title">From source code to a running container</figcaption>
 <div class="flow-body"><div class="flow-node"><strong>Dockerfile and code</strong><span>the recipe and your application</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">docker build</span></div><div class="flow-node"><strong>Image orders-api:1.4</strong><span>a read-only package, built once</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">docker push</span></div><div class="flow-node is-key"><strong>Registry</strong><span>stores the image so any machine can pull it</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">docker run, on any machine with a container runtime</span></div><div class="flow-node"><strong>Container</strong><span>a running, isolated copy of the image</span></div></div>
 </figure>
-<p>If you've never run a container, install <b>Docker Desktop</b> (or Docker Engine on Linux) and try <code>docker run -p 8080:80 nginx</code>, then open <code>http://localhost:8080</code>. You just ran a web server without installing one. That's the whole idea.</p>
+<p>If you've never run a container, install <b>Docker Desktop</b> (or Docker Engine on Linux). The <b>Try it</b> section at the end of this module runs a web server in one command, without installing the web server itself. That's the whole idea.</p>
 </div>
 </section>
 <section>

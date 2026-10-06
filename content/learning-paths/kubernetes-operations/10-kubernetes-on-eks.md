@@ -27,24 +27,6 @@ Amazon EKS is Kubernetes where AWS runs the control plane. You don't install etc
 
 The objects, the YAML, and `kubectl` are exactly the same as on a local cluster. What you learned on kind carries over unchanged.
 
-```flow
-title: Where each part of an EKS cluster lives
-group: AWS-managed account (run and patched by AWS)
-* EKS control plane | API server, etcd, scheduler, and controllers across several AZs
-end
--> reaches your nodes through network interfaces EKS creates in your subnets
-group: Your AWS account and VPC (your responsibility)
-paths
-path: Nodes
-Managed node groups or Karpenter | EC2 instances running kubelet and containerd
-path: Add-ons
-Cluster add-ons | VPC CNI, CoreDNS, kube-proxy, load balancer controller
-path: Workloads
-Your applications | Deployments, Services, config, and their IAM roles
-end
-end
-```
-
 | Part | Who runs it on EKS | What that means for you |
 | --- | --- | --- |
 | API server, etcd, scheduler | AWS | Nothing to install or back up. You choose the Kubernetes version and when to upgrade it. |

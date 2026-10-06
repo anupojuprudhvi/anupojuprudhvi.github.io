@@ -24,7 +24,7 @@ related: [tolling/eks-ingress-incident-rca]
 
 ## Principle · "It deployed" and "it's healthy" are different questions
 
-A `kubectl apply` returning without error only confirms the manifest was accepted by the API server — not that the resulting pods came up healthy, passed their readiness checks, and are actually serving traffic. Treating those as the same thing is how a broken rollout goes unnoticed until a user reports it.
+When `kubectl apply` returns without an error, it only means the API server accepted the change. It doesn't mean the new pods started, passed their readiness checks, or are serving traffic. Treating those as the same thing is how a broken rollout goes unnoticed until a user reports it.
 
 ```text
 # Confirm the rollout actually finished, not just that it started
@@ -38,11 +38,11 @@ kubectl describe pod <pod-name> -n <namespace>
 kubectl logs <pod-name> -n <namespace> --previous
 ```
 
-`kubectl rollout status` waits until the rollout really completes or fails, which makes it a better automation gate than treating `apply` as the finish line. `--previous` on `kubectl logs` matters specifically after a crash loop — it retrieves logs from the container's last run, not the fresh, log-empty restart that's currently in `CrashLoopBackOff`.
+`kubectl rollout status` waits until the rollout has really finished or failed, so it makes a much better pipeline check than `apply`. After a crash loop, `kubectl logs --previous` matters: it shows the logs from the run that crashed, not from the fresh restart, which is usually empty.
 
 ## A repeatable triage sequence for a stuck deployment
 
-Guessing under pressure is slower and less reliable than working a fixed sequence. It follows the same path a deploy takes through the cluster (see [How a Cluster Works](04-how-a-cluster-works.html)), so each step rules out one stage:
+Guessing under pressure is slow. Work the same sequence every time instead. It follows the path a deploy takes through the cluster ([How a Cluster Works](04-how-a-cluster-works.html)), so each step rules out one stage:
 
 ```flow
 title: Triage a stuck deployment one layer at a time
@@ -60,19 +60,16 @@ App problem | kubectl logs --previous; often missing config or an IAM difference
 path: Running, not ready
 Readiness problem | the probe fails; check dependencies and the probe path
 end
--> cause found
-* Roll back or fix forward | now based on a known cause
+-> then decide
+* Users affected? | roll back first and find the cause after; otherwise fix forward
 ```
 
-A useful default order:
+A few habits make each step faster:
 
-### Triage checklist
-
-- Confirm you're in the correct cluster context and namespace before touching anything — `kubectl config current-context` first, always.
-- Check `kubectl get events -n <namespace> --sort-by='.lastTimestamp'` for the actual scheduling or admission failure, rather than starting from pod logs.
-- Check whether the failure is at the pod level (crash, OOMKill, failed readiness probe) or the node level (insufficient capacity, taints, an unschedulable node) — `kubectl describe pod` reports both, but they call for different fixes.
-- If the image itself is suspect, verify it's pullable from that specific cluster's network path, not just present in the registry — a registry-auth or network-policy issue looks identical to a bad image from the pod's perspective.
-- Only roll back once the actual failure mode is identified. A rollback without a root cause just reintroduces the same failure the next time someone deploys forward.
+- **Check the context first, every time.** `kubectl config current-context` before you touch anything. Fixing the wrong cluster makes things worse.
+- **Start from events, not logs.** `kubectl get events -n <namespace> --sort-by='.lastTimestamp'` usually names the real failure: scheduling, image, or admission.
+- **Pod problem or node problem?** A crash, an OOMKill, or a failing probe is a pod problem. Not enough capacity, a taint, or an unschedulable node is a node problem. `kubectl describe pod` shows both, but they need different fixes.
+- **"In the registry" isn't the same as "pullable".** A registry login or network problem looks exactly like a bad image from the pod's side. Check that this cluster can actually pull it.
 
 ## When to roll back versus roll forward
 
@@ -85,13 +82,15 @@ kubectl rollout history deployment/<name> -n <namespace>
 kubectl rollout undo deployment/<name> -n <namespace> --to-revision=<n>
 ```
 
-Rolling back is the right call when the previous revision is known-good and restoring service matters more than root-causing immediately — which is most production incidents. Rolling forward with a fix is preferable when the previous revision has its own known issues, or when the fix is small, well-understood, and faster to ship than a rollback-then-redeploy cycle would be.
+**Roll back** when users are affected and the previous version is known to be good. That's most production incidents: restore service first, then find the cause. Don't deploy forward again until you know it, or the same failure comes straight back.
+
+**Roll forward** with a fix when the previous version has its own known problems, or when the fix is small, well understood, and quicker than rolling back and redeploying.
 
 ### Implementation notes
 
-- **A stuck rollout and a failing rollout look identical from the outside at first.** `kubectl rollout status` distinguishes them for you rather than requiring you to infer it from pod counts.
-- **Recording *why* a rollback happened, not just that it did, is what makes the next on-call engineer's job easier.** An undocumented rollback just moves the unknown failure mode to the next deployment attempt.
-- **The single most common root cause of "it worked in QA, not in Production" is an environment-specific config or IAM permission difference, not the code.** Checking that first is usually faster than re-reading application logs from the top.
+- **A slow rollout and a failed one look the same at first.** `kubectl rollout status` tells you which, so you don't have to guess from pod counts.
+- **Write down why you rolled back.** A rollback with no recorded cause just hands the same failure to whoever deploys next.
+- **"It worked in QA but not in Production" is usually configuration, not code.** A missing setting or a different IAM permission is the most common cause, so check those before reading logs from the top.
 
 ## Recap · Key terms
 

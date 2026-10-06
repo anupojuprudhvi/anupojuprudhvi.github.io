@@ -92,19 +92,6 @@ kubectl create namespace shop-prod
 kubectl apply -k overlays/prod
 ```
 
-```flow
-title: Kustomize builds each environment from one base
-* base | the full Deployment and Service, shared by every environment
--> each overlay adds only its differences
-paths
-path: Dev
-overlays/dev | namespace shop-dev, the base's 2 replicas
-path: Prod
-overlays/prod | namespace shop-prod, 4 replicas, pinned image tag
-end
--> kubectl apply -k
-Cluster | gets plain, complete YAML for that environment
-```
 
 ## Helm · A package manager for Kubernetes
 
@@ -194,7 +181,7 @@ kubectl delete -k hello/overlays/prod
 - **Always pin chart versions.** `helm install` without `--version` installs whatever is newest today, so two environments installed a week apart can differ. The same lesson appears in [The Platform Add-on Layer](12-platform-add-ons.html).
 - **Keep your values files in Git.** `--set` on the command line is fine in a lab, but the settings then exist only in Helm's release history.
 - **Review what a chart creates before installing it.** `helm template` shows every object, including cluster-wide roles and permissions some charts ask for.
-- **Don't mix tools on the same objects.** If Helm installed something, change it with Helm. Editing a Helm-managed object with `kubectl` is undone at the next upgrade.
+- **Don't mix tools on the same objects.** If Helm installed something, change it with Helm. A `kubectl edit` on a Helm-managed object isn't in the chart or the values, so nobody can see it was made, and a later upgrade or rollback may silently overwrite it.
 
 ## Recap · Key terms
 
@@ -227,12 +214,12 @@ Q: Before installing a chart, you want to see every object it will create, inclu
 * `helm template`
 - `helm rollback`
 = `helm template` renders the chart to plain YAML without touching the cluster, so you can review it first.
-S: Someone edits a Helm-managed Deployment with `kubectl edit`. What happens at the next `helm upgrade`?
-* The change is overwritten by what the chart and values say
-- Helm keeps the manual change and merges it
-- The upgrade fails until the edit is reverted
-- Helm creates a second Deployment
-= Helm applies what the chart and values describe. A manual edit isn't in either, so it's lost. Change Helm-managed objects through Helm.
+S: Someone fixes a Helm-managed Deployment with `kubectl edit` during an incident. What's the problem with leaving it that way?
+- Nothing; Helm always keeps manual edits
+* The fix isn't in the chart or values, so it's invisible, and a later upgrade or rollback may overwrite it
+- Helm deletes the Deployment at the next upgrade
+- The Deployment stops being managed by Helm
+= Helm merges each upgrade with the live state, so an edit can survive one upgrade and be lost on the next, or on a rollback. Put the fix into the values file, so it's recorded and reviewed.
 Q: Which split does this track use?
 - Kustomize for everything
 - Helm for your own apps, Kustomize for add-ons

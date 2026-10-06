@@ -54,7 +54,7 @@ Image orders-api:1.4 | a read-only package, built once
 Container | a running, isolated copy of the image
 ```
 
-If you've never run a container, install **Docker Desktop** (or Docker Engine on Linux) and try `docker run -p 8080:80 nginx`, then open `http://localhost:8080`. You just ran a web server without installing one. That's the whole idea.
+If you've never run a container, install **Docker Desktop** (or Docker Engine on Linux). The **Try it** section at the end of this module runs a web server in one command, without installing the web server itself. That's the whole idea.
 
 ## Problem · One container is easy, hundreds are not
 

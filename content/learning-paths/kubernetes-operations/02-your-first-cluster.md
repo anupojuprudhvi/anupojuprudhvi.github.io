@@ -130,17 +130,7 @@ kubectl get pods -w
 kubectl delete pod hello-<random-suffix>
 ```
 
-In terminal 1, the pod you deleted goes to `Terminating`, and a **new pod with a different name** appears and starts running within seconds. You didn't ask for that. You'd asked for two copies, there was one, so Kubernetes made another. That's the **reconciliation loop**, and [How a Cluster Works](04-how-a-cluster-works.html) explains exactly how it works.
-
-```flow
-title: What happened when you deleted a pod
-* Desired state | the Deployment says: 2 copies of hello
--> you deleted one pod
-Actual state | only 1 copy running
--> a controller notices the difference within a second
-Fix | a new pod is created and scheduled onto a node
-loop: the cluster keeps checking, so this happens every time, without anyone watching
-```
+In terminal 1, the pod you deleted goes to `Terminating`, and a **new pod with a different name** appears and starts running within seconds. You didn't ask for that. You'd asked for two copies, there was one, so Kubernetes made another. That's the **reconciliation loop**: the desired state said 2, the actual state was 1, so a controller fixed the difference. [How a Cluster Works](04-how-a-cluster-works.html) explains exactly how it works.
 
 ## Explore · Scale, look inside, and read logs
 

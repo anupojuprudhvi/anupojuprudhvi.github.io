@@ -327,10 +327,6 @@ kubectl kustomize overlays/prod
 # Apply an environment (-k instead of -f)
 kubectl create namespace shop-prod
 kubectl apply -k overlays/prod</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<figure class="flow">
-<figcaption class="flow-title">Kustomize builds each environment from one base</figcaption>
-<div class="flow-body"><div class="flow-node is-key"><strong>base</strong><span>the full Deployment and Service, shared by every environment</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">each overlay adds only its differences</span></div><div class="flow-paths"><div class="flow-path"><span class="flow-path-label">Dev</span><div class="flow-node"><strong>overlays/dev</strong><span>namespace shop-dev, the base's 2 replicas</span></div></div><div class="flow-path"><span class="flow-path-label">Prod</span><div class="flow-node"><strong>overlays/prod</strong><span>namespace shop-prod, 4 replicas, pinned image tag</span></div></div></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">kubectl apply -k</span></div><div class="flow-node"><strong>Cluster</strong><span>gets plain, complete YAML for that environment</span></div></div>
-</figure>
 </div>
 </section>
 <section>
@@ -415,7 +411,7 @@ kubectl delete -k hello/overlays/prod</code></pre><figcaption class="scroll-hint
 <li><b>Always pin chart versions.</b> <code>helm install</code> without <code>--version</code> installs whatever is newest today, so two environments installed a week apart can differ. The same lesson appears in <a href="12-platform-add-ons.html">The Platform Add-on Layer</a>.</li>
 <li><b>Keep your values files in Git.</b> <code>--set</code> on the command line is fine in a lab, but the settings then exist only in Helm's release history.</li>
 <li><b>Review what a chart creates before installing it.</b> <code>helm template</code> shows every object, including cluster-wide roles and permissions some charts ask for.</li>
-<li><b>Don't mix tools on the same objects.</b> If Helm installed something, change it with Helm. Editing a Helm-managed object with <code>kubectl</code> is undone at the next upgrade.</li>
+<li><b>Don't mix tools on the same objects.</b> If Helm installed something, change it with Helm. A <code>kubectl edit</code> on a Helm-managed object isn't in the chart or the values, so nobody can see it was made, and a later upgrade or rollback may silently overwrite it.</li>
 </ul>
 </details>
 </div>
@@ -459,11 +455,11 @@ kubectl delete -k hello/overlays/prod</code></pre><figcaption class="scroll-hint
 <ol class="lp-quiz-options" type="A"><li><code>helm list</code></li><li><code>helm history</code></li><li><code>helm template</code></li><li><code>helm rollback</code></li></ol>
 <details class="lp-quiz-answer"><summary>Show answer</summary><p><b><code>helm template</code></b></p><p class="lp-quiz-why"><code>helm template</code> renders the chart to plain YAML without touching the cluster, so you can review it first.</p></details>
 </li>
-<li class="lp-quiz-q" data-answer="0" data-kind="Scenario">
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
 <p class="lp-quiz-kind">Scenario</p>
-<p class="lp-quiz-prompt">Someone edits a Helm-managed Deployment with <code>kubectl edit</code>. What happens at the next <code>helm upgrade</code>?</p>
-<ol class="lp-quiz-options" type="A"><li>The change is overwritten by what the chart and values say</li><li>Helm keeps the manual change and merges it</li><li>The upgrade fails until the edit is reverted</li><li>Helm creates a second Deployment</li></ol>
-<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The change is overwritten by what the chart and values say</b></p><p class="lp-quiz-why">Helm applies what the chart and values describe. A manual edit isn't in either, so it's lost. Change Helm-managed objects through Helm.</p></details>
+<p class="lp-quiz-prompt">Someone fixes a Helm-managed Deployment with <code>kubectl edit</code> during an incident. What's the problem with leaving it that way?</p>
+<ol class="lp-quiz-options" type="A"><li>Nothing; Helm always keeps manual edits</li><li>The fix isn't in the chart or values, so it's invisible, and a later upgrade or rollback may overwrite it</li><li>Helm deletes the Deployment at the next upgrade</li><li>The Deployment stops being managed by Helm</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The fix isn't in the chart or values, so it's invisible, and a later upgrade or rollback may overwrite it</b></p><p class="lp-quiz-why">Helm merges each upgrade with the live state, so an edit can survive one upgrade and be lost on the next, or on a rollback. Put the fix into the values file, so it's recorded and reviewed.</p></details>
 </li>
 <li class="lp-quiz-q" data-answer="2" data-kind="Concept">
 <p class="lp-quiz-kind">Concept</p>

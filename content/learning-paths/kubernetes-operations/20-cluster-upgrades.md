@@ -5,7 +5,7 @@ updated: 2026-10-01
 track: kubernetes-operations
 order: 20
 module: 20
-summary: How to upgrade EKS one version at a time — checking for removed APIs first, then the control plane, add-ons, and nodes, in an order that keeps workloads running.
+summary: How to upgrade EKS one version at a time: check for removed APIs first, then upgrade the control plane, add-ons, and nodes, in an order that keeps workloads running.
 level: Production · Upgrades
 readingTime: 10 min read
 stack: [Amazon EKS, Kubernetes, kubectl, Managed Node Groups]
@@ -48,26 +48,14 @@ EKS upgrade insights flag deprecated API usage the cluster has actually seen, wh
 
 ## Step 2 · Control plane, then add-ons, then nodes
 
-```flow
-title: One minor-version upgrade, for example 1.32 to 1.33
-Pre-flight | upgrade insights clean, removed APIs fixed, rehearsed on a non-production cluster
--> aws eks update-cluster-version, or the version in Terraform
-* Control plane on 1.33 | AWS replaces the API servers; workloads keep running
--> nodes are still on 1.32, which is allowed: nodes may lag, never lead
-Core add-ons | VPC CNI, CoreDNS, kube-proxy moved to versions for 1.33
--> then the nodes
-Nodes | new nodes on 1.33 join; old ones are cordoned, drained, and removed one at a time
--> then everything else that talks to the API
-Other controllers | load balancer controller, ingress, Argo CD checked against 1.33
-loop: repeat for the next minor version; you can't skip one
-```
+Upgrade one minor version at a time (for example 1.32 to 1.33), in this order:
 
-### Upgrade order
+1. **Control plane.** Run `aws eks update-cluster-version`, or change the version in Terraform. EKS replaces the API servers in the background, and running workloads keep going.
+2. **Core add-ons.** Move the VPC CNI, CoreDNS, and kube-proxy to versions made for the new release. For managed add-ons this is a version bump; self-managed ones need their manifests updated.
+3. **Nodes.** For managed node groups, start a version update, and EKS replaces the nodes one at a time, cordoning and draining each. With Karpenter, updating the AMI or the node class makes it replace nodes gradually. Until this step finishes, the nodes run one version behind the control plane, which is allowed.
+4. **Everything else.** Controllers that talk to the Kubernetes API, such as the AWS Load Balancer Controller, an ingress controller, or Argo CD, have their own supported version ranges. Check each against the new version.
 
-- **Control plane.** `aws eks update-cluster-version` (or change the version in Terraform). EKS runs the API servers across several Availability Zones and replaces them in the background; running workloads keep going.
-- **Core add-ons.** Bring the VPC CNI, CoreDNS, and kube-proxy up to versions that match the new release. Managed add-ons make this a version bump; self-managed ones need their manifests updated.
-- **Nodes.** For managed node groups, start a version update and EKS replaces nodes in a rolling fashion, cordoning and draining each one. With Karpenter, updating the AMI or the node class causes it to replace nodes gradually.
-- **Everything else.** Controllers that talk to the Kubernetes API, such as the AWS Load Balancer Controller or an ingress controller, often have their own compatibility ranges. Check them against the new version.
+Then repeat for the next minor version if you're more than one behind.
 
 ```text
 # Watch nodes come up on the new version as the rollout proceeds

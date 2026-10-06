@@ -55,22 +55,7 @@ The **worker nodes** are the muscle. They're ordinary machines (a Docker contain
 
 - **kubelet:** the node's agent. It asks the API server which pods belong on its node, and makes sure they're running.
 - **Container runtime** (usually containerd): pulls images and starts containers, the same job Docker does on your laptop.
-- **kube-proxy** and a **network plugin (CNI):** give each pod an IP address and route traffic to it. The networking module covers these.
-
-```flow
-title: The two halves of every cluster
-group: Control plane
-* API server | the only way in, for people, tools, nodes, and controllers
-etcd | stores every object
-Scheduler and controllers | decide where pods go, and keep fixing differences
-end
--> nodes ask the API server what they should be running
-group: Worker nodes
-kubelet | starts and watches the pods assigned to this node
-containerd | pulls images and runs containers
-kube-proxy and CNI | pod IP addresses and routing
-end
-```
+- **A network plugin (CNI)** gives each pod its own IP address, and **kube-proxy** routes traffic sent to a Service on to the right pods. The networking module covers both.
 
 ## Flow · What really happens when you run kubectl apply
 

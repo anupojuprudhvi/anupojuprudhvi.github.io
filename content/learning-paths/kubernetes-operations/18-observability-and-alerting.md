@@ -39,31 +39,6 @@ For most services, four signals cover the symptoms:
 - **Metrics.** CloudWatch Container Insights (installed through the `amazon-cloudwatch-observability` add-on) gives node, pod, and container metrics with little setup. Prometheus, self-run or through Amazon Managed Service for Prometheus with Grafana, gives more control and is the usual choice when apps expose their own metrics.
 - **Cluster state.** `kube-state-metrics` turns Kubernetes objects into metrics: pods stuck in `Pending`, containers restarting, deployments with fewer ready replicas than desired. Many real incidents show up here first.
 
-```flow
-title: From a container to an on-call alert
-group: EKS cluster
-paths
-path: Logs
-App containers | write JSON lines to stdout and stderr
--> collected on every node
-Fluent Bit (DaemonSet) | adds pod, namespace, and node labels
-path: Metrics
-App and node metrics | request counts, latency, CPU, memory
--> scraped every 30 to 60 seconds
-Prometheus agent or CloudWatch agent | also collects kube-state-metrics
-end
-end
--> shipped out of the cluster
-paths
-path: Search
-CloudWatch Logs | query by request ID across every service
-path: Dashboards and rules
-Managed Prometheus or CloudWatch | Grafana dashboards, and alert rules on the four signals
-end
--> only symptoms users would feel
-* Alert to on-call | links to a runbook and the Incident Triage checklist
-```
-
 ```text
 # Is anything restarting or stuck right now?
 kubectl get pods -A --field-selector=status.phase!=Running

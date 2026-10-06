@@ -444,7 +444,7 @@
       <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/17-scaling-requests-and-cost.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/17-scaling-requests-and-cost.html</guid>
       <pubDate>Mon, 28 Sep 2026 00:00:00 GMT</pubDate>
-      <description>Why resource requests drive almost everything in an EKS cluster — scheduling, autoscaling, and the bill — and how pod and node autoscaling fit together.</description>
+      <description>Why resource requests drive almost everything in an EKS cluster (scheduling, autoscaling, and the bill), how pod and node autoscaling work together, and how to keep scale-down safe.</description>
       <category>Kubernetes from Zero to Production on Amazon EKS</category>
     </item>
     <item>
@@ -460,7 +460,7 @@
       <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/20-cluster-upgrades.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/20-cluster-upgrades.html</guid>
       <pubDate>Mon, 28 Sep 2026 00:00:00 GMT</pubDate>
-      <description>How to upgrade EKS one version at a time — checking for removed APIs first, then the control plane, add-ons, and nodes, in an order that keeps workloads running.</description>
+      <description>How to upgrade EKS one version at a time: check for removed APIs first, then upgrade the control plane, add-ons, and nodes, in an order that keeps workloads running.</description>
       <category>Kubernetes from Zero to Production on Amazon EKS</category>
     </item>
     <item>
