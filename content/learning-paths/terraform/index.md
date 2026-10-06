@@ -1,7 +1,7 @@
 ---
 title: Terraform for Enterprise Production
 date: 2026-09-17
-updated: 2026-10-01
+updated: 2026-10-06
 track: terraform
 summary: A playbook for building, scaling, and governing Terraform in enterprise AWS. Part 1 covers the production techniques; Part 2 turns them into one delivery process that takes a module from design to production.
 level: Intermediate to Advanced
@@ -20,7 +20,7 @@ Most tutorials teach you how to write an `aws_instance` block. In real productio
 
 This track comes from building and running multi-account AWS platforms in telecom, tolling, and healthcare.
 
-The track has two parts. **Part 1** teaches the production techniques one at a time. **Part 2** puts them together as one delivery process: how a team designs, builds, tests, records, reviews, and promotes every module the same way. It follows a real codebase standard for an AWS Glue and S3 data platform, with every name removed. Each Part 2 module ends with a five-question **pop quiz**; score 4 out of 5 to pass.
+The track has two parts. **Part 1** teaches the production techniques one at a time. **Part 2** puts them together as one delivery process: how a team designs, builds, tests, records, reviews, and promotes every module the same way. It follows a real codebase standard for an AWS Glue and S3 data platform, with every name removed. Every module ends with a short recap of the key terms and a five-question **pop quiz**; score 4 out of 5 to pass.
 
 <div class="callout"><b>Which path do I take?</b><ul><li><b>Building or changing one module</b> in a codebase that already exists? Start at <a href="07-base-composition-and-environment-modules.html">Module 07</a> and follow Part 2 in order. Your environments and their state layers stay as they are.</li><li><b>Starting a platform from scratch?</b> Begin with <a href="01-enterprise-module-design.html">Module 01</a> and <a href="02-state-isolation-and-locking.html">Module 02</a> to split state into layers and bootstrap the backend. Then build each layer&#39;s code through the Part 2 process.</li><li><b>Already running Terraform in production?</b> Go straight to <a href="11-module-promotion-gate.html">Module 11</a> for the whole process on one page, then back to whichever step you&#39;re missing.</li></ul></div>
 

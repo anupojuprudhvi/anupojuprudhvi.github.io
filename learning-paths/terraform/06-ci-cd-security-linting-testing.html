@@ -43,7 +43,7 @@
         "image": "https://anupojuprudhvi.github.io/assets/og/learning-paths/terraform.jpg",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/terraform/06-ci-cd-security-linting-testing.html",
         "datePublished": "2026-09-17",
-        "dateModified": "2026-10-01",
+        "dateModified": "2026-10-06",
         "isPartOf": {"@type":"CreativeWorkSeries","name":"Terraform for Enterprise Production","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/index.html"},
         "position": 6,
         "keywords": "ci-cd, checkov, tflint, drift-detection, pipeline, automation, Terraform, GitHub Actions, Checkov, TFLint, AWS"
@@ -171,8 +171,8 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 06 of 11</span>
             <span><b>Level:</b> DevOps &amp; Governance</span>
-            <span><b>Time:</b> 9 min read</span>
-            <span><b>Updated:</b> <time datetime="2026-10-01">1 Oct 2026</time></span>
+            <span><b>Time:</b> 10 min read</span>
+            <span><b>Updated:</b> <time datetime="2026-10-06">6 Oct 2026</time></span>
           </div>
         </div>
       </header>
@@ -189,7 +189,7 @@
                 <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
                 <li><a href="05-refactoring-with-moved-blocks.html"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a></li>
                 <li class="is-current"><a href="06-ci-cd-security-linting-testing.html" aria-current="page"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a>
-                <ol class="lp-toc-sections"><li><a href="#the-three-tier-verification-pipeline">The three-tier verification pipeline</a></li><li><a href="#code-quality-linting-with-tflint">Code quality &amp; linting with TFLint</a></li><li><a href="#security-scanning-with-checkov">Security scanning with Checkov</a></li><li><a href="#automated-plan-posting-in-pull-requests">Automated plan posting in Pull Requests</a></li><li><a href="#scheduled-drift-detection">Scheduled drift detection</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#the-three-tier-verification-pipeline">The three-tier verification pipeline</a></li><li><a href="#code-quality-linting-with-tflint">Code quality &amp; linting with TFLint</a></li><li><a href="#security-scanning-with-checkov">Security scanning with Checkov</a></li><li><a href="#automated-plan-posting-in-pull-requests">Automated plan posting in Pull Requests</a></li><li><a href="#scheduled-drift-detection">Scheduled drift detection</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
               </ol>
               <p class="lp-toc-part">Part 2 · How a module is delivered: design to production</p>
               <ol class="lp-toc-list">
@@ -226,6 +226,17 @@
             </nav>
             </details>
           <section>
+<div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Order pipeline checks from fastest to slowest: format and lint, security scan, then plan</li>
+<li>Configure TFLint and Checkov, and handle a finding with a fix or a recorded exception</li>
+<li>Post plans on pull requests, apply the saved plan, and detect drift on a schedule</li>
+</ul>
+<p><b>Before you start:</b> read <a href="04-secrets-and-sensitive-values.html">Zero-Plaintext Secret Architecture</a>. The pipeline here deploys through the OIDC role it describes.</p>
+</div>
+</section>
+<section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
 <h2 id="the-three-tier-verification-pipeline">The three-tier verification pipeline</h2>
@@ -367,6 +378,61 @@ terraform plan -detailed-exitcode</code></pre>
 </ul>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>TFLint:</b> a linter that knows the AWS provider, catching mistakes <code>terraform validate</code> can't, such as invalid instance types.</li>
+<li><b>Checkov:</b> a security scanner for infrastructure code. A required check in branch protection blocks the merge on a finding.</li>
+<li><b>Scoped skip:</b> <code>checkov:skip=&lt;ID&gt;:&lt;reason&gt;</code> on one resource, naming its ADR. Preferred over a global skip.</li>
+<li><b>Saved plan:</b> <code>terraform plan -out=tfplan</code>, reviewed on the pull request and applied as-is. Terraform refuses it if the state has changed since.</li>
+<li><b>Drift detection:</b> a scheduled <code>terraform plan -detailed-exitcode</code>. Exit code 2 means the real infrastructure differs from the code.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="0" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Why do <code>terraform fmt</code>, <code>terraform validate</code>, and TFLint run before the plan?</p>
+<ol class="lp-quiz-options" type="A"><li>They take seconds and catch simple mistakes before the slower steps run</li><li>The plan needs their output</li><li>Checkov requires them</li><li>They need AWS credentials first</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>They take seconds and catch simple mistakes before the slower steps run</b></p><p class="lp-quiz-why">Fastest checks first: a formatting slip fails in seconds instead of after a full scan and plan.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">A scheduled <code>terraform plan -detailed-exitcode</code> returns 2. What does that mean?</p>
+<ol class="lp-quiz-options" type="A"><li>The plan failed</li><li>No changes</li><li>Drift: the real infrastructure differs from the code</li><li>Another run holds the state lock</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Drift: the real infrastructure differs from the code</b></p><p class="lp-quiz-why">0 means no changes, 1 means the plan failed, and 2 means there are changes to bring into code or undo.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Checkov flags a nonprod bucket without access logging, and the team accepts the risk. How should it pass?</p>
+<ol class="lp-quiz-options" type="A"><li>Set <code>soft-fail: true</code></li><li>Remove the Checkov step for nonprod</li><li>Write an ADR, add a scoped <code>checkov:skip</code> that names it, and log it in the CHANGELOG</li><li>Add the check to the global skip list</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Write an ADR, add a scoped <code>checkov:skip</code> that names it, and log it in the CHANGELOG</b></p><p class="lp-quiz-why">A finding that can't be fixed is accepted on the record, for that one resource, and never by switching the check off.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="0" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">The plan step pipes its output into <code>tee</code>, and a broken plan still shows a green check. What's missing?</p>
+<ol class="lp-quiz-options" type="A"><li><code>set -o pipefail</code>, so the plan's failure isn't hidden by the pipe</li><li><code>-no-color</code></li><li><code>-detailed-exitcode</code></li><li>A longer PR comment</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b><code>set -o pipefail</code>, so the plan's failure isn't hidden by the pipe</b></p><p class="lp-quiz-why">Without <code>pipefail</code>, the step's exit code is <code>tee</code>'s, which succeeds even when the plan fails.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">A pull request's plan was approved yesterday. Overnight, another change was applied to the same state. What happens when the deploy job applies the saved plan?</p>
+<ol class="lp-quiz-options" type="A"><li>It applies anyway</li><li>It merges both changes</li><li>Terraform refuses the stale plan, and a fresh plan has to be made and reviewed</li><li>It undoes the overnight change</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Terraform refuses the stale plan, and a fresh plan has to be made and reviewed</b></p><p class="lp-quiz-why">A saved plan applies only to the state it was made from. If the state has moved on, Terraform rejects it.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/terraform/05-refactoring-with-moved-blocks.html">
           <span class="lp-nav-label">← Module 05</span>
           <span class="lp-nav-title">Zero-Downtime Refactoring with Moved &amp; Import Blocks</span>
@@ -402,6 +468,7 @@ terraform plan -detailed-exitcode</code></pre>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
     <script src="../../assets/flow-player.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>
 </html>

@@ -43,7 +43,7 @@
         "image": "https://anupojuprudhvi.github.io/assets/og/learning-paths/terraform.jpg",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/terraform/05-refactoring-with-moved-blocks.html",
         "datePublished": "2026-09-17",
-        "dateModified": "2026-09-17",
+        "dateModified": "2026-10-06",
         "isPartOf": {"@type":"CreativeWorkSeries","name":"Terraform for Enterprise Production","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/index.html"},
         "position": 5,
         "keywords": "refactoring, moved-blocks, import, zero-downtime, state-migration, Terraform 1.5+, HCL, AWS"
@@ -171,8 +171,8 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 05 of 11</span>
             <span><b>Level:</b> Advanced Refactoring</span>
-            <span><b>Time:</b> 8 min read</span>
-            <span><b>Published:</b> <time datetime="2026-09-17">17 Sep 2026</time></span>
+            <span><b>Time:</b> 9 min read</span>
+            <span><b>Updated:</b> <time datetime="2026-10-06">6 Oct 2026</time></span>
           </div>
         </div>
       </header>
@@ -188,7 +188,7 @@
                 <li><a href="03-variables-validation-and-types.html"><span class="lp-toc-num">03</span><span>Modern HCL — Types, Validations &amp; Preconditions</span></a></li>
                 <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
                 <li class="is-current"><a href="05-refactoring-with-moved-blocks.html" aria-current="page"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a>
-                <ol class="lp-toc-sections"><li><a href="#code-refactoring-must-not-cause-resource-recreation">Code refactoring must not cause resource recreation</a></li><li><a href="#refactoring-with-declarative-moved-blocks">Refactoring with declarative moved blocks</a></li><li><a href="#declarative-adoption-with-import-blocks">Declarative adoption with import blocks</a></li><li><a href="#safely-detaching-resources-with-removed-blocks">Safely detaching resources with removed blocks</a></li><li><a href="#refactoring-without-downtime">Refactoring without downtime</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#code-refactoring-must-not-cause-resource-recreation">Code refactoring must not cause resource recreation</a></li><li><a href="#refactoring-with-declarative-moved-blocks">Refactoring with declarative moved blocks</a></li><li><a href="#declarative-adoption-with-import-blocks">Declarative adoption with import blocks</a></li><li><a href="#safely-detaching-resources-with-removed-blocks">Safely detaching resources with removed blocks</a></li><li><a href="#refactoring-without-downtime">Refactoring without downtime</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a></li>
               </ol>
               <p class="lp-toc-part">Part 2 · How a module is delivered: design to production</p>
@@ -226,6 +226,17 @@
             </nav>
             </details>
           <section>
+<div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Rename and restructure resources with <code>moved</code> blocks, without destroying them</li>
+<li>Bring existing resources under Terraform with <code>import</code> blocks</li>
+<li>Stop managing a resource without deleting it, using <code>removed</code> blocks</li>
+</ul>
+<p><b>Before you start:</b> read <a href="03-variables-validation-and-types.html">Modern HCL</a>. Its switch from <code>count</code> to <code>for_each</code> is a typical refactor that needs <code>moved</code> blocks.</p>
+</div>
+</section>
+<section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
 <h2 id="code-refactoring-must-not-cause-resource-recreation">Code refactoring must not cause resource recreation</h2>
@@ -325,6 +336,60 @@ removed {
 </ol>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b><code>moved</code> block:</b> records a new address for an existing resource, reviewed and applied together with the code change (Terraform 1.1+).</li>
+<li><b><code>import</code> block:</b> adopts an existing resource declaratively (1.5+). <code>terraform plan -generate-config-out</code> drafts its HCL.</li>
+<li><b><code>removed</code> block with <code>destroy = false</code>:</b> drops a resource from state but leaves it running (1.7+).</li>
+<li><b><code>terraform state mv</code>:</b> the older manual command. It isn't reviewed, and it can run out of step with the code.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="0" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">What should the plan show after a correct <code>moved</code> block for a resource whose settings didn't change?</p>
+<ol class="lp-quiz-options" type="A"><li>That the resource has moved, with 0 to add, 0 to change, 0 to destroy</li><li>1 to add and 1 to destroy</li><li>1 to change</li><li>Nothing about the move at all</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>That the resource has moved, with 0 to add, 0 to change, 0 to destroy</b></p><p class="lp-quiz-why">The move is listed in the plan, and the apply only updates state. The real resource isn't touched.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Which block stops Terraform managing an Aurora cluster without deleting it?</p>
+<ol class="lp-quiz-options" type="A"><li><code>moved</code></li><li><code>import</code></li><li><code>removed</code>, with <code>destroy = false</code></li><li><code>lifecycle { prevent_destroy = true }</code></li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b><code>removed</code>, with <code>destroy = false</code></b></p><p class="lp-quiz-why"><code>removed</code> with <code>destroy = false</code> takes the cluster out of state and leaves it running in AWS.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Why is <code>terraform state mv</code> riskier than a <code>moved</code> block?</p>
+<ol class="lp-quiz-options" type="A"><li>It's slower</li><li>It isn't in Git or reviewed, and it can run before or after the code change instead of with it</li><li>It only works with local state</li><li>It deletes the resource</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>It isn't in Git or reviewed, and it can run before or after the code change instead of with it</b></p><p class="lp-quiz-why">If the pipeline applies the new code before someone runs the command, Terraform plans to destroy and re-create the resource.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">During a module refactor, the plan shows <code>1 to destroy</code>. What do you do?</p>
+<ol class="lp-quiz-options" type="A"><li>Apply; the <code>moved</code> block fixes it afterwards</li><li>Stop: the <code>from</code> or <code>to</code> address is wrong. Fix it until the plan shows no destroys</li><li>Add <code>prevent_destroy</code> and apply</li><li>Run <code>terraform state rm</code> first</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Stop: the <code>from</code> or <code>to</code> address is wrong. Fix it until the plan shows no destroys</b></p><p class="lp-quiz-why">A correct refactor plans 0 to add, 0 to change, 0 to destroy. A destroy means Terraform doesn't see the move.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">A shared module that other teams use added <code>moved</code> blocks last month. Can you delete them now?</p>
+<ol class="lp-quiz-options" type="A"><li>Yes, once your own environment has applied them</li><li>Yes, after 30 days</li><li>No: keep them, because other teams' code may not have applied the move yet</li><li>Only if <code>terraform validate</code> passes</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>No: keep them, because other teams' code may not have applied the move yet</b></p><p class="lp-quiz-why">A <code>moved</code> block can go only after every environment and branch using the code has applied it. In a shared module, keep it for good.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/terraform/04-secrets-and-sensitive-values.html">
           <span class="lp-nav-label">← Module 04</span>
           <span class="lp-nav-title">Zero-Plaintext Secret Architecture</span>
@@ -359,6 +424,7 @@ removed {
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>
 </html>

@@ -1,15 +1,24 @@
 ---
 title: Zero-Downtime Refactoring with Moved & Import Blocks
 date: 2026-09-17
+updated: 2026-10-06
 track: terraform
 order: 5
 module: 5
 summary: Rename, restructure, adopt, and let go of resources without outages, using moved, import, and removed blocks that are reviewed in a pull request like any other code.
 level: Advanced Refactoring
-readingTime: 8 min read
+readingTime: 9 min read
 stack: [Terraform 1.5+, HCL, AWS]
 tags: [refactoring, moved-blocks, import, zero-downtime, state-migration]
 ---
+
+**In this module, you'll learn to:**
+
+- Rename and restructure resources with `moved` blocks, without destroying them
+- Bring existing resources under Terraform with `import` blocks
+- Stop managing a resource without deleting it, using `removed` blocks
+
+**Before you start:** read [Modern HCL](03-variables-validation-and-types.html). Its switch from `count` to `for_each` is a typical refactor that needs `moved` blocks.
 
 ## Principle · Code refactoring must not cause resource recreation
 
@@ -104,3 +113,47 @@ removed {
 1. **Change the code and add `moved` in the same commit.** Never remove the old resource in one commit and add the move in another.
 2. **Read the plan.** You want `Plan: 0 to add, 0 to change, 0 to destroy`. If it shows a destroy, stop: the `from` or `to` address is wrong.
 3. **Keep `moved` blocks until everyone has applied them.** Remove one only after every environment and every open branch using this code has applied it. In a shared module that other teams use, keep them for good.
+
+## Recap · Key terms
+
+- **`moved` block:** records a new address for an existing resource, reviewed and applied together with the code change (Terraform 1.1+).
+- **`import` block:** adopts an existing resource declaratively (1.5+). `terraform plan -generate-config-out` drafts its HCL.
+- **`removed` block with `destroy = false`:** drops a resource from state but leaves it running (1.7+).
+- **`terraform state mv`:** the older manual command. It isn't reviewed, and it can run out of step with the code.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+Q: What should the plan show after a correct `moved` block for a resource whose settings didn't change?
+* That the resource has moved, with 0 to add, 0 to change, 0 to destroy
+- 1 to add and 1 to destroy
+- 1 to change
+- Nothing about the move at all
+= The move is listed in the plan, and the apply only updates state. The real resource isn't touched.
+Q: Which block stops Terraform managing an Aurora cluster without deleting it?
+- `moved`
+- `import`
+* `removed`, with `destroy = false`
+- `lifecycle { prevent_destroy = true }`
+= `removed` with `destroy = false` takes the cluster out of state and leaves it running in AWS.
+Q: Why is `terraform state mv` riskier than a `moved` block?
+- It's slower
+* It isn't in Git or reviewed, and it can run before or after the code change instead of with it
+- It only works with local state
+- It deletes the resource
+= If the pipeline applies the new code before someone runs the command, Terraform plans to destroy and re-create the resource.
+S: During a module refactor, the plan shows `1 to destroy`. What do you do?
+- Apply; the `moved` block fixes it afterwards
+* Stop: the `from` or `to` address is wrong. Fix it until the plan shows no destroys
+- Add `prevent_destroy` and apply
+- Run `terraform state rm` first
+= A correct refactor plans 0 to add, 0 to change, 0 to destroy. A destroy means Terraform doesn't see the move.
+S: A shared module that other teams use added `moved` blocks last month. Can you delete them now?
+- Yes, once your own environment has applied them
+- Yes, after 30 days
+* No: keep them, because other teams' code may not have applied the move yet
+- Only if `terraform validate` passes
+= A `moved` block can go only after every environment and branch using the code has applied it. In a shared module, keep it for good.
+```
