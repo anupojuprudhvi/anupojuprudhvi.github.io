@@ -249,7 +249,7 @@ The challenges that only show up once real users depend on the platform: deliver
 
 ## Big picture · The whole platform, as three flows
 
-This is the map, and it makes the most sense once you've finished Part 2. Here's the whole system end to end, as three flows. Press **Play traffic flow** on any of them to follow it hop by hop. Every box names the module that explains it, so if something breaks at one hop, that's the module to open.
+This is the map, and it makes the most sense once you've finished Part 2. Here's the whole system end to end, as three flows. Press **Play step by step** on any of them to follow it hop by hop. Every box names the module that explains it, so if something breaks at one hop, that's the module to open.
 
 ### Flow 1 · A user's request, from the browser to your code
 

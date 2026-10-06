@@ -52,7 +52,7 @@
 
     var controls = document.createElement("div");
     controls.className = "flow-controls";
-    var play = button("▶ Play traffic flow", "flow-play");
+    var play = button("▶ Play step by step", "flow-play");
     var back = button("← Back", "flow-back");
     var next = button("Next →", "flow-next");
     var reset = button("Reset", "flow-reset");
@@ -84,7 +84,7 @@
       back.disabled = current <= 0;
       next.disabled = current >= steps.length - 1;
       reset.disabled = current < 0;
-      if (!timer) play.textContent = current >= steps.length - 1 ? "↻ Play again" : "▶ Play traffic flow";
+      if (!timer) play.textContent = current >= steps.length - 1 ? "↻ Play again" : "▶ Play step by step";
       if (current < 0) {
         caption.textContent = idle;
         return;
