@@ -311,10 +311,6 @@
 <div class="section-eyebrow">Inside</div>
 <h2 id="what-a-file-really-is">What a file really is</h2>
 <p>A file name is just a label. The file itself is an <b>inode</b>: a record that holds the file's owner, permissions, size, timestamps, and where its data sits on the disk. A directory is a list that maps names to inode numbers.</p>
-<figure class="flow">
-<figcaption class="flow-title">From a name to the data</figcaption>
-<div class="flow-body"><div class="flow-node"><strong>Directory /home/ubuntu</strong><span>a list of names, each pointing to an inode number</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">notes.txt points to inode 524301</span></div><div class="flow-node is-key"><strong>Inode 524301</strong><span>owner, group, permissions, size, timestamps, link count</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">the inode records where the data blocks are</span></div><div class="flow-node"><strong>Data blocks</strong><span>the file's actual contents on disk</span></div></div>
-</figure>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">echo &quot;hello&quot; &gt; notes.txt
 ls -i notes.txt          # the inode number
 stat notes.txt           # everything the inode holds
@@ -540,7 +536,6 @@ cat /srv/reports/2026/q3.txt</code></pre><figcaption class="scroll-hint">Scroll 
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
-    <script src="../../assets/flow-player.js" defer></script>
     <script src="../../assets/quiz.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>

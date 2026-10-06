@@ -16,21 +16,6 @@ Every module is built to be worked through, not just read. Each one opens with w
 
 <div class="callout"><b>Where to start.</b><ul><li><b>New to Linux, or only used it in college?</b> Start at <a href="01-shell-survival.html">Module 01</a> and read in order. It sets up the free lab VM that every module uses.</li><li><b>Use Linux at work already?</b> Take the pop quiz at the end of each Part 1 module. Pass all five, then start at <a href="06-boot-process.html">Part 2</a>, where most day-to-day troubleshooting knowledge lives.</li><li><b>Chasing a specific problem?</b> Go straight to the module for it: services in <a href="07-systemd-and-services.html">07</a>, memory in <a href="09-memory-and-the-oom-killer.html">09</a>, disks in <a href="10-storage-and-filesystems.html">10</a>, networking in <a href="11-networking-basics.html">11</a> and <a href="12-dns-firewalls-and-packets.html">12</a>, a slow server in <a href="13-troubleshooting-method.html">13</a>.</li><li><b>Think you already know it all?</b> Try the <a href="20-capstone-incident.html">capstone incident</a> first, and come back for whatever slows you down.</li></ul></div>
 
-```flow
-title: The route through this track
-Part 1 · Foundations | the shell, text tools, files and permissions, users and SSH, packages
--> you can work on any Linux server without guessing
-Part 2 · How Linux works | boot, systemd, processes, memory, storage, networking, DNS
--> you can explain what the system is doing and why
-Part 3 · Troubleshooting | a method, the tracing tools, logs and monitoring
--> you can go from a symptom to a root cause
-Part 4 · Linux for DevOps | containers from scratch, hardening, automation, performance
--> you understand the layer that Docker, Kubernetes, and CI run on
-Part 5 · Capstone | an incident with several faults at once, and a written postmortem
--> then see the same skills applied to real systems
-* Part 6 · Production Incident Reviews | real, anonymized incidents, from symptom to root cause
-```
-
 ## Break-fix · How every lab ends
 
 Reading about a full disk isn't the same as fixing one. So every module ends with a **Break it, fix it** exercise. You run one command that breaks your lab VM the way real servers break. Then you get only the symptom a user would report. Three hints are folded underneath, to open one at a time if you get stuck:

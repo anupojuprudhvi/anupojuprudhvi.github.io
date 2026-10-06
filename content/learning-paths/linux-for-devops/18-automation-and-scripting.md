@@ -23,16 +23,9 @@ tags: [linux, bash, scripting, automation, ansible, cloud-init, cron]
 
 Typing the same commands on every server doesn't scale, and it drifts: one server gets a slightly different setting, and nobody remembers why. Automation turns those commands into code you can review, test, and run again. Three tools cover most of it, each at a different stage of a server's life:
 
-```flow
-title: Where each automation tool fits
-Image | Packer or a cloud image: the base OS, baked in advance
--> a new server boots from the image
-cloud-init | runs once at first boot: users, keys, packages, a bootstrap command
--> the server joins the fleet
-* Configuration management | Ansible keeps every server in the desired state, run after run
--> small fixes and checks between runs
-Scripts | Bash for glue: one-off tasks, health checks, and small jobs
-```
+- **cloud-init** runs once, at first boot: users, keys, packages, and a bootstrap command.
+- **Ansible** keeps every server in the desired state, run after run.
+- **Bash** is the glue for one-off tasks, health checks, and small jobs in between.
 
 ## Bash · Scripts that fail safely
 
