@@ -4,6 +4,10 @@
  *   og-image.png                          ← assets/og-template.html (site-wide default, with --default)
  *   assets/og/<project>/<slug>.jpg        ← assets/og-page.html, one per case study
  *   assets/og/<project>/index.jpg         ← assets/og-page.html, one per project overview
+ *   assets/og/learning-paths/<track>.jpg  ← assets/og-page.html, one per learning path
+ *
+ * `--only <prefix>` renders just the images whose path starts with the
+ * prefix, e.g. `npm run social -- --only assets/og/learning-paths/`.
  *
  * Run after adding or renaming a case study, then `npm run build` so pages
  * pick the new image up (build.mjs falls back to og-image.png when a
@@ -57,6 +61,24 @@ for (const project of projects) {
   }
 }
 
+const tracks = JSON.parse(fs.readFileSync(path.join(root, "content/learning-paths/tracks.json"), "utf8"));
+for (const track of tracks) {
+  const modules = fs
+    .readdirSync(path.join(root, "content/learning-paths", track.id))
+    .filter((f) => /^\d+-.*\.md$/.test(f)).length;
+  cards.push({
+    out: `assets/og/learning-paths/${track.id}.jpg`,
+    eyebrow: track.eyebrow || "Learning path",
+    title: track.title,
+    stat: String(modules),
+    statLabel: modules === 1 ? "module" : "modules",
+    kind: "Learning path",
+  });
+}
+
+const onlyAt = process.argv.indexOf("--only");
+const only = onlyAt > -1 ? process.argv[onlyAt + 1] : "";
+
 try {
   const page = await browser.newPage({
     viewport: { width: 1200, height: 630 },
@@ -66,7 +88,7 @@ try {
     await page.goto(`${base}/assets/og-template.html`);
     await page.screenshot({ path: path.join(root, "og-image.png") });
   }
-  for (const card of cards) {
+  for (const card of cards.filter((c) => c.out.startsWith(only))) {
     const { out, ...params } = card;
     await page.goto(`${base}/assets/og-page.html?${new URLSearchParams(params)}`);
     fs.mkdirSync(path.dirname(path.join(root, out)), { recursive: true });
