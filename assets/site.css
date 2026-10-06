@@ -6,6 +6,9 @@
   --text-body: #b8c8d1;
   --text-muted: #92a7b4;
   --border: #2a3b46;
+  /* Lines and outlines inside diagrams: 3:1 against the page, so connectors
+     stay visible (WCAG 1.4.11); --border is for quiet dividers only. */
+  --line: #536b7a;
   --accent: #81e4c1;
   --accent-bright: #81e4c1;
   --accent-soft: #19392f;
@@ -30,6 +33,7 @@
   --text-body: #425b68;
   --text-muted: #526c78;
   --border: #d3dfdf;
+  --line: #78929a;
   --accent: #176b53;
   --accent-bright: #81e4c1;
   --accent-soft: #e1f3ea;
@@ -664,7 +668,7 @@ nav.topnav {
 .architecture {
   position: relative;
   background:
-    radial-gradient(ellipse at center, #17372e55, transparent 70%),
+    radial-gradient(ellipse at center, var(--hero-glow-a), transparent 70%),
     linear-gradient(var(--border) 1px, transparent 1px),
     linear-gradient(90deg, var(--border) 1px, transparent 1px);
   background-size:
@@ -719,7 +723,7 @@ nav.topnav {
   padding: 25px 16px;
   text-align: center;
   margin: 28px 36px 0;
-  box-shadow: 0 0 35px #81e4c10c;
+  box-shadow: 0 0 35px var(--hero-glow-a);
   transition:
     box-shadow 0.4s ease,
     border-color 0.4s ease;

@@ -727,12 +727,13 @@
   opacity: 0;
   animation: lp-confetti-fall var(--fall) cubic-bezier(0.25, 0.6, 0.45, 1) var(--delay) forwards;
 }
-.lp-confetti-piece.c0 { background: #81e4c1; }
-.lp-confetti-piece.c1 { background: #f2b155; }
-.lp-confetti-piece.c2 { background: #7aa7ff; }
-.lp-confetti-piece.c3 { background: #e0776e; }
+/* Site palette only, so the celebration matches both themes. */
+.lp-confetti-piece.c0 { background: var(--accent-bright); }
+.lp-confetti-piece.c1 { background: var(--accent2); }
+.lp-confetti-piece.c2 { background: var(--accent); }
+.lp-confetti-piece.c3 { background: var(--danger); }
 .lp-confetti-piece.c4 {
-  background: #b48ce8;
+  background: var(--text-muted);
   border-radius: 50%;
   width: 8px;
   height: 8px;

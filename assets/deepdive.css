@@ -149,7 +149,7 @@
   stroke-dasharray: 4, 3;
 }
 .hub-line {
-  stroke: var(--border);
+  stroke: var(--line);
   stroke-width: 1.5;
   fill: none;
   transition:
@@ -348,9 +348,15 @@ pre.code {
 }
 .hub-groupbox {
   fill: none;
-  stroke: var(--border);
+  stroke: var(--line);
   stroke-width: 1.5;
   stroke-dasharray: 3, 4;
+}
+/* A label on a connector (e.g. the public entry path). */
+.hub-edge-label {
+  font-family: system-ui, sans-serif;
+  font-size: 10.5px;
+  fill: var(--text-muted);
 }
 .hub-group-label {
   font-family: system-ui, sans-serif;
