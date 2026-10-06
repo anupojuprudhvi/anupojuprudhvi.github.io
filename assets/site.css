@@ -112,6 +112,12 @@ summary {
   margin: auto;
   padding: 0 32px;
 }
+/* A .wrap inside another .wrap (sections written into a page body) must not
+   add a second set of side padding and indent its content. */
+.wrap .wrap {
+  max-width: none;
+  padding: 0;
+}
 .eyebrow,
 .section-eyebrow {
   font:
@@ -1251,11 +1257,11 @@ footer {
     top: 24px;
   }
 }
-/* Large screens: browsing pages (homepage, library, learning hub) widen to
-   1320px instead of sitting in a narrow column with wide empty margins.
-   Reading pages keep their narrower --maxw (.deepdive); the nav bar follows
-   --site-maxw everywhere so it lines up across all pages. The homepage
-   network switches to its layout drawn for this width. */
+/* Large screens: every page widens to 1320px instead of sitting in a narrow
+   column with wide empty margins, so all pages share the homepage's width.
+   Running text on reading pages keeps its own line length (--measure in
+   deepdive.css). The homepage network switches to its layout drawn for this
+   width. */
 .hub-net-wide {
   display: none;
   margin-left: -800px;
@@ -1562,9 +1568,6 @@ html.js .reveal-in {
 }
 
 /* ---------------------------------- Privacy page */
-.privacy-body {
-  max-width: 760px;
-}
 .privacy-body h2 {
   font-size: 22px;
   margin: 34px 0 12px;
