@@ -570,7 +570,7 @@ pre.code {
 .scroll-hint {
   display: none;
   margin-top: 8px;
-  font-size: 11.5px;
+  font-size: 12px;
   color: var(--text-muted);
 }
 .deepdive .seq {
@@ -661,8 +661,10 @@ pre.code {
   .scroll-hint {
     display: block;
   }
+  /* 12.5px keeps commands readable on a phone (Lighthouse's legibility
+     floor is 12px); long lines still scroll sideways. */
   .deepdive pre.code {
-    font-size: 11px;
+    font-size: 12.5px;
   }
   /* Tables become stacked label/value cards instead of a squeezed grid. */
   .table-wrap {
