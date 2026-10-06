@@ -109,6 +109,10 @@ function learningPathsNavDropdown({ prefix = "", current = false } = {}) {
                 <strong>Linux for DevOps</strong>
                 <small>25 Modules · Labs &amp; Incident Reviews</small>
               </a>
+              <a href="${prefix}my-ai-journey/index.html" role="menuitem" class="nav-dropdown-item">
+                <strong>My AI Journey</strong>
+                <small>11 Chapters · Copy-Paste to Agentic Workflows</small>
+              </a>
             </div>
           </div>`;
 }

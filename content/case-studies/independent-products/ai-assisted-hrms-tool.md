@@ -86,6 +86,8 @@ I built this tool with AI coding tools, and the way I worked mattered more than 
 - **Small, complete changes.** Each change is the smallest one that fully solves the problem, which keeps AI-written code easy to review.
 - **Security is tested, not assumed.** Any change to permissions is tested with the wrong role and the wrong company, and expects to be refused. Failing tests and security checks are never switched off to get a change through.
 
+The same approach is described step by step in the [My AI Journey](../../learning-paths/my-ai-journey/index.html) learning path.
+
 ## Trade-offs · Kept simple on purpose
 
 - **Quoting, not generating.** The assistant quotes the handbook instead of writing its own answer. It reads less smoothly than a chatbot, but it can't make up a policy.

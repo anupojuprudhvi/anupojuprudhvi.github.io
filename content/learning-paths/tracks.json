@@ -68,5 +68,25 @@
     "stack": ["Ubuntu 24.04", "Bash", "systemd", "LVM", "nftables", "tcpdump", "strace", "eBPF", "Ansible", "Docker"],
     "closingQuestion": "Questions about this learning path?",
     "closingBody": "I'm happy to go into more detail on any of this: how to practise troubleshooting safely, which fundamentals matter most early on, or how a break-fix lab is put together."
+  },
+  {
+    "id": "my-ai-journey",
+    "motif": "stream",
+    "parts": [
+      { "title": "Part 1 · Curious (late 2022 to mid 2024)", "modules": [1, 2, 3] },
+      { "title": "Part 2 · Working together (late 2024 to early 2026)", "modules": [4, 5, 6] },
+      { "title": "Part 3 · Agents (late 2025 to 2026)", "modules": [7, 8] },
+      { "title": "Part 4 · Standards and building (mid 2026)", "modules": [9, 10] },
+      { "title": "Part 5 · Now", "modules": [11] }
+    ],
+    "title": "My AI Journey: From Copy-Paste to Agentic Workflows",
+    "eyebrow": "AI in DevOps Practice",
+    "summary": "The story of how I brought AI into my work as a Lead DevOps engineer and DevOps architect: a curious ChatGPT question in late 2022, the copy-paste years, then AI as a co-worker, writer, and planner, and finally agentic workflows that deliver platform code compliant by design and apps built for SOC compliance. Every chapter ends with an exercise to try on your own work.",
+    "level": "All levels",
+    "duration": "11 Chapters · 67 min read",
+    "badge": "Personal Journey",
+    "stack": ["ChatGPT", "Claude", "AGENTS.md", "Agent Skills", "MCP"],
+    "closingQuestion": "Where are you on your own AI journey?",
+    "closingBody": "If you're bringing AI into your own work, or you're stuck at one of these stages, I'd be glad to hear how it's going and compare notes on what's worked."
   }
 ]

@@ -8,6 +8,94 @@
     <atom:link href="https://anupojuprudhvi.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <lastBuildDate>Tue, 06 Oct 2026 00:00:00 GMT</lastBuildDate>
     <item>
+      <title>Before AI: How I Worked Without It</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/01-before-ai.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/01-before-ai.html</guid>
+      <pubDate>Tue, 06 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Where the story starts. A DevOps engineer, a failing pipeline, and a dozen browser tabs. How I solved problems before AI, the three things that ate my time, and why you should write down your own starting point before you judge what AI changes.</description>
+      <category>My AI Journey: From Copy-Paste to Agentic Workflows</category>
+    </item>
+    <item>
+      <title>First Conversations: Trying ChatGPT in Late 2022</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/02-first-chatgpt-conversations.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/02-first-chatgpt-conversations.html</guid>
+      <pubDate>Tue, 06 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Late 2022. I typed a technical question into ChatGPT and got back one clear, confident answer instead of a list of links. It felt like a shortcut, until the first confident answer turned out to be wrong. The habit that came from it is the one I still use every day.</description>
+      <category>My AI Journey: From Copy-Paste to Agentic Workflows</category>
+    </item>
+    <item>
+      <title>The Copy-Paste Loop: Debugging by Hand (2023 to Mid 2024)</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/03-the-copy-paste-loop.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/03-the-copy-paste-loop.html</guid>
+      <pubDate>Tue, 06 Oct 2026 00:00:00 GMT</pubDate>
+      <description>For about eighteen months I used AI on and off, almost always the same way. Paste the error, copy the fix back, run it, paste the next error. Why that loop sometimes worked, why it often went round in circles, and the lesson behind every chapter after it, that context is the job.</description>
+      <category>My AI Journey: From Copy-Paste to Agentic Workflows</category>
+    </item>
+    <item>
+      <title>AI as a Co-Worker: Debugging Together (Late 2024 to Early 2025)</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/04-ai-as-a-co-worker.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/04-ai-as-a-co-worker.html</guid>
+      <pubDate>Tue, 06 Oct 2026 00:00:00 GMT</pubDate>
+      <description>The turning point. I stopped pasting errors and started explaining problems, the way I would to a colleague. AI went from a patch machine to a debugging partner that suggests causes, explains unfamiliar logs, and argues back. What changed, the brief I now give it, and why I still own the fix.</description>
+      <category>My AI Journey: From Copy-Paste to Agentic Workflows</category>
+    </item>
+    <item>
+      <title>AI as a Writer: Documentation That Finally Gets Done (Mid 2025)</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/05-ai-as-a-writer.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/05-ai-as-a-writer.html</guid>
+      <pubDate>Tue, 06 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Documentation was always the thing I put off. In mid 2025 that changed. I bring the facts, AI brings the structure and the first draft, and I check every line. Runbooks, guides, and design notes that used to wait for &quot;later&quot; started getting written, and the training material and learning paths on this site came out of the same habit.</description>
+      <category>My AI Journey: From Copy-Paste to Agentic Workflows</category>
+    </item>
+    <item>
+      <title>AI as a Planner: Breaking Down Big Work and Cutting Cloud Cost (Late 2025 to Early 2026)</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/06-ai-as-a-planner.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/06-ai-as-a-planner.html</guid>
+      <pubDate>Tue, 06 Oct 2026 00:00:00 GMT</pubDate>
+      <description>As an architect, the hardest part of a project is often the first week, reading a long, complex requirement and turning it into a plan. From late 2025 I used AI to read with me, break big work into a work breakdown structure (WBS) of small tasks, and look for cloud cost savings. The method, and why the decisions stay with me.</description>
+      <category>My AI Journey: From Copy-Paste to Agentic Workflows</category>
+    </item>
+    <item>
+      <title>Compliant by Design: An Agentic Workflow for Platform Code (Late 2025)</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/07-compliant-by-design.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/07-compliant-by-design.html</guid>
+      <pubDate>Tue, 06 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Late 2025, the biggest step so far. Instead of asking AI for snippets, I designed a workflow where an AI agent delivers whole pieces of platform code, and the rules it must follow (naming, tagging, security checks, tests, and review) are built into the workflow itself. Compliance stopped being a check at the end and became the way the code is written.</description>
+      <category>My AI Journey: From Copy-Paste to Agentic Workflows</category>
+    </item>
+    <item>
+      <title>Context for Agents: AGENTS.md, Skills, and MCP (February 2026)</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/08-agents-md-skills-and-mcp.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/08-agents-md-skills-and-mcp.html</guid>
+      <pubDate>Tue, 06 Oct 2026 00:00:00 GMT</pubDate>
+      <description>In February 2026 I started giving agents context the proper way. AGENTS.md is the onboarding note every agent reads first. Skills are step-by-step procedures it loads when a task needs them. MCP connects it to tools and data. Hooks turn the most important rules into checks it can't skip. A tour, using the setup behind this very website.</description>
+      <category>My AI Journey: From Copy-Paste to Agentic Workflows</category>
+    </item>
+    <item>
+      <title>Writing the Standards: Platform Docs, ADRs, and Changelogs (Mid 2026)</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/09-writing-the-standards.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/09-writing-the-standards.html</guid>
+      <pubDate>Tue, 06 Oct 2026 00:00:00 GMT</pubDate>
+      <description>By mid 2026 the loop closed. Agents work best from written standards, so I started using AI to help write the standards themselves, a complete documentation set for a platform. Enterprise platform guides, architecture decision records (ADRs) that capture why, and changelogs that say what changed. How I write them with AI, and why they now serve people and agents alike.</description>
+      <category>My AI Journey: From Copy-Paste to Agentic Workflows</category>
+    </item>
+    <item>
+      <title>Building Web Apps for SOC Compliance, with a Full Security Audit (Mid 2026)</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/10-building-for-soc-compliance.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/10-building-for-soc-compliance.html</guid>
+      <pubDate>Tue, 06 Oct 2026 00:00:00 GMT</pubDate>
+      <description>The last step of the journey so far. By mid 2026 I was building whole web applications with AI agents. An HR management tool with SOC-style controls designed in from the start, and a PDF product that went through a full security audit, which found a critical bug that everyday testing never would have.</description>
+      <category>My AI Journey: From Copy-Paste to Agentic Workflows</category>
+    </item>
+    <item>
+      <title>Where I Am Now, and Where You Could Start</title>
+      <link>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/11-where-i-am-now.html</link>
+      <guid>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/11-where-i-am-now.html</guid>
+      <pubDate>Tue, 06 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Four years after my first ChatGPT question, AI is part of nearly everything I do as a DevOps architect: debugging, writing, planning, delivering platform code, and building apps. How my work changed against the baseline from Chapter 01, what didn't change at all, and a simple way to find your own next step.</description>
+      <category>My AI Journey: From Copy-Paste to Agentic Workflows</category>
+    </item>
+    <item>
       <title>Base, Composition &amp; Environment: A Three-Layer Module Standard</title>
       <link>https://anupojuprudhvi.github.io/learning-paths/terraform/07-base-composition-and-environment-modules.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/terraform/07-base-composition-and-environment-modules.html</guid>
