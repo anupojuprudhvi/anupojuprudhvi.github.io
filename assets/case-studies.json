@@ -779,14 +779,14 @@
   {
     "title": "Hardening a solo SaaS product, end to end, with AI-agent-assisted engineering",
     "nav": "Solo SaaS hardening",
-    "summary": "Taking a PDF SaaS product I built alone from a serverless deployment that didn't run to a security-reviewed app about 93% lighter, using AI coding tools under strict written rules.",
+    "summary": "Taking a PDF SaaS product I built alone from a serverless deployment that didn't run to a security-reviewed, self-hosted app about 93% lighter, using AI coding tools under strict written rules.",
     "project": "independent-products",
     "projectName": "Independent Products & AI-Assisted Engineering",
     "layer": "Product engineering",
     "stack": [
       "Node.js",
-      "Vercel Serverless",
-      "Supabase",
+      "Docker Compose",
+      "Supabase (self-hosted)",
       "Stripe",
       "mupdf WASM",
       "Terraform"
@@ -796,10 +796,11 @@
       "security",
       "performance",
       "serverless",
+      "self-hosting",
       "ai-assisted-engineering"
     ],
     "url": "case-studies/independent-products/solo-saas-hardening-ai-agentic-engineering.html",
     "problem": "A solo-built PDF compression and conversion SaaS product launched on Vercel's serverless platform, but the architecture it launched with was built around assumptions serverless doesn't support: a native-binary PDF rendering library that can't load its system dependencies in a Lambda-style runtime, a worker file `pdf.js` needs that the deployment bundler couldn't trace and include, and a file-based SQLite database on a filesystem that's read-only and wiped between invocations. On top of that, the app handled real payments through Stripe and had never had a dedicated security pass.",
-    "solution": "A systematic, documented engineering pass — one person, working through a formalized AI-agent-assisted workflow — that replaced the native-binary rendering stack with a pure WebAssembly engine, migrated the database to managed Postgres, ran a full security audit that found and fixed nine real findings including a critical payment-integrity bug, and cut the app's first-load payload by roughly 93%."
+    "solution": "A systematic, documented engineering pass — one person, working through a formalized AI-agent-assisted workflow — that replaced the native-binary rendering stack with a pure WebAssembly engine, moved the data to Postgres, ran a full security audit that found and fixed nine real findings including a critical payment-integrity bug, and cut the app's first-load payload by roughly 93%. The product then left Vercel entirely for a self-hosted Supabase stack and a Docker deployment, so users' data stays on infrastructure I control."
   }
 ]

@@ -1,6 +1,6 @@
 ---
 title: Two products I built and run myself, with AI as a closely supervised helper
-summary: A simple HR management tool with a plain-language assistant, and a serverless PDF product taken from broken to audited, both built under a strict, written way of working with AI coding tools.
+summary: A simple HR management tool with a plain-language assistant, and a PDF product taken from a broken serverless deployment to an audited, self-hosted app, both built under a strict, written way of working with AI coding tools.
 role: Solo Product Builder
 scope: HR modules, cited policy search, keeping each company's data separate, WebAssembly, security review, and automated CI/CD checks
 ---
@@ -14,7 +14,7 @@ Products built by one person tend to collect shortcuts that break once real user
 This section covers two products, both built with AI coding tools working under clear rules:
 
 1. **An AI-assisted HRMS tool:** one place for leave, attendance, shifts, timesheets, the org chart, assets, and policy documents. A built-in assistant takes plain-language requests and answers policy questions by quoting the company's own documents, with the page. It runs on Next.js, FastAPI, and PostgreSQL.
-2. **Solo SaaS hardening:** a PDF processing product I took from a serverless deployment that didn't work to a security-reviewed WebAssembly engine about 93% lighter, with Supabase Postgres and verified payment handling. I built it alone, following a written working protocol.
+2. **Solo SaaS hardening:** a PDF processing product I took from a serverless deployment that didn't work to a security-reviewed WebAssembly engine about 93% lighter, with verified payment handling, then moved it off Vercel to a self-hosted setup. I built it alone, following a written working protocol.
 
 ## Architecture · Simple pieces, clear boundaries
 
@@ -28,8 +28,8 @@ This section covers two products, both built with AI coding tools working under 
 
        Solo SaaS hardening (PDF engine)
        ─────────────────────────────────────────────────────
-       • WebAssembly rendering, no native binaries (runs locally and serverless)
-       • Supabase Postgres with row-level security (RLS)
+       • WebAssembly rendering, no native binaries (the same code runs on a laptop and a server)
+       • Self-hosted Supabase in Docker, off Vercel
        • Signed webhook checks and protection against double charging
        • First load cut from 1.47 MB to 106 KB (about 93%)
 ```

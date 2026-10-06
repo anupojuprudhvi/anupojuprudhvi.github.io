@@ -7,12 +7,12 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Two products I built and run myself, with AI as a closely supervised helper — Prudhvi Raj Anupoju</title>
-    <meta name="description" content="A simple HR management tool with a plain-language assistant, and a serverless PDF product taken from broken to audited, both built under a strict, written way of working with AI coding tools." />
+    <meta name="description" content="A simple HR management tool with a plain-language assistant, and a PDF product taken from a broken serverless deployment to an audited, self-hosted app, both built under a strict, written way of working with AI coding tools." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/case-studies/independent-products/" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://anupojuprudhvi.github.io/case-studies/independent-products/" />
     <meta property="og:title" content="Two products I built and run myself, with AI as a closely supervised helper" />
-    <meta property="og:description" content="A simple HR management tool with a plain-language assistant, and a serverless PDF product taken from broken to audited, both built under a strict, written way of working with AI coding tools." />
+    <meta property="og:description" content="A simple HR management tool with a plain-language assistant, and a PDF product taken from a broken serverless deployment to an audited, self-hosted app, both built under a strict, written way of working with AI coding tools." />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/assets/og/independent-products/index.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -26,7 +26,7 @@
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "Two products I built and run myself, with AI as a closely supervised helper",
-        "description": "A simple HR management tool with a plain-language assistant, and a serverless PDF product taken from broken to audited, both built under a strict, written way of working with AI coding tools.",
+        "description": "A simple HR management tool with a plain-language assistant, and a PDF product taken from a broken serverless deployment to an audited, self-hosted app, both built under a strict, written way of working with AI coding tools.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -148,7 +148,7 @@
             <div>
               <div class="eyebrow">Independent Products &amp; AI-Assisted Engineering</div>
               <h1>Two products I built and run myself, with AI as a closely supervised helper</h1>
-              <p class="sub">A simple HR management tool with a plain-language assistant, and a serverless PDF product taken from broken to audited, both built under a strict, written way of working with AI coding tools.</p>
+              <p class="sub">A simple HR management tool with a plain-language assistant, and a PDF product taken from a broken serverless deployment to an audited, self-hosted app, both built under a strict, written way of working with AI coding tools.</p>
             </div>
             <svg class="motif motif-pipeline" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <text class="m-start m-muted" x="4" y="40">git push → main</text>
@@ -184,7 +184,7 @@
 <p>This section covers two products, both built with AI coding tools working under clear rules:</p>
 <ol>
 <li><b>An AI-assisted HRMS tool:</b> one place for leave, attendance, shifts, timesheets, the org chart, assets, and policy documents. A built-in assistant takes plain-language requests and answers policy questions by quoting the company's own documents, with the page. It runs on Next.js, FastAPI, and PostgreSQL.</li>
-<li><b>Solo SaaS hardening:</b> a PDF processing product I took from a serverless deployment that didn't work to a security-reviewed WebAssembly engine about 93% lighter, with Supabase Postgres and verified payment handling. I built it alone, following a written working protocol.</li>
+<li><b>Solo SaaS hardening:</b> a PDF processing product I took from a serverless deployment that didn't work to a security-reviewed WebAssembly engine about 93% lighter, with verified payment handling, then moved it off Vercel to a self-hosted setup. I built it alone, following a written working protocol.</li>
 </ol>
 </div>
 </section>
@@ -201,8 +201,8 @@
 
        Solo SaaS hardening (PDF engine)
        ─────────────────────────────────────────────────────
-       • WebAssembly rendering, no native binaries (runs locally and serverless)
-       • Supabase Postgres with row-level security (RLS)
+       • WebAssembly rendering, no native binaries (the same code runs on a laptop and a server)
+       • Self-hosted Supabase in Docker, off Vercel
        • Signed webhook checks and protection against double charging
        • First load cut from 1.47 MB to 106 KB (about 93%)</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <details class="implementation-notes">
@@ -243,7 +243,7 @@
 <h2>2 detailed write-ups</h2>
 <div class="case-study-links">
             <a href="ai-assisted-hrms-tool.html"><span>01 / Product engineering</span><strong>AI-Assisted HRMS</strong><small>A simple HR management tool I built with AI coding tools. It covers leave, attendance, shifts, timesheets, the org chart, company assets, and policy documents, and a built-in assistant handles everyday requests in plain language and answers policy questions by quoting the handbook, with the page. →</small></a>
-            <a href="solo-saas-hardening-ai-agentic-engineering.html"><span>02 / Product engineering</span><strong>Solo SaaS hardening</strong><small>Taking a PDF SaaS product I built alone from a serverless deployment that didn't run to a security-reviewed app about 93% lighter, using AI coding tools under strict written rules. →</small></a>
+            <a href="solo-saas-hardening-ai-agentic-engineering.html"><span>02 / Product engineering</span><strong>Solo SaaS hardening</strong><small>Taking a PDF SaaS product I built alone from a serverless deployment that didn't run to a security-reviewed, self-hosted app about 93% lighter, using AI coding tools under strict written rules. →</small></a>
 </div>
 </div>
 </section>

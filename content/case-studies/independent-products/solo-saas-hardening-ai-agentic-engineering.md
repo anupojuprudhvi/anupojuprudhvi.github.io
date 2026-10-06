@@ -2,12 +2,12 @@
 title: Hardening a solo SaaS product, end to end, with AI-agent-assisted engineering
 date: 2026-09-18
 nav: Solo SaaS hardening
-summary: Taking a PDF SaaS product I built alone from a serverless deployment that didn't run to a security-reviewed app about 93% lighter, using AI coding tools under strict written rules.
+summary: Taking a PDF SaaS product I built alone from a serverless deployment that didn't run to a security-reviewed, self-hosted app about 93% lighter, using AI coding tools under strict written rules.
 project: independent-products
 layer: Product engineering
 order: 10
-stack: [Node.js, Vercel Serverless, Supabase, Stripe, mupdf WASM, Terraform]
-tags: [saas, security, performance, serverless, ai-assisted-engineering]
+stack: [Node.js, Docker Compose, Supabase (self-hosted), Stripe, mupdf WASM, Terraform]
+tags: [saas, security, performance, serverless, self-hosting, ai-assisted-engineering]
 problem: |
   A solo-built PDF compression and conversion SaaS product launched on Vercel's serverless
   platform, but the architecture it launched with was built around assumptions serverless
@@ -19,13 +19,14 @@ problem: |
 solution: |
   A systematic, documented engineering pass — one person, working through a formalized
   AI-agent-assisted workflow — that replaced the native-binary rendering stack with a pure
-  WebAssembly engine, migrated the database to managed Postgres, ran a full security audit
-  that found and fixed nine real findings including a critical payment-integrity bug, and cut
-  the app's first-load payload by roughly 93%.
+  WebAssembly engine, moved the data to Postgres, ran a full security audit that found and
+  fixed nine real findings including a critical payment-integrity bug, and cut the app's
+  first-load payload by roughly 93%. The product then left Vercel entirely for a self-hosted
+  Supabase stack and a Docker deployment, so users' data stays on infrastructure I control.
 heroTitle: One person, a formal AI-agent workflow, and a production SaaS product taken from broken to hardened
 intro: A solo SaaS product hit the wall a lot of serverless deployments hit — libraries that assume a persistent filesystem or native system dependencies that Lambda-style runtimes don't provide. This case study covers rebuilding the core engine around that constraint, the security audit that followed, and the AI-agent-assisted engineering discipline that made it possible to do all of this alone without cutting corners.
 role: Solo founder / full-stack & infrastructure engineer
-scope: Serverless architecture rework, self-run security audit and remediation, and performance optimization
+scope: Serverless architecture rework, the move to self-hosting, self-run security audit and remediation, and performance optimization
 closingText: Happy to go deeper on the WASM rendering rewrite, the security audit findings, or how the AI-agent workflow itself was structured.
 outcomes:
   - value: 93%
@@ -52,7 +53,7 @@ Underneath both of those was a business-critical concern that hadn't been addres
    ──────                                    ─────
    [ canvas (native binary) ]                [ mupdf — pure WASM ]
    [ pdf.js worker (untraceable) ]     ──►    [ no worker, no native deps ]
-   [ SQLite (local file) ]                    [ Supabase Postgres, managed ]
+   [ SQLite (local file) ]                    [ Supabase Postgres, self-hosted ]
           │                                          │
           ▼                                          ▼
    Fails silently on Vercel                   Runs identically local & deployed
@@ -60,11 +61,19 @@ Underneath both of those was a business-critical concern that hadn't been addres
 
 ### Implementation notes
 
-- **The fix was a rewrite of the rendering path, not a patch.** Rather than continuing to work around the native canvas library and the worker-loading problem individually, the compression engine was rebuilt on `mupdf` compiled to WebAssembly — no native bindings, no worker file, no dynamic import the bundler needs to trace. The same code path now runs identically on a laptop and in a serverless function, which is what actually closes this class of bug rather than patching around each symptom.
+- **The fix was a rewrite of the rendering path, not a patch.** Rather than continuing to work around the native canvas library and the worker-loading problem individually, the compression engine was rebuilt on `mupdf` compiled to WebAssembly — no native bindings, no worker file, no dynamic import the bundler needs to trace. The same code path now runs identically on a laptop and on a server, which is what actually closes this class of bug rather than patching around each symptom.
 - **The database migration wasn't just "move the file to a service."** Moving from SQLite to Supabase Postgres also meant hand-writing and committing an idempotent, row-level-security-locked schema — the first migration attempt shipped the code that read and wrote a `users` table without ever creating that table anywhere, which meant every read failed and was silently swallowed as "not found" until that was caught and fixed. That became a standing rule afterward: a data-access helper is never allowed to turn a real error into an empty success value, because it makes a broken query and a table that really is empty look identical.
 - **The security audit found a critical payment bug.** The Stripe webhook — the endpoint that grants purchased credits — verified the cryptographic signature only when both the webhook secret and the signature header were present, and otherwise trusted the request body directly. That meant anyone who knew the endpoint could POST a fabricated "payment completed" event and mint credits for any account, with no payment involved. The fix rejects any webhook call that isn't signed at all, rather than treating an unsigned request as a degraded-but-acceptable case. The same audit pass also fixed a forgeable default session secret (an unset environment variable falling back to a known string — full authentication bypass in production if missed), a session-fixation gap (session IDs weren't rotated on login), and a race condition in credit deduction that allowed the same credits to be spent twice under concurrent requests.
 - **Performance work was measured before and after, not assumed.** The homepage's first-load transfer dropped from about 1.47MB across three different origins to roughly 106KB from one, mainly by fixing two mislabeled 594KB images that were actually 1024px JPEGs saved with a `.png` extension and being rendered at 68px, self-hosting the one font family actually in use instead of pulling from Google's CDN, and loading the auth SDK on demand instead of on every page view regardless of whether that page needed it.
 - **A cross-region latency bug was a deployment-topology problem, not a code problem.** Login was slow because the serverless functions ran in one region while the database sat in another, and every login made several sequential round trips between them. The fix was pinning the function region next to the database and folding a redundant follow-up request into the login response itself — a deployment and response-shape change, not a rewrite of how authentication or sessions actually work.
+
+### Leaving Vercel for self-hosting
+
+Once the engine and the database worked, I took the product off Vercel entirely and recorded the decision in an ADR. Supabase was already the backend for data, sign-in, and file storage, so the real question was where that data lives. Supabase's managed cloud would have put users' rows and files on someone else's servers. Supabase is open source, though, and the same stack runs in Docker, so self-hosting it keeps every row and every stored file on infrastructure I control.
+
+The app now ships as a Docker image next to that self-hosted Supabase stack. Local development runs the identical stack, so what I test on my laptop is what runs when deployed. The Terraform describes the AWS side: EC2 instances that require IMDSv2 and use encrypted disks, managed through Systems Manager with no SSH port open, an optional load balancer in front of each instance, and the image kept in ECR.
+
+The cost is that I now run it myself: backups, image updates, disk space, and TLS certificates are my job, not a platform's. The ADR says so plainly, so it's a choice on record rather than a surprise later.
 
 ### Privacy by construction, not by policy
 

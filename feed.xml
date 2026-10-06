@@ -540,7 +540,7 @@
       <link>https://anupojuprudhvi.github.io/case-studies/independent-products/solo-saas-hardening-ai-agentic-engineering.html</link>
       <guid>https://anupojuprudhvi.github.io/case-studies/independent-products/solo-saas-hardening-ai-agentic-engineering.html</guid>
       <pubDate>Fri, 18 Sep 2026 00:00:00 GMT</pubDate>
-      <description>Taking a PDF SaaS product I built alone from a serverless deployment that didn't run to a security-reviewed app about 93% lighter, using AI coding tools under strict written rules.</description>
+      <description>Taking a PDF SaaS product I built alone from a serverless deployment that didn't run to a security-reviewed, self-hosted app about 93% lighter, using AI coding tools under strict written rules.</description>
       <category>Product engineering</category>
     </item>
     <item>
