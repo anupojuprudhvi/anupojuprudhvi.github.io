@@ -290,10 +290,6 @@
             ├── versions.tf
             └── README.md</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <p>Calls only ever go down this tree. An environment calls a composition, a composition calls base modules, and a base module calls nothing.</p>
-<figure class="flow">
-<figcaption class="flow-title">Who calls whom</figcaption>
-<div class="flow-body"><div class="flow-node is-key"><strong>environments/nonprod</strong><span>the only layer that knows which environment it is; holds providers, backend, and values</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">calls, passing names, sizing, and network IDs</span></div><div class="flow-node"><strong>composition/glue-s3</strong><span>joins the parts: IAM roles, networking, naming, outputs</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">calls each base module with resource-specific inputs</span></div><div class="flow-paths"><div class="flow-path"><span class="flow-path-label">base/s3</span><div class="flow-node"><strong>S3 bucket</strong><span>encryption, public access block, versioning</span></div></div><div class="flow-path"><span class="flow-path-label">base/glue-etl</span><div class="flow-node"><strong>Glue ETL job</strong><span>script location, worker type, role</span></div></div><div class="flow-path"><span class="flow-path-label">base/glue-crawler</span><div class="flow-node"><strong>Glue crawler</strong><span>target path, schedule, role</span></div></div></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">creates</span></div><div class="flow-node"><strong>AWS Glue + Amazon S3</strong><span>the running data pipeline</span></div></div>
-</figure>
 </div>
 </section>
 <section>
@@ -523,7 +519,6 @@ module &quot;glue_s3&quot; {
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
-    <script src="../../assets/flow-player.js" defer></script>
     <script src="../../assets/quiz.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>

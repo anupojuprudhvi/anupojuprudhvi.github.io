@@ -76,24 +76,6 @@ terraform/
 
 Calls only ever go down this tree. An environment calls a composition, a composition calls base modules, and a base module calls nothing.
 
-```flow
-title: Who calls whom
-* environments/nonprod | the only layer that knows which environment it is; holds providers, backend, and values
--> calls, passing names, sizing, and network IDs
-composition/glue-s3 | joins the parts: IAM roles, networking, naming, outputs
--> calls each base module with resource-specific inputs
-paths
-path: base/s3
-S3 bucket | encryption, public access block, versioning
-path: base/glue-etl
-Glue ETL job | script location, worker type, role
-path: base/glue-crawler
-Glue crawler | target path, schedule, role
-end
--> creates
-AWS Glue + Amazon S3 | the running data pipeline
-```
-
 ## Responsibilities · What each layer may and may not do
 
 | Layer | Example | Does | Never does |
