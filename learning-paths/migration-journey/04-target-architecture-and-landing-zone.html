@@ -175,7 +175,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 04 of 06</span>
             <span><b>Level:</b> Solution Architecture</span>
-            <span><b>Time:</b> 7 min read</span>
+            <span><b>Time:</b> 8 min read</span>
             <span><b>Updated:</b> <time datetime="2026-10-06">6 Oct 2026</time></span>
           </div>
         </div>
@@ -190,7 +190,7 @@
                 <li><a href="02-discovery-telemetry-and-inventory.html"><span class="lp-toc-num">02</span><span>Discovery Telemetry · RVTools, AWS Transform &amp; Sizing</span></a></li>
                 <li><a href="03-financial-engineering-tco-and-licensing.html"><span class="lp-toc-num">03</span><span>Financial Engineering · 3-Year TCO &amp; Licensing</span></a></li>
                 <li class="is-current"><a href="04-target-architecture-and-landing-zone.html" aria-current="page"><span class="lp-toc-num">04</span><span>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</span></a>
-                <ol class="lp-toc-sections"><li><a href="#build-the-foundation-first">Build the foundation first</a></li><li><a href="#the-multi-account-layout">The multi-account layout</a></li><li><a href="#the-7rs">The 7Rs</a></li><li><a href="#the-workload-placement-list">The workload placement list</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#build-the-foundation-first">Build the foundation first</a></li><li><a href="#the-multi-account-layout">The multi-account layout</a></li><li><a href="#the-7rs">The 7Rs</a></li><li><a href="#the-workload-placement-list">The workload placement list</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="05-mobilize-wave-planning-and-pilot.html"><span class="lp-toc-num">05</span><span>The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot</span></a></li>
                 <li><a href="06-migrate-and-modernize-strategies.html"><span class="lp-toc-num">06</span><span>Migrate &amp; Modernize · In-Flight vs. Sequential Factory</span></a></li>
               </ol>
@@ -212,6 +212,17 @@
             </nav>
             </details>
           <section>
+<div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Lay out a multi-account landing zone and the guardrails that matter most</li>
+<li>Connect people and networks safely: single sign-on, Transit Gateway, and links to the datacenter</li>
+<li>Choose one of the 7Rs for every workload, and record it in the placement list</li>
+</ul>
+<p><b>Before you start:</b> read <a href="02-discovery-telemetry-and-inventory.html">Discovery Telemetry</a>. Its right-sized targets go into the placement list at the end of this module.</p>
+</div>
+</section>
+<section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
 <h2 id="build-the-foundation-first">Build the foundation first</h2>
@@ -280,6 +291,62 @@
 </ul>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>Landing zone:</b> a multi-account AWS environment in organizational units (core, infrastructure, workloads), built with Control Tower or infrastructure as code.</li>
+<li><b>Service control policy (SCP):</b> a rule set on an OU that no account under it can override.</li>
+<li><b>IAM Identity Center:</b> single sign-on from the company identity provider, with short-lived credentials and MFA.</li>
+<li><b>Transit Gateway:</b> the hub that connects every workload VPC, with Direct Connect or VPN back to the datacenter.</li>
+<li><b>7Rs:</b> rehost, replatform, refactor, repurchase, retain, retire, and relocate.</li>
+<li><b>Workload placement list:</b> every application with its servers, right-sized target, 7R strategy, account, VPC, and wave.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Which account keeps the central, write-once CloudTrail and VPC flow logs?</p>
+<ol class="lp-quiz-options" type="A"><li>Management</li><li>Log archive</li><li>Network</li><li>Production</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Log archive</b></p><p class="lp-quiz-why">Keeping logs in their own account means no one working in a workload account can change or delete them.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="0" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">What makes a service control policy different from a policy inside one account?</p>
+<ol class="lp-quiz-options" type="A"><li>It's set on the OU, and no account under it can override it</li><li>It only applies to the management account</li><li>It grants permissions to users</li><li>It expires after a day</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>It's set on the OU, and no account under it can override it</b></p><p class="lp-quiz-why">SCPs set the outer limits for every account in the OU, such as blocking unapproved regions or stopping anyone from turning off CloudTrail.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Which of the 7Rs moves a database to Amazon RDS without changing the application's code?</p>
+<ol class="lp-quiz-options" type="A"><li>Rehost</li><li>Replatform</li><li>Refactor</li><li>Relocate</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Replatform</b></p><p class="lp-quiz-why">Replatforming moves to a managed service while the application stays as it is.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">Discovery finds 40 test servers that nobody owns and nobody has signed in to for a year. Which strategy?</p>
+<ol class="lp-quiz-options" type="A"><li>Rehost</li><li>Retain</li><li>Retire</li><li>Repurchase</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Retire</b></p><p class="lp-quiz-why">Switching off forgotten servers saves money with no migration effort at all.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">A system depends on a mainframe that isn't moving yet, and needs very low latency to it. What's its strategy for now?</p>
+<ol class="lp-quiz-options" type="A"><li>Rehost it in the first wave</li><li>Retain: keep it on-premises for the time being</li><li>Refactor it to Lambda</li><li>Retire it</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Retain: keep it on-premises for the time being</b></p><p class="lp-quiz-why">Retain is for systems that can't move yet. Revisit them when what they depend on moves.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/migration-journey/03-financial-engineering-tco-and-licensing.html">
           <span class="lp-nav-label">← Module 03</span>
           <span class="lp-nav-title">Financial Engineering · 3-Year TCO &amp; Licensing</span>
@@ -314,6 +381,7 @@
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>
 </html>

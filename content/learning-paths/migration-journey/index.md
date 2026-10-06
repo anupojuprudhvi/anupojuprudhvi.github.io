@@ -5,7 +5,7 @@ updated: 2026-10-06
 track: migration-journey
 summary: A practical guide to large cloud migrations on AWS. Choosing a rapid or deep assessment, sizing from real usage, building the cost case, designing the landing zone, planning waves, and deciding what to modernize along the way.
 level: Intermediate to Executive
-duration: 6 Modules · 41 min read
+duration: 6 Modules · 47 min read
 stack: [AWS MAP, RVTools, TCO Modeling, Landing Zone, AWS MGN, Amazon EKS]
 ---
 
@@ -18,6 +18,8 @@ The **AWS Migration Acceleration Program (MAP)** splits this into three phases:
 1. **Assess:** find out what you have, how ready the organization is, and what it will cost on AWS. The result is a business case leadership can approve.
 2. **Mobilize:** build the AWS foundation (the landing zone), plan the migration waves, and prove the process by moving one real application first.
 3. **Migrate and modernize:** move the rest, wave by wave, and modernize the parts where it pays off.
+
+Each module opens with what you'll learn, and ends with a recap of the key terms and a five-question **pop quiz**; score 4 out of 5 to pass.
 
 ## Deliverables · What each phase produces
 

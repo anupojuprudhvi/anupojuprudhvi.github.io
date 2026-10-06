@@ -5,7 +5,7 @@ updated: 2026-10-01
 track: kubernetes-operations
 summary: A path from never having used Kubernetes to running Amazon EKS in production. Start with the basics on a free local cluster, learn the core concepts, move to EKS and build the platform, then work through the real challenges of operating it.
 level: Beginner to Advanced
-duration: 20 Modules · 220 min read
+duration: 20 Modules · 217 min read
 stack: [Kubernetes, kind, kubectl, Helm, Amazon EKS, AWS Load Balancer Controller, Argo CD, Karpenter]
 ---
 

@@ -175,7 +175,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 02 of 06</span>
             <span><b>Level:</b> Technical Discovery</span>
-            <span><b>Time:</b> 7 min read</span>
+            <span><b>Time:</b> 8 min read</span>
             <span><b>Updated:</b> <time datetime="2026-10-06">6 Oct 2026</time></span>
           </div>
         </div>
@@ -188,7 +188,7 @@
               <ol class="lp-toc-list">
                 <li><a href="01-assessment-paths-rapid-vs-deep.html"><span class="lp-toc-num">01</span><span>Assessment Frameworks · Rapid vs. Deep Enterprise</span></a></li>
                 <li class="is-current"><a href="02-discovery-telemetry-and-inventory.html" aria-current="page"><span class="lp-toc-num">02</span><span>Discovery Telemetry · RVTools, AWS Transform &amp; Sizing</span></a>
-                <ol class="lp-toc-sections"><li><a href="#don-t-copy-vm-sizes-one-to-one">Don't copy VM sizes one-to-one</a></li><li><a href="#two-kinds-of-data">Two kinds of data</a></li><li><a href="#compute-storage-and-processor">Compute, storage, and processor</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#don-t-copy-vm-sizes-one-to-one">Don't copy VM sizes one-to-one</a></li><li><a href="#two-kinds-of-data">Two kinds of data</a></li><li><a href="#compute-storage-and-processor">Compute, storage, and processor</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="03-financial-engineering-tco-and-licensing.html"><span class="lp-toc-num">03</span><span>Financial Engineering · 3-Year TCO &amp; Licensing</span></a></li>
                 <li><a href="04-target-architecture-and-landing-zone.html"><span class="lp-toc-num">04</span><span>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</span></a></li>
                 <li><a href="05-mobilize-wave-planning-and-pilot.html"><span class="lp-toc-num">05</span><span>The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot</span></a></li>
@@ -212,6 +212,17 @@
             </nav>
             </details>
           <section>
+<div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Combine a point-in-time inventory (RVTools) with usage collected over weeks</li>
+<li>Right-size compute from the 95th percentile, and storage from the data actually used</li>
+<li>Judge when AWS Graviton is worth testing</li>
+</ul>
+<p><b>Before you start:</b> read <a href="01-assessment-paths-rapid-vs-deep.html">Assessment Frameworks</a>. The type of assessment decides how long you collect usage data.</p>
+</div>
+</section>
+<section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
 <h2 id="don-t-copy-vm-sizes-one-to-one">Don't copy VM sizes one-to-one</h2>
@@ -263,6 +274,61 @@
 <p>Linux workloads whose software runs on ARM64 can often move to <b>AWS Graviton</b> instances (such as <code>m7g</code> or <code>c7g</code>). AWS quotes up to 40% better price-performance than comparable x86 instances. It isn't automatic: check that every package and agent has an ARM64 build, and test before you commit. Windows workloads stay on x86.</p>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>RVTools:</b> a free, read-only export from vCenter of what each VM is <em>allocated</em>. No usage over time, no dependencies.</li>
+<li><b>Agentless collector:</b> an appliance inside VMware that reads performance data from vCenter, so nothing is installed on the servers.</li>
+<li><b>95th-percentile sizing:</b> current vCPUs × 95th-percentile CPU use × 1.25 headroom, rounded up.</li>
+<li><b><code>gp3</code>:</b> every volume gets a baseline of 3,000 IOPS and 125 MB/s, whatever its size.</li>
+<li><b>AWS Graviton:</b> ARM64 instances. AWS quotes up to 40% better price-performance; every package needs an ARM64 build, and Windows stays on x86.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="2" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">What can't RVTools tell you?</p>
+<ol class="lp-quiz-options" type="A"><li>How many vCPUs each VM has</li><li>Each VM's operating system</li><li>How much of its CPU each VM actually uses over time</li><li>Each VM's power state</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>How much of its CPU each VM actually uses over time</b></p><p class="lp-quiz-why">RVTools is a snapshot of what's allocated. Usage over time needs a collector running for weeks.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="0" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Why size compute from the 95th percentile instead of the peak?</p>
+<ol class="lp-quiz-options" type="A"><li>The single highest spike is often a backup or patch run, not normal load</li><li>AWS bills by the 95th percentile</li><li>Collectors don't record peaks</li><li>MAP requires it</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>The single highest spike is often a backup or patch run, not normal load</b></p><p class="lp-quiz-why">Sizing for the one biggest spike means paying all month for a nightly job. The 95th percentile plus headroom covers real load.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">A <code>gp3</code> volume is sized at 100 GB. What baseline performance does it get?</p>
+<ol class="lp-quiz-options" type="A"><li>Very little, because it's small</li><li>3,000 IOPS and 125 MB/s, like any <code>gp3</code> volume</li><li>10,000 IOPS</li><li>Only what <code>io2</code> would give</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>3,000 IOPS and 125 MB/s, like any <code>gp3</code> volume</b></p><p class="lp-quiz-why">With <code>gp3</code>, performance doesn't depend on size, so you can size for the data actually used.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="2" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">A VM has 16 vCPUs, and its 95th-percentile CPU use is 10%. Using the module's formula, how many vCPUs should its target have?</p>
+<ol class="lp-quiz-options" type="A"><li>16</li><li>4</li><li>2</li><li>1</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>2</b></p><p class="lp-quiz-why">16 × 0.10 × 1.25 = 2. Check memory the same way before choosing an instance type.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">The security team won't allow anything to be installed inside production servers. How do you still collect usage over time?</p>
+<ol class="lp-quiz-options" type="A"><li>Use RVTools alone</li><li>Deploy an agentless collector that reads performance data from vCenter with a read-only account</li><li>Install agents on test servers and extrapolate</li><li>Size from the allocated resources</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Deploy an agentless collector that reads performance data from vCenter with a read-only account</b></p><p class="lp-quiz-why">The agentless collector runs as a separate appliance, which is often what gets security teams to agree.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/migration-journey/01-assessment-paths-rapid-vs-deep.html">
           <span class="lp-nav-label">← Module 01</span>
           <span class="lp-nav-title">Assessment Frameworks · Rapid vs. Deep Enterprise</span>
@@ -297,6 +363,7 @@
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>
 </html>

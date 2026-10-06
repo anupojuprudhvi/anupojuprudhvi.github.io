@@ -7,10 +7,18 @@ order: 2
 module: 2
 summary: Collecting what you have and how much of it is really used. RVTools for a quick inventory, an agentless collector for usage over time, and right-sizing compute, storage, and processor type so the AWS estimate isn't built on oversized VMs.
 level: Technical Discovery
-readingTime: 7 min read
+readingTime: 8 min read
 stack: [RVTools, VMware vCenter, AWS Transform, Right-Sizing]
 tags: [discovery, telemetry, vmware, right-sizing, inventory]
 ---
+
+**In this module, you'll learn to:**
+
+- Combine a point-in-time inventory (RVTools) with usage collected over weeks
+- Right-size compute from the 95th percentile, and storage from the data actually used
+- Judge when AWS Graviton is worth testing
+
+**Before you start:** read [Assessment Frameworks](01-assessment-paths-rapid-vs-deep.html). The type of assessment decides how long you collect usage data.
 
 ## Principle · Don't copy VM sizes one-to-one
 
@@ -60,3 +68,48 @@ On-premises disks are often allocated far bigger than the data on them. A 1 TB d
 ### 3. Processor: consider AWS Graviton
 
 Linux workloads whose software runs on ARM64 can often move to **AWS Graviton** instances (such as `m7g` or `c7g`). AWS quotes up to 40% better price-performance than comparable x86 instances. It isn't automatic: check that every package and agent has an ARM64 build, and test before you commit. Windows workloads stay on x86.
+
+## Recap · Key terms
+
+- **RVTools:** a free, read-only export from vCenter of what each VM is *allocated*. No usage over time, no dependencies.
+- **Agentless collector:** an appliance inside VMware that reads performance data from vCenter, so nothing is installed on the servers.
+- **95th-percentile sizing:** current vCPUs × 95th-percentile CPU use × 1.25 headroom, rounded up.
+- **`gp3`:** every volume gets a baseline of 3,000 IOPS and 125 MB/s, whatever its size.
+- **AWS Graviton:** ARM64 instances. AWS quotes up to 40% better price-performance; every package needs an ARM64 build, and Windows stays on x86.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+Q: What can't RVTools tell you?
+- How many vCPUs each VM has
+- Each VM's operating system
+* How much of its CPU each VM actually uses over time
+- Each VM's power state
+= RVTools is a snapshot of what's allocated. Usage over time needs a collector running for weeks.
+Q: Why size compute from the 95th percentile instead of the peak?
+* The single highest spike is often a backup or patch run, not normal load
+- AWS bills by the 95th percentile
+- Collectors don't record peaks
+- MAP requires it
+= Sizing for the one biggest spike means paying all month for a nightly job. The 95th percentile plus headroom covers real load.
+Q: A `gp3` volume is sized at 100 GB. What baseline performance does it get?
+- Very little, because it's small
+* 3,000 IOPS and 125 MB/s, like any `gp3` volume
+- 10,000 IOPS
+- Only what `io2` would give
+= With `gp3`, performance doesn't depend on size, so you can size for the data actually used.
+S: A VM has 16 vCPUs, and its 95th-percentile CPU use is 10%. Using the module's formula, how many vCPUs should its target have?
+- 16
+- 4
+* 2
+- 1
+= 16 × 0.10 × 1.25 = 2. Check memory the same way before choosing an instance type.
+S: The security team won't allow anything to be installed inside production servers. How do you still collect usage over time?
+- Use RVTools alone
+* Deploy an agentless collector that reads performance data from vCenter with a read-only account
+- Install agents on test servers and extrapolate
+- Size from the allocated resources
+= The agentless collector runs as a separate appliance, which is often what gets security teams to agree.
+```

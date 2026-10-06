@@ -7,10 +7,18 @@ order: 6
 module: 6
 summary: Move first and improve later, or modernize during the move? When each approach fits, the common modernization targets (containers on EKS, Aurora, and managed messaging), and what the final phase hands over.
 level: Modernization Architecture
-readingTime: 6 min read
+readingTime: 7 min read
 stack: [AWS MGN, Amazon EKS, Karpenter, Amazon Aurora, AWS DMS, Amazon EventBridge]
 tags: [modernization, migrate, eks, aurora, serverless, migration-factory]
 ---
+
+**In this module, you'll learn to:**
+
+- Decide when to rehost first and when to modernize during the move
+- Recognize the common modernization targets: Amazon EKS, Aurora, and managed messaging
+- List what the final phase hands over
+
+**Before you start:** read [Target State Blueprint](04-target-architecture-and-landing-zone.html) for the 7Rs, and [The Mobilize Phase](05-mobilize-wave-planning-and-pilot.html) for how waves run.
 
 ## Principle · Move first, or modernize on the way?
 
@@ -73,3 +81,48 @@ Databases are often the biggest licence cost, and the most work to look after:
 3. **Cutover reports and sign-off:** performance after each cutover, and acceptance by the application owners.
 4. **MAP close-out reporting,** as required by AWS or your partner.
 5. **Datacenter exit:** old hardware securely wiped and retired, so the lease or colocation contract can end.
+
+## Recap · Key terms
+
+- **Migration tax:** paying to recreate the old setup in the cloud, while modernizing "later" often never happens.
+- **Rehost first:** copy servers as they are with MGN. Fast, but old problems and costs move too.
+- **Modernize in flight:** replatform or refactor during the wave. Lower running costs sooner, but more effort and testing.
+- **SCT and DMS:** the Schema Conversion Tool converts the schema and DMS moves the data, for example from SQL Server to Aurora PostgreSQL.
+- **Spot Instances:** spare capacity at up to 90% off On-Demand (AWS's figure) that can be taken back at short notice.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+Q: What is the "migration tax"?
+* Paying to recreate the old setup in the cloud, while modernizing "later" often never happens
+- A fee AWS charges for MGN
+- The cost of MAP reporting
+- Data transfer charges during replication
+= Same VM sizes, same licences, same patching work, now on AWS, until someone finds time to change them.
+Q: Which workloads suit Spot Instances?
+- Production databases
+* Interruptible work, such as CI/CD build runners and queue workers
+- Domain controllers
+- Anything on a 3-year Savings Plan
+= Spot capacity can be taken back at short notice, so it fits work that can stop and restart.
+Q: Moving from SQL Server to Aurora PostgreSQL removes the database licence. What does it usually also need?
+- Nothing; DMS converts everything automatically
+* Real changes to stored procedures and queries, and careful testing
+- A Dedicated Host
+- Rehosting to EC2 first
+= SCT converts the schema and DMS moves the data, but the application's database code usually needs work.
+S: The datacenter must be empty in 75 days, and most servers run vendor software you can't change. What fits most of the estate?
+* Rehost with MGN now, and review for modernization later
+- Refactor everything to Lambda
+- Modernize every application during the move
+- Retain everything until after the deadline
+= A hard deadline and software you can't change are exactly what rehosting is for.
+S: Your own core application faces an expensive SQL Server licence renewal, and its team is closely involved. What fits it?
+- Rehost it unchanged
+* Modernize it during the move, for example to Aurora PostgreSQL with SCT and DMS
+- Retire it
+- Relocate it to VMware on AWS
+= A costly renewal and a team that can change and test the application make modernizing in flight worth the extra effort.
+```

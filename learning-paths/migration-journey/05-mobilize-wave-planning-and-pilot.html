@@ -175,7 +175,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 05 of 06</span>
             <span><b>Level:</b> Migration Engineering</span>
-            <span><b>Time:</b> 7 min read</span>
+            <span><b>Time:</b> 8 min read</span>
             <span><b>Updated:</b> <time datetime="2026-10-06">6 Oct 2026</time></span>
           </div>
         </div>
@@ -191,7 +191,7 @@
                 <li><a href="03-financial-engineering-tco-and-licensing.html"><span class="lp-toc-num">03</span><span>Financial Engineering · 3-Year TCO &amp; Licensing</span></a></li>
                 <li><a href="04-target-architecture-and-landing-zone.html"><span class="lp-toc-num">04</span><span>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</span></a></li>
                 <li class="is-current"><a href="05-mobilize-wave-planning-and-pilot.html" aria-current="page"><span class="lp-toc-num">05</span><span>The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot</span></a>
-                <ol class="lp-toc-sections"><li><a href="#from-why-to-how">From &quot;why&quot; to &quot;how&quot;</a></li><li><a href="#one-team-not-two">One team, not two</a></li><li><a href="#grouping-servers-into-waves">Grouping servers into waves</a></li><li><a href="#wave-0">Wave 0</a></li><li><a href="#ready-for-the-waves">Ready for the waves</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#from-why-to-how">From &quot;why&quot; to &quot;how&quot;</a></li><li><a href="#one-team-not-two">One team, not two</a></li><li><a href="#grouping-servers-into-waves">Grouping servers into waves</a></li><li><a href="#wave-0">Wave 0</a></li><li><a href="#ready-for-the-waves">Ready for the waves</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="06-migrate-and-modernize-strategies.html"><span class="lp-toc-num">06</span><span>Migrate &amp; Modernize · In-Flight vs. Sequential Factory</span></a></li>
               </ol>
             </nav>
@@ -212,6 +212,17 @@
             </nav>
             </details>
           <section>
+<div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Organize the partner's and the client's engineers as one team with clear ownership</li>
+<li>Group servers into waves by dependencies, criticality, change windows, and tooling</li>
+<li>Run a pilot cutover with a tested rollback, and use what it measures</li>
+</ul>
+<p><b>Before you start:</b> read <a href="03-financial-engineering-tco-and-licensing.html">Financial Engineering</a> and <a href="04-target-architecture-and-landing-zone.html">Target State Blueprint</a>. Mobilize starts once that business case is approved, and builds that landing zone.</p>
+</div>
+</section>
+<section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
 <h2 id="from-why-to-how">From &quot;why&quot; to &quot;how&quot;</h2>
@@ -291,6 +302,62 @@
 <p>With the platform built, the runbook proven, and the internal teams trained, the remaining waves can move steadily and repeatably.</p>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>Mobilize:</b> the phase after the business case is approved: build the landing zone, plan the waves, and run the pilot.</li>
+<li><b>CCoE:</b> a cloud center of excellence, the partner's and client's people working as one team.</li>
+<li><b>Migration wave:</b> a small, ordered batch of servers grouped by what talks to what, criticality, change windows, and tooling.</li>
+<li><b>MGN and DMS:</b> AWS Application Migration Service moves whole servers; AWS Database Migration Service moves databases.</li>
+<li><b>Pilot (lighthouse, Wave 0):</b> the first real application moved end to end, to prove the cutover and the rollback.</li>
+<li><b>Reverse replication:</b> replication from AWS back to the original database, so a rollback doesn't lose data written after the switch.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="0" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Why do an application and its database move in the same wave?</p>
+<ol class="lp-quiz-options" type="A"><li>Split across waves, every call between them crosses the link to the datacenter, and the application slows down</li><li>MGN can't move them separately</li><li>Licensing requires it</li><li>DNS can only be switched once</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Split across waves, every call between them crosses the link to the datacenter, and the application slows down</b></p><p class="lp-quiz-why">Network flow data from discovery shows which servers talk to each other constantly.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Which application makes a good pilot?</p>
+<ol class="lp-quiz-options" type="A"><li>The most critical customer-facing system, to prove the most</li><li>A low-risk, typical three-tier application whose owner is keen to help</li><li>The smallest server in the estate</li><li>A system in a change freeze</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>A low-risk, typical three-tier application whose owner is keen to help</b></p><p class="lp-quiz-why">The pilot should be safe to delay, representative of the estate, and properly tested by its owner.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="0" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Which tool moves whole servers?</p>
+<ol class="lp-quiz-options" type="A"><li>AWS Application Migration Service (MGN)</li><li>AWS Database Migration Service (DMS)</li><li>AWS Schema Conversion Tool</li><li>RVTools</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>AWS Application Migration Service (MGN)</b></p><p class="lp-quiz-why">MGN replicates servers continuously until the cutover. Databases usually move with DMS or native replication.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">In the pilot, users wrote orders in AWS for an hour before a problem showed up, and you point DNS back. What happens to those orders?</p>
+<ol class="lp-quiz-options" type="A"><li>They replicate back automatically</li><li>They're lost, unless reverse replication to the original database was set up before the cutover</li><li>MGN keeps a copy</li><li>The DNS change copies them</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>They're lost, unless reverse replication to the original database was set up before the cutover</b></p><p class="lp-quiz-why">Pointing DNS back is quick, but the data written in AWS stays there. Plan and test the rollback before the window starts.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">The pilot's database switch took 20 minutes instead of the three hours planned. What's the right use of that?</p>
+<ol class="lp-quiz-options" type="A"><li>Ignore it; pilots aren't representative</li><li>Correct the runbook, and plan later waves' maintenance windows from the measured time</li><li>Give every later wave a 20-minute window, whatever its size</li><li>Skip testing in later waves</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Correct the runbook, and plan later waves' maintenance windows from the measured time</b></p><p class="lp-quiz-why">Measuring how long the cutover really takes is one of the pilot's main jobs. The corrected runbook is what every later wave follows.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/migration-journey/04-target-architecture-and-landing-zone.html">
           <span class="lp-nav-label">← Module 04</span>
           <span class="lp-nav-title">Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</span>
@@ -326,6 +393,7 @@
     </footer>
     <script src="../../assets/assistant.js" defer></script>
     <script src="../../assets/flow-player.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>
 </html>

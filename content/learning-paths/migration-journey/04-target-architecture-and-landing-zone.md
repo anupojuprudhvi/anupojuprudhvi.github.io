@@ -7,10 +7,18 @@ order: 4
 module: 4
 summary: The foundation to build before anything moves. A multi-account landing zone with guardrails, single sign-on, and hub networking, and the 7Rs, the strategy that decides what happens to each workload.
 level: Solution Architecture
-readingTime: 7 min read
+readingTime: 8 min read
 stack: [AWS Organizations, Landing Zone, Transit Gateway, 7Rs Framework]
 tags: [landing-zone, architecture, 7rs, networking, governance]
 ---
+
+**In this module, you'll learn to:**
+
+- Lay out a multi-account landing zone and the guardrails that matter most
+- Connect people and networks safely: single sign-on, Transit Gateway, and links to the datacenter
+- Choose one of the 7Rs for every workload, and record it in the placement list
+
+**Before you start:** read [Discovery Telemetry](02-discovery-telemetry-and-inventory.html). Its right-sized targets go into the placement list at the end of this module.
 
 ## Principle · Build the foundation first
 
@@ -65,3 +73,49 @@ The architecture work ends with one list that covers every application:
 - the application and the servers that belong to it;
 - each server's current size and its right-sized AWS target, for example `APP01` at 8 vCPU / 32 GB becoming an `m7g.large` at 2 vCPU / 8 GB (Module 02);
 - its 7R strategy, its target account and VPC, and its planned migration wave.
+
+## Recap · Key terms
+
+- **Landing zone:** a multi-account AWS environment in organizational units (core, infrastructure, workloads), built with Control Tower or infrastructure as code.
+- **Service control policy (SCP):** a rule set on an OU that no account under it can override.
+- **IAM Identity Center:** single sign-on from the company identity provider, with short-lived credentials and MFA.
+- **Transit Gateway:** the hub that connects every workload VPC, with Direct Connect or VPN back to the datacenter.
+- **7Rs:** rehost, replatform, refactor, repurchase, retain, retire, and relocate.
+- **Workload placement list:** every application with its servers, right-sized target, 7R strategy, account, VPC, and wave.
+
+## Check yourself · Pop quiz
+
+Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.
+
+```quiz
+Q: Which account keeps the central, write-once CloudTrail and VPC flow logs?
+- Management
+* Log archive
+- Network
+- Production
+= Keeping logs in their own account means no one working in a workload account can change or delete them.
+Q: What makes a service control policy different from a policy inside one account?
+* It's set on the OU, and no account under it can override it
+- It only applies to the management account
+- It grants permissions to users
+- It expires after a day
+= SCPs set the outer limits for every account in the OU, such as blocking unapproved regions or stopping anyone from turning off CloudTrail.
+Q: Which of the 7Rs moves a database to Amazon RDS without changing the application's code?
+- Rehost
+* Replatform
+- Refactor
+- Relocate
+= Replatforming moves to a managed service while the application stays as it is.
+S: Discovery finds 40 test servers that nobody owns and nobody has signed in to for a year. Which strategy?
+- Rehost
+- Retain
+* Retire
+- Repurchase
+= Switching off forgotten servers saves money with no migration effort at all.
+S: A system depends on a mainframe that isn't moving yet, and needs very low latency to it. What's its strategy for now?
+- Rehost it in the first wave
+* Retain: keep it on-premises for the time being
+- Refactor it to Lambda
+- Retire it
+= Retain is for systems that can't move yet. Revisit them when what they depend on moves.
+```

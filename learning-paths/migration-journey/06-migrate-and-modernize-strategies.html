@@ -175,7 +175,7 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 06 of 06</span>
             <span><b>Level:</b> Modernization Architecture</span>
-            <span><b>Time:</b> 6 min read</span>
+            <span><b>Time:</b> 7 min read</span>
             <span><b>Updated:</b> <time datetime="2026-10-06">6 Oct 2026</time></span>
           </div>
         </div>
@@ -192,7 +192,7 @@
                 <li><a href="04-target-architecture-and-landing-zone.html"><span class="lp-toc-num">04</span><span>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</span></a></li>
                 <li><a href="05-mobilize-wave-planning-and-pilot.html"><span class="lp-toc-num">05</span><span>The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot</span></a></li>
                 <li class="is-current"><a href="06-migrate-and-modernize-strategies.html" aria-current="page"><span class="lp-toc-num">06</span><span>Migrate &amp; Modernize · In-Flight vs. Sequential Factory</span></a>
-                <ol class="lp-toc-sections"><li><a href="#move-first-or-modernize-on-the-way">Move first, or modernize on the way?</a></li><li><a href="#two-approaches">Two approaches</a></li><li><a href="#common-modernization-targets">Common modernization targets</a></li><li><a href="#what-the-final-phase-hands-over">What the final phase hands over</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#move-first-or-modernize-on-the-way">Move first, or modernize on the way?</a></li><li><a href="#two-approaches">Two approaches</a></li><li><a href="#common-modernization-targets">Common modernization targets</a></li><li><a href="#what-the-final-phase-hands-over">What the final phase hands over</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
               </ol>
             </nav>
           </aside>
@@ -212,6 +212,17 @@
             </nav>
             </details>
           <section>
+<div class="wrap">
+<p><b>In this module, you'll learn to:</b></p>
+<ul>
+<li>Decide when to rehost first and when to modernize during the move</li>
+<li>Recognize the common modernization targets: Amazon EKS, Aurora, and managed messaging</li>
+<li>List what the final phase hands over</li>
+</ul>
+<p><b>Before you start:</b> read <a href="04-target-architecture-and-landing-zone.html">Target State Blueprint</a> for the 7Rs, and <a href="05-mobilize-wave-planning-and-pilot.html">The Mobilize Phase</a> for how waves run.</p>
+</div>
+</section>
+<section>
 <div class="wrap">
 <div class="section-eyebrow">Principle</div>
 <h2 id="move-first-or-modernize-on-the-way">Move first, or modernize on the way?</h2>
@@ -290,6 +301,61 @@
 </ol>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Recap</div>
+<h2 id="key-terms">Key terms</h2>
+<ul>
+<li><b>Migration tax:</b> paying to recreate the old setup in the cloud, while modernizing &quot;later&quot; often never happens.</li>
+<li><b>Rehost first:</b> copy servers as they are with MGN. Fast, but old problems and costs move too.</li>
+<li><b>Modernize in flight:</b> replatform or refactor during the wave. Lower running costs sooner, but more effort and testing.</li>
+<li><b>SCT and DMS:</b> the Schema Conversion Tool converts the schema and DMS moves the data, for example from SQL Server to Aurora PostgreSQL.</li>
+<li><b>Spot Instances:</b> spare capacity at up to 90% off On-Demand (AWS's figure) that can be taken back at short notice.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Check yourself</div>
+<h2 id="pop-quiz">Pop quiz</h2>
+<p>Five questions: three on the ideas in this module, and two scenarios where you apply them. The order changes every time you take it, and 4 out of 5 passes.</p>
+<div class="lp-quiz" data-quiz>
+<p class="lp-quiz-intro">5 questions. Decide on your answer to each, then check it.</p>
+<ol class="lp-quiz-list">
+<li class="lp-quiz-q" data-answer="0" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">What is the &quot;migration tax&quot;?</p>
+<ol class="lp-quiz-options" type="A"><li>Paying to recreate the old setup in the cloud, while modernizing &quot;later&quot; often never happens</li><li>A fee AWS charges for MGN</li><li>The cost of MAP reporting</li><li>Data transfer charges during replication</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Paying to recreate the old setup in the cloud, while modernizing &quot;later&quot; often never happens</b></p><p class="lp-quiz-why">Same VM sizes, same licences, same patching work, now on AWS, until someone finds time to change them.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Which workloads suit Spot Instances?</p>
+<ol class="lp-quiz-options" type="A"><li>Production databases</li><li>Interruptible work, such as CI/CD build runners and queue workers</li><li>Domain controllers</li><li>Anything on a 3-year Savings Plan</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Interruptible work, such as CI/CD build runners and queue workers</b></p><p class="lp-quiz-why">Spot capacity can be taken back at short notice, so it fits work that can stop and restart.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Concept">
+<p class="lp-quiz-kind">Concept</p>
+<p class="lp-quiz-prompt">Moving from SQL Server to Aurora PostgreSQL removes the database licence. What does it usually also need?</p>
+<ol class="lp-quiz-options" type="A"><li>Nothing; DMS converts everything automatically</li><li>Real changes to stored procedures and queries, and careful testing</li><li>A Dedicated Host</li><li>Rehosting to EC2 first</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Real changes to stored procedures and queries, and careful testing</b></p><p class="lp-quiz-why">SCT converts the schema and DMS moves the data, but the application's database code usually needs work.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="0" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">The datacenter must be empty in 75 days, and most servers run vendor software you can't change. What fits most of the estate?</p>
+<ol class="lp-quiz-options" type="A"><li>Rehost with MGN now, and review for modernization later</li><li>Refactor everything to Lambda</li><li>Modernize every application during the move</li><li>Retain everything until after the deadline</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Rehost with MGN now, and review for modernization later</b></p><p class="lp-quiz-why">A hard deadline and software you can't change are exactly what rehosting is for.</p></details>
+</li>
+<li class="lp-quiz-q" data-answer="1" data-kind="Scenario">
+<p class="lp-quiz-kind">Scenario</p>
+<p class="lp-quiz-prompt">Your own core application faces an expensive SQL Server licence renewal, and its team is closely involved. What fits it?</p>
+<ol class="lp-quiz-options" type="A"><li>Rehost it unchanged</li><li>Modernize it during the move, for example to Aurora PostgreSQL with SCT and DMS</li><li>Retire it</li><li>Relocate it to VMware on AWS</li></ol>
+<details class="lp-quiz-answer"><summary>Show answer</summary><p><b>Modernize it during the move, for example to Aurora PostgreSQL with SCT and DMS</b></p><p class="lp-quiz-why">A costly renewal and a team that can change and test the application make modernizing in flight worth the extra effort.</p></details>
+</li>
+</ol>
+</div>
+</div>
+</section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/migration-journey/05-mobilize-wave-planning-and-pilot.html">
           <span class="lp-nav-label">← Module 05</span>
           <span class="lp-nav-title">The Mobilize Phase · Wave Planning &amp; Lighthouse Pilot</span>
@@ -324,6 +390,7 @@
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
+    <script src="../../assets/quiz.js" defer></script>
     <script src="../../assets/reading-progress.js" defer></script>
   </body>
 </html>
