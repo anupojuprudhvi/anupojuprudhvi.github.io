@@ -28,7 +28,7 @@ import { join, relative, dirname, basename } from "node:path";
 import { esc } from "./lib/html.mjs";
 import { parseFrontMatter, renderBody } from "./lib/markdown.mjs";
 import { MOTIF_NAMES, LAYER_MOTIF, motifSvg } from "./lib/motifs.mjs";
-import { SITE, SITE_META, HEAD_SECURITY, readingMinutes, page, libraryPage, learningPathPage, redirectPage, siteTopNav, latestCaseStudies, toolboxSection, LAYER_ORDER } from "./lib/render.mjs";
+import { SITE, SITE_META, HEAD_SECURITY, readingMinutes, siteFooter, page, libraryPage, learningPathPage, redirectPage, siteTopNav, latestCaseStudies, toolboxSection, LAYER_ORDER } from "./lib/render.mjs";
 
 const ROOT = process.cwd();
 const CONTENT = join(ROOT, "content/case-studies");
@@ -230,6 +230,7 @@ const selectedWork = projects.map((project, projectIndex) => {
       ogImage: socialImage(project.id, "index"),
       headSecurity: HEAD_SECURITY,
       siteNav: siteTopNav({ docs, up: "../../", active: "case-studies" }),
+      siteFooter: siteFooter({ up: "../../" }),
       motif: motifSvg(project.motif),
     };
     if (sources[0] === ".md") {
@@ -291,6 +292,7 @@ emit(
     selectedWork,
     engagementCount: projects.length,
     siteNav: siteTopNav({ docs, home: true }),
+    siteFooter: siteFooter({ home: true }),
     headSecurity: HEAD_SECURITY,
     latestCaseStudies: latestCaseStudies(recentDocs),
     toolbox: toolboxSection(toolbox),
@@ -300,10 +302,12 @@ emit(
 // Branded 404 page (GitHub Pages serves /404.html for any missing URL).
 emit("404.html", template(readFileSync(join(ROOT, "content/404.html"), "utf8"), {
   siteNav: siteTopNav({ docs, up: "/" }),
+  siteFooter: siteFooter({ up: "/" }),
   headSecurity: HEAD_SECURITY,
 }));
 emit("privacy.html", template(readFileSync(join(ROOT, "content/privacy.html"), "utf8"), {
   siteNav: siteTopNav({ docs }),
+  siteFooter: siteFooter(),
   headSecurity: HEAD_SECURITY,
 }));
 
@@ -317,6 +321,7 @@ if (existsSync(join(LEARNING_PATHS_DIR, "tracks.json"))) {
       "learning-paths/index.html",
       template(readFileSync(hubSourcePath, "utf8"), {
         siteNav: siteTopNav({ docs, up: "../", active: "learning-paths" }),
+        siteFooter: siteFooter({ up: "../" }),
         headSecurity: HEAD_SECURITY,
       }),
     );

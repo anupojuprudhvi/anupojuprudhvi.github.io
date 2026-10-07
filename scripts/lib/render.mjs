@@ -141,6 +141,37 @@ function learningPathsNavDropdown({ prefix = "", current = false } = {}) {
           </div>`;
 }
 
+/* --------------------------------------------------------------- Site footer */
+/**
+ * One footer for every page: the site's sections, then the small print.
+ * `up` is the relative path to the site root ("", "../", "/"); on the
+ * homepage (`home: true`) the section links are in-page anchors. theme.js
+ * adds "Pause animations" to the second row on pages with looping motion.
+ */
+export function siteFooter({ up = "", home = false } = {}) {
+  const a = (p) => `${up}${p}`;
+  const page = home ? "" : a("index.html");
+  return `    <footer>
+      <div class="wrap footer-nav">
+        <nav aria-label="Footer">
+          <a href="${page}#work">Selected work</a>
+          <a href="${a("case-studies/index.html")}">Case studies</a>
+          <a href="${a("learning-paths/index.html")}">Learning paths</a>
+          <a href="${page}#approach">Approach</a>
+          <a href="${page}#background">About</a>
+          <a href="${page}#contact">Contact</a>
+        </nav>
+      </div>
+      <div class="wrap footer-inner">
+        <span>© ${SITE_META.year} Prudhvi Raj Anupoju</span>
+        <a href="https://www.linkedin.com/in/prudhvi-raj-anupoju/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+        <a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a>
+        <a href="${a("privacy.html")}">Privacy</a>
+        <a href="${home ? "#top" : "#main"}">Back to top ↑</a>
+      </div>
+    </footer>`;
+}
+
 /* ------------------------------------------------- Unified Site Top Navigation */
 /**
  * One navigation bar for every page, with the same links everywhere. On the
@@ -573,16 +604,7 @@ ${sectionsHtml}
         </div>
       </div>
     </main>
-    <footer>
-      <div class="wrap footer-inner">
-        <span>© ${SITE_META.year} Prudhvi Raj Anupoju</span
-        ><a href="${a("learning-paths/index.html")}">Learning paths ↗</a
-        ><a href="${a("case-studies/index.html")}">Case studies ↗</a
-        ><a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a
-        ><a href="${a("index.html")}#work">Back to overview ↗</a
-        ><a href="${a("privacy.html")}">Privacy</a>
-      </div>
-    </footer>
+${siteFooter({ up })}
     <script src="${a("assets/assistant.js")}" defer></script>${bodyHtml.includes('<figure class="flow">') ? `
     <script src="${a("assets/flow-player.js")}" defer></script>` : ""}
     ${scripts}
@@ -742,15 +764,7 @@ ${cards}
         </div>
       </section>
     </main>
-    <footer>
-      <div class="wrap footer-inner">
-        <span>© ${SITE_META.year} Prudhvi Raj Anupoju</span
-        ><a href="../learning-paths/index.html">Learning paths ↗</a
-        ><a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a
-        ><a href="../index.html#work">Selected work ↗</a
-        ><a href="../privacy.html">Privacy</a>
-      </div>
-    </footer>
+${siteFooter({ up: "../" })}
     <script src="../assets/library.js" defer></script>
     <script src="../assets/assistant.js" defer></script>
   </body>
@@ -993,16 +1007,7 @@ ${siteTopNav({ docs, up, active: "learning-paths" })}
         </div>
       </div>
     </main>
-    <footer>
-      <div class="wrap footer-inner">
-        <span>© ${SITE_META.year} Prudhvi Raj Anupoju</span>
-        <a href="${a("learning-paths/index.html")}">Learning paths ↗</a>
-        <a href="${a("case-studies/index.html")}">Case studies ↗</a>
-        <a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a>
-        <a href="${a("index.html")}#work">Selected work ↗</a>
-        <a href="${a("privacy.html")}">Privacy</a>
-      </div>
-    </footer>
+${siteFooter({ up })}
     <script src="${a("assets/assistant.js")}" defer></script>${bodyHtml.includes('<figure class="flow">') ? `
     <script src="${a("assets/flow-player.js")}" defer></script>` : ""}${bodyHtml.includes("data-quiz") ? `
     <script src="${a("assets/quiz.js")}" defer></script>` : ""}
