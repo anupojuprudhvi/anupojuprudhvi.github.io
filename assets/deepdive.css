@@ -804,6 +804,13 @@ pre.code {
     margin-top: 0;
   }
 }
+/* Phones: the illustration sits under the summary and only pushes the
+   content down, so it's left out there. */
+@media (max-width: 640px) {
+  .motif {
+    display: none;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .motif .m-packets {
     display: none;

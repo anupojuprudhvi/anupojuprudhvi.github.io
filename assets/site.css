@@ -505,6 +505,13 @@ nav.topnav {
     display: none;
   }
 }
+/* On phones the drawing would push the stats and case studies a full screen
+   further down; the interactive architecture panel below it stays. */
+@media (max-width: 640px) {
+  .hub-net-compact {
+    display: none;
+  }
+}
 .hub-link {
   fill: none;
   stroke: var(--border);
