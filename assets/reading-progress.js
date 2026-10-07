@@ -14,7 +14,28 @@
   "use strict";
 
   var article = document.querySelector("article.lp-content[data-track]");
-  if (!article) return;
+  if (!article) {
+    showTrackProgress();
+    return;
+  }
+
+  // ---- Learning-paths hub: "3 of 11 done" on each track card with progress.
+  function showTrackProgress() {
+    var els = document.querySelectorAll(".track-progress[data-track]");
+    Array.prototype.forEach.call(els, function (el) {
+      var done = 0;
+      try {
+        var list = JSON.parse(localStorage.getItem("lp-done:" + el.getAttribute("data-track")) || "[]");
+        done = Array.isArray(list) ? list.length : 0;
+      } catch (e) {
+        return; /* blocked storage: the card simply shows no progress */
+      }
+      var total = Number(el.getAttribute("data-total")) || 0;
+      if (!done || !total) return;
+      el.textContent = Math.min(done, total) + " of " + total + " done";
+      el.hidden = false;
+    });
+  }
 
   var track = article.getAttribute("data-track");
   var total = Number(article.getAttribute("data-total")) || 0;
