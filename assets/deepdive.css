@@ -106,6 +106,64 @@
   color: var(--accent);
   font: 12px ui-monospace, monospace;
 }
+/* Case studies: "On this page" contents in a sticky column beside the
+   sections on wide screens. Narrower screens show the sections alone. */
+.cs-toc {
+  display: none;
+}
+@media (min-width: 1100px) {
+  .cs-body.has-toc {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 200px;
+    gap: 56px;
+    align-items: start;
+  }
+  /* The sections keep their own .wrap; inside the grid it must not add a
+     second width limit or side padding. */
+  .cs-body.has-toc .cs-main .wrap {
+    max-width: none;
+    padding: 0;
+  }
+  .cs-toc {
+    display: block;
+    position: sticky;
+    top: 96px;
+    padding: 48px 0;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+  }
+}
+.cs-toc-title {
+  font: 600 11px/1.6 ui-monospace, monospace;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.cs-toc ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-left: 1px solid var(--border);
+}
+.cs-toc a {
+  display: block;
+  padding: 5px 0 5px 14px;
+  margin-left: -1px;
+  border-left: 2px solid transparent;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text-muted);
+  text-decoration: none;
+}
+.cs-toc a:hover,
+.cs-toc a.is-active {
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
 .hubwrap {
   margin: 28px 0;
   /* The SVG scales with its box; on wide pages keep it at reading width so

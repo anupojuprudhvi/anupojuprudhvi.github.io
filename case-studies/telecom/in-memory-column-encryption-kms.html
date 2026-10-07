@@ -178,25 +178,27 @@
         </div>
       </header>
 
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
-<h2>Replacing the key provider without replacing every caller</h2>
+<h2 id="replacing-the-key-provider-without-replacing-every-caller">Replacing the key provider without replacing every caller</h2>
 <p>The platform already encrypted sensitive subscriber data through a local C-based service. That service depended on an on-premises key provider. Moving the database and applications into AWS also required a workable key-management integration, but changing every application's encryption interface would have widened the migration considerably.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Solution</div>
-<h2>Isolate the provider change</h2>
+<h2 id="isolate-the-provider-change">Isolate the provider change</h2>
 <p>The key-unwrapping integration was adapted to AWS KMS while retaining the existing local service and application-facing contract. This was a targeted change to the provider integration, not a claim that no code changed or that the existing cryptographic design had been independently certified.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>Distinguish the wrapping key from the data key</h2>
+<h2 id="distinguish-the-wrapping-key-from-the-data-key">Distinguish the wrapping key from the data key</h2>
 <p>The design uses a local service to make data-encryption keys available to authorized application processes. KMS protects the wrapped key material and authorizes unwrapping. The plaintext data key returned to the host must then be protected by that host and its processes; it is distinct from the KMS key itself. This is the boundary described by <a href="https://docs.aws.amazon.com/kms/latest/developerguide/kms-cryptography.html">AWS envelope encryption</a>.</p>
 <p>Keeping a local integration avoids a KMS request for each field operation, but extends the responsibility for plaintext key lifetime and access to the application environment.</p>
 <details class="implementation-notes">
@@ -212,7 +214,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Security</div>
-<h2>Key lifecycle remains part of the application design</h2>
+<h2 id="key-lifecycle-remains-part-of-the-application-design">Key lifecycle remains part of the application design</h2>
 <p>Permissions to unwrap keys should be limited to the required workload roles, with access logging and a documented response to loss of KMS access. Host access, process privileges, memory dumps, swap behavior, and key cleanup affect the plaintext-key boundary.</p>
 <p>Database encryption at rest and application field encryption address different access paths. Neither this provider migration nor a plaintext-pattern scan establishes regulatory compliance or an audit outcome.</p>
 </div>
@@ -220,31 +222,37 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Delivery</div>
-<h2>Validate old and new data paths before cutover</h2>
+<h2 id="validate-old-and-new-data-paths-before-cutover">Validate old and new data paths before cutover</h2>
 <p>The migration used staging validation around the updated daemon and wrapped key material. Checks included reading existing data and exercising the new provider path. Scanning database exports can help detect obvious plaintext exposure, but it does not prove cryptographic correctness, authorization boundaries, or complete protection of sensitive fields.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Trade-offs</div>
-<h2>Compatibility preserves both behavior and constraints</h2>
+<h2 id="compatibility-preserves-both-behavior-and-constraints">Compatibility preserves both behavior and constraints</h2>
 <p>Retaining the local crypto interface reduced the scope of caller changes. It also retained responsibility for key caching, rotation, historical-data access, and the application's encrypted-query design. This case study deliberately does not present an unverified cipher mode or equality-search construction as a recommended design.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Outcome</div>
-<h2>A narrower migration boundary</h2>
+<h2 id="a-narrower-migration-boundary">A narrower migration boundary</h2>
 <p>The key provider was modernized through a focused integration change while preserving the application's local service contract. The meaningful outcome is that separation of responsibilities; no latency benchmark, blanket compliance claim, or assertion that the database can never access plaintext keys is made here.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Next steps</div>
-<h2>Complete the cryptographic design review</h2>
+<h2 id="complete-the-cryptographic-design-review">Complete the cryptographic design review</h2>
 <p>Document the actual cipher and integrity mechanism, IV construction, query path, key owners, cache lifetime, and rotation/revocation behavior. Validate restart and provider-outage behavior, then retain the test evidence before publishing stronger security or performance claims.</p>
 </div>
 </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#replacing-the-key-provider-without-replacing-every-caller" title="Replacing the key provider without replacing every caller">Problem</a></li><li><a href="#isolate-the-provider-change" title="Isolate the provider change">Solution</a></li><li><a href="#distinguish-the-wrapping-key-from-the-data-key" title="Distinguish the wrapping key from the data key">Architecture</a></li><li><a href="#key-lifecycle-remains-part-of-the-application-design" title="Key lifecycle remains part of the application design">Security</a></li><li><a href="#validate-old-and-new-data-paths-before-cutover" title="Validate old and new data paths before cutover">Delivery</a></li><li><a href="#compatibility-preserves-both-behavior-and-constraints" title="Compatibility preserves both behavior and constraints">Trade-offs</a></li><li><a href="#a-narrower-migration-boundary" title="A narrower migration boundary">Outcome</a></li><li><a href="#complete-the-cryptographic-design-review" title="Complete the cryptographic design review">Next steps</a></li></ol>
+        </aside>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/telecom/serverless-ha-failover-engine.html">← Failover and licensing continuity</a>
         <a href="../../case-studies/telecom/platform-automation-engine-v1-to-v10.html">Repeatable platform delivery →</a>

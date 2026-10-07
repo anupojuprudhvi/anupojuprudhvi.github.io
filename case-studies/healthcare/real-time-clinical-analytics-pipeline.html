@@ -195,11 +195,13 @@
 </div>
 </div>
 </section>
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
-<h2>Reporting and ingestion were fighting over the same database</h2>
+<h2 id="reporting-and-ingestion-were-fighting-over-the-same-database">Reporting and ingestion were fighting over the same database</h2>
 <p>The operational database's job was to be the durable, transactionally-consistent source of truth for live application state — a device reading arrives, gets written, and the application acts on it immediately. That's a fundamentally different access pattern from a care coordinator asking &quot;show me this patient's blood pressure trend over the last 90 days,&quot; which touches a large historical range in a single read.</p>
 <p>Running both patterns against the same database meant they competed directly: a burst of heavy trend queries could visibly slow down live telemetry writes, and there was no way to scale the two independently, because they weren't separated at all.</p>
 </div>
@@ -207,7 +209,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>Ingest once, index for queries, never touch OLTP again</h2>
+<h2 id="ingest-once-index-for-queries-never-touch-oltp-again">Ingest once, index for queries, never touch OLTP again</h2>
 <pre tabindex="0" class="code"><code class="language-text">[ Device telemetry / integration tier ]
              │
              ▼
@@ -240,7 +242,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Production incident</div>
-<h2>Dashboard-server deadlocks under heavy reporting load</h2>
+<h2 id="dashboard-server-deadlocks-under-heavy-reporting-load">Dashboard-server deadlocks under heavy reporting load</h2>
 <p>Once the pipeline was in place, the remaining single point of failure was the BI layer itself: under heavy concurrent reporting load, dashboard sessions periodically disconnected and the server's own management UI stopped responding — a deadlock in the BI server's own process, not the pipeline feeding it.</p>
 <details class="implementation-notes">
 <summary>Triage sequence</summary>
@@ -255,6 +257,12 @@
 <p>Unsaved dashboard drafts during an unexpected crash needed to be recovered from local autosave rather than the server session, which became a documented step in the runbook so a future on-call engineer isn't discovering that mid-incident.</p>
 </div>
 </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#reporting-and-ingestion-were-fighting-over-the-same-database" title="Reporting and ingestion were fighting over the same database">Problem</a></li><li><a href="#ingest-once-index-for-queries-never-touch-oltp-again" title="Ingest once, index for queries, never touch OLTP again">Architecture</a></li><li><a href="#dashboard-server-deadlocks-under-heavy-reporting-load" title="Dashboard-server deadlocks under heavy reporting load">Production incident</a></li></ol>
+        </aside>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/healthcare/hl7-device-interoperability-engine.html">← HL7 device interoperability</a>
         <a href="../../case-studies/healthcare/zero-public-ingress-network-security.html">Zero-public-ingress security →</a>

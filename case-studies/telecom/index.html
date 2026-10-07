@@ -178,11 +178,13 @@
         </div>
       </header>
 
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
-<h2>A cloud migration with dependencies that could not simply be replaced</h2>
+<h2 id="a-cloud-migration-with-dependencies-that-could-not-simply-be-replaced">A cloud migration with dependencies that could not simply be replaced</h2>
 <p>The platform handled sensitive call and messaging data, but its database, recovery procedures, and software licensing had grown around an on-premises environment. Moving the virtual machines alone would have carried those constraints into the cloud.</p>
 <p>The architectural contribution focused on modernizing the database, automating recovery, preserving the licensed network identity, adapting key management, and making node provisioning repeatable. The detailed case studies below explain the decisions and boundaries of each part of that work.</p>
 </div>
@@ -190,7 +192,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Solution</div>
-<h2>Separate the decisions, coordinate the cutover</h2>
+<h2 id="separate-the-decisions-coordinate-the-cutover">Separate the decisions, coordinate the cutover</h2>
 <p>Database migration used baseline transfer and change-data capture (CDC) while schema and client compatibility were addressed. The final cutover included a brief pause in writes, replication catch-up, validation, and endpoint changes. That is a controlled cutover; it should not be read as a claim that every request continued without interruption.</p>
 <p>Recovery automation brought together health alarms, orchestration, service checks, and a persistent network interface for licensed services. Provisioning automation then made the required host configuration reproducible across environments.</p>
 </div>
@@ -198,7 +200,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>Distinct responsibilities for compute, data, and recovery</h2>
+<h2 id="distinct-responsibilities-for-compute-data-and-recovery">Distinct responsibilities for compute, data, and recovery</h2>
 <p>Application nodes handled call-processing services. Persistent service nodes hosted dependencies such as connection pools, the key service, and licensed interfaces, while Aurora hosted the relational data. Keeping these roles explicit helped separate replaceable compute from state and identity that had to survive replacement.</p>
 <p>The regional network design separated application and hub VPC responsibilities and used Transit Gateway connectivity between the primary and recovery regions. Database and file replication addressed separate recovery needs. Network reachability alone does not establish an application recovery time: promotion, endpoint routing, service readiness, and client reconnection still need to be exercised together.</p>
 <details class="implementation-notes">
@@ -214,35 +216,35 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Security</div>
-<h2>Protect data and constrain operational access</h2>
+<h2 id="protect-data-and-constrain-operational-access">Protect data and constrain operational access</h2>
 <p>The work included private database placement, encrypted transport, scoped automation permissions, and a migration of the existing key-unwrapping integration to AWS KMS. These controls address specific risks; they do not, by themselves, establish regulatory compliance or an audit result.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Delivery</div>
-<h2>Validate the whole service, not just running processes</h2>
+<h2 id="validate-the-whole-service-not-just-running-processes">Validate the whole service, not just running processes</h2>
 <p>The delivery process combined environment provisioning, database checks, application smoke tests, and recovery exercises. The CDR incident reinforced why a running process is not sufficient evidence of a healthy service: records must reach their destination, and reconciliation must account for missing or duplicated events.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Trade-offs</div>
-<h2>Legacy compatibility still shapes the cloud design</h2>
+<h2 id="legacy-compatibility-still-shapes-the-cloud-design">Legacy compatibility still shapes the cloud design</h2>
 <p>Preserving licensed network identity limits where an interface can move. Retaining the existing crypto integration avoids a broad application rewrite but carries forward key-lifecycle and query-compatibility questions. Shared file storage and the batch ingestion path also retain operational dependencies that require monitoring.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Outcome</div>
-<h2>A coordinated modernization and recovery approach</h2>
+<h2 id="a-coordinated-modernization-and-recovery-approach">A coordinated modernization and recovery approach</h2>
 <p>The engagement replaced several manual or hardware-dependent procedures with cloud-based delivery and recovery workflows. The strongest evidence in these stories is the constraint addressed, the implementation decision, and the validation described. Precise timing, savings, and success-rate claims need a defined measurement window and supporting records before being presented as benchmarks.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Case studies</div>
-<h2>Four engineering stories and one incident write-up</h2>
+<h2 id="four-engineering-stories-and-one-incident-write-up">Four engineering stories and one incident write-up</h2>
 <div class="case-study-links">
             <a href="aurora-global-database-modernization.html"><span>01 / Database modernization</span><strong>Database migration and connection pooling</strong><small>Combining schema and client compatibility work, continuous replication, and local connection pooling to move a legacy telecom database tier to Aurora. →</small></a>
             <a href="serverless-ha-failover-engine.html"><span>02 / High availability</span><strong>Failover and licensing continuity</strong><small>Bringing recovery orchestration, service validation, and hardware-bound licensing into one failover workflow, with an explicit same-AZ boundary. →</small></a>
@@ -255,10 +257,16 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Next steps</div>
-<h2>Make recovery and performance evidence repeatable</h2>
+<h2 id="make-recovery-and-performance-evidence-repeatable">Make recovery and performance evidence repeatable</h2>
 <p>The next priorities are a complete regional recovery exercise, repeatable database load measurements, key-lifecycle review, and retained validation records. These would establish the limits of the design more clearly than component counts or blanket availability claims.</p>
 </div>
 </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#a-cloud-migration-with-dependencies-that-could-not-simply-be-replaced" title="A cloud migration with dependencies that could not simply be replaced">Problem</a></li><li><a href="#separate-the-decisions-coordinate-the-cutover" title="Separate the decisions, coordinate the cutover">Solution</a></li><li><a href="#distinct-responsibilities-for-compute-data-and-recovery" title="Distinct responsibilities for compute, data, and recovery">Architecture</a></li><li><a href="#protect-data-and-constrain-operational-access" title="Protect data and constrain operational access">Security</a></li><li><a href="#validate-the-whole-service-not-just-running-processes" title="Validate the whole service, not just running processes">Delivery</a></li><li><a href="#legacy-compatibility-still-shapes-the-cloud-design" title="Legacy compatibility still shapes the cloud design">Trade-offs</a></li><li><a href="#a-coordinated-modernization-and-recovery-approach" title="A coordinated modernization and recovery approach">Outcome</a></li><li><a href="#four-engineering-stories-and-one-incident-write-up" title="Four engineering stories and one incident write-up">Case studies</a></li><li><a href="#make-recovery-and-performance-evidence-repeatable" title="Make recovery and performance evidence repeatable">Next steps</a></li></ol>
+        </aside>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/index.html">← Case studies</a>
       </aside>

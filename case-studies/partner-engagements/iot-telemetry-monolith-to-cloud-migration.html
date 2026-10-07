@@ -191,10 +191,12 @@
 </div>
 </div>
 </section>
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Target architecture</div>
-<h2>Translating monolithic telemetry backends into managed AWS cloud architectures</h2>
+<h2 id="translating-monolithic-telemetry-backends-into-managed-aws-cloud-architectures">Translating monolithic telemetry backends into managed AWS cloud architectures</h2>
 <div class="problem-solution">
 <div>
 <h3>The problem</h3>
@@ -237,7 +239,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Assessment</div>
-<h2>Deconstructing the on-premises IoT monolith</h2>
+<h2 id="deconstructing-the-on-premises-iot-monolith">Deconstructing the on-premises IoT monolith</h2>
 <p>Connected IoT backends encounter severe operational stress: devices maintain persistent socket connections, emit continuous telemetry packets (vital signs, heart rates, environmental temperature, sensor battery states), and require immediate delivery of urgent alert notifications.</p>
 <p>The existing on-premises platform handled these responsibilities through a monolithic application stack where connection management, stream ingestion, business rules, and customer-facing APIs competed for compute and thread pools on the same bare-metal host clusters.</p>
 <p>Under the AWS Migration Acceleration Program (MAP) Assess phase, the objective was to break this monolithic dependency chain and design an elastic, highly available target architecture on AWS.</p>
@@ -259,7 +261,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>Decoupled telemetry ingestion and processing</h2>
+<h2 id="decoupled-telemetry-ingestion-and-processing">Decoupled telemetry ingestion and processing</h2>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">[ Connected IoT Hardware Units ]
              │ (Mutual TLS / MQTT)
              ▼
@@ -282,10 +284,16 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Outcome</div>
-<h2>The MAP Assessment final report and mobilize roadmap</h2>
+<h2 id="the-map-assessment-final-report-and-mobilize-roadmap">The MAP Assessment final report and mobilize roadmap</h2>
 <p>The engagement concluded with the delivery of the <b>Target AWS Architecture Blueprint</b>, the <b>Service Mapping Matrix</b>, and the executive <b>MAP Assessment Final Report</b>. These architectural deliverables established clear workload migration sequences, verified security and HIPAA/SOC2 compliance baselines, and established technical governance for the subsequent MAP Mobilize and Migration waves.</p>
 </div>
 </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#translating-monolithic-telemetry-backends-into-managed-aws-cloud-architectures" title="Translating monolithic telemetry backends into managed AWS cloud architectures">Target architecture</a></li><li><a href="#deconstructing-the-on-premises-iot-monolith" title="Deconstructing the on-premises IoT monolith">Assessment</a></li><li><a href="#decoupled-telemetry-ingestion-and-processing" title="Decoupled telemetry ingestion and processing">Architecture</a></li><li><a href="#the-map-assessment-final-report-and-mobilize-roadmap" title="The MAP Assessment final report and mobilize roadmap">Outcome</a></li></ol>
+        </aside>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/partner-engagements/it-monitoring-tanzu-to-eks-map-assessment.html">← IT monitoring Tanzu to EKS MAP</a>
         <a href="../../case-studies/partner-engagements/adtech-saas-marketplace-onboarding.html">AdTech SaaS marketplace onboarding →</a>

@@ -184,10 +184,12 @@
         </div>
       </header>
 
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Service integration</div>
-<h2>How a webhook reaches a private service</h2>
+<h2 id="how-a-webhook-reaches-a-private-service">How a webhook reaches a private service</h2>
 <div class="problem-solution">
 <div>
 <h3>The problem</h3>
@@ -242,7 +244,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Why this way</div>
-<h2>Two architectural constraints shaped by AWS</h2>
+<h2 id="two-architectural-constraints-shaped-by-aws">Two architectural constraints shaped by AWS</h2>
 <p>The interesting part of this design is how little of it was preference. Two components exist because the obvious approach is not available on this platform, and it is worth being explicit about which is which.</p>
 <p><b>CloudFront is not there as a CDN.</b> AWS WAF cannot be associated with an HTTP API — it attaches only to CloudFront, an Application Load Balancer, a REST API, or AppSync. Putting WAF in front of an HTTP API therefore means putting CloudFront in front of it. That makes CloudFront a mandatory part of the security model, not an optimisation, and anyone later &quot;simplifying&quot; it away removes the WAF layer entirely and publishes the API Gateway URL with no IP filtering at all.</p>
 <p><b>The Lambda authorizer is not there for convenience.</b> Jira signs its webhooks with symmetric HMAC-SHA256. API Gateway's native JWT authorizer only supports asymmetric algorithms paired with OIDC discovery, and WAF can match strings and patterns but cannot compute an HMAC against a secret. Nothing built in can verify these signatures, so verification has to run somewhere — and running it at the boundary keeps it out of the backend service.</p>
@@ -252,7 +254,7 @@
 </section>
 <section>
 <div class="wrap">
-<h2>What makes it hold up</h2>
+<h2 id="what-makes-it-hold-up">What makes it hold up</h2>
 <p><b>Each layer rejects something the others cannot.</b> Edge WAF stops traffic from the wrong network. The secret header stops traffic that found the API Gateway URL directly and tried to skip the edge — a real exposure, since HTTP API endpoints are publicly resolvable. Signature verification stops forged or expired payloads from the right network. Private networking stops anything that somehow got past all three from reaching a pod. Removing any one of them leaves a specific, nameable gap.</p>
 <p><b>Authorization caching is disabled deliberately.</b> A cached result means a rotated or compromised secret stays valid until the cache expires, and API Gateway's authorizer cache has no invalidation API — you cannot flush one identity. For a receiver handling operational ticket and SLA data, a window of accepted-but-revoked tokens was not worth the saved invocations. The cost of that choice is a Lambda invocation per request, partly offset by running on ARM64; if it ever became a problem the right fix is provisioned concurrency, not re-enabling the cache.</p>
 <p><b>Both sender styles are handled in one place.</b> Webhooks arrive with a signed token; Automation rules send a static pre-shared one. Rather than splitting these across two entry points, the authorizer accepts either and applies the matching check.</p>
@@ -269,6 +271,12 @@
 </details>
 </div>
 </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#how-a-webhook-reaches-a-private-service" title="How a webhook reaches a private service">Service integration</a></li><li><a href="#two-architectural-constraints-shaped-by-aws" title="Two architectural constraints shaped by AWS">Why this way</a></li><li><a href="#what-makes-it-hold-up" title="What makes it hold up">What makes it hold up</a></li></ol>
+        </aside>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/tolling/entra-workspaces-saml.html">← Federate WorkSpaces with Entra</a>
         <a href="../../case-studies/tolling/route53-shared-dns.html">Share DNS across environments →</a>

@@ -186,11 +186,13 @@
         </div>
       </header>
 
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 
 <section>
         <div class="wrap">
           <div class="section-eyebrow">The problem</div>
-          <h2>
+          <h2 id="a-monolith-that-couldn-t-scale-with-the-data-it-was-collecting">
             A monolith that couldn't scale with the data it was collecting
           </h2>
           <p>
@@ -226,7 +228,7 @@
       <section>
         <div class="wrap">
           <div class="section-eyebrow">Architecture</div>
-          <h2>
+          <h2 id="decomposing-the-monolith-into-managed-independently-scaled-services">
             Decomposing the monolith into managed, independently-scaled services
           </h2>
           <p>
@@ -289,7 +291,7 @@
       <section>
         <div class="wrap">
           <div class="section-eyebrow">Reducing database load</div>
-          <h2>Taking reporting traffic off the live database entirely</h2>
+          <h2 id="taking-reporting-traffic-off-the-live-database-entirely">Taking reporting traffic off the live database entirely</h2>
           <p>
             Rather than scaling the operational database up to absorb both live
             writes and heavy analytical reads, the architecture decoupled the two: vitals
@@ -393,7 +395,7 @@
       <section>
         <div class="wrap">
           <div class="section-eyebrow">Cost-aware compute</div>
-          <h2>Applying the same discipline across several engagements</h2>
+          <h2 id="applying-the-same-discipline-across-several-engagements">Applying the same discipline across several engagements</h2>
           <p>
             This pattern — right-sizing compute instead of running static,
             always-on fleets — wasn't unique to one platform. Across several
@@ -453,7 +455,7 @@
       <section>
         <div class="wrap">
           <div class="section-eyebrow">Outcome</div>
-          <h2>What changed</h2>
+          <h2 id="what-changed">What changed</h2>
           <div class="outcomes">
             <div class="outcome">
               <div class="num">~50%</div>
@@ -485,6 +487,12 @@
           </p>
         </div>
       </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#a-monolith-that-couldn-t-scale-with-the-data-it-was-collecting" title="A monolith that couldn't scale with the data it was collecting">The problem</a></li><li><a href="#decomposing-the-monolith-into-managed-independently-scaled-services" title="Decomposing the monolith into managed, independently-scaled services">Architecture</a></li><li><a href="#taking-reporting-traffic-off-the-live-database-entirely" title="Taking reporting traffic off the live database entirely">Reducing database load</a></li><li><a href="#applying-the-same-discipline-across-several-engagements" title="Applying the same discipline across several engagements">Cost-aware compute</a></li><li><a href="#what-changed" title="What changed">Outcome</a></li></ol>
+        </aside>
+      </div>
       <div class="wrap">
         <section class="related-links" aria-label="Learn the concepts behind this">
           <h2>Learn the concepts behind this</h2>

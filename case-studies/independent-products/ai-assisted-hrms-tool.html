@@ -180,11 +180,13 @@
         </div>
       </header>
 
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
-<h2>Everyday HR lives in too many places</h2>
+<h2 id="everyday-hr-lives-in-too-many-places">Everyday HR lives in too many places</h2>
 <p>Small and mid-sized companies often run HR from a mix of spreadsheets, email, and a shared folder. It works, but it costs time every day:</p>
 <ul>
 <li><b>Employees can't see their own data.</b> How much leave is left? Which shift am I on? They have to ask someone.</li>
@@ -196,7 +198,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Solution</div>
-<h2>One simple tool, plus an assistant that shows its sources</h2>
+<h2 id="one-simple-tool-plus-an-assistant-that-shows-its-sources">One simple tool, plus an assistant that shows its sources</h2>
 <p>The tool covers everyday HR work in one place:</p>
 <div class="table-wrap"><table class="md-table">
 <thead><tr><th scope="col">Area</th><th scope="col">What it does</th></tr></thead>
@@ -215,7 +217,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>A web app, an API, an assistant, and a database</h2>
+<h2 id="a-web-app-an-api-an-assistant-and-a-database">A web app, an API, an assistant, and a database</h2>
 <figure class="flow">
 <figcaption class="flow-title">How a request moves through the HRMS</figcaption>
 <div class="flow-body"><div class="flow-node"><strong>Browser</strong><span>employees, managers, and HR</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">HTTPS</span></div><div class="flow-node"><strong>Next.js web app</strong><span>the pages; sign-in kept in an httpOnly cookie that page scripts can't read</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">API calls</span></div><div class="flow-node"><strong>FastAPI</strong><span>leave, attendance, shifts, timesheets, org chart, assets, documents</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">plain-language requests</span></div><div class="flow-node is-key"><strong>Assistant</strong><span>understands the request, then calls the same API as the signed-in user</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">reads and writes</span></div><div class="flow-node"><strong>PostgreSQL</strong><span>every record tagged with the company it belongs to</span></div></div>
@@ -233,7 +235,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Assistant</div>
-<h2>Plain-language requests, and answers you can check</h2>
+<h2 id="plain-language-requests-and-answers-you-can-check">Plain-language requests, and answers you can check</h2>
 <p>The assistant covers two kinds of question.</p>
 <p><b>Everyday requests.</b> &quot;How much leave do I have?&quot;, &quot;request leave next Friday&quot;, &quot;clock me in&quot;, &quot;which shift am I on?&quot;, &quot;who's in today?&quot;. If a detail is missing, such as the dates for a leave request, it asks for it before doing anything.</p>
 <p><b>Policy questions.</b> &quot;What's our parental leave policy?&quot; Instead of letting an AI model invent an answer, it searches the company's own policy documents and quotes the matching passage:</p>
@@ -248,7 +250,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Delivery</div>
-<h2>Built with AI coding tools, under written rules</h2>
+<h2 id="built-with-ai-coding-tools-under-written-rules">Built with AI coding tools, under written rules</h2>
 <p>I built this tool with AI coding tools, and the way I worked mattered more than the tools:</p>
 <ul>
 <li><b>Written rules for the AI.</b> An AGENTS.md file in the repository sets out how every change is made, and each task gets a written handover: what changed, which checks ran, and what's left.</li>
@@ -262,7 +264,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Trade-offs</div>
-<h2>Kept simple on purpose</h2>
+<h2 id="kept-simple-on-purpose">Kept simple on purpose</h2>
 <ul>
 <li><b>Quoting, not generating.</b> The assistant quotes the handbook instead of writing its own answer. It reads less smoothly than a chatbot, but it can't make up a policy.</li>
 <li><b>Keyword search.</b> Policy search matches words and phrases rather than meaning, so a question that uses very different words from the handbook may find nothing. It then says so rather than guessing.</li>
@@ -272,13 +274,19 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Next steps</div>
-<h2>Where it could go</h2>
+<h2 id="where-it-could-go">Where it could go</h2>
 <ul>
 <li>Leave and attendance reports for HR and managers.</li>
 <li>Reminders for approvals that have waited too long.</li>
 </ul>
 </div>
 </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#everyday-hr-lives-in-too-many-places" title="Everyday HR lives in too many places">Problem</a></li><li><a href="#one-simple-tool-plus-an-assistant-that-shows-its-sources" title="One simple tool, plus an assistant that shows its sources">Solution</a></li><li><a href="#a-web-app-an-api-an-assistant-and-a-database" title="A web app, an API, an assistant, and a database">Architecture</a></li><li><a href="#plain-language-requests-and-answers-you-can-check" title="Plain-language requests, and answers you can check">Assistant</a></li><li><a href="#built-with-ai-coding-tools-under-written-rules" title="Built with AI coding tools, under written rules">Delivery</a></li><li><a href="#kept-simple-on-purpose" title="Kept simple on purpose">Trade-offs</a></li><li><a href="#where-it-could-go" title="Where it could go">Next steps</a></li></ol>
+        </aside>
+      </div>
       <div class="wrap">
         <section class="related-links" aria-label="Learn the concepts behind this">
           <h2>Learn the concepts behind this</h2>

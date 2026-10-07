@@ -191,10 +191,12 @@
 </div>
 </div>
 </section>
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Storage operations</div>
-<h2>High-concurrency S3 migration for small objects</h2>
+<h2 id="high-concurrency-s3-migration-for-small-objects">High-concurrency S3 migration for small objects</h2>
 <div class="problem-solution">
 <div>
 <h3>The problem</h3>
@@ -242,7 +244,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
-<h2>When object count matters more than raw gigabytes</h2>
+<h2 id="when-object-count-matters-more-than-raw-gigabytes">When object count matters more than raw gigabytes</h2>
 <p>Migrating 225 GB of data between Amazon S3 buckets is normally trivial. On a modest 1 Gbps connection, 225 GB of contiguous data transfers in under 35 minutes.</p>
 <p>However, the dataset in this migration consisted of <b>1.48 million small objects</b> (averaging ~155 KB each), typical of tolling OCR camera reads, plate crop images, and sensor transaction logs. At this object count, the physics of cloud storage change:</p>
 <ul>
@@ -255,7 +257,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Alternatives</div>
-<h2>Evaluating migration paths</h2>
+<h2 id="evaluating-migration-paths">Evaluating migration paths</h2>
 <p>Four distinct approaches were evaluated to balance migration runtime, infrastructure cost, and operational complexity:</p>
 <div class="table-wrap"><table class="md-table">
 <thead><tr><th scope="col">Approach</th><th scope="col">Pros</th><th scope="col">Cons / Verdict</th></tr></thead>
@@ -279,7 +281,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Execution</div>
-<h2>S5cmd and 128 concurrent workers</h2>
+<h2 id="s5cmd-and-128-concurrent-workers">S5cmd and 128 concurrent workers</h2>
 <p>The tool of choice was <b><code>s5cmd</code></b>, a high-performance S3 client written in Go. Unlike standard CLI implementations, <code>s5cmd</code> uses lightweight goroutines to issue deeply pipelined, concurrent S3 API calls.</p>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">       Source S3 Bucket                      Destination S3 Bucket
       [ 1.48M Small Objects ]                [ Target Bucket ]
@@ -305,7 +307,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Verification</div>
-<h2>Trust through validation before purge</h2>
+<h2 id="trust-through-validation-before-purge">Trust through validation before purge</h2>
 <p>Speed is meaningless if data integrity cannot be guaranteed. Before source data was marked for deprecation, a verification process confirmed that every single object had landed intact:</p>
 <ol>
 <li><b>Object Count Parity:</b> Automated S3 inventory and bucket listing scripts confirmed that all 1,480,000+ object keys were accounted for on the destination bucket.</li>
@@ -317,11 +319,17 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Lesson</div>
-<h2>Concurrency beats bandwidth for small objects</h2>
+<h2 id="concurrency-beats-bandwidth-for-small-objects">Concurrency beats bandwidth for small objects</h2>
 <p>At cloud scale, small-file storage operations are <b>API transaction problems</b>, not bandwidth problems. When moving millions of small objects, throwing larger network pipes at the problem does not help if the client cannot dispatch concurrent requests fast enough.</p>
 <p>A simple change in tooling — moving from serial CLI processes to a parallel Go-based client on existing in-region compute — eliminated an 8-hour operational bottleneck in under an hour, with zero added infrastructure spend.</p>
 </div>
 </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#high-concurrency-s3-migration-for-small-objects" title="High-concurrency S3 migration for small objects">Storage operations</a></li><li><a href="#when-object-count-matters-more-than-raw-gigabytes" title="When object count matters more than raw gigabytes">Problem</a></li><li><a href="#evaluating-migration-paths" title="Evaluating migration paths">Alternatives</a></li><li><a href="#s5cmd-and-128-concurrent-workers" title="S5cmd and 128 concurrent workers">Execution</a></li><li><a href="#trust-through-validation-before-purge" title="Trust through validation before purge">Verification</a></li><li><a href="#concurrency-beats-bandwidth-for-small-objects" title="Concurrency beats bandwidth for small objects">Lesson</a></li></ol>
+        </aside>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/tolling/s3-image-api.html">← Upload and retrieve images</a>
       </aside>

@@ -178,11 +178,13 @@
         </div>
       </header>
 
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
-<h2>Infrastructure could be ready while the application was not</h2>
+<h2 id="infrastructure-could-be-ready-while-the-application-was-not">Infrastructure could be ready while the application was not</h2>
 <p>A provisioned instance still needed storage mounts, database settings, service registration, web configuration, and mail routing. Manual commands across environments left subtle differences that were difficult to distinguish from application defects.</p>
 <p>Two acceptance failures made this concrete: administrative API calls timed out against obsolete endpoints, and mobile onboarding reported an organization error after authentication had actually succeeded.</p>
 </div>
@@ -190,14 +192,14 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Solution</div>
-<h2>Make application readiness part of provisioning</h2>
+<h2 id="make-application-readiness-part-of-provisioning">Make application readiness part of provisioning</h2>
 <p>A centralized configuration workflow read environment-specific inputs and applied the required host settings. It covered shared storage, database pool configuration, service setup, web and mail settings, and registry reconciliation. As defects were diagnosed, their validation checks were incorporated directly into automated provisioning and environment handoff.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>Separate shared steps from node responsibilities</h2>
+<h2 id="separate-shared-steps-from-node-responsibilities">Separate shared steps from node responsibilities</h2>
 <p>Application nodes and persistent service nodes had different configuration needs. The workflow selected steps for the node role while using a shared approach to input validation, backups, permissions, and logging. Systems Manager or instance bootstrapping provided the execution path.</p>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
@@ -213,38 +215,44 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Security</div>
-<h2>Keep configuration automation accountable</h2>
+<h2 id="keep-configuration-automation-accountable">Keep configuration automation accountable</h2>
 <p>Credential inputs were kept outside the scripts and protected through restricted access. Configuration files needed appropriate ownership and permissions, and logs needed to avoid exposing secrets. Reconciliation of service mappings must also respect tenant and regional boundaries; a fallback that makes one test pass is not automatically the correct mapping for every subscriber.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Delivery</div>
-<h2>Feed diagnosed defects back into the workflow</h2>
+<h2 id="feed-diagnosed-defects-back-into-the-workflow">Feed diagnosed defects back into the workflow</h2>
 <p>The automation was packaged for host provisioning and run through Systems Manager or bootstrapping. The API and onboarding fixes were incorporated into endpoint updates, seed-data checks, and smoke tests so the same omissions could be detected before acceptance testing.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Trade-offs</div>
-<h2>A provisioning script is not continuous drift management</h2>
+<h2 id="a-provisioning-script-is-not-continuous-drift-management">A provisioning script is not continuous drift management</h2>
 <p>This workflow reduced repeated manual setup, but did not continuously enforce state after an operator changed a host. Safe reruns, explicit error handling, and post-run validation remained necessary. Backup files also need a tested restore procedure to be useful for rollback.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Outcome</div>
-<h2>Troubleshooting became a repeatable delivery control</h2>
+<h2 id="troubleshooting-became-a-repeatable-delivery-control">Troubleshooting became a repeatable delivery control</h2>
 <p>The contribution was a common provisioning path and better readiness checks across environments. Script-version counts are development history rather than an outcome. A provisioning-time reduction or first-pass success rate should be published only with the node scope, number of runs, and timing boundaries recorded.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Next steps</div>
-<h2>Test reruns and interrupted provisioning</h2>
+<h2 id="test-reruns-and-interrupted-provisioning">Test reruns and interrupted provisioning</h2>
 <p>Build a role-by-environment test matrix covering a clean node, an already configured node, an interrupted run, and a dependency outage. Include rollback, secret-redaction checks, and tenant-specific service discovery before using successful completion as a release gate.</p>
 </div>
 </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#infrastructure-could-be-ready-while-the-application-was-not" title="Infrastructure could be ready while the application was not">Problem</a></li><li><a href="#make-application-readiness-part-of-provisioning" title="Make application readiness part of provisioning">Solution</a></li><li><a href="#separate-shared-steps-from-node-responsibilities" title="Separate shared steps from node responsibilities">Architecture</a></li><li><a href="#keep-configuration-automation-accountable" title="Keep configuration automation accountable">Security</a></li><li><a href="#feed-diagnosed-defects-back-into-the-workflow" title="Feed diagnosed defects back into the workflow">Delivery</a></li><li><a href="#a-provisioning-script-is-not-continuous-drift-management" title="A provisioning script is not continuous drift management">Trade-offs</a></li><li><a href="#troubleshooting-became-a-repeatable-delivery-control" title="Troubleshooting became a repeatable delivery control">Outcome</a></li><li><a href="#test-reruns-and-interrupted-provisioning" title="Test reruns and interrupted provisioning">Next steps</a></li></ol>
+        </aside>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/telecom/in-memory-column-encryption-kms.html">← Key-management migration</a>
         <a href="../../case-studies/telecom/cdr-ingestion-pipeline-incident-rca.html">Incident: silent CDR ingestion failure →</a>

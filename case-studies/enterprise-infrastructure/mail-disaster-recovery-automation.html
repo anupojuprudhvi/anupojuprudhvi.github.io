@@ -195,11 +195,13 @@
 </div>
 </div>
 </section>
+      <div class="cs-body">
+        <div class="cs-main">
 
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
-<h2>A single instance, a manual runbook, and hours of downtime</h2>
+<h2 id="a-single-instance-a-manual-runbook-and-hours-of-downtime">A single instance, a manual runbook, and hours of downtime</h2>
 <p>The mail platform ran on one EC2 instance. When that instance became impaired — a host-level hardware issue, a failed health check — recovery meant a human working through a checklist: figure out which elastic IP needed reassigning, find the correct data volume among everything else in the account, attach it to a new instance, wait for the attachment to actually complete, work out which block device it landed on (which can vary depending on instance type), mount it, and finally restart mail services and confirm every daemon came back healthy. Done carefully, that took four to eight hours — and every one of those hours was mail fully down for the organization.</p>
 <p>Separately, the mail platform had a deliverability problem: without properly configured SPF, DKIM, and DMARC records, a meaningful share of legitimate outbound email was landing in spam folders or getting flagged by recipient mail servers.</p>
 </div>
@@ -207,7 +209,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>One script replaces the entire manual sequence</h2>
+<h2 id="one-script-replaces-the-entire-manual-sequence">One script replaces the entire manual sequence</h2>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">                [ External mail gateways / Internet ]
                                 │
                      [ Elastic IP — reassociated ]
@@ -243,6 +245,8 @@
 <p>This is a single-instance failover pattern automated end to end, not a true multi-AZ active-active mail deployment — the mail platform is still down for the seconds-to-minutes the script takes to run, just not for hours. Building genuine multi-AZ high availability into an already-established mail deployment would have meant a much larger migration project than was in scope here; automating the existing recovery path to the point where it reliably runs in under three minutes was the trade that fit the actual constraint, and the same &quot;detect, reassociate, remount, verify&quot; pattern generalizes cleanly to any other stateful EC2 service that doesn't have built-in HA.</p>
 </div>
 </section>
+        </div>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/enterprise-infrastructure/hybrid-object-storage-platform.html">← Hybrid object storage</a>
       </aside>

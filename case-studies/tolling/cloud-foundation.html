@@ -189,11 +189,13 @@
 </div>
 </div>
 </section>
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 
 <section>
         <div class="wrap">
           <div class="section-eyebrow">The problem</div>
-          <h2>Every account was its own island</h2>
+          <h2 id="every-account-was-its-own-island">Every account was its own island</h2>
           <p>
             Before this work, each tolling project's AWS environment had been
             built independently — its own network design, its own security
@@ -215,7 +217,7 @@
       <section>
         <div class="wrap">
           <div class="section-eyebrow">Architecture</div>
-          <h2>A four-layer landing zone, deployed bottom-up</h2>
+          <h2 id="a-four-layer-landing-zone-deployed-bottom-up">A four-layer landing zone, deployed bottom-up</h2>
           <p>
             The entire platform was organized into four dependency-ordered
             Terraform layers, each one only allowed to depend on the layer
@@ -292,7 +294,7 @@
       <section>
         <div class="wrap">
           <div class="section-eyebrow">Networking</div>
-          <h2>Hub-and-spoke, not point-to-point</h2>
+          <h2 id="hub-and-spoke-not-point-to-point">Hub-and-spoke, not point-to-point</h2>
           <p>
             Every account's VPC attaches to one central Transit Gateway rather
             than maintaining its own peering relationships and its own path to
@@ -495,7 +497,7 @@
       <section>
         <div class="wrap">
           <div class="section-eyebrow">Rollout</div>
-          <h2>A strict, dependency-ordered build sequence</h2>
+          <h2 id="a-strict-dependency-ordered-build-sequence">A strict, dependency-ordered build sequence</h2>
           <p>
             Because every layer depends only on the one below it, the entire
             platform — or a single new account joining it — follows the same
@@ -545,7 +547,7 @@
       <section>
         <div class="wrap">
           <div class="section-eyebrow">CI/CD</div>
-          <h2>Designing so a mistake literally cannot ship</h2>
+          <h2 id="designing-so-a-mistake-literally-cannot-ship">Designing so a mistake literally cannot ship</h2>
           <p>
             Terraform changes are safe to review but dangerous to run carelessly
             against 40+ live accounts, so the deployment pipeline was designed to make an
@@ -623,7 +625,7 @@
       <section>
         <div class="wrap">
           <div class="section-eyebrow">Outcome</div>
-          <h2>What changed</h2>
+          <h2 id="what-changed">What changed</h2>
           <div class="outcomes">
             <div class="outcome">
               <div class="num">40+</div>
@@ -653,6 +655,12 @@
           </p>
         </div>
       </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#every-account-was-its-own-island" title="Every account was its own island">The problem</a></li><li><a href="#a-four-layer-landing-zone-deployed-bottom-up" title="A four-layer landing zone, deployed bottom-up">Architecture</a></li><li><a href="#hub-and-spoke-not-point-to-point" title="Hub-and-spoke, not point-to-point">Networking</a></li><li><a href="#a-strict-dependency-ordered-build-sequence" title="A strict, dependency-ordered build sequence">Rollout</a></li><li><a href="#designing-so-a-mistake-literally-cannot-ship" title="Designing so a mistake literally cannot ship">CI/CD</a></li><li><a href="#what-changed" title="What changed">Outcome</a></li></ol>
+        </aside>
+      </div>
       <div class="wrap">
         <section class="related-links" aria-label="Learn the concepts behind this">
           <h2>Learn the concepts behind this</h2>

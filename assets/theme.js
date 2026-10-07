@@ -136,8 +136,8 @@
       addEventListener("beforeprint", () => blocks.forEach((el) => el.classList.remove("reveal-pending")));
     }
 
-    // Module sidebar: highlight the section currently being read.
-    const sectionLinks = [...document.querySelectorAll(".lp-sidebar .lp-toc-sections a")];
+    // Module sidebar and case-study contents: highlight the section being read.
+    const sectionLinks = [...document.querySelectorAll(".lp-sidebar .lp-toc-sections a, .cs-toc a")];
     if (sectionLinks.length && "IntersectionObserver" in window) {
       const byId = new Map(sectionLinks.map((link) => [link.hash.slice(1), link]));
       const headings = [...byId.keys()].map((id) => document.getElementById(id)).filter(Boolean);

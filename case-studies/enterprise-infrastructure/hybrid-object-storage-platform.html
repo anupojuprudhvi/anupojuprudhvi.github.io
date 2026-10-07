@@ -189,11 +189,13 @@
 </div>
 </div>
 </section>
+      <div class="cs-body">
+        <div class="cs-main">
 
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
-<h2>Three infrastructure environments, three storage silos</h2>
+<h2 id="three-infrastructure-environments-three-storage-silos">Three infrastructure environments, three storage silos</h2>
 <p>Public cloud compute, an on-prem VMware data center, and a private OpenStack cloud each came with their own block storage, and none of it talked to the others. Application media, PostgreSQL dumps, and system backups piled up as local files on whichever host generated them, which meant every new service or tenant inherited that host's storage limits, and disaster recovery meant restoring from whatever happened to be on that one machine — not a separately-stored, environment-independent copy.</p>
 <p>Traditional block storage was also the wrong tool for the actual access pattern: most of what needed storing was unstructured (media files, PDFs, backup archives), needed to be reachable the same way from all three environments, and needed a retention policy — hot for 30 days, cold after that — rather than living forever on primary disk.</p>
 </div>
@@ -201,7 +203,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>A distributed object store as the shared layer underneath everything</h2>
+<h2 id="a-distributed-object-store-as-the-shared-layer-underneath-everything">A distributed object store as the shared layer underneath everything</h2>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">              [ Client applications / backup agents / ERP ]
                                 │
                     [ HTTPS — ports 443 / 9000 ]
@@ -239,6 +241,8 @@ python3 minio_s3_client.py list --prefix backups/</code></pre><figcaption class=
 <p>Self-hosting a distributed object store is a real operational commitment compared to just using a managed cloud object store directly — you own the cluster's health, its erasure-coding configuration, and its upgrade path, where a managed service would hand all of that to the provider. That trade only made sense because two of the three environments weren't AWS at all; a managed AWS-only object store couldn't have been the shared layer for the on-prem and OpenStack workloads regardless of how well it worked for the AWS side.</p>
 </div>
 </section>
+        </div>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/enterprise-infrastructure/oracle-rac-cluster-on-aws.html">← Oracle RAC on AWS</a>
         <a href="../../case-studies/enterprise-infrastructure/mail-disaster-recovery-automation.html">Mail disaster recovery →</a>
