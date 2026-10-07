@@ -10,7 +10,7 @@
     "eyebrow": "Infrastructure as Code",
     "summary": "A practical guide to building and running Terraform in enterprise AWS. Part 1 covers the techniques: module structure, safe state, validation, secrets, refactoring, and CI/CD checks. Part 2 puts them into one delivery process for a team codebase: base and composition modules, shared conventions, testing, decision records, and a security gate every module passes before it reaches an environment.",
     "level": "Intermediate to Advanced",
-    "duration": "11 Modules · 108 min read",
+    "duration": "11 Modules · 110 min read",
     "badge": "Production Playbook",
     "stack": ["Terraform 1.11+", "AWS", "HCL", "terraform test", "Checkov", "TFLint", "ADRs"],
     "closingQuestion": "Questions about this learning path?",

@@ -43,7 +43,7 @@
         "image": "https://anupojuprudhvi.github.io/assets/og/learning-paths/terraform.jpg",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/learning-paths/terraform/06-ci-cd-security-linting-testing.html",
         "datePublished": "2026-09-17",
-        "dateModified": "2026-10-06",
+        "dateModified": "2026-10-07",
         "isPartOf": {"@type":"CreativeWorkSeries","name":"Terraform for Enterprise Production","url":"https://anupojuprudhvi.github.io/learning-paths/terraform/index.html"},
         "position": 6,
         "keywords": "ci-cd, checkov, tflint, drift-detection, pipeline, automation, Terraform, GitHub Actions, Checkov, TFLint, AWS"
@@ -171,8 +171,8 @@
           <div class="lp-meta-bar">
             <span><b>Module:</b> 06 of 11</span>
             <span><b>Level:</b> DevOps &amp; Governance</span>
-            <span><b>Time:</b> 10 min read</span>
-            <span><b>Updated:</b> <time datetime="2026-10-06">6 Oct 2026</time></span>
+            <span><b>Time:</b> 12 min read</span>
+            <span><b>Updated:</b> <time datetime="2026-10-07">7 Oct 2026</time></span>
           </div>
         </div>
       </header>
@@ -189,7 +189,7 @@
                 <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
                 <li><a href="05-refactoring-with-moved-blocks.html"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a></li>
                 <li class="is-current"><a href="06-ci-cd-security-linting-testing.html" aria-current="page"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a>
-                <ol class="lp-toc-sections"><li><a href="#the-three-tier-verification-pipeline">The three-tier verification pipeline</a></li><li><a href="#code-quality-linting-with-tflint">Code quality &amp; linting with TFLint</a></li><li><a href="#security-scanning-with-checkov">Security scanning with Checkov</a></li><li><a href="#automated-plan-posting-in-pull-requests">Automated plan posting in Pull Requests</a></li><li><a href="#scheduled-drift-detection">Scheduled drift detection</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
+                <ol class="lp-toc-sections"><li><a href="#the-three-tier-verification-pipeline">The three-tier verification pipeline</a></li><li><a href="#code-quality-linting-with-tflint">Code quality &amp; linting with TFLint</a></li><li><a href="#security-scanning-with-checkov">Security scanning with Checkov</a></li><li><a href="#automated-plan-posting-in-pull-requests">Automated plan posting in Pull Requests</a></li><li><a href="#scheduled-drift-detection">Scheduled drift detection</a></li><li><a href="#make-checkov-fail-then-pass">Make Checkov fail, then pass</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
               </ol>
               <p class="lp-toc-part">Part 2 · How a module is delivered: design to production</p>
               <ol class="lp-toc-list">
@@ -376,6 +376,52 @@ terraform plan -detailed-exitcode</code></pre>
 <li><b>Exit code 2:</b> <b>drift found.</b> Send an alert to the team's channel or on-call tool, and decide whether to bring the change into code or undo it.</li>
 <li><b>Exit code 1:</b> the plan itself failed.</li>
 </ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Try it</div>
+<h2 id="make-checkov-fail-then-pass">Make Checkov fail, then pass</h2>
+<p>Checkov reads the code without calling AWS, so this lab needs no AWS account and no Terraform install, only Python 3. It takes about ten minutes. Run it in a terminal on Linux, macOS, or WSL.</p>
+<p><b>1. Install Checkov in a throwaway folder.</b></p>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">mkdir checkov-lab &amp;&amp; cd checkov-lab
+python3 -m venv .venv &amp;&amp; . .venv/bin/activate
+pip install checkov</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<p><b>2. Write a security group that opens SSH to the internet.</b> Save this as <code>main.tf</code>:</p>
+<pre tabindex="0" class="code"><code class="language-hcl">resource &quot;aws_security_group&quot; &quot;bastion&quot; {
+  name   = &quot;bastion&quot;
+  vpc_id = &quot;vpc-12345678&quot;
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = &quot;tcp&quot;
+    cidr_blocks = [&quot;0.0.0.0/0&quot;]
+  }
+}</code></pre>
+<p><b>3. Scan it, the way the pipeline would.</b></p>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">checkov -d . --framework terraform --compact --quiet
+echo &quot;exit code: $?&quot;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<p>Three checks fail: <code>CKV_AWS_24</code> (SSH open to <code>0.0.0.0/0</code>), <code>CKV_AWS_23</code> (no descriptions), and <code>CKV2_AWS_5</code> (the group isn't attached to anything). The exit code is <code>1</code>, and that is what fails the CI step and blocks the merge. Newer Checkov releases sometimes add checks, so you may see an extra finding; handle it the same way.</p>
+<p><b>4. Fix what you can in the code.</b> Allow SSH only from the corporate network, and describe the group and the rule:</p>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-hcl">resource &quot;aws_security_group&quot; &quot;bastion&quot; {
+  name        = &quot;bastion&quot;
+  description = &quot;SSH to the bastion from the corporate network only&quot;
+  vpc_id      = &quot;vpc-12345678&quot;
+
+  ingress {
+    description = &quot;SSH from the corporate network&quot;
+    from_port   = 22
+    to_port     = 22
+    protocol    = &quot;tcp&quot;
+    cidr_blocks = [&quot;10.0.0.0/8&quot;]
+  }
+}</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<p>Scan again. Only <code>CKV2_AWS_5</code> is left.</p>
+<p><b>5. Accept the last one on the record.</b> In a layered codebase this group is created here and attached to instances by the compute layer, which a scan of this one folder can't see. That's a reason, not an excuse, so it goes in a scoped skip that names the decision record. Add this as the first line inside the resource block:</p>
+<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-hcl">  # checkov:skip=CKV2_AWS_5:Attached by the compute layer's launch template (ADR-0007)</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<p>Scan once more: <code>Failed checks: 0, Skipped checks: 1</code>, and the exit code is <code>0</code>. The skip and its reason show up in the full report (run it without <code>--quiet</code>), so a reviewer can see exactly what was accepted and why.</p>
+<p>Notice what you didn't do: no <code>--soft-fail</code>, and no global skip in <code>.checkov.yaml</code>. The finding is accepted for this one resource, with a reason, and every other security group is still checked.</p>
 </div>
 </section>
 <section>
