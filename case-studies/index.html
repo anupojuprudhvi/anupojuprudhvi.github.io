@@ -143,12 +143,12 @@
               <div class="filters" role="group" aria-labelledby="filterIndustry">
                 <span class="filter-label" id="filterIndustry">Industry</span>
                 <button class="filter" data-uc-filter="all" aria-pressed="true">All</button>
-                <button class="filter" data-uc-filter="project:telecom" aria-pressed="false">Telecom &amp; Secure Communications</button>
-                <button class="filter" data-uc-filter="project:tolling" aria-pressed="false">Tolling Infrastructure</button>
-                <button class="filter" data-uc-filter="project:healthcare" aria-pressed="false">Healthcare &amp; Cost Architecture</button>
-                <button class="filter" data-uc-filter="project:partner-engagements" aria-pressed="false">AWS APN &amp; Migration Engagements</button>
-                <button class="filter" data-uc-filter="project:enterprise-infrastructure" aria-pressed="false">Enterprise Hybrid Cloud Infrastructure</button>
-                <button class="filter" data-uc-filter="project:independent-products" aria-pressed="false">Independent Products &amp; AI-Assisted Engineering</button>
+                <button class="filter" data-uc-filter="project:telecom" aria-pressed="false" title="Telecom &amp; Secure Communications">Telecom</button>
+                <button class="filter" data-uc-filter="project:tolling" aria-pressed="false" title="Tolling Infrastructure">Tolling</button>
+                <button class="filter" data-uc-filter="project:healthcare" aria-pressed="false" title="Healthcare &amp; Cost Architecture">Healthcare</button>
+                <button class="filter" data-uc-filter="project:partner-engagements" aria-pressed="false" title="AWS APN &amp; Migration Engagements">APN &amp; migration</button>
+                <button class="filter" data-uc-filter="project:enterprise-infrastructure" aria-pressed="false" title="Enterprise Hybrid Cloud Infrastructure">Hybrid infrastructure</button>
+                <button class="filter" data-uc-filter="project:independent-products" aria-pressed="false" title="Independent Products &amp; AI-Assisted Engineering">Independent products</button>
               </div>
               <div class="filters" role="group" aria-labelledby="filterCapability">
                 <span class="filter-label" id="filterCapability">Capability</span>
@@ -176,187 +176,187 @@
           <h2 class="visually-hidden" id="ucListTitle">Case studies</h2>
           <div class="uc-grid" id="ucGrid">
         <article class="uc-card" data-project="telecom" data-layer="Data &amp; storage" data-tags="database migration cdc aurora pgbouncer performance" data-tools="terraform aurora aws-dms">
-          <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Data &amp; storage</span></div>
+          <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Data &amp; storage</span><span>3 min read</span></div>
           <h3><a href="telecom/aurora-global-database-modernization.html">Modernizing a telecom database with a controlled cutover</a></h3>
           <p>Combining schema and client compatibility work, continuous replication, and local connection pooling to move a legacy telecom database tier to Aurora.</p>
           <p class="uc-stack">Aurora PostgreSQL · AWS DMS · PgBouncer · C client libraries · Terraform</p>
         </article>
         <article class="uc-card" data-project="telecom" data-layer="Resilience &amp; DR" data-tags="failover licensing eni recovery orchestration" data-tools="amazon-ec2 aws-lambda dynamodb cloudwatch systems-manager">
-          <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Resilience &amp; DR</span></div>
+          <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Resilience &amp; DR</span><span>3 min read</span></div>
           <h3><a href="telecom/serverless-ha-failover-engine.html">Automating telecom failover, preserving licensed identity</a></h3>
           <p>Bringing recovery orchestration, service validation, and hardware-bound licensing into one failover workflow, with an explicit same-AZ boundary.</p>
           <p class="uc-stack">AWS Lambda · DynamoDB · CloudWatch · Systems Manager · EC2 · Elastic Network Interfaces</p>
         </article>
         <article class="uc-card" data-project="telecom" data-layer="Networking &amp; security" data-tags="security encryption kms legacy-modernization key-management" data-tools="aws-kms postgresql linux">
-          <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Networking &amp; security</span></div>
+          <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Networking &amp; security</span><span>3 min read</span></div>
           <h3><a href="telecom/in-memory-column-encryption-kms.html">Moving legacy telecom key management to AWS KMS</a></h3>
           <p>Adapting an existing local encryption service to AWS KMS while preserving its application integration and making the key-handling boundaries explicit.</p>
           <p class="uc-stack">AWS KMS · C · Linux shared memory · systemd · PostgreSQL</p>
         </article>
         <article class="uc-card" data-project="telecom" data-layer="Platform &amp; delivery" data-tags="automation provisioning configuration service-discovery deployment" data-tools="systems-manager linux bash">
-          <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Platform &amp; delivery</span></div>
+          <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Platform &amp; delivery</span><span>3 min read</span></div>
           <h3><a href="telecom/platform-automation-engine-v1-to-v10.html">Making telecom node provisioning repeatable</a></h3>
           <p>Turning manual host configuration and recurring migration defects into a provisioning workflow with explicit config, service reconciliation, and smoke tests.</p>
           <p class="uc-stack">Bash · AWS Systems Manager · systemd · Linux · Postfix</p>
         </article>
         <article class="uc-card" data-project="telecom" data-layer="Operations &amp; incidents" data-tags="incident-response cdr ingestion observability recovery" data-tools="postgresql apache-kafka cloudwatch linux">
-          <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Operations &amp; incidents</span></div>
+          <div class="uc-meta"><span>Telecom &amp; Secure Communications</span><span>Operations &amp; incidents</span><span>2 min read</span></div>
           <h3><a href="telecom/cdr-ingestion-pipeline-incident-rca.html">Diagnosing a silent call-record ingestion failure</a></h3>
           <p>Tracing missing call records through consumer output and SSH transfer, then replacing process-only checks with data-flow monitoring.</p>
           <p class="uc-stack">Kafka · PostgreSQL · Linux · SSH ETL · CloudWatch</p>
         </article>
         <article class="uc-card" data-project="tolling" data-layer="Foundation &amp; governance" data-tags="governance networking terraform cicd multi-account" data-tools="terraform github-actions transit-gateway aws-organizations">
-          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Foundation &amp; governance</span></div>
+          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Foundation &amp; governance</span><span>4 min read</span></div>
           <h3><a href="tolling/cloud-foundation.html">One governed cloud foundation under 40+ accounts</a></h3>
           <p>A four-layer landing zone, one hub-and-spoke network, and a CI/CD pipeline where an unintended apply is structurally impossible.</p>
           <p class="uc-stack">Terraform · AWS Organizations · Transit Gateway · GitHub Actions</p>
         </article>
         <article class="uc-card" data-project="tolling" data-layer="Networking &amp; security" data-tags="networking transit-gateway multi-account segmentation terraform" data-tools="terraform amazon-vpc transit-gateway aws-network-firewall">
-          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Networking &amp; security</span></div>
+          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Networking &amp; security</span><span>2 min read</span></div>
           <h3><a href="tolling/transit-gateway-hub-and-spoke.html">A Transit Gateway hub that keeps account routing deliberate</a></h3>
           <p>Connecting shared services, workload accounts, security inspection, and a recovery region through one governed Transit Gateway, not a full mesh of VPC routes.</p>
           <p class="uc-stack">AWS Transit Gateway · AWS RAM · VPC · Terraform · AWS Network Firewall</p>
         </article>
         <article class="uc-card" data-project="tolling" data-layer="Resilience &amp; DR" data-tags="resilience disaster-recovery database terraform security multi-region" data-tools="terraform aws-kms secrets-manager aurora">
-          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Resilience &amp; DR</span></div>
+          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Resilience &amp; DR</span><span>4 min read</span></div>
           <h3><a href="tolling/aurora-multi-region-dr-parity.html">Make Aurora DR behave like the primary, not exist beside it</a></h3>
           <p>Closing the two gaps that can make a replicated Aurora environment fail differently in recovery: secondary parameter-group drift and missing regional secrets.</p>
           <p class="uc-stack">Amazon Aurora Global Database · AWS Secrets Manager · AWS KMS · Terraform</p>
         </article>
         <article class="uc-card" data-project="tolling" data-layer="Operations &amp; incidents" data-tags="eks kubernetes ingress incident-response observability networking" data-tools="amazon-eks aws-load-balancer-controller route-53 application-load-balancer cloudwatch">
-          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Operations &amp; incidents</span></div>
+          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Operations &amp; incidents</span><span>2 min read</span></div>
           <h3><a href="tolling/eks-ingress-incident-rca.html">Turn an EKS ingress incident into a diagnosable traffic path</a></h3>
           <p>A structured RCA pattern for an EKS ingress failure that separates DNS, load-balancer, routing, network-policy, and application causes, not just &quot;5xx.&quot;</p>
           <p class="uc-stack">Amazon EKS · AWS Load Balancer Controller · Application Load Balancer · Route 53 · CloudWatch</p>
         </article>
         <article class="uc-card" data-project="tolling" data-layer="Platform &amp; delivery" data-tags="cicd github-actions terraform oidc security deployment governance" data-tools="terraform github-actions aws-iam">
-          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Platform &amp; delivery</span></div>
+          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Platform &amp; delivery</span><span>3 min read</span></div>
           <h3><a href="tolling/cicd-delivery-engine.html">A reusable CI/CD engine with safe-by-default delivery</a></h3>
           <p>Bootstrapping AWS OIDC roles once with SSO, then reusing one GitHub Actions engine for speculative plans and gated, single-environment Terraform deploys.</p>
           <p class="uc-stack">GitHub Actions · Terraform · AWS IAM OIDC · AWS STS · GitHub Environments</p>
         </article>
         <article class="uc-card" data-project="tolling" data-layer="Foundation &amp; governance" data-tags="security cloudtrail audit compliance s3 multi-account governance" data-tools="aws-kms aws-organizations cloudtrail amazon-s3 amazon-sns">
-          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Foundation &amp; governance</span></div>
+          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Foundation &amp; governance</span><span>2 min read</span></div>
           <h3><a href="tolling/cloudtrail-tamper-protection.html">Make organization CloudTrail evidence difficult to alter</a></h3>
           <p>Centralizing CloudTrail events in a separately governed archive account, with encryption, a restrictive bucket policy, retention controls, and change alerting.</p>
           <p class="uc-stack">AWS CloudTrail · AWS Organizations · Amazon S3 · AWS KMS · S3 Object Lock · Amazon SNS</p>
         </article>
         <article class="uc-card" data-project="tolling" data-layer="Networking &amp; security" data-tags="identity sso saml workspaces entra active-directory terraform" data-tools="terraform aws-iam saml-2-0 microsoft-entra-id amazon-workspaces">
-          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Networking &amp; security</span></div>
+          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Networking &amp; security</span><span>4 min read</span></div>
           <h3><a href="tolling/entra-workspaces-saml.html">Corporate SSO for Amazon WorkSpaces, without losing AD</a></h3>
           <p>Separating Entra authentication from AD machine operations so Personal and Pool WorkSpaces get corporate sign-in without weakening the domain boundary.</p>
           <p class="uc-stack">Microsoft Entra ID · SAML 2.0 · AWS IAM · Amazon WorkSpaces · AD Connector · Terraform</p>
         </article>
         <article class="uc-card" data-project="tolling" data-layer="Applications &amp; integration" data-tags="integration security api webhooks waf authentication" data-tools="amazon-eks amazon-vpc cloudfront api-gateway aws-waf secrets-manager aws-lambda">
-          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Applications &amp; integration</span></div>
+          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Applications &amp; integration</span><span>5 min read</span></div>
           <h3><a href="tolling/jsm-integration.html">Letting a SaaS webhook reach a private service, safely</a></h3>
           <p>A layered, authenticated path from Jira Service Management into a private service, using CloudFront and a Lambda authorizer because simpler options don't work.</p>
           <p class="uc-stack">API Gateway HTTP API · CloudFront · AWS WAF · Lambda authorizer · VPC Link · EKS · Secrets Manager</p>
         </article>
         <article class="uc-card" data-project="tolling" data-layer="Networking &amp; security" data-tags="dns route53 networking multi-account shared-services terraform" data-tools="terraform amazon-vpc transit-gateway route-53">
-          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Networking &amp; security</span></div>
+          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Networking &amp; security</span><span>3 min read</span></div>
           <h3><a href="tolling/route53-shared-dns.html">One DNS model for public services and private environments</a></h3>
           <p>Separating public internet resolution from private VPC resolution, then associating one centrally managed hosted zone with shared and environment VPCs.</p>
           <p class="uc-stack">Amazon Route 53 · Route 53 Resolver · VPC · Transit Gateway · Terraform</p>
         </article>
         <article class="uc-card" data-project="tolling" data-layer="Applications &amp; integration" data-tags="storage security api networking dns cost" data-tools="terraform amazon-vpc route-53 api-gateway aws-iam amazon-s3">
-          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Applications &amp; integration</span></div>
+          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Applications &amp; integration</span><span>4 min read</span></div>
           <h3><a href="tolling/s3-image-api.html">A private image API without a proxy application to operate</a></h3>
           <p>Removing a load balancer and a Lambda proxy from the image path, leaving API Gateway talking to S3 directly through one shared private endpoint.</p>
           <p class="uc-stack">API Gateway · Amazon S3 · Route 53 · VPC endpoints · IAM · Terraform</p>
         </article>
         <article class="uc-card" data-project="tolling" data-layer="Data &amp; storage" data-tags="s3 migration performance storage concurrency cost aws" data-tools="amazon-ec2 amazon-s3 bash">
-          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Data &amp; storage</span></div>
+          <div class="uc-meta"><span>Tolling Infrastructure</span><span>Data &amp; storage</span><span>5 min read</span></div>
           <h3><a href="tolling/s3-large-scale-bucket-migration.html">Moving 1.48 million S3 objects in 54 minutes instead of 8+ hours</a></h3>
           <p>Moving 225 GB of data across 1.48 million small objects between same-region S3 buckets, cutting transfer time from 8+ hours to 54 minutes using high-concurrency tooling on existing in-region compute.</p>
           <p class="uc-stack">Amazon S3 · AWS CLI · s5cmd · Amazon EC2 · AWS Data Pipeline · Bash</p>
         </article>
         <article class="uc-card" data-project="healthcare" data-layer="Applications &amp; integration" data-tags="finops modernization kubernetes caching analytics" data-tools="amazon-eks cloudfront amazon-rds elasticache">
-          <div class="uc-meta"><span>Healthcare &amp; Cost Architecture</span><span>Applications &amp; integration</span></div>
+          <div class="uc-meta"><span>Healthcare &amp; Cost Architecture</span><span>Applications &amp; integration</span><span>4 min read</span></div>
           <h3><a href="healthcare/clinical-platform-modernization-and-cost-optimization.html">Clinical platform modernization and cost architecture</a></h3>
           <p>Decomposing an on-premise clinical monolith into containerized services, and taking reporting load off the live database with a decoupled analytics pipeline.</p>
           <p class="uc-stack">Amazon EKS · RDS · ElastiCache · CloudFront</p>
         </article>
         <article class="uc-card" data-project="healthcare" data-layer="Applications &amp; integration" data-tags="interoperability hl7 healthcare-iot integration-engineering" data-tools="">
-          <div class="uc-meta"><span>Healthcare &amp; Cost Architecture</span><span>Applications &amp; integration</span></div>
+          <div class="uc-meta"><span>Healthcare &amp; Cost Architecture</span><span>Applications &amp; integration</span><span>4 min read</span></div>
           <h3><a href="healthcare/hl7-device-interoperability-engine.html">HL7 device-interoperability engine for remote monitoring</a></h3>
           <p>A dedicated integration tier translating proprietary medical-IoT telemetry into standardized HL7 and JSON for clinical systems and a partner hospital network.</p>
           <p class="uc-stack">NextGen Mirth Connect · Nginx · MySQL · HL7 v2.5.1 · TLS 1.2+</p>
         </article>
         <article class="uc-card" data-project="healthcare" data-layer="Data &amp; storage" data-tags="data-engineering real-time-analytics olap streaming" data-tools="">
-          <div class="uc-meta"><span>Healthcare &amp; Cost Architecture</span><span>Data &amp; storage</span></div>
+          <div class="uc-meta"><span>Healthcare &amp; Cost Architecture</span><span>Data &amp; storage</span><span>3 min read</span></div>
           <h3><a href="healthcare/real-time-clinical-analytics-pipeline.html">Decoupled real-time analytics for clinical telemetry</a></h3>
           <p>Streaming physiological telemetry into a real-time OLAP store so care teams can query months of patient vitals without touching the operational database.</p>
           <p class="uc-stack">Apache NiFi · Apache Pinot · Tableau Server · mTLS</p>
         </article>
         <article class="uc-card" data-project="healthcare" data-layer="Networking &amp; security" data-tags="security hipaa networking vpn cdn" data-tools="cloudfront aws-waf aws-client-vpn aws-kms">
-          <div class="uc-meta"><span>Healthcare &amp; Cost Architecture</span><span>Networking &amp; security</span></div>
+          <div class="uc-meta"><span>Healthcare &amp; Cost Architecture</span><span>Networking &amp; security</span><span>3 min read</span></div>
           <h3><a href="healthcare/zero-public-ingress-network-security.html">Zero-public-ingress network architecture for HIPAA</a></h3>
           <p>A network design where no compute or database resource has a public IP, engineering access is mutual-TLS VPN only, and the CDN is tuned for clinical apps.</p>
           <p class="uc-stack">AWS Client VPN · AWS CloudFront · AWS WAF · AWS KMS</p>
         </article>
         <article class="uc-card" data-project="healthcare" data-layer="Platform &amp; delivery" data-tags="ci-cd devops jenkins delivery-engineering" data-tools="jenkins amazon-ecr amazon-eks">
-          <div class="uc-meta"><span>Healthcare &amp; Cost Architecture</span><span>Platform &amp; delivery</span></div>
+          <div class="uc-meta"><span>Healthcare &amp; Cost Architecture</span><span>Platform &amp; delivery</span><span>3 min read</span></div>
           <h3><a href="healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.html">CI/CD delivery pipeline for a regulated healthcare platform</a></h3>
           <p>A GitFlow-to-Kubernetes pipeline with per-branch promotion gates, headless registry authentication, and deployment lead time cut from hours to minutes.</p>
           <p class="uc-stack">Jenkins · Bitbucket · AWS ECR · Amazon EKS</p>
         </article>
         <article class="uc-card" data-project="partner-engagements" data-layer="Migration &amp; strategy" data-tags="migration map-assess tco vmware identity-center finops enterprise" data-tools="iam-identity-center saml-2-0 aws-transform rvtools vmware-vcenter">
-          <div class="uc-meta"><span>AWS APN &amp; Migration Engagements</span><span>Migration &amp; strategy</span></div>
+          <div class="uc-meta"><span>AWS APN &amp; Migration Engagements</span><span>Migration &amp; strategy</span><span>3 min read</span></div>
           <h3><a href="partner-engagements/fintech-map-assess-business-case.html">Institutional digital asset platform · AWS MAP business case</a></h3>
           <p>An agentless VMware discovery, a third-party IdP-to-Identity Center SAML fix, and a Directional Business Case for an institutional financial platform.</p>
           <p class="uc-stack">AWS Transform · VMware vCenter · RVTools · AWS IAM Identity Center · Enterprise SAML IdP · AWS CAF</p>
         </article>
         <article class="uc-card" data-project="partner-engagements" data-layer="Migration &amp; strategy" data-tags="migration map media cross-region tco storage finops" data-tools="aws-map aws-application-discovery">
-          <div class="uc-meta"><span>AWS APN &amp; Migration Engagements</span><span>Migration &amp; strategy</span></div>
+          <div class="uc-meta"><span>AWS APN &amp; Migration Engagements</span><span>Migration &amp; strategy</span><span>2 min read</span></div>
           <h3><a href="partner-engagements/media-cross-region-map-migration.html">Global media platform · Cross-region MAP migration</a></h3>
           <p>Inventory profiling and cloud transformation across US and EU data centers, sizing high-capacity media storage, compute, and localized workflows under AWS MAP.</p>
           <p class="uc-stack">AWS Application Discovery · AWS MAP · Excel Analytics · Multi-Region Profiling · TCO Modeling</p>
         </article>
         <article class="uc-card" data-project="partner-engagements" data-layer="Migration &amp; strategy" data-tags="kubernetes eks tanzu vmware migration map-assess karpenter finops" data-tools="amazon-eks karpenter vmware-tanzu aws-map aws-transform rvtools">
-          <div class="uc-meta"><span>AWS APN &amp; Migration Engagements</span><span>Migration &amp; strategy</span></div>
+          <div class="uc-meta"><span>AWS APN &amp; Migration Engagements</span><span>Migration &amp; strategy</span><span>3 min read</span></div>
           <h3><a href="partner-engagements/it-monitoring-tanzu-to-eks-map-assessment.html">Enterprise IT monitoring · VMware Tanzu to EKS assessment</a></h3>
           <p>An AWS MAP Assess evaluation for a European IT monitoring enterprise, transitioning VMware Tanzu Kubernetes to Amazon EKS with Karpenter and a TCO analysis.</p>
           <p class="uc-stack">Amazon EKS · VMware Tanzu · Karpenter · AWS Transform · RVTools · Dell VxRail · AWS MAP</p>
         </article>
         <article class="uc-card" data-project="partner-engagements" data-layer="Migration &amp; strategy" data-tags="iot telemetry monolith-to-microservices architecture eks kinesis map" data-tools="amazon-eks aws-iot-core aurora dynamodb amazon-kinesis aws-map">
-          <div class="uc-meta"><span>AWS APN &amp; Migration Engagements</span><span>Migration &amp; strategy</span></div>
+          <div class="uc-meta"><span>AWS APN &amp; Migration Engagements</span><span>Migration &amp; strategy</span><span>3 min read</span></div>
           <h3><a href="partner-engagements/iot-telemetry-monolith-to-cloud-migration.html">Connected IoT platform · Monolith to AWS cloud migration</a></h3>
           <p>Moving a connected-device platform from on-premise servers to AWS managed services: mapping each old service to its AWS replacement, cost estimates, and a MAP Mobilize roadmap.</p>
           <p class="uc-stack">AWS IoT Core · Amazon EKS · Amazon Kinesis · Aurora PostgreSQL · DynamoDB · AWS MAP</p>
         </article>
         <article class="uc-card" data-project="partner-engagements" data-layer="Applications &amp; integration" data-tags="marketplace saas multi-cloud adtech commercialization integration" data-tools="api-gateway">
-          <div class="uc-meta"><span>AWS APN &amp; Migration Engagements</span><span>Applications &amp; integration</span></div>
+          <div class="uc-meta"><span>AWS APN &amp; Migration Engagements</span><span>Applications &amp; integration</span><span>3 min read</span></div>
           <h3><a href="partner-engagements/adtech-saas-marketplace-onboarding.html">Enterprise AdTech SaaS · Cloud marketplace onboarding</a></h3>
           <p>Getting an AdTech SaaS product listed and sold through a cloud marketplace: the buyer sign-up flow, usage-based billing, and checks after launch.</p>
           <p class="uc-stack">Google Cloud Marketplace · AWS · SaaS Integration · Webhooks · API Gateway · Cloud Functions</p>
         </article>
         <article class="uc-card" data-project="enterprise-infrastructure" data-layer="Data &amp; storage" data-tags="database high-availability oracle clustering aws" data-tools="amazon-ec2 amazon-ebs oracle-rac linux aws-dms">
-          <div class="uc-meta"><span>Enterprise Hybrid Cloud Infrastructure</span><span>Data &amp; storage</span></div>
+          <div class="uc-meta"><span>Enterprise Hybrid Cloud Infrastructure</span><span>Data &amp; storage</span><span>4 min read</span></div>
           <h3><a href="enterprise-infrastructure/oracle-rac-cluster-on-aws.html">21-node Oracle RAC cluster on AWS without shared-SAN storage</a></h3>
           <p>A 21+ node Oracle RAC cluster running active-active database failover on AWS, built around software-defined clustered storage to work around AWS's lack of native shared-SAN block storage.</p>
           <p class="uc-stack">Oracle RAC · FlashGrid · AWS EC2 · AWS EBS · AWS DMS · CentOS</p>
         </article>
         <article class="uc-card" data-project="enterprise-infrastructure" data-layer="Data &amp; storage" data-tags="storage hybrid-cloud backups cost-optimization" data-tools="docker-compose amazon-s3 minio python">
-          <div class="uc-meta"><span>Enterprise Hybrid Cloud Infrastructure</span><span>Data &amp; storage</span></div>
+          <div class="uc-meta"><span>Enterprise Hybrid Cloud Infrastructure</span><span>Data &amp; storage</span><span>4 min read</span></div>
           <h3><a href="enterprise-infrastructure/hybrid-object-storage-platform.html">Distributed S3-compatible storage spanning AWS, on-prem VMware, and OpenStack</a></h3>
           <p>A self-hosted distributed object storage layer unifying backups, ERP media, and mail archives across a public cloud, an on-prem data center, and a private OpenStack cloud behind one S3 API.</p>
           <p class="uc-stack">MinIO · Docker Compose · Nginx · Restic · AWS S3 Glacier · Python · Boto3</p>
         </article>
         <article class="uc-card" data-project="enterprise-infrastructure" data-layer="Resilience &amp; DR" data-tags="disaster-recovery availability email automation" data-tools="amazon-ec2 amazon-ebs amazon-s3 bash">
-          <div class="uc-meta"><span>Enterprise Hybrid Cloud Infrastructure</span><span>Resilience &amp; DR</span></div>
+          <div class="uc-meta"><span>Enterprise Hybrid Cloud Infrastructure</span><span>Resilience &amp; DR</span><span>4 min read</span></div>
           <h3><a href="enterprise-infrastructure/mail-disaster-recovery-automation.html">Automated sub-3-minute failover for enterprise mail infrastructure</a></h3>
           <p>An automated EC2 failover system for a single-instance enterprise mail platform, cutting recovery time from 4+ hours of manual recovery to under 3 minutes, paired with tiered S3 backups and DNS-authenticated delivery.</p>
           <p class="uc-stack">Zimbra · AWS EC2 · AWS EBS · AWS S3 · Bash · SPF/DKIM/DMARC</p>
         </article>
         <article class="uc-card" data-project="independent-products" data-layer="Product engineering" data-tags="hrms assistant policy-search multi-tenant ai-assisted-engineering" data-tools="postgresql">
-          <div class="uc-meta"><span>Independent Products &amp; AI-Assisted Engineering</span><span>Product engineering</span></div>
+          <div class="uc-meta"><span>Independent Products &amp; AI-Assisted Engineering</span><span>Product engineering</span><span>4 min read</span></div>
           <h3><a href="independent-products/ai-assisted-hrms-tool.html">An AI-assisted HRMS tool: leave, attendance, timesheets, and policy answers in one place</a></h3>
           <p>A simple HR management tool I built with AI coding tools. It covers leave, attendance, shifts, timesheets, the org chart, company assets, and policy documents, and a built-in assistant handles everyday requests in plain language and answers policy questions by quoting the handbook, with the page.</p>
           <p class="uc-stack">FastAPI · Next.js · PostgreSQL</p>
         </article>
         <article class="uc-card" data-project="independent-products" data-layer="Product engineering" data-tags="saas security performance serverless self-hosting ai-assisted-engineering" data-tools="terraform docker-compose">
-          <div class="uc-meta"><span>Independent Products &amp; AI-Assisted Engineering</span><span>Product engineering</span></div>
+          <div class="uc-meta"><span>Independent Products &amp; AI-Assisted Engineering</span><span>Product engineering</span><span>10 min read</span></div>
           <h3><a href="independent-products/solo-saas-hardening-ai-agentic-engineering.html">Hardening a solo SaaS product, end to end, with AI-agent-assisted engineering</a></h3>
           <p>Taking a PDF SaaS product I built alone from a serverless deployment that didn't run to a security-reviewed, self-hosted app about 93% lighter, using AI coding tools under strict written rules.</p>
           <p class="uc-stack">Node.js · Docker Compose · Supabase (self-hosted) · Stripe · mupdf WASM · Terraform</p>

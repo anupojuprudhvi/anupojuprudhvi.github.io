@@ -5,6 +5,8 @@
     "summary": "Combining schema and client compatibility work, continuous replication, and local connection pooling to move a legacy telecom database tier to Aurora.",
     "project": "telecom",
     "projectName": "Telecom & Secure Communications",
+    "projectShort": "Telecom",
+    "minutes": 3,
     "layer": "Data & storage",
     "stack": [
       "Aurora PostgreSQL",
@@ -31,6 +33,8 @@
     "summary": "Bringing recovery orchestration, service validation, and hardware-bound licensing into one failover workflow, with an explicit same-AZ boundary.",
     "project": "telecom",
     "projectName": "Telecom & Secure Communications",
+    "projectShort": "Telecom",
+    "minutes": 3,
     "layer": "Resilience & DR",
     "stack": [
       "AWS Lambda",
@@ -57,6 +61,8 @@
     "summary": "Adapting an existing local encryption service to AWS KMS while preserving its application integration and making the key-handling boundaries explicit.",
     "project": "telecom",
     "projectName": "Telecom & Secure Communications",
+    "projectShort": "Telecom",
+    "minutes": 3,
     "layer": "Networking & security",
     "stack": [
       "AWS KMS",
@@ -82,6 +88,8 @@
     "summary": "Turning manual host configuration and recurring migration defects into a provisioning workflow with explicit config, service reconciliation, and smoke tests.",
     "project": "telecom",
     "projectName": "Telecom & Secure Communications",
+    "projectShort": "Telecom",
+    "minutes": 3,
     "layer": "Platform & delivery",
     "stack": [
       "Bash",
@@ -107,6 +115,8 @@
     "summary": "Tracing missing call records through consumer output and SSH transfer, then replacing process-only checks with data-flow monitoring.",
     "project": "telecom",
     "projectName": "Telecom & Secure Communications",
+    "projectShort": "Telecom",
+    "minutes": 2,
     "layer": "Operations & incidents",
     "stack": [
       "Kafka",
@@ -132,6 +142,8 @@
     "summary": "A four-layer landing zone, one hub-and-spoke network, and a CI/CD pipeline where an unintended apply is structurally impossible.",
     "project": "tolling",
     "projectName": "Tolling Infrastructure",
+    "projectShort": "Tolling",
+    "minutes": 4,
     "layer": "Foundation & governance",
     "stack": [
       "Terraform",
@@ -156,6 +168,8 @@
     "summary": "Connecting shared services, workload accounts, security inspection, and a recovery region through one governed Transit Gateway, not a full mesh of VPC routes.",
     "project": "tolling",
     "projectName": "Tolling Infrastructure",
+    "projectShort": "Tolling",
+    "minutes": 2,
     "layer": "Networking & security",
     "stack": [
       "AWS Transit Gateway",
@@ -181,6 +195,8 @@
     "summary": "Closing the two gaps that can make a replicated Aurora environment fail differently in recovery: secondary parameter-group drift and missing regional secrets.",
     "project": "tolling",
     "projectName": "Tolling Infrastructure",
+    "projectShort": "Tolling",
+    "minutes": 4,
     "layer": "Resilience & DR",
     "stack": [
       "Amazon Aurora Global Database",
@@ -206,6 +222,8 @@
     "summary": "A structured RCA pattern for an EKS ingress failure that separates DNS, load-balancer, routing, network-policy, and application causes, not just \"5xx.\"",
     "project": "tolling",
     "projectName": "Tolling Infrastructure",
+    "projectShort": "Tolling",
+    "minutes": 2,
     "layer": "Operations & incidents",
     "stack": [
       "Amazon EKS",
@@ -232,6 +250,8 @@
     "summary": "Bootstrapping AWS OIDC roles once with SSO, then reusing one GitHub Actions engine for speculative plans and gated, single-environment Terraform deploys.",
     "project": "tolling",
     "projectName": "Tolling Infrastructure",
+    "projectShort": "Tolling",
+    "minutes": 3,
     "layer": "Platform & delivery",
     "stack": [
       "GitHub Actions",
@@ -259,6 +279,8 @@
     "summary": "Centralizing CloudTrail events in a separately governed archive account, with encryption, a restrictive bucket policy, retention controls, and change alerting.",
     "project": "tolling",
     "projectName": "Tolling Infrastructure",
+    "projectShort": "Tolling",
+    "minutes": 2,
     "layer": "Foundation & governance",
     "stack": [
       "AWS CloudTrail",
@@ -287,6 +309,8 @@
     "summary": "Separating Entra authentication from AD machine operations so Personal and Pool WorkSpaces get corporate sign-in without weakening the domain boundary.",
     "project": "tolling",
     "projectName": "Tolling Infrastructure",
+    "projectShort": "Tolling",
+    "minutes": 4,
     "layer": "Networking & security",
     "stack": [
       "Microsoft Entra ID",
@@ -315,6 +339,8 @@
     "summary": "A layered, authenticated path from Jira Service Management into a private service, using CloudFront and a Lambda authorizer because simpler options don't work.",
     "project": "tolling",
     "projectName": "Tolling Infrastructure",
+    "projectShort": "Tolling",
+    "minutes": 5,
     "layer": "Applications & integration",
     "stack": [
       "API Gateway HTTP API",
@@ -343,6 +369,8 @@
     "summary": "Separating public internet resolution from private VPC resolution, then associating one centrally managed hosted zone with shared and environment VPCs.",
     "project": "tolling",
     "projectName": "Tolling Infrastructure",
+    "projectShort": "Tolling",
+    "minutes": 3,
     "layer": "Networking & security",
     "stack": [
       "Amazon Route 53",
@@ -369,6 +397,8 @@
     "summary": "Removing a load balancer and a Lambda proxy from the image path, leaving API Gateway talking to S3 directly through one shared private endpoint.",
     "project": "tolling",
     "projectName": "Tolling Infrastructure",
+    "projectShort": "Tolling",
+    "minutes": 4,
     "layer": "Applications & integration",
     "stack": [
       "API Gateway",
@@ -396,6 +426,8 @@
     "summary": "Moving 225 GB of data across 1.48 million small objects between same-region S3 buckets, cutting transfer time from 8+ hours to 54 minutes using high-concurrency tooling on existing in-region compute.",
     "project": "tolling",
     "projectName": "Tolling Infrastructure",
+    "projectShort": "Tolling",
+    "minutes": 5,
     "layer": "Data & storage",
     "stack": [
       "Amazon S3",
@@ -424,6 +456,8 @@
     "summary": "Decomposing an on-premise clinical monolith into containerized services, and taking reporting load off the live database with a decoupled analytics pipeline.",
     "project": "healthcare",
     "projectName": "Healthcare & Cost Architecture",
+    "projectShort": "Healthcare",
+    "minutes": 4,
     "layer": "Applications & integration",
     "stack": [
       "Amazon EKS",
@@ -448,6 +482,8 @@
     "summary": "A dedicated integration tier translating proprietary medical-IoT telemetry into standardized HL7 and JSON for clinical systems and a partner hospital network.",
     "project": "healthcare",
     "projectName": "Healthcare & Cost Architecture",
+    "projectShort": "Healthcare",
+    "minutes": 4,
     "layer": "Applications & integration",
     "stack": [
       "NextGen Mirth Connect",
@@ -472,6 +508,8 @@
     "summary": "Streaming physiological telemetry into a real-time OLAP store so care teams can query months of patient vitals without touching the operational database.",
     "project": "healthcare",
     "projectName": "Healthcare & Cost Architecture",
+    "projectShort": "Healthcare",
+    "minutes": 3,
     "layer": "Data & storage",
     "stack": [
       "Apache NiFi",
@@ -495,6 +533,8 @@
     "summary": "A network design where no compute or database resource has a public IP, engineering access is mutual-TLS VPN only, and the CDN is tuned for clinical apps.",
     "project": "healthcare",
     "projectName": "Healthcare & Cost Architecture",
+    "projectShort": "Healthcare",
+    "minutes": 3,
     "layer": "Networking & security",
     "stack": [
       "AWS Client VPN",
@@ -519,6 +559,8 @@
     "summary": "A GitFlow-to-Kubernetes pipeline with per-branch promotion gates, headless registry authentication, and deployment lead time cut from hours to minutes.",
     "project": "healthcare",
     "projectName": "Healthcare & Cost Architecture",
+    "projectShort": "Healthcare",
+    "minutes": 3,
     "layer": "Platform & delivery",
     "stack": [
       "Jenkins",
@@ -542,6 +584,8 @@
     "summary": "An agentless VMware discovery, a third-party IdP-to-Identity Center SAML fix, and a Directional Business Case for an institutional financial platform.",
     "project": "partner-engagements",
     "projectName": "AWS APN & Migration Engagements",
+    "projectShort": "APN & migration",
+    "minutes": 3,
     "layer": "Migration & strategy",
     "stack": [
       "AWS Transform",
@@ -570,6 +614,8 @@
     "summary": "Inventory profiling and cloud transformation across US and EU data centers, sizing high-capacity media storage, compute, and localized workflows under AWS MAP.",
     "project": "partner-engagements",
     "projectName": "AWS APN & Migration Engagements",
+    "projectShort": "APN & migration",
+    "minutes": 2,
     "layer": "Migration & strategy",
     "stack": [
       "AWS Application Discovery",
@@ -597,6 +643,8 @@
     "summary": "An AWS MAP Assess evaluation for a European IT monitoring enterprise, transitioning VMware Tanzu Kubernetes to Amazon EKS with Karpenter and a TCO analysis.",
     "project": "partner-engagements",
     "projectName": "AWS APN & Migration Engagements",
+    "projectShort": "APN & migration",
+    "minutes": 3,
     "layer": "Migration & strategy",
     "stack": [
       "Amazon EKS",
@@ -627,6 +675,8 @@
     "summary": "Moving a connected-device platform from on-premise servers to AWS managed services: mapping each old service to its AWS replacement, cost estimates, and a MAP Mobilize roadmap.",
     "project": "partner-engagements",
     "projectName": "AWS APN & Migration Engagements",
+    "projectShort": "APN & migration",
+    "minutes": 3,
     "layer": "Migration & strategy",
     "stack": [
       "AWS IoT Core",
@@ -655,6 +705,8 @@
     "summary": "Getting an AdTech SaaS product listed and sold through a cloud marketplace: the buyer sign-up flow, usage-based billing, and checks after launch.",
     "project": "partner-engagements",
     "projectName": "AWS APN & Migration Engagements",
+    "projectShort": "APN & migration",
+    "minutes": 3,
     "layer": "Applications & integration",
     "stack": [
       "Google Cloud Marketplace",
@@ -682,6 +734,8 @@
     "summary": "A 21+ node Oracle RAC cluster running active-active database failover on AWS, built around software-defined clustered storage to work around AWS's lack of native shared-SAN block storage.",
     "project": "enterprise-infrastructure",
     "projectName": "Enterprise Hybrid Cloud Infrastructure",
+    "projectShort": "Hybrid infrastructure",
+    "minutes": 4,
     "layer": "Data & storage",
     "stack": [
       "Oracle RAC",
@@ -708,6 +762,8 @@
     "summary": "A self-hosted distributed object storage layer unifying backups, ERP media, and mail archives across a public cloud, an on-prem data center, and a private OpenStack cloud behind one S3 API.",
     "project": "enterprise-infrastructure",
     "projectName": "Enterprise Hybrid Cloud Infrastructure",
+    "projectShort": "Hybrid infrastructure",
+    "minutes": 4,
     "layer": "Data & storage",
     "stack": [
       "MinIO",
@@ -734,6 +790,8 @@
     "summary": "An automated EC2 failover system for a single-instance enterprise mail platform, cutting recovery time from 4+ hours of manual recovery to under 3 minutes, paired with tiered S3 backups and DNS-authenticated delivery.",
     "project": "enterprise-infrastructure",
     "projectName": "Enterprise Hybrid Cloud Infrastructure",
+    "projectShort": "Hybrid infrastructure",
+    "minutes": 4,
     "layer": "Resilience & DR",
     "stack": [
       "Zimbra",
@@ -759,6 +817,8 @@
     "summary": "A simple HR management tool I built with AI coding tools. It covers leave, attendance, shifts, timesheets, the org chart, company assets, and policy documents, and a built-in assistant handles everyday requests in plain language and answers policy questions by quoting the handbook, with the page.",
     "project": "independent-products",
     "projectName": "Independent Products & AI-Assisted Engineering",
+    "projectShort": "Independent products",
+    "minutes": 4,
     "layer": "Product engineering",
     "stack": [
       "FastAPI",
@@ -782,6 +842,8 @@
     "summary": "Taking a PDF SaaS product I built alone from a serverless deployment that didn't run to a security-reviewed, self-hosted app about 93% lighter, using AI coding tools under strict written rules.",
     "project": "independent-products",
     "projectName": "Independent Products & AI-Assisted Engineering",
+    "projectShort": "Independent products",
+    "minutes": 10,
     "layer": "Product engineering",
     "stack": [
       "Node.js",

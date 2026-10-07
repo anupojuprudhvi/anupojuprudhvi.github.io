@@ -340,7 +340,7 @@ ${d.outcomes
 }
 
 /** Rough reading time at ~220 words per minute, from the rendered text. */
-function readingMinutes(...html) {
+export function readingMinutes(...html) {
   const words = html
     .join(" ")
     .replace(/<[^>]+>/g, " ")
@@ -623,7 +623,7 @@ export function libraryPage(items, { toolbox = [], toolsByUrl = new Map() } = {}
       )}" data-tools="${esc((toolsByUrl.get(i.url) || []).join(" "))}">
           <div class="uc-meta"><span>${esc(i.projectName)}</span><span>${esc(
             i.layer || "",
-          )}</span></div>
+          )}</span>${i.minutes ? `<span>${i.minutes} min read</span>` : ""}</div>
           <h3><a href="${esc(i.url.replace(/^case-studies\//, ""))}">${esc(
             i.title,
           )}</a></h3>
@@ -635,8 +635,8 @@ export function libraryPage(items, { toolbox = [], toolsByUrl = new Map() } = {}
 
   // The count is visual only; the button's accessible name stays the label
   // (the live status line announces how many studies are shown).
-  const filterBtn = (val, text, pressed = false, count) =>
-    `<button class="filter" data-uc-filter="${esc(val)}" aria-pressed="${pressed}">${esc(
+  const filterBtn = (val, text, pressed = false, count, title = "") =>
+    `<button class="filter" data-uc-filter="${esc(val)}" aria-pressed="${pressed}"${title ? ` title="${esc(title)}"` : ""}>${esc(
       text,
     )}${count ? ` <span class="filter-count" aria-hidden="true">${count}</span>` : ""}</button>`;
 
@@ -708,12 +708,11 @@ ${siteTopNav({ docs: items, up: "../", active: "case-studies" })}
                 <span class="filter-label" id="filterIndustry">Industry</span>
                 ${filterBtn("all", "All", true)}
                 ${projects
-                  .map((p) =>
-                    filterBtn(
-                      "project:" + items.find((i) => i.projectName === p).project,
-                      p,
-                    ),
-                  )
+                  .map((p) => {
+                    // Short chip label ("Telecom"); the full project name is the tooltip.
+                    const item = items.find((i) => i.projectName === p);
+                    return filterBtn("project:" + item.project, item.projectShort || p, false, undefined, item.projectShort ? p : "");
+                  })
                   .join("\n                ")}
               </div>
               <div class="filters" role="group" aria-labelledby="filterCapability">

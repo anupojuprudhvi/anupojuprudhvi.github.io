@@ -36,7 +36,7 @@
 }
 .uc-search input {
   width: 100%;
-  max-width: 520px;
+  max-width: 760px;
   background: var(--bg-raised);
   border: 1px solid var(--border);
   border-radius: 4px;
