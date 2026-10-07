@@ -1,13 +1,13 @@
 ---
 title: CI/CD Guardrails — TFLint, Checkov & Plan Automation
 date: 2026-09-17
-updated: 2026-10-06
+updated: 2026-10-07
 track: terraform
 order: 6
 module: 6
 summary: A three-tier pipeline for Terraform: fast format and lint checks, Checkov security scanning, a plan posted on every pull request, and a nightly check for drift.
 level: DevOps & Governance
-readingTime: 10 min read
+readingTime: 12 min read
 stack: [Terraform, GitHub Actions, Checkov, TFLint, AWS]
 tags: [ci-cd, checkov, tflint, drift-detection, pipeline, automation]
 ---
@@ -167,6 +167,73 @@ terraform plan -detailed-exitcode</code></pre>
 - **Exit code 0:** no changes. Real infrastructure matches the code.
 - **Exit code 2:** **drift found.** Send an alert to the team's channel or on-call tool, and decide whether to bring the change into code or undo it.
 - **Exit code 1:** the plan itself failed.
+
+## Try it · Make Checkov fail, then pass
+
+Checkov reads the code without calling AWS, so this lab needs no AWS account and no Terraform install, only Python 3. It takes about ten minutes. Run it in a terminal on Linux, macOS, or WSL.
+
+**1. Install Checkov in a throwaway folder.**
+
+```text
+mkdir checkov-lab && cd checkov-lab
+python3 -m venv .venv && . .venv/bin/activate
+pip install checkov
+```
+
+**2. Write a security group that opens SSH to the internet.** Save this as `main.tf`:
+
+```hcl
+resource "aws_security_group" "bastion" {
+  name   = "bastion"
+  vpc_id = "vpc-12345678"
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+```
+
+**3. Scan it, the way the pipeline would.**
+
+```text
+checkov -d . --framework terraform --compact --quiet
+echo "exit code: $?"
+```
+
+Three checks fail: `CKV_AWS_24` (SSH open to `0.0.0.0/0`), `CKV_AWS_23` (no descriptions), and `CKV2_AWS_5` (the group isn't attached to anything). The exit code is `1`, and that is what fails the CI step and blocks the merge. Newer Checkov releases sometimes add checks, so you may see an extra finding; handle it the same way.
+
+**4. Fix what you can in the code.** Allow SSH only from the corporate network, and describe the group and the rule:
+
+```hcl
+resource "aws_security_group" "bastion" {
+  name        = "bastion"
+  description = "SSH to the bastion from the corporate network only"
+  vpc_id      = "vpc-12345678"
+
+  ingress {
+    description = "SSH from the corporate network"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/8"]
+  }
+}
+```
+
+Scan again. Only `CKV2_AWS_5` is left.
+
+**5. Accept the last one on the record.** In a layered codebase this group is created here and attached to instances by the compute layer, which a scan of this one folder can't see. That's a reason, not an excuse, so it goes in a scoped skip that names the decision record. Add this as the first line inside the resource block:
+
+```hcl
+  # checkov:skip=CKV2_AWS_5:Attached by the compute layer's launch template (ADR-0007)
+```
+
+Scan once more: `Failed checks: 0, Skipped checks: 1`, and the exit code is `0`. The skip and its reason show up in the full report (run it without `--quiet`), so a reviewer can see exactly what was accepted and why.
+
+Notice what you didn't do: no `--soft-fail`, and no global skip in `.checkov.yaml`. The finding is accepted for this one resource, with a reason, and every other security group is still checked.
 
 ## Recap · Key terms
 
