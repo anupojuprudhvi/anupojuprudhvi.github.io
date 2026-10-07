@@ -10,6 +10,7 @@ level: DevOps & Governance
 readingTime: 12 min read
 stack: [Terraform, GitHub Actions, Checkov, TFLint, AWS]
 tags: [ci-cd, checkov, tflint, drift-detection, pipeline, automation]
+motif: pipeline
 ---
 
 **In this module, you'll learn to:**

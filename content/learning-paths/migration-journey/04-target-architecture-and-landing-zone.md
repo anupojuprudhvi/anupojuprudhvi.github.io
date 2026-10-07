@@ -10,6 +10,7 @@ level: Solution Architecture
 readingTime: 8 min read
 stack: [AWS Organizations, Landing Zone, Transit Gateway, 7Rs Framework]
 tags: [landing-zone, architecture, 7rs, networking, governance]
+motif: network
 ---
 
 **In this module, you'll learn to:**

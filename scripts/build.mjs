@@ -335,6 +335,8 @@ if (existsSync(join(LEARNING_PATHS_DIR, "tracks.json"))) {
     const modules = moduleFiles.map((file) => {
       const { data, body } = parseFrontMatter(readFileSync(file, "utf8").replaceAll("\r\n", "\n"), file);
       checkDates(data, file);
+      if (data.motif !== undefined && !MOTIF_NAMES.includes(data.motif))
+        throw new Error(`${relative(ROOT, file)}: motif "${data.motif}" must be one of: ${MOTIF_NAMES.join(", ")}`);
       const slug = basename(file, ".md");
       const url = `learning-paths/${track.id}/${slug}.html`;
       noteLastModified(url, data);

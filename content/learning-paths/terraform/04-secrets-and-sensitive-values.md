@@ -10,6 +10,7 @@ level: Security & Compliance
 readingTime: 8 min read
 stack: [Terraform, AWS Secrets Manager, AWS KMS, IAM]
 tags: [security, secrets, sensitive-values, encryption, state-security]
+motif: security
 ---
 
 **In this module, you'll learn to:**

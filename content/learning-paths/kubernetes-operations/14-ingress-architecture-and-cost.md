@@ -12,6 +12,7 @@ stack: [Amazon EKS, AWS Load Balancer Controller, Nginx Ingress, Gateway API, AW
 tags: [ingress, alb, nginx, gateway-api, cost-optimization, eks]
 redirectFrom: [ingress-architecture-and-cost, 01-dual-ingress-architecture]
 related: [tolling/eks-ingress-incident-rca, healthcare/zero-public-ingress-network-security]
+motif: network
 ---
 
 **In this module, you'll learn to:**

@@ -12,6 +12,7 @@ stack: [Amazon EKS, Argo CD, Helm, Kustomize, GitHub]
 tags: [gitops, argo-cd, ci-cd, delivery, eks]
 redirectFrom: [gitops-with-argo-cd, 09-gitops-with-argo-cd]
 related: [healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare, tolling/cicd-delivery-engine]
+motif: pipeline
 ---
 
 **In this module, you'll learn to:**

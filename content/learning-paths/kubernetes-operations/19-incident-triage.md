@@ -12,6 +12,7 @@ stack: [Amazon EKS, kubectl, Kubernetes]
 tags: [operations, incident-response, kubectl, eks]
 redirectFrom: [incident-triage, 04-day-2-operations-and-incident-triage]
 related: [tolling/eks-ingress-incident-rca]
+motif: monitor
 ---
 
 **In this module, you'll learn to:**

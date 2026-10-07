@@ -9,6 +9,7 @@ level: Module standard · Build & test
 readingTime: 10 min read
 stack: [Terraform 1.7+, terraform test, Terratest, HCL, AWS]
 tags: [workflow, testing, terraform-test, terratest, plan-review]
+motif: pipeline
 ---
 
 **In this module, you'll learn to:**

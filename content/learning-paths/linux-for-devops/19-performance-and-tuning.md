@@ -9,6 +9,7 @@ level: Linux for DevOps · Hands-on lab
 readingTime: 14 min read
 stack: [sysctl, ab, nginx, conntrack, iostat, perf]
 tags: [linux, performance, sysctl, tuning, conntrack, load-testing, kubernetes]
+motif: monitor
 ---
 
 **In this module, you'll learn to:**

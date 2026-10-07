@@ -9,6 +9,7 @@ level: Module standard · Capstone
 readingTime: 12 min read
 stack: [Terraform, Checkov, GitHub Actions, ADRs]
 tags: [checkov, promotion-gate, security, governance, ci-cd, capstone]
+motif: pipeline
 ---
 
 **In this module, you'll learn to:**

@@ -12,6 +12,7 @@ stack: [Amazon ECR, Docker, Amazon EKS, CI/CD]
 tags: [ecr, ci-cd, container-delivery, eks]
 redirectFrom: [container-delivery-to-eks, 03-container-delivery-to-eks]
 related: [healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare]
+motif: pipeline
 ---
 
 **In this module, you'll learn to:**
