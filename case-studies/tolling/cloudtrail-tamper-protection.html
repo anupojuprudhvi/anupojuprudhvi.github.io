@@ -187,10 +187,12 @@
 </div>
 </div>
 </section>
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Security architecture</div>
-<h2>How centralized audit logs remain trustworthy after an account compromise</h2>
+<h2 id="how-centralized-audit-logs-remain-trustworthy-after-an-account-compromise">How centralized audit logs remain trustworthy after an account compromise</h2>
 <div class="problem-solution">
 <div>
 <h3>The problem</h3>
@@ -233,7 +235,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>The decisions that mattered</h2>
+<h2 id="the-decisions-that-mattered">The decisions that mattered</h2>
 <p>The design separates collection from custody. The management account or delegated security owner controls the organization trail, while the archive account owns the bucket and key used to retain the evidence. This does not make deletion mathematically impossible, but it removes the ordinary workload-account path and creates an auditable administrative boundary for exceptional retention operations.</p>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
@@ -251,21 +253,21 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Security</div>
-<h2>Tamper resistance has limits</h2>
+<h2 id="tamper-resistance-has-limits">Tamper resistance has limits</h2>
 <p>S3 Object Lock or an equivalent retention control can protect objects from ordinary deletion or overwrite during the retention period, but it does not remove the need to protect the root and organization administration paths. Break-glass access is kept separate, strongly authenticated, time-bound where possible, and reviewed after use. The architecture documents these limits instead of promising absolute immutability.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Delivery</div>
-<h2>How the change is rolled out</h2>
+<h2 id="how-the-change-is-rolled-out">How the change is rolled out</h2>
 <p>Create and validate the archive bucket and KMS policy first, then enable the organization trail and confirm delivery from representative member accounts. Test the alert path with controlled configuration changes, verify that unauthorized principals cannot write or delete archive objects, and record the retention and break-glass procedure. Rollout is complete only when both event delivery and detection of control-plane changes are evidenced.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Trade-offs</div>
-<h2>What this does not solve</h2>
+<h2 id="what-this-does-not-solve">What this does not solve</h2>
 <ul>
 <li>CloudTrail is not a packet capture or an application audit log; important data events and application events require separate decisions.</li>
 <li>Retention protection can complicate legal deletion, cost management, and incident cleanup, so the policy needs an accountable owner.</li>
@@ -276,17 +278,23 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Outcome</div>
-<h2>What changed</h2>
+<h2 id="what-changed">What changed</h2>
 <p>Audit evidence is collected centrally, encrypted, stored outside ordinary workload administration, and paired with detection for changes to the logging controls. The published outcome is a stronger evidence boundary and a testable response path; it does not claim a measured reduction in compromise or investigation time.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Next</div>
-<h2>Improvements worth funding</h2>
+<h2 id="improvements-worth-funding">Improvements worth funding</h2>
 <p>Run a controlled tamper-resistance exercise covering trail changes, bucket-policy changes, key administration, and break-glass access. Capture alert latency, investigator visibility, and the exact permissions needed to recover the logging plane before setting service-level targets.</p>
 </div>
 </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#how-centralized-audit-logs-remain-trustworthy-after-an-account-compromise" title="How centralized audit logs remain trustworthy after an account compromise">Security architecture</a></li><li><a href="#the-decisions-that-mattered" title="The decisions that mattered">Architecture</a></li><li><a href="#tamper-resistance-has-limits" title="Tamper resistance has limits">Security</a></li><li><a href="#how-the-change-is-rolled-out" title="How the change is rolled out">Delivery</a></li><li><a href="#what-this-does-not-solve" title="What this does not solve">Trade-offs</a></li><li><a href="#what-changed" title="What changed">Outcome</a></li><li><a href="#improvements-worth-funding" title="Improvements worth funding">Next</a></li></ol>
+        </aside>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/tolling/cicd-delivery-engine.html">← Build the delivery engine</a>
         <a href="../../case-studies/tolling/entra-workspaces-saml.html">Federate WorkSpaces with Entra →</a>

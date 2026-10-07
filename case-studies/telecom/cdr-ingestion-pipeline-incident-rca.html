@@ -176,25 +176,27 @@
         </div>
       </header>
 
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
-<h2>Running processes masked missing business data</h2>
+<h2 id="running-processes-masked-missing-business-data">Running processes masked missing business data</h2>
 <p>Call Detail Records (CDRs) stopped reaching the reporting database while voice and messaging services remained active. Process-health checks did not identify the interruption, so investigation had to follow the records themselves.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Solution</div>
-<h2>Trace one record through the pipeline</h2>
+<h2 id="trace-one-record-through-the-pipeline">Trace one record through the pipeline</h2>
 <p>Investigated the end-to-end telemetry path from queue messages to consumer output, file transfer, and database ingestion. The investigation identified two distinct failures: consumer parsing produced empty batch files, and an SSH host-key mismatch blocked scheduled transfers after node replacement.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>Health must be checked across the boundaries</h2>
+<h2 id="health-must-be-checked-across-the-boundaries">Health must be checked across the boundaries</h2>
 <p>The legacy path crossed a message queue, local batch files, an SSH-based transfer, and database inserts. A running consumer or a newly created file did not demonstrate successful delivery to the final table.</p>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
@@ -209,38 +211,44 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Security</div>
-<h2>Repair trust without bypassing verification</h2>
+<h2 id="repair-trust-without-bypassing-verification">Repair trust without bypassing verification</h2>
 <p>The transfer used a dedicated service identity over SSH. Host-key reconciliation must preserve verification rather than disable it to make the job run. Diagnostic samples and quarantined records also need restricted access and retention controls because call records can contain sensitive information.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Delivery</div>
-<h2>Restore flow, then observe the destination</h2>
+<h2 id="restore-flow-then-observe-the-destination">Restore flow, then observe the destination</h2>
 <p>The recovery combined a consumer correction, transfer-configuration reconciliation, and replay from the incident window. Batch-file checks and ingestion monitoring were added so that future failures could be detected beyond the process state.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Trade-offs</div>
-<h2>Recovery still depended on a legacy batch path</h2>
+<h2 id="recovery-still-depended-on-a-legacy-batch-path">Recovery still depended on a legacy batch path</h2>
 <p>Disk buffering and host-to-host transfer remained operational dependencies. Replayability also depended on retained source events; successful process restarts alone could not prove billing completeness.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Outcome</div>
-<h2>A better definition of service health</h2>
+<h2 id="a-better-definition-of-service-health">A better definition of service health</h2>
 <p>The incident led to restored ingestion and monitoring based on data movement. The available narrative does not provide a reconciled record ledger, so this write-up does not claim that zero records were lost or duplicated.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Next steps</div>
-<h2>Track freshness and reconciliation</h2>
+<h2 id="track-freshness-and-reconciliation">Track freshness and reconciliation</h2>
 <p>Add destination freshness, queue lag, transfer failures, and rejected-record counts to the acceptance criteria. Preserve a reconciliation report for the affected interval and exercise replay with duplicate detection.</p>
 </div>
 </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#running-processes-masked-missing-business-data" title="Running processes masked missing business data">Problem</a></li><li><a href="#trace-one-record-through-the-pipeline" title="Trace one record through the pipeline">Solution</a></li><li><a href="#health-must-be-checked-across-the-boundaries" title="Health must be checked across the boundaries">Architecture</a></li><li><a href="#repair-trust-without-bypassing-verification" title="Repair trust without bypassing verification">Security</a></li><li><a href="#restore-flow-then-observe-the-destination" title="Restore flow, then observe the destination">Delivery</a></li><li><a href="#recovery-still-depended-on-a-legacy-batch-path" title="Recovery still depended on a legacy batch path">Trade-offs</a></li><li><a href="#a-better-definition-of-service-health" title="A better definition of service health">Outcome</a></li><li><a href="#track-freshness-and-reconciliation" title="Track freshness and reconciliation">Next steps</a></li></ol>
+        </aside>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/telecom/platform-automation-engine-v1-to-v10.html">← Repeatable platform delivery</a>
       </aside>

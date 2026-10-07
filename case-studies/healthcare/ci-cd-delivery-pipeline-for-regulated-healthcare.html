@@ -189,18 +189,20 @@
 </div>
 </div>
 </section>
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
-<h2>A manual release process doesn't scale, and doesn't survive an audit</h2>
+<h2 id="a-manual-release-process-doesn-t-scale-and-doesn-t-survive-an-audit">A manual release process doesn't scale, and doesn't survive an audit</h2>
 <p>Before automation, shipping a change meant an engineer manually building the application, constructing a container image by hand, authenticating to the registry, and applying Kubernetes manifests directly against a cluster — a process that worked, but depended entirely on whichever engineer was doing it that day getting every step right, in order, under time pressure. For a HIPAA platform, that's also a weak position for change control: there's no consistent, enforced record of what was tested and approved before it reached production.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>The branch determines the environment, the pipeline does the rest</h2>
+<h2 id="the-branch-determines-the-environment-the-pipeline-does-the-rest">The branch determines the environment, the pipeline does the rest</h2>
 <div class="table-wrap"><table class="md-table">
 <thead><tr><th scope="col">Branch</th><th scope="col">Target environment</th><th scope="col">Promotion trigger</th></tr></thead>
 <tbody>
@@ -225,7 +227,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Production gotcha</div>
-<h2>Headless container-registry authentication</h2>
+<h2 id="headless-container-registry-authentication">Headless container-registry authentication</h2>
 <p>Jenkins agents run as headless, non-interactive processes, and the registry's standard login flow expected an interactive terminal — every pipeline run failed at the authentication stage with a &quot;cannot perform an interactive login from a non-TTY device&quot; error.</p>
 <h3>Fix</h3>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># What failed (interactive-only):
@@ -239,6 +241,12 @@ aws ecr get-login-password --region &lt;region&gt; \
 <p>Replacing the manual build-and-deploy process with this pipeline took deployment lead time — from a commit ready to ship, to that change running in its target environment — from roughly four hours down to under five minutes, while adding more approval structure to the path to production, not less.</p>
 </div>
 </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#a-manual-release-process-doesn-t-scale-and-doesn-t-survive-an-audit" title="A manual release process doesn't scale, and doesn't survive an audit">Problem</a></li><li><a href="#the-branch-determines-the-environment-the-pipeline-does-the-rest" title="The branch determines the environment, the pipeline does the rest">Architecture</a></li><li><a href="#headless-container-registry-authentication" title="Headless container-registry authentication">Production gotcha</a></li></ol>
+        </aside>
+      </div>
       <div class="wrap">
         <section class="related-links" aria-label="Learn the concepts behind this">
           <h2>Learn the concepts behind this</h2>

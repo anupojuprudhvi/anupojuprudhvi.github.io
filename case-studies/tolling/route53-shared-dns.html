@@ -189,10 +189,12 @@
 </div>
 </div>
 </section>
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 <section>
 <div class="wrap">
 <div class="section-eyebrow">DNS architecture</div>
-<h2>How one Route 53 design serves every environment</h2>
+<h2 id="how-one-route-53-design-serves-every-environment">How one Route 53 design serves every environment</h2>
 <div class="problem-solution">
 <div>
 <h3>The problem</h3>
@@ -247,7 +249,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Why this way</div>
-<h2>Public and private DNS solve different problems</h2>
+<h2 id="public-and-private-dns-solve-different-problems">Public and private DNS solve different problems</h2>
 <p>The important choice was not simply to create a Route 53 zone. It was to make the visibility boundary part of the design. Public and private hosted zones can use the same domain name, but they answer in different contexts: public DNS is authoritative for internet queries, while a private zone is visible only inside the VPCs associated with it. The private zone is not a firewall and association does not grant network access by itself.</p>
 <p><b>Public hosted zones are for public reachability.</b> They hold records that internet clients must resolve, such as an edge endpoint. Their presence does not make a load balancer, API, or workload private resource reachable; the target's own exposure and security controls still determine whether a connection works.</p>
 <p><b>Private hosted zones are for internal naming.</b> Route 53 returns private-zone records only to queries from associated VPCs. Associating several environment VPCs with one zone gives development, staging, production, and shared services the same naming contract without asking each environment to maintain a separate copy of the records.</p>
@@ -256,7 +258,7 @@
 </section>
 <section>
 <div class="wrap">
-<h2>What makes it hold up</h2>
+<h2 id="what-makes-it-hold-up">What makes it hold up</h2>
 <p><b>The Shared Services account owns the namespace.</b> Hosted zones and their records have one accountable owner. Environment accounts consume the private namespace through explicit associations rather than creating lookalike zones.</p>
 <p><b>The association list is treated as shared state.</b> A consumer account creates its own cross-account association, so the zone module ignores externally added VPC association drift instead of trying to remove it on the next plan. Changes to same-account VPC inputs remain managed by the zone module. Production zones also need a destroy safeguard and an approved removal process because deleting a zone can affect every associated environment.</p>
 <p><b>DNS is not the authorization layer.</b> A successful lookup only returns a destination. Private routing, Transit Gateway or resolver connectivity, security groups on port 53, endpoint policies, IAM, and the target service's own controls still have to permit the resulting traffic. This separation keeps a DNS change from being mistaken for a network or application access grant.</p>
@@ -273,6 +275,12 @@
 </ul>
 </div>
 </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#how-one-route-53-design-serves-every-environment" title="How one Route 53 design serves every environment">DNS architecture</a></li><li><a href="#public-and-private-dns-solve-different-problems" title="Public and private DNS solve different problems">Why this way</a></li><li><a href="#what-makes-it-hold-up" title="What makes it hold up">What makes it hold up</a></li></ol>
+        </aside>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/tolling/jsm-integration.html">← Connect JSM to private services</a>
         <a href="../../case-studies/tolling/s3-image-api.html">Upload and retrieve images →</a>

@@ -193,10 +193,12 @@
 </div>
 </div>
 </section>
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Data resilience</div>
-<h2>Closing the configuration gaps in a multi-region Aurora design</h2>
+<h2 id="closing-the-configuration-gaps-in-a-multi-region-aurora-design">Closing the configuration gaps in a multi-region Aurora design</h2>
 <div class="problem-solution">
 <div>
 <h3>The problem</h3>
@@ -239,7 +241,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>The decisions that mattered</h2>
+<h2 id="the-decisions-that-mattered">The decisions that mattered</h2>
 <p>The important design decision was to treat disaster recovery as a behavioral contract, not a collection of standby resources. A secondary cluster that has different extensions, logging, connection limits, or planner settings is not an equivalent recovery target. Likewise, a secret that cannot be resolved in the recovery region adds a hidden dependency to the failover path.</p>
 <details class="implementation-notes">
 <summary>Implementation evidence</summary>
@@ -263,7 +265,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Delivery</div>
-<h2>How the change is rolled out</h2>
+<h2 id="how-the-change-is-rolled-out">How the change is rolled out</h2>
 <p>The change is delivered as a Terraform module update with environment-level inputs remaining the source of truth. The safe sequence is to validate the module and its provider aliases, run speculative plans for each environment, and apply the production global-replication configuration only after the plan shows the intended secondary parameter groups, attachments, secret replica, and endpoint payload changes. Single-region plans should confirm that no secondary KMS lookup or DR-only resource is attempted.</p>
 <p>The implementation also removed environment-specific provider assumptions from the child module. Explicit provider injection allows the same module to run through different approved deployment environments without embedding local configuration.</p>
 </div>
@@ -271,7 +273,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Trade-offs</div>
-<h2>What this does not solve</h2>
+<h2 id="what-this-does-not-solve">What this does not solve</h2>
 <ul>
 <li><b>Regional failure is not every failure:</b> Replication across regions improves regional resilience, but it does not protect against every account, identity, or application-level failure.</li>
 <li><b>Replication is not application recovery:</b> Parameter parity and local secret availability remove two hidden failure modes; they do not prove that an application, DNS cutover, permissions, or dependent services will recover. Those paths still require a tested runbook and recovery exercise.</li>
@@ -283,7 +285,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Outcome</div>
-<h2>What changed</h2>
+<h2 id="what-changed">What changed</h2>
 <p>The documented design closes two concrete recovery gaps. The secondary Aurora cluster and instances are no longer allowed to silently fall back to default parameter groups, and recovery-region workloads can obtain the replicated secret and discover the secondary endpoint locally. The result is stronger failover readiness and one declarative parameter source, while single-region environments avoid unnecessary DR resources.</p>
 <p>The measurable claims here are implementation outcomes rather than an invented recovery-time guarantee: <b>two documented DR gaps closed</b>, <b>one shared parameter source</b>, and <b>zero secondary-only resources for configurations where global replication is disabled</b>.</p>
 </div>
@@ -291,10 +293,16 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Next</div>
-<h2>Improvements worth funding</h2>
+<h2 id="improvements-worth-funding">Improvements worth funding</h2>
 <p>The next validation step should be a controlled regional recovery exercise that checks more than Terraform state: secret retrieval from the secondary region, application connection behavior, parameter-dependent extensions, endpoint selection, DNS or service discovery, and rollback. The exercise should record actual recovery time and any manual actions before publishing an RTO/RPO claim.</p>
 </div>
 </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#closing-the-configuration-gaps-in-a-multi-region-aurora-design" title="Closing the configuration gaps in a multi-region Aurora design">Data resilience</a></li><li><a href="#the-decisions-that-mattered" title="The decisions that mattered">Architecture</a></li><li><a href="#how-the-change-is-rolled-out" title="How the change is rolled out">Delivery</a></li><li><a href="#what-this-does-not-solve" title="What this does not solve">Trade-offs</a></li><li><a href="#what-changed" title="What changed">Outcome</a></li><li><a href="#improvements-worth-funding" title="Improvements worth funding">Next</a></li></ol>
+        </aside>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/tolling/transit-gateway-hub-and-spoke.html">← Connect accounts through Transit Gateway</a>
         <a href="../../case-studies/tolling/eks-ingress-incident-rca.html">Trace an EKS ingress incident →</a>

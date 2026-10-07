@@ -191,18 +191,20 @@
 </div>
 </div>
 </section>
+      <div class="cs-body">
+        <div class="cs-main">
 
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
-<h2>Two audiences, one platform, and neither should reach patient data directly</h2>
+<h2 id="two-audiences-one-platform-and-neither-should-reach-patient-data-directly">Two audiences, one platform, and neither should reach patient data directly</h2>
 <p>A remote patient monitoring platform has two fundamentally different groups that need access: clinicians and patients using the product itself, and engineers operating and maintaining it. Handling both naively — for example, giving engineers a bastion host with a public IP, or letting application servers sit in public subnets because it's simpler to reach them — creates a direct network path from the internet into the systems holding PHI. Under HIPAA's technical safeguards, that's not an acceptable trade for convenience.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>Separate the user path from the operator path completely</h2>
+<h2 id="separate-the-user-path-from-the-operator-path-completely">Separate the user path from the operator path completely</h2>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">   Clinicians &amp; Patients                    Engineering &amp; Operations
           │                                          │
           ▼                                          ▼
@@ -232,6 +234,8 @@
 <p>Mutual-TLS VPN access for engineering is meaningfully more operational overhead than a bastion host or a shared VPN — every engineer needs a per-environment profile, and profile issuance and revocation has to be a deliberate process rather than a shared credential. That overhead is the direct cost of the environments never having a public network path into them at all; for a platform handling PHI, that trade was made deliberately rather than defaulted into.</p>
 </div>
 </section>
+        </div>
+      </div>
       <div class="wrap">
         <section class="related-links" aria-label="Learn the concepts behind this">
           <h2>Learn the concepts behind this</h2>

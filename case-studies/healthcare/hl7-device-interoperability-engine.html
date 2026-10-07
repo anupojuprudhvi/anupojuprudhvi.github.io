@@ -195,10 +195,12 @@
 </div>
 </div>
 </section>
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Case study</div>
-<h2>How it works</h2>
+<h2 id="how-it-works">How it works</h2>
 <div class="problem-solution">
 <div>
 <h3>The problem</h3>
@@ -241,7 +243,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
-<h2>Every device vendor speaks a different language</h2>
+<h2 id="every-device-vendor-speaks-a-different-language">Every device vendor speaks a different language</h2>
 <p>Medical IoT devices don't share a wire format. A blood pressure cuff, a glucometer, and a smart scale from the same vendor can each post readings in a different shape, and a device from a different vendor entirely might use raw XML, HL7, or a proprietary binary layout. Healthcare EHR systems and internal clinical platforms, meanwhile, expect data in recognized healthcare interoperability standards — chiefly HL7 v2/v3 and FHIR.</p>
 <p>Left unaddressed, that mismatch pushes translation logic outward: every consuming system ends up writing and maintaining its own parser for every device format it needs to understand. That doesn't scale past a handful of integrations, and it means a hospital partner's EHR team would need to understand a device vendor's proprietary schema directly.</p>
 <details class="implementation-notes">
@@ -257,7 +259,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>A single interoperability host in the request path</h2>
+<h2 id="a-single-interoperability-host-in-the-request-path">A single interoperability host in the request path</h2>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">[ Medical IoT Device Fleet ]
   (BP cuff · Glucometer · Pulse oximeter · Smart scale)
              │  HTTPS, vendor-proprietary payload
@@ -289,7 +291,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Production incident</div>
-<h2>A silent restart failure after a routine OS patch</h2>
+<h2 id="a-silent-restart-failure-after-a-routine-os-patch">A silent restart failure after a routine OS patch</h2>
 <p>During a routine operating-system security patch cycle, the interoperability engine's host rebooted as expected — but telemetry uploads began failing immediately afterward with <code>502 Bad Gateway</code> at the reverse proxy.</p>
 <details class="implementation-notes">
 <summary>Investigation and root cause</summary>
@@ -312,6 +314,12 @@
 <p>A systemd watchdog script was added to detect and clear this same socket-lock condition automatically, so the same failure mode after a future patch cycle would self-heal instead of requiring the same manual diagnosis again.</p>
 </div>
 </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#how-it-works" title="How it works">Case study</a></li><li><a href="#every-device-vendor-speaks-a-different-language" title="Every device vendor speaks a different language">Problem</a></li><li><a href="#a-single-interoperability-host-in-the-request-path" title="A single interoperability host in the request path">Architecture</a></li><li><a href="#a-silent-restart-failure-after-a-routine-os-patch" title="A silent restart failure after a routine OS patch">Production incident</a></li></ol>
+        </aside>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/healthcare/clinical-platform-modernization-and-cost-optimization.html">← Cut database read load</a>
         <a href="../../case-studies/healthcare/real-time-clinical-analytics-pipeline.html">Real-time clinical analytics →</a>

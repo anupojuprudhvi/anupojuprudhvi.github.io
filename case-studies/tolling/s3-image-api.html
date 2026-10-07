@@ -184,10 +184,12 @@
         </div>
       </header>
 
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Image handling</div>
-<h2>How a request actually reaches S3</h2>
+<h2 id="how-a-request-actually-reaches-s3">How a request actually reaches S3</h2>
 <div class="problem-solution">
 <div>
 <h3>The problem</h3>
@@ -242,7 +244,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Why this way</div>
-<h2>Every layer had to justify itself</h2>
+<h2 id="every-layer-had-to-justify-itself">Every layer had to justify itself</h2>
 <p>The end state looks obvious in hindsight. It wasn't the starting point, and each layer was removed for a specific reason rather than a preference for minimalism.</p>
 <p><b>The Lambda proxy went first.</b> It was translating HTTP requests into S3 calls — work API Gateway can do natively through a service integration. Keeping it meant paying per invocation, adding a cold-start tail to image uploads, and maintaining error handling and timeout logic for a component whose entire job was to forward bytes.</p>
 <p><b>The load balancer went next.</b> With the proxy gone it was routing to a single backend, and its host and URL rewrite rules needed careful configuration to keep doing so correctly. It remained an extra hop and a standing cost for no remaining function.</p>
@@ -252,7 +254,7 @@
 </section>
 <section>
 <div class="wrap">
-<h2>What makes it hold up</h2>
+<h2 id="what-makes-it-hold-up">What makes it hold up</h2>
 <p><b>Authorization is four layers, not one.</b> A private custom domain requires explicit authorization at each stage, and a request that satisfies three and fails the fourth looks, from the caller's side, exactly like a DNS problem:</p>
 <ul>
 <li><b>Management policy</b> — grants the Shared Services account permission to attach its endpoint to this custom domain at all.</li>
@@ -266,6 +268,12 @@
 <p><b>Both endpoints stay associated.</b> The shared endpoint carries traffic that resolved through the central hosted zone; each environment's own endpoint serves workloads inside that VPC or reaching it over VPN or Direct Connect. Dropping either one silently strands a class of caller.</p>
 </div>
 </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#how-a-request-actually-reaches-s3" title="How a request actually reaches S3">Image handling</a></li><li><a href="#every-layer-had-to-justify-itself" title="Every layer had to justify itself">Why this way</a></li><li><a href="#what-makes-it-hold-up" title="What makes it hold up">What makes it hold up</a></li></ol>
+        </aside>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/tolling/route53-shared-dns.html">← Share DNS across environments</a>
         <a href="../../case-studies/tolling/s3-large-scale-bucket-migration.html">S3 migration at scale →</a>

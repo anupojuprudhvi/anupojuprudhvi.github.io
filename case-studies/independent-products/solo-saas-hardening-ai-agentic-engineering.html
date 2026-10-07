@@ -189,11 +189,13 @@
 </div>
 </div>
 </section>
+      <div class="cs-body">
+        <div class="cs-main">
 
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
-<h2>Serverless doesn't forgive assumptions a normal server tolerates</h2>
+<h2 id="serverless-doesn-t-forgive-assumptions-a-normal-server-tolerates">Serverless doesn't forgive assumptions a normal server tolerates</h2>
 <p>The product's PDF rendering engine depended on a native-binary canvas library and <code>pdf.js</code>'s worker-based rendering model — both fine on a normal server, both broken on Vercel's serverless runtime. The canvas library couldn't link its underlying system graphics libraries in that environment; <code>pdf.js</code> loads its worker script through a dynamic import the deployment bundler can't trace statically, so the worker file simply never shipped. The failures didn't look the same twice — sometimes an outright 500 error, sometimes the request &quot;succeeded&quot; but the output was barely smaller than the input — while every one of it worked correctly on a local machine. That mismatch is its own lesson: a serverless environment can pass every local test and still not run the same code path once deployed.</p>
 <p>The database had the same category of problem: a file-based SQLite store on a filesystem that's read-only at the application root, so writes there failed outright with a read-only-filesystem error; redirecting writes to the one writable scratch directory available didn't really fix it either, because that storage doesn't survive between function invocations, so a write could succeed and then simply not be there anymore the next time a user's request landed on a different instance.</p>
 <p>Underneath both of those was a business-critical concern that hadn't been addressed at all yet: the app processes real payments through Stripe, and no dedicated security review had been run against it.</p>
@@ -202,7 +204,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>Rebuilding the engine around the runtime's actual constraints, not around what's convenient locally</h2>
+<h2 id="rebuilding-the-engine-around-the-runtime-s-actual-constraints-not-around-what-s-convenient-locally">Rebuilding the engine around the runtime's actual constraints, not around what's convenient locally</h2>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">   Before                                    After
    ──────                                    ─────
    [ canvas (native binary) ]                [ mupdf — pure WASM ]
@@ -239,6 +241,8 @@
 <p>Rewriting the rendering engine instead of patching the native-binary approach cost real time up front — WASM compilation has its own quirks and the migration touched every code path that generated a PDF. It was the right call because the alternative was chasing an open-ended list of serverless-incompatibility bugs one at a time, each looking like a one-off until the next one landed. Running the security audit as a dedicated pass, rather than fixing issues opportunistically as they were noticed, surfaced the critical webhook finding specifically because it wasn't reachable through the app's normal usage paths — it only showed up under a deliberate line-by-line adversarial read of the whole codebase — server, routes, middleware, and client — which is a good argument for scheduling that kind of pass rather than waiting for something to trigger it.</p>
 </div>
 </section>
+        </div>
+      </div>
       <div class="wrap">
         <section class="related-links" aria-label="Learn the concepts behind this">
           <h2>Learn the concepts behind this</h2>

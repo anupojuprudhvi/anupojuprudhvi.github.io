@@ -178,25 +178,27 @@
         </div>
       </header>
 
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
-<h2>Compatibility and connection pressure had to be addressed together</h2>
+<h2 id="compatibility-and-connection-pressure-had-to-be-addressed-together">Compatibility and connection pressure had to be addressed together</h2>
 <p>The telecom platform depended on an older PostgreSQL environment, legacy schema behavior, and native client code. Call processing, messaging, account management, and reporting also competed for database connections. A database move had to preserve those application paths while avoiding an extended offline copy.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Solution</div>
-<h2>Prepare the database while the existing platform keeps serving traffic</h2>
+<h2 id="prepare-the-database-while-the-existing-platform-keeps-serving-traffic">Prepare the database while the existing platform keeps serving traffic</h2>
 <p>The migration strategy decoupled schema remediation, native client compatibility, data replication, and application cutover. AWS DMS handled the baseline transfer and change synchronization described in the migration workflow. Local PgBouncer instances provided a controlled connection path to Aurora, instead of allowing application concurrency to translate directly into backend connection growth.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>Separate data movement from application switchover</h2>
+<h2 id="separate-data-movement-from-application-switchover">Separate data movement from application switchover</h2>
 <p>Logical databases separated workload responsibilities, including core state, queue processing, messaging, and call reporting. Schema and client changes were validated before switching the application endpoints. Keeping replication running during preparation reduced the amount of data that needed to catch up at cutover.</p>
 <p>Migration tooling depends on the source engine version and its supported replication path. A verified source inventory and compatibility checks are prerequisites for repeating this approach.</p>
 <details class="implementation-notes">
@@ -213,14 +215,14 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Security</div>
-<h2>Protect the migration path and pool credentials</h2>
+<h2 id="protect-the-migration-path-and-pool-credentials">Protect the migration path and pool credentials</h2>
 <p>Migration traffic used the private VPN/transit path. Aurora was placed in private subnets with encryption at rest. Pool authentication files required restricted ownership and permissions; database transport used TLS. Certificate and hostname verification must be checked explicitly rather than inferred from an encryption setting.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Delivery</div>
-<h2>Pause writes, reconcile, then change endpoints</h2>
+<h2 id="pause-writes-reconcile-then-change-endpoints">Pause writes, reconcile, then change endpoints</h2>
 <p>Schema and configuration changes progressed through non-production environments before production cutover. During the final window, writes to the old database were briefly paused, remaining changes were applied, data checks were completed, and application endpoints were switched through the connection pool. Smoke tests then exercised the business paths before normal traffic resumed.</p>
 <p>This describes a migration with a brief write pause. It does not claim uninterrupted writes or establish a universal zero-downtime result.</p>
 </div>
@@ -228,7 +230,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Trade-offs</div>
-<h2>Pooling changes the connection contract</h2>
+<h2 id="pooling-changes-the-connection-contract">Pooling changes the connection contract</h2>
 <p>Transaction pooling requires a review of session state, temporary objects, prepared statements, and other connection-specific behavior. Per-pool limits also need to be evaluated across all nodes and database/user combinations; a limit on one host is not a cluster-wide cap.</p>
 <p>Replication validation and a rollback decision are separate concerns. Once applications write to the new target, switching back requires a plan for those new writes rather than simply restoring the previous endpoint.</p>
 </div>
@@ -236,17 +238,23 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Outcome</div>
-<h2>Migration and connection management became one delivery workflow</h2>
+<h2 id="migration-and-connection-management-became-one-delivery-workflow">Migration and connection management became one delivery workflow</h2>
 <p>The platform moved to Aurora with compatibility work and connection pooling incorporated into deployment. Data validation and application checks supported the cutover. Performance improvements require comparable workload measurements before they can be quantified.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Next steps</div>
-<h2>Establish a repeatable performance baseline</h2>
+<h2 id="establish-a-repeatable-performance-baseline">Establish a repeatable performance baseline</h2>
 <p>Retain a source/version inventory, cutover validation report, and rollback criteria. Compare pool wait time, connection counts, query latency, CPU, and error rates under the same workload before publishing performance improvements.</p>
 </div>
 </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#compatibility-and-connection-pressure-had-to-be-addressed-together" title="Compatibility and connection pressure had to be addressed together">Problem</a></li><li><a href="#prepare-the-database-while-the-existing-platform-keeps-serving-traffic" title="Prepare the database while the existing platform keeps serving traffic">Solution</a></li><li><a href="#separate-data-movement-from-application-switchover" title="Separate data movement from application switchover">Architecture</a></li><li><a href="#protect-the-migration-path-and-pool-credentials" title="Protect the migration path and pool credentials">Security</a></li><li><a href="#pause-writes-reconcile-then-change-endpoints" title="Pause writes, reconcile, then change endpoints">Delivery</a></li><li><a href="#pooling-changes-the-connection-contract" title="Pooling changes the connection contract">Trade-offs</a></li><li><a href="#migration-and-connection-management-became-one-delivery-workflow" title="Migration and connection management became one delivery workflow">Outcome</a></li><li><a href="#establish-a-repeatable-performance-baseline" title="Establish a repeatable performance baseline">Next steps</a></li></ol>
+        </aside>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/index.html">← Case studies</a>
         <a href="../../case-studies/telecom/serverless-ha-failover-engine.html">Failover and licensing continuity →</a>

@@ -184,18 +184,20 @@
         </div>
       </header>
 
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
-<h2>A replacement host was not enough to restore service</h2>
+<h2 id="a-replacement-host-was-not-enough-to-restore-service">A replacement host was not enough to restore service</h2>
 <p>Legacy recovery depended on hardware-oriented fencing and operator intervention. The telecom software also used a node-locked license tied to a MAC address and private IP. A newly provisioned host could therefore be healthy while its call-processing software remained unable to start with the expected licensed identity.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Solution</div>
-<h2>Treat recovery and licensing as the same workflow</h2>
+<h2 id="treat-recovery-and-licensing-as-the-same-workflow">Treat recovery and licensing as the same workflow</h2>
 <p>A serverless Lambda recovery workflow was built to trigger from CloudWatch alarms. DynamoDB conditional writes coordinated orchestration attempts, while Systems Manager handled host-side network and service operations. A persistent secondary Elastic Network Interface (ENI) carried the identity registered with the software vendor.</p>
 <p>The ENI approach preserved identity when that interface moved to a replacement host; it did not require assigning a custom MAC address or imply that ordinary instance reboots change interface identity.</p>
 </div>
@@ -203,7 +205,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>Separate orchestration from the hosts being recovered</h2>
+<h2 id="separate-orchestration-from-the-hosts-being-recovered">Separate orchestration from the hosts being recovered</h2>
 <p>The orchestrator ran outside the two service nodes. Its responsibilities included acquiring a lease, moving the designated interface, requesting service changes, checking readiness and ownership, and handling the degraded host. These are distinct controls: a coordination lock does not itself fence a node or prove that only one node can accept writes.</p>
 <div class="hubwrap">
             <div class="diagram-top">
@@ -315,21 +317,21 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Security</div>
-<h2>Constrain the recovery mechanism</h2>
+<h2 id="constrain-the-recovery-mechanism">Constrain the recovery mechanism</h2>
 <p>Recovery permissions should be scoped to the managed instances, interface, command documents, and lock resources where the AWS actions support resource-level restrictions. Command execution and orchestration logs provide an audit trail. The licensed interface still needs the appropriate service security groups and host permissions.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Delivery</div>
-<h2>Exercise more than a clean instance stop</h2>
+<h2 id="exercise-more-than-a-clean-instance-stop">Exercise more than a clean instance stop</h2>
 <p>The source implementation describes staging exercises covering service failures, interface disruption, resource pressure, and stopped instances. Those exercises tested interface transfer and service recovery. Recorded timing should identify the failure mode, detection delay, start/end events, and retry behavior before being used as an availability commitment.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Trade-offs</div>
-<h2>Same-AZ recovery is not regional disaster recovery</h2>
+<h2 id="same-az-recovery-is-not-regional-disaster-recovery">Same-AZ recovery is not regional disaster recovery</h2>
 <p>An ENI can attach only to an instance in the same Availability Zone. This workflow therefore cannot carry the same interface across an AZ or regional failure. Recovery elsewhere requires a separate network identity and a vendor-approved licensing approach. See the <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/network-interface-attachments.html">AWS interface attachment constraints</a>.</p>
 <p>Existing connections may drop during recovery and need client retry behavior. This design coordinates host-level recovery; it does not replace Aurora recovery or a complete regional failover plan.</p>
 </div>
@@ -337,17 +339,23 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Outcome</div>
-<h2>Recovery included the application's licensed identity</h2>
+<h2 id="recovery-included-the-application-s-licensed-identity">Recovery included the application's licensed identity</h2>
 <p>The work combined host recovery with interface movement and application checks, addressing a dependency that a generic instance replacement would miss. The portfolio does not claim zero split-brain risk or a universal sub-minute recovery time; those depend on failure conditions and retained test evidence.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Next steps</div>
-<h2>Document failure boundaries and recovery evidence</h2>
+<h2 id="document-failure-boundaries-and-recovery-evidence">Document failure boundaries and recovery evidence</h2>
 <p>Capture lease-expiry tests, partially completed interface moves, unavailable Systems Manager agents, and failed fencing calls. Verify the promotion/fencing sequence and record the recovery timeline for each scenario, including the point at which clients can successfully use the service.</p>
 </div>
 </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#a-replacement-host-was-not-enough-to-restore-service" title="A replacement host was not enough to restore service">Problem</a></li><li><a href="#treat-recovery-and-licensing-as-the-same-workflow" title="Treat recovery and licensing as the same workflow">Solution</a></li><li><a href="#separate-orchestration-from-the-hosts-being-recovered" title="Separate orchestration from the hosts being recovered">Architecture</a></li><li><a href="#constrain-the-recovery-mechanism" title="Constrain the recovery mechanism">Security</a></li><li><a href="#exercise-more-than-a-clean-instance-stop" title="Exercise more than a clean instance stop">Delivery</a></li><li><a href="#same-az-recovery-is-not-regional-disaster-recovery" title="Same-AZ recovery is not regional disaster recovery">Trade-offs</a></li><li><a href="#recovery-included-the-application-s-licensed-identity" title="Recovery included the application's licensed identity">Outcome</a></li><li><a href="#document-failure-boundaries-and-recovery-evidence" title="Document failure boundaries and recovery evidence">Next steps</a></li></ol>
+        </aside>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/telecom/aurora-global-database-modernization.html">← Database migration and connection pooling</a>
         <a href="../../case-studies/telecom/in-memory-column-encryption-kms.html">Key-management migration →</a>

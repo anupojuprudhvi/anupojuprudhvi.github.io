@@ -187,10 +187,12 @@
 </div>
 </div>
 </section>
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 <section>
 <div class="wrap">
 <div class="section-eyebrow">CI/CD architecture</div>
-<h2>How Terraform changes move from pull request to environment</h2>
+<h2 id="how-terraform-changes-move-from-pull-request-to-environment">How Terraform changes move from pull request to environment</h2>
 <div class="problem-solution">
 <div>
 <h3>The problem</h3>
@@ -245,14 +247,14 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Why this way</div>
-<h2>Bootstrap the identity before automating delivery</h2>
+<h2 id="bootstrap-the-identity-before-automating-delivery">Bootstrap the identity before automating delivery</h2>
 <p>The first deployment cannot be performed by the pipeline itself. The GitHub Actions runner needs an AWS IAM OIDC provider and a trusted role before it can obtain credentials, so those resources are applied once from an administrator's workstation using AWS SSO. This is a deliberate bootstrap boundary, not a gap in automation.</p>
 <p>After the bootstrap, the same <code>toll-cicd-plan</code> and <code>toll-cicd-apply</code> role pattern can be reused by service workflows in the accounts they target. The plan role is read-only, while the apply role is reserved for the explicitly gated deployment path. Short-lived STS credentials replace static access keys and reduce the rotation and exposure problem of storing cloud credentials in CI secrets.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
-<h2>The reusable workflow pattern</h2>
+<h2 id="the-reusable-workflow-pattern">The reusable workflow pattern</h2>
 <p>The delivery system has three layers:</p>
 <ol>
 <li><b>Router:</b> one operator-facing workflow exposes the service, environment, and plan-only inputs instead of filling the Actions sidebar with bespoke deployment interfaces.</li>
@@ -264,7 +266,7 @@
 </section>
 <section>
 <div class="wrap">
-<h2>Safety is a job-graph property</h2>
+<h2 id="safety-is-a-job-graph-property">Safety is a job-graph property</h2>
 <p>The important controls are layered rather than dependent on an operator remembering a command-line convention:</p>
 <ul>
 <li>Pull-request jobs have no apply step and use the read-only plan role.</li>
@@ -292,10 +294,16 @@
 </section>
 <section>
 <div class="wrap">
-<h2>What it enables</h2>
+<h2 id="what-it-enables">What it enables</h2>
 <p>The platform team can add delivery to another Terraform module by declaring its module-specific inputs in a small caller workflow. Authentication hardening, Terraform upgrades, plan presentation, and deployment gates remain centralized. That gives engineers a repeatable promotion path across the account hierarchy without turning every service team into a CI/CD platform maintainer.</p>
 </div>
 </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#how-terraform-changes-move-from-pull-request-to-environment" title="How Terraform changes move from pull request to environment">CI/CD architecture</a></li><li><a href="#bootstrap-the-identity-before-automating-delivery" title="Bootstrap the identity before automating delivery">Why this way</a></li><li><a href="#the-reusable-workflow-pattern" title="The reusable workflow pattern">The reusable workflow pattern</a></li><li><a href="#safety-is-a-job-graph-property" title="Safety is a job-graph property">Safety is a job-graph property</a></li><li><a href="#what-it-enables" title="What it enables">What it enables</a></li></ol>
+        </aside>
+      </div>
       <div class="wrap">
         <section class="related-links" aria-label="Learn the concepts behind this">
           <h2>Learn the concepts behind this</h2>

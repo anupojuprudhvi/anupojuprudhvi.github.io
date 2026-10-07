@@ -176,11 +176,13 @@
         </div>
       </header>
 
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
-<h2>Migration scale, legacy constraints, and making the business case to executives</h2>
+<h2 id="migration-scale-legacy-constraints-and-making-the-business-case-to-executives">Migration scale, legacy constraints, and making the business case to executives</h2>
 <p>Enterprise organizations transitioning from legacy virtualized infrastructure or monolithic architectures to AWS face severe friction: lack of workload dependency visibility, uncertain multi-year financial returns, unquantified migration risks, and institutional inertia. Without structured discovery and formal TCO modeling, enterprise cloud initiatives stall before migration begins.</p>
 <p>As part of AWS Partner Network (APN) delivery engagements, my role centered on guiding enterprise clients through the <b>AWS Migration Acceleration Program (MAP)</b> framework — moving from automated on-premises discovery to executive-validated Directional Business Cases (DBC) and production-ready target architecture blueprints.</p>
 </div>
@@ -188,7 +190,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Solution</div>
-<h2>A phased, data-driven migration lifecycle</h2>
+<h2 id="a-phased-data-driven-migration-lifecycle">A phased, data-driven migration lifecycle</h2>
 <p>The engagements followed the structured AWS MAP methodology, establishing empirical data baselines before planning infrastructure mobilization:</p>
 <ol>
 <li><b>Assess Phase</b>: Automated inventory collection, 6-pillar Cloud Adoption Framework (CAF) evaluation, and 3–5 year TCO financial modeling in AWS Transform.</li>
@@ -200,7 +202,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>Discovery tooling, identity federation, and target blueprints</h2>
+<h2 id="discovery-tooling-identity-federation-and-target-blueprints">Discovery tooling, identity federation, and target blueprints</h2>
 <p>Discovery requires high fidelity with zero operational disturbance to running production environments. Depending on client security boundaries, discovery was executed via <b>AWS Transform Agentless Collector OVA appliances</b> deployed directly into VMware vCenter clusters, or automated ingestion and normalization of deep RVTools exports.</p>
 <p>Where enterprise identity systems presented friction — such as legacy SAML configurations blocking assessment workspace access — coexistence architectures bridged the enterprise SAML IdP with <b>AWS IAM Identity Center (SAML + SCIM)</b> without disrupting existing developer workflows.</p>
 <details class="implementation-notes">
@@ -216,28 +218,28 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Security</div>
-<h2>Least privilege discovery and air-gapped support</h2>
+<h2 id="least-privilege-discovery-and-air-gapped-support">Least privilege discovery and air-gapped support</h2>
 <p>Discovery mechanisms operated strictly within read-only service account boundaries. For air-gapped or restricted financial environments, the discovery tool operated fully offline, collecting performance metrics locally and exporting encrypted assessment files for offline ingestion into AWS Transform.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Delivery</div>
-<h2>Securing migration funding and executive sponsorship</h2>
+<h2 id="securing-migration-funding-and-executive-sponsorship">Securing migration funding and executive sponsorship</h2>
 <p>The primary milestone of the Assess phase is delivering the <b>Directional Business Case (DBC)</b> and <b>Migration Readiness Assessment (MRA)</b> report. These documents provide the rigorous financial and technical justification required for C-level investment approval and qualify for AWS MAP partner co-funding for the subsequent Mobilize and Migrate phases.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Outcome</div>
-<h2>Measured clarity across diverse enterprise estates</h2>
+<h2 id="measured-clarity-across-diverse-enterprise-estates">Measured clarity across diverse enterprise estates</h2>
 <p>Across multiple client engagements, this structured methodology transformed opaque on-premise infrastructure footprints into concrete, right-sized AWS architectures, surfacing millions in projected infrastructure savings and providing actionable 7Rs roadmaps.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Case studies</div>
-<h2>Four APN migration and modernization engagements</h2>
+<h2 id="four-apn-migration-and-modernization-engagements">Four APN migration and modernization engagements</h2>
 <div class="case-study-links">
             <a href="fintech-map-assess-business-case.html"><span>01 / Migration assessment</span><strong>Digital asset platform MAP assess</strong><small>An agentless VMware discovery, a third-party IdP-to-Identity Center SAML fix, and a Directional Business Case for an institutional financial platform. →</small></a>
             <a href="media-cross-region-map-migration.html"><span>02 / Cross-region discovery</span><strong>Global media MAP assessment</strong><small>Inventory profiling and cloud transformation across US and EU data centers, sizing high-capacity media storage, compute, and localized workflows under AWS MAP. →</small></a>
@@ -247,6 +249,12 @@
 </div>
 </div>
 </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#migration-scale-legacy-constraints-and-making-the-business-case-to-executives" title="Migration scale, legacy constraints, and making the business case to executives">Problem</a></li><li><a href="#a-phased-data-driven-migration-lifecycle" title="A phased, data-driven migration lifecycle">Solution</a></li><li><a href="#discovery-tooling-identity-federation-and-target-blueprints" title="Discovery tooling, identity federation, and target blueprints">Architecture</a></li><li><a href="#least-privilege-discovery-and-air-gapped-support" title="Least privilege discovery and air-gapped support">Security</a></li><li><a href="#securing-migration-funding-and-executive-sponsorship" title="Securing migration funding and executive sponsorship">Delivery</a></li><li><a href="#measured-clarity-across-diverse-enterprise-estates" title="Measured clarity across diverse enterprise estates">Outcome</a></li><li><a href="#four-apn-migration-and-modernization-engagements" title="Four APN migration and modernization engagements">Case studies</a></li></ol>
+        </aside>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/index.html">← Case studies</a>
       </aside>

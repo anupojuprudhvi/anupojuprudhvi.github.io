@@ -185,10 +185,12 @@
 </div>
 </div>
 </section>
+      <div class="cs-body has-toc">
+        <div class="cs-main">
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Incident response</div>
-<h2>How the ingress path was narrowed from edge request to pod</h2>
+<h2 id="how-the-ingress-path-was-narrowed-from-edge-request-to-pod">How the ingress path was narrowed from edge request to pod</h2>
 <div class="problem-solution">
 <div>
 <h3>The problem</h3>
@@ -236,7 +238,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>The decisions that mattered</h2>
+<h2 id="the-decisions-that-mattered">The decisions that mattered</h2>
 <p>The design treats ingress as a chain of contracts rather than one Kubernetes object. Route 53 must identify the right edge, the load balancer must select the right listener and target group, the controller must reconcile the intended objects, targets must pass health checks, and the pod must be ready to serve the request. Each checkpoint produces evidence that narrows the RCA.</p>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
@@ -254,21 +256,21 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Security</div>
-<h2>Preserve evidence while restoring service</h2>
+<h2 id="preserve-evidence-while-restoring-service">Preserve evidence while restoring service</h2>
 <p>Incident access is scoped to the affected cluster and AWS resources. Logs and events are read before changes where possible, sensitive headers and payloads are redacted from incident notes, and emergency changes retain an owner, timestamp, reason, and rollback condition. Network controls are investigated as boundaries, not disabled as a first response.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Delivery</div>
-<h2>How the change is rolled out</h2>
+<h2 id="how-the-change-is-rolled-out">How the change is rolled out</h2>
 <p>The runbook is tested in a non-production environment with intentionally unhealthy targets, a mismatched Service selector, and a blocked network path. Each exercise must show that responders can distinguish the resulting symptoms and restore the known-good configuration. Production adoption should add the checkpoints to the on-call workflow and alert links without changing application behavior merely to make the dashboard look healthy.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Trade-offs</div>
-<h2>What this does not solve</h2>
+<h2 id="what-this-does-not-solve">What this does not solve</h2>
 <ul>
 <li>A structured RCA reduces investigation ambiguity but cannot prevent every bad deployment or cloud-provider failure.</li>
 <li>Health checks prove a particular probe path, not every user journey.</li>
@@ -279,17 +281,23 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Outcome</div>
-<h2>What changed</h2>
+<h2 id="what-changed">What changed</h2>
 <p>Ingress troubleshooting now has a stable order of operations and a vocabulary shared by DNS, platform, networking, and application responders. The documented outcome is diagnostic repeatability; no uptime, recovery-time, or incident-volume claim is made without measurements from the incident system.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Next</div>
-<h2>Improvements worth funding</h2>
+<h2 id="improvements-worth-funding">Improvements worth funding</h2>
 <p>Instrument a synthetic request that records the same correlation identifier at the edge, load balancer, controller, and application layers. Use a tabletop exercise to measure investigation time and the number of handoffs before publishing those metrics.</p>
 </div>
 </section>
+        </div>
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol><li><a href="#how-the-ingress-path-was-narrowed-from-edge-request-to-pod" title="How the ingress path was narrowed from edge request to pod">Incident response</a></li><li><a href="#the-decisions-that-mattered" title="The decisions that mattered">Architecture</a></li><li><a href="#preserve-evidence-while-restoring-service" title="Preserve evidence while restoring service">Security</a></li><li><a href="#how-the-change-is-rolled-out" title="How the change is rolled out">Delivery</a></li><li><a href="#what-this-does-not-solve" title="What this does not solve">Trade-offs</a></li><li><a href="#what-changed" title="What changed">Outcome</a></li><li><a href="#improvements-worth-funding" title="Improvements worth funding">Next</a></li></ol>
+        </aside>
+      </div>
       <div class="wrap">
         <section class="related-links" aria-label="Learn the concepts behind this">
           <h2>Learn the concepts behind this</h2>

@@ -456,6 +456,20 @@ ${enables}
   const rest =
     bodyHtml && bodyHtml.trimStart().startsWith("<section") ? bodyHtml : "";
 
+  // "On this page": every section heading gets an id, and pages with three or
+  // more sections show a contents list beside them on wide screens.
+  const { html: sectionsHtml, toc } = sectionToc(
+    `${leadSection}\n${rest.replace(/<pre(?![^>]*tabindex)/g, '<pre tabindex="0"')}`,
+  );
+  const tocHtml =
+    toc.length >= 3
+      ? `
+        <aside class="cs-toc" aria-label="On this page">
+          <p class="cs-toc-title">On this page</p>
+          <ol>${toc.map((t) => `<li><a href="#${t.id}" title="${t.title.replace(/"/g, "&quot;")}">${t.label}</a></li>`).join("")}</ol>
+        </aside>`
+      : "";
+
   return `<!doctype html>
 <html lang="en" data-theme="dark">
   <head>
@@ -536,8 +550,11 @@ ${siteTopNav({ docs, up, active: "case-studies" })}
         </div>
       </header>
 ${keyResults(d)}
-${leadSection}
-${rest.replace(/<pre(?![^>]*tabindex)/g, '<pre tabindex="0"')}${learning.length ? `
+      <div class="cs-body${tocHtml ? " has-toc" : ""}">
+        <div class="cs-main">
+${sectionsHtml}
+        </div>${tocHtml}
+      </div>${learning.length ? `
       <div class="wrap">
         ${relatedLinks("Learn the concepts behind this", learning.map((m) => ({ href: a(m.url), eyebrow: `${m.trackTitle} · Module ${String(m.module).padStart(2, "0")}`, title: m.title, summary: m.summary })))}
       </div>` : ""}
@@ -740,6 +757,29 @@ ${cards}
   </body>
 </html>
 `;
+}
+
+/**
+ * Gives each section's <h2> an id and returns the contents list for it,
+ * labelled by the section's eyebrow ("Problem", "Outcome") when it has one.
+ * Headings that already carry attributes (ids, classes) are left alone.
+ */
+function sectionToc(html) {
+  const used = new Set();
+  const toc = [];
+  const out = html.replace(
+    /(<div class="section-eyebrow">([\s\S]*?)<\/div>\s*)?<h2>([\s\S]*?)<\/h2>/g,
+    (_, eyebrowBlock = "", eyebrow, title) => {
+      const base = slugify(title);
+      let id = base;
+      for (let n = 2; used.has(id); n++) id = `${base}-${n}`;
+      used.add(id);
+      const strip = (s) => s.replace(/<[^>]+>/g, "").trim();
+      toc.push({ id, label: strip(eyebrow || title), title: strip(title) });
+      return `${eyebrowBlock}<h2 id="${id}">${title}</h2>`;
+    },
+  );
+  return { html: out, toc };
 }
 
 /* --------------------------------------------------------- learning path page */

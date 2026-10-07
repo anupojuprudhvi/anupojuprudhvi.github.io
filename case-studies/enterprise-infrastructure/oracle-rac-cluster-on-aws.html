@@ -189,11 +189,13 @@
 </div>
 </div>
 </section>
+      <div class="cs-body">
+        <div class="cs-main">
 
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
-<h2>Active-active clustering on storage that wasn't built to share</h2>
+<h2 id="active-active-clustering-on-storage-that-wasn-t-built-to-share">Active-active clustering on storage that wasn't built to share</h2>
 <p>Oracle RAC gets its high availability from every node in the cluster reading and writing the same underlying storage at once — if one node fails, the others already have live access to its data and simply absorb its workload. That model assumes a shared SAN. AWS EBS volumes don't work that way: each volume attaches to exactly one EC2 instance at a time, which is the standard blocker that keeps most RAC deployments off public cloud entirely, or forces them onto more expensive dedicated-hardware options.</p>
 <p>The platform this ran on also had an unusually spiky load profile: routine day-to-day traffic, punctuated by short, extreme surges (an examination-results release, an admissions deadline) where concurrent connections and transaction volume could jump by an order of magnitude with no warning window to scale into ahead of time. A cluster that could only fail over gracefully, but not sustain that kind of peak, wouldn't have solved the actual problem.</p>
 </div>
@@ -201,7 +203,7 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
-<h2>A software-defined storage fabric standing in for a SAN</h2>
+<h2 id="a-software-defined-storage-fabric-standing-in-for-a-san">A software-defined storage fabric standing in for a SAN</h2>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text">                   [ Application tier / ERP / web services ]
                                      │
                      ┌───────────────┴───────────────┐
@@ -243,6 +245,8 @@ su - grid -c &quot;asmcmd lsdg&quot;</code></pre>
 <p>Running RAC yourself on EC2 with a third-party clustered-storage layer is a heavier operational commitment than a managed database service — every node, the storage fabric, and the patching cadence are yours to own, and that's a real ongoing cost against something like Aurora's operational simplicity. It was the right trade here because the workload's failure mode wasn't &quot;an outage is inconvenient,&quot; it was &quot;an outage during a results release affects a very large population of students and families with no way to reschedule the event&quot; — active-active RAC with zero-downtime patching bought headroom a simpler managed setup at the same scale wouldn't have.</p>
 </div>
 </section>
+        </div>
+      </div>
       <aside class="next-study wrap">
         <a href="../../case-studies/index.html">← Case studies</a>
         <a href="../../case-studies/enterprise-infrastructure/hybrid-object-storage-platform.html">Hybrid object storage →</a>
