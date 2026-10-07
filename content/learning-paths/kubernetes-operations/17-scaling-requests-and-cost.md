@@ -12,6 +12,7 @@ stack: [Amazon EKS, Kubernetes, Horizontal Pod Autoscaler, Karpenter, Cluster Au
 tags: [autoscaling, cost, capacity, eks, kubernetes]
 redirectFrom: [scaling-requests-and-cost, 05-scaling-requests-and-cost]
 related: [partner-engagements/it-monitoring-tanzu-to-eks-map-assessment, healthcare/clinical-platform-modernization-and-cost-optimization]
+motif: monitor
 ---
 
 **In this module, you'll learn to:**

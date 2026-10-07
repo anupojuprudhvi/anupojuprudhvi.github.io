@@ -156,20 +156,18 @@
               <h1>Target State Blueprint · Landing Zone &amp; 7Rs Roadmap</h1>
               <p class="sub">The foundation to build before anything moves. A multi-account landing zone with guardrails, single sign-on, and hub networking, and the 7Rs, the strategy that decides what happens to each workload.</p>
             </div>
-            <svg class="motif motif-migration" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
-    <defs><path id="mM" d="M84 90 C 108 44, 132 44, 156 90" /></defs>
-    <text x="45" y="30">ON-PREM</text><text class="m-hot" x="195" y="30">AWS</text>
-    <rect class="m-node" x="6" y="40" width="78" height="100" rx="5" />
-    <rect class="m-node m-dashed" x="156" y="40" width="78" height="100" rx="5" />
-    <rect class="m-node mm-src1" x="16" y="58" width="58" height="16" rx="2" />
-    <rect class="m-node mm-src2" x="16" y="82" width="58" height="16" rx="2" />
-    <rect class="m-node mm-src3" x="16" y="106" width="58" height="16" rx="2" />
-    <rect class="m-node mm-dst1" x="166" y="58" width="58" height="16" rx="2" />
-    <rect class="m-node mm-dst2" x="166" y="82" width="58" height="16" rx="2" />
-    <rect class="m-node mm-dst3" x="166" y="106" width="58" height="16" rx="2" />
-    <path class="m-line m-dash" d="M84 90 C 108 44, 132 44, 156 90" />
-    <g class="m-packets"><circle class="m-pk" r="2.4"><animateMotion dur="1.5s" begin="-0.2s" repeatCount="indefinite"><mpath href="#mM" /></animateMotion></circle><circle class="m-pk" r="2.4"><animateMotion dur="1.5s" begin="-0.95s" repeatCount="indefinite"><mpath href="#mM" /></animateMotion></circle></g>
-    <text class="m-muted" x="120" y="162">wave-by-wave cutover</text>
+            <svg class="motif motif-network" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
+    <defs>
+      <path id="mA" d="M85 84 H40 V38" /><path id="mB" d="M155 84 H200 V38" />
+      <path id="mC" d="M85 96 H40 V142" /><path id="mD" d="M155 96 H200 V142" />
+    </defs>
+    <path class="m-line" d="M85 84 H40 V38 M155 84 H200 V38 M85 96 H40 V142 M155 96 H200 V142" />
+    <g class="m-packets"><circle class="m-pk" r="2.4"><animateMotion dur="2.6s" begin="-0.3s" repeatCount="indefinite"><mpath href="#mA" /></animateMotion></circle><circle class="m-pk" r="2.4"><animateMotion dur="3.1s" begin="-1.9s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#mB" /></animateMotion></circle><circle class="m-pk" r="2.4"><animateMotion dur="2.9s" begin="-1.1s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#mC" /></animateMotion></circle><circle class="m-pk" r="2.4"><animateMotion dur="2.4s" begin="-0.7s" repeatCount="indefinite"><mpath href="#mD" /></animateMotion></circle><circle class="m-pk" r="2.4"><animateMotion dur="3.1s" begin="-0.4s" repeatCount="indefinite"><mpath href="#mB" /></animateMotion></circle></g>
+    <rect class="m-node m-hub" x="85" y="76" width="70" height="28" rx="4" /><text class="m-hot" x="120" y="93">TGW</text>
+    <rect class="m-node" x="10" y="14" width="60" height="24" rx="4" /><text x="40" y="29">PROD</text>
+    <rect class="m-node" x="170" y="14" width="60" height="24" rx="4" /><text x="200" y="29">DEV</text>
+    <rect class="m-node" x="10" y="142" width="60" height="24" rx="4" /><text x="40" y="157">SHARED</text>
+    <rect class="m-node" x="170" y="142" width="60" height="24" rx="4" /><text x="200" y="157">EGRESS</text>
     </svg>
           </div>
           <div class="lp-meta-bar">

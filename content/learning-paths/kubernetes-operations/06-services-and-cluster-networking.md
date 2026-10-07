@@ -12,6 +12,7 @@ stack: [Kubernetes, CoreDNS, kube-proxy, Services, Ingress, NetworkPolicy]
 tags: [kubernetes, services, networking, dns, ingress, fundamentals]
 redirectFrom: [services-and-cluster-networking]
 related: [tolling/eks-ingress-incident-rca, healthcare/zero-public-ingress-network-security]
+motif: network
 ---
 
 **In this module, you'll learn to:**

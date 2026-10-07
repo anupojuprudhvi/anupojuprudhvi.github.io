@@ -10,6 +10,7 @@ level: Migration Engineering
 readingTime: 8 min read
 stack: [AWS MGN, AWS DMS, Wave Planning, Lighthouse Pilot, CCoE]
 tags: [mobilize, wave-planning, migration-factory, pilot, operational-readiness]
+motif: migration
 ---
 
 **In this module, you'll learn to:**

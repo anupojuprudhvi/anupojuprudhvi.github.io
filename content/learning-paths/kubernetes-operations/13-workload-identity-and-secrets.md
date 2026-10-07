@@ -12,6 +12,7 @@ stack: [Amazon EKS, EKS Pod Identity, IRSA, AWS IAM, AWS Secrets Manager, Extern
 tags: [security, iam, pod-identity, irsa, secrets, eks]
 redirectFrom: [workload-identity-and-secrets, 07-workload-identity-and-secrets]
 related: [tolling/cicd-delivery-engine]
+motif: security
 ---
 
 **In this module, you'll learn to:**

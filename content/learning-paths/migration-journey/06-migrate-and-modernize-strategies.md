@@ -10,6 +10,7 @@ level: Modernization Architecture
 readingTime: 7 min read
 stack: [AWS MGN, Amazon EKS, Karpenter, Amazon Aurora, AWS DMS, Amazon EventBridge]
 tags: [modernization, migrate, eks, aurora, serverless, migration-factory]
+motif: migration
 ---
 
 **In this module, you'll learn to:**

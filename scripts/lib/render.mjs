@@ -849,6 +849,9 @@ export function learningPathPage(d, bodyHtml, { up, url, prev, next, track, docs
     });
   }
   const withSidebar = !isOverview && modules.length > 1;
+  // The track's illustration heads its overview. A module shows one only when
+  // it names a motif that fits its own topic (motif: in its front matter).
+  const heroMotif = isOverview ? track.motif : d.motif;
 
   const breadcrumb = isOverview
     ? `<a class="back-link back" href="${a("learning-paths/index.html")}">← All learning paths</a>`
@@ -955,8 +958,8 @@ ${siteTopNav({ docs, up, active: "learning-paths" })}
               <span class="lp-badge">${esc(d.level || track.badge || "Production Playbook")}</span>
               <h1>${esc(d.title)}</h1>
               ${d.summary ? `<p class="sub">${inline(d.summary)}</p>` : ""}
-            </div>${track.motif ? `
-            ${motifSvg(track.motif)}` : ""}
+            </div>${heroMotif ? `
+            ${motifSvg(heroMotif)}` : ""}
           </div>
           <div class="lp-meta-bar">
             ${metaBits}

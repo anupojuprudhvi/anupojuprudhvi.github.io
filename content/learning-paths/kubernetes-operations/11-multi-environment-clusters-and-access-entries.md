@@ -12,6 +12,7 @@ stack: [Amazon EKS, AWS IAM, Kubernetes RBAC, EKS access entries]
 tags: [rbac, iam, eks, multi-environment, security]
 redirectFrom: [multi-environment-clusters-and-access-entries, 02-multi-environment-clusters-and-rbac]
 related: [tolling/cloud-foundation]
+motif: network
 ---
 
 **In this module, you'll learn to:**

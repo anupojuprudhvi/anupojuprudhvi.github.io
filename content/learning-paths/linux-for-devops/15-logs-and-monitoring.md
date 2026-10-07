@@ -9,6 +9,7 @@ level: Troubleshooting · Hands-on lab
 readingTime: 14 min read
 stack: [journald, journalctl, logrotate, rsyslog, Prometheus node_exporter]
 tags: [linux, logs, logrotate, journald, monitoring, prometheus, alerting]
+motif: monitor
 ---
 
 **In this module, you'll learn to:**

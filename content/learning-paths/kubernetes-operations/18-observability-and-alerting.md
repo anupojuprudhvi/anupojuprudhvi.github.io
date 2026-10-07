@@ -12,6 +12,7 @@ stack: [Amazon EKS, CloudWatch Container Insights, Fluent Bit, Prometheus, Amazo
 tags: [observability, monitoring, logging, alerting, eks]
 redirectFrom: [observability-and-alerting, 08-observability]
 related: [tolling/eks-ingress-incident-rca]
+motif: monitor
 ---
 
 **In this module, you'll learn to:**
