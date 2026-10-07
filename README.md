@@ -201,6 +201,9 @@ recorded in [the telecom editorial notes](docs/telecom-content-review.md).
 
 Templates use named slots such as `{{projectName}}`, `{{engagementUrl}}`,
 `{{selectedWork}}`, `{{caseStudyLinks}}`, and `{{caseStudyCount}}`.
+`{{year}}` works in every template: it is the year of the newest `date:` or
+`updated:` in any content file, so the footer year moves on with the site while
+the build stays reproducible (it never reads the clock).
 Unknown slots and invalid project references fail the build before outputs are
 written. HTML in content is trusted repository-authored markup, not user input.
 
@@ -223,9 +226,33 @@ These files help discovery; they do not guarantee search-engine indexing.
 
 Social preview images: `assets/og-template.html` is the site-wide default
 (`og-image.png`), and `assets/og-page.html` renders one image per case study and
-project overview into `assets/og/`. Run `npm run social` after adding or renaming
-a case study (add `-- --default` to also regenerate `og-image.png`), then
+project overview into `assets/og/`, and one per learning path into
+`assets/og/learning-paths/<track>.jpg` (shared by the track's overview and
+modules). Run `npm run social` after adding or renaming a case study or track
+(add `-- --default` to also regenerate `og-image.png`, or `-- --only <prefix>`
+to redraw just one set, such as `assets/og/learning-paths/`), then
 `npm run build`; pages fall back to `og-image.png` until their image exists.
+
+Titles and descriptions are trimmed for search results in
+`scripts/lib/render.mjs`: `docTitle()` adds " — Prudhvi Raj Anupoju" only when
+the whole title stays within about 60 characters, and `metaDescription()` ends a
+summary longer than 160 characters at its last full sentence (or a word, with an
+ellipsis). The full summary still shows on the page, so write summaries for
+readers and let the build shorten the meta tags.
+
+Layout widths: every page uses the homepage width (`--maxw` in `site.css`,
+1160px, or 1320px from 1600px wide). Running text on reading pages is capped at
+`--measure` (860px, in `deepdive.css`); figures, tables, and card lists use the
+full width. Below 1024px the navigation collapses behind the Menu button.
+
+The site's font is Inter, self-hosted as one variable file in `assets/fonts/`
+(SIL Open Font License, `assets/fonts/OFL.txt`) and preloaded on every page.
+
+Learning-path modules follow one shape: "In this module, you'll learn to",
+"Before you start", the sections, an optional "Try it" lab, "Recap · Key terms",
+and "Check yourself · Pop quiz". When a module's `readingTime` changes, update
+the track's `duration` in its `index.md`, in `tracks.json`, and on the
+learning-paths hub (`content/learning-paths/index.html`).
 
 Project outcomes and credentials are based on the existing portfolio content.
 The $300K+ figure describes annual savings identified across several
