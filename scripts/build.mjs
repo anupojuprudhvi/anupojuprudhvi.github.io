@@ -28,7 +28,7 @@ import { join, relative, dirname, basename } from "node:path";
 import { esc } from "./lib/html.mjs";
 import { parseFrontMatter, renderBody } from "./lib/markdown.mjs";
 import { MOTIF_NAMES, LAYER_MOTIF, motifSvg } from "./lib/motifs.mjs";
-import { SITE, SITE_META, HEAD_SECURITY, page, libraryPage, learningPathPage, redirectPage, siteTopNav, latestCaseStudies, toolboxSection, LAYER_ORDER } from "./lib/render.mjs";
+import { SITE, SITE_META, HEAD_SECURITY, readingMinutes, page, libraryPage, learningPathPage, redirectPage, siteTopNav, latestCaseStudies, toolboxSection, LAYER_ORDER } from "./lib/render.mjs";
 
 const ROOT = process.cwd();
 const CONTENT = join(ROOT, "content/case-studies");
@@ -176,6 +176,8 @@ const index = docs.map((d) => ({
   summary: d.summary,
   project: d.project,
   projectName: d.projectName || d.project,
+  projectShort: projectMap.get(d.project)?.short || "",
+  minutes: readingMinutes(d.bodyHtml, d.problem || "", d.solution || "", d.intro || ""),
   layer: d.layer || "",
   stack: d.stack || [],
   tags: d.tags || [],
