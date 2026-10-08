@@ -1,0 +1,842 @@
+/* Raj, the homepage guide (companion.js): Prudhvi as a hologram on a pedestal
+   that greets visitors, offers topics, walks them to each section, and points
+   at what they're reading with a laser.
+
+   Palette: the panels are dark "glass" in both themes, so they use the site's
+   inverse tokens (--inverse-bg, --inverse-text) and --accent-bright, which
+   keep their contrast on dark backgrounds. --holo-alert is the dark-theme
+   --accent2 for the same reason.
+
+   Stacking: below the Ask dialog (z-index 70) and the site header (100). The
+   figure's canvas ignores the pointer, and nothing covers the Ask launcher. */
+
+.companion-launcher,
+.companion-hud,
+.companion-laser,
+.companion-reticle {
+  --holo: var(--accent-bright);
+  --holo-alert: #f2b155;
+  --holo-soft: color-mix(in srgb, var(--accent-bright) 14%, transparent);
+  --holo-line: color-mix(in srgb, var(--accent-bright) 42%, transparent);
+  --holo-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* ---------------------------------------------------------------- launcher */
+.companion-launcher {
+  position: fixed;
+  right: 22px;
+  /* Ask launcher: 22px offset + 48px button + a 12px gap. */
+  bottom: 82px;
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+  background: var(--bg);
+  color: var(--accent);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.5);
+}
+.companion-launcher:hover {
+  background: var(--accent-soft);
+}
+.companion-launcher[hidden] {
+  display: none;
+}
+.companion-launcher-icon {
+  display: none;
+  flex: none;
+}
+/* Same rule as the Ask launcher: below 1760px the pill would cover the
+   content column, so it shrinks to a round icon button. */
+@media (max-width: 1759px) {
+  .companion-launcher {
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    justify-content: center;
+  }
+  .companion-launcher-icon {
+    display: block;
+  }
+  .companion-launcher-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
+/* ------------------------------------------------------------ 3D stage */
+.companion-stage {
+  position: fixed;
+  right: 6px;
+  bottom: 70px;
+  z-index: 59;
+  width: 300px;
+  height: 440px;
+  pointer-events: none;
+}
+.companion-stage[hidden] {
+  display: none;
+}
+.companion-stage canvas {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 3px color-mix(in srgb, var(--accent-bright) 70%, transparent))
+    drop-shadow(0 0 14px color-mix(in srgb, var(--accent-bright) 35%, transparent));
+}
+/* Light theme: the hologram stands in its own dark projection field. */
+:root[data-theme="light"] .companion-stage::before {
+  content: "";
+  position: absolute;
+  inset: 6% -4% 0;
+  background: radial-gradient(ellipse 50% 50% at 50% 54%, var(--inverse-bg) 58%, transparent 100%);
+}
+
+/* ----------------------------------------------------------- HUD panel */
+.companion-hud {
+  position: fixed;
+  right: 250px;
+  bottom: min(360px, 40vh);
+  z-index: 62;
+  width: 350px;
+  max-height: calc(100vh - min(360px, 40vh) - 96px);
+  display: flex;
+  flex-direction: column;
+  padding: 12px 14px 14px;
+  color: var(--inverse-text);
+  background:
+    repeating-linear-gradient(0deg, transparent 0 3px, color-mix(in srgb, var(--accent-bright) 3%, transparent) 3px 4px),
+    linear-gradient(160deg, color-mix(in srgb, var(--inverse-bg) 96%, transparent), color-mix(in srgb, var(--inverse-bg) 90%, transparent));
+  border: 1px solid var(--holo-line);
+  border-radius: 6px;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.35),
+    0 0 32px -8px color-mix(in srgb, var(--accent-bright) 45%, transparent),
+    0 24px 60px -24px rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  font-size: 14px;
+  line-height: 1.5;
+  animation: companion-materialize 0.45s ease-out;
+}
+.companion-hud[hidden] {
+  display: none;
+}
+/* Moved out of the way of what Raj is pointing at (companion.js dodge). */
+.companion-hud.is-dock-low {
+  bottom: 16px;
+  max-height: calc(100vh - 112px);
+}
+.companion-hud.is-dock-high {
+  top: 88px;
+  bottom: auto;
+  max-height: calc(100vh - 104px);
+}
+/* A scan of light runs along the frame's top edge. */
+.companion-hud-head::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--holo), transparent) no-repeat;
+  background-size: 30% 100%;
+  animation: companion-edge 4s linear infinite;
+  pointer-events: none;
+}
+@keyframes companion-edge {
+  from {
+    background-position: -40% 0;
+  }
+  to {
+    background-position: 140% 0;
+  }
+}
+/* Corner brackets. */
+.companion-hud::before,
+.companion-hud::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--holo);
+  pointer-events: none;
+}
+.companion-hud::before {
+  top: -1px;
+  left: -1px;
+  border-right: 0;
+  border-bottom: 0;
+}
+.companion-hud::after {
+  right: -1px;
+  bottom: -1px;
+  border-left: 0;
+  border-top: 0;
+}
+@keyframes companion-materialize {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+    filter: brightness(2);
+  }
+}
+
+.companion-hud-head {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: -4px -4px 8px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent-bright) 16%, transparent);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.companion-hud.is-dragging,
+.companion-hud.is-dragging .companion-hud-head {
+  cursor: grabbing;
+}
+.companion-hud.is-dragging {
+  animation: none;
+  box-shadow:
+    0 0 0 1px var(--holo),
+    0 0 44px -6px color-mix(in srgb, var(--accent-bright) 60%, transparent),
+    0 30px 70px -24px rgba(0, 0, 0, 0.85);
+}
+/* Scrolls inside the frame, so the corner brackets never cause scrollbars. */
+.companion-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-right: -8px;
+  padding-right: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--holo-line) transparent;
+}
+.companion-body::-webkit-scrollbar {
+  width: 6px;
+}
+.companion-body::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background: var(--holo-line);
+}
+.companion-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+.companion-body[hidden] {
+  display: none;
+}
+/* Minimized: header plus one line of what Raj last said. */
+.companion-hud.is-min {
+  height: auto !important;
+  padding-bottom: 10px;
+}
+.companion-hud.is-min .companion-hud-head {
+  margin-bottom: 6px;
+}
+.companion-peek {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 4px 0 0;
+  border: 0;
+  background: none;
+  color: var(--inverse-text);
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+.companion-peek[hidden] {
+  display: none;
+}
+.companion-peek-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.companion-peek-open {
+  flex: none;
+  font-family: var(--holo-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--holo);
+}
+.companion-peek.is-new {
+  animation: companion-ping 1.2s ease-out;
+}
+@keyframes companion-ping {
+  0% {
+    color: var(--holo);
+    text-shadow: 0 0 12px var(--holo);
+  }
+}
+.companion-resize {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 22px;
+  height: 22px;
+  cursor: nwse-resize;
+  touch-action: none;
+  z-index: 1;
+}
+.companion-resize::before {
+  content: "";
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--holo-line);
+  border-bottom: 2px solid var(--holo-line);
+}
+.companion-resize:hover::before {
+  border-color: var(--holo);
+}
+.companion-hud.is-min .companion-resize {
+  display: none;
+}
+.companion-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--holo-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--holo);
+}
+.companion-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--holo);
+  box-shadow: 0 0 10px var(--holo);
+  animation: companion-blink 2s ease-in-out infinite;
+}
+@keyframes companion-blink {
+  50% {
+    opacity: 0.35;
+  }
+}
+.companion-head-actions {
+  display: flex;
+  gap: 2px;
+}
+.companion-icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: none;
+  color: var(--inverse-text-muted);
+  font: inherit;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+.companion-icon-btn:hover,
+.companion-icon-btn[aria-pressed="true"] {
+  color: var(--holo);
+  border-color: var(--holo-line);
+  background: var(--holo-soft);
+}
+.companion-icon-btn[hidden] {
+  display: none;
+}
+
+/* Speech */
+.companion-bubble-tag {
+  margin: 0 0 4px;
+  font-family: var(--holo-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--holo);
+}
+.companion-hud.is-alert .companion-bubble-tag {
+  color: var(--holo-alert);
+}
+.companion-bubble-text {
+  margin: 0;
+  min-height: 3em;
+  font-size: 15px;
+  font-weight: 550;
+  line-height: 1.5;
+  color: var(--inverse-heading);
+}
+.companion-bubble-text.is-typing::after {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 1em;
+  margin-left: 3px;
+  vertical-align: -2px;
+  background: var(--holo);
+  animation: companion-blink 0.8s steps(1) infinite;
+}
+.companion-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Info card for the case study or section in focus. */
+.companion-card {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--holo-line);
+  border-left: 3px solid var(--holo);
+  border-radius: 4px;
+  background: var(--holo-soft);
+}
+.companion-card[hidden] {
+  display: none;
+}
+.companion-card-title {
+  margin: 0 0 6px;
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--inverse-heading);
+}
+.companion-card-rows {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 10px;
+  margin: 0;
+  font-size: 13px;
+}
+.companion-card-rows dt {
+  font-family: var(--holo-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--holo);
+  padding-top: 2px;
+}
+.companion-card-rows dd {
+  margin: 0;
+  color: var(--inverse-text);
+}
+
+/* Topic menu */
+.companion-topics {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+.companion-topics[hidden] {
+  display: none;
+}
+.companion-topic {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--holo-line);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--accent-bright) 5%, transparent);
+  color: var(--inverse-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  animation: companion-materialize 0.4s ease-out backwards;
+  transition:
+    background 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+.companion-topic:nth-child(2) {
+  animation-delay: 0.08s;
+}
+.companion-topic:nth-child(3) {
+  animation-delay: 0.16s;
+}
+.companion-topic:nth-child(4) {
+  animation-delay: 0.24s;
+}
+.companion-topic:hover {
+  background: var(--holo-soft);
+  box-shadow: 0 0 18px -6px var(--holo);
+  transform: translateX(-2px);
+}
+.companion-topic-num {
+  font-family: var(--holo-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--holo);
+}
+.companion-topic-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--inverse-heading);
+}
+.companion-topic-sub {
+  display: block;
+  font-size: 12px;
+  color: var(--inverse-text-muted);
+}
+.companion-topic-go {
+  color: var(--holo);
+}
+
+/* Search results for a question */
+.companion-results {
+  display: grid;
+  gap: 6px;
+  margin-top: 12px;
+}
+.companion-results[hidden] {
+  display: none;
+}
+.companion-result {
+  display: grid;
+  gap: 2px;
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--holo-line);
+  border-left: 3px solid var(--holo);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--accent-bright) 5%, transparent);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  animation: companion-materialize 0.35s ease-out backwards;
+}
+.companion-result:hover {
+  background: var(--holo-soft);
+  box-shadow: 0 0 18px -6px var(--holo);
+}
+.companion-result-title {
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--inverse-heading);
+}
+.companion-result-meta {
+  font-size: 12px;
+  color: var(--inverse-text-muted);
+}
+
+/* Question box */
+.companion-ask {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+}
+.companion-ask input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--holo-line);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--inverse-bg) 70%, black);
+  color: var(--inverse-heading);
+  font: inherit;
+  font-size: 14px;
+}
+.companion-ask input::placeholder {
+  color: var(--inverse-text-muted);
+}
+.companion-ask input:focus {
+  outline: 2px solid var(--holo);
+  outline-offset: 1px;
+}
+.companion-send {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  flex: none;
+  border: 1px solid var(--holo);
+  border-radius: 4px;
+  background: var(--holo);
+  color: var(--text-on-accent-bright);
+  cursor: pointer;
+}
+.companion-send:hover {
+  filter: brightness(1.1);
+}
+
+/* Actions */
+.companion-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.companion-actions[hidden] {
+  display: none;
+}
+.companion-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border: 1px solid var(--holo-line);
+  border-radius: 4px;
+  background: none;
+  color: var(--holo);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.companion-btn:hover {
+  background: var(--holo-soft);
+  border-color: var(--holo);
+}
+.companion-btn-primary {
+  background: var(--holo);
+  border-color: var(--holo);
+  color: var(--text-on-accent-bright);
+}
+.companion-btn-primary:hover {
+  background: var(--holo);
+  filter: brightness(1.1);
+}
+
+.companion-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid color-mix(in srgb, var(--accent-bright) 18%, transparent);
+}
+.companion-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  color: var(--holo);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.companion-link-btn:hover {
+  text-decoration: underline;
+}
+.companion-note {
+  margin: 0;
+  font-size: 12px;
+  color: var(--inverse-text-muted);
+}
+.companion-note:empty {
+  display: none;
+}
+
+/* ------------------------------------------------- laser and reticle */
+.companion-laser {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 61;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--holo), color-mix(in srgb, var(--holo) 70%, white));
+  box-shadow:
+    0 0 6px var(--holo),
+    0 0 16px var(--holo);
+  transform-origin: 0 50%;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.companion-laser.is-on {
+  opacity: 0.95;
+}
+.companion-reticle {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 61;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.companion-reticle.is-on {
+  opacity: 1;
+}
+.companion-reticle span {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--holo);
+  filter: drop-shadow(0 0 4px var(--holo));
+}
+.companion-reticle .tl {
+  left: 0;
+  top: 0;
+  border-right: 0;
+  border-bottom: 0;
+}
+.companion-reticle .tr {
+  right: 0;
+  top: 0;
+  border-left: 0;
+  border-bottom: 0;
+}
+.companion-reticle .bl {
+  left: 0;
+  bottom: 0;
+  border-right: 0;
+  border-top: 0;
+}
+.companion-reticle .br {
+  right: 0;
+  bottom: 0;
+  border-left: 0;
+  border-top: 0;
+}
+.companion-ripple {
+  position: fixed;
+  z-index: 61;
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--accent-bright);
+  border-radius: 50%;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0.2);
+  animation: companion-ripple 0.55s ease-out forwards;
+}
+@keyframes companion-ripple {
+  to {
+    transform: translate(-50%, -50%) scale(2.4);
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------- sizes */
+@media (max-width: 1279px) {
+  .companion-stage {
+    width: 230px;
+    height: 340px;
+  }
+  .companion-hud {
+    right: 190px;
+    bottom: min(280px, 36vh);
+    width: 330px;
+    max-height: calc(100vh - min(280px, 36vh) - 96px);
+  }
+}
+@media (max-width: 767px) {
+  .companion-stage {
+    right: 0;
+    bottom: 64px;
+    width: 120px;
+    height: 176px;
+  }
+  .companion-hud {
+    left: 10px;
+    right: 112px;
+    bottom: 70px;
+    width: auto;
+    max-height: 58vh;
+    padding: 12px;
+  }
+  .companion-topic {
+    grid-template-columns: auto 1fr;
+    gap: 8px;
+    padding: 8px 10px;
+  }
+  .companion-topic-sub,
+  .companion-topic-go {
+    display: none;
+  }
+  .companion-bubble-text {
+    font-size: 14px;
+  }
+}
+@media (max-width: 640px) {
+  .companion-launcher {
+    right: 14px;
+    /* Ask launcher on phones: 14px offset + 48px button + a 10px gap. */
+    bottom: 72px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .companion-hud-head::after,
+  .companion-peek.is-new,
+  .companion-hud,
+  .companion-topic,
+  .companion-ripple,
+  .companion-status-dot,
+  .companion-bubble-text.is-typing::after {
+    animation: none;
+  }
+}
+
+@media print {
+  .companion-launcher,
+  .companion-stage,
+  .companion-hud,
+  .companion-laser,
+  .companion-reticle {
+    display: none !important;
+  }
+}
+/* The approved portrait keeps Raj's detail without a GPU/WebGL dependency. */
+.companion-portrait {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 14px var(--hero-glow-a));
+}
+.companion-stage[data-mode="point"] .companion-portrait,
+.companion-stage[data-mode="poke"] .companion-portrait {
+  filter: drop-shadow(0 0 20px var(--hero-glow-a)) brightness(1.12);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .companion-portrait { animation: hologram-breathe 6s ease-in-out infinite; }
+}
+.companion-portrait.raj-sprite { width: 100%; height: auto; margin: 0; }
+.companion-stage { width: 340px; height: 340px; }
+.companion-stage.is-at-hero { visibility: hidden; }
+@media (max-width: 1279px) { .companion-stage { width: 260px; height: 260px; } }
+@media (max-width: 767px) { .companion-stage { width: 140px; height: 140px; } }
+@media (max-width: 767px) {
+  .companion-hud.is-min { left: 10px; right: auto; width: clamp(180px, 50vw, 220px); }
+  .companion-hud.is-min [data-c="voice"],
+  .companion-hud.is-min [data-c="menu"] { display: none; }
+}
