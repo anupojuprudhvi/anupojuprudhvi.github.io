@@ -284,7 +284,9 @@ visitor has closed him. The optimized local `assets/images/raj-poses.webp`
 atlas supplies six poses based on the owner's photo: resting, waving (two
 frames), pointing, speaking, and nodding. CSS and the guide state machine
 animate these poses; this is an illustrated 2D hologram, not a rigged 3D model
-or live facial tracking. No WebGL runtime is required. The hero and floating
+or live facial tracking. Optional speech prefers an installed Indian English (`en-IN`) voice at a relaxed
+pace. Voice availability depends on the browser and device. No WebGL runtime
+is required. The hero and floating
 guide share the same poses; only one character is shown while the hero is in
 view. The greeting starts minimized and expands on request. Raj keeps guiding if the artwork
 fails to load. `scripts/verify-companion.mjs` covers him

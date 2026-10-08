@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import AxeBuilder from "@axe-core/playwright";
+import { verifyVoice } from "./verify-voice.mjs";
 
 // Raj, the homepage guide (assets/companion.js): greets first-time visitors,
 // offers topics, walks to sections and case studies and points at them,
@@ -227,6 +228,7 @@ export async function verifyCompanion(browser, base) {
     }
   }
 
+  await verifyVoice(browser, base);
   assert.deepEqual(errors, []);
   console.log("PASS: Raj greets, offers topics, walks and points, answers or takes a message, dodges what he points at, stays clear of Ask, and works without artwork.");
 }

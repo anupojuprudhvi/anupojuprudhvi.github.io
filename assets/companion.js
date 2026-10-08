@@ -251,12 +251,38 @@
   let voiceOn = local.get("companion-voice") === "on";
   const canSpeak = "speechSynthesis" in window && typeof SpeechSynthesisUtterance === "function";
 
-  function speak(message) {
+  let speechRequest = 0;
+  function stopSpeech() {
+    speechRequest++;
+    if (canSpeak) speechSynthesis.cancel();
+  }
+
+  async function speak(message) {
     if (!canSpeak || !message) return;
-    speechSynthesis.cancel();
+    stopSpeech();
+    const request = speechRequest;
+    let voices = speechSynthesis.getVoices();
+    // Some browsers populate voices only after the first speech interaction.
+    if (!voices.length) {
+      await new Promise((resolve) => {
+        const finish = () => {
+          clearTimeout(timeout);
+          speechSynthesis.removeEventListener("voiceschanged", finish);
+          resolve();
+        };
+        const timeout = setTimeout(finish, 800);
+        speechSynthesis.addEventListener("voiceschanged", finish);
+      });
+      voices = speechSynthesis.getVoices();
+    }
+    if (request !== speechRequest || !voiceOn || !isOpen()) return;
+    const indianVoice = voices.find((voice) => /^en[-_]in$/i.test(voice.lang))
+      || voices.find((voice) => /^en(?:[-_]|$)/i.test(voice.lang) && /\bindia(?:n)?\b/i.test(voice.name));
     const utterance = new SpeechSynthesisUtterance(message);
+    if (indianVoice) utterance.voice = indianVoice;
     utterance.lang = "en-IN";
-    utterance.rate = 0.95;
+    utterance.rate = 0.9;
+    utterance.pitch = 1;
     speechSynthesis.speak(utterance);
   }
 
@@ -822,7 +848,7 @@
     newFlow();
     clearPoint();
     clearInterval(typeTimer);
-    if (canSpeak) speechSynthesis.cancel();
+    stopSpeech();
     hud.hidden = true;
     root.classList.remove("raj-guide-open");
     stage.hidden = true;
@@ -933,7 +959,7 @@
         ui.voice.setAttribute("aria-pressed", String(voiceOn));
         local.set("companion-voice", voiceOn ? "on" : "off");
         if (voiceOn) speak(ui.live.textContent);
-        else speechSynthesis.cancel();
+        else stopSpeech();
       });
     }
 
