@@ -5,6 +5,7 @@ import path from "node:path";
 import assert from "node:assert/strict";
 import { serve, root } from "./serve.mjs";
 import { verifySearch } from "./verify-search.mjs";
+import { verifyCompanion } from "./verify-companion.mjs";
 const artifacts = path.join(root, "artifacts");
 const server = serve(0);
 await new Promise((resolve) => server.once("listening", resolve));
@@ -24,6 +25,7 @@ try {
   });
   fs.mkdirSync(artifacts, { recursive: true });
   await verifySearch(browser, base);
+  await verifyCompanion(browser, base);
   const allPages = [
     "index.html",
     "privacy.html",
