@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 470" focusable="false">
+  <defs>
+  <pattern id="topoGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+  <circle cx="1" cy="1" r=".7" fill="#82d8df" opacity=".18"/>
+  </pattern>
+  <linearGradient id="topoWash">
+  <stop stop-color="#18313d" stop-opacity=".7"/>
+  <stop offset="1" stop-color="#131b2c" stop-opacity=".5"/>
+  </linearGradient>
+  </defs>
+  <rect x="12" y="12" width="616" height="446" rx="12" fill="url(#topoGrid)"/>
+  <g fill="url(#topoWash)" stroke="#42616b">
+  <rect x="65" y="65" width="500" height="370" rx="10"/>
+  <rect x="85" y="195" width="450" height="220" rx="7" stroke-dasharray="4 6"/>
+  </g>
+  <g fill="#91b9c5" font-family="monospace" font-size="9" letter-spacing="2">
+  <text x="80" y="48">CLOUD PLATFORM / ARCHITECTURE EXPLORER</text>
+  <text x="100" y="185">PRIVATE NETWORK · GOVERNED BOUNDARY</text>
+  </g>
+  <g fill="none" stroke="#62c6c7" stroke-width="1.2" opacity=".65">
+  <path d="M140 140v70M310 140v70M480 140v70M140 270v70M310 270v70M480 270v70M175 240h100M345 240h100M175 370h100M345 370h100"/>
+  </g>
+  <g class="topology-node">
+  <rect x="88" y="76" width="104" height="68" rx="6" fill="#101d2c" stroke="#a998ff" stroke-opacity=".6"/>
+  <path d="m131 96 9-5 9 5v10l-9 5-9-5Z m0 0 9 5 9-5 m-9 5v10" fill="none" stroke="#a998ff" stroke-width="1.3"/>
+  <text x="140" y="127" text-anchor="middle" fill="#e2eff5" font-family="monospace" font-size="9" letter-spacing="1">EDGE</text>
+  <text x="140" y="158" text-anchor="middle" fill="#91aabc" font-family="monospace" font-size="8">Global routing</text>
+  </g>
+  <g class="topology-node">
+  <rect x="258" y="76" width="104" height="68" rx="6" fill="#101d2c" stroke="#72e8d3" stroke-opacity=".6"/>
+  <path d="m301 96 9-5 9 5v10l-9 5-9-5Z m0 0 9 5 9-5 m-9 5v10" fill="none" stroke="#72e8d3" stroke-width="1.3"/>
+  <text x="310" y="127" text-anchor="middle" fill="#e2eff5" font-family="monospace" font-size="9" letter-spacing="1">IDENTITY</text>
+  <text x="310" y="158" text-anchor="middle" fill="#91aabc" font-family="monospace" font-size="8">Access boundaries</text>
+  </g>
+  <g class="topology-node">
+  <rect x="428" y="76" width="104" height="68" rx="6" fill="#101d2c" stroke="#a998ff" stroke-opacity=".6"/>
+  <path d="m471 96 9-5 9 5v10l-9 5-9-5Z m0 0 9 5 9-5 m-9 5v10" fill="none" stroke="#a998ff" stroke-width="1.3"/>
+  <text x="480" y="127" text-anchor="middle" fill="#e2eff5" font-family="monospace" font-size="9" letter-spacing="1">OBSERVE</text>
+  <text x="480" y="158" text-anchor="middle" fill="#91aabc" font-family="monospace" font-size="8">Logs &amp; metrics</text>
+  </g>
+  <g class="topology-node">
+  <rect x="88" y="206" width="104" height="68" rx="6" fill="#101d2c" stroke="#72e8d3" stroke-opacity=".6"/>
+  <path d="m131 226 9-5 9 5v10l-9 5-9-5Z m0 0 9 5 9-5 m-9 5v10" fill="none" stroke="#72e8d3" stroke-width="1.3"/>
+  <text x="140" y="257" text-anchor="middle" fill="#e2eff5" font-family="monospace" font-size="9" letter-spacing="1">NETWORK</text>
+  <text x="140" y="288" text-anchor="middle" fill="#91aabc" font-family="monospace" font-size="8">Transit gateway</text>
+  </g>
+  <g class="topology-node">
+  <rect x="258" y="206" width="104" height="68" rx="6" fill="#101d2c" stroke="#83b8ff" stroke-opacity=".6"/>
+  <path d="m301 226 9-5 9 5v10l-9 5-9-5Z m0 0 9 5 9-5 m-9 5v10" fill="none" stroke="#83b8ff" stroke-width="1.3"/>
+  <text x="310" y="257" text-anchor="middle" fill="#e2eff5" font-family="monospace" font-size="9" letter-spacing="1">COMPUTE</text>
+  <text x="310" y="288" text-anchor="middle" fill="#91aabc" font-family="monospace" font-size="8">Kubernetes / EKS</text>
+  </g>
+  <g class="topology-node">
+  <rect x="428" y="206" width="104" height="68" rx="6" fill="#101d2c" stroke="#a998ff" stroke-opacity=".6"/>
+  <path d="m471 226 9-5 9 5v10l-9 5-9-5Z m0 0 9 5 9-5 m-9 5v10" fill="none" stroke="#a998ff" stroke-width="1.3"/>
+  <text x="480" y="257" text-anchor="middle" fill="#e2eff5" font-family="monospace" font-size="9" letter-spacing="1">DELIVERY</text>
+  <text x="480" y="288" text-anchor="middle" fill="#91aabc" font-family="monospace" font-size="8">CI/CD pipelines</text>
+  </g>
+  <g class="topology-node">
+  <rect x="88" y="336" width="104" height="68" rx="6" fill="#101d2c" stroke="#83b8ff" stroke-opacity=".6"/>
+  <path d="m131 356 9-5 9 5v10l-9 5-9-5Z m0 0 9 5 9-5 m-9 5v10" fill="none" stroke="#83b8ff" stroke-width="1.3"/>
+  <text x="140" y="387" text-anchor="middle" fill="#e2eff5" font-family="monospace" font-size="9" letter-spacing="1">PRIMARY</text>
+  <text x="140" y="418" text-anchor="middle" fill="#91aabc" font-family="monospace" font-size="8">Application services</text>
+  </g>
+  <g class="topology-node">
+  <rect x="258" y="336" width="104" height="68" rx="6" fill="#101d2c" stroke="#72e8d3" stroke-opacity=".6"/>
+  <path d="m301 356 9-5 9 5v10l-9 5-9-5Z m0 0 9 5 9-5 m-9 5v10" fill="none" stroke="#72e8d3" stroke-width="1.3"/>
+  <text x="310" y="387" text-anchor="middle" fill="#e2eff5" font-family="monospace" font-size="9" letter-spacing="1">DATA</text>
+  <text x="310" y="418" text-anchor="middle" fill="#91aabc" font-family="monospace" font-size="8">Aurora / storage</text>
+  </g>
+  <g class="topology-node">
+  <rect x="428" y="336" width="104" height="68" rx="6" fill="#101d2c" stroke="#72e8d3" stroke-opacity=".6"/>
+  <path d="m471 356 9-5 9 5v10l-9 5-9-5Z m0 0 9 5 9-5 m-9 5v10" fill="none" stroke="#72e8d3" stroke-width="1.3"/>
+  <text x="480" y="387" text-anchor="middle" fill="#e2eff5" font-family="monospace" font-size="9" letter-spacing="1">RECOVERY</text>
+  <text x="480" y="418" text-anchor="middle" fill="#91aabc" font-family="monospace" font-size="8">Multi-region DR</text>
+  </g>
+  <g fill="#79f3df">
+  <circle r="3" cx="140" cy="175"/>
+  <circle r="3" cx="310" cy="310"/>
+  <circle r="3" cx="400" cy="240"/>
+  </g>
+  </svg>

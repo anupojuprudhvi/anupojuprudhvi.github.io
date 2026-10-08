@@ -84,140 +84,27 @@
       }
     </script>
     <script src="assets/theme.js"></script>
+    <link rel="preload" href="assets/images/raj-poses.webp" as="image" />
     <link rel="preload" href="assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="assets/site.css" />
     <link rel="stylesheet" href="assets/assistant.css" />
+    <link rel="stylesheet" href="assets/companion.css" />
     <script src="assets/site.js" defer></script>
     <script src="assets/assistant.js" defer></script>
+    <script src="assets/companion.js" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
 {{siteNav}}
     <main id="main">
       <header class="hero" id="top">
-        <!-- Decorative hub-and-spoke network behind the hero: traffic flows
-             through a transit gateway; every cycle PROD fails, traffic fails over
-             to DR, then recovers. Laid out on the 1440px design grid so lines run
-             through the gaps around the text and the architecture card. -->
-        <div class="hero-bg" aria-hidden="true">
-          <svg class="hub-net" width="1440" height="820" viewBox="0 0 1440 820" focusable="false">
-            <defs>
-              <path id="hubToProd" d="M1043 556 V55" />
-              <path id="hubToDev" d="M973 572 H787 V55" />
-              <path id="hubToShared" d="M973 572 H615" />
-              <path id="hubToDr" d="M1113 572 H1318 V395" />
-            </defs>
-            <g class="hub-links">
-              <path class="hub-link hub-link-prod" d="M1043 556 V55" />
-              <path class="hub-link" d="M973 572 H615" />
-              <path class="hub-link" d="M787 572 V55" />
-              <path class="hub-link hub-link-dr" d="M1113 572 H1318 V395" />
-              <circle class="hub-joint" cx="787" cy="572" r="2.5" />
-            </g>
-            <g class="hub-packets">
-              <g class="pk-prod">
-                <circle class="pk" r="2.2"><animateMotion dur="3.4s" begin="-0.4s" repeatCount="indefinite"><mpath href="#hubToProd" /></animateMotion></circle>
-                <circle class="pk" r="2.2"><animateMotion dur="3.4s" begin="-2.1s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#hubToProd" /></animateMotion></circle>
-              </g>
-              <circle class="pk" r="2.2"><animateMotion dur="4.2s" begin="-1.3s" repeatCount="indefinite"><mpath href="#hubToDev" /></animateMotion></circle>
-              <circle class="pk" r="2.2"><animateMotion dur="4.2s" begin="-3.4s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#hubToDev" /></animateMotion></circle>
-              <circle class="pk" r="2.2"><animateMotion dur="2.6s" begin="-0.9s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#hubToShared" /></animateMotion></circle>
-              <g class="pk-dr">
-                <circle class="pk" r="2.2"><animateMotion dur="2.4s" begin="-0.2s" repeatCount="indefinite"><mpath href="#hubToDr" /></animateMotion></circle>
-                <circle class="pk" r="2.2"><animateMotion dur="2.4s" begin="-1.4s" repeatCount="indefinite"><mpath href="#hubToDr" /></animateMotion></circle>
-              </g>
-            </g>
-            <g class="hub-nodes">
-              <g class="hub-node hub-node-hub">
-                <rect x="973" y="556" width="140" height="32" rx="5" />
-                <text x="1043" y="576">TRANSIT GATEWAY</text>
-              </g>
-              <g class="hub-node hub-node-prod">
-                <rect x="983" y="17" width="120" height="38" rx="5" />
-                <text x="1043" y="33">VPC · PROD</text>
-                <text class="hub-state hub-state-ok" x="1043" y="47">HEALTHY</text>
-                <text class="hub-state hub-state-bad" x="1043" y="47">FAILING</text>
-              </g>
-              <g class="hub-node">
-                <rect x="737" y="17" width="100" height="38" rx="5" />
-                <text x="787" y="33">VPC · DEV</text>
-                <text class="hub-state" x="787" y="47">HEALTHY</text>
-              </g>
-              <g class="hub-node">
-                <rect x="505" y="556" width="110" height="32" rx="5" />
-                <text x="560" y="576">SHARED SVCS</text>
-              </g>
-              <g class="hub-node hub-node-dr">
-                <rect x="1278" y="357" width="80" height="38" rx="5" />
-                <text x="1318" y="373">VPC · DR</text>
-                <text class="hub-state hub-state-standby" x="1318" y="387">STANDBY</text>
-                <text class="hub-state hub-state-active" x="1318" y="387">ACTIVE</text>
-              </g>
-            </g>
-          </svg>
-          <!-- Same diagram for the 1320px layout on screens 1600px and wider. -->
-          <svg class="hub-net hub-net-wide" width="1600" height="820" viewBox="0 0 1600 820" focusable="false">
-            <defs>
-              <path id="wideToProd" d="M1169 556 V55" />
-              <path id="wideToDev" d="M1099 572 H878 V55" />
-              <path id="wideToShared" d="M1099 572 H615" />
-              <path id="wideToDr" d="M1239 572 H1488 V395" />
-            </defs>
-            <g class="hub-links">
-              <path class="hub-link hub-link-prod" d="M1169 556 V55" />
-              <path class="hub-link" d="M1099 572 H615" />
-              <path class="hub-link" d="M878 572 V55" />
-              <path class="hub-link hub-link-dr" d="M1239 572 H1488 V395" />
-              <circle class="hub-joint" cx="878" cy="572" r="2.5" />
-            </g>
-            <g class="hub-packets">
-              <g class="pk-prod">
-                <circle class="pk" r="2.2"><animateMotion dur="3.4s" begin="-0.4s" repeatCount="indefinite"><mpath href="#wideToProd" /></animateMotion></circle>
-                <circle class="pk" r="2.2"><animateMotion dur="3.4s" begin="-2.1s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#wideToProd" /></animateMotion></circle>
-              </g>
-              <circle class="pk" r="2.2"><animateMotion dur="4.2s" begin="-1.3s" repeatCount="indefinite"><mpath href="#wideToDev" /></animateMotion></circle>
-              <circle class="pk" r="2.2"><animateMotion dur="4.2s" begin="-3.4s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#wideToDev" /></animateMotion></circle>
-              <circle class="pk" r="2.2"><animateMotion dur="2.6s" begin="-0.9s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#wideToShared" /></animateMotion></circle>
-              <g class="pk-dr">
-                <circle class="pk" r="2.2"><animateMotion dur="2.4s" begin="-0.2s" repeatCount="indefinite"><mpath href="#wideToDr" /></animateMotion></circle>
-                <circle class="pk" r="2.2"><animateMotion dur="2.4s" begin="-1.4s" repeatCount="indefinite"><mpath href="#wideToDr" /></animateMotion></circle>
-              </g>
-            </g>
-            <g class="hub-nodes">
-              <g class="hub-node hub-node-hub">
-                <rect x="1099" y="556" width="140" height="32" rx="5" />
-                <text x="1169" y="576">TRANSIT GATEWAY</text>
-              </g>
-              <g class="hub-node hub-node-prod">
-                <rect x="1109" y="17" width="120" height="38" rx="5" />
-                <text x="1169" y="33">VPC · PROD</text>
-                <text class="hub-state hub-state-ok" x="1169" y="47">HEALTHY</text>
-                <text class="hub-state hub-state-bad" x="1169" y="47">FAILING</text>
-              </g>
-              <g class="hub-node">
-                <rect x="828" y="17" width="100" height="38" rx="5" />
-                <text x="878" y="33">VPC · DEV</text>
-                <text class="hub-state" x="878" y="47">HEALTHY</text>
-              </g>
-              <g class="hub-node">
-                <rect x="505" y="556" width="110" height="32" rx="5" />
-                <text x="560" y="576">SHARED SVCS</text>
-              </g>
-              <g class="hub-node hub-node-dr">
-                <rect x="1448" y="357" width="80" height="38" rx="5" />
-                <text x="1488" y="373">VPC · DR</text>
-                <text class="hub-state hub-state-standby" x="1488" y="387">STANDBY</text>
-                <text class="hub-state hub-state-active" x="1488" y="387">ACTIVE</text>
-              </g>
-            </g>
-          </svg>
-          <span class="hero-spot"></span>
-        </div>
+        <div class="hero-bg" aria-hidden="true"><span class="hero-spot"></span><div class="globe-grid"></div></div>
         <div class="wrap">
           <div class="hero-grid">
-            <div>
+            <div class="hero-copy">
               <p class="type-eyebrow" id="typeLine" aria-label="Cloud platform architect"><span class="type-word" id="typeWord">Cloud</span><span> platform architect</span><span class="type-cursor" aria-hidden="true"></span></p>
-              <h1>Infrastructure<br />you can<br /><span>build on.</span></h1>
+              <p class="hero-edition">ENGINEERING THE NEXT / CLOUD · SYSTEMS · SCALE</p>
+              <h1>Designing<br />resilient global<br />architectures.<br /><span>At scale.</span></h1>
               <p class="lede">
                 I build cloud platforms that hold up under real production
                 load, with reliability, security, and cost control designed
@@ -250,63 +137,13 @@
                   >Get in touch ↘</a
                 >
               </div>
-              <!-- Compact version of the background network for screens where
-                   that one is hidden (below 1280px): same classes, same cycle. -->
-              <svg class="hub-net-compact" viewBox="0 0 340 170" aria-hidden="true" focusable="false">
-                <defs>
-                  <path id="cToProd" d="M130 71 V24 H108" />
-                  <path id="cToDev" d="M210 71 V24 H232" />
-                  <path id="cToShared" d="M130 99 V146 H108" />
-                  <path id="cToDr" d="M210 99 V146 H232" />
-                </defs>
-                <g class="hub-links">
-                  <path class="hub-link hub-link-prod" d="M130 71 V24 H108" />
-                  <path class="hub-link" d="M210 71 V24 H232" />
-                  <path class="hub-link" d="M130 99 V146 H108" />
-                  <path class="hub-link hub-link-dr" d="M210 99 V146 H232" />
-                </g>
-                <g class="hub-packets">
-                  <g class="pk-prod">
-                    <circle class="pk" r="2.4"><animateMotion dur="2.2s" begin="-0.3s" repeatCount="indefinite"><mpath href="#cToProd" /></animateMotion></circle>
-                    <circle class="pk" r="2.4"><animateMotion dur="2.2s" begin="-1.4s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#cToProd" /></animateMotion></circle>
-                  </g>
-                  <circle class="pk" r="2.4"><animateMotion dur="2.6s" begin="-0.8s" repeatCount="indefinite"><mpath href="#cToDev" /></animateMotion></circle>
-                  <circle class="pk" r="2.4"><animateMotion dur="2.4s" begin="-1.6s" repeatCount="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#cToShared" /></animateMotion></circle>
-                  <g class="pk-dr">
-                    <circle class="pk" r="2.4"><animateMotion dur="1.8s" begin="-0.2s" repeatCount="indefinite"><mpath href="#cToDr" /></animateMotion></circle>
-                    <circle class="pk" r="2.4"><animateMotion dur="1.8s" begin="-1.1s" repeatCount="indefinite"><mpath href="#cToDr" /></animateMotion></circle>
-                  </g>
-                </g>
-                <g class="hub-nodes">
-                  <g class="hub-node hub-node-hub">
-                    <rect x="110" y="71" width="120" height="28" rx="5" />
-                    <text x="170" y="89">TRANSIT GATEWAY</text>
-                  </g>
-                  <g class="hub-node hub-node-prod">
-                    <rect x="12" y="7" width="96" height="34" rx="5" />
-                    <text x="60" y="21">VPC · PROD</text>
-                    <text class="hub-state hub-state-ok" x="60" y="34">HEALTHY</text>
-                    <text class="hub-state hub-state-bad" x="60" y="34">FAILING</text>
-                  </g>
-                  <g class="hub-node">
-                    <rect x="232" y="7" width="96" height="34" rx="5" />
-                    <text x="280" y="21">VPC · DEV</text>
-                    <text class="hub-state" x="280" y="34">HEALTHY</text>
-                  </g>
-                  <g class="hub-node">
-                    <rect x="12" y="129" width="96" height="34" rx="5" />
-                    <text x="60" y="150">SHARED SVCS</text>
-                  </g>
-                  <g class="hub-node hub-node-dr">
-                    <rect x="232" y="129" width="96" height="34" rx="5" />
-                    <text x="280" y="143">VPC · DR</text>
-                    <text class="hub-state hub-state-standby" x="280" y="156">STANDBY</text>
-                    <text class="hub-state hub-state-active" x="280" y="156">ACTIVE</text>
-                  </g>
-                </g>
-              </svg>
+
             </div>
             <div class="architecture">
+              <div class="orbital-scene" aria-hidden="true">
+                <span class="orbital-coordinate">PLATFORM SYSTEM / 001</span>
+                <img src="assets/cloud-platform.svg" alt="" width="640" height="470" />
+              </div>
               <div class="arch-label">
                 <span>ARCHITECTURE / BY DESIGN</span>
                 <button class="trace-btn" id="traceBtn" type="button">
@@ -331,6 +168,15 @@
                 everything built on it.
               </div>
             </div>
+            <div class="hero-raj">
+              <div class="raj-intro-card">
+                <span class="raj-online"><i aria-hidden="true"></i> RAJ / ARCHITECTURE GUIDE</span>
+                <p>Explore the systems<br />behind the work.</p>
+                <button type="button" class="raj-start" data-open-raj hidden>Meet your guide <span aria-hidden="true">↗</span></button>
+              </div>
+              <div class="raj-hero-image raj-sprite" data-pose="point" aria-hidden="true"></div>
+              <span class="raj-scene-caption" aria-hidden="true">SECURE · SCALABLE · RESILIENT</span>
+            </div>
           </div>
           <div class="stats" id="statsRow">
             <div class="stat">
@@ -352,6 +198,17 @@
           </div>
         </div>
       </header>
+      <section class="expertise-deck" aria-labelledby="expertiseTitle">
+        <div class="wrap">
+          <div class="expertise-heading"><p class="eyebrow" id="expertiseTitle">CORE EXPERTISE / BUILT INTO EVERY LAYER</p><span aria-hidden="true">01 — 04</span></div>
+          <div class="expertise-grid">
+            <a href="case-studies/index.html"><span class="expertise-symbol" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M12 33h25a8 8 0 0 0 1-16 13 13 0 0 0-25-2 9 9 0 0 0-1 18Z"/><path d="m17 39 7 4 7-4M24 33v10"/></svg></span><strong>AWS &amp; Cloud</strong><small>Architecture without limits</small></a>
+            <a href="case-studies/index.html?tool=amazon-eks"><span class="expertise-symbol" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="m24 3 17 9v23l-17 10-17-10V12Z"/><circle cx="24" cy="24" r="9"/><path d="M24 7v8m0 18v8M9 15l8 5m14 9 8 5M9 34l8-5m14-9 8-5"/></svg></span><strong>Kubernetes</strong><small>Platforms built to scale</small></a>
+            <a href="case-studies/index.html?tool=terraform"><span class="expertise-symbol" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="m5 7 15 9v17L5 24Zm19 11 15 9v17l-15-9Zm0-17 15 9v13l-15-9Zm18 12v17l5-3V10Z"/></svg></span><strong>Infrastructure as Code</strong><small>Repeatable by design</small></a>
+            <a href="#work"><span class="expertise-symbol" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="m24 3 17 7v13c0 11-17 22-17 22S7 34 7 23V10Z"/><path d="m16 24 6 6 12-13"/></svg></span><strong>Resilience &amp; Security</strong><small>Ready for the unexpected</small></a>
+          </div>
+        </div>
+      </section>
 {{latestCaseStudies}}
       <section id="work">
         <div class="wrap">
