@@ -266,6 +266,30 @@ direct email fallback when nothing matches. If a hosted model is added later,
 only the `answer()` function in `assets/assistant.js` changes; the index it
 searches is already the grounding corpus.
 
+## About Raj, the homepage guide
+
+Raj (`assets/companion.js` and `companion.css`) is me as a hologram on a
+projection pedestal. On a first visit he waves and says hello, then offers four
+topics. He guides the visitor to the one they pick and points at it with a laser.
+He steps through the case studies as milestones, offers help when someone
+lingers on a case study, and opens it for them. He also answers questions from
+`assets/case-studies.json`. When he can't answer, he opens the message form in
+"Ask or message me" with the question filled in. Like the Ask panel, he is not
+an AI. His lines live in `SECTIONS` in `companion.js` and repeat facts from
+`content/home.html`, so update both together. Visitors only ever see the name
+"Raj", never "avatar" or "model".
+
+He greets once per browser session, and never under reduced motion or after a
+visitor has closed him. The optimized local `assets/images/raj-poses.webp`
+atlas supplies six poses based on the owner's photo: resting, waving (two
+frames), pointing, speaking, and nodding. CSS and the guide state machine
+animate these poses; this is an illustrated 2D hologram, not a rigged 3D model
+or live facial tracking. No WebGL runtime is required. The hero and floating
+guide share the same poses; only one character is shown while the hero is in
+view. The greeting starts minimized and expands on request. Raj keeps guiding if the artwork
+fails to load. `scripts/verify-companion.mjs` covers him
+in `npm test`.
+
 ## Deployment
 
 The repository is served directly by GitHub Pages from the `main` branch.
