@@ -2274,7 +2274,6 @@ body { background-image: radial-gradient(ellipse at 90% 0, var(--hero-glow-b), t
 ::selection { background: var(--accent); color: var(--bg); }
 .topnav { background: color-mix(in srgb,var(--bg) 90%,transparent); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
 .brand { letter-spacing: -.05em; font-weight: 750; }
-.brand::before { content: '⌘'; display: inline-grid; place-items:center; width:32px; height:32px; margin-right:10px; border:1px solid var(--accent); border-radius:9px; color:var(--accent); }
 .nav-cta { border-radius:7px; background:var(--accent-soft); }
 .hero { padding: 80px 0 0; overflow:hidden; }
 .hero-bg { opacity:.35; }
@@ -2489,3 +2488,10 @@ h2 { font-size:clamp(30px,3.5vw,48px); letter-spacing:-.055em; }
   .hero-copy { min-width: 0; }
 }
 @media (max-width: 360px) { .hero h1 { font-size: 32px; } }
+
+/* Keep the architecture and professional experience prominent without the guide. */
+.hero-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 60px; }
+.hero .lede { max-width: 480px; }
+@media (min-width: 1200px) { .hero h1 { font-size: clamp(44px, 4vw, 62px); } }
+@media (max-width: 1199px) { .architecture { grid-column: 2; grid-row: 1; } }
+@media (max-width: 767px) { .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; } .architecture { grid-column: 1; grid-row: 2; } }
