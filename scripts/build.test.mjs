@@ -132,15 +132,15 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
     projects[0].name = "Updated telecom name";
     fs.writeFileSync(file("content/projects.json"), JSON.stringify(projects));
     succeeds();
-    for (const output of ["index.html", "case-studies/telecom/index.html", "case-studies/telecom/renamed-study.html", "assets/case-studies.json"])
+    for (const output of ["case-studies/index.html", "case-studies/telecom/index.html", "case-studies/telecom/renamed-study.html", "assets/case-studies.json"])
       assert.match(read(output), /Updated telecom name/);
     succeeds("--check");
 
     projects.reverse();
     fs.writeFileSync(file("content/projects.json"), JSON.stringify(projects));
     succeeds();
-    const labels = [...read("index.html").matchAll(/<div class="tag">(.*?)<\/div>/g)].map((match) => match[1]);
-    const expectedLabels = projects.map((p, i) => `${String(i + 1).padStart(2, "0")} / ${p.name.replaceAll("&", "&amp;")}`);
+    const labels = [...read("case-studies/index.html").matchAll(/data-uc-filter="project:([^"]+)"/g)].map((match) => match[1]);
+    const expectedLabels = projects.map(p => p.id);
     assert.deepEqual(labels, expectedLabels);
 
     // A new project needs registry metadata, its pitch, and a study, not build-code edits.
@@ -150,7 +150,7 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
     fs.mkdirSync(file("content/case-studies/new-project"));
     fs.writeFileSync(file("content/case-studies/new-project/first-study.md"), "---\ntitle: First study\ndate: 2030-01-01\nproject: new-project\nsummary: New project narrative.\n---\n\n## Architecture\n\nDetails.\n");
     succeeds();
-    assert.match(read("index.html"), /Another project/);
+    assert.match(read("case-studies/index.html"), /Another project/);
     assert.match(read("case-studies/new-project/index.html"), /first-study.html/);
     fs.unlinkSync(file("content/case-studies/telecom/renamed-study.md"));
     succeeds();

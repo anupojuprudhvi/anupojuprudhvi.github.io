@@ -61,7 +61,6 @@
       <div class="wrap nav-inner">
         <a class="brand" href="../../index.html">Prudhvi Raj Anupoju</a>
         <div class="navlinks" id="siteNavLinks">
-          <a href="../../index.html#work">Selected work</a>
           <div class="nav-dropdown">
             <a href="../../case-studies/index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" aria-current="page"
               >Case studies <span class="nav-arrow" aria-hidden="true">▾</span></a
@@ -131,7 +130,7 @@
             </div>
           </div>
           <a href="../../index.html#approach">Approach</a>
-          <a href="../../index.html#background">About</a>
+          <a href="../../index.html#background">Experience</a>
           <a href="../../index.html#contact" class="nav-cta">Let's connect</a>
         </div>
         <a class="nav-icon" href="https://www.linkedin.com/in/prudhvi-raj-anupoju/" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">in</span><span class="sr-only">LinkedIn profile (opens in a new tab)</span></a>
@@ -179,6 +178,18 @@
           </div>
         </div>
       </header>
+<section class="case-overview"><div class="wrap"><h2>At a glance</h2><dl><div><dt>Problem</dt><dd>A solo-built PDF compression and conversion SaaS product launched on Vercel's serverless
+platform, but the architecture it launched with was built around assumptions serverless
+doesn't support: a native-binary PDF rendering library that can't load its system
+dependencies in a Lambda-style runtime, a worker file <code>pdf.js</code> needs that the deployment
+bundler couldn't trace and include, and a file-based SQLite database on a filesystem that's
+read-only and wiped between invocations. On top of that, the app handled real payments
+through Stripe and had never had a dedicated security pass.</dd></div><div><dt>Approach</dt><dd>A systematic, documented engineering pass — one person, working through a formalized
+AI-agent-assisted workflow — that replaced the native-binary rendering stack with a pure
+WebAssembly engine, moved the data to Postgres, ran a full security audit that found and
+fixed nine real findings including a critical payment-integrity bug, and cut the app's
+first-load payload by roughly 93%. The product then left Vercel entirely for a self-hosted
+Supabase stack and a Docker deployment, so users' data stays on infrastructure I control.</dd></div><div><dt>My contribution</dt><dd>Solo founder / full-stack &amp; infrastructure engineer</dd></div></dl></div></section>
 <section class="key-results" aria-labelledby="keyResultsTitle">
 <div class="wrap">
 <h2 class="section-eyebrow" id="keyResultsTitle">Key results</h2>
@@ -269,23 +280,23 @@
     <footer>
       <div class="wrap footer-nav">
         <nav aria-label="Footer">
-          <a href="../../index.html#work">Selected work</a>
           <a href="../../case-studies/index.html">Case studies</a>
           <a href="../../learning-paths/index.html">Learning paths</a>
           <a href="../../index.html#approach">Approach</a>
-          <a href="../../index.html#background">About</a>
+          <a href="../../index.html#background">Experience</a>
           <a href="../../index.html#contact">Contact</a>
         </nav>
       </div>
       <div class="wrap footer-inner">
         <span>© 2026 Prudhvi Raj Anupoju</span>
-        <a href="https://www.linkedin.com/in/prudhvi-raj-anupoju/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-        <a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a>
+        <a href="https://www.linkedin.com/in/prudhvi-raj-anupoju/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status</a>
         <a href="../../privacy.html">Privacy</a>
         <a href="#main">Back to top ↑</a>
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
+    <script src="../../assets/diagram-viewer.js" defer></script>
     
   </body>
 </html>

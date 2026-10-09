@@ -154,18 +154,17 @@ export function siteFooter({ up = "", home = false } = {}) {
   return `    <footer>
       <div class="wrap footer-nav">
         <nav aria-label="Footer">
-          <a href="${page}#work">Selected work</a>
           <a href="${a("case-studies/index.html")}">Case studies</a>
           <a href="${a("learning-paths/index.html")}">Learning paths</a>
           <a href="${page}#approach">Approach</a>
-          <a href="${page}#background">About</a>
+          <a href="${page}#background">Experience</a>
           <a href="${page}#contact">Contact</a>
         </nav>
       </div>
       <div class="wrap footer-inner">
         <span>© ${SITE_META.year} Prudhvi Raj Anupoju</span>
-        <a href="https://www.linkedin.com/in/prudhvi-raj-anupoju/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-        <a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a>
+        <a href="https://www.linkedin.com/in/prudhvi-raj-anupoju/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status</a>
         <a href="${a("privacy.html")}">Privacy</a>
         <a href="${home ? "#top" : "#main"}">Back to top ↑</a>
       </div>
@@ -190,12 +189,11 @@ export function siteTopNav({
   const page = home ? "" : a("index.html");
   const homeAnchors = `
           <a href="${page}#approach">Approach</a>
-          <a href="${page}#background">About</a>`;
+          <a href="${page}#background">Experience</a>`;
   return `    <nav class="topnav" aria-label="Main navigation">
       <div class="wrap nav-inner">
         <a class="brand" href="${home ? "#top" : a("index.html")}">Prudhvi Raj Anupoju</a>
         <div class="navlinks" id="siteNavLinks">
-          <a href="${page}#work"${active === "work" ? ` aria-current="page"` : ""}>Selected work</a>
           ${caseStudiesNavDropdown(docs, { prefix: a("case-studies/"), current: active === "case-studies" })}
           ${learningPathsNavDropdown({ prefix: a("learning-paths/"), current: active === "learning-paths" })}${homeAnchors}
           <a href="${page}#contact" class="nav-cta">Let's connect</a>
@@ -285,7 +283,7 @@ export function latestCaseStudies(recentItems, { prefix = "" } = {}) {
                 </span>
                 <strong class="recent-card-title">${esc(item.title)}</strong>
                 <span class="recent-card-desc">${esc(item.desc || item.summary || "")}</span>
-                <span class="recent-card-cta">Read the case study <span aria-hidden="true">→</span></span>
+                <span class="recent-card-cta">Read the case study </span>
               </a>
             </li>`,
     )
@@ -294,7 +292,7 @@ export function latestCaseStudies(recentItems, { prefix = "" } = {}) {
         <div class="wrap">
           <div class="latest-head">
             <h2 id="latestTitle">Latest case studies</h2>
-            <a href="${prefix}case-studies/index.html" class="recent-all-link">Browse all case studies →</a>
+            <a href="${prefix}case-studies/index.html" class="recent-all-link">Browse all case studies</a>
           </div>
           <ul class="recent-list">
 ${cards}
@@ -350,7 +348,20 @@ ${para(d.solution)}
 ${flowBlock(d)}`;
 }
 
-/** Headline results, shown right under the hero so skimmers see them first. */
+/** Short orientation drawn only from existing case-study metadata. */
+function caseOverview(d) {
+  const firstSentence = value => String(value || '').trim().match(/^.*?[.!?](?:\s|$)/)?.[0]?.trim() || String(value || '').trim();
+  const items = [
+    ['Problem', firstSentence(d.problem)],
+    ['Approach', firstSentence(d.solution)],
+    ['My contribution', d.role],
+    ['What this enables', firstSentence(d.enables)],
+  ].filter(([, value]) => value);
+  if (items.length < 2) return '';
+  return '<section class="case-overview"><div class="wrap"><h2>At a glance</h2><dl>' + items.map(([label, value]) => '<div><dt>' + esc(label) + '</dt><dd>' + inline(value) + '</dd></div>').join('') + '</dl></div></section>';
+}
+
+/** Headline results use only outcomes already recorded in the source. */
 function keyResults(d) {
   if (!Array.isArray(d.outcomes) || !d.outcomes.length) return "";
   return `<section class="key-results" aria-labelledby="keyResultsTitle">
@@ -580,6 +591,7 @@ ${siteTopNav({ docs, up, active: "case-studies" })}
           </div>` : ""}
         </div>
       </header>
+${isStudy ? caseOverview(d) : ""}
 ${keyResults(d)}
       <div class="cs-body${tocHtml ? " has-toc" : ""}">
         <div class="cs-main">
@@ -596,7 +608,7 @@ ${sectionsHtml}
         <div class="wrap">
           <h2>${isStudy ? "Questions about this case study?" : "Questions about this work?"}</h2>
           <p>
-            ${d.closingText ? esc(d.closingText) : "Happy to go deeper on any part of this — the architecture, the\n            trade-offs, or the decisions behind it."}
+            ${d.closingText ? esc(d.closingText) : "Happy to go deeper on any part of this: the architecture, the\n            trade-offs, or the decisions behind it."}
           </p>
           <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
             >anupojuprudhvi@gmail.com</a
@@ -605,7 +617,8 @@ ${sectionsHtml}
       </div>
     </main>
 ${siteFooter({ up })}
-    <script src="${a("assets/assistant.js")}" defer></script>${bodyHtml.includes('<figure class="flow">') ? `
+    <script src="${a("assets/assistant.js")}" defer></script>
+    <script src="${a("assets/diagram-viewer.js")}" defer></script>${bodyHtml.includes('<figure class="flow">') ? `
     <script src="${a("assets/flow-player.js")}" defer></script>` : ""}
     ${scripts}
   </body>

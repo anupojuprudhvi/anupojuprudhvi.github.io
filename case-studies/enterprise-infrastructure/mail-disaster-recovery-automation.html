@@ -61,7 +61,6 @@
       <div class="wrap nav-inner">
         <a class="brand" href="../../index.html">Prudhvi Raj Anupoju</a>
         <div class="navlinks" id="siteNavLinks">
-          <a href="../../index.html#work">Selected work</a>
           <div class="nav-dropdown">
             <a href="../../case-studies/index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" aria-current="page"
               >Case studies <span class="nav-arrow" aria-hidden="true">▾</span></a
@@ -131,7 +130,7 @@
             </div>
           </div>
           <a href="../../index.html#approach">Approach</a>
-          <a href="../../index.html#background">About</a>
+          <a href="../../index.html#background">Experience</a>
           <a href="../../index.html#contact" class="nav-cta">Let's connect</a>
         </div>
         <a class="nav-icon" href="https://www.linkedin.com/in/prudhvi-raj-anupoju/" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">in</span><span class="sr-only">LinkedIn profile (opens in a new tab)</span></a>
@@ -185,6 +184,16 @@
           </div>
         </div>
       </header>
+<section class="case-overview"><div class="wrap"><h2>At a glance</h2><dl><div><dt>Problem</dt><dd>Enterprise email ran as a single EC2-hosted instance handling a high volume of daily
+communications across administrative offices, campuses, and external partners — a real single
+point of failure. Recovering from an instance impairment meant a manual sequence of reassigning
+the elastic IP, locating and reattaching the data volume, remounting it, and restarting services
+by hand, which took four to eight hours end to end. On top of that, missing email-authentication
+records meant a meaningful share of outbound mail was being flagged as spam before it ever
+reached recipients.</dd></div><div><dt>Approach</dt><dd>A single Bash script that automates the entire failover sequence end to end — instance
+metadata lookup, elastic IP reassociation, EBS volume attachment with a polling wait loop,
+filesystem mount (including NVMe device-mapping for newer instance types), and a service
+restart — plus a tiered S3 backup pipeline and full SPF/DKIM/DMARC DNS hardening.</dd></div><div><dt>My contribution</dt><dd>Lead infrastructure &amp; disaster recovery architect</dd></div></dl></div></section>
 <section class="key-results" aria-labelledby="keyResultsTitle">
 <div class="wrap">
 <h2 class="section-eyebrow" id="keyResultsTitle">Key results</h2>
@@ -265,23 +274,23 @@
     <footer>
       <div class="wrap footer-nav">
         <nav aria-label="Footer">
-          <a href="../../index.html#work">Selected work</a>
           <a href="../../case-studies/index.html">Case studies</a>
           <a href="../../learning-paths/index.html">Learning paths</a>
           <a href="../../index.html#approach">Approach</a>
-          <a href="../../index.html#background">About</a>
+          <a href="../../index.html#background">Experience</a>
           <a href="../../index.html#contact">Contact</a>
         </nav>
       </div>
       <div class="wrap footer-inner">
         <span>© 2026 Prudhvi Raj Anupoju</span>
-        <a href="https://www.linkedin.com/in/prudhvi-raj-anupoju/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-        <a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a>
+        <a href="https://www.linkedin.com/in/prudhvi-raj-anupoju/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status</a>
         <a href="../../privacy.html">Privacy</a>
         <a href="#main">Back to top ↑</a>
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
+    <script src="../../assets/diagram-viewer.js" defer></script>
     
   </body>
 </html>

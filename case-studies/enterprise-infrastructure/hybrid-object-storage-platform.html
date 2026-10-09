@@ -61,7 +61,6 @@
       <div class="wrap nav-inner">
         <a class="brand" href="../../index.html">Prudhvi Raj Anupoju</a>
         <div class="navlinks" id="siteNavLinks">
-          <a href="../../index.html#work">Selected work</a>
           <div class="nav-dropdown">
             <a href="../../case-studies/index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" aria-current="page"
               >Case studies <span class="nav-arrow" aria-hidden="true">▾</span></a
@@ -131,7 +130,7 @@
             </div>
           </div>
           <a href="../../index.html#approach">Approach</a>
-          <a href="../../index.html#background">About</a>
+          <a href="../../index.html#background">Experience</a>
           <a href="../../index.html#contact" class="nav-cta">Let's connect</a>
         </div>
         <a class="nav-icon" href="https://www.linkedin.com/in/prudhvi-raj-anupoju/" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">in</span><span class="sr-only">LinkedIn profile (opens in a new tab)</span></a>
@@ -179,6 +178,14 @@
           </div>
         </div>
       </header>
+<section class="case-overview"><div class="wrap"><h2>At a glance</h2><dl><div><dt>Problem</dt><dd>The organization's footprint was hybrid in practice, not just on paper — production compute in
+AWS, enterprise virtualization in an on-prem data center running VMware, and a private
+OpenStack cloud, each with its own block storage and no shared way to store unstructured data:
+ERP file attachments, database dumps, and system backups. Every environment's storage was
+siloed, expensive to scale, and reachable only through whatever tooling that specific platform
+supported — there was no common access pattern across all three.</dd></div><div><dt>Approach</dt><dd>A distributed, S3-compatible object storage platform (MinIO) deployed behind an Nginx TLS
+reverse proxy, reachable via the same S3 API from all three environments, with automated
+Restic-encrypted backup pipelines and AWS S3 Glacier lifecycle tiering for long-term retention.</dd></div><div><dt>My contribution</dt><dd>Lead platform engineer / distributed storage architect</dd></div></dl></div></section>
 <section class="key-results" aria-labelledby="keyResultsTitle">
 <div class="wrap">
 <h2 class="section-eyebrow" id="keyResultsTitle">Key results</h2>
@@ -262,23 +269,23 @@ python3 minio_s3_client.py list --prefix backups/</code></pre><figcaption class=
     <footer>
       <div class="wrap footer-nav">
         <nav aria-label="Footer">
-          <a href="../../index.html#work">Selected work</a>
           <a href="../../case-studies/index.html">Case studies</a>
           <a href="../../learning-paths/index.html">Learning paths</a>
           <a href="../../index.html#approach">Approach</a>
-          <a href="../../index.html#background">About</a>
+          <a href="../../index.html#background">Experience</a>
           <a href="../../index.html#contact">Contact</a>
         </nav>
       </div>
       <div class="wrap footer-inner">
         <span>© 2026 Prudhvi Raj Anupoju</span>
-        <a href="https://www.linkedin.com/in/prudhvi-raj-anupoju/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-        <a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a>
+        <a href="https://www.linkedin.com/in/prudhvi-raj-anupoju/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status</a>
         <a href="../../privacy.html">Privacy</a>
         <a href="#main">Back to top ↑</a>
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
+    <script src="../../assets/diagram-viewer.js" defer></script>
     
   </body>
 </html>

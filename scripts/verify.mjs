@@ -170,19 +170,8 @@ try {
       theme === "dark" ? "light" : "dark",
     );
     if (file === "index.html") {
-      const tags = await page.locator(".case").evaluateAll((cards) => cards.map((card) => card.dataset.tags.split(/\s+/)));
-      const filters = await page.locator("[data-filter]").evaluateAll((buttons) => buttons.map((button) => button.dataset.filter));
-      for (const filter of filters) {
-        const count = tags.filter((values) => filter === "all" || values.includes(filter)).length;
-        await page.locator(`[data-filter="${filter}"]`).click();
-        assert.equal(await page.locator(".case:visible").count(), count);
-      }
-      await page.locator('[data-filter="all"]').click();
-      await page.locator("summary").first().focus();
-      await page.keyboard.press("Enter");
-      assert(
-        (await page.locator("details").first().getAttribute("open")) !== null,
-      );
+      assert.equal(await page.locator("#work").count(), 0);
+      assert.equal(await page.getByRole("link", {name:"Explore case studies", exact:true}).count(), 1);
       await context.grantPermissions(["clipboard-read", "clipboard-write"]);
       await page.getByRole("button", { name: "Copy email address" }).click();
       assert.equal(
@@ -240,7 +229,7 @@ try {
   await page.locator("#themeToggle").click();
   await Promise.all([
     page.waitForURL(/case-studies/),
-    page.locator(".case-bottom a").first().click(),
+    page.getByRole("link", {name:"Explore case studies", exact:true}).click(),
   ]);
   assert.equal(await page.locator("html").getAttribute("data-theme"), "light");
   await page.reload();
@@ -384,7 +373,8 @@ try {
   const plain = await nojs.newPage();
   await plain.goto(base);
   const projects = JSON.parse(fs.readFileSync(path.join(root, "content/projects.json"), "utf8"));
-  assert.equal(await plain.locator(".case:visible").count(), projects.length);
+  assert.equal(await plain.locator("#work").count(), 0);
+  assert.equal(await plain.getByRole("link", {name:"Explore case studies", exact:true}).count(), 1);
   const index = JSON.parse(fs.readFileSync(path.join(root, "assets/case-studies.json"), "utf8"));
   for (const project of new Set(index.map((item) => item.project))) {
     await plain.goto(`${base}/case-studies/${project}/index.html`);
