@@ -8,6 +8,3 @@
 .githooks/* text eol=lf
 Dockerfile text eol=lf
 docker/*.conf text eol=lf
-
-# Third-party minified build, kept byte-for-byte as published.
-assets/vendor/** -diff linguist-vendored
