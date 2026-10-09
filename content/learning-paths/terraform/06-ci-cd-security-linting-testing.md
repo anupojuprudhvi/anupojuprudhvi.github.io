@@ -1,5 +1,5 @@
 ---
-title: CI/CD Guardrails — TFLint, Checkov & Plan Automation
+title: CI/CD Guardrails: TFLint, Checkov & Plan Automation
 date: 2026-09-17
 updated: 2026-10-07
 track: terraform

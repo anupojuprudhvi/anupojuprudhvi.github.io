@@ -94,31 +94,31 @@ Why slice environments into numbered layers instead of one monolithic deployment
       <td class="gnum">00-bootstrap</td>
       <td>S3 state bucket and KMS keys</td>
       <td><strong>Once</strong> (Creation only)</td>
-      <td>Highest — Platform Admin / Security Lead</td>
+      <td>Highest (Platform Admin / Security Lead</td>
     </tr>
     <tr>
       <td class="gnum">01-networking</td>
       <td>VPCs, Subnets, Transit Gateway, Route 53 Resolver</td>
       <td><strong>Quarterly</strong> (Slow moving)</td>
-      <td>High — Network &amp; Foundation Platform Team</td>
+      <td>High) Network &amp; Foundation Platform Team</td>
     </tr>
     <tr>
       <td class="gnum">02-security</td>
       <td>Base IAM roles, GuardDuty, Security Hub, KMS keys</td>
       <td><strong>Monthly</strong> (Compliance)</td>
-      <td>High — SecOps &amp; Platform Team</td>
+      <td>High (SecOps &amp; Platform Team</td>
     </tr>
     <tr>
       <td class="gnum">03-data</td>
       <td>Aurora PostgreSQL, DynamoDB, S3 lakes, ElastiCache</td>
       <td><strong>Monthly</strong> (Planned maintenance)</td>
-      <td>Extreme — Database &amp; Platform Storage Team</td>
+      <td>Extreme) Database &amp; Platform Storage Team</td>
     </tr>
     <tr>
       <td class="gnum">04-compute</td>
       <td>EKS clusters, node groups, ALBs, ECS tasks, Lambdas</td>
       <td><strong>Daily / Weekly</strong> (Fast moving)</td>
-      <td>Contained — Application &amp; DevOps Teams</td>
+      <td>Contained: Application &amp; DevOps Teams</td>
     </tr>
   </tbody>
 </table>

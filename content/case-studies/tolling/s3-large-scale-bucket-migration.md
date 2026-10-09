@@ -92,7 +92,7 @@ The tool of choice was **`s5cmd`**, a high-performance S3 client written in Go. 
 
 - **High concurrency (128 workers):** Ran the sync command with `s5cmd --numworkers 128 cp 's3://source-bucket/*' 's3://dest-bucket/'`, distributing requests across 128 concurrent worker threads to saturate S3's frontend request handling across multiple prefix partitions.
 - **Zero data-transfer charges:** Because both buckets and the EC2 instance were located within `us-east-1`, all network traffic remained inside the same AWS regional boundary. AWS charges $0.00 per GB for intra-region data transfer between S3 and EC2; costs were strictly limited to standard S3 API request counts (`$0.005` per 1,000 `PUT` requests) and normal instance uptime.
-- **54-minute runtime:** The entire copy finished in **54 minutes with zero errors** — an ~89% reduction in execution time compared to the original 8-hour estimate.
+- **54-minute runtime:** The entire copy finished in **54 minutes with zero errors**: an ~89% reduction in execution time compared to the original 8-hour estimate.
 
 ## Verification · Trust through validation before purge
 
@@ -106,4 +106,4 @@ Speed is meaningless if data integrity cannot be guaranteed. Before source data 
 
 At cloud scale, small-file storage operations are **API transaction problems**, not bandwidth problems. When moving millions of small objects, throwing larger network pipes at the problem does not help if the client cannot dispatch concurrent requests fast enough.
 
-A simple change in tooling — moving from serial CLI processes to a parallel Go-based client on existing in-region compute — eliminated an 8-hour operational bottleneck in under an hour, with zero added infrastructure spend.
+A simple change in tooling (moving from serial CLI processes to a parallel Go-based client on existing in-region compute) eliminated an 8-hour operational bottleneck in under an hour, with zero added infrastructure spend.

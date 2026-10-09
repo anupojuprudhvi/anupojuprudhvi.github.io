@@ -184,8 +184,8 @@
           </div>
         </div>
       </header>
-<section class="case-overview"><div class="wrap"><h2>At a glance</h2><dl><div><dt>Problem</dt><dd>Care coordinators needed to query months of patient vital-sign history — blood pressure, pulse,
-glucose, oxygen saturation — for trend review and triage, but the only place that history lived
+<section class="case-overview"><div class="wrap"><h2>At a glance</h2><dl><div><dt>Problem</dt><dd>Care coordinators needed to query months of patient vital-sign history (blood pressure, pulse,
+glucose, oxygen saturation) for trend review and triage, but the only place that history lived
 was the same operational database handling live, high-frequency device writes. Every heavy
 reporting query competed directly with real-time telemetry ingestion for the same resources.</dd></div><div><dt>Approach</dt><dd>A dedicated streaming pipeline that moves vitals out of the write path entirely: a flow-management
 layer ingests, validates, and enriches telemetry in flight, a distributed real-time OLAP datastore
@@ -208,7 +208,7 @@ operational database, so reporting load never reaches the system of record.</dd>
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
 <h2 id="reporting-and-ingestion-were-fighting-over-the-same-database">Reporting and ingestion were fighting over the same database</h2>
-<p>The operational database's job was to be the durable, transactionally-consistent source of truth for live application state — a device reading arrives, gets written, and the application acts on it immediately. That's a fundamentally different access pattern from a care coordinator asking &quot;show me this patient's blood pressure trend over the last 90 days,&quot; which touches a large historical range in a single read.</p>
+<p>The operational database's job was to be the durable, transactionally-consistent source of truth for live application state: a device reading arrives, gets written, and the application acts on it immediately. That's a fundamentally different access pattern from a care coordinator asking &quot;show me this patient's blood pressure trend over the last 90 days,&quot; which touches a large historical range in a single read.</p>
 <p>Running both patterns against the same database meant they competed directly: a burst of heavy trend queries could visibly slow down live telemetry writes, and there was no way to scale the two independently, because they weren't separated at all.</p>
 </div>
 </section>
@@ -236,20 +236,20 @@ operational database, so reporting load never reaches the system of record.</dd>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
 <ul>
-<li><b>The flow-management layer is the only thing that talks to both sides.</b> Device-facing ingestion and the OLAP store are decoupled by this layer, so either side can change independently — a new device family or a new dashboard doesn't require touching the other.</li>
-<li><b>The OLAP store was chosen specifically for the access pattern, not for general-purpose analytics.</b> A distributed, real-time, column-oriented store is a deliberate choice for high-concurrency, low-latency aggregation over a data warehouse built for large batch queries — the requirement was interactive dashboard response times across thousands of concurrently-active patients, not nightly reporting.</li>
+<li><b>The flow-management layer is the only thing that talks to both sides.</b> Device-facing ingestion and the OLAP store are decoupled by this layer, so either side can change independently (a new device family or a new dashboard doesn't require touching the other.</li>
+<li><b>The OLAP store was chosen specifically for the access pattern, not for general-purpose analytics.</b> A distributed, real-time, column-oriented store is a deliberate choice for high-concurrency, low-latency aggregation over a data warehouse built for large batch queries) the requirement was interactive dashboard response times across thousands of concurrently-active patients, not nightly reporting.</li>
 <li><b>Every hop between pipeline stages authenticates with mutual TLS</b>, so a compromised or misconfigured client can't inject or read telemetry mid-pipeline even from inside the private network.</li>
 </ul>
 </details>
 <h3>Result</h3>
-<p>Care coordinators querying a 90-day, multi-vital patient history went from a query that could take roughly 18 seconds — competing with live writes on the operational database — to consistently under 500 milliseconds, run entirely against the decoupled store instead.</p>
+<p>Care coordinators querying a 90-day, multi-vital patient history went from a query that could take roughly 18 seconds (competing with live writes on the operational database) to consistently under 500 milliseconds, run entirely against the decoupled store instead.</p>
 </div>
 </section>
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Production incident</div>
 <h2 id="dashboard-server-deadlocks-under-heavy-reporting-load">Dashboard-server deadlocks under heavy reporting load</h2>
-<p>Once the pipeline was in place, the remaining single point of failure was the BI layer itself: under heavy concurrent reporting load, dashboard sessions periodically disconnected and the server's own management UI stopped responding — a deadlock in the BI server's own process, not the pipeline feeding it.</p>
+<p>Once the pipeline was in place, the remaining single point of failure was the BI layer itself: under heavy concurrent reporting load, dashboard sessions periodically disconnected and the server's own management UI stopped responding: a deadlock in the BI server's own process, not the pipeline feeding it.</p>
 <details class="implementation-notes">
 <summary>Triage sequence</summary>
 <ul>

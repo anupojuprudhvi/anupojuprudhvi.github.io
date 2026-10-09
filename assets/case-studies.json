@@ -360,8 +360,8 @@
       "authentication"
     ],
     "url": "case-studies/tolling/jsm-integration.html",
-    "problem": "Jira Service Management and Jira Automation needed to deliver webhook events into an internal service running on EKS. That service has no authentication logic of its own — it was built to process business logic from traffic it could already trust. So the entry point had to do all of it: be publicly reachable, because the events come from a SaaS product; verify the request signature and expiry; and never expose the load balancer or the pods behind it. Getting any one of those wrong makes the other two irrelevant. The design should not be read as a complete replay-prevention system: replay handling remains an application concern unless a nonce or event-id strategy is added.",
-    "solution": "A layered perimeter where each stage rejects a different class of request: edge filtering at CloudFront, a Lambda authorizer that verifies the signature cryptographically, and a private VPC Link into the internal load balancer. Two of those pieces are not design preferences. CloudFront and the Lambda are both there because of specific AWS platform limits, covered below — which is also why the architecture is documented rather than just built."
+    "problem": "Jira Service Management and Jira Automation needed to deliver webhook events into an internal service running on EKS. That service has no authentication logic of its own: it was built to process business logic from traffic it could already trust. So the entry point had to do all of it: be publicly reachable, because the events come from a SaaS product; verify the request signature and expiry; and never expose the load balancer or the pods behind it. Getting any one of those wrong makes the other two irrelevant. The design should not be read as a complete replay-prevention system: replay handling remains an application concern unless a nonce or event-id strategy is added.",
+    "solution": "A layered perimeter where each stage rejects a different class of request: edge filtering at CloudFront, a Lambda authorizer that verifies the signature cryptographically, and a private VPC Link into the internal load balancer. Two of those pieces are not design preferences. CloudFront and the Lambda are both there because of specific AWS platform limits, covered below: which is also why the architecture is documented rather than just built."
   },
   {
     "title": "One DNS model for public services and private environments",
@@ -398,7 +398,7 @@
     "project": "tolling",
     "projectName": "Tolling Infrastructure",
     "projectShort": "Tolling",
-    "minutes": 4,
+    "minutes": 3,
     "layer": "Applications & integration",
     "stack": [
       "API Gateway",
@@ -417,7 +417,7 @@
       "cost"
     ],
     "url": "case-studies/tolling/s3-image-api.html",
-    "problem": "Internal tolling services needed to upload and retrieve images in S3 over HTTP. The interface worked, but the path in front of it had accumulated layers: a load balancer, and behind it a Lambda function acting as an HTTP proxy. Both cost money on every request and added latency, and the proxy was application code — with its own error handling, timeout behaviour and deployment lifecycle — for work that amounts to handing bytes to S3. It also had to behave identically across development, staging and production, resolve through a consistent private domain in each, and keep every part of the path unreachable from the internet.",
+    "problem": "Internal tolling services needed to upload and retrieve images in S3 over HTTP. The interface worked, but the path in front of it had accumulated layers: a load balancer, and behind it a Lambda function acting as an HTTP proxy. Both cost money on every request and added latency, and the proxy was application code (with its own error handling, timeout behaviour and deployment lifecycle) for work that amounts to handing bytes to S3. It also had to behave identically across development, staging and production, resolve through a consistent private domain in each, and keep every part of the path unreachable from the internet.",
     "solution": "API Gateway talking to S3 directly, with nothing in between. A private REST API per environment uses an AWS service integration for GET and PUT: the gateway assumes a role, signs the request, and S3 authorizes against that role. No compute sits in the transfer path. Each environment resolves its own custom domain through a single private hosted zone in the Shared Services account, pointing at one shared interface endpoint rather than one per account. It took four iterations to get there, each removing something."
   },
   {
@@ -427,7 +427,7 @@
     "project": "tolling",
     "projectName": "Tolling Infrastructure",
     "projectShort": "Tolling",
-    "minutes": 5,
+    "minutes": 4,
     "layer": "Data & storage",
     "stack": [
       "Amazon S3",
@@ -499,7 +499,7 @@
       "integration-engineering"
     ],
     "url": "case-studies/healthcare/hl7-device-interoperability-engine.html",
-    "problem": "Connected medical devices from a third-party device vendor — blood pressure cuffs, glucometers, pulse oximeters, and smart scales — each transmitted physiological telemetry in a proprietary, device-specific format. Neither the clinical microservices platform nor the hospital partner network it fed could ingest that traffic directly, and every new device family risked becoming a one-off, hand-built parser.",
+    "problem": "Connected medical devices from a third-party device vendor (blood pressure cuffs, glucometers, pulse oximeters, and smart scales) each transmitted physiological telemetry in a proprietary, device-specific format. Neither the clinical microservices platform nor the hospital partner network it fed could ingest that traffic directly, and every new device family risked becoming a one-off, hand-built parser.",
     "solution": "A dedicated interoperability host running NextGen Mirth Connect as the single translation point: every device family's proprietary payload is normalized into HL7 v2.5.1 and JSON before it reaches either the internal microservices platform or the external hospital partner feed, so neither side ever has to know the other's format."
   },
   {
@@ -524,7 +524,7 @@
       "streaming"
     ],
     "url": "case-studies/healthcare/real-time-clinical-analytics-pipeline.html",
-    "problem": "Care coordinators needed to query months of patient vital-sign history — blood pressure, pulse, glucose, oxygen saturation — for trend review and triage, but the only place that history lived was the same operational database handling live, high-frequency device writes. Every heavy reporting query competed directly with real-time telemetry ingestion for the same resources.",
+    "problem": "Care coordinators needed to query months of patient vital-sign history (blood pressure, pulse, glucose, oxygen saturation) for trend review and triage, but the only place that history lived was the same operational database handling live, high-frequency device writes. Every heavy reporting query competed directly with real-time telemetry ingestion for the same resources.",
     "solution": "A dedicated streaming pipeline that moves vitals out of the write path entirely: a flow-management layer ingests, validates, and enriches telemetry in flight, a distributed real-time OLAP datastore indexes it for low-latency aggregation, and clinical dashboards query that store instead of the operational database, so reporting load never reaches the system of record."
   },
   {
@@ -550,8 +550,8 @@
       "cdn"
     ],
     "url": "case-studies/healthcare/zero-public-ingress-network-security.html",
-    "problem": "As a platform handling Protected Health Information (PHI) under HIPAA, every application server, Kubernetes worker node, analytics engine, and database needed to be reachable by engineers for operations and by patients/clinicians for the product itself — without either path creating a direct public attack surface into the environments actually holding patient data.",
-    "solution": "A network design with two entirely separate front doors: patient- and clinician-facing traffic reaches the platform only through a CDN and web application firewall in front of the public application tier, while engineering and administrative access to every private subnet goes through mutual-TLS VPN endpoints scoped per environment — and no compute or database resource in either path carries a public IPv4 address."
+    "problem": "As a platform handling Protected Health Information (PHI) under HIPAA, every application server, Kubernetes worker node, analytics engine, and database needed to be reachable by engineers for operations and by patients/clinicians for the product itself (without either path creating a direct public attack surface into the environments actually holding patient data.",
+    "solution": "A network design with two entirely separate front doors: patient- and clinician-facing traffic reaches the platform only through a CDN and web application firewall in front of the public application tier, while engineering and administrative access to every private subnet goes through mutual-TLS VPN endpoints scoped per environment) and no compute or database resource in either path carries a public IPv4 address."
   },
   {
     "title": "CI/CD delivery pipeline for a regulated healthcare platform",
@@ -575,7 +575,7 @@
       "delivery-engineering"
     ],
     "url": "case-studies/healthcare/ci-cd-delivery-pipeline-for-regulated-healthcare.html",
-    "problem": "Every microservice needed a repeatable path from a developer's commit to a running container in the right environment, with enough process around it to satisfy change control for a HIPAA platform — without that process turning into a manual runbook that only one or two engineers knew how to execute correctly under pressure.",
+    "problem": "Every microservice needed a repeatable path from a developer's commit to a running container in the right environment, with enough process around it to satisfy change control for a HIPAA platform: without that process turning into a manual runbook that only one or two engineers knew how to execute correctly under pressure.",
     "solution": "A GitFlow branching model where the branch itself determines the target environment, driving Jenkins declarative pipelines that compile, test, containerize, and promote each service through Development, QA, Staging, and Production with an explicit approval gate before anything reaches a live clinical environment."
   },
   {
@@ -753,7 +753,7 @@
       "aws"
     ],
     "url": "case-studies/enterprise-infrastructure/oracle-rac-cluster-on-aws.html",
-    "problem": "A large education-services platform ran its core academic and financial operations — registrations, fee processing, and examination results — on a database tier that had to absorb extreme, predictable concurrency spikes (an exam-results release could multiply load by an order of magnitude in minutes) without downtime or throttling. Oracle RAC is the standard answer for active-active database high availability, but RAC has traditionally required shared-SAN block storage that AWS doesn't provide natively — EBS volumes attach to one instance at a time.",
+    "problem": "A large education-services platform ran its core academic and financial operations (registrations, fee processing, and examination results) on a database tier that had to absorb extreme, predictable concurrency spikes (an exam-results release could multiply load by an order of magnitude in minutes) without downtime or throttling. Oracle RAC is the standard answer for active-active database high availability, but RAC has traditionally required shared-SAN block storage that AWS doesn't provide natively (EBS volumes attach to one instance at a time.",
     "solution": "A 21+ node active-active Oracle RAC cluster on AWS EC2, using a software-defined clustered storage layer (FlashGrid) to emulate shared-SAN semantics across independently-attached EBS volumes, with tuned ASM diskgroups, provisioned-IOPS storage, and kernel-level I/O tuning to hit sub-2ms latency under load."
   },
   {
@@ -781,7 +781,7 @@
       "cost-optimization"
     ],
     "url": "case-studies/enterprise-infrastructure/hybrid-object-storage-platform.html",
-    "problem": "The organization's footprint was hybrid in practice, not just on paper — production compute in AWS, enterprise virtualization in an on-prem data center running VMware, and a private OpenStack cloud, each with its own block storage and no shared way to store unstructured data: ERP file attachments, database dumps, and system backups. Every environment's storage was siloed, expensive to scale, and reachable only through whatever tooling that specific platform supported — there was no common access pattern across all three.",
+    "problem": "The organization's footprint was hybrid in practice, not just on paper (production compute in AWS, enterprise virtualization in an on-prem data center running VMware, and a private OpenStack cloud, each with its own block storage and no shared way to store unstructured data: ERP file attachments, database dumps, and system backups. Every environment's storage was siloed, expensive to scale, and reachable only through whatever tooling that specific platform supported) there was no common access pattern across all three.",
     "solution": "A distributed, S3-compatible object storage platform (MinIO) deployed behind an Nginx TLS reverse proxy, reachable via the same S3 API from all three environments, with automated Restic-encrypted backup pipelines and AWS S3 Glacier lifecycle tiering for long-term retention."
   },
   {
@@ -808,8 +808,8 @@
       "automation"
     ],
     "url": "case-studies/enterprise-infrastructure/mail-disaster-recovery-automation.html",
-    "problem": "Enterprise email ran as a single EC2-hosted instance handling a high volume of daily communications across administrative offices, campuses, and external partners — a real single point of failure. Recovering from an instance impairment meant a manual sequence of reassigning the elastic IP, locating and reattaching the data volume, remounting it, and restarting services by hand, which took four to eight hours end to end. On top of that, missing email-authentication records meant a meaningful share of outbound mail was being flagged as spam before it ever reached recipients.",
-    "solution": "A single Bash script that automates the entire failover sequence end to end — instance metadata lookup, elastic IP reassociation, EBS volume attachment with a polling wait loop, filesystem mount (including NVMe device-mapping for newer instance types), and a service restart — plus a tiered S3 backup pipeline and full SPF/DKIM/DMARC DNS hardening."
+    "problem": "Enterprise email ran as a single EC2-hosted instance handling a high volume of daily communications across administrative offices, campuses, and external partners (a real single point of failure. Recovering from an instance impairment meant a manual sequence of reassigning the elastic IP, locating and reattaching the data volume, remounting it, and restarting services by hand, which took four to eight hours end to end. On top of that, missing email-authentication records meant a meaningful share of outbound mail was being flagged as spam before it ever reached recipients.",
+    "solution": "A single Bash script that automates the entire failover sequence end to end) instance metadata lookup, elastic IP reassociation, EBS volume attachment with a polling wait loop, filesystem mount (including NVMe device-mapping for newer instance types), and a service restart (plus a tiered S3 backup pipeline and full SPF/DKIM/DMARC DNS hardening."
   },
   {
     "title": "An AI-assisted HRMS tool: leave, attendance, timesheets, and policy answers in one place",
@@ -863,6 +863,6 @@
     ],
     "url": "case-studies/independent-products/solo-saas-hardening-ai-agentic-engineering.html",
     "problem": "A solo-built PDF compression and conversion SaaS product launched on Vercel's serverless platform, but the architecture it launched with was built around assumptions serverless doesn't support: a native-binary PDF rendering library that can't load its system dependencies in a Lambda-style runtime, a worker file `pdf.js` needs that the deployment bundler couldn't trace and include, and a file-based SQLite database on a filesystem that's read-only and wiped between invocations. On top of that, the app handled real payments through Stripe and had never had a dedicated security pass.",
-    "solution": "A systematic, documented engineering pass — one person, working through a formalized AI-agent-assisted workflow — that replaced the native-binary rendering stack with a pure WebAssembly engine, moved the data to Postgres, ran a full security audit that found and fixed nine real findings including a critical payment-integrity bug, and cut the app's first-load payload by roughly 93%. The product then left Vercel entirely for a self-hosted Supabase stack and a Docker deployment, so users' data stays on infrastructure I control."
+    "solution": "A systematic, documented engineering pass (one person, working through a formalized AI-agent-assisted workflow) that replaced the native-binary rendering stack with a pure WebAssembly engine, moved the data to Postgres, ran a full security audit that found and fixed nine real findings including a critical payment-integrity bug, and cut the app's first-load payload by roughly 93%. The product then left Vercel entirely for a self-hosted Supabase stack and a Docker deployment, so users' data stays on infrastructure I control."
   }
 ]

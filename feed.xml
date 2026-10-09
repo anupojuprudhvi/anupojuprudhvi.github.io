@@ -560,7 +560,7 @@
       <category>Kubernetes from Zero to Production on Amazon EKS</category>
     </item>
     <item>
-      <title>Container Delivery — Build, Tag, Push, Promote</title>
+      <title>Container Delivery: Build, Tag, Push, Promote</title>
       <link>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/15-container-delivery-to-eks.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/15-container-delivery-to-eks.html</guid>
       <pubDate>Fri, 18 Sep 2026 00:00:00 GMT</pubDate>
@@ -728,7 +728,7 @@
       <category>Terraform for Enterprise Production</category>
     </item>
     <item>
-      <title>Modern HCL — Types, Validations &amp; Preconditions</title>
+      <title>Modern HCL: Types, Validations &amp; Preconditions</title>
       <link>https://anupojuprudhvi.github.io/learning-paths/terraform/03-variables-validation-and-types.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/terraform/03-variables-validation-and-types.html</guid>
       <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
@@ -752,7 +752,7 @@
       <category>Terraform for Enterprise Production</category>
     </item>
     <item>
-      <title>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</title>
+      <title>CI/CD Guardrails: TFLint, Checkov &amp; Plan Automation</title>
       <link>https://anupojuprudhvi.github.io/learning-paths/terraform/06-ci-cd-security-linting-testing.html</link>
       <guid>https://anupojuprudhvi.github.io/learning-paths/terraform/06-ci-cd-security-linting-testing.html</guid>
       <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>

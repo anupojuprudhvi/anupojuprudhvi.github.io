@@ -184,8 +184,8 @@
           </div>
         </div>
       </header>
-<section class="case-overview"><div class="wrap"><h2>At a glance</h2><dl><div><dt>Problem</dt><dd>Connected medical devices from a third-party device vendor — blood pressure cuffs, glucometers,
-pulse oximeters, and smart scales — each transmitted physiological telemetry in a proprietary,
+<section class="case-overview"><div class="wrap"><h2>At a glance</h2><dl><div><dt>Problem</dt><dd>Connected medical devices from a third-party device vendor (blood pressure cuffs, glucometers,
+pulse oximeters, and smart scales) each transmitted physiological telemetry in a proprietary,
 device-specific format. Neither the clinical microservices platform nor the hospital partner
 network it fed could ingest that traffic directly, and every new device family risked becoming
 a one-off, hand-built parser.</dd></div><div><dt>Approach</dt><dd>A dedicated interoperability host running NextGen Mirth Connect as the single translation point:
@@ -211,7 +211,7 @@ neither side ever has to know the other's format.</dd></div><div><dt>My contribu
 <div class="problem-solution">
 <div>
 <h3>The problem</h3>
-<p>Connected medical devices from a third-party device vendor — blood pressure cuffs, glucometers, pulse oximeters, and smart scales — each transmitted physiological telemetry in a proprietary, device-specific format. Neither the clinical microservices platform nor the hospital partner network it fed could ingest that traffic directly, and every new device family risked becoming a one-off, hand-built parser.</p>
+<p>Connected medical devices from a third-party device vendor (blood pressure cuffs, glucometers, pulse oximeters, and smart scales) each transmitted physiological telemetry in a proprietary, device-specific format. Neither the clinical microservices platform nor the hospital partner network it fed could ingest that traffic directly, and every new device family risked becoming a one-off, hand-built parser.</p>
 </div>
 <div>
 <h3>The architectural solution</h3>
@@ -229,7 +229,7 @@ neither side ever has to know the other's format.</dd></div><div><dt>My contribu
 <li class="reqflow-step">
 <span class="reqflow-n">02</span>
 <span class="reqflow-name">TLS termination at the edge</span>
-<span class="reqflow-note">An Nginx reverse proxy terminates TLS on the integration host and forwards the request to the interoperability engine over a local, unencrypted hop — the only place decrypted traffic exists is on that single host.</span>
+<span class="reqflow-note">An Nginx reverse proxy terminates TLS on the integration host and forwards the request to the interoperability engine over a local, unencrypted hop: the only place decrypted traffic exists is on that single host.</span>
 </li>
 <li class="reqflow-step">
 <span class="reqflow-n">03</span>
@@ -251,12 +251,12 @@ neither side ever has to know the other's format.</dd></div><div><dt>My contribu
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
 <h2 id="every-device-vendor-speaks-a-different-language">Every device vendor speaks a different language</h2>
-<p>Medical IoT devices don't share a wire format. A blood pressure cuff, a glucometer, and a smart scale from the same vendor can each post readings in a different shape, and a device from a different vendor entirely might use raw XML, HL7, or a proprietary binary layout. Healthcare EHR systems and internal clinical platforms, meanwhile, expect data in recognized healthcare interoperability standards — chiefly HL7 v2/v3 and FHIR.</p>
+<p>Medical IoT devices don't share a wire format. A blood pressure cuff, a glucometer, and a smart scale from the same vendor can each post readings in a different shape, and a device from a different vendor entirely might use raw XML, HL7, or a proprietary binary layout. Healthcare EHR systems and internal clinical platforms, meanwhile, expect data in recognized healthcare interoperability standards: chiefly HL7 v2/v3 and FHIR.</p>
 <p>Left unaddressed, that mismatch pushes translation logic outward: every consuming system ends up writing and maintaining its own parser for every device format it needs to understand. That doesn't scale past a handful of integrations, and it means a hospital partner's EHR team would need to understand a device vendor's proprietary schema directly.</p>
 <details class="implementation-notes">
 <summary>Why this needed a dedicated tier, not a library</summary>
 <ul>
-<li><b>New device families are a routine occurrence, not an edge case.</b> A remote patient monitoring program adds device types as clinical programs expand — each one needs its own transformation logic somewhere.</li>
+<li><b>New device families are a routine occurrence, not an edge case.</b> A remote patient monitoring program adds device types as clinical programs expand: each one needs its own transformation logic somewhere.</li>
 <li><b>The hospital partner network only speaks standard formats.</b> An external EHR integration isn't going to accept a vendor-proprietary payload; it expects HL7 or FHIR at the wire level.</li>
 <li><b>Message state needs to be independently auditable.</b> For a HIPAA-governed telemetry stream, knowing which messages were received, transformed, delivered, or errored has to survive independently of whatever's consuming the message downstream.</li>
 </ul>
@@ -290,7 +290,7 @@ neither side ever has to know the other's format.</dd></div><div><dt>My contribu
 <ul>
 <li><b>TLS terminates once, at the edge of one host.</b> The reverse proxy in front of the interoperability engine is the only place the connection is ever encrypted-to-plaintext; everything behind it stays on a private, localhost-only listener.</li>
 <li><b>Message state is tracked independently of delivery.</b> Every message's lifecycle (received, filtered, transformed, sent, errored) is written to a local datastore, so a delivery failure downstream is diagnosable without needing logs from the consuming system.</li>
-<li><b>The transformation layer, not the devices or the consumers, owns the schema contract.</b> Device vendors and downstream consumers never need to agree on a format directly — they each only need to agree with the interoperability engine.</li>
+<li><b>The transformation layer, not the devices or the consumers, owns the schema contract.</b> Device vendors and downstream consumers never need to agree on a format directly: they each only need to agree with the interoperability engine.</li>
 </ul>
 </details>
 </div>
@@ -299,11 +299,11 @@ neither side ever has to know the other's format.</dd></div><div><dt>My contribu
 <div class="wrap">
 <div class="section-eyebrow">Production incident</div>
 <h2 id="a-silent-restart-failure-after-a-routine-os-patch">A silent restart failure after a routine OS patch</h2>
-<p>During a routine operating-system security patch cycle, the interoperability engine's host rebooted as expected — but telemetry uploads began failing immediately afterward with <code>502 Bad Gateway</code> at the reverse proxy.</p>
+<p>During a routine operating-system security patch cycle, the interoperability engine's host rebooted as expected: but telemetry uploads began failing immediately afterward with <code>502 Bad Gateway</code> at the reverse proxy.</p>
 <details class="implementation-notes">
 <summary>Investigation and root cause</summary>
 <ul>
-<li>The reverse proxy's error log showed a connection refusal to the local interoperability engine port, meaning the process wasn't listening at all — not a timeout, an absence.</li>
+<li>The reverse proxy's error log showed a connection refusal to the local interoperability engine port, meaning the process wasn't listening at all: not a timeout, an absence.</li>
 <li>Checking the process table confirmed the engine's Java service hadn't started automatically after the reboot.</li>
 <li>The actual cause was a stale lockfile on the local message-tracking database's socket, left behind from the pre-patch shutdown, which blocked the service from acquiring its database connection on startup.</li>
 </ul>
@@ -316,7 +316,7 @@ neither side ever has to know the other's format.</dd></div><div><dt>My contribu
 <li>Verified end-to-end device payload processing before considering the incident closed.</li>
 </ul>
 </details>
-<p>Because the device vendor's own client software queues and retries failed uploads, no telemetry readings from the outage window were lost once the service came back — the fix was to the availability of the pipeline, not to any missing data once it resumed.</p>
+<p>Because the device vendor's own client software queues and retries failed uploads, no telemetry readings from the outage window were lost once the service came back: the fix was to the availability of the pipeline, not to any missing data once it resumed.</p>
 <h3>Follow-up</h3>
 <p>A systemd watchdog script was added to detect and clear this same socket-lock condition automatically, so the same failure mode after a future patch cycle would self-heal instead of requiring the same manual diagnosis again.</p>
 </div>

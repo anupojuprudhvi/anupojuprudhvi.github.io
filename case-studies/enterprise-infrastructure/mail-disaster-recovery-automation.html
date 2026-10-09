@@ -152,7 +152,7 @@
             <div>
               <div class="eyebrow">Enterprise Hybrid Cloud Infrastructure</div>
               <h1>A four-to-eight-hour manual recovery, reduced to one script</h1>
-              <p class="sub">A single EC2 instance hosting enterprise mail was a real single point of failure, and recovering it by hand — reassigning the IP, finding and reattaching the right volume, remounting, restarting — routinely took the better part of a working day. This case study covers automating that entire sequence into one script, plus the backup and DNS-authentication hardening that went with it.</p>
+              <p class="sub">A single EC2 instance hosting enterprise mail was a real single point of failure, and recovering it by hand) reassigning the IP, finding and reattaching the right volume, remounting, restarting: routinely took the better part of a working day. This case study covers automating that entire sequence into one script, plus the backup and DNS-authentication hardening that went with it.</p>
             </div>
             <svg class="motif motif-failover" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <defs><path id="mP" d="M110 32 V66 H56 V100" /><path id="mS" d="M130 32 V66 H184 V100" /></defs>
@@ -185,15 +185,15 @@
         </div>
       </header>
 <section class="case-overview"><div class="wrap"><h2>At a glance</h2><dl><div><dt>Problem</dt><dd>Enterprise email ran as a single EC2-hosted instance handling a high volume of daily
-communications across administrative offices, campuses, and external partners — a real single
+communications across administrative offices, campuses, and external partners (a real single
 point of failure. Recovering from an instance impairment meant a manual sequence of reassigning
 the elastic IP, locating and reattaching the data volume, remounting it, and restarting services
 by hand, which took four to eight hours end to end. On top of that, missing email-authentication
 records meant a meaningful share of outbound mail was being flagged as spam before it ever
-reached recipients.</dd></div><div><dt>Approach</dt><dd>A single Bash script that automates the entire failover sequence end to end — instance
+reached recipients.</dd></div><div><dt>Approach</dt><dd>A single Bash script that automates the entire failover sequence end to end) instance
 metadata lookup, elastic IP reassociation, EBS volume attachment with a polling wait loop,
 filesystem mount (including NVMe device-mapping for newer instance types), and a service
-restart — plus a tiered S3 backup pipeline and full SPF/DKIM/DMARC DNS hardening.</dd></div><div><dt>My contribution</dt><dd>Lead infrastructure &amp; disaster recovery architect</dd></div></dl></div></section>
+restart (plus a tiered S3 backup pipeline and full SPF/DKIM/DMARC DNS hardening.</dd></div><div><dt>My contribution</dt><dd>Lead infrastructure &amp; disaster recovery architect</dd></div></dl></div></section>
 <section class="key-results" aria-labelledby="keyResultsTitle">
 <div class="wrap">
 <h2 class="section-eyebrow" id="keyResultsTitle">Key results</h2>
@@ -211,7 +211,7 @@ restart — plus a tiered S3 backup pipeline and full SPF/DKIM/DMARC DNS hardeni
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
 <h2 id="a-single-instance-a-manual-runbook-and-hours-of-downtime">A single instance, a manual runbook, and hours of downtime</h2>
-<p>The mail platform ran on one EC2 instance. When that instance became impaired — a host-level hardware issue, a failed health check — recovery meant a human working through a checklist: figure out which elastic IP needed reassigning, find the correct data volume among everything else in the account, attach it to a new instance, wait for the attachment to actually complete, work out which block device it landed on (which can vary depending on instance type), mount it, and finally restart mail services and confirm every daemon came back healthy. Done carefully, that took four to eight hours — and every one of those hours was mail fully down for the organization.</p>
+<p>The mail platform ran on one EC2 instance. When that instance became impaired (a host-level hardware issue, a failed health check) recovery meant a human working through a checklist: figure out which elastic IP needed reassigning, find the correct data volume among everything else in the account, attach it to a new instance, wait for the attachment to actually complete, work out which block device it landed on (which can vary depending on instance type), mount it, and finally restart mail services and confirm every daemon came back healthy. Done carefully, that took four to eight hours: and every one of those hours was mail fully down for the organization.</p>
 <p>Separately, the mail platform had a deliverability problem: without properly configured SPF, DKIM, and DMARC records, a meaningful share of legitimate outbound email was landing in spam folders or getting flagged by recipient mail servers.</p>
 </div>
 </section>
@@ -239,9 +239,9 @@ restart — plus a tiered S3 backup pipeline and full SPF/DKIM/DMARC DNS hardeni
 <ul>
 <li><b>The script does exactly what the manual runbook did, in order, without the waiting-and-guessing.</b> It queries EC2 instance metadata for the new host's instance ID, uses the AWS CLI to atomically reassociate the elastic IP, checks whether the data volume is already attached and attaches it if not, then polls the AWS API in a loop until the volume actually reports an <code>attached</code> state rather than assuming a fixed delay is long enough.</li>
 <li><b>It handles the one thing that trips up manual recovery under pressure: device naming.</b> Newer, Nitro-based EC2 instance types expose attached EBS volumes as NVMe devices rather than the traditional <code>/dev/xvdf</code>-style path, so the script checks for the expected device and falls back to the NVMe mapping automatically instead of leaving that judgment call to whoever's running the recovery at 2am.</li>
-<li><b>Recovery ends in a verified state, not just a restart command.</b> After mounting the filesystem, the script restarts mail services and then explicitly checks that every core daemon — directory, mail transport, mailbox store — reports healthy, rather than treating &quot;the restart command didn't error&quot; as success.</li>
+<li><b>Recovery ends in a verified state, not just a restart command.</b> After mounting the filesystem, the script restarts mail services and then explicitly checks that every core daemon (directory, mail transport, mailbox store) reports healthy, rather than treating &quot;the restart command didn't error&quot; as success.</li>
 <li><b>Backups are tiered, not a single nightly dump.</b> A full backup runs weekly and incremental backups run on the other days, each compressed and uploaded to a dedicated S3 backup bucket, with a rolling 7-day local retention window so recovery doesn't depend on how far back the most recent full backup happens to be.</li>
-<li><b>Deliverability was a DNS problem as much as an infrastructure one.</b> Publishing 2048-bit DKIM keys, a strict SPF record, and a DMARC policy requiring authentication on all outbound mail took the deliverability rate from 82% to 99.8% — the infrastructure automation solved availability, this solved whether the mail actually arrived once it was sent.</li>
+<li><b>Deliverability was a DNS problem as much as an infrastructure one.</b> Publishing 2048-bit DKIM keys, a strict SPF record, and a DMARC policy requiring authentication on all outbound mail took the deliverability rate from 82% to 99.8%: the infrastructure automation solved availability, this solved whether the mail actually arrived once it was sent.</li>
 </ul>
 </details>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-bash"># Automated failover — run on the replacement instance
@@ -251,7 +251,7 @@ restart — plus a tiered S3 backup pipeline and full SPF/DKIM/DMARC DNS hardeni
 # elastic IP, attaches (or confirms) the data volume, mounts it — with
 # NVMe fallback — and restarts mail services with a health check.</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <h3>Trade-offs</h3>
-<p>This is a single-instance failover pattern automated end to end, not a true multi-AZ active-active mail deployment — the mail platform is still down for the seconds-to-minutes the script takes to run, just not for hours. Building genuine multi-AZ high availability into an already-established mail deployment would have meant a much larger migration project than was in scope here; automating the existing recovery path to the point where it reliably runs in under three minutes was the trade that fit the actual constraint, and the same &quot;detect, reassociate, remount, verify&quot; pattern generalizes cleanly to any other stateful EC2 service that doesn't have built-in HA.</p>
+<p>This is a single-instance failover pattern automated end to end, not a true multi-AZ active-active mail deployment: the mail platform is still down for the seconds-to-minutes the script takes to run, just not for hours. Building genuine multi-AZ high availability into an already-established mail deployment would have meant a much larger migration project than was in scope here; automating the existing recovery path to the point where it reliably runs in under three minutes was the trade that fit the actual constraint, and the same &quot;detect, reassociate, remount, verify&quot; pattern generalizes cleanly to any other stateful EC2 service that doesn't have built-in HA.</p>
 </div>
 </section>
         </div>

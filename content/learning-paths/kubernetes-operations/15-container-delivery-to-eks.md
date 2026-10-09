@@ -1,5 +1,5 @@
 ---
-title: Container Delivery — Build, Tag, Push, Promote
+title: Container Delivery: Build, Tag, Push, Promote
 date: 2026-09-18
 updated: 2026-10-01
 track: kubernetes-operations
