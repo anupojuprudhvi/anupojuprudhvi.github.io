@@ -2443,9 +2443,9 @@ h2 { font-size:clamp(30px,3.5vw,48px); letter-spacing:-.055em; }
 @media (max-width: 767px) { .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 28px; } .architecture { grid-column: 1; grid-row: 2; } }
 
 /* Clear reading hierarchy and accessible diagram enlargement. */
-.experience-links { margin: 22px 0; line-height: 2; }
+.background-grid .experience-links { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin: 20px 0 0; font-size: 14px; line-height: 1.6; }
 .role { position: relative; border-left: 2px solid var(--border); padding-left: 22px; }
-.role::before { content: ''; position: absolute; left: -5px; top: 24px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.role::before { content: ''; position: absolute; left: -5px; top: 2px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
 .case-overview { padding: 28px 0; border-bottom: 1px solid var(--border); }
 .case-overview h2 { font-size: 20px; margin-bottom: 20px; }
 .case-overview dl { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px 40px; margin: 0; }
@@ -2501,3 +2501,12 @@ body:not(.deepdive) #work, body:not(.deepdive) #approach, body:not(.deepdive) #b
 @media(prefers-reduced-motion:reduce) { .expertise-dots button::before { transition: none; } }
 
 .expertise-grid.has-tail::after { content: ""; flex: 0 0 var(--expertise-tail); }
+
+/* Slow movement for the decorative hero rings. Global motion pause still applies. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  .globe-grid { animation: hero-ring-drift 24s ease-in-out infinite alternate; }
+}
+@keyframes hero-ring-drift {
+  from { transform: rotate(-20deg) scaleY(.85); opacity: .32; }
+  to { transform: rotate(-18deg) scaleY(.87) scale(1.02); opacity: .38; }
+}

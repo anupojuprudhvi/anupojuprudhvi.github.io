@@ -42,12 +42,11 @@
   const launcher = document.createElement("button");
   launcher.className = "ask-launcher";
   launcher.type = "button";
-  // The icon shows on its own below 1760px (CSS), where the full pill would
-  // sit on top of page content; the label stays as the accessible name.
-  launcher.innerHTML = `<svg class="ask-launcher-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.2 3.6c-.5.4-1.3.1-1.3-.6V16A2.5 2.5 0 0 1 4 13.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span class="ask-launcher-label">Ask or message me</span> <kbd>${
+  // The launcher keeps a visible label on desktop and an accessible icon on mobile.
+  launcher.innerHTML = `<svg class="ask-launcher-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.2 3.6c-.5.4-1.3.1-1.3-.6V16A2.5 2.5 0 0 1 4 13.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span class="ask-launcher-label">Message me</span> <kbd>${
     navigator.platform.toLowerCase().includes("mac") ? "⌘" : "Ctrl"
   } K</kbd>`;
-  launcher.title = "Ask or message me";
+  launcher.title = "Message me";
   launcher.setAttribute("aria-haspopup", "dialog");
 
   const backdrop = document.createElement("div");
@@ -57,11 +56,10 @@
     <div class="ask-panel" role="dialog" aria-modal="true" aria-labelledby="askTitle">
       <button class="ask-close" type="button" aria-label="Close">×</button>
       <div class="ask-head">
-        <h2 id="askTitle">Ask or message me</h2>
+        <h2 id="askTitle">Message me</h2>
         <p class="ask-note">
           Search my written case notes, or switch to <b>Message</b> to reach me
-          directly — not an AI either way. Search results link to the page
-          they came from.
+          directly. Search returns matches from the written case studies.
         </p>
       </div>
       <div class="ask-tabs" role="tablist">
@@ -220,12 +218,14 @@
   /* -------------------------------------------------------------- wire */
   let lastFocus = null;
 
-  function open() {
+  function open(mode = "search") {
     lastFocus = document.activeElement;
     backdrop.hidden = false;
-    setMode("search");
-    answer(backdrop.querySelector("#askInput").value);
-    backdrop.querySelector("#askInput").focus();
+    setMode(mode);
+    if (mode === "search") {
+      answer(backdrop.querySelector("#askInput").value);
+      backdrop.querySelector("#askInput").focus();
+    }
     document.addEventListener("keydown", onKeydown, true);
   }
 
@@ -547,6 +547,7 @@
 
   function setMode(mode, carryQuery) {
     const search = mode === "search";
+    backdrop.querySelector("#askTitle").textContent = search ? "Search my work" : "Send a message";
     const tabSearch = backdrop.querySelector("#askTabSearch");
     const tabMessage = backdrop.querySelector("#askTabMessage");
     tabSearch.classList.toggle("active", search);
@@ -560,7 +561,11 @@
   }
 
   function wire() {
-    launcher.addEventListener("click", open);
+    launcher.addEventListener("click", () => open("message"));
+    document.querySelectorAll("[data-ask-mode]").forEach(link => link.addEventListener("click", event => {
+      event.preventDefault();
+      open(link.dataset.askMode);
+    }));
     backdrop.querySelector(".ask-close").addEventListener("click", close);
     backdrop.addEventListener("click", (e) => {
       if (e.target === backdrop) close();

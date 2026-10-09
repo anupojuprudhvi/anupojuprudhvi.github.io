@@ -179,6 +179,9 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
     assert.match(run().stderr, /quiz: add an explanation line/);
     fs.unlinkSync(file(testModule));
 
+    // Exercise the optional toolbox renderer even when the homepage omits it.
+    const homeWithoutToolbox = read("content/home.html");
+    fs.writeFileSync(file("content/home.html"), homeWithoutToolbox.replace("</main>", "{{toolbox}}\n</main>"));
     // Toolbox: every tool links to the library filtered to it, the library
     // cards carry the matching tool slugs, and a tool with no case study fails.
     succeeds();
@@ -193,6 +196,8 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
     succeeds();
     assert.equal(fs.existsSync(file("learning-paths/migration-journey/99-temporary-module.html")), false);
 
+    fs.writeFileSync(file("content/home.html"), homeWithoutToolbox);
+    succeeds();
     const homeSource = read("content/home.html");
     fs.writeFileSync(file("content/home.html"), homeSource.replace('rel="canonical"', 'rel="alternate"'));
     assert.match(run().stderr, /expected exactly one canonical URL/);
