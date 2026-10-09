@@ -123,12 +123,11 @@
     <main id="main">
       <header class="lp-hero">
         <div class="wrap">
-          <span class="lp-badge">Curriculum &amp; Playbooks</span>
-          <h1>Architecture Playbooks &amp; Learning Paths</h1>
+          <h1>Learning paths</h1>
           <p class="sub">
-            Practical guides based on real enterprise projects. No toy examples: each
-            track covers what tends to go wrong, where the boundaries should sit, and
-            the patterns that hold up in production.
+            Practical guides on building and running cloud platforms. Choose a track
+            and work through its modules in order, with examples, exercises, and operational decisions.
+            <a href="../case-studies/index.html">The case studies show these ideas in practice.</a>
           </p>
         </div>
       </header>
@@ -139,17 +138,14 @@
             <article class="case">
               <div class="case-grid">
                 <div>
-                  <div class="tag">Track 01 / Production Playbook</div>
+                  <div class="tag">Track 01</div>
                   <h3>
                     <a href="terraform/index.html"
                       >Terraform for Enterprise Production</a
                     >
                   </h3>
                   <p class="ctx">
-                    A practical guide to building and running Terraform in enterprise AWS: module structure, keeping state safe, refactoring without downtime, handling secrets, and automated checks in CI/CD. Then one delivery process for a team codebase: base and composition modules, testing, decision records, and a security gate before any environment.
-                  </p>
-                  <p class="case-stack">
-                    Terraform 1.11+ · AWS · HCL · terraform test · Checkov · TFLint · ADRs
+                    Build reusable Terraform modules, manage state and secrets, and test changes before promoting them through environments.
                   </p>
                 </div>
                 <div class="case-result">
@@ -161,24 +157,21 @@
               <div class="case-bottom">
                 <span>Intermediate to Advanced</span>
                 <a class="button" href="terraform/index.html"
-                  >Explore curriculum →</a
+                  >View modules</a
                 >
               </div>
             </article>
             <article class="case">
               <div class="case-grid">
                 <div>
-                  <div class="tag">Track 02 / Migration Playbook</div>
+                  <div class="tag">Track 02</div>
                   <h3>
                     <a href="migration-journey/index.html"
                       >Enterprise Cloud Migration: Assess, Mobilize &amp; Modernize</a
                     >
                   </h3>
                   <p class="ctx">
-                    An architecture and cost guide for enterprise cloud migrations: rapid (4–6 week) versus deep (3–4 month) assessments, 3-year cost modelling including Savings Plans and Microsoft licensing, landing zone design, wave planning, and modernizing along the way.
-                  </p>
-                  <p class="case-stack">
-                    AWS MAP · RVTools · TCO Modeling · Landing Zone · AWS MGN · Amazon EKS
+                    Assess workloads and costs, design the landing zone, and plan migration waves through to modernization.
                   </p>
                 </div>
                 <div class="case-result">
@@ -190,24 +183,21 @@
               <div class="case-bottom">
                 <span>Intermediate to Executive</span>
                 <a class="button" href="migration-journey/index.html"
-                  >Explore curriculum →</a
+                  >View modules</a
                 >
               </div>
             </article>
             <article class="case">
               <div class="case-grid">
                 <div>
-                  <div class="tag">Track 03 / Zero to Production</div>
+                  <div class="tag">Track 03</div>
                   <h3>
                     <a href="kubernetes-operations/index.html"
                       >Kubernetes from Zero to Production on Amazon EKS</a
                     >
                   </h3>
                   <p class="ctx">
-                    A path from never having used Kubernetes to running Amazon EKS in production: the basics on a free local cluster, then the core concepts (workloads, networking, storage, access, packaging), then building an EKS platform, then the real challenges of operating it. Step-by-step flow diagrams throughout, and a shuffled pop quiz to end every module. No Kubernetes experience needed.
-                  </p>
-                  <p class="case-stack">
-                    Kubernetes · kind · kubectl · Helm · Amazon EKS · AWS Load Balancer Controller · Argo CD · Karpenter
+                    Start on a local cluster, learn the core concepts, then build and operate Amazon EKS. Each module ends with a quiz.
                   </p>
                 </div>
                 <div class="case-result">
@@ -219,24 +209,21 @@
               <div class="case-bottom">
                 <span>Beginner to Advanced</span>
                 <a class="button" href="kubernetes-operations/index.html"
-                  >Explore curriculum →</a
+                  >View modules</a
                 >
               </div>
             </article>
             <article class="case">
               <div class="case-grid">
                 <div>
-                  <div class="tag">Track 04 / Break-Fix Labs</div>
+                  <div class="tag">Track 04</div>
                   <h3>
                     <a href="linux-for-devops/index.html"
                       >Linux for DevOps: From First Terminal to On-Call Troubleshooting</a
                     >
                   </h3>
                   <p class="ctx">
-                    A hands-on path for new graduates and associate engineers, from a first hour on a Linux server to diagnosing real production faults. Every module ends with a break-fix lab: you break a free lab VM on purpose, then find and fix the cause with the same tools used on call. Five parts take you from the basics, through how Linux works and a troubleshooting method, to containers built by hand, hardening, automation, a capstone incident with three random faults, and reviews of real production incidents.
-                  </p>
-                  <p class="case-stack">
-                    Ubuntu 24.04 · Bash · systemd · LVM · nftables · tcpdump · strace · eBPF · Ansible · Docker
+                    Learn Linux through practical troubleshooting labs, from your first terminal session to diagnosing production incidents.
                   </p>
                 </div>
                 <div class="case-result">
@@ -248,24 +235,21 @@
               <div class="case-bottom">
                 <span>Beginner to Intermediate</span>
                 <a class="button" href="linux-for-devops/index.html"
-                  >Explore curriculum →</a
+                  >View modules</a
                 >
               </div>
             </article>
             <article class="case">
               <div class="case-grid">
                 <div>
-                  <div class="tag">Track 05 / Personal Journey</div>
+                  <div class="tag">Track 05</div>
                   <h3>
                     <a href="my-ai-journey/index.html"
                       >My AI Journey: From Copy-Paste to Agentic Workflows</a
                     >
                   </h3>
                   <p class="ctx">
-                    The story of how I brought AI into my work as a Lead DevOps engineer and DevOps architect: a curious ChatGPT question in late 2022, the copy-paste years, then AI as a co-worker, writer, and planner, and finally agentic workflows that deliver platform code compliant by design and apps built for SOC compliance. Every chapter opens with the moment that stage began and ends with an exercise to try on your own work, plus three quick scenarios.
-                  </p>
-                  <p class="case-stack">
-                    ChatGPT · Claude · AGENTS.md · Agent Skills · MCP
+                    How I brought AI into daily engineering work, from early experiments to structured workflows. Each chapter includes an exercise.
                   </p>
                 </div>
                 <div class="case-result">
@@ -277,7 +261,7 @@
               <div class="case-bottom">
                 <span>All levels</span>
                 <a class="button" href="my-ai-journey/index.html"
-                  >Read the journey →</a
+                  >Read the journey</a
                 >
               </div>
             </article>
