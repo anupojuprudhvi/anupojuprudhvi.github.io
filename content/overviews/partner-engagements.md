@@ -1,6 +1,6 @@
 ---
 title: Enterprise migration assessments and cloud strategy
-summary: Architectural advisory and migration delivery across AWS Partner Network engagements — agentless discovery, TCO business cases, and target landing zones.
+summary: Architectural advisory and migration delivery across AWS Partner Network engagements: agentless discovery, TCO business cases, and target landing zones.
 role: APN Cloud Migration Architect & Technical Lead
 scope: Enterprise VMware estates, multi-region discovery, AWS Transform business cases, and target architecture design
 ---
@@ -9,7 +9,7 @@ scope: Enterprise VMware estates, multi-region discovery, AWS Transform business
 
 Enterprise organizations transitioning from legacy virtualized infrastructure or monolithic architectures to AWS face severe friction: lack of workload dependency visibility, uncertain multi-year financial returns, unquantified migration risks, and institutional inertia. Without structured discovery and formal TCO modeling, enterprise cloud initiatives stall before migration begins.
 
-As part of AWS Partner Network (APN) delivery engagements, my role centered on guiding enterprise clients through the **AWS Migration Acceleration Program (MAP)** framework — moving from automated on-premises discovery to executive-validated Directional Business Cases (DBC) and production-ready target architecture blueprints.
+As part of AWS Partner Network (APN) delivery engagements, my role centered on guiding enterprise clients through the **AWS Migration Acceleration Program (MAP)** framework: moving from automated on-premises discovery to executive-validated Directional Business Cases (DBC) and production-ready target architecture blueprints.
 
 ## Solution · A phased, data-driven migration lifecycle
 
@@ -23,7 +23,7 @@ The engagements followed the structured AWS MAP methodology, establishing empiri
 
 Discovery requires high fidelity with zero operational disturbance to running production environments. Depending on client security boundaries, discovery was executed via **AWS Transform Agentless Collector OVA appliances** deployed directly into VMware vCenter clusters, or automated ingestion and normalization of deep RVTools exports.
 
-Where enterprise identity systems presented friction — such as legacy SAML configurations blocking assessment workspace access — coexistence architectures bridged the enterprise SAML IdP with **AWS IAM Identity Center (SAML + SCIM)** without disrupting existing developer workflows.
+Where enterprise identity systems presented friction (such as legacy SAML configurations blocking assessment workspace access) coexistence architectures bridged the enterprise SAML IdP with **AWS IAM Identity Center (SAML + SCIM)** without disrupting existing developer workflows.
 
 ### Implementation notes
 

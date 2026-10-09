@@ -175,7 +175,7 @@
             <div><b>Capability</b><br />Data &amp; storage</div>
             <div><b>Stack</b><br />Amazon S3 · AWS CLI · s5cmd · Amazon EC2 · AWS Data Pipeline · Bash</div>
             <div><b>Tags</b><br />s3 · migration · performance · storage · concurrency · cost · aws</div>
-            <div><b>Reading time</b><br />5 min</div>
+            <div><b>Reading time</b><br />4 min</div>
             <div><b>Published</b><br /><time datetime="2026-09-24">24 Sep 2026</time></div>
           </div>
         </div>
@@ -299,7 +299,7 @@
 <ul>
 <li><b>High concurrency (128 workers):</b> Ran the sync command with <code>s5cmd --numworkers 128 cp 's3://source-bucket/*' 's3://dest-bucket/'</code>, distributing requests across 128 concurrent worker threads to saturate S3's frontend request handling across multiple prefix partitions.</li>
 <li><b>Zero data-transfer charges:</b> Because both buckets and the EC2 instance were located within <code>us-east-1</code>, all network traffic remained inside the same AWS regional boundary. AWS charges $0.00 per GB for intra-region data transfer between S3 and EC2; costs were strictly limited to standard S3 API request counts (<code>$0.005</code> per 1,000 <code>PUT</code> requests) and normal instance uptime.</li>
-<li><b>54-minute runtime:</b> The entire copy finished in <b>54 minutes with zero errors</b> — an ~89% reduction in execution time compared to the original 8-hour estimate.</li>
+<li><b>54-minute runtime:</b> The entire copy finished in <b>54 minutes with zero errors</b>: an ~89% reduction in execution time compared to the original 8-hour estimate.</li>
 </ul>
 </details>
 </div>
@@ -321,7 +321,7 @@
 <div class="section-eyebrow">Lesson</div>
 <h2 id="concurrency-beats-bandwidth-for-small-objects">Concurrency beats bandwidth for small objects</h2>
 <p>At cloud scale, small-file storage operations are <b>API transaction problems</b>, not bandwidth problems. When moving millions of small objects, throwing larger network pipes at the problem does not help if the client cannot dispatch concurrent requests fast enough.</p>
-<p>A simple change in tooling — moving from serial CLI processes to a parallel Go-based client on existing in-region compute — eliminated an 8-hour operational bottleneck in under an hour, with zero added infrastructure spend.</p>
+<p>A simple change in tooling (moving from serial CLI processes to a parallel Go-based client on existing in-region compute) eliminated an 8-hour operational bottleneck in under an hour, with zero added infrastructure spend.</p>
 </div>
 </section>
         </div>

@@ -1,5 +1,5 @@
 ---
-title: Modern HCL — Types, Validations & Preconditions
+title: Modern HCL: Types, Validations & Preconditions
 date: 2026-09-17
 updated: 2026-10-06
 track: terraform

@@ -10,8 +10,8 @@ order: 20
 stack: [Apache NiFi, Apache Pinot, Tableau Server, mTLS]
 tags: [data-engineering, real-time-analytics, olap, streaming]
 problem: |
-  Care coordinators needed to query months of patient vital-sign history — blood pressure, pulse,
-  glucose, oxygen saturation — for trend review and triage, but the only place that history lived
+  Care coordinators needed to query months of patient vital-sign history (blood pressure, pulse,
+  glucose, oxygen saturation) for trend review and triage, but the only place that history lived
   was the same operational database handling live, high-frequency device writes. Every heavy
   reporting query competed directly with real-time telemetry ingestion for the same resources.
 solution: |
@@ -36,7 +36,7 @@ scaffold: false
 
 ## Problem · Reporting and ingestion were fighting over the same database
 
-The operational database's job was to be the durable, transactionally-consistent source of truth for live application state — a device reading arrives, gets written, and the application acts on it immediately. That's a fundamentally different access pattern from a care coordinator asking "show me this patient's blood pressure trend over the last 90 days," which touches a large historical range in a single read.
+The operational database's job was to be the durable, transactionally-consistent source of truth for live application state: a device reading arrives, gets written, and the application acts on it immediately. That's a fundamentally different access pattern from a care coordinator asking "show me this patient's blood pressure trend over the last 90 days," which touches a large historical range in a single read.
 
 Running both patterns against the same database meant they competed directly: a burst of heavy trend queries could visibly slow down live telemetry writes, and there was no way to scale the two independently, because they weren't separated at all.
 
@@ -64,17 +64,17 @@ Running both patterns against the same database meant they competed directly: a 
 
 ### Implementation notes
 
-- **The flow-management layer is the only thing that talks to both sides.** Device-facing ingestion and the OLAP store are decoupled by this layer, so either side can change independently — a new device family or a new dashboard doesn't require touching the other.
-- **The OLAP store was chosen specifically for the access pattern, not for general-purpose analytics.** A distributed, real-time, column-oriented store is a deliberate choice for high-concurrency, low-latency aggregation over a data warehouse built for large batch queries — the requirement was interactive dashboard response times across thousands of concurrently-active patients, not nightly reporting.
+- **The flow-management layer is the only thing that talks to both sides.** Device-facing ingestion and the OLAP store are decoupled by this layer, so either side can change independently (a new device family or a new dashboard doesn't require touching the other.
+- **The OLAP store was chosen specifically for the access pattern, not for general-purpose analytics.** A distributed, real-time, column-oriented store is a deliberate choice for high-concurrency, low-latency aggregation over a data warehouse built for large batch queries) the requirement was interactive dashboard response times across thousands of concurrently-active patients, not nightly reporting.
 - **Every hop between pipeline stages authenticates with mutual TLS**, so a compromised or misconfigured client can't inject or read telemetry mid-pipeline even from inside the private network.
 
 ### Result
 
-Care coordinators querying a 90-day, multi-vital patient history went from a query that could take roughly 18 seconds — competing with live writes on the operational database — to consistently under 500 milliseconds, run entirely against the decoupled store instead.
+Care coordinators querying a 90-day, multi-vital patient history went from a query that could take roughly 18 seconds (competing with live writes on the operational database) to consistently under 500 milliseconds, run entirely against the decoupled store instead.
 
 ## Production incident · Dashboard-server deadlocks under heavy reporting load
 
-Once the pipeline was in place, the remaining single point of failure was the BI layer itself: under heavy concurrent reporting load, dashboard sessions periodically disconnected and the server's own management UI stopped responding — a deadlock in the BI server's own process, not the pipeline feeding it.
+Once the pipeline was in place, the remaining single point of failure was the BI layer itself: under heavy concurrent reporting load, dashboard sessions periodically disconnected and the server's own management UI stopped responding: a deadlock in the BI server's own process, not the pipeline feeding it.
 
 ### Triage sequence
 

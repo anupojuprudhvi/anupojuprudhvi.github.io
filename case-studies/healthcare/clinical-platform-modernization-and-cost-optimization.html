@@ -152,7 +152,7 @@
             <div>
               <div class="eyebrow">Healthcare &amp; Cost Architecture</div>
               <h1>Modernizing legacy clinical systems and cutting structural cost</h1>
-              <p class="sub">An on-premise clinical platform — collecting and routing patient biometric data from connected medical devices to care teams — had hit the scaling and reliability limits of running as a single monolith on fixed hardware. This case study details how it was decomposed into managed, containerized services, alongside structural cost-reduction patterns applied across multiple engagements.</p>
+              <p class="sub">An on-premise clinical platform (collecting and routing patient biometric data from connected medical devices to care teams) had hit the scaling and reliability limits of running as a single monolith on fixed hardware. This case study details how it was decomposed into managed, containerized services, alongside structural cost-reduction patterns applied across multiple engagements.</p>
             </div>
             <svg class="motif motif-stream" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <defs>
@@ -196,9 +196,7 @@
             A monolith that couldn't scale with the data it was collecting
           </h2>
           <p>
-            The platform ingests a continuous stream of biometric telemetry —
-            vitals like blood pressure, pulse, glucose, and oxygen saturation —
-            from thousands of connected patient devices, and routes it to
+            The platform ingests a continuous stream of biometric telemetry (vitals like blood pressure, pulse, glucose, and oxygen saturation) from thousands of connected patient devices, and routes it to
             clinical teams for real-time monitoring and historical trend review.
             It had been built and run as a single on-premise application, and
             that design was showing its limits in three specific ways:
@@ -281,7 +279,7 @@
 
           <p>
             Multiple independent application APIs share one load balancer
-            instead of provisioning one per service — a small decision that has
+            instead of provisioning one per service: a small decision that has
             a real cost effect once you're running more than a handful of
             services, covered in the outcome below.
           </p>
@@ -397,8 +395,8 @@
           <div class="section-eyebrow">Cost-aware compute</div>
           <h2 id="applying-the-same-discipline-across-several-engagements">Applying the same discipline across several engagements</h2>
           <p>
-            This pattern — right-sizing compute instead of running static,
-            always-on fleets — wasn't unique to one platform. Across several
+            This pattern (right-sizing compute instead of running static,
+            always-on fleets) wasn't unique to one platform. Across several
             client engagements during the same period, a consistent
             set of cost levers was applied:
           </p>
@@ -445,7 +443,7 @@
             </table>
           </div>
           <p>
-            None of these are exotic individually — the value was in applying
+            None of these are exotic individually: the value was in applying
             all of them consistently, with actual financial modeling behind each
             recommendation rather than a generic "move to cloud-native" pitch.
           </p>
@@ -511,7 +509,7 @@
         <div class="wrap">
           <h2>Questions about this case study?</h2>
           <p>
-            I'm happy to go deeper on any part of this — the service decomposition, the analytics decoupling, or the cost-modeling approach.
+            I'm happy to go deeper on any part of this: the service decomposition, the analytics decoupling, or the cost-modeling approach.
           </p>
           <a class="cta" href="mailto:anupojuprudhvi@gmail.com"
             >anupojuprudhvi@gmail.com</a

@@ -198,7 +198,7 @@
           <h2 id="every-account-was-its-own-island">Every account was its own island</h2>
           <p>
             Before this work, each tolling project's AWS environment had been
-            built independently — its own network design, its own security
+            built independently (its own network design, its own security
             posture, its own way of provisioning a new environment. That meant
             no consistent audit trail across the platform, security tooling
             rolled out unevenly, and a new environment taking weeks of manual
@@ -206,8 +206,7 @@
             infrastructure, that inconsistency is itself a risk.
           </p>
           <p>
-            The brief was to design a single governance model that every account
-            — present and future — would inherit automatically, without slowing
+            The brief was to design a single governance model that every account) present and future: would inherit automatically, without slowing
             engineering teams down or requiring them to understand the
             underlying plumbing.
           </p>
@@ -285,7 +284,7 @@
             <b>Why layers, not one big Terraform config:</b> state is decoupled
             between layers via remote-state lookups, so a change to an
             application never risks touching the network hub, and a new account
-            only ever needs to run the layers it's missing — not rebuild the
+            only ever needs to run the layers it's missing: not rebuild the
             platform from scratch.
           </div>
         </div>
@@ -476,16 +475,15 @@
           </div>
           <p class="hub-note">
             Security and Archive &amp; Migration are kept as a lightweight
-            <b>governance and compliance stack</b> — audit, guardrails,
-            long-term retention — structurally separate from the accounts that
+            <b>governance and compliance stack</b> (audit, guardrails,
+            long-term retention) structurally separate from the accounts that
             actually run workloads. Every account in either group still connects
             to the same single hub.
           </p>
           <p class="hub-detail">
             To be precise about the path: a public request hits CloudFront
-            first, with a WAF in front of it, then resolves through Route 53 —
-            both the public zone for the domain and the private zones used for
-            internal service discovery — hosted in the Shared Services account.
+            first, with a WAF in front of it, then resolves through Route 53 (both the public zone for the domain and the private zones used for
+            internal service discovery) hosted in the Shared Services account.
             From there it reaches the Transit Gateway in the Networking account
             and gets distributed to whichever account actually owns the
             workload, Production included. It's one entry point, not a separate
@@ -500,7 +498,7 @@
           <h2 id="a-strict-dependency-ordered-build-sequence">A strict, dependency-ordered build sequence</h2>
           <p>
             Because every layer depends only on the one below it, the entire
-            platform — or a single new account joining it — follows the same
+            platform (or a single new account joining it) follows the same
             fixed sequence. In practice this turned a bespoke, multi-week
             onboarding into a repeatable checklist:
           </p>
@@ -530,7 +528,7 @@
               <h3>Shared services</h3>
               <p>
                 Bastion access, DNS, certificates, identity, and security
-                tooling — the layer every application depends on.
+                tooling: the layer every application depends on.
               </p>
             </div>
             <div class="seq-item">
@@ -571,8 +569,7 @@
               <tr>
                 <td class="gnum">1</td>
                 <td>
-                  Pull requests can only ever trigger a read-only <b>plan</b> —
-                  the automated PR job has no <code>apply</code> step to run,
+                  Pull requests can only ever trigger a read-only <b>plan</b>: the automated PR job has no <code>apply</code> step to run,
                   full stop.
                 </td>
               </tr>
@@ -580,7 +577,7 @@
                 <td class="gnum">2</td>
                 <td>
                   That plan job assumes an IAM role scoped to AWS-managed
-                  read-only access — even a compromised or misconfigured
+                  read-only access (even a compromised or misconfigured
                   workflow is hard-rejected by AWS itself if it attempts a
                   write.
                 </td>
@@ -597,7 +594,7 @@
                 <td class="gnum">4</td>
                 <td>
                   Applying still requires typing the exact target environment
-                  name as a confirmation string — a typo or a copy-paste from
+                  name as a confirmation string) a typo or a copy-paste from
                   the wrong run aborts the pipeline before Terraform runs at
                   all.
                 </td>
@@ -606,7 +603,7 @@
                 <td class="gnum">5</td>
                 <td>
                   The apply step itself is conditionally skipped in the workflow
-                  definition unless every prior check passed — it's not a
+                  definition unless every prior check passed: it's not a
                   policy, it's how the job graph is built.
                 </td>
               </tr>
@@ -615,7 +612,7 @@
 
           <p>
             The result: onboarding a brand-new module into this pipeline takes
-            under two minutes of YAML, but no engineer — however new — can
+            under two minutes of YAML, but no engineer (however new) can
             accidentally run <code>terraform apply</code> against production by
             clicking the wrong button.
           </p>

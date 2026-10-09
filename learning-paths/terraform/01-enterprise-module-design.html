@@ -174,10 +174,10 @@
                 <li class="is-current"><a href="01-enterprise-module-design.html" aria-current="page"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a>
                 <ol class="lp-toc-sections"><li><a href="#the-two-types-of-terraform-modules">The two types of Terraform modules</a></li><li><a href="#the-canonical-directory-layout">The canonical directory layout</a></li><li><a href="#exact-pins-in-roots-ranges-in-modules">Exact pins in roots, ranges in modules</a></li><li><a href="#anti-patterns-to-avoid">Anti-patterns to avoid</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="02-state-isolation-and-locking.html"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a></li>
-                <li><a href="03-variables-validation-and-types.html"><span class="lp-toc-num">03</span><span>Modern HCL — Types, Validations &amp; Preconditions</span></a></li>
+                <li><a href="03-variables-validation-and-types.html"><span class="lp-toc-num">03</span><span>Modern HCL: Types, Validations &amp; Preconditions</span></a></li>
                 <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
                 <li><a href="05-refactoring-with-moved-blocks.html"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a></li>
-                <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a></li>
+                <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails: TFLint, Checkov &amp; Plan Automation</span></a></li>
               </ol>
               <p class="lp-toc-part">Part 2 · How a module is delivered: design to production</p>
               <ol class="lp-toc-list">
@@ -198,10 +198,10 @@
               <ol class="lp-toc-list">
                 <li class="is-current"><a href="01-enterprise-module-design.html" aria-current="page"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a></li>
                 <li><a href="02-state-isolation-and-locking.html"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a></li>
-                <li><a href="03-variables-validation-and-types.html"><span class="lp-toc-num">03</span><span>Modern HCL — Types, Validations &amp; Preconditions</span></a></li>
+                <li><a href="03-variables-validation-and-types.html"><span class="lp-toc-num">03</span><span>Modern HCL: Types, Validations &amp; Preconditions</span></a></li>
                 <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
                 <li><a href="05-refactoring-with-moved-blocks.html"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a></li>
-                <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a></li>
+                <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails: TFLint, Checkov &amp; Plan Automation</span></a></li>
               </ol>
               <p class="lp-toc-part">Part 2 · How a module is delivered: design to production</p>
               <ol class="lp-toc-list">
@@ -298,31 +298,31 @@
       <td class="gnum">00-bootstrap</td>
       <td>S3 state bucket and KMS keys</td>
       <td><strong>Once</strong> (Creation only)</td>
-      <td>Highest — Platform Admin / Security Lead</td>
+      <td>Highest (Platform Admin / Security Lead</td>
     </tr>
     <tr>
       <td class="gnum">01-networking</td>
       <td>VPCs, Subnets, Transit Gateway, Route 53 Resolver</td>
       <td><strong>Quarterly</strong> (Slow moving)</td>
-      <td>High — Network &amp; Foundation Platform Team</td>
+      <td>High) Network &amp; Foundation Platform Team</td>
     </tr>
     <tr>
       <td class="gnum">02-security</td>
       <td>Base IAM roles, GuardDuty, Security Hub, KMS keys</td>
       <td><strong>Monthly</strong> (Compliance)</td>
-      <td>High — SecOps &amp; Platform Team</td>
+      <td>High (SecOps &amp; Platform Team</td>
     </tr>
     <tr>
       <td class="gnum">03-data</td>
       <td>Aurora PostgreSQL, DynamoDB, S3 lakes, ElastiCache</td>
       <td><strong>Monthly</strong> (Planned maintenance)</td>
-      <td>Extreme — Database &amp; Platform Storage Team</td>
+      <td>Extreme) Database &amp; Platform Storage Team</td>
     </tr>
     <tr>
       <td class="gnum">04-compute</td>
       <td>EKS clusters, node groups, ALBs, ECS tasks, Lambdas</td>
       <td><strong>Daily / Weekly</strong> (Fast moving)</td>
-      <td>Contained — Application &amp; DevOps Teams</td>
+      <td>Contained: Application &amp; DevOps Teams</td>
     </tr>
   </tbody>
 </table>

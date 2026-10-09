@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <title>Modern HCL — Types, Validations &amp; Preconditions</title>
+    <title>Modern HCL: Types, Validations &amp; Preconditions</title>
     <meta name="description" content="Modules that check their own inputs: typed variables, validation blocks, preconditions and postconditions, and for_each with stable keys so removing one item…" />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/terraform/03-variables-validation-and-types.html" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://anupojuprudhvi.github.io/learning-paths/terraform/03-variables-validation-and-types.html" />
-    <meta property="og:title" content="Modern HCL — Types, Validations &amp; Preconditions — Prudhvi Raj Anupoju" />
+    <meta property="og:title" content="Modern HCL: Types, Validations &amp; Preconditions — Prudhvi Raj Anupoju" />
     <meta property="og:description" content="Modules that check their own inputs: typed variables, validation blocks, preconditions and postconditions, and for_each with stable keys so removing one item…" />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/assets/og/learning-paths/terraform.jpg" />
     <meta property="og:image:width" content="1200" />
@@ -19,12 +19,12 @@
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies &amp; Learning Paths" href="https://anupojuprudhvi.github.io/feed.xml" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://anupojuprudhvi.github.io/learning-paths/"},{"@type":"ListItem","position":3,"name":"Terraform for Enterprise Production","item":"https://anupojuprudhvi.github.io/learning-paths/terraform/index.html"},{"@type":"ListItem","position":4,"name":"Modern HCL — Types, Validations & Preconditions","item":"https://anupojuprudhvi.github.io/learning-paths/terraform/03-variables-validation-and-types.html"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://anupojuprudhvi.github.io/learning-paths/"},{"@type":"ListItem","position":3,"name":"Terraform for Enterprise Production","item":"https://anupojuprudhvi.github.io/learning-paths/terraform/index.html"},{"@type":"ListItem","position":4,"name":"Modern HCL: Types, Validations & Preconditions","item":"https://anupojuprudhvi.github.io/learning-paths/terraform/03-variables-validation-and-types.html"}]}</script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "TechArticle",
-        "headline": "Modern HCL — Types, Validations & Preconditions",
+        "headline": "Modern HCL: Types, Validations & Preconditions",
         "description": "Modules that check their own inputs: typed variables, validation blocks, preconditions and postconditions, and for_each with stable keys so removing one item doesn't replace the others.",
         "author": {
           "@type": "Person",
@@ -152,7 +152,7 @@
           <div class="hero-split">
             <div>
               <span class="lp-badge">Core Architecture</span>
-              <h1>Modern HCL — Types, Validations &amp; Preconditions</h1>
+              <h1>Modern HCL: Types, Validations &amp; Preconditions</h1>
               <p class="sub">Modules that check their own inputs: typed variables, validation blocks, preconditions and postconditions, and for_each with stable keys so removing one item doesn't replace the others.</p>
             </div>
           </div>
@@ -173,11 +173,11 @@
               <ol class="lp-toc-list">
                 <li><a href="01-enterprise-module-design.html"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a></li>
                 <li><a href="02-state-isolation-and-locking.html"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a></li>
-                <li class="is-current"><a href="03-variables-validation-and-types.html" aria-current="page"><span class="lp-toc-num">03</span><span>Modern HCL — Types, Validations &amp; Preconditions</span></a>
+                <li class="is-current"><a href="03-variables-validation-and-types.html" aria-current="page"><span class="lp-toc-num">03</span><span>Modern HCL: Types, Validations &amp; Preconditions</span></a>
                 <ol class="lp-toc-sections"><li><a href="#catch-bad-inputs-before-they-reach-aws">Catch bad inputs before they reach AWS</a></li><li><a href="#custom-variable-validation-blocks">Custom variable validation blocks</a></li><li><a href="#lifecycle-preconditions-postconditions">Lifecycle preconditions &amp; postconditions</a></li><li><a href="#the-count-index-shift-trap">The count index-shift trap</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
                 <li><a href="05-refactoring-with-moved-blocks.html"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a></li>
-                <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a></li>
+                <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails: TFLint, Checkov &amp; Plan Automation</span></a></li>
               </ol>
               <p class="lp-toc-part">Part 2 · How a module is delivered: design to production</p>
               <ol class="lp-toc-list">
@@ -198,10 +198,10 @@
               <ol class="lp-toc-list">
                 <li><a href="01-enterprise-module-design.html"><span class="lp-toc-num">01</span><span>Enterprise Repository &amp; Module Layout</span></a></li>
                 <li><a href="02-state-isolation-and-locking.html"><span class="lp-toc-num">02</span><span>State Isolation, Remote Locking &amp; Blast Radius Control</span></a></li>
-                <li class="is-current"><a href="03-variables-validation-and-types.html" aria-current="page"><span class="lp-toc-num">03</span><span>Modern HCL — Types, Validations &amp; Preconditions</span></a></li>
+                <li class="is-current"><a href="03-variables-validation-and-types.html" aria-current="page"><span class="lp-toc-num">03</span><span>Modern HCL: Types, Validations &amp; Preconditions</span></a></li>
                 <li><a href="04-secrets-and-sensitive-values.html"><span class="lp-toc-num">04</span><span>Zero-Plaintext Secret Architecture</span></a></li>
                 <li><a href="05-refactoring-with-moved-blocks.html"><span class="lp-toc-num">05</span><span>Zero-Downtime Refactoring with Moved &amp; Import Blocks</span></a></li>
-                <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</span></a></li>
+                <li><a href="06-ci-cd-security-linting-testing.html"><span class="lp-toc-num">06</span><span>CI/CD Guardrails: TFLint, Checkov &amp; Plan Automation</span></a></li>
               </ol>
               <p class="lp-toc-part">Part 2 · How a module is delivered: design to production</p>
               <ol class="lp-toc-list">

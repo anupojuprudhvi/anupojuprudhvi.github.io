@@ -180,7 +180,7 @@
       </header>
 <section class="case-overview"><div class="wrap"><h2>At a glance</h2><dl><div><dt>Problem</dt><dd>Every microservice needed a repeatable path from a developer's commit to a running container in
 the right environment, with enough process around it to satisfy change control for a HIPAA
-platform — without that process turning into a manual runbook that only one or two engineers
+platform: without that process turning into a manual runbook that only one or two engineers
 knew how to execute correctly under pressure.</dd></div><div><dt>Approach</dt><dd>A GitFlow branching model where the branch itself determines the target environment, driving
 Jenkins declarative pipelines that compile, test, containerize, and promote each service through
 Development, QA, Staging, and Production with an explicit approval gate before anything reaches
@@ -202,7 +202,7 @@ a live clinical environment.</dd></div><div><dt>My contribution</dt><dd>CI/CD &a
 <div class="wrap">
 <div class="section-eyebrow">Problem</div>
 <h2 id="a-manual-release-process-doesn-t-scale-and-doesn-t-survive-an-audit">A manual release process doesn't scale, and doesn't survive an audit</h2>
-<p>Before automation, shipping a change meant an engineer manually building the application, constructing a container image by hand, authenticating to the registry, and applying Kubernetes manifests directly against a cluster — a process that worked, but depended entirely on whichever engineer was doing it that day getting every step right, in order, under time pressure. For a HIPAA platform, that's also a weak position for change control: there's no consistent, enforced record of what was tested and approved before it reached production.</p>
+<p>Before automation, shipping a change meant an engineer manually building the application, constructing a container image by hand, authenticating to the registry, and applying Kubernetes manifests directly against a cluster: a process that worked, but depended entirely on whichever engineer was doing it that day getting every step right, in order, under time pressure. For a HIPAA platform, that's also a weak position for change control: there's no consistent, enforced record of what was tested and approved before it reached production.</p>
 </div>
 </section>
 <section>
@@ -219,13 +219,13 @@ a live clinical environment.</dd></div><div><dt>My contribution</dt><dd>CI/CD &a
 <tr><td data-label="Branch"><code>live</code></td><td data-label="Target environment">Production</td><td data-label="Promotion trigger">Change-control sign-off, rolling update</td></tr>
 </tbody>
 </table></div>
-<p>A commit's branch is the only input the pipeline needs to know where it's headed — there's no separate deployment ticket or manual environment selection, which removes an entire class of &quot;deployed to the wrong environment&quot; mistakes.</p>
+<p>A commit's branch is the only input the pipeline needs to know where it's headed: there's no separate deployment ticket or manual environment selection, which removes an entire class of &quot;deployed to the wrong environment&quot; mistakes.</p>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
 <ul>
 <li><b>Every stage of the pipeline is declarative, not a loose collection of scripts.</b> Build, automated test, containerize, sync configuration, authenticate, push, and deploy are explicit named stages in one Jenkins pipeline definition per service, so a failure is immediately attributable to a specific stage rather than &quot;the deploy script broke somewhere.&quot;</li>
 <li><b>Environment-specific configuration is pulled at build time, not baked into the image.</b> Each pipeline run syncs the target environment's configuration from a dedicated bucket immediately before building the container, so the same pipeline definition produces environment-correct artifacts without maintaining separate images per environment.</li>
-<li><b>Image tags encode the environment and build number</b>, so a specific artifact — <code>qa1.0.42</code>, for example — can be traced back to exactly which pipeline run produced it and promoted forward without rebuilding.</li>
+<li><b>Image tags encode the environment and build number</b>, so a specific artifact: <code>qa1.0.42</code>, for example: can be traced back to exactly which pipeline run produced it and promoted forward without rebuilding.</li>
 </ul>
 </details>
 </div>
@@ -234,7 +234,7 @@ a live clinical environment.</dd></div><div><dt>My contribution</dt><dd>CI/CD &a
 <div class="wrap">
 <div class="section-eyebrow">Production gotcha</div>
 <h2 id="headless-container-registry-authentication">Headless container-registry authentication</h2>
-<p>Jenkins agents run as headless, non-interactive processes, and the registry's standard login flow expected an interactive terminal — every pipeline run failed at the authentication stage with a &quot;cannot perform an interactive login from a non-TTY device&quot; error.</p>
+<p>Jenkins agents run as headless, non-interactive processes, and the registry's standard login flow expected an interactive terminal: every pipeline run failed at the authentication stage with a &quot;cannot perform an interactive login from a non-TTY device&quot; error.</p>
 <h3>Fix</h3>
 <figure class="wide-block"><pre tabindex="0" class="code"><code class="language-text"># What failed (interactive-only):
 docker login -u AWS -p $(aws ecr get-login) &lt;registry&gt;
@@ -242,9 +242,9 @@ docker login -u AWS -p $(aws ecr get-login) &lt;registry&gt;
 # What works headlessly:
 aws ecr get-login-password --region &lt;region&gt; \
   | docker login --username AWS --password-stdin &lt;registry&gt;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
-<p>Piping the temporary authentication token directly into <code>docker login</code> over standard input avoids the interactive prompt entirely, letting a headless CI runner authenticate the same way a human would at a terminal — just without a terminal. This is a small, easy-to-miss detail that breaks registry authentication specifically in automated pipelines while working fine when tested by hand, which is exactly why it surfaced only after the pipeline was wired up end-to-end.</p>
+<p>Piping the temporary authentication token directly into <code>docker login</code> over standard input avoids the interactive prompt entirely, letting a headless CI runner authenticate the same way a human would at a terminal: just without a terminal. This is a small, easy-to-miss detail that breaks registry authentication specifically in automated pipelines while working fine when tested by hand, which is exactly why it surfaced only after the pipeline was wired up end-to-end.</p>
 <h3>Result</h3>
-<p>Replacing the manual build-and-deploy process with this pipeline took deployment lead time — from a commit ready to ship, to that change running in its target environment — from roughly four hours down to under five minutes, while adding more approval structure to the path to production, not less.</p>
+<p>Replacing the manual build-and-deploy process with this pipeline took deployment lead time (from a commit ready to ship, to that change running in its target environment) from roughly four hours down to under five minutes, while adding more approval structure to the path to production, not less.</p>
 </div>
 </section>
         </div>
@@ -257,7 +257,7 @@ aws ecr get-login-password --region &lt;region&gt; \
         <section class="related-links" aria-label="Learn the concepts behind this">
           <h2>Learn the concepts behind this</h2>
           <ul>
-            <li><a href="../../learning-paths/kubernetes-operations/15-container-delivery-to-eks.html"><span class="related-eyebrow">Kubernetes from Zero to Production on Amazon EKS · Module 15</span><strong>Container Delivery — Build, Tag, Push, Promote</strong><small>Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command.</small></a></li>
+            <li><a href="../../learning-paths/kubernetes-operations/15-container-delivery-to-eks.html"><span class="related-eyebrow">Kubernetes from Zero to Production on Amazon EKS · Module 15</span><strong>Container Delivery: Build, Tag, Push, Promote</strong><small>Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command.</small></a></li>
             <li><a href="../../learning-paths/kubernetes-operations/16-gitops-with-argo-cd.html"><span class="related-eyebrow">Kubernetes from Zero to Production on Amazon EKS · Module 16</span><strong>GitOps with Argo CD: Git as the Source of Truth</strong><small>Letting Argo CD keep each cluster matching what's in Git, so a deploy is a reviewed pull request, drift gets fixed automatically, and rolling back means reverting a commit.</small></a></li>
           </ul>
         </section>

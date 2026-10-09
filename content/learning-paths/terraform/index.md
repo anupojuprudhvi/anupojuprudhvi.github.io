@@ -54,7 +54,7 @@ The patterns every enterprise Terraform codebase needs, each on its own: structu
     <a class="lp-module-card" href="03-variables-validation-and-types.html">
       <span class="lp-module-num">03</span>
       <div class="lp-module-body">
-        <h3>Modern HCL — Types, Validations &amp; Preconditions</h3>
+        <h3>Modern HCL (Types, Validations &amp; Preconditions</h3>
         <p>Modules that reject bad inputs at plan time, preconditions and postconditions, and why for_each beats count.</p>
       </div>
       <span class="lp-module-action">Read module →</span>
@@ -84,7 +84,7 @@ The patterns every enterprise Terraform codebase needs, each on its own: structu
     <a class="lp-module-card" href="06-ci-cd-security-linting-testing.html">
       <span class="lp-module-num">06</span>
       <div class="lp-module-body">
-        <h3>CI/CD Guardrails — TFLint, Checkov &amp; Plan Automation</h3>
+        <h3>CI/CD Guardrails) TFLint, Checkov &amp; Plan Automation</h3>
         <p>Fast lint checks, Checkov security scanning, a plan posted on every pull request, and a nightly drift check.</p>
       </div>
       <span class="lp-module-action">Read module →</span>

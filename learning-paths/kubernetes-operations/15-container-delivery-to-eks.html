@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <title>Container Delivery — Build, Tag, Push, Promote</title>
+    <title>Container Delivery: Build, Tag, Push, Promote</title>
     <meta name="description" content="Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once…" />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/15-container-delivery-to-eks.html" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/15-container-delivery-to-eks.html" />
-    <meta property="og:title" content="Container Delivery — Build, Tag, Push, Promote — Prudhvi Raj Anupoju" />
+    <meta property="og:title" content="Container Delivery: Build, Tag, Push, Promote — Prudhvi Raj Anupoju" />
     <meta property="og:description" content="Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once…" />
     <meta property="og:image" content="https://anupojuprudhvi.github.io/assets/og/learning-paths/kubernetes-operations.jpg" />
     <meta property="og:image:width" content="1200" />
@@ -19,12 +19,12 @@
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies &amp; Learning Paths" href="https://anupojuprudhvi.github.io/feed.xml" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://anupojuprudhvi.github.io/learning-paths/"},{"@type":"ListItem","position":3,"name":"Kubernetes from Zero to Production on Amazon EKS","item":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/index.html"},{"@type":"ListItem","position":4,"name":"Container Delivery — Build, Tag, Push, Promote","item":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/15-container-delivery-to-eks.html"}]}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Learning paths","item":"https://anupojuprudhvi.github.io/learning-paths/"},{"@type":"ListItem","position":3,"name":"Kubernetes from Zero to Production on Amazon EKS","item":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/index.html"},{"@type":"ListItem","position":4,"name":"Container Delivery: Build, Tag, Push, Promote","item":"https://anupojuprudhvi.github.io/learning-paths/kubernetes-operations/15-container-delivery-to-eks.html"}]}</script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "TechArticle",
-        "headline": "Container Delivery — Build, Tag, Push, Promote",
+        "headline": "Container Delivery: Build, Tag, Push, Promote",
         "description": "Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command.",
         "author": {
           "@type": "Person",
@@ -152,7 +152,7 @@
           <div class="hero-split">
             <div>
               <span class="lp-badge">Production · Delivery</span>
-              <h1>Container Delivery — Build, Tag, Push, Promote</h1>
+              <h1>Container Delivery: Build, Tag, Push, Promote</h1>
               <p class="sub">Build an image once and promote that exact image to each environment, using immutable tags and digests, plus the registry login detail that only breaks once a pipeline, not a person, runs the command.</p>
             </div>
             <svg class="motif motif-pipeline" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
@@ -205,7 +205,7 @@
               </ol>
               <p class="lp-toc-part">Part 4 · Operating in production</p>
               <ol class="lp-toc-list">
-                <li class="is-current"><a href="15-container-delivery-to-eks.html" aria-current="page"><span class="lp-toc-num">15</span><span>Container Delivery — Build, Tag, Push, Promote</span></a>
+                <li class="is-current"><a href="15-container-delivery-to-eks.html" aria-current="page"><span class="lp-toc-num">15</span><span>Container Delivery: Build, Tag, Push, Promote</span></a>
                 <ol class="lp-toc-sections"><li><a href="#build-once-then-promote-the-same-image">Build once, then promote the same image</a></li><li><a href="#registry-login-breaks-in-headless-ci-cd">Registry login breaks in headless CI/CD</a></li><li><a href="#key-terms">Key terms</a></li><li><a href="#pop-quiz">Pop quiz</a></li></ol></li>
                 <li><a href="16-gitops-with-argo-cd.html"><span class="lp-toc-num">16</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
                 <li><a href="17-scaling-requests-and-cost.html"><span class="lp-toc-num">17</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
@@ -245,7 +245,7 @@
               </ol>
               <p class="lp-toc-part">Part 4 · Operating in production</p>
               <ol class="lp-toc-list">
-                <li class="is-current"><a href="15-container-delivery-to-eks.html" aria-current="page"><span class="lp-toc-num">15</span><span>Container Delivery — Build, Tag, Push, Promote</span></a></li>
+                <li class="is-current"><a href="15-container-delivery-to-eks.html" aria-current="page"><span class="lp-toc-num">15</span><span>Container Delivery: Build, Tag, Push, Promote</span></a></li>
                 <li><a href="16-gitops-with-argo-cd.html"><span class="lp-toc-num">16</span><span>GitOps with Argo CD: Git as the Source of Truth</span></a></li>
                 <li><a href="17-scaling-requests-and-cost.html"><span class="lp-toc-num">17</span><span>Scaling Without Surprises: Requests, Autoscaling &amp; Cost</span></a></li>
                 <li><a href="18-observability-and-alerting.html"><span class="lp-toc-num">18</span><span>Observability: Knowing Something's Wrong Before Users Do</span></a></li>

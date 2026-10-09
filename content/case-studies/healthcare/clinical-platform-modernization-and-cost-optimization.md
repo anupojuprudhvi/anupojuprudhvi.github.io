@@ -10,10 +10,10 @@ tags: [finops, modernization, kubernetes, caching, analytics]
 problem: An on-premise clinical platform past the scaling limits of fixed hardware, where heavy reporting queries competed with real-time device ingestion on the same database.
 solution: Containerized microservices on managed Kubernetes, an in-memory caching layer, and a streaming analytics pipeline so dashboards never touch the operational database.
 heroTitle: Modernizing legacy clinical systems and cutting structural cost
-intro: An on-premise clinical platform — collecting and routing patient biometric data from connected medical devices to care teams — had hit the scaling and reliability limits of running as a single monolith on fixed hardware. This case study details how it was decomposed into managed, containerized services, alongside structural cost-reduction patterns applied across multiple engagements.
+intro: An on-premise clinical platform (collecting and routing patient biometric data from connected medical devices to care teams) had hit the scaling and reliability limits of running as a single monolith on fixed hardware. This case study details how it was decomposed into managed, containerized services, alongside structural cost-reduction patterns applied across multiple engagements.
 role: Application modernization & cost-aware infrastructure design
 scope: Clinical monolith decomposition + cross-engagement cost work
-closingText: I'm happy to go deeper on any part of this — the service decomposition, the analytics decoupling, or the cost-modeling approach.
+closingText: I'm happy to go deeper on any part of this: the service decomposition, the analytics decoupling, or the cost-modeling approach.
 scaffold: false
 scripts: [cache-diagram.js]
 ---
@@ -25,9 +25,7 @@ scripts: [cache-diagram.js]
             A monolith that couldn't scale with the data it was collecting
           </h2>
           <p>
-            The platform ingests a continuous stream of biometric telemetry —
-            vitals like blood pressure, pulse, glucose, and oxygen saturation —
-            from thousands of connected patient devices, and routes it to
+            The platform ingests a continuous stream of biometric telemetry (vitals like blood pressure, pulse, glucose, and oxygen saturation) from thousands of connected patient devices, and routes it to
             clinical teams for real-time monitoring and historical trend review.
             It had been built and run as a single on-premise application, and
             that design was showing its limits in three specific ways:
@@ -110,7 +108,7 @@ scripts: [cache-diagram.js]
 
           <p>
             Multiple independent application APIs share one load balancer
-            instead of provisioning one per service — a small decision that has
+            instead of provisioning one per service: a small decision that has
             a real cost effect once you're running more than a handful of
             services, covered in the outcome below.
           </p>
@@ -226,8 +224,8 @@ scripts: [cache-diagram.js]
           <div class="section-eyebrow">Cost-aware compute</div>
           <h2>Applying the same discipline across several engagements</h2>
           <p>
-            This pattern — right-sizing compute instead of running static,
-            always-on fleets — wasn't unique to one platform. Across several
+            This pattern (right-sizing compute instead of running static,
+            always-on fleets) wasn't unique to one platform. Across several
             client engagements during the same period, a consistent
             set of cost levers was applied:
           </p>
@@ -274,7 +272,7 @@ scripts: [cache-diagram.js]
             </table>
           </div>
           <p>
-            None of these are exotic individually — the value was in applying
+            None of these are exotic individually: the value was in applying
             all of them consistently, with actual financial modeling behind each
             recommendation rather than a generic "move to cloud-native" pitch.
           </p>
