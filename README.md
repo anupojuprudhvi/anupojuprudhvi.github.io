@@ -269,9 +269,14 @@ searches is already the grounding corpus.
 ## Homepage presentation
 
 The homepage puts professional experience and architecture first. The hologram,
-automatic greeting, and voice controls are no longer loaded. Existing navigation,
-request tracing, case-study filters, and the Ask panel remain available.
-The former guide assets are retained for reference but are not used by the page.
+automatic greeting, and voice controls are no longer loaded. Case-study search and filters, Learning Paths, and the Ask panel remain available.
+The generic homepage architecture illustration and duplicate project cards are removed.
+Seven expertise cards cover architecture, Kubernetes, infrastructure as code,
+resilience, CI/CD, FinOps, and migration. The card strip scrolls manually.
+Unused guide code, portrait artwork, and the Three.js vendor bundle have been removed.
+Case-study overviews use existing problem, solution, role, and outcome metadata.
+The Experience navigation preserves the original `#background` anchor. Diagrams
+can be enlarged in a keyboard-accessible dialog; originals remain readable without JavaScript.
 
 ## Deployment
 
@@ -288,3 +293,9 @@ npm run build
 git add -A && git commit -m "…"
 git push origin main
 ```
+
+Homepage navigation leads to the case-study library rather than a duplicate
+Selected Work card section. The hero and header use the same reading grid.
+The role label and metrics remain steady instead of animating. Visible copy
+uses existing portfolio facts, with decorative arrows and prose dashes reduced.
+Technical commands, diagrams, and dates keep their required notation.

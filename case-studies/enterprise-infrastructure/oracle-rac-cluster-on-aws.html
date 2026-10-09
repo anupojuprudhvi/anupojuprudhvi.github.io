@@ -61,7 +61,6 @@
       <div class="wrap nav-inner">
         <a class="brand" href="../../index.html">Prudhvi Raj Anupoju</a>
         <div class="navlinks" id="siteNavLinks">
-          <a href="../../index.html#work">Selected work</a>
           <div class="nav-dropdown">
             <a href="../../case-studies/index.html" class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false" aria-current="page"
               >Case studies <span class="nav-arrow" aria-hidden="true">▾</span></a
@@ -131,7 +130,7 @@
             </div>
           </div>
           <a href="../../index.html#approach">Approach</a>
-          <a href="../../index.html#background">About</a>
+          <a href="../../index.html#background">Experience</a>
           <a href="../../index.html#contact" class="nav-cta">Let's connect</a>
         </div>
         <a class="nav-icon" href="https://www.linkedin.com/in/prudhvi-raj-anupoju/" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">in</span><span class="sr-only">LinkedIn profile (opens in a new tab)</span></a>
@@ -179,6 +178,15 @@
           </div>
         </div>
       </header>
+<section class="case-overview"><div class="wrap"><h2>At a glance</h2><dl><div><dt>Problem</dt><dd>A large education-services platform ran its core academic and financial operations —
+registrations, fee processing, and examination results — on a database tier that had to absorb
+extreme, predictable concurrency spikes (an exam-results release could multiply load by an order
+of magnitude in minutes) without downtime or throttling. Oracle RAC is the standard answer for
+active-active database high availability, but RAC has traditionally required shared-SAN block
+storage that AWS doesn't provide natively — EBS volumes attach to one instance at a time.</dd></div><div><dt>Approach</dt><dd>A 21+ node active-active Oracle RAC cluster on AWS EC2, using a software-defined clustered
+storage layer (FlashGrid) to emulate shared-SAN semantics across independently-attached EBS
+volumes, with tuned ASM diskgroups, provisioned-IOPS storage, and kernel-level I/O tuning to hit
+sub-2ms latency under load.</dd></div><div><dt>My contribution</dt><dd>Lead cloud architect / database infrastructure engineer</dd></div></dl></div></section>
 <section class="key-results" aria-labelledby="keyResultsTitle">
 <div class="wrap">
 <h2 class="section-eyebrow" id="keyResultsTitle">Key results</h2>
@@ -266,23 +274,23 @@ su - grid -c &quot;asmcmd lsdg&quot;</code></pre>
     <footer>
       <div class="wrap footer-nav">
         <nav aria-label="Footer">
-          <a href="../../index.html#work">Selected work</a>
           <a href="../../case-studies/index.html">Case studies</a>
           <a href="../../learning-paths/index.html">Learning paths</a>
           <a href="../../index.html#approach">Approach</a>
-          <a href="../../index.html#background">About</a>
+          <a href="../../index.html#background">Experience</a>
           <a href="../../index.html#contact">Contact</a>
         </nav>
       </div>
       <div class="wrap footer-inner">
         <span>© 2026 Prudhvi Raj Anupoju</span>
-        <a href="https://www.linkedin.com/in/prudhvi-raj-anupoju/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
-        <a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status ↗</a>
+        <a href="https://www.linkedin.com/in/prudhvi-raj-anupoju/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://stats.uptimerobot.com/T37DqoPPMU" target="_blank" rel="noopener noreferrer" title="Live uptime monitoring, running since September 2026">Uptime status</a>
         <a href="../../privacy.html">Privacy</a>
         <a href="#main">Back to top ↑</a>
       </div>
     </footer>
     <script src="../../assets/assistant.js" defer></script>
+    <script src="../../assets/diagram-viewer.js" defer></script>
     
   </body>
 </html>
