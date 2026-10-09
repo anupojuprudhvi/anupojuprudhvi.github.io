@@ -272,7 +272,7 @@ The homepage puts professional experience and architecture first. The hologram,
 automatic greeting, and voice controls are no longer loaded. Case-study search and filters, Learning Paths, and the Ask panel remain available.
 The generic homepage architecture illustration and duplicate project cards are removed.
 Seven expertise cards cover architecture, Kubernetes, infrastructure as code,
-resilience, CI/CD, FinOps, and migration. The card strip scrolls manually.
+resilience, CI/CD, FinOps, and migration. The card strip supports manual navigation and pausable rotation.
 Unused guide code, portrait artwork, and the Three.js vendor bundle have been removed.
 Case-study overviews use existing problem, solution, role, and outcome metadata.
 The Experience navigation preserves the original `#background` anchor. Diagrams
@@ -299,3 +299,15 @@ Selected Work card section. The hero and header use the same reading grid.
 The role label and metrics remain steady instead of animating. Visible copy
 uses existing portfolio facts, with decorative arrows and prose dashes reduced.
 Technical commands, diagrams, and dates keep their required notation.
+
+Expertise navigation uses labelled dots with swipe and mouse-drag support.
+Rotation runs every eight seconds only while visible, pauses for hover/focus,
+stops after manual navigation, and respects reduced motion and Pause animations.
+Contact links open the existing message or written-work search panel directly.
+They retain mailto/library fallbacks without JavaScript. Duplicate capability
+prose and the toolbox catalogue have been removed from the homepage.
+
+The homepage moves from introduction to case studies, expertise, delivery approach,
+experience, credentials, and contact. Repeated hero labels are removed. The learning
+path hub uses short summaries with details on each track page, and links back to
+case studies so examples and guides remain connected.
