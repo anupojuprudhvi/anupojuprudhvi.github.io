@@ -26,6 +26,15 @@ export async function verifyPresentation(browser, base) {
     await page.setViewportSize({width:390,height:844});
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
     await page.screenshot({path:'artifacts/without-hologram-mobile.png', fullPage:true});
+    const contact = page.locator('[data-ask-mode="message"]');
+    await contact.click();
+    await page.locator('#askMessageMode').waitFor();
+    assert.equal(await page.locator('#askTitle').textContent(), 'Send a message');
+    await page.keyboard.press('Escape');
+    assert.equal(await contact.evaluate(el=>el===document.activeElement),true);
+    await page.locator('[data-ask-mode="search"]').click();
+    await page.locator('#askInput').waitFor();
+    await page.keyboard.press('Escape');
     await page.goto(base + '/case-studies/tolling/aurora-multi-region-dr-parity.html');
     assert.equal(await page.locator('.case-overview dt').first().textContent(), 'Problem');
     await page.getByRole('button', {name:'Enlarge diagram'}).first().click();

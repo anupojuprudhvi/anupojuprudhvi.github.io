@@ -14,7 +14,7 @@ export async function verifySearch(browser, base) {
     const item = { ...index[0], nav: label };
     await page.route("**/assets/case-studies.json", (route) => route.fulfill({ json: [item] }));
     await page.goto(base);
-    await page.locator(".ask-launcher").click();
+    await page.locator('[data-ask-mode="search"]').click();
     const chip = page.locator("#askChips button").first();
     await chip.waitFor();
     assert.equal(await chip.textContent(), label);
@@ -37,7 +37,7 @@ export async function verifySearch(browser, base) {
         return route.fulfill({ status: 503, body: "Unavailable" });
       });
       await page.goto(base);
-      await page.locator(".ask-launcher").click();
+      await page.locator('[data-ask-mode="search"]').click();
       await page.getByRole("button", { name: "Retry search" }).waitFor();
       assert.match(await page.locator("#askResults").textContent(), /Search couldn't load/);
       assert.equal(await page.locator("#askResults").getAttribute("aria-busy"), "false");
@@ -46,7 +46,7 @@ export async function verifySearch(browser, base) {
       }
       if (failure === "network") {
         await page.locator(".ask-close").click();
-        await page.locator(".ask-launcher").click();
+        await page.locator('[data-ask-mode="search"]').click();
       } else {
         await page.getByRole("button", { name: "Retry search" }).click();
       }

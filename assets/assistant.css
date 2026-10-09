@@ -531,3 +531,9 @@
     display: none !important;
   }
 }
+
+/* Keep the contact entry point legible on desktop rather than an unexplained icon. */
+@media(min-width:768px) and (max-width:1759px) { .ask-launcher { width: auto; padding: 10px 14px; } .ask-launcher-label { position: static; width: auto; height: auto; clip: auto; overflow: visible; white-space: nowrap; } }
+
+/* Leave a clear dock below footer controls for the fixed contact launcher. */
+@media screen { body:has(.ask-launcher) footer { padding-bottom: 96px; } }

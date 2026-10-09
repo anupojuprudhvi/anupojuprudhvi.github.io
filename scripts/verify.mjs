@@ -180,6 +180,7 @@ try {
       );
     } else if (await page.locator('button[id$="PlayBtn"]').count()) {
       await page.locator('button[id$="PlayBtn"]').click();
+      await page.locator(".hub-node.active").first().waitFor({state:"visible"});
       assert(
         (await page.locator(".hub-node.active").count()) > 0,
         "Diagram must activate",
@@ -333,11 +334,14 @@ try {
   assert.equal(await progressReader.locator(".lp-module-card.is-done").count(), 1, "the overview marks the finished module");
   assert.equal(await progressReader.locator(".lp-progress").count(), 0, "overview pages have no reading widget");
   await progressContext.close();
-  // Toolbox: a tool chip opens the library filtered to exactly the case
-  // studies its count promises, says which tool, and links back to all.
+  // An expertise card opens the library filtered to the matching case
+  // studies, names the tool, and offers a link back to all studies.
   const toolboxContext = await browser.newContext();
   const visitor = await toolboxContext.newPage();
   visitor.on("pageerror", (e) => errors.push(`toolbox: ${e.message}`));
+  await visitor.goto(`${base}/case-studies/index.html`);
+  const promised = await visitor.locator('.uc-card[data-tools~="amazon-eks"]').count();
+  assert(promised > 0, "the library contains EKS case studies");
   await visitor.goto(base);
   // The change-process steps animate in on scroll and must end fully visible.
   await visitor.locator(".change-flow").scrollIntoViewIfNeeded();
@@ -345,10 +349,8 @@ try {
   await visitor.waitForFunction(() =>
     [...document.querySelectorAll(".change-step")].every((step) => getComputedStyle(step).opacity === "1"),
   );
-  const eksChip = visitor.locator('#toolbox a.tool-chip[href$="?tool=amazon-eks"]');
-  const promised = Number(await eksChip.locator(".tool-count").textContent());
-  assert(promised > 0, "the toolbox shows how many case studies used a tool");
-  await Promise.all([visitor.waitForURL(/tool=amazon-eks/), eksChip.click()]);
+  const eksCard = visitor.locator('#expertiseCards a[href$="?tool=amazon-eks"]');
+  await Promise.all([visitor.waitForURL(/tool=amazon-eks/), eksCard.click()]);
   assert.equal(await visitor.locator(".uc-card:visible").count(), promised);
   assert.equal((await visitor.locator("#ucStatus").textContent()).trim(), `${promised} case studies using Amazon EKS`);
   assert.equal(await visitor.locator("#ucToolFilter").isVisible(), true);
