@@ -49,6 +49,8 @@
   launcher.title = "Message me";
   launcher.setAttribute("aria-haspopup", "dialog");
 
+  let dismissEndPrompt = () => {};
+
   const backdrop = document.createElement("div");
   backdrop.className = "ask-backdrop";
   backdrop.hidden = true;
@@ -98,7 +100,69 @@
   document.addEventListener("DOMContentLoaded", () => {
     document.body.append(launcher, backdrop);
     wire();
+    setupEndPrompt();
   });
+
+  // A small, non-modal reminder appears once when the visitor reaches the end.
+  function setupEndPrompt() {
+    if (!("IntersectionObserver" in window)) return;
+    const note = document.createElement("aside");
+    note.className = "ask-end-note";
+    note.setAttribute("aria-label", "Contact reminder");
+    note.hidden = true;
+    note.innerHTML = '<p>Questions about this page?<small>You can send me a message.</small></p><button type="button" aria-label="Dismiss contact reminder">×</button>';
+    const end = document.createElement("div");
+    end.className = "ask-page-end";
+    end.setAttribute("aria-hidden", "true");
+    document.body.append(end, note);
+    let shown = false;
+    let dismissed = false;
+    dismissEndPrompt = () => {
+      dismissed = true;
+      note.hidden = true;
+      launcher.classList.add("is-quiet");
+    };
+    note.querySelector("button").addEventListener("click", () => {
+      dismissEndPrompt();
+      launcher.focus({preventScroll:true});
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && !note.hidden && backdrop.hidden) {
+        event.preventDefault();
+        dismissEndPrompt();
+        launcher.focus({preventScroll:true});
+      }
+    });
+    let atEnd = false;
+    const watched = new WeakSet();
+    function syncReminder() {
+      const blocked = document.querySelector('.lp-quiz-nudge.is-open, dialog[open]');
+      if (!atEnd || blocked) {
+        if (note.contains(document.activeElement)) launcher.focus({preventScroll:true});
+        note.hidden = true;
+        if (!atEnd && shown) dismissed = true;
+        return;
+      }
+      if (dismissed || !backdrop.hidden) return;
+      shown = true;
+      note.hidden = false;
+      launcher.classList.add("is-quiet");
+    }
+    function watchPrompts() {
+      document.querySelectorAll('.lp-quiz-nudge, dialog').forEach(prompt => {
+        if (watched.has(prompt)) return;
+        watched.add(prompt);
+        new MutationObserver(syncReminder).observe(prompt, {attributes:true, attributeFilter:['class','open']});
+      });
+      syncReminder();
+    }
+    new MutationObserver(watchPrompts).observe(document.body, {childList:true});
+    watchPrompts();
+    new IntersectionObserver(entries => {
+      atEnd = entries[0].isIntersecting;
+      syncReminder();
+    }, {rootMargin:"0px 0px 2px 0px"}).observe(end);
+  }
 
   /* ------------------------------------------------------------ search */
   const norm = (s) => (s || "").toLowerCase();
@@ -219,6 +283,7 @@
   let lastFocus = null;
 
   function open(mode = "search") {
+    dismissEndPrompt();
     lastFocus = document.activeElement;
     backdrop.hidden = false;
     setMode(mode);

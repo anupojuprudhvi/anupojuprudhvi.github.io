@@ -167,9 +167,9 @@
     }
 
     // "Pause animations" (WCAG 2.2.2 Pause, Stop, Hide): looping diagrams and
-    // the typing headline stop, and the choice is remembered.
+    // the contact glow stop, and the choice is remembered.
     // Only offered where something actually loops and motion isn't already reduced.
-    const looping = document.querySelector("svg.hub-net, svg.hub-net-compact, svg.motif, #typeWord");
+    const looping = document.querySelector('svg.hub-net, svg.hub-net-compact, svg.motif, #typeWord, script[src$="assistant.js"]');
     const footerRow = document.querySelector("footer .footer-inner");
     if (looping && footerRow && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
       const button = document.createElement("button");

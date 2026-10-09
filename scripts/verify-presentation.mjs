@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import AxeBuilder from '@axe-core/playwright';
 import {verifyCarousel} from './verify-carousel.mjs';
+import {verifyContactPrompt} from './verify-contact-prompt.mjs';
 export async function verifyPresentation(browser, base) {
   const context = await browser.newContext({reducedMotion:'reduce'});
   const page = await context.newPage();
@@ -49,4 +50,5 @@ export async function verifyPresentation(browser, base) {
     console.log('PASS: experience, case-study overviews, diagram enlargement and focus restoration, expertise navigation, and retired-asset removal.');
   } finally { await context.close(); }
   await verifyCarousel(browser, base);
+  await verifyContactPrompt(browser, base);
 }
