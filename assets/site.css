@@ -2477,12 +2477,27 @@ body:not(.deepdive) #work, body:not(.deepdive) #approach, body:not(.deepdive) #b
 .portfolio-home .hero h1 { font-size: clamp(38px,5vw,68px); }
 .portfolio-home .hero .lede { max-width: 640px; font-size: 16px; }
 .expertise-heading h2 { font-size: 24px; margin: 0; }
-.expertise-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 18px; padding: 4px 2px 18px; }
-.expertise-grid a { flex: 0 0 260px; min-height: 210px; display: flex; flex-direction: column; scroll-snap-align: start; }
+.expertise-grid { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 18px; padding: 4px 2px; scrollbar-width: none; }
+.expertise-grid::-webkit-scrollbar { display: none; }
+.expertise-grid a { flex: 0 0 calc((100% - 54px) / 4); min-height: 210px; display: flex; flex-direction: column; scroll-snap-align: start; }
 .expertise-grid a::after { content: none; }
 .expertise-grid strong { min-height: 44px; line-height: 1.45; font-size: 14px; }
 .expertise-grid small { margin-top: 8px; line-height: 1.6; }
 .expertise-controls { display: flex; gap: 8px; }
 .expertise-controls[hidden] { display: none; }
 .expertise-controls button { border: 1px solid var(--border); background: var(--bg); color: var(--text); border-radius: 6px; padding: 8px 12px; cursor: pointer; }
-@media(max-width:767px) { .expertise-grid a { flex-basis: 240px; } }
+@media(max-width:1199px) { .expertise-grid a { flex-basis: calc((100% - 18px) / 2); } }
+@media(max-width:767px) { .expertise-grid a { flex-basis: 100%; } }
+
+.expertise-controls { justify-content: center; align-items: center; gap: 16px; margin-top: 14px; }
+.expertise-dots { display: flex; align-items: center; }
+.expertise-dots button { display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border: 0; background: transparent; }
+.expertise-dots button::before { content: ''; width: 8px; height: 8px; border-radius: 10px; background: var(--text-muted); transition: width .2s; }
+.expertise-dots button[aria-current="true"]::before { width: 24px; background: var(--accent); }
+.expertise-play { font-size: 12px; }
+.expertise-play[hidden] { display: none; }
+.expertise-grid { cursor: grab; }
+.expertise-grid.is-dragging { cursor: grabbing; scroll-snap-type: none; user-select: none; }
+@media(prefers-reduced-motion:reduce) { .expertise-dots button::before { transition: none; } }
+
+.expertise-grid.has-tail::after { content: ""; flex: 0 0 var(--expertise-tail); }
