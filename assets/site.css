@@ -2504,9 +2504,9 @@ body:not(.deepdive) #work, body:not(.deepdive) #approach, body:not(.deepdive) #b
 
 /* Slow movement for the decorative hero rings. Global motion pause still applies. */
 @media screen and (prefers-reduced-motion: no-preference) {
-  .globe-grid { animation: hero-ring-drift 24s ease-in-out infinite alternate; }
+  .globe-grid { animation: hero-ring-drift 10s ease-in-out infinite alternate; }
 }
 @keyframes hero-ring-drift {
-  from { transform: rotate(-20deg) scaleY(.85); opacity: .32; }
-  to { transform: rotate(-18deg) scaleY(.87) scale(1.02); opacity: .38; }
+  from { transform: translate(-16px, 8px) rotate(-20deg) scaleY(.85) scale(.98); opacity: .32; }
+  to { transform: translate(20px, -12px) rotate(-12deg) scaleY(.88) scale(1.08); opacity: .42; }
 }
