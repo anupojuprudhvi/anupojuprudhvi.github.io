@@ -311,3 +311,8 @@ The homepage moves from introduction to case studies, expertise, delivery approa
 experience, credentials, and contact. Repeated hero labels are removed. The learning
 path hub uses short summaries with details on each track page, and links back to
 case studies so examples and guides remain connected.
+
+The contact launcher uses a gentle glow while browsing. A dismissible reminder
+appears at the bottom of pages with the contact panel, without opening a form or
+moving keyboard focus. It yields to the learning quiz prompt, stays dismissed for
+the current page visit, and respects reduced motion and Pause animations.
