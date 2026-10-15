@@ -14,7 +14,7 @@ Products built by one person tend to collect shortcuts that break once real user
 This section covers two products, both built with AI coding tools working under clear rules:
 
 1. **An AI-assisted HRMS tool:** one place for leave, attendance, shifts, timesheets, the org chart, assets, and policy documents. A built-in assistant takes plain-language requests and answers policy questions by quoting the company's own documents, with the page. It runs on Next.js, FastAPI, and PostgreSQL.
-2. **Solo SaaS hardening:** a PDF processing product I took from a serverless deployment that didn't work to a security-reviewed WebAssembly engine about 93% lighter, with verified payment handling, then moved it off Vercel to a self-hosted setup. I built it alone, following a written working protocol.
+2. **Solo product hardening:** a PDF processing product I took from a serverless deployment that didn't work to a self-audited WebAssembly engine about 93% lighter, with verified payment handling, then moved it off Vercel to a self-hosted setup. I built it alone, following a written working protocol.
 
 ## Architecture · Simple pieces, clear boundaries
 
@@ -26,7 +26,7 @@ This section covers two products, both built with AI coding tools working under 
        • Assistant acts through the API as the signed-in user
        • Policy answers quote the source document and page
 
-       Solo SaaS hardening (PDF engine)
+       Solo product hardening (PDF engine)
        ─────────────────────────────────────────────────────
        • WebAssembly rendering, no native binaries (the same code runs on a laptop and a server)
        • Self-hosted Supabase in Docker, off Vercel

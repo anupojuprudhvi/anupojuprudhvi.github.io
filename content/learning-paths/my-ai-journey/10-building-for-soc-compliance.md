@@ -19,7 +19,7 @@ By mid 2026, everything from the earlier chapters came together: agents that fol
 ## What I built · Two real products
 
 - **An [AI-assisted HRMS tool](../../case-studies/independent-products/ai-assisted-hrms-tool.html):** leave, attendance, shifts, timesheets, the org chart, assets, and policy documents, with an assistant that answers policy questions by quoting the handbook with the page.
-- **A [PDF product](../../case-studies/independent-products/solo-saas-hardening-ai-agentic-engineering.html)** that handles real payments, taken from a broken deployment to a hardened, audited app.
+- **A [PDF product](../../case-studies/independent-products/solo-saas-hardening-ai-agentic-engineering.html)** that includes Stripe checkout for buying credits, taken from a broken deployment to a hardened, self-audited app.
 
 Both were built with AI agents doing much of the coding, under the rules from [Chapter 08](08-agents-md-skills-and-mcp.html).
 
@@ -37,7 +37,7 @@ One thing to be clear about: designing for SOC controls isn't the same as holdin
 
 ## The audit · Reading the code like an attacker
 
-Tests check that the app does what it should. An audit asks what it does when someone attacks it. The PDF product handles real payments but had never had a security review, so I ran a full audit as a separate, deliberate pass: a line-by-line read of the server, routes, middleware, and client, looking for ways to misuse it.
+Tests check that the app does what it should. An audit asks what it does when someone attacks it. The PDF product includes Stripe checkout for buying credits but had never had a security review, so I ran a full audit as a separate, deliberate pass: a line-by-line read of the server, routes, middleware, and client, looking for ways to misuse it.
 
 It found nine real issues. The worst was critical: the payment webhook trusted unsigned requests, so anyone who knew the endpoint could fake a "payment completed" event and get credits for free. It wasn't reachable through normal use, so no everyday test would have found it. A deliberate audit did.
 

@@ -1,7 +1,7 @@
 ---
 title: An AI-assisted HRMS tool: leave, attendance, timesheets, and policy answers in one place
 date: 2026-09-24
-updated: 2026-10-06
+updated: 2026-10-15
 nav: AI-Assisted HRMS
 summary: A simple HR management tool I built with AI coding tools. It covers leave, attendance, shifts, timesheets, the org chart, company assets, and policy documents, and a built-in assistant handles everyday requests in plain language and answers policy questions by quoting the handbook, with the page.
 project: independent-products
@@ -92,6 +92,15 @@ The same approach is described step by step in the [My AI Journey](../../learnin
 
 - **Quoting, not generating.** The assistant quotes the handbook instead of writing its own answer. It reads less smoothly than a chatbot, but it can't make up a policy.
 - **Keyword search.** Policy search matches words and phrases rather than meaning, so a question that uses very different words from the handbook may find nothing. It then says so rather than guessing.
+
+## Forward-deployed lens · What this shows
+
+I built this alone, with no customers. I set the requirements myself and treated them the way I would a customer's:
+
+- **Design around what a wrong answer costs.** A made-up policy answer would mislead an employee, so the assistant quotes the handbook with the page and says so plainly when nothing matches.
+- **Scope to the real need.** The tool covers the everyday HR work small companies do, and leaves reports and reminders for later.
+- **Keep boundaries testable.** One company can't read another's data, and the assistant can't do more than the signed-in person can. Automated tests try both and expect a refusal.
+- **Work under written rules.** AI coding tools did much of the coding, but every change followed a written protocol, with a handover of what changed and which checks ran.
 
 ## Next steps · Where it could go
 

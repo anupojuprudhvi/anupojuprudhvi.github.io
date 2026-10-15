@@ -243,7 +243,7 @@
 <h2 id="two-real-products">Two real products</h2>
 <ul>
 <li><b>An [AI-assisted HRMS tool](../../case-studies/independent-products/ai-assisted-hrms-tool.html):</b> leave, attendance, shifts, timesheets, the org chart, assets, and policy documents, with an assistant that answers policy questions by quoting the handbook with the page.</li>
-<li><b>A [PDF product](../../case-studies/independent-products/solo-saas-hardening-ai-agentic-engineering.html)</b> that handles real payments, taken from a broken deployment to a hardened, audited app.</li>
+<li><b>A [PDF product](../../case-studies/independent-products/solo-saas-hardening-ai-agentic-engineering.html)</b> that includes Stripe checkout for buying credits, taken from a broken deployment to a hardened, self-audited app.</li>
 </ul>
 <p>Both were built with AI agents doing much of the coding, under the rules from <a href="08-agents-md-skills-and-mcp.html">Chapter 08</a>.</p>
 </div>
@@ -267,7 +267,7 @@
 <div class="wrap">
 <div class="section-eyebrow">The audit</div>
 <h2 id="reading-the-code-like-an-attacker">Reading the code like an attacker</h2>
-<p>Tests check that the app does what it should. An audit asks what it does when someone attacks it. The PDF product handles real payments but had never had a security review, so I ran a full audit as a separate, deliberate pass: a line-by-line read of the server, routes, middleware, and client, looking for ways to misuse it.</p>
+<p>Tests check that the app does what it should. An audit asks what it does when someone attacks it. The PDF product includes Stripe checkout for buying credits but had never had a security review, so I ran a full audit as a separate, deliberate pass: a line-by-line read of the server, routes, middleware, and client, looking for ways to misuse it.</p>
 <p>It found nine real issues. The worst was critical: the payment webhook trusted unsigned requests, so anyone who knew the endpoint could fake a &quot;payment completed&quot; event and get credits for free. It wasn't reachable through normal use, so no everyday test would have found it. A deliberate audit did.</p>
 <p>Every finding was fixed and written up the same way: the symptom, the cause, the fix, and a rule to stop it happening again.</p>
 <p>AI helps here too, as an extra reviewer that reads every file without getting tired. But the audit is a deliberate step with a person in charge, not something an agent does on the side.</p>
@@ -327,7 +327,7 @@
           <h2>See it in practice</h2>
           <ul>
             <li><a href="../../case-studies/independent-products/ai-assisted-hrms-tool.html"><span class="related-eyebrow">Case study · Independent Products &amp; AI-Assisted Engineering</span><strong>AI-Assisted HRMS</strong><small>A simple HR management tool I built with AI coding tools. It covers leave, attendance, shifts, timesheets, the org chart, company assets, and policy documents, and a built-in assistant handles everyday requests in plain language and answers policy questions by quoting the handbook, with the page.</small></a></li>
-            <li><a href="../../case-studies/independent-products/solo-saas-hardening-ai-agentic-engineering.html"><span class="related-eyebrow">Case study · Independent Products &amp; AI-Assisted Engineering</span><strong>Solo SaaS hardening</strong><small>Taking a PDF SaaS product I built alone from a serverless deployment that didn't run to a security-reviewed, self-hosted app about 93% lighter, using AI coding tools under strict written rules.</small></a></li>
+            <li><a href="../../case-studies/independent-products/solo-saas-hardening-ai-agentic-engineering.html"><span class="related-eyebrow">Case study · Independent Products &amp; AI-Assisted Engineering</span><strong>Solo product hardening</strong><small>Taking a PDF product I built alone from a serverless deployment that didn't run to a self-audited, self-hosted app about 93% lighter, using AI coding tools under strict written rules.</small></a></li>
           </ul>
         </section>
           <nav class="lp-nav" aria-label="Module navigation"><a class="lp-nav-link prev" href="../../learning-paths/my-ai-journey/09-writing-the-standards.html">

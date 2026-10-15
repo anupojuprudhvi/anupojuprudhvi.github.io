@@ -818,7 +818,7 @@
     "project": "independent-products",
     "projectName": "Independent Products & AI-Assisted Engineering",
     "projectShort": "Independent products",
-    "minutes": 4,
+    "minutes": 5,
     "layer": "Product engineering",
     "stack": [
       "FastAPI",
@@ -837,9 +837,9 @@
     "solution": "I built a simple HRMS: one place for leave, attendance, shifts, timesheets, the org chart, assets, and policy documents. A built-in assistant takes plain-language requests such as \"how much leave do I have?\" and answers policy questions by quoting the company's own documents, with the page. I built it with AI coding tools under written working rules."
   },
   {
-    "title": "Hardening a solo SaaS product, end to end, with AI-agent-assisted engineering",
-    "nav": "Solo SaaS hardening",
-    "summary": "Taking a PDF SaaS product I built alone from a serverless deployment that didn't run to a security-reviewed, self-hosted app about 93% lighter, using AI coding tools under strict written rules.",
+    "title": "Hardening a solo-built PDF product, end to end, with AI-agent-assisted engineering",
+    "nav": "Solo product hardening",
+    "summary": "Taking a PDF product I built alone from a serverless deployment that didn't run to a self-audited, self-hosted app about 93% lighter, using AI coding tools under strict written rules.",
     "project": "independent-products",
     "projectName": "Independent Products & AI-Assisted Engineering",
     "projectShort": "Independent products",
@@ -862,7 +862,7 @@
       "ai-assisted-engineering"
     ],
     "url": "case-studies/independent-products/solo-saas-hardening-ai-agentic-engineering.html",
-    "problem": "A solo-built PDF compression and conversion SaaS product launched on Vercel's serverless platform, but the architecture it launched with was built around assumptions serverless doesn't support: a native-binary PDF rendering library that can't load its system dependencies in a Lambda-style runtime, a worker file `pdf.js` needs that the deployment bundler couldn't trace and include, and a file-based SQLite database on a filesystem that's read-only and wiped between invocations. On top of that, the app handled real payments through Stripe and had never had a dedicated security pass.",
-    "solution": "A systematic, documented engineering pass (one person, working through a formalized AI-agent-assisted workflow) that replaced the native-binary rendering stack with a pure WebAssembly engine, moved the data to Postgres, ran a full security audit that found and fixed nine real findings including a critical payment-integrity bug, and cut the app's first-load payload by roughly 93%. The product then left Vercel entirely for a self-hosted Supabase stack and a Docker deployment, so users' data stays on infrastructure I control."
+    "problem": "A solo-built PDF compression and conversion product first deployed to Vercel's serverless platform, but the architecture it was first deployed with was built around assumptions serverless doesn't support: a native-binary PDF rendering library that can't load its system dependencies in a Lambda-style runtime, a worker file `pdf.js` needs that the deployment bundler couldn't trace and include, and a file-based SQLite database on a filesystem that's read-only and wiped between invocations. On top of that, the app includes Stripe checkout for buying credits and had never had a dedicated security pass.",
+    "solution": "A systematic, documented engineering pass (one person, working through a formalized AI-agent-assisted workflow) that replaced the native-binary rendering stack with a pure WebAssembly engine, moved the data to Postgres, ran a full security audit that found and fixed nine real findings including a critical payment-integrity bug, and cut the app's first-load payload by roughly 93%. The product then left Vercel entirely for a self-hosted Supabase stack and a Docker deployment, so any user data stays on infrastructure I control."
   }
 ]

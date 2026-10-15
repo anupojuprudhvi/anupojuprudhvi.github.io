@@ -20,7 +20,7 @@
     "project": "independent-products",
     "tag": "AI-assisted engineering",
     "badge": "10 Suites",
-    "title": "Hardening a solo SaaS built with AI",
+    "title": "Hardening a solo-built PDF product with AI",
     "desc": "How 10 automated test suites and a strict pre-push checklist kept AI-written code in check."
   }
 ]
