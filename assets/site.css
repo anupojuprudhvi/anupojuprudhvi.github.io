@@ -1332,7 +1332,7 @@ footer {
 /* Below 1024px the full row of links no longer fits beside the name, so
    they collapse behind the Menu button (the same as on phones) instead of
    wrapping onto two or three lines. */
-@media (max-width: 1023px) {
+@media (max-width: 1059px) {
   .nav-inner {
     gap: 12px;
     min-height: 72px;
