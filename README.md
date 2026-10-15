@@ -29,12 +29,14 @@ its `container` job.
 `.github/workflows/build-check.yml` runs on every push and pull request:
 
 - **build** — generated-output drift check, generator and preview-server tests,
-  the full browser suite, then `npm run stage` (copies only public files to
-  `_site/` and fails on any local link that would 404) and `npm run lighthouse`
-  (median of 3 runs; performance ≥ 90, accessibility, best practices and SEO
-  ≥ 95; reports kept as a run artifact).
+  the full browser suite (page screenshots are skipped in CI), then
+  `npm run stage` (copies only public files to `_site/` and fails on any local
+  link that would 404).
+- **lighthouse** — runs alongside **build**, so the deploy doesn't wait for both
+  in sequence: `npm run lighthouse` (median of 3 runs; performance ≥ 90,
+  accessibility, best practices and SEO ≥ 95; reports kept as a run artifact).
 - **container** — the Docker setup above, so it can't silently rot.
-- **deploy** — on `main` only, and only after **build** passes: publishes
+- **deploy** — on `main` only, and only after **build** and **lighthouse** pass: publishes
   `_site/` to GitHub Pages. Requires *Settings → Pages → Source: GitHub Actions*.
   Publishing the staged folder also keeps `content/`, `scripts/`, and repo docs
   off the public site.

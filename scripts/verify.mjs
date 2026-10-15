@@ -7,6 +7,9 @@ import { serve, root } from "./serve.mjs";
 import { verifySearch } from "./verify-search.mjs";
 import { verifyPresentation } from "./verify-presentation.mjs";
 const artifacts = path.join(root, "artifacts");
+// CI never uploads these PNGs, and full-page captures of every page in both
+// themes are a large share of the run time, so they are local/Docker only.
+const captureScreenshots = !process.env.CI;
 const server = serve(0);
 await new Promise((resolve) => server.once("listening", resolve));
 const base = `http://127.0.0.1:${server.address().port}`;
@@ -127,17 +130,18 @@ try {
       .replace(/\.html$/, "")
       .replaceAll("/", "-")
       .replaceAll("\\", "-");
-    await page.screenshot({
-      path: path.join(artifacts, `${slug}-${theme}-desktop.png`),
-      fullPage: true,
-    });
+    if (captureScreenshots)
+      await page.screenshot({
+        path: path.join(artifacts, `${slug}-${theme}-desktop.png`),
+        fullPage: true,
+      });
     for (const width of [320, 360, 390, 768, 1440]) {
       await page.setViewportSize({ width, height: 900 });
       const overflow = await page.evaluate(
         () => document.documentElement.scrollWidth > innerWidth,
       );
       assert.equal(overflow, false, `${file} ${theme} overflow at ${width}`);
-      if (width === 390)
+      if (width === 390 && captureScreenshots)
         await page.screenshot({
           path: path.join(artifacts, `${slug}-${theme}-mobile.png`),
           fullPage: true,
