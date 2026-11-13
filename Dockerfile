@@ -8,7 +8,7 @@
 #   test   – Playwright image running the same checks as CI
 
 ARG NODE_VERSION=24
-ARG PLAYWRIGHT_VERSION=1.63.0
+ARG PLAYWRIGHT_VERSION=1.64.1
 
 # ---------------------------------------------------------------- build
 FROM node:${NODE_VERSION}-alpine AS build

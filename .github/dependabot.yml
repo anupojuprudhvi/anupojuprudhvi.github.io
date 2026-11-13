@@ -10,7 +10,9 @@ updates:
         patterns: ["*"]
 
   # Base images in the local Docker setup. Tags set through ARG (node,
-  # playwright) are not visible to Dependabot; bump those by hand.
+  # playwright) are not visible to Dependabot; bump those by hand. A test in
+  # scripts/build.test.mjs fails when ARG PLAYWRIGHT_VERSION drifts from the
+  # installed playwright package, so an npm bump PR shows the needed change.
   - package-ecosystem: docker
     directory: /
     schedule:

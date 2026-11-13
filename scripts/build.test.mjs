@@ -216,3 +216,16 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
     fs.rmSync(sandbox, { recursive: true, force: true });
   }
 });
+
+// The Docker test image ships its own browser, pinned through an ARG that Dependabot
+// can't see. If it drifts from the installed playwright package, the container job
+// fails only after merge, so catch the mismatch here in the normal build job.
+test("Docker Playwright image matches the installed playwright package", () => {
+  const dockerfile = fs.readFileSync("Dockerfile", "utf8");
+  const pinned = dockerfile.match(/^ARG PLAYWRIGHT_VERSION=(\S+)$/m)?.[1];
+  const lock = JSON.parse(fs.readFileSync("package-lock.json", "utf8"));
+  const installed = lock.packages?.["node_modules/playwright"]?.version;
+  assert(pinned, "Dockerfile must set ARG PLAYWRIGHT_VERSION");
+  assert(installed, "package-lock.json must list playwright");
+  assert.equal(pinned, installed, `Dockerfile pins Playwright ${pinned} but package-lock.json installs ${installed}; update ARG PLAYWRIGHT_VERSION`);
+});
