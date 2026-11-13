@@ -1,6 +1,5 @@
 import assert from 'node:assert/strict';
 import AxeBuilder from '@axe-core/playwright';
-import {verifyCarousel} from './verify-carousel.mjs';
 import {verifyContactPrompt} from './verify-contact-prompt.mjs';
 export async function verifyPresentation(browser, base) {
   const context = await browser.newContext({reducedMotion:'reduce'});
@@ -35,15 +34,20 @@ export async function verifyPresentation(browser, base) {
     assert.equal(await page.locator("#work .case").count(), 6, "selected work lists every engagement");
     assert.equal(await page.locator("#work .case h3 a").first().getAttribute("href") !== null, true);
     assert.equal(await page.locator(".expertise-grid a").count(), 7);
-    await page.getByRole("button", {name:"Show expertise group 2 of 2"}).click();
-    await page.waitForFunction(() => document.getElementById("expertiseCards").scrollLeft > 0);
+    assert.equal(await page.locator('.expertise-controls, .expertise-dots, .expertise-play').count(), 0);
+    assert.equal(await page.locator('#expertiseCards').evaluate(el => getComputedStyle(el).display), 'grid');
+    assert.equal(await page.locator('#expertiseCards a:visible').count(), 7);
+    assert.equal(await page.locator('#statsRow .stat a').count(), 4);
+    assert.equal(await page.locator('.hero h1').evaluate(el => getComputedStyle(el).textTransform), 'none');
     const aligned = await page.evaluate(() => Math.abs(document.querySelector(".expertise-heading").getBoundingClientRect().left - document.querySelector(".hero-copy").getBoundingClientRect().left) < 1);
     assert.equal(aligned, true, "hero and expertise share a reading column");
-    assert.equal(await page.getByRole('button', {name:'Play automatic expertise rotation'}).isHidden(), true);
-    await page.screenshot({path:'artifacts/without-hologram-desktop.png', fullPage:false});
+    await page.mouse.move(5, 600);
+    assert.equal(await openMenus(), 0, "navigation is closed in the clean presentation capture");
+    await page.screenshot({path:'artifacts/redesign-light-desktop.png', fullPage:false});
     await page.setViewportSize({width:390,height:844});
+    assert.equal(await page.locator('#expertiseCards a:visible').count(), 7);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
-    await page.screenshot({path:'artifacts/without-hologram-mobile.png', fullPage:true});
+    await page.screenshot({path:'artifacts/redesign-light-mobile.png', fullPage:true});
     const contact = page.locator('[data-ask-mode="message"]');
     await contact.click();
     await page.locator('#askMessageMode').waitFor();
@@ -64,8 +68,7 @@ export async function verifyPresentation(browser, base) {
     assert.equal(await opener.evaluate(el => el === document.activeElement), true);
     await opener.click();
     await page.getByRole('button', {name:'Close', exact:true}).click();
-    console.log('PASS: experience, case-study overviews, diagram enlargement and focus restoration, expertise navigation, and retired-asset removal.');
+    console.log('PASS: experience, case-study overviews, diagram focus restoration, static expertise grid, evidence links, and retired-asset removal.');
   } finally { await context.close(); }
-  await verifyCarousel(browser, base);
   await verifyContactPrompt(browser, base);
 }

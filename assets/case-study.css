@@ -4,11 +4,9 @@
   padding: 0;
 }
 .reqflow-title {
-  font:
-    10px ui-monospace,
+  font: var(--font-xs) ui-monospace,
     monospace;
   letter-spacing: 0.12em;
-  text-transform: uppercase;
   color: var(--text-muted);
   margin-bottom: 18px;
 }
@@ -49,8 +47,7 @@
   background: var(--bg);
   border: 1px solid var(--accent);
   color: var(--accent);
-  font:
-    11px ui-monospace,
+  font: var(--font-xs) ui-monospace,
     monospace;
   font-weight: 600;
   position: relative;
@@ -58,7 +55,7 @@
 }
 .reqflow-name {
   color: var(--text);
-  font-size: 15px;
+  font-size: var(--font-sm);
   font-weight: 600;
   letter-spacing: -0.015em;
   align-self: center;
@@ -68,7 +65,7 @@
 }
 .reqflow-note {
   grid-column: 2;
-  font-size: 13.5px;
+  font-size: var(--font-xs);
   color: var(--text-body);
   line-height: 1.7;
   margin-top: 4px;
@@ -103,13 +100,13 @@
   .reqflow-n {
     width: 26px;
     height: 26px;
-    font-size: 10px;
+    font-size: var(--font-xs);
   }
   .reqflow-name {
-    font-size: 14px;
+    font-size: var(--font-xs);
     min-height: 26px;
   }
   .reqflow-note {
-    font-size: 13px;
+    font-size: var(--font-xs);
   }
 }

@@ -202,7 +202,7 @@ export function siteTopNav({
           <a href="${page}#contact" class="nav-cta">Let's connect</a>
         </div>
         <a class="nav-icon" href="https://www.linkedin.com/in/prudhvi-raj-anupoju/" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">in</span><span class="sr-only">LinkedIn profile (opens in a new tab)</span></a>
-        <button id="themeToggle" type="button" aria-label="Switch to light theme">☼</button>
+        <button id="themeToggle" type="button" aria-label="Switch to dark theme">☾</button>
         <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="siteNavLinks" aria-label="Open menu">
           <span class="nav-toggle-bars" aria-hidden="true"></span>
         </button>
@@ -516,7 +516,7 @@ ${enables}
       : "";
 
   return `<!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -679,7 +679,7 @@ export function libraryPage(items, { toolbox = [], toolsByUrl = new Map() } = {}
     )}${count ? ` <span class="filter-count" aria-hidden="true">${count}</span>` : ""}</button>`;
 
   return `<!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -920,7 +920,7 @@ export function learningPathPage(d, bodyHtml, { up, url, prev, next, track, docs
     .join("\n            ");
 
   return `<!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

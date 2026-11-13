@@ -1,9 +1,27 @@
 (() => {
-  let theme = "dark";
+  const systemTheme = typeof matchMedia === "function"
+    ? matchMedia("(prefers-color-scheme: dark)")
+    : { matches: false };
+  let savedTheme = null;
   try {
-    if (localStorage.getItem("theme") === "light") theme = "light";
+    const stored = localStorage.getItem("theme");
+    if (stored === "light" || stored === "dark") savedTheme = stored;
   } catch {}
-  document.documentElement.dataset.theme = theme;
+  const applyTheme = (theme) => {
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+    const toggle = document.getElementById("themeToggle");
+    if (!toggle) return;
+    const dark = theme === "dark";
+    const label = `Switch to ${dark ? "light" : "dark"} theme`;
+    toggle.setAttribute("aria-label", label);
+    toggle.title = label;
+    toggle.textContent = dark ? "☼" : "☾";
+  };
+  applyTheme(savedTheme || (systemTheme.matches ? "dark" : "light"));
+  systemTheme.addEventListener?.("change", (event) => {
+    if (!savedTheme) applyTheme(event.matches ? "dark" : "light");
+  });
   // Lets CSS collapse the mobile menu only when this script can reopen it.
   document.documentElement.classList.add("js");
   // Remembered "Pause animations" choice (WCAG 2.2.2), applied before first paint.
@@ -13,25 +31,16 @@
   const motionPaused = () => document.documentElement.classList.contains("motion-paused");
   document.addEventListener("DOMContentLoaded", () => {
     const toggle = document.getElementById("themeToggle");
-    const label = () => {
-      const dark = document.documentElement.dataset.theme === "dark";
-      toggle.setAttribute(
-        "aria-label",
-        `Switch to ${dark ? "light" : "dark"} theme`,
-      );
-      toggle.title = toggle.getAttribute("aria-label");
-      toggle.textContent = dark ? "☼" : "☾";
-    };
     if (toggle) {
-      label();
+      applyTheme(document.documentElement.dataset.theme);
       toggle.addEventListener("click", () => {
         const next =
           document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-        document.documentElement.dataset.theme = next;
+        applyTheme(next);
+        savedTheme = next;
         try {
           localStorage.setItem("theme", next);
         } catch {}
-        label();
       });
     }
 
@@ -62,7 +71,11 @@
 
       // Only one menu at a time: hovering a menu closes any other one, whether it
       // was opened by a click (.is-open) or is held open by keyboard focus.
+      dropdown.addEventListener("focusout", (e) => {
+        if (!dropdown.contains(e.relatedTarget)) dropdown.classList.remove("is-dismissed");
+      });
       dropdown.addEventListener("mouseenter", () => {
+        dropdown.classList.remove("is-dismissed");
         document.querySelectorAll(".nav-dropdown").forEach((other) => {
           if (other === dropdown) return;
           if (other.classList.contains("is-open")) {
@@ -104,8 +117,13 @@
           setMenu(false);
           menuButton.focus();
         }
-        document.querySelectorAll(".nav-dropdown.is-open").forEach((d) => {
+        // Escape closes a menu whether a click opened it or keyboard focus did.
+        // is-dismissed overrides the :focus-visible rule until focus leaves or the
+        // pointer re-enters, so the trigger can keep focus without reopening the menu.
+        document.querySelectorAll(".nav-dropdown").forEach((d) => {
+          if (!d.classList.contains("is-open") && !d.contains(document.activeElement)) return;
           d.classList.remove("is-open");
+          d.classList.add("is-dismissed");
           d.querySelector(".nav-dropdown-trigger")?.setAttribute(
             "aria-expanded",
             "false",
@@ -179,10 +197,10 @@
       diagrams.forEach((svg) => diagramObserver.observe(svg));
     }
 
-    // "Pause animations" (WCAG 2.2.2 Pause, Stop, Hide): looping diagrams and
-    // the contact glow stop, and the choice is remembered.
+    // "Pause animations" (WCAG 2.2.2 Pause, Stop, Hide): looping diagrams stop,
+    // and the choice is remembered.
     // Only offered where something actually loops and motion isn't already reduced.
-    const looping = document.querySelector('svg.hub-net, svg.hub-net-compact, svg.motif, #typeWord, script[src$="assistant.js"]');
+    const looping = document.querySelector('svg.hub-net, svg.hub-net-compact, svg.motif, #typeWord');
     const footerRow = document.querySelector("footer .footer-inner");
     if (looping && footerRow && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
       const button = document.createElement("button");

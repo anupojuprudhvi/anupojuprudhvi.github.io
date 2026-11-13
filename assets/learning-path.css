@@ -6,23 +6,22 @@
 }
 .lp-badge {
   display: inline-block;
-  font: 600 11px/1.6 ui-monospace, monospace;
+  font: 600 var(--font-xs)/1.6 ui-monospace, monospace;
   letter-spacing: 0.12em;
-  text-transform: uppercase;
   color: var(--accent);
   background: var(--accent-soft);
   border: 1px solid var(--accent);
   padding: 3px 10px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   margin-bottom: 16px;
 }
 .lp-hero h1 {
-  font-size: clamp(32px, 5vw, 44px);
+  font-size: var(--font-xl);
   margin-bottom: 16px;
   line-height: 1.15;
 }
 .lp-hero .sub {
-  font-size: 16px;
+  font-size: var(--font-sm);
   color: var(--text-body);
   max-width: 780px;
   line-height: 1.7;
@@ -32,7 +31,7 @@
   align-items: center;
   gap: 20px;
   flex-wrap: wrap;
-  font-size: 12.5px;
+  font-size: var(--font-xs);
   color: var(--text-muted);
   margin-top: 24px;
   padding-top: 20px;
@@ -47,7 +46,7 @@
   padding: 48px 0 64px;
 }
 .lp-content h2 {
-  font-size: 24px;
+  font-size: var(--font-lg);
   margin: 40px 0 16px;
   color: var(--text);
   letter-spacing: -0.02em;
@@ -56,7 +55,7 @@
   margin-top: 0;
 }
 .lp-content p {
-  font-size: 15.5px;
+  font-size: var(--font-sm);
   line-height: 1.75;
   color: var(--text-body);
   margin-bottom: 20px;
@@ -67,7 +66,7 @@
   padding: 0;
   color: var(--text-body);
   line-height: 1.75;
-  font-size: 15px;
+  font-size: var(--font-sm);
 }
 .lp-content li {
   margin-bottom: 8px;
@@ -75,10 +74,10 @@
 .lp-content pre {
   background: var(--bg-raised);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   padding: 20px 22px;
   overflow-x: auto;
-  font: 13px/1.65 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font: var(--font-xs)/1.65 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   color: var(--text);
   margin: 24px 0;
 }
@@ -96,7 +95,7 @@
   background: var(--bg-raised);
   border: 1px solid var(--border);
   padding: 2px 6px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   color: var(--accent);
 }
 
@@ -115,7 +114,7 @@
   padding: 18px 20px;
   background: var(--bg-raised);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   text-decoration: none;
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
@@ -126,14 +125,13 @@
   text-align: right;
 }
 .lp-nav-label {
-  font: 10.5px ui-monospace, monospace;
+  font: var(--font-xs) ui-monospace, monospace;
   letter-spacing: 0.1em;
-  text-transform: uppercase;
   color: var(--accent);
   margin-bottom: 6px;
 }
 .lp-nav-title {
-  font-size: 14px;
+  font-size: var(--font-xs);
   font-weight: 600;
   color: var(--text);
 }
@@ -142,7 +140,7 @@
 /* Learning-paths hub cards. ".lp-content p" would otherwise make the stack
    line 15.5px, larger than the description above it. */
 .lp-content .case-stack {
-  font-size: 11.5px;
+  font-size: var(--font-xs);
   line-height: 1.7;
   color: var(--text-muted);
   margin: 18px 0 0;
@@ -150,7 +148,7 @@
 .track-progress {
   display: block;
   margin-top: 12px;
-  font: 600 12px/1.4 ui-monospace, monospace;
+  font: 600 var(--font-xs)/1.4 ui-monospace, monospace;
   color: var(--accent);
 }
 .track-progress[hidden] {
@@ -172,7 +170,7 @@
   gap: 20px;
   background: var(--bg-raised);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   padding: 20px 24px;
   text-decoration: none;
   transition: border-color 0.2s, background 0.2s;
@@ -181,23 +179,23 @@
   border-color: var(--accent);
 }
 .lp-module-num {
-  font: 18px ui-monospace, monospace;
+  font: var(--font-md) ui-monospace, monospace;
   font-weight: 600;
   color: var(--accent);
 }
 .lp-module-body h3 {
-  font-size: 16px;
+  font-size: var(--font-sm);
   font-weight: 600;
   color: var(--text);
   margin-bottom: 4px;
 }
 .lp-module-body p {
-  font-size: 13px;
+  font-size: var(--font-xs);
   color: var(--text-muted);
   margin: 0;
 }
 .lp-module-action {
-  font-size: 13px;
+  font-size: var(--font-xs);
   font-weight: 600;
   color: var(--accent);
 }
@@ -219,10 +217,10 @@
 .case-bottom a.button {
   background: var(--accent);
   color: var(--bg) !important;
-  font-size: 12.5px;
+  font-size: var(--font-xs);
   font-weight: 650;
   padding: 8px 18px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -253,9 +251,9 @@
   cursor: pointer;
   padding: 12px 16px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   background: var(--bg-raised);
-  font-size: 14px;
+  font-size: var(--font-xs);
   font-weight: 600;
   color: var(--text);
 }
@@ -263,7 +261,7 @@
   margin-bottom: 12px;
 }
 .lp-toc {
-  font-size: 13.5px;
+  font-size: var(--font-xs);
   line-height: 1.4;
 }
 .lp-toc-track {
@@ -277,9 +275,8 @@
   color: var(--accent);
 }
 .lp-content .lp-toc-part {
-  font: 600 10.5px/1.4 ui-monospace, monospace;
+  font: 600 var(--font-xs)/1.4 ui-monospace, monospace;
   letter-spacing: 0.1em;
-  text-transform: uppercase;
   color: var(--accent);
   margin: 18px 0 8px;
 }
@@ -295,7 +292,7 @@
   display: flex;
   gap: 10px;
   padding: 7px 10px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   border-left: 2px solid transparent;
   color: var(--text-body);
   text-decoration: none;
@@ -311,7 +308,7 @@
   font-weight: 600;
 }
 .lp-toc-num {
-  font: 12px/1.6 ui-monospace, monospace;
+  font: var(--font-xs)/1.6 ui-monospace, monospace;
   color: var(--text-muted);
   flex-shrink: 0;
 }
@@ -324,7 +321,7 @@
   padding: 4px 0 4px 12px;
   margin-left: -1px;
   border-left: 2px solid transparent;
-  font-size: 12.5px;
+  font-size: var(--font-xs);
   color: var(--text-muted);
   text-decoration: none;
 }
@@ -385,16 +382,16 @@
 }
 .lp-quiz-options {
   margin: 0 0 8px 22px;
-  font-size: 14.5px;
+  font-size: var(--font-sm);
 }
 .lp-quiz-answer summary {
   cursor: pointer;
   color: var(--accent);
-  font-size: 14px;
+  font-size: var(--font-xs);
   padding: 6px 0;
 }
 .lp-quiz-answer p {
-  font-size: 14.5px;
+  font-size: var(--font-sm);
   margin: 8px 0 0;
 }
 .lp-quiz.is-enhanced .lp-quiz-intro,
@@ -403,7 +400,7 @@
 }
 .lp-quiz-app {
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: var(--bg-raised);
   padding: 22px 24px;
 }
@@ -411,10 +408,9 @@
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  font-size: 12.5px;
+  font-size: var(--font-xs);
   font-weight: 600;
   letter-spacing: 0.04em;
-  text-transform: uppercase;
   color: var(--text-muted);
 }
 .lp-quiz-head p {
@@ -427,7 +423,7 @@
   margin: 10px 0 18px;
   appearance: none;
   border: 0;
-  border-radius: 999px;
+  border-radius: var(--radius-round);
   background: var(--border);
   overflow: hidden;
 }
@@ -443,7 +439,7 @@
 }
 .lp-quiz-qtext {
   color: var(--text);
-  font-size: 17px;
+  font-size: var(--font-sm);
   font-weight: 600;
   line-height: 1.45;
   margin: 0 0 16px;
@@ -465,11 +461,11 @@
   min-height: 44px;
   padding: 12px 14px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   background: var(--bg);
   color: var(--text-body);
   font: inherit;
-  font-size: 14.5px;
+  font-size: var(--font-sm);
   line-height: 1.45;
   text-align: left;
   cursor: pointer;
@@ -486,10 +482,10 @@
   cursor: default;
 }
 .lp-quiz-letter {
-  font: 600 12.5px ui-monospace, monospace;
+  font: 600 var(--font-xs) ui-monospace, monospace;
   color: var(--accent);
   border: 1px solid var(--accent);
-  border-radius: 5px;
+  border-radius: var(--radius-sm);
   padding: 1px 6px;
   margin-top: 1px;
 }
@@ -498,7 +494,7 @@
 }
 .lp-quiz-mark {
   grid-column: 2;
-  font-size: 12.5px;
+  font-size: var(--font-xs);
   font-weight: 650;
   margin-top: 6px;
 }
@@ -523,7 +519,7 @@
   padding: 12px 16px;
   border-left: 3px solid var(--border);
   background: var(--bg);
-  font-size: 14.5px;
+  font-size: var(--font-sm);
 }
 .lp-quiz-feedback.is-right {
   border-left-color: var(--accent);
@@ -543,7 +539,7 @@
 }
 .lp-quiz-result {
   color: var(--text);
-  font-size: 22px;
+  font-size: var(--font-lg);
   font-weight: 700;
   margin: 0 0 6px;
 }
@@ -553,7 +549,7 @@
 .lp-quiz-review {
   margin: 0 0 4px;
   padding-left: 20px;
-  font-size: 14.5px;
+  font-size: var(--font-sm);
 }
 .lp-quiz-review li {
   margin-bottom: 12px;
@@ -565,7 +561,7 @@
   color: var(--text);
 }
 
-/* The slide-in card. Bottom left, clear of the chat button (bottom right). */
+/* The slide-in card stays at the bottom left on wide screens. */
 .lp-quiz-nudge {
   position: fixed;
   left: 22px;
@@ -574,9 +570,8 @@
   width: min(360px, calc(100vw - 44px));
   padding: 18px 20px;
   border: 1px solid var(--accent);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: var(--bg-raised);
-  box-shadow: 0 18px 40px -16px rgba(0, 0, 0, 0.55);
   opacity: 0;
   visibility: hidden;
   transform: translateY(24px);
@@ -591,21 +586,20 @@
   margin: 0;
 }
 .lp-quiz-nudge-eyebrow {
-  font-size: 11px;
+  font-size: var(--font-xs);
   font-weight: 700;
   letter-spacing: 0.1em;
-  text-transform: uppercase;
   color: var(--accent);
 }
 .lp-quiz-nudge .lp-quiz-nudge-title {
   margin-top: 4px;
-  font-size: 16px;
+  font-size: var(--font-sm);
   font-weight: 650;
   color: var(--text);
 }
 .lp-quiz-nudge .lp-quiz-nudge-body {
   margin-top: 6px;
-  font-size: 13.5px;
+  font-size: var(--font-xs);
   color: var(--text-body);
 }
 .lp-quiz-nudge-actions {
@@ -621,7 +615,7 @@
   max-height: calc(100vh - 32px);
   padding: 0;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   background: var(--bg);
   color: var(--text-body);
 }
@@ -638,7 +632,7 @@
 }
 .deepdive .lp-quiz-dialog-head h2 {
   margin: 0;
-  font-size: 18px;
+  font-size: var(--font-md);
 }
 .lp-quiz-dialog .lp-quiz-app {
   border: 0;
@@ -676,10 +670,9 @@
 /* Question kind: a label in the no-script list, a chip in the live quiz. */
 .lp-quiz-kind {
   margin: 0 0 2px;
-  font-size: 11px;
+  font-size: var(--font-xs);
   font-weight: 700;
   letter-spacing: 0.1em;
-  text-transform: uppercase;
   color: var(--text-muted);
 }
 .lp-quiz.is-enhanced .lp-quiz-kind {
@@ -690,7 +683,7 @@
   margin-left: 6px;
   padding: 1px 8px;
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius-round);
   letter-spacing: 0.06em;
   color: var(--text-muted);
 }
@@ -707,14 +700,14 @@
   margin: 0 0 12px;
   padding: 8px 16px 8px 10px;
   border: 1px solid var(--accent);
-  border-radius: 999px;
+  border-radius: var(--radius-round);
   background: var(--accent-soft);
   color: var(--accent);
   font-weight: 700;
   animation: lp-quiz-pop 0.6s cubic-bezier(0.2, 1.4, 0.4, 1) both;
 }
 .lp-quiz-badge-icon {
-  font-size: 22px;
+  font-size: var(--font-lg);
   line-height: 1;
 }
 @keyframes lp-quiz-pop {
@@ -740,7 +733,7 @@
   left: var(--x);
   width: 9px;
   height: 14px;
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   opacity: 0;
   animation: lp-confetti-fall var(--fall) cubic-bezier(0.25, 0.6, 0.45, 1) var(--delay) forwards;
 }
@@ -785,9 +778,9 @@
 
 /* ---------------------------------------------------------------------------
    Reading progress (reading-progress.js): a thin bar across the top, a ring
-   above the chat button with the percentage read and the track's count of
-   finished modules, and a short message at each milestone. It never takes
-   clicks, and it doesn't animate when motion is reduced or paused. */
+   with the percentage read and the track's count of finished modules, and a
+   short message at each milestone. It never takes clicks, and it doesn't
+   animate when motion is reduced or paused. */
 .lp-progress-bar {
   position: fixed;
   top: 0;
@@ -804,7 +797,7 @@
   transform: scaleX(var(--p, 0));
   transform-origin: left center;
 }
-/* The "running" dot at the leading edge glows only while the reader scrolls. */
+/* The running dot follows the leading edge without a glow. */
 .lp-progress-bar-dot {
   position: absolute;
   top: -3px;
@@ -819,21 +812,11 @@
 }
 .lp-progress-bar.is-moving .lp-progress-bar-dot {
   opacity: 1;
-  animation: lp-progress-glow 0.9s ease-in-out infinite alternate;
 }
-@keyframes lp-progress-glow {
-  from {
-    box-shadow: 0 0 0 0 var(--accent);
-  }
-  to {
-    box-shadow: 0 0 10px 3px var(--accent);
-  }
-}
-
 .lp-progress {
   position: fixed;
   right: 22px;
-  bottom: 82px;
+  bottom: 22px;
   z-index: 60;
   display: grid;
   grid-template-columns: 44px;
@@ -841,10 +824,9 @@
   column-gap: 10px;
   padding: 7px;
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius-round);
   background: var(--bg-raised);
   color: var(--text);
-  box-shadow: 0 12px 30px -14px rgba(0, 0, 0, 0.5);
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
@@ -879,7 +861,7 @@
   grid-column: 1;
   grid-row: 1;
   justify-self: center;
-  font-size: 11px;
+  font-size: var(--font-xs);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
@@ -888,7 +870,7 @@
 .lp-progress-text {
   display: none;
   flex-direction: column;
-  font-size: 12px;
+  font-size: var(--font-xs);
   line-height: 1.3;
 }
 .lp-progress.is-showing {
@@ -917,10 +899,10 @@
   max-width: min(280px, calc(100vw - 44px));
   padding: 9px 13px;
   border: 1px solid var(--accent);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   background: var(--bg-raised);
   color: var(--text);
-  font-size: 13px;
+  font-size: var(--font-xs);
   line-height: 1.4;
   opacity: 0;
   transform: translateY(6px);

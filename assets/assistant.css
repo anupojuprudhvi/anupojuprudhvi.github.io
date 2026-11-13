@@ -19,63 +19,6 @@
   opacity: 0;
 }
 
-.ask-launcher {
-  position: fixed;
-  right: 22px;
-  bottom: 22px;
-  z-index: 60;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 18px;
-  border-radius: 999px;
-  border: 1px solid var(--accent);
-  background: var(--bg);
-  color: var(--accent);
-  font-size: 13px;
-  font-weight: 650;
-  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.5);
-}
-.ask-launcher:hover {
-  background: var(--accent-soft);
-}
-.ask-launcher-icon {
-  display: none;
-  flex: none;
-}
-/* Below 1760px the full pill would cover the right edge of the content
-   column (cards, tables, links), so it shrinks to a round icon button. The
-   label is kept for screen readers; the title attribute shows it on hover. */
-@media (max-width: 1759px) {
-  .ask-launcher {
-    width: 48px;
-    height: 48px;
-    padding: 0;
-    justify-content: center;
-  }
-  .ask-launcher-icon {
-    display: block;
-  }
-  .ask-launcher-label,
-  .ask-launcher kbd {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
-  }
-}
-.ask-launcher kbd {
-  font:
-    10px ui-monospace,
-    monospace;
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 2px 5px;
-  color: var(--text-muted);
-}
-
 .ask-backdrop {
   position: fixed;
   inset: 0;
@@ -96,20 +39,19 @@
   flex-direction: column;
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   overflow: hidden;
-  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.8);
 }
 .ask-head {
   padding: 20px 22px 0;
 }
 .ask-head h2 {
-  font-size: 17px;
+  font-size: var(--font-sm);
   font-weight: 600;
   letter-spacing: -0.02em;
 }
 .ask-note {
-  font-size: 12.5px;
+  font-size: var(--font-xs);
   color: var(--text-muted);
   margin-top: 6px;
   line-height: 1.6;
@@ -121,7 +63,7 @@
   background: transparent;
   border: 0;
   color: var(--text-muted);
-  font-size: 20px;
+  font-size: var(--font-lg);
   line-height: 1;
   padding: 6px;
 }
@@ -139,10 +81,10 @@
   width: 100%;
   background: var(--bg-raised);
   border: 1px solid var(--border);
-  border-radius: 5px;
+  border-radius: var(--radius-sm);
   color: var(--text);
   font: inherit;
-  font-size: 14px;
+  font-size: var(--font-xs);
   padding: 12px 14px;
 }
 .ask-field input::placeholder {
@@ -164,9 +106,9 @@
   border: 1px solid var(--border);
   background: transparent;
   color: var(--text-body);
-  border-radius: 999px;
+  border-radius: var(--radius-round);
   padding: 6px 13px;
-  font-size: 11.5px;
+  font-size: var(--font-xs);
 }
 .ask-chips button:hover,
 .ask-retry:hover {
@@ -182,7 +124,7 @@
 .ask-hit {
   display: block;
   padding: 15px 14px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   text-decoration: none;
   border-bottom: 1px solid var(--border);
 }
@@ -197,10 +139,8 @@
   outline-offset: -2px;
 }
 .ask-hit-meta {
-  font:
-    10px ui-monospace,
+  font: var(--font-xs) ui-monospace,
     monospace;
-  text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--accent);
   margin-bottom: 7px;
@@ -208,14 +148,14 @@
 .ask-hit strong {
   display: block;
   color: var(--text);
-  font-size: 14.5px;
+  font-size: var(--font-sm);
   font-weight: 600;
   line-height: 1.4;
   letter-spacing: -0.015em;
 }
 .ask-hit span {
   display: block;
-  font-size: 12.5px;
+  font-size: var(--font-xs);
   color: var(--text-body);
   margin-top: 6px;
   line-height: 1.6;
@@ -223,12 +163,12 @@
 .ask-hit mark {
   background: var(--accent-soft);
   color: var(--accent);
-  border-radius: 2px;
+  border-radius: var(--radius-sm);
   padding: 0 2px;
 }
 .ask-empty {
   padding: 26px 16px;
-  font-size: 13px;
+  font-size: var(--font-xs);
   color: var(--text-muted);
 }
 
@@ -240,7 +180,7 @@
   align-items: center;
   gap: 14px;
   flex-wrap: wrap;
-  font-size: 12px;
+  font-size: var(--font-xs);
   color: var(--text-muted);
 }
 .ask-foot a {
@@ -259,7 +199,7 @@
   padding: 3px;
   background: var(--bg-raised);
   border: 1px solid var(--border);
-  border-radius: 999px;
+  border-radius: var(--radius-round);
 }
 .ask-tab {
   flex: 1;
@@ -267,11 +207,10 @@
   background: none;
   color: var(--text-muted);
   cursor: pointer;
-  font:
-    600 12px "Inter",
+  font: 600 var(--font-xs) "Inter",
     sans-serif;
   padding: 8px 10px;
-  border-radius: 999px;
+  border-radius: var(--radius-round);
 }
 .ask-tab.active {
   background: var(--accent);
@@ -281,12 +220,11 @@
   color: var(--text);
 }
 .ask-tab kbd {
-  font:
-    10px ui-monospace,
+  font: var(--font-xs) ui-monospace,
     monospace;
   border: 1px solid currentColor;
   opacity: 0.6;
-  border-radius: 3px;
+  border-radius: var(--radius-sm);
   padding: 1px 5px;
   margin-left: 4px;
 }
@@ -295,7 +233,7 @@
   background: none;
   color: var(--accent);
   font: inherit;
-  font-size: 12px;
+  font-size: var(--font-xs);
   font-weight: 600;
   cursor: pointer;
   padding: 0;
@@ -319,7 +257,7 @@
 }
 .ask-msg {
   max-width: 90%;
-  font-size: 12.5px;
+  font-size: var(--font-xs);
   line-height: 1.5;
 }
 .ask-msg.bot {
@@ -378,14 +316,13 @@
 .ask-recap {
   background: var(--bg-raised);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   padding: 10px 12px;
-  font-size: 11.5px;
+  font-size: var(--font-xs);
 }
 .ask-recap dt {
   color: var(--text-muted);
-  font-size: 10px;
-  text-transform: uppercase;
+  font-size: var(--font-xs);
   letter-spacing: 0.05em;
   margin-top: 6px;
 }
@@ -412,10 +349,10 @@
   border: 1px solid var(--border);
   background: var(--bg-raised);
   color: var(--text);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   padding: 9px 11px;
   font: inherit;
-  font-size: 12.5px;
+  font-size: var(--font-xs);
   resize: none;
 }
 .ask-field-row input:focus-visible,
@@ -428,10 +365,9 @@
   border: none;
   background: var(--accent);
   color: var(--bg);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   padding: 0 14px;
-  font:
-    600 12px "Inter",
+  font: 600 var(--font-xs) "Inter",
     sans-serif;
   cursor: pointer;
   flex-shrink: 0;
@@ -449,10 +385,9 @@
   border: 1px solid var(--border);
   background: var(--bg-raised);
   color: var(--text);
-  border-radius: 999px;
+  border-radius: var(--radius-round);
   padding: 7px 12px;
-  font:
-    550 12px "Inter",
+  font: 550 var(--font-xs) "Inter",
     sans-serif;
   cursor: pointer;
 }
@@ -462,11 +397,11 @@
 }
 .ask-err {
   color: var(--danger);
-  font-size: 11px;
+  font-size: var(--font-xs);
   margin: 6px 2px 0;
 }
 .ask-sending {
-  font-size: 12px;
+  font-size: var(--font-xs);
   color: var(--text-muted);
   text-align: center;
   margin: 4px 0;
@@ -482,7 +417,7 @@
   border: none;
   background: none;
   color: var(--text-muted);
-  font: 12px "Inter", sans-serif;
+  font: var(--font-xs) "Inter", sans-serif;
   cursor: pointer;
   padding: 4px;
   text-decoration: none;
@@ -493,7 +428,7 @@
 
 .ask-privacy {
   margin-top: 8px;
-  font-size: 11.5px;
+  font-size: var(--font-xs);
   color: var(--text-muted);
 }
 .ask-privacy a {
@@ -508,10 +443,6 @@
 }
 
 @media (max-width: 640px) {
-  .ask-launcher {
-    right: 14px;
-    bottom: 14px;
-  }
   .ask-backdrop {
     padding: 0;
     place-items: stretch;
@@ -526,46 +457,7 @@
 }
 
 @media print {
-  .ask-launcher,
   .ask-backdrop {
     display: none !important;
   }
 }
-
-/* Keep the contact entry point legible on desktop rather than an unexplained icon. */
-@media(min-width:768px) and (max-width:1759px) { .ask-launcher { width: auto; padding: 10px 14px; } .ask-launcher-label { position: static; width: auto; height: auto; clip: auto; overflow: visible; white-space: nowrap; } }
-
-/* Leave a clear dock below footer controls for the fixed contact launcher. */
-@media screen { body:has(.ask-launcher) footer { padding-bottom: 176px; } }
-
-/* A gentle glow keeps the contact entry point visible without flashing text. */
-@media screen and (prefers-reduced-motion: no-preference) {
-  .ask-launcher:not(.is-quiet) { animation: contact-breathe 5.5s ease-in-out infinite; }
-  .ask-end-note { animation: contact-note-in .35s ease-out both; }
-}
-@keyframes contact-breathe {
-  0%, 100% { box-shadow: 0 0 0 0 var(--accent-soft), 0 10px 30px -12px rgba(0,0,0,.5); }
-  50% { box-shadow: 0 0 0 6px var(--accent-soft), 0 0 24px var(--accent-soft); }
-}
-@keyframes contact-note-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.ask-page-end { height: 1px; pointer-events: none; }
-.ask-end-note {
-  position: fixed; right: 22px; bottom: 82px; z-index: 59;
-  width: min(300px, calc(100vw - 28px)); box-sizing: border-box;
-  display: flex; align-items: center; gap: 12px; padding: 12px 14px;
-  border: 1px solid var(--border); border-radius: 16px;
-  background: var(--bg); color: var(--text); box-shadow: 0 8px 28px rgba(0,0,0,.18);
-}
-.ask-end-note[hidden] { display: none; }
-.ask-end-note p { margin: 0; font-size: 14px; line-height: 1.5; }
-.ask-end-note small { display: block; color: var(--text-muted); font-size: 12px; }
-.ask-end-note button { flex: none; width: 44px; height: 44px; margin-left: auto; padding: 0; font-size: 20px; border: 0; background: transparent; color: var(--text-muted); }
-
-@media(max-width:640px) { .ask-end-note { right: 14px; bottom: 74px; } }
-@media print { .ask-end-note, .ask-page-end { display: none !important; } }
-
-.motion-paused .ask-end-note { animation: none; }
-@media(max-width:767px) { body:has(.lp-quiz-nudge.is-open) .ask-launcher { visibility: hidden; } }

@@ -228,18 +228,29 @@ try {
   await Promise.all(
     Array.from({ length: Math.min(CONCURRENCY, pairs.length) }, worker),
   );
-  const context = await browser.newContext();
+  const context = await browser.newContext({ colorScheme: "dark" });
   const page = await context.newPage();
+  // Reset saved theme so the test starts from OS-driven initial render.
+  try { localStorage.removeItem("theme"); } catch {}
   await page.goto(base);
   assert.equal(await page.locator("html").getAttribute("data-theme"), "dark");
+  await page.emulateMedia({ colorScheme: "light" });
+  // The browser delivers prefers-color-scheme change events on its next frame, so wait for it.
+  await page.waitForFunction(() => document.documentElement.dataset.theme === "light", null, { timeout: 5000 })
+    .catch(() => {});
+  assert.equal(await page.locator("html").getAttribute("data-theme"), "light", "an unsaved choice follows OS changes");
   await page.locator("#themeToggle").click();
+  assert.equal(await page.locator("html").getAttribute("data-theme"), "dark");
+  await page.emulateMedia({ colorScheme: "dark" });
+  await page.emulateMedia({ colorScheme: "light" });
+  assert.equal(await page.locator("html").getAttribute("data-theme"), "dark", "a saved choice wins over OS changes");
   await Promise.all([
     page.waitForURL(/case-studies/),
     page.getByRole("link", {name:"Explore case studies", exact:true}).click(),
   ]);
-  assert.equal(await page.locator("html").getAttribute("data-theme"), "light");
+  assert.equal(await page.locator("html").getAttribute("data-theme"), "dark");
   await page.reload();
-  assert.equal(await page.locator("html").getAttribute("data-theme"), "light");
+  assert.equal(await page.locator("html").getAttribute("data-theme"), "dark");
   await context.close();
   // Mobile menu: collapsed by default, opens from the Menu button, closes on Escape.
   const mobile = await browser.newContext({ viewport: { width: 390, height: 844 } });
