@@ -2510,3 +2510,263 @@ body:not(.deepdive) #work, body:not(.deepdive) #approach, body:not(.deepdive) #b
   from { transform: translate(-16px, 8px) rotate(-20deg) scaleY(.85) scale(.98); opacity: .32; }
   to { transform: translate(20px, -12px) rotate(-12deg) scaleY(.88) scale(1.08); opacity: .42; }
 }
+
+/* Forward-Deployed Engineering (FDE) Capability Showcase */
+.fde-section {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+.fde-intro-p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-body);
+  max-width: 720px;
+}
+.fde-block {
+  margin-top: 24px;
+}
+.fde-block-head {
+  margin-bottom: 20px;
+}
+.fde-block-head .fde-eyebrow {
+  font: 600 10.5px ui-monospace, monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 6px;
+}
+.fde-block-head h3 {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  margin: 0 0 8px;
+  color: var(--text);
+}
+.fde-block-head p {
+  color: var(--text-muted);
+  font-size: 13.5px;
+  margin: 0;
+  max-width: 700px;
+  line-height: 1.5;
+}
+.fde-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.fde-pillar-card {
+  padding: 24px 22px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg-raised);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.fde-pillar-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+}
+.fde-pillar-badge {
+  display: inline-flex;
+  align-items: center;
+  font: 700 11px ui-monospace, monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.fde-pillar-card h3 {
+  font-size: 17px;
+  margin: 0;
+  color: var(--text);
+}
+.fde-pillar-card p {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--text-body);
+  margin: 0;
+}
+
+/* Comparison Table */
+.fde-compare-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg-raised);
+  margin-top: 16px;
+}
+.fde-compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+.fde-compare-table th,
+.fde-compare-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+.fde-compare-table tr:last-child td {
+  border-bottom: none;
+}
+.fde-compare-table th {
+  font: 600 11px ui-monospace, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: color-mix(in srgb, var(--bg) 50%, var(--bg-raised));
+}
+.fde-compare-table th.fde-col-highlight,
+.fde-compare-table td.fde-col-highlight {
+  background: color-mix(in srgb, var(--accent-soft) 40%, var(--bg-raised));
+  color: var(--text);
+  font-weight: 550;
+  border-left: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
+  border-right: 1px solid color-mix(in srgb, var(--accent) 30%, var(--border));
+}
+
+/* 4-Phase Lifecycle */
+.fde-lifecycle-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+.fde-phase-card {
+  position: relative;
+  padding: 22px 18px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg-raised);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.fde-phase-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+.fde-phase-num {
+  font: 700 11px ui-monospace, monospace;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.fde-phase-card h4 {
+  font-size: 15px;
+  margin: 0;
+  line-height: 1.35;
+  color: var(--text);
+}
+.fde-phase-card p {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-body);
+  margin: 0;
+}
+
+/* Built Across Four Domains Grid */
+.fde-built-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 16px;
+}
+.fde-built-card {
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg-raised);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.fde-built-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+}
+.fde-domain-tag {
+  font: 700 10px ui-monospace, monospace;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: inline-block;
+  margin-bottom: 2px;
+}
+.fde-built-card h4 {
+  font-size: 16px;
+  margin: 0;
+  line-height: 1.3;
+  color: var(--text);
+}
+.fde-built-card p {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--text-body);
+  margin: 0;
+}
+.fde-built-facts {
+  font: 500 11px ui-monospace, monospace;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+  margin-top: 2px;
+}
+.fde-built-footnote {
+  margin-top: 12px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Weekly Cadence */
+.fde-cadence-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.fde-day-card {
+  padding: 16px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-raised);
+}
+.fde-day-tag {
+  font: 700 10.5px ui-monospace, monospace;
+  color: var(--accent);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+}
+.fde-day-card strong {
+  font-size: 13px;
+  display: block;
+  margin-bottom: 4px;
+  color: var(--text);
+  line-height: 1.3;
+}
+.fde-day-card p {
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .fde-pillars { grid-template-columns: 1fr; }
+  .fde-lifecycle-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fde-built-grid { grid-template-columns: 1fr; }
+  .fde-cadence-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .fde-lifecycle-grid { grid-template-columns: 1fr; }
+  .fde-cadence-grid { grid-template-columns: 1fr; }
+}

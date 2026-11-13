@@ -7,6 +7,11 @@ for the generator — it is plain Node.
 
 Live at: https://anupojuprudhvi.github.io/
 
+## Requirements
+
+- **Docker** (recommended) — runs the build, tests, and hardened nginx locally without installing anything.
+- **Node.js ≥24** — only needed if you run the generator (`node scripts/build.mjs`) or tests outside Docker. CI uses Node 24.
+
 ## Run it locally with Docker
 
 `docker compose up --build` starts two containers:
