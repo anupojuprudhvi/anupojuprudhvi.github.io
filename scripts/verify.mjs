@@ -32,6 +32,7 @@ try {
   const allPages = [
     "index.html",
     "privacy.html",
+    "forward-deployed/index.html",
     ...fs
       .readdirSync(path.join(root, "case-studies"), { recursive: true })
       .filter((p) => p.endsWith(".html"))
@@ -174,7 +175,7 @@ try {
       theme === "dark" ? "light" : "dark",
     );
     if (file === "index.html") {
-      assert.equal(await page.locator("#work").count(), 0);
+      assert.equal(await page.locator("#work .case").count(), 6);
       assert.equal(await page.getByRole("link", {name:"Explore case studies", exact:true}).count(), 1);
       await context.grantPermissions(["clipboard-read", "clipboard-write"]);
       await page.getByRole("button", { name: "Copy email address" }).click();
@@ -379,7 +380,7 @@ try {
   const plain = await nojs.newPage();
   await plain.goto(base);
   const projects = JSON.parse(fs.readFileSync(path.join(root, "content/projects.json"), "utf8"));
-  assert.equal(await plain.locator("#work").count(), 0);
+  assert.equal(await plain.locator("#work .case").count(), projects.length, "every engagement shows without JavaScript");
   assert.equal(await plain.getByRole("link", {name:"Explore case studies", exact:true}).count(), 1);
   const index = JSON.parse(fs.readFileSync(path.join(root, "assets/case-studies.json"), "utf8"));
   for (const project of new Set(index.map((item) => item.project))) {

@@ -229,16 +229,16 @@
               <span>Enterprise cloud &amp; platform architecture</span>
             </div>
             <div class="stat">
-              <strong data-prefix="$" data-target="2.5" data-decimals="1" data-suffix="M+">$2.5M+</strong>
-              <span>Projected cloud TCO &amp; licensing savings</span>
+              <strong data-target="40" data-suffix="+">40+</strong>
+              <span>AWS accounts under one governance model · <a href="case-studies/tolling/cloud-foundation.html">evidence</a></span>
             </div>
             <div class="stat">
-              <strong data-target="1000" data-suffix="+">1,000+</strong>
-              <span>Workloads profiled, migrated &amp; modernized</span>
+              <strong data-prefix="$" data-target="300" data-suffix="K+">$300K+</strong>
+              <span>Annual infrastructure savings identified · <a href="case-studies/healthcare/clinical-platform-modernization-and-cost-optimization.html">evidence</a></span>
             </div>
             <div class="stat">
-              <strong data-target="6" data-suffix=" Sectors">6 Sectors</strong>
-              <span>Telecom, Tolling, Healthcare, FinTech, AdTech &amp; Education</span>
+              <strong data-target="600" data-suffix="+">600+</strong>
+              <span>Servers analyzed in one migration assessment · <a href="case-studies/partner-engagements/media-cross-region-map-migration.html">evidence</a></span>
             </div>
           </div>
         </div>
@@ -286,54 +286,381 @@
           </ul>
         </div>
       </section>
-      <section id="forward-deployed">
-        <div class="wrap fde-section">
+      <section id="work">
+        <div class="wrap">
           <div class="section-head">
             <div>
-              <p class="eyebrow">Forward-Deployed Engineering</p>
-              <h2>Inside your systems.<br />Accountable through to production.</h2>
+              <p class="eyebrow">Selected work</p>
+              <h2>6 engagements, in depth.</h2>
             </div>
-            <p class="fde-intro-p">
-              Forward deployed engineers embed directly inside customer teams, work on live systems and unvarnished data, and turn ambiguous technical initiatives into software that runs reliably in production. No slide-only recommendations; no ticket handoffs.
+            <p>
+              Each engagement opens to its architecture, constraints, and written
+              case studies. Customer names are withheld.
             </p>
           </div>
-
-          <!-- Pillars: Embedded, Hands-on, Accountable -->
-          <div class="fde-pillars">
-            <div class="fde-pillar-card">
-              <span class="fde-pillar-badge">01 · Direct Presence</span>
-              <h3>Embedded with your team</h3>
-              <p>Joins your stand-ups, chat channels, and pairs with the operators who do the work. Uncovers the unstated workarounds, data quirks, and compliance hurdles that requirements documents miss.</p>
+          <div class="case-list">
+          <article class="case" data-tags="resilience finops migration">
+            <div class="case-grid">
+              <div>
+                <div class="tag">01 / Telecom &amp; Secure Communications</div>
+                <h3>Modernizing telecom.<br />Working with legacy constraints.</h3>
+                <p class="ctx">
+                  A secure communications platform with an aging database,
+                  hardware-bound licenses, and no room for an extended outage.
+                  Led the database migration and designed its automated recovery
+                  path.
+                </p>
+                <p class="case-stack">
+                  Aurora PostgreSQL · AWS DMS · Lambda · Terraform
+                </p>
+              </div>
+              <div class="case-result">
+                <strong>Automated</strong>
+                <p>Failover recovery in one automated workflow</p>
+                <small>Recovery, service validation and licensed service identity handled together</small>
+              </div>
             </div>
-            <div class="fde-pillar-card">
-              <span class="fde-pillar-badge">02 · Live Systems</span>
-              <h3>Hands-on in live environments</h3>
-              <p>Designs and writes the code against your real systems and security rules. Prototypes bespoke API adapters, database synchronizers, and infrastructure code in days, not quarters.</p>
+            <details>
+              <summary>Architectural contribution</summary>
+              <ul>
+                <li>
+                  <b>Led the database modernization:</b> a phased migration with a controlled cutover to Aurora
+                  PostgreSQL, planned around a legacy platform with no room for
+                  extended downtime.
+                </li>
+                <li>
+                  <b>Designed the failover architecture:</b> replaced a manual,
+                  hardware-dependent recovery process with an automated,
+                  serverless failover path.
+                </li>
+                <li>
+                  <b>Preserved licensing continuity:</b> designed a networking
+                  approach that kept hardware-bound software licenses valid
+                  through the cloud transition.
+                </li>
+                <li>
+                  <b>Implemented data protection:</b> migrated the existing key-management integration
+                  to AWS KMS while preserving application compatibility.
+                </li>
+              </ul>
+            </details>
+            <div class="case-bottom">
+              <a href="case-studies/telecom/index.html"
+                >View 5 case studies <span aria-hidden="true">↗</span></a
+              >
             </div>
-            <div class="fde-pillar-card">
-              <span class="fde-pillar-badge">03 · Production Ownership</span>
-              <h3>Accountable to production</h3>
-              <p>Measured by what actually ships and stays healthy under real production load. Stays until your internal team owns and extends the platform with complete operational autonomy.</p>
+          </article>
+          <article class="case" data-tags="governance platform">
+            <div class="case-grid">
+              <div>
+                <div class="tag">02 / Tolling Infrastructure</div>
+                <h3>
+                  <a href="case-studies/tolling/index.html"
+                    >Tolling platforms.<br />One cloud foundation.</a
+                  >
+                </h3>
+                <p class="ctx">
+                  Several tolling projects each had their own AWS setup for toll
+                  collection and roadside systems. I designed one shared landing zone
+                  with consistent networking, security guardrails, and automated
+                  provisioning, plus a JSM webhook integration and private S3 image APIs.
+                </p>
+                <p class="case-stack">
+                  AWS Organizations · Transit Gateway · API Gateway · S3 ·
+                  Route 53 · Terraform
+                </p>
+              </div>
+              <div class="case-result">
+                <strong>Weeks → hours</strong>
+                <p>New environment provisioning</p>
+                <small>40+ AWS accounts under one governance model</small>
+              </div>
             </div>
+            <details>
+              <summary>Architectural contribution</summary>
+              <ul>
+                <li>
+                  <b>Designed the landing zone:</b> a modular, tiered
+                  Terraform structure separating foundation, networking, shared
+                  services, and applications.
+                </li>
+                <li>
+                  <b>Centralized the network design:</b> a hub-and-spoke model
+                  that replaced fragmented, per-account networking with one
+                  consistent pattern.
+                </li>
+                <li>
+                  <b>Reduced provisioning time:</b> automated environment setup
+                  that previously took weeks of manual configuration.
+                </li>
+                <li>
+                  <b>Simplified security oversight:</b> centralized logging and
+                  monitoring across all accounts for a single, consistent audit
+                  trail.
+                </li>
+                <li>
+                  <b>Centralized DNS across accounts:</b> shared public and
+                  private Route 53 zones with Resolver forwarding, using an
+                  explicit authorization-then-association workflow for consumer
+                  VPCs.
+                </li>
+              </ul>
+            </details>
+            <div class="case-bottom">
+              <a href="case-studies/tolling/index.html"
+                >View 11 case studies <span aria-hidden="true">↗</span></a
+              >
+            </div>
+          </article>
+          <article class="case" data-tags="finops resilience governance">
+            <div class="case-grid">
+              <div>
+                <div class="tag">03 / Healthcare &amp; Cost Architecture</div>
+                <h3>
+                  A clinical platform,<br />built to grow beyond its hardware.
+                </h3>
+                <p class="ctx">
+                  Decomposed a legacy clinical monolith into managed,
+                  containerized services and reduced database pressure with
+                  caching. Related cost optimization and FinOps architecture extended
+                  across several client engagements.
+                </p>
+                <p class="case-stack">
+                  Amazon EKS · RDS · ElastiCache · CloudFront
+                </p>
+              </div>
+              <div class="case-result">
+                <strong>~50%</strong>
+                <p>Less direct database read load</p>
+                <small
+                  >$300K+ annual savings identified across engagements</small
+                >
+              </div>
+            </div>
+            <details>
+              <summary>Architectural contribution</summary>
+              <ul>
+                <li>
+                  <b>Re-architected a legacy monolith:</b> decomposed an
+                  on-premise clinical application into containerized services
+                  running on managed infrastructure, removing the on-prem
+                  hardware dependency.
+                </li>
+                <li>
+                  <b>Reduced database load:</b> added an in-memory cache that
+ cut direct database reads by about half.
+                </li>
+                <li>
+                  <b>Applied cost-aware compute design:</b> moved static server
+                  fleets to dynamic, right-sized compute across several
+                  engagements.
+                </li>
+                <li>
+                  <b>Standardized delivery pipelines:</b> automated deployment
+                  and disaster-recovery processes to reduce manual operational
+                  overhead.
+                </li>
+              </ul>
+            </details>
+            <div class="case-bottom">
+              <a href="case-studies/healthcare/index.html"
+                >View 5 case studies <span aria-hidden="true">↗</span></a
+              >
+            </div>
+          </article>
+          <article class="case" data-tags="migration finops platform">
+            <div class="case-grid">
+              <div>
+                <div class="tag">04 / AWS APN &amp; Migration Engagements</div>
+                <h3>
+                  Cloud migration acceleration.<br />From discovery to business case.
+                </h3>
+                <p class="ctx">
+                  Enterprise cloud discovery, migration readiness assessments (MRA),
+                  and directional business cases across AWS Partner Network (APN)
+                  consulting engagements. Led infrastructure profiling, TCO modeling,
+                  and target architecture blueprints.
+                </p>
+                <p class="case-stack">
+                  AWS Transform · Application Discovery Service · VMware vCenter · RVTools · AWS CAF
+                </p>
+              </div>
+              <div class="case-result">
+                <strong>600+</strong>
+                <p>Servers analyzed in a single migration assessment</p>
+                <small>Savings are projected in each assessment's business case, not realized</small>
+              </div>
+            </div>
+            <details>
+              <summary>Architectural contribution</summary>
+              <ul>
+                <li>
+                  <b>Automated enterprise inventory discovery:</b> deployed agentless collectors
+ in VMware vCenter and loaded RVTools exports to capture real CPU, RAM, disk, and
+ network-dependency data without installing agents on every server.
+                </li>
+                <li>
+                  <b>Led Kubernetes &amp; VMware modernization:</b> evaluated on-premises VMware
+                  Tanzu and Dell VxRail estates, and designed target Amazon EKS platforms with
+ Karpenter autoscaling and Graviton compute to remove hypervisor licensing costs.
+                </li>
+                <li>
+                  <b>Generated executive Directional Business Cases:</b> used AWS Transform to
+                  model 3–5 year TCO comparisons, right-sized EC2 compute, and optimized licensing
+                  (BYOL vs. License Included) to qualify for AWS MAP funding.
+                </li>
+                <li>
+                  <b>Assessed Migration Readiness (MRA):</b> evaluated organizations across all 6
+                  AWS Cloud Adoption Framework (CAF) pillars to identify operational, security,
+                  and governance gaps prior to migration mobilization.
+                </li>
+                <li>
+                  <b>Designed target cloud environments:</b> mapped legacy monolithic services to
+ managed AWS services (EKS, Aurora, IoT Core) and designed cloud marketplace
+ onboarding.
+                </li>
+              </ul>
+            </details>
+            <div class="case-bottom">
+              <a href="case-studies/partner-engagements/index.html"
+                >View 5 case studies <span aria-hidden="true">↗</span></a
+              >
+            </div>
+          </article>
+          <article class="case" data-tags="database resilience hybrid-cloud">
+            <div class="case-grid">
+              <div>
+                <div class="tag">05 / Enterprise Hybrid Cloud Infrastructure</div>
+                <h3>
+                  21 nodes, no shared SAN,<br />zero downtime at peak load.
+                </h3>
+                <p class="ctx">
+                  Designed a 21+ node active-active Oracle RAC cluster on AWS using
+                  software-defined clustered storage to work around AWS's lack of native
+                  shared-SAN block storage, plus a hybrid object storage platform and
+                  automated disaster recovery spanning AWS, on-prem VMware, and OpenStack.
+                </p>
+                <p class="case-stack">
+                  Oracle RAC · FlashGrid · AWS EC2/EBS · MinIO · Zimbra
+                </p>
+              </div>
+              <div class="case-result">
+                <strong>21+</strong>
+                <p>Active Oracle RAC nodes on AWS, without native shared-SAN storage</p>
+                <small>Mail failover cut from 4+ hours of manual recovery to under 3 minutes</small>
+              </div>
+            </div>
+            <details>
+              <summary>Architectural contribution</summary>
+              <ul>
+                <li>
+                  <b>Built a 21+ node Oracle RAC cluster on AWS:</b> used
+                  software-defined clustered storage to emulate shared-SAN semantics
+                  across independently-attached EBS volumes, tuning ASM diskgroups and
+                  kernel I/O settings for sub-2ms latency under peak concurrency.
+                </li>
+                <li>
+                  <b>Automated end-to-end disaster recovery for enterprise mail:</b> built
+                  a single script handling elastic IP reassociation, EBS volume
+                  reattachment, and service recovery, cutting RTO from 4+ hours to under
+                  3 minutes.
+                </li>
+                <li>
+                  <b>Unified storage across three infrastructure environments:</b>
+                  deployed a distributed S3-compatible object storage platform reachable
+                  from AWS, an on-prem VMware data center, and OpenStack behind one API.
+                </li>
+                <li>
+                  <b>Cut recurring storage costs by 40%:</b> automated lifecycle tiering
+                  from hot object storage to AWS S3 Glacier while meeting multi-year
+                  audit retention requirements.
+                </li>
+              </ul>
+            </details>
+            <div class="case-bottom">
+              <a href="case-studies/enterprise-infrastructure/index.html"
+                >View 3 case studies <span aria-hidden="true">↗</span></a
+              >
+            </div>
+          </article>
+          <article class="case" data-tags="platform governance ai-assisted-engineering">
+            <div class="case-grid">
+              <div>
+                <div class="tag">06 / Independent Products &amp; AI-Assisted Engineering</div>
+                <h3>
+                  <a href="case-studies/independent-products/index.html"
+                    >An AI-assisted HRMS tool and a hardened PDF product.<br />Two products built alone, with AI under written rules.</a
+                  >
+                </h3>
+                <p class="ctx">
+                  A simple HR management tool for leave, attendance, shifts, timesheets,
+                  assets, and policy documents, with an assistant that takes plain-language
+                  requests and quotes the handbook with the page. And a PDF product taken
+                  from a broken serverless deployment to a self-audited WebAssembly
+                  engine. Both built with AI coding tools under written working rules.
+                </p>
+                <p class="case-stack">
+                  Next.js · FastAPI · PostgreSQL · WebAssembly · Self-hosted Supabase
+                </p>
+              </div>
+              <div class="case-result">
+                <strong>~93%</strong>
+                <p>Smaller first load on the PDF product (1.47 MB to 106 KB)</p>
+                <small>Nine security findings fixed · policy answers cite document and page</small>
+              </div>
+            </div>
+            <details>
+              <summary>Architectural contribution</summary>
+              <ul>
+                <li>
+                  <b>Built a simple HRMS:</b>
+                  leave with balances and approvals, attendance and shifts, timesheets,
+                  an org chart that refuses reporting loops, assets, and policy documents.
+                </li>
+                <li>
+                  <b>Built an assistant that shows its sources:</b>
+                  plain-language requests run through the API as the signed-in user, and
+                  policy answers quote the company's own documents with the page, without
+                  sending data to an outside AI service.
+                </li>
+                <li>
+                  <b>Kept each company's data separate:</b>
+                  every record is tagged with its company, and tests check that one company
+                  can't read or change another's data.
+                </li>
+                <li>
+                  <b>Put AI-assisted development on a short leash:</b>
+                  an AGENTS.md in each repository, a written handover for every HRMS task,
+                  and security checks that are never switched off to get a change through.
+                </li>
+              </ul>
+            </details>
+            <div class="case-bottom">
+              <a href="case-studies/independent-products/index.html"
+                >View 2 case studies <span aria-hidden="true">↗</span></a
+              >
+            </div>
+          </article>
           </div>
-
-          <!-- Glimpse CTA Band -->
+        </div>
+      </section>
+      <section id="forward-deployed" class="band">
+        <div class="wrap fde-section">
           <div class="fde-glimpse-card">
             <div class="fde-glimpse-content">
-              <h3>See the complete forward-deployed delivery practice</h3>
-              <p>Explore delivery methodology comparisons (Advisory vs Staff Aug vs FDE), the 4-phase lifecycle, internal product proofs, and high-stakes client engagement outcomes.</p>
+              <h3>Working inside customer environments</h3>
+              <p>How these engagements ran: embedded with the customer's team, against live systems, with each claim linked to its written case study.</p>
               <div class="fde-glimpse-tags">
-                <span>Cloud Migration &amp; RVTools</span>
-                <span>MuPDF WASM Document Service</span>
-                <span>Workforce Analytics</span>
-                <span>AI Agent Watchdog</span>
+                <span>Landing zones</span>
+                <span>Database migration</span>
+                <span>Migration assessments</span>
+                <span>Products I run myself</span>
               </div>
             </div>
             <div class="fde-glimpse-action">
-              <a class="button" href="forward-deployed/index.html">Explore the FDE Practice →</a>
+              <a class="button" href="forward-deployed/index.html">See how I work</a>
             </div>
           </div>
-
         </div>
       </section>
       <section class="expertise-deck" aria-labelledby="expertiseTitle">

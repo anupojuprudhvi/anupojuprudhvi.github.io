@@ -16,7 +16,9 @@ export async function verifyPresentation(browser, base) {
     assert.equal(await page.locator('a[href="#background"]').filter({hasText:'View experience'}).count(), 1);
     assert.equal(await page.locator('.role').count(), 3);
     assert.equal(await page.evaluate(() => document.querySelector('#latestTitle').compareDocumentPosition(document.querySelector('.expertise-deck')) & Node.DOCUMENT_POSITION_FOLLOWING), 4);
-    assert.equal(await page.locator(".architecture, #traceBtn, #work").count(), 0);
+    assert.equal(await page.locator(".architecture, #traceBtn").count(), 0);
+    assert.equal(await page.locator("#work .case").count(), 6, "selected work lists every engagement");
+    assert.equal(await page.locator("#work .case h3 a").first().getAttribute("href") !== null, true);
     assert.equal(await page.locator(".expertise-grid a").count(), 7);
     await page.getByRole("button", {name:"Show expertise group 2 of 2"}).click();
     await page.waitForFunction(() => document.getElementById("expertiseCards").scrollLeft > 0);

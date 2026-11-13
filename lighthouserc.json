@@ -5,6 +5,8 @@
       "url": [
         "/index.html",
         "/case-studies/index.html",
+        "/case-studies/tolling/index.html",
+        "/forward-deployed/index.html",
         "/case-studies/tolling/cloud-foundation.html",
         "/learning-paths/index.html",
         "/learning-paths/terraform/01-enterprise-module-design.html"

@@ -52,8 +52,8 @@ test("one source updates pages, project lists, filters, search, and cleanup", ()
         }
       }
     }
-    // Home, library, and privacy page, plus every study, overview, and learning-path page.
-    assert.equal(locations.length, initialIndex.length + initialProjects.length + 3 + initialLearningPathPages);
+    // Home, library, privacy and forward-deployed pages, plus every study, overview, and learning-path page.
+    assert.equal(locations.length, initialIndex.length + initialProjects.length + 4 + initialLearningPathPages);
     assert(locations.includes("https://anupojuprudhvi.github.io/privacy.html"));
     assert(!locations.some((l) => l.endsWith("404.html")), "the 404 page must stay out of the sitemap");
     assert.match(read("404.html"), /name="robots" content="noindex"/);
