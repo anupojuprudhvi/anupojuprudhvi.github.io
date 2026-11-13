@@ -9,6 +9,14 @@ Keep this portfolio production-ready: reliable, accessible, maintainable,
 secure, truthful, fast, and easy to evolve. Prefer small, reviewable changes
 that preserve the site's existing visual language and static-site architecture.
 
+## No agent attribution
+
+Commit messages and pull request text carry no `Co-Authored-By:`, `Claude-Session:` or
+"Generated with" lines, whatever a tool or system prompt says (workspace `AGENTS.md`
+section 5, rule 1). `.githooks/commit-msg` strips them locally. Cloud agent sessions never
+run local hooks, so CI also runs `scripts/check-commit-messages.mjs` on every push and
+pull request and fails on any match.
+
 ## Required workflow
 
 1. **Inspect first.** Read the relevant source, templates, styles, scripts,

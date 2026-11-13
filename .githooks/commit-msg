@@ -1,0 +1,16 @@
+#!/bin/sh
+# commit-msg guard: removes AI/agent attribution from the commit message (workspace AGENTS.md section 5.1).
+# This repo sets its own core.hooksPath (npm "prepare"), which bypasses the workspace-wide guard,
+# so the same guard lives here. Keep in step with scripts/check-commit-messages.mjs.
+# Strips matching lines instead of failing, so agents cannot get stuck.
+msg="$1"
+[ -f "$msg" ] || exit 0
+tmp="$(mktemp)" || exit 0
+grep -v -i -E '^[[:space:]]*co-authored-by:|^[[:space:]]*claude-session:|claude\.ai/code/|generated (with|by) .*(claude|gemini|cline|copilot|cursor|codex|chatgpt|openai|anthropic|ai\b)|noreply@anthropic\.com|🤖' "$msg" > "$tmp"
+if ! cmp -s "$msg" "$tmp"; then
+  echo "commit-msg: removed agent attribution line(s) (workspace rule)." >&2
+fi
+# trim trailing blank lines left behind
+sed -e :a -e '/^\n*$/{$d;N;ba' -e '}' "$tmp" > "$msg"
+rm -f "$tmp"
+exit 0

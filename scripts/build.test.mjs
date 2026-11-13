@@ -229,3 +229,18 @@ test("Docker Playwright image matches the installed playwright package", () => {
   assert(installed, "package-lock.json must list playwright");
   assert.equal(pinned, installed, `Dockerfile pins Playwright ${pinned} but package-lock.json installs ${installed}; update ARG PLAYWRIGHT_VERSION`);
 });
+
+test("commit-message check flags agent attribution and nothing else", async () => {
+  const { findAttribution } = await import("./check-commit-messages.mjs");
+  for (const bad of [
+    "feat: x\n\nCo-Authored-By: Some Agent <noreply@anthropic.com>",
+    "feat: x\n\nClaude-Session: https://claude.ai/code/session_abc",
+    "feat: x\n\n🤖 Generated with Claude Code",
+    "fix: y\n\nco-authored-by: someone <a@b.c>",
+  ]) assert(findAttribution(bad), `should flag: ${JSON.stringify(bad)}`);
+  for (const ok of [
+    "feat(home): restore selected work and remove unsupported claims",
+    "docs: explain why we avoid Claude-style prompts",
+    "fix: handle co-author names in the byline component",
+  ]) assert(!findAttribution(ok), `should allow: ${JSON.stringify(ok)}`);
+});
