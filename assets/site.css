@@ -2712,6 +2712,9 @@ body:not(.deepdive) #work, body:not(.deepdive) #approach, body:not(.deepdive) #b
   color: var(--text-body);
   margin: 0;
 }
+.fde-built-card .fde-card-action {
+  margin-top: 10px;
+}
 .fde-built-facts {
   font: 500 11px ui-monospace, monospace;
   color: var(--text-muted);
