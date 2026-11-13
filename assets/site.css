@@ -337,7 +337,7 @@ nav.topnav {
   text-decoration: none;
 }
 .nav-dropdown-trigger:hover,
-.nav-dropdown:focus-within .nav-dropdown-trigger,
+.nav-dropdown:has(:focus-visible) .nav-dropdown-trigger,
 .nav-dropdown.is-open .nav-dropdown-trigger {
   color: var(--accent);
 }
@@ -349,7 +349,7 @@ nav.topnav {
   opacity: 0.7;
 }
 .nav-dropdown:hover .nav-arrow,
-.nav-dropdown:focus-within .nav-arrow,
+.nav-dropdown:has(:focus-visible) .nav-arrow,
 .nav-dropdown.is-open .nav-arrow {
   transform: rotate(180deg);
   opacity: 1;
@@ -381,7 +381,7 @@ nav.topnav {
   display: block;
 }
 .nav-dropdown:hover .nav-dropdown-menu,
-.nav-dropdown:focus-within .nav-dropdown-menu,
+.nav-dropdown:has(:focus-visible) .nav-dropdown-menu,
 .nav-dropdown.is-open .nav-dropdown-menu {
   display: flex;
 }
@@ -1168,7 +1168,7 @@ footer {
     box-sizing: border-box;
   }
   .nav-dropdown:hover .nav-dropdown-menu,
-  .nav-dropdown:focus-within .nav-dropdown-menu,
+  .nav-dropdown:has(:focus-visible) .nav-dropdown-menu,
   .nav-dropdown.is-open .nav-dropdown-menu {
     transform: none;
   }
@@ -1291,12 +1291,12 @@ footer {
    hides nothing. html.js raises specificity above per-card transitions. */
 html.js .reveal-pending {
   opacity: 0;
-  transform: translateY(18px);
+  transform: translateY(8px);
 }
 html.js .reveal-in {
   transition:
-    opacity 0.6s ease var(--reveal-delay, 0ms),
-    transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms);
+    opacity 0.4s ease-out var(--reveal-delay, 0ms),
+    transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms);
 }
 @media print {
   html.js .reveal-pending {
@@ -1998,7 +1998,7 @@ section.band {
 }
 body { background-image: radial-gradient(ellipse at 90% 0, var(--hero-glow-b), transparent 35%); }
 ::selection { background: var(--accent); color: var(--bg); }
-.topnav { background: color-mix(in srgb,var(--bg) 90%,transparent); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+.topnav { background: color-mix(in srgb,var(--bg) 96%,transparent); border-bottom: 1px solid var(--border); }
 .brand { letter-spacing: -.05em; font-weight: 750; }
 .nav-cta { border-radius:7px; background:var(--accent-soft); }
 .hero { padding: 80px 0 0; overflow:hidden; }
@@ -2204,9 +2204,31 @@ body:not(.deepdive) #work, body:not(.deepdive) #approach, body:not(.deepdive) #b
 
 .expertise-grid.has-tail::after { content: ""; flex: 0 0 var(--expertise-tail); }
 
+/* Two sonar rings travel outward from the centre of the hero rings and fade.
+   Transform and opacity only, so it runs on the compositor. */
+.globe-grid::before,
+.globe-grid::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  opacity: 0;
+  transform: scale(0.12);
+  pointer-events: none;
+}
+
 /* Slow movement for the decorative hero rings. Global motion pause still applies. */
 @media screen and (prefers-reduced-motion: no-preference) {
   .globe-grid { animation: hero-ring-drift 10s ease-in-out infinite alternate; }
+  .globe-grid::before,
+  .globe-grid::after { animation: hero-ring-pulse 8s cubic-bezier(0.25, 0.6, 0.3, 1) infinite; }
+  .globe-grid::after { animation-delay: -4s; }
+}
+@keyframes hero-ring-pulse {
+  0% { transform: scale(0.12); opacity: 0; }
+  12% { opacity: 1; }
+  100% { transform: scale(1); opacity: 0; }
 }
 @keyframes hero-ring-drift {
   from { transform: translate(-16px, 8px) rotate(-20deg) scaleY(.85) scale(.98); opacity: .32; }

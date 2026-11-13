@@ -60,13 +60,16 @@
       const trigger = dropdown.querySelector(".nav-dropdown-trigger");
       if (!trigger) return;
 
-      // Close other dropdowns on hover to prevent overlapping menus
+      // Only one menu at a time: hovering a menu closes any other one, whether it
+      // was opened by a click (.is-open) or is held open by keyboard focus.
       dropdown.addEventListener("mouseenter", () => {
-        document.querySelectorAll(".nav-dropdown.is-open").forEach((other) => {
-          if (other !== dropdown) {
+        document.querySelectorAll(".nav-dropdown").forEach((other) => {
+          if (other === dropdown) return;
+          if (other.classList.contains("is-open")) {
             other.classList.remove("is-open");
             other.querySelector(".nav-dropdown-trigger")?.setAttribute("aria-expanded", "false");
           }
+          if (other.contains(document.activeElement)) document.activeElement.blur();
         });
       });
 
@@ -127,17 +130,17 @@
         setTimeout(() => {
           el.classList.remove("reveal-in");
           el.style.removeProperty("--reveal-delay");
-        }, 700 + delay);
+        }, 450 + delay);
       };
       const observer = new IntersectionObserver(
         (entries) => {
           // Blocks arriving together (a card grid) stagger slightly.
           entries.filter((e) => e.isIntersecting).forEach((e, i) => {
             observer.unobserve(e.target);
-            reveal(e.target, Math.min(i, 3) * 80);
+            reveal(e.target, Math.min(i, 3) * 50);
           });
         },
-        { rootMargin: "0px 0px -8% 0px" },
+        { rootMargin: "0px 0px 6% 0px" },
       );
       blocks.forEach((el) => {
         el.classList.add("reveal-pending");

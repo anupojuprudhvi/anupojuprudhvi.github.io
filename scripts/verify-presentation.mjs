@@ -17,6 +17,21 @@ export async function verifyPresentation(browser, base) {
     assert.equal(await page.locator('.role').count(), 3);
     assert.equal(await page.evaluate(() => document.querySelector('#latestTitle').compareDocumentPosition(document.querySelector('.expertise-deck')) & Node.DOCUMENT_POSITION_FOLLOWING), 4);
     assert.equal(await page.locator(".architecture, #traceBtn").count(), 0);
+    // Nav menus: a clicked menu must close when another is hovered, and a second click closes it.
+    const menus = page.locator(".nav-dropdown-menu");
+    const openMenus = () => menus.evaluateAll(els => els.filter(el => getComputedStyle(el).display !== "none").length);
+    await page.getByRole("link", {name: /^Case studies/}).first().click();
+    assert.equal(await openMenus(), 1, "clicking Case studies opens one menu");
+    await page.getByRole("link", {name: /^Learning paths/}).first().hover();
+    assert.equal(await openMenus(), 1, "hovering Learning paths must not leave Case studies open");
+    await page.mouse.move(5, 600);
+    assert.equal(await openMenus(), 0, "moving away closes every menu");
+    const caseTrigger = page.getByRole("link", {name: /^Case studies/}).first();
+    await caseTrigger.click();
+    await caseTrigger.click();
+    await page.mouse.move(5, 600);
+    assert.equal(await openMenus(), 0, "a second click closes the menu");
+    await page.keyboard.press("Escape");
     assert.equal(await page.locator("#work .case").count(), 6, "selected work lists every engagement");
     assert.equal(await page.locator("#work .case h3 a").first().getAttribute("href") !== null, true);
     assert.equal(await page.locator(".expertise-grid a").count(), 7);
