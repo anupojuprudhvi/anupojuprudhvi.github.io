@@ -60,6 +60,16 @@
       const trigger = dropdown.querySelector(".nav-dropdown-trigger");
       if (!trigger) return;
 
+      // Close other dropdowns on hover to prevent overlapping menus
+      dropdown.addEventListener("mouseenter", () => {
+        document.querySelectorAll(".nav-dropdown.is-open").forEach((other) => {
+          if (other !== dropdown) {
+            other.classList.remove("is-open");
+            other.querySelector(".nav-dropdown-trigger")?.setAttribute("aria-expanded", "false");
+          }
+        });
+      });
+
       trigger.addEventListener("click", (e) => {
         e.preventDefault();
         // Only one dropdown open at a time, so menus never stack on phones.

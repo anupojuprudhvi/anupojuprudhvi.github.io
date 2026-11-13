@@ -371,9 +371,9 @@ nav.topnav {
 .nav-dropdown-menu {
   position: absolute;
   top: calc(100% + 4px);
-  left: 50%;
-  transform: translateX(-50%);
-  min-width: 250px;
+  left: 0;
+  transform: none;
+  min-width: 260px;
   background: var(--bg-raised);
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -2712,7 +2712,59 @@ body:not(.deepdive) #work, body:not(.deepdive) #approach, body:not(.deepdive) #b
   color: var(--text-body);
   margin: 0;
 }
-.fde-built-card .fde-card-action {
+.fde-built-card /* Forward Deployed Engineering Hub & Glimpse */
+.fde-glimpse-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 2rem;
+  background: var(--surface-raised, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+  border-radius: 12px;
+  margin-top: 2rem;
+}
+@media (min-width: 768px) {
+  .fde-glimpse-card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+.fde-glimpse-content h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+}
+.fde-glimpse-content p {
+  margin: 0 0 1rem;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  max-width: 680px;
+}
+.fde-glimpse-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.fde-glimpse-tags span {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(45, 212, 191, 0.1);
+  color: #2dd4bf;
+  border: 1px solid rgba(45, 212, 191, 0.2);
+}
+.fde-glimpse-action {
+  flex-shrink: 0;
+}
+.fde-hub-head {
+  margin-bottom: 24px;
+}
+.fde-hub-stats {
+  margin-top: 24px;
+}
+.fde-card-action {
   margin-top: 10px;
 }
 .fde-built-facts {

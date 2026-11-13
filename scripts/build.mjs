@@ -311,6 +311,21 @@ emit("privacy.html", template(readFileSync(join(ROOT, "content/privacy.html"), "
   headSecurity: HEAD_SECURITY,
 }));
 
+// Forward-deployed engineering hub page
+const fdeSourcePath = join(ROOT, "content/forward-deployed.html");
+if (existsSync(fdeSourcePath)) {
+  emit(
+    "forward-deployed/index.html",
+    template(readFileSync(fdeSourcePath, "utf8"), {
+      siteNav: siteTopNav({ docs, up: "../", active: "forward-deployed" }),
+      siteFooter: siteFooter({ up: "../" }),
+      headSecurity: HEAD_SECURITY,
+    }),
+  );
+  written++;
+  console.log("  hub     ", "forward-deployed/index.html");
+}
+
 // learning paths and playbooks
 const LEARNING_PATHS_DIR = join(ROOT, "content/learning-paths");
 if (existsSync(join(LEARNING_PATHS_DIR, "tracks.json"))) {

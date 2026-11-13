@@ -12,7 +12,7 @@ const ROOT = process.cwd();
 const out = resolve(ROOT, process.argv[2] || "_site");
 
 const FILES = ["index.html", "404.html", "privacy.html", "og-image.png", "robots.txt", "sitemap.xml", "feed.xml"];
-const DIRS = ["assets", "case-studies", "learning-paths"];
+const DIRS = ["assets", "case-studies", "learning-paths", "forward-deployed"];
 // Social-image templates render previews at build time; they are not pages.
 const EXCLUDE = new Set(["assets/og-template.html", "assets/og-page.html"]);
 

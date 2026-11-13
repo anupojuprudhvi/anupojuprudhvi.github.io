@@ -33,7 +33,11 @@ const pages = (dir) =>
 const files = ["index.html", "404.html", "privacy.html"].map((f) =>
   join(ROOT, f),
 )
-  .concat(pages(join(ROOT, "case-studies")), pages(join(ROOT, "learning-paths")));
+  .concat(
+    pages(join(ROOT, "case-studies")),
+    pages(join(ROOT, "learning-paths")),
+    existsSync(join(ROOT, "forward-deployed")) ? pages(join(ROOT, "forward-deployed")) : []
+  );
 
 // href/src attribute values. Absolute URLs (https://, //) are handled by
 // check-links.mjs; mailto:, tel:, #, data: are not file links.

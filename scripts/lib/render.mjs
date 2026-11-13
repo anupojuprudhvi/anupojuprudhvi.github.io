@@ -156,7 +156,7 @@ export function siteFooter({ up = "", home = false } = {}) {
         <nav aria-label="Footer">
           <a href="${a("case-studies/index.html")}">Case studies</a>
           <a href="${a("learning-paths/index.html")}">Learning paths</a>
-          <a href="${page}#forward-deployed">Forward-deployed</a>
+          <a href="${a("forward-deployed/index.html")}">Forward-deployed</a>
           <a href="${page}#approach">Approach</a>
           <a href="${page}#background">Experience</a>
           <a href="${page}#contact">Contact</a>
@@ -183,13 +183,14 @@ export function siteFooter({ up = "", home = false } = {}) {
 export function siteTopNav({
   docs = [],
   up = "",
-  active = "", // "case-studies" | "learning-paths" | "work"
+  active = "", // "case-studies" | "learning-paths" | "forward-deployed" | "work"
   home = false,
 } = {}) {
   const a = (p) => `${up}${p}`;
   const page = home ? "" : a("index.html");
+  const fdeActive = active === "forward-deployed" ? ' class="is-current" aria-current="page"' : "";
   const homeAnchors = `
-          <a href="${page}#forward-deployed">Forward-deployed</a>
+          <a href="${a("forward-deployed/index.html")}"${fdeActive}>Forward-deployed</a>
           <a href="${page}#approach">Approach</a>
           <a href="${page}#background">Experience</a>`;
   return `    <nav class="topnav" aria-label="Main navigation">
