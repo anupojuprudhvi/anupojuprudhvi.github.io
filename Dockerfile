@@ -28,7 +28,7 @@ RUN node scripts/build.mjs
 RUN node scripts/stage.mjs /public
 
 # ----------------------------------------------------------------- site
-FROM nginxinc/nginx-unprivileged:1.30-alpine AS site
+FROM nginxinc/nginx-unprivileged:1.31-alpine AS site
 COPY --chown=root:root docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build --chown=root:root /public /usr/share/nginx/html
 EXPOSE 8080
