@@ -59,7 +59,12 @@
     {
       "name": "Data & storage",
       "tools": [
-        { "name": "Amazon S3", "match": ["AWS S3", "S3 Object Lock", "AWS S3 Glacier"] },
+        { "name": "Amazon S3", "match": ["AWS S3", "S3 Object Lock", "AWS S3 Glacier", "Medallion S3"] },
+        { "name": "Apache Iceberg", "match": ["Iceberg"] },
+        { "name": "AWS Glue", "match": ["Glue", "AWS Glue PySpark"] },
+        { "name": "Amazon Athena", "match": ["Athena"] },
+        { "name": "PySpark", "match": ["Spark"] },
+        { "name": "AWS Step Functions", "match": ["Step Functions"] },
         { "name": "Aurora", "match": ["Aurora PostgreSQL", "Amazon Aurora Global Database"] },
         { "name": "PostgreSQL", "match": ["PostgreSQL 16"] },
         { "name": "Amazon RDS", "match": ["RDS"] },

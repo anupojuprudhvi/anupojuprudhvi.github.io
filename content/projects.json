@@ -37,6 +37,13 @@
     "intro": "Three pieces of an enterprise estate that had to work across public cloud, on-premise virtualization, and a private cloud at once — active-active database clustering without native shared storage, one object-storage API for every environment, and a mail platform that recovers in minutes instead of hours."
   },
   {
+    "id": "data-platform",
+    "name": "Enterprise Data Lakehouse & Analytics Platform",
+    "short": "Data Lakehouse",
+    "motif": "stream",
+    "customOverview": true
+  },
+  {
     "id": "independent-products",
     "name": "Independent Products & AI-Assisted Engineering",
     "short": "Independent products",

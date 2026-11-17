@@ -106,7 +106,7 @@
             <div class="nav-dropdown-menu" role="menu">
               <a href="case-studies/index.html" role="menuitem" class="nav-dropdown-item">
                 <strong>All Case Studies</strong>
-                <small>31 case studies · full library &amp; filters</small>
+                <small>33 case studies · full library &amp; filters</small>
               </a>
               <div class="nav-dropdown-divider" role="separator"></div>
               <a href="case-studies/index.html?filter=project%3Atelecom" role="menuitem" class="nav-dropdown-item">
@@ -128,6 +128,10 @@
               <a href="case-studies/index.html?filter=project%3Aenterprise-infrastructure" role="menuitem" class="nav-dropdown-item">
                 <strong>Enterprise Hybrid Cloud Infrastructure</strong>
                 <small>3 case studies</small>
+              </a>
+              <a href="case-studies/index.html?filter=project%3Adata-platform" role="menuitem" class="nav-dropdown-item">
+                <strong>Enterprise Data Lakehouse &amp; Analytics Platform</strong>
+                <small>2 case studies</small>
               </a>
               <a href="case-studies/index.html?filter=project%3Aindependent-products" role="menuitem" class="nav-dropdown-item">
                 <strong>Independent Products &amp; AI-Assisted Engineering</strong>
@@ -290,7 +294,7 @@
           <div class="section-head">
             <div>
               <p class="eyebrow">Selected work</p>
-              <h2>6 engagements, in depth.</h2>
+              <h2>7 engagements, in depth.</h2>
             </div>
             <p>
               Each engagement opens to its architecture, constraints, and written
@@ -582,10 +586,64 @@
               >
             </div>
           </article>
+          <article class="case" data-tags="data platform finops">
+            <div class="case-grid">
+              <div>
+                <div class="tag">06 / Enterprise Data Lakehouse &amp; Analytics Platform</div>
+                <h3>
+                  <a href="case-studies/data-platform/index.html"
+                    >Enterprise Data Lakehouse.<br />Apache Iceberg on AWS.</a
+                  >
+                </h3>
+                <p class="ctx">
+                  Architected a multi-domain Medallion lakehouse platform for a national
+                  utility infrastructure enterprise. Replaced rigid data pipelines with Apache
+                  Iceberg ACID tables, serverless AWS Glue PySpark transformations, and
+                  automated Step Functions orchestration with domain-isolated encryption.
+                </p>
+                <p class="case-stack">
+                  Apache Iceberg · AWS Glue · Amazon S3 · Step Functions · Athena · KMS · Terraform
+                </p>
+              </div>
+              <div class="case-result">
+                <strong>ACID Lakehouse</strong>
+                <p>Multi-domain data platform</p>
+                <small>100% serverless compute with domain-isolated KMS keys and S3 Bucket Keys</small>
+              </div>
+            </div>
+            <details>
+              <summary>Architectural contribution</summary>
+              <ul>
+                <li>
+                  <b>Medallion architecture on Apache Iceberg:</b> designed a 4-tier lakehouse
+                  (Raw &rarr; Bronze append &rarr; Silver conformed &rarr; Gold marts) with ACID
+                  guarantees, schema evolution, and min/max metadata pruning.
+                </li>
+                <li>
+                  <b>Domain-isolated security model:</b> designed dedicated KMS customer-managed
+                  keys, scoped IAM execution roles, and 5 standardized S3 buckets per domain
+                  preventing cross-domain blast radius.
+                </li>
+                <li>
+                  <b>Serverless FinOps engineering:</b> cut operational costs via S3 Gateway
+                  VPC Endpoints, S3 Bucket Keys (99% KMS request reduction), and dynamic Glue DPU allocation.
+                </li>
+                <li>
+                  <b>Automated audit and quarantine framework:</b> captured corrupted records and
+                  schema mismatches into dedicated audit tables with deterministic error codes.
+                </li>
+              </ul>
+            </details>
+            <div class="case-bottom">
+              <a href="case-studies/data-platform/index.html"
+                >View 2 case studies <span aria-hidden="true">↗</span></a
+              >
+            </div>
+          </article>
           <article class="case" data-tags="platform governance ai-assisted-engineering">
             <div class="case-grid">
               <div>
-                <div class="tag">06 / Independent Products &amp; AI-Assisted Engineering</div>
+                <div class="tag">07 / Independent Products &amp; AI-Assisted Engineering</div>
                 <h3>
                   <a href="case-studies/independent-products/index.html"
                     >An AI-assisted HRMS tool and a hardened PDF product.<br />Two products built alone, with AI under written rules.</a

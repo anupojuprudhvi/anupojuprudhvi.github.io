@@ -6,7 +6,23 @@
     <description>Enterprise cloud architecture case studies and hands-on learning paths covering governance, resilience, Kubernetes, Terraform, migration, and cost optimization.</description>
     <language>en</language>
     <atom:link href="https://anupojuprudhvi.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <lastBuildDate>Thu, 15 Oct 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 28 Oct 2026 00:00:00 GMT</lastBuildDate>
+    <item>
+      <title>Enterprise FinOps and serverless data lakehouse governance</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/data-platform/serverless-etl-orchestration-and-finops.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/data-platform/serverless-etl-orchestration-and-finops.html</guid>
+      <pubDate>Wed, 28 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Slashing lakehouse operational costs through S3 Bucket Keys, VPC Gateway endpoints, Iceberg metadata pruning, and automated compute teardown.</description>
+      <category>Data &amp; storage</category>
+    </item>
+    <item>
+      <title>Building a multi-domain Apache Iceberg lakehouse on AWS</title>
+      <link>https://anupojuprudhvi.github.io/case-studies/data-platform/apache-iceberg-medallion-lakehouse-architecture.html</link>
+      <guid>https://anupojuprudhvi.github.io/case-studies/data-platform/apache-iceberg-medallion-lakehouse-architecture.html</guid>
+      <pubDate>Sat, 24 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Designing an ACID-compliant Medallion lakehouse on AWS with domain-isolated S3 storage, PySpark transformations, and automated audit trails.</description>
+      <category>Data &amp; storage</category>
+    </item>
     <item>
       <title>Before AI: How I Worked Without It</title>
       <link>https://anupojuprudhvi.github.io/learning-paths/my-ai-journey/01-before-ai.html</link>

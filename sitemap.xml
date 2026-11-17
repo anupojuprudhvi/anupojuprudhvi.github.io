@@ -2,6 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://anupojuprudhvi.github.io/</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/data-platform/</loc></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/data-platform/apache-iceberg-medallion-lakehouse-architecture.html</loc><lastmod>2026-10-24</lastmod></url>
+  <url><loc>https://anupojuprudhvi.github.io/case-studies/data-platform/serverless-etl-orchestration-and-finops.html</loc><lastmod>2026-10-28</lastmod></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/</loc></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/hybrid-object-storage-platform.html</loc><lastmod>2026-09-18</lastmod></url>
   <url><loc>https://anupojuprudhvi.github.io/case-studies/enterprise-infrastructure/mail-disaster-recovery-automation.html</loc><lastmod>2026-09-18</lastmod></url>

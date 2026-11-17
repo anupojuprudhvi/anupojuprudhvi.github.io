@@ -812,6 +812,68 @@
     "solution": "A single Bash script that automates the entire failover sequence end to end) instance metadata lookup, elastic IP reassociation, EBS volume attachment with a polling wait loop, filesystem mount (including NVMe device-mapping for newer instance types), and a service restart (plus a tiered S3 backup pipeline and full SPF/DKIM/DMARC DNS hardening."
   },
   {
+    "title": "Building a multi-domain Apache Iceberg lakehouse on AWS",
+    "nav": "Multi-domain Iceberg lakehouse",
+    "summary": "Designing an ACID-compliant Medallion lakehouse on AWS with domain-isolated S3 storage, PySpark transformations, and automated audit trails.",
+    "project": "data-platform",
+    "projectName": "Enterprise Data Lakehouse & Analytics Platform",
+    "projectShort": "Data Lakehouse",
+    "minutes": 4,
+    "layer": "Data & storage",
+    "stack": [
+      "Apache Iceberg",
+      "AWS Glue",
+      "PySpark",
+      "Amazon S3",
+      "AWS Step Functions",
+      "Amazon Athena",
+      "Terraform"
+    ],
+    "tags": [
+      "iceberg",
+      "lakehouse",
+      "data-lake",
+      "glue",
+      "pyspark",
+      "s3",
+      "athena",
+      "step-functions"
+    ],
+    "url": "case-studies/data-platform/apache-iceberg-medallion-lakehouse-architecture.html",
+    "problem": "Enterprise operational data across business domains suffered from schema evolution failures, lack of ACID guarantees on S3, and cross-domain blast radius risks.",
+    "solution": "Implement a 4-tier Medallion architecture on Apache Iceberg with per-domain encryption keys, serverless AWS Glue ETL, and Step Functions DAG orchestration."
+  },
+  {
+    "title": "Enterprise FinOps and serverless data lakehouse governance",
+    "nav": "Lakehouse FinOps & governance",
+    "summary": "Slashing lakehouse operational costs through S3 Bucket Keys, VPC Gateway endpoints, Iceberg metadata pruning, and automated compute teardown.",
+    "project": "data-platform",
+    "projectName": "Enterprise Data Lakehouse & Analytics Platform",
+    "projectShort": "Data Lakehouse",
+    "minutes": 3,
+    "layer": "Data & storage",
+    "stack": [
+      "AWS Glue",
+      "Amazon S3",
+      "AWS Step Functions",
+      "Amazon Athena",
+      "AWS KMS",
+      "Terraform"
+    ],
+    "tags": [
+      "finops",
+      "lakehouse",
+      "cost-optimization",
+      "s3-lifecycle",
+      "athena",
+      "kms",
+      "serverless"
+    ],
+    "url": "case-studies/data-platform/serverless-etl-orchestration-and-finops.html",
+    "problem": "Data platform running costs threatened project viability due to 24/7 idle infrastructure, per-request KMS API charges, and uncompressed full-table scans.",
+    "solution": "Deploy 100% serverless event-driven architecture with zero idle compute, S3 Gateway Endpoints, S3 Bucket Keys, and Athena per-query cost bounds."
+  },
+  {
     "title": "An AI-assisted HRMS tool: leave, attendance, timesheets, and policy answers in one place",
     "nav": "AI-Assisted HRMS",
     "summary": "A simple HR management tool I built with AI coding tools. It covers leave, attendance, shifts, timesheets, the org chart, company assets, and policy documents, and a built-in assistant handles everyday requests in plain language and answers policy questions by quoting the handbook, with the page.",

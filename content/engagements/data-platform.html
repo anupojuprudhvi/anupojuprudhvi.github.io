@@ -1,0 +1,54 @@
+          <article class="case" data-tags="data platform finops">
+            <div class="case-grid">
+              <div>
+                <div class="tag">{{projectNumber}} / {{projectName}}</div>
+                <h3>
+                  <a href="{{engagementUrl}}"
+                    >Enterprise Data Lakehouse.<br />Apache Iceberg on AWS.</a
+                  >
+                </h3>
+                <p class="ctx">
+                  Architected a multi-domain Medallion lakehouse platform for a national
+                  utility infrastructure enterprise. Replaced rigid data pipelines with Apache
+                  Iceberg ACID tables, serverless AWS Glue PySpark transformations, and
+                  automated Step Functions orchestration with domain-isolated encryption.
+                </p>
+                <p class="case-stack">
+                  Apache Iceberg · AWS Glue · Amazon S3 · Step Functions · Athena · KMS · Terraform
+                </p>
+              </div>
+              <div class="case-result">
+                <strong>ACID Lakehouse</strong>
+                <p>Multi-domain data platform</p>
+                <small>100% serverless compute with domain-isolated KMS keys and S3 Bucket Keys</small>
+              </div>
+            </div>
+            <details>
+              <summary>Architectural contribution</summary>
+              <ul>
+                <li>
+                  <b>Medallion architecture on Apache Iceberg:</b> designed a 4-tier lakehouse
+                  (Raw &rarr; Bronze append &rarr; Silver conformed &rarr; Gold marts) with ACID
+                  guarantees, schema evolution, and min/max metadata pruning.
+                </li>
+                <li>
+                  <b>Domain-isolated security model:</b> designed dedicated KMS customer-managed
+                  keys, scoped IAM execution roles, and 5 standardized S3 buckets per domain
+                  preventing cross-domain blast radius.
+                </li>
+                <li>
+                  <b>Serverless FinOps engineering:</b> cut operational costs via S3 Gateway
+                  VPC Endpoints, S3 Bucket Keys (99% KMS request reduction), and dynamic Glue DPU allocation.
+                </li>
+                <li>
+                  <b>Automated audit and quarantine framework:</b> captured corrupted records and
+                  schema mismatches into dedicated audit tables with deterministic error codes.
+                </li>
+              </ul>
+            </details>
+            <div class="case-bottom">
+              <a href="{{engagementUrl}}"
+                >View {{caseStudyLabel}} <span aria-hidden="true">↗</span></a
+              >
+            </div>
+          </article>
