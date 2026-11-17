@@ -86,3 +86,16 @@ The data platform infrastructure was engineered into 4 decoupled Terraform stack
 
 - **Small file compaction:** High-frequency streaming appends generate small Parquet files. Iceberg table maintenance required scheduling periodic maintenance jobs to run `rewrite_data_files` and expire obsolete snapshots, balancing write latency against read query performance.
 - **Glue DPU autoscaling:** Serverless Glue DPUs offer zero idle costs, but require 1–2 minutes of container warm-up latency. For ultra-low latency requirements (<10 seconds), an event-driven Lambda micro-batching tier is the usual complement.
+
+## Outcome · What the design guarantees
+
+- **Consistent reads and writes:** Iceberg snapshots give each query a stable view of a table, so a failed batch no longer leaves readers with partial partitions.
+- **Contained blast radius:** Each domain has its own buckets, catalog namespace, KMS key and execution role, so a mistake in one domain cannot reach another.
+- **Traceable data quality:** Malformed files and rejected rows land in audit locations with error codes instead of silently disappearing or blocking the run.
+- **No idle compute:** Pipelines run only when triggered, so compute spend follows data volume.
+
+## Next steps · Natural extensions
+
+- Add data-quality expectations as code, with failures surfaced in a dashboard rather than only in audit tables.
+- Add column-level access controls and lineage tracking in the governance stack.
+- Automate Iceberg table maintenance with alerts when small-file counts or snapshot age cross a threshold.

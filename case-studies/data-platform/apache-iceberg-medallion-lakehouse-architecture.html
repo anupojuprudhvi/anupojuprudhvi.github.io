@@ -176,7 +176,7 @@
             <div><b>Capability</b><br />Data &amp; storage</div>
             <div><b>Stack</b><br />Apache Iceberg · AWS Glue · PySpark · Amazon S3 · AWS Step Functions · Amazon Athena · Terraform</div>
             <div><b>Tags</b><br />iceberg · lakehouse · data-lake · glue · pyspark · s3 · athena · step-functions</div>
-            <div><b>Reading time</b><br />3 min</div>
+            <div><b>Reading time</b><br />4 min</div>
             <div><b>Published</b><br /><time datetime="2026-10-24">24 Oct 2026</time></div>
           </div>
         </div>
@@ -265,10 +265,33 @@
 </ul>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Outcome</div>
+<h2 id="what-the-design-guarantees">What the design guarantees</h2>
+<ul>
+<li><b>Consistent reads and writes:</b> Iceberg snapshots give each query a stable view of a table, so a failed batch no longer leaves readers with partial partitions.</li>
+<li><b>Contained blast radius:</b> Each domain has its own buckets, catalog namespace, KMS key and execution role, so a mistake in one domain cannot reach another.</li>
+<li><b>Traceable data quality:</b> Malformed files and rejected rows land in audit locations with error codes instead of silently disappearing or blocking the run.</li>
+<li><b>No idle compute:</b> Pipelines run only when triggered, so compute spend follows data volume.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Next steps</div>
+<h2 id="natural-extensions">Natural extensions</h2>
+<ul>
+<li>Add data-quality expectations as code, with failures surfaced in a dashboard rather than only in audit tables.</li>
+<li>Add column-level access controls and lineage tracking in the governance stack.</li>
+<li>Automate Iceberg table maintenance with alerts when small-file counts or snapshot age cross a threshold.</li>
+</ul>
+</div>
+</section>
         </div>
         <aside class="cs-toc" aria-label="On this page">
           <p class="cs-toc-title">On this page</p>
-          <ol><li><a href="#lakehouse-scale-without-cross-domain-data-leakage" title="Lakehouse scale without cross-domain data leakage">Problem</a></li><li><a href="#medallion-architecture-with-apache-iceberg-and-serverless-etl" title="Medallion architecture with Apache Iceberg and serverless ETL">Solution</a></li><li><a href="#domain-isolation-and-decoupled-storage" title="Domain isolation and decoupled storage">Architecture</a></li><li><a href="#dedicated-kms-keys-and-least-privilege-iam" title="Dedicated KMS keys and least-privilege IAM">Security</a></li><li><a href="#modular-terraform-infrastructure" title="Modular Terraform infrastructure">Delivery</a></li><li><a href="#engine-concurrency-vs-file-compaction" title="Engine concurrency vs. file compaction">Trade-offs</a></li></ol>
+          <ol><li><a href="#lakehouse-scale-without-cross-domain-data-leakage" title="Lakehouse scale without cross-domain data leakage">Problem</a></li><li><a href="#medallion-architecture-with-apache-iceberg-and-serverless-etl" title="Medallion architecture with Apache Iceberg and serverless ETL">Solution</a></li><li><a href="#domain-isolation-and-decoupled-storage" title="Domain isolation and decoupled storage">Architecture</a></li><li><a href="#dedicated-kms-keys-and-least-privilege-iam" title="Dedicated KMS keys and least-privilege IAM">Security</a></li><li><a href="#modular-terraform-infrastructure" title="Modular Terraform infrastructure">Delivery</a></li><li><a href="#engine-concurrency-vs-file-compaction" title="Engine concurrency vs. file compaction">Trade-offs</a></li><li><a href="#what-the-design-guarantees" title="What the design guarantees">Outcome</a></li><li><a href="#natural-extensions" title="Natural extensions">Next steps</a></li></ol>
         </aside>
       </div>
       <aside class="next-study wrap">

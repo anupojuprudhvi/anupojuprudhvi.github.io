@@ -176,7 +176,7 @@
             <div><b>Capability</b><br />Data &amp; storage</div>
             <div><b>Stack</b><br />AWS Glue · Amazon S3 · AWS Step Functions · Amazon Athena · AWS KMS · Terraform</div>
             <div><b>Tags</b><br />finops · lakehouse · cost-optimization · s3-lifecycle · athena · kms · serverless</div>
-            <div><b>Reading time</b><br />3 min</div>
+            <div><b>Reading time</b><br />4 min</div>
             <div><b>Published</b><br /><time datetime="2026-10-28">28 Oct 2026</time></div>
           </div>
         </div>
@@ -258,10 +258,32 @@
 </ul>
 </div>
 </section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Outcome</div>
+<h2 id="costs-that-follow-usage">Costs that follow usage</h2>
+<ul>
+<li><b>Spend tracks data volume:</b> With no idle clusters, compute is billed only for job runtime, and a single query cannot scan past the workgroup limit.</li>
+<li><b>Fixed charges removed by design:</b> Gateway Endpoints and Bucket Keys take NAT data-processing and per-request KMS charges out of the bill.</li>
+<li><b>Spend is attributable:</b> Workgroup cost-allocation tags let each domain see its own analytics cost.</li>
+</ul>
+</div>
+</section>
+<section>
+<div class="wrap">
+<div class="section-eyebrow">Next steps</div>
+<h2 id="natural-extensions">Natural extensions</h2>
+<ul>
+<li>Replace the modeled comparison with measured numbers from Cost Explorer and the Athena workgroup metrics once enough billing history exists.</li>
+<li>Add budget alerts per domain tag, with an automated notice when scan volume trends upward.</li>
+<li>Review storage tiering for the Raw and Audit buckets as retention needs become clear.</li>
+</ul>
+</div>
+</section>
         </div>
         <aside class="cs-toc" aria-label="On this page">
           <p class="cs-toc-title">On this page</p>
-          <ol><li><a href="#idle-infrastructure-waste-in-enterprise-data-pipelines" title="Idle infrastructure waste in enterprise data pipelines">Problem</a></li><li><a href="#four-tier-serverless-finops-optimization" title="Four-tier serverless FinOps optimization">Solution</a></li><li><a href="#architectural-mechanisms-that-cut-bills" title="Architectural mechanisms that cut bills">Architecture</a></li><li><a href="#modeled-cost-impact" title="Modeled cost impact">Delivery</a></li><li><a href="#serverless-cold-starts-vs-predictable-performance" title="Serverless cold-starts vs. predictable performance">Trade-offs</a></li></ol>
+          <ol><li><a href="#idle-infrastructure-waste-in-enterprise-data-pipelines" title="Idle infrastructure waste in enterprise data pipelines">Problem</a></li><li><a href="#four-tier-serverless-finops-optimization" title="Four-tier serverless FinOps optimization">Solution</a></li><li><a href="#architectural-mechanisms-that-cut-bills" title="Architectural mechanisms that cut bills">Architecture</a></li><li><a href="#modeled-cost-impact" title="Modeled cost impact">Delivery</a></li><li><a href="#serverless-cold-starts-vs-predictable-performance" title="Serverless cold-starts vs. predictable performance">Trade-offs</a></li><li><a href="#costs-that-follow-usage" title="Costs that follow usage">Outcome</a></li><li><a href="#natural-extensions" title="Natural extensions">Next steps</a></li></ol>
         </aside>
       </div>
       <aside class="next-study wrap">

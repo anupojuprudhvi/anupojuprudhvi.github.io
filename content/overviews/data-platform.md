@@ -1,7 +1,7 @@
 ---
 title: Enterprise Data Lakehouse & Analytics Platform
 summary: An enterprise lakehouse architecture built on Apache Iceberg, AWS Glue, Amazon S3, and AWS Step Functions with domain-level isolation and serverless FinOps governance.
-role: Lead Cloud Platform & Data Lakehouse Architect
+role: Cloud Platform & Data Lakehouse Engineer
 scope: Medallion lakehouse design, multi-domain Terraform stacks, IAM isolation, and FinOps optimization
 ---
 

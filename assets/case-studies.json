@@ -818,7 +818,7 @@
     "project": "data-platform",
     "projectName": "Enterprise Data Lakehouse & Analytics Platform",
     "projectShort": "Data Lakehouse",
-    "minutes": 3,
+    "minutes": 4,
     "layer": "Data & storage",
     "stack": [
       "Apache Iceberg",
@@ -850,7 +850,7 @@
     "project": "data-platform",
     "projectName": "Enterprise Data Lakehouse & Analytics Platform",
     "projectShort": "Data Lakehouse",
-    "minutes": 3,
+    "minutes": 4,
     "layer": "Data & storage",
     "stack": [
       "AWS Glue",
