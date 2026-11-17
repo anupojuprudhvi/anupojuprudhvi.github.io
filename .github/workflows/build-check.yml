@@ -1,12 +1,8 @@
 name: Build check
 
-# Every push and PR is verified. A push to main deploys to GitHub Pages only
-# after every check in the build job passes (repo Settings → Pages → Source
-# must be "GitHub Actions").
+# Manual trigger only (workflow_dispatch). Automatic push/pull_request triggers
+# are disabled so builds and deployments run only on demand.
 on:
-  push:
-    branches: [main]
-  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -146,7 +142,7 @@ jobs:
 
   deploy:
     needs: [build, lighthouse]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       pages: write
