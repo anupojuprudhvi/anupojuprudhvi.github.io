@@ -31,7 +31,7 @@ its `container` job.
 
 ## CI and deployment
 
-`.github/workflows/build-check.yml` runs on every push and pull request:
+`.github/workflows/build-check.yml` (**Build & Deploy**) is triggered manually on demand via `workflow_dispatch`:
 
 - **build** — generated-output drift check, generator and preview-server tests,
   the full browser suite (page screenshots are skipped in CI), then

@@ -1,4 +1,4 @@
-name: Build check
+name: Build & Deploy
 
 # Manual trigger only (workflow_dispatch). Automatic push/pull_request triggers
 # are disabled so builds and deployments run only on demand.
