@@ -31,12 +31,12 @@ export async function verifyPresentation(browser, base) {
     await page.mouse.move(5, 600);
     assert.equal(await openMenus(), 0, "a second click closes the menu");
     await page.keyboard.press("Escape");
-    assert.equal(await page.locator("#work .case").count(), 6, "selected work lists every engagement");
+    assert.equal(await page.locator("#work .case").count(), 7, "selected work lists every engagement");
     assert.equal(await page.locator("#work .case h3 a").first().getAttribute("href") !== null, true);
-    assert.equal(await page.locator(".expertise-grid a").count(), 7);
+    assert.equal(await page.locator(".expertise-grid a").count(), 8);
     assert.equal(await page.locator('.expertise-controls, .expertise-dots, .expertise-play').count(), 0);
     assert.equal(await page.locator('#expertiseCards').evaluate(el => getComputedStyle(el).display), 'grid');
-    assert.equal(await page.locator('#expertiseCards a:visible').count(), 7);
+    assert.equal(await page.locator('#expertiseCards a:visible').count(), 8);
     assert.equal(await page.locator('#statsRow .stat a').count(), 4);
     assert.equal(await page.locator('.hero h1').evaluate(el => getComputedStyle(el).textTransform), 'none');
     const aligned = await page.evaluate(() => Math.abs(document.querySelector(".expertise-heading").getBoundingClientRect().left - document.querySelector(".hero-copy").getBoundingClientRect().left) < 1);
@@ -45,7 +45,7 @@ export async function verifyPresentation(browser, base) {
     assert.equal(await openMenus(), 0, "navigation is closed in the clean presentation capture");
     await page.screenshot({path:'artifacts/redesign-light-desktop.png', fullPage:false});
     await page.setViewportSize({width:390,height:844});
-    assert.equal(await page.locator('#expertiseCards a:visible').count(), 7);
+    assert.equal(await page.locator('#expertiseCards a:visible').count(), 8);
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
     await page.screenshot({path:'artifacts/redesign-light-mobile.png', fullPage:true});
     const contact = page.locator('[data-ask-mode="message"]');

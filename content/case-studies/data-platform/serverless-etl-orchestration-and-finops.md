@@ -8,10 +8,10 @@ layer: Data & storage
 order: 20
 stack: [AWS Glue, Amazon S3, AWS Step Functions, Amazon Athena, AWS KMS, Terraform]
 tags: [finops, lakehouse, cost-optimization, s3-lifecycle, athena, kms, serverless]
-summary: Slashing lakehouse operational costs through S3 Bucket Keys, VPC Gateway endpoints, Iceberg metadata pruning, and automated compute teardown.
+summary: Reducing lakehouse operating costs through S3 Bucket Keys, VPC Gateway endpoints, Iceberg metadata pruning, and automated compute teardown.
 scaffold: false
 problem: Data platform running costs threatened project viability due to 24/7 idle infrastructure, per-request KMS API charges, and uncompressed full-table scans.
-solution: Deploy 100% serverless event-driven architecture with zero idle compute, S3 Gateway Endpoints, S3 Bucket Keys, and Athena per-query cost bounds.
+solution: Deploy a serverless, event-driven architecture with no idle compute, S3 Gateway Endpoints, S3 Bucket Keys, and Athena per-query cost bounds.
 ---
 
 ## Problem · Idle infrastructure waste in enterprise data pipelines
@@ -27,26 +27,20 @@ Enterprise data lake architectures frequently suffer from silent, compounding co
 
 The lakehouse was restructured to guarantee that infrastructure expenditures scale strictly with actual data movement and query consumption:
 
-```mermaid
-flowchart LR
-    classDef waste fill:#ffebee,stroke:#c62828,stroke-width:1.5px,color:#b71c1c;
-    classDef opt fill:#e8f5e9,stroke:#2e7d32,stroke-width:1.5px,color:#1b5e20;
-
-    subgraph Legacy ["Traditional Pattern (Compounding Waste)"]
-        W1["24/7 Spark Cluster<br/>(Idle bill: $300-$1,000/mo)"]
-        W2["NAT Gateway S3 Routing<br/>($0.045/GB bandwidth fees)"]
-        W3["Per-Object KMS Calls<br/>($0.03 per 10k calls)"]
-        W4["Full CSV Table Scans<br/>($5.00/TB unindexed)"]
-    end
-    class Legacy,W1,W2,W3,W4 waste;
-
-    subgraph Serverless ["FinOps Lakehouse Architecture"]
-        O1["Serverless AWS Glue<br/>($0.44/DPU-hr, per-second)"]
-        O2["S3 Gateway Endpoints<br/>(Free internal VPC routing)"]
-        O3["S3 Bucket Keys<br/>(99% KMS request reduction)"]
-        O4["Iceberg Metadata Pruning<br/>(85%+ bytes skipped)"]
-    end
-    class Serverless,O1,O2,O3,O4 opt;
+```flow
+title: Where the lakehouse cost leaks were, and what replaced each one
+paths
+path: Traditional pattern
+Always-on Spark cluster | pays for idle hours
+Routing S3 traffic through a NAT Gateway | $0.045 per GB processed
+Per-object KMS calls | $0.03 per 10,000 requests
+Full CSV scans in Athena | $5.00 per TB scanned
+path: FinOps lakehouse
+* Serverless AWS Glue | $0.44 per DPU-hour, billed per second
+* S3 Gateway Endpoints | no hourly or per-GB charge
+* S3 Bucket Keys | up to 99% fewer KMS requests
+* Iceberg metadata pruning | skips data files on partition and column filters
+end
 ```
 
 ## Architecture · Architectural mechanisms that cut bills
@@ -55,21 +49,23 @@ flowchart LR
 Configured S3 Gateway Endpoints inside VPC route tables across all private subnets. Traffic between AWS Glue ETL jobs and Amazon S3 routes directly over the AWS private network backbone at **$0.00/hour and $0.00/GB data transfer**, completely bypassing NAT Gateways.
 
 ### 2. S3 Bucket Keys for cryptographic cost containment
-Standard AWS KMS encryption invokes the KMS service for every individual S3 object `GET` and `PUT`. By enabling **S3 Bucket Keys**, S3 uses a short-lived bucket-level key to create data keys, reducing KMS cryptographic API calls from $1:1$ down to under $1:1,000$—an immediate 99% reduction in KMS charges during ETL operations.
+Standard AWS KMS encryption invokes the KMS service for every individual S3 object `GET` and `PUT`. By enabling **S3 Bucket Keys**, S3 uses a short-lived bucket-level key to create data keys, cutting KMS requests from one per object operation to a small fraction of that. AWS documents up to a 99% reduction in KMS request costs for this pattern.
 
 ### 3. Apache Iceberg columnar partitioning & file skipping
-Migrating from raw CSV to Apache Iceberg (Parquet columnar format with zstandard compression) achieved:
-- **80% storage footprint reduction** via columnar compression.
-- **Min/max metadata statistics:** Athena inspects Iceberg manifest files and skips 85% to 95% of data files during predicate queries (`WHERE date >= ... AND region = ...`), slashing per-query scan costs.
+Migrating from raw CSV to Apache Iceberg (Parquet columnar format with zstandard compression) changed the cost profile in two ways:
+- **Smaller storage footprint:** Columnar compression typically shrinks delimited text several-fold, which lowers both storage and bytes scanned.
+- **Min/max metadata statistics:** Athena reads Iceberg manifest files and skips data files that cannot match a predicate (`WHERE date >= ... AND region = ...`), so selective queries scan far less data.
 
 ### 4. Per-query spend caps and workgroup governance
 Configured dedicated Amazon Athena workgroups with:
 - **Per-query scan limits:** Any query set to scan more than 20 GB is automatically canceled before incurring runaway costs.
 - **Workgroup-level cost allocation tags:** Enforcing domain attribution on all ad-hoc analytical spend.
 
-## Delivery · Measurable cost reductions
+## Delivery · Modeled cost impact
 
-| Metric / Service | Unoptimized Baseline | FinOps Serverless Architecture |
+The figures below are a modeled comparison for a mid-sized workload, built from the published unit prices above. They show how each design choice changes the bill, not audited production invoices.
+
+| Cost area | Always-on baseline (modeled) | Serverless design (modeled) |
 | :--- | :--- | :--- |
 | **ETL Compute** | $450/month (idle provisioned EMR) | ~$35/month (serverless Glue billed per second) |
 | **VPC Data Transfer** | ~$180/month (NAT Gateway GB processing) | $0.00/month (S3 Gateway Endpoint) |
@@ -78,5 +74,5 @@ Configured dedicated Amazon Athena workgroups with:
 
 ## Trade-offs · Serverless cold-starts vs. predictable performance
 
-- **Glue Job Warm-Up:** Serverless Glue jobs have an initiation delay of 60–90 seconds while worker nodes are allocated. For streaming workloads requiring sub-minute turnaround, serverless Glue was supplemented with lightweight AWS Lambda micro-batching.
-- **Iceberg Table Compaction Overhead:** Small files generated by frequent writes can degrade query performance over time. A lightweight weekly maintenance Glue job was scheduled during off-peak hours to rewrite and compact small files into 128 MB blocks.
+- **Glue job warm-up:** Serverless Glue jobs take roughly a minute or two to allocate workers. For workloads that need sub-minute turnaround, Lambda micro-batching is the usual complement.
+- **Iceberg Table Compaction Overhead:** Small files generated by frequent writes can degrade query performance over time. A weekly maintenance Glue job, scheduled off-peak, rewrites small files into larger blocks (128 MB is a common target).

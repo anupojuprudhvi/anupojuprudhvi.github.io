@@ -1,9 +1,17 @@
 [
   {
+    "slug": "apache-iceberg-medallion-lakehouse-architecture",
+    "project": "data-platform",
+    "tag": "Data engineering",
+    "badge": "Latest",
+    "title": "A multi-domain Apache Iceberg lakehouse on AWS",
+    "desc": "A serverless Medallion pipeline on Iceberg, with per-domain encryption keys and Step Functions orchestration."
+  },
+  {
     "slug": "ai-assisted-hrms-tool",
     "project": "independent-products",
     "tag": "AI-assisted product",
-    "badge": "Latest",
+    "badge": "Recent",
     "title": "An AI-assisted HRMS tool",
     "desc": "Leave, attendance, shifts, timesheets, and policy documents in one simple tool, with an assistant that quotes the handbook and the page."
   },
@@ -14,13 +22,5 @@
     "badge": "8h → 54m",
     "title": "Tolling S3 Migration: 1.48M Objects",
     "desc": "Moving 225 GB spread across 1.48M small objects with s5cmd on an existing in-region EC2 instance, at no extra compute cost."
-  },
-  {
-    "slug": "solo-saas-hardening-ai-agentic-engineering",
-    "project": "independent-products",
-    "tag": "AI-assisted engineering",
-    "badge": "10 Suites",
-    "title": "Hardening a solo-built PDF product with AI",
-    "desc": "How 10 automated test suites and a strict pre-push checklist kept AI-written code in check."
   }
 ]

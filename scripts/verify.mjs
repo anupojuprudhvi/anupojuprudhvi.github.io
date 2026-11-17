@@ -175,7 +175,7 @@ try {
       theme === "dark" ? "light" : "dark",
     );
     if (file === "index.html") {
-      assert.equal(await page.locator("#work .case").count(), 6);
+      assert.equal(await page.locator("#work .case").count(), 7);
       assert.equal(await page.getByRole("link", {name:"Explore case studies", exact:true}).count(), 1);
       await context.grantPermissions(["clipboard-read", "clipboard-write"]);
       await page.getByRole("button", { name: "Copy email address" }).click();

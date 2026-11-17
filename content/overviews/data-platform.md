@@ -15,12 +15,12 @@ An enterprise utility infrastructure provider managed complex field operations, 
 
 ## Solution · Multi-domain Medallion architecture with Apache Iceberg
 
-The platform replaced monolithic, always-on data infrastructure with a modular, 100% serverless Medallion lakehouse architecture built on Apache Iceberg:
+The platform replaced monolithic, always-on data infrastructure with a modular, serverless Medallion lakehouse architecture built on Apache Iceberg:
 
 - **Medallion Pipeline:** A 4-stage pipeline moving data from Raw landing through append-only Bronze Iceberg tables, deduplicated Silver conformed entities with audit tracking, and curated Gold business data marts.
 - **Event-Driven Orchestration:** AWS Step Functions state machines coordinate AWS Glue PySpark jobs with native failure handling, parameter passing, and dead-letter queue notifications.
 - **Domain-Isolated Storage & Encryption:** Standardized 5-bucket per-domain architecture (`raw`, `bronze`, `silver`, `gold`, `audit`) protected by dedicated AWS KMS Customer Managed Keys.
-- **FinOps Controls by Design:** S3 Gateway Endpoints for free internal VPC routing, S3 Bucket Keys reducing KMS request charges by 99%, and query spend caps on Amazon Athena workgroups.
+- **FinOps Controls by Design:** S3 Gateway Endpoints for free internal VPC routing, S3 Bucket Keys cutting KMS request charges (AWS documents up to 99%), and query spend caps on Amazon Athena workgroups.
 
 ## Architecture · Decoupled compute, storage, and governance
 

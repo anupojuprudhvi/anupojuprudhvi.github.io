@@ -24,7 +24,7 @@ An enterprise utility infrastructure provider managed multi-domain operational d
 
 ## Solution · Medallion architecture with Apache Iceberg and serverless ETL
 
-The platform was architected around a 100% serverless Medallion pattern built on Apache Iceberg format:
+The platform was architected around a serverless Medallion pattern built on Apache Iceberg format:
 
 ```
  Landing (Raw) ──► Bronze (Append) ──► Silver (Cleaned & SCD2) ──► Gold (Aggregated Marts)
@@ -37,35 +37,32 @@ The platform was architected around a 100% serverless Medallion pattern built on
 
 ## Architecture · Domain isolation and decoupled storage
 
-```mermaid
-flowchart TD
-    classDef orch fill:#ede7f6,stroke:#512da8,stroke-width:1.5px,color:#311b92;
-    classDef compute fill:#e1f5fe,stroke:#0288d1,stroke-width:1.5px,color:#01579b;
-    classDef storage fill:#fff3e0,stroke:#e65100,stroke-width:1.5px,color:#bf360c;
-    classDef audit fill:#ffebee,stroke:#c62828,stroke-width:1.5px,color:#b71c1c;
-
-    EB["EventBridge Scheduler<br/>(Cron triggers)"] --> SF["AWS Step Functions<br/>(Domain State Machine)"]
-    class EB,SF orch;
-
-    SF --> J1["Glue Job 1: Bronze Append<br/>(landing_to_bronze.py)"]
-    J1 --> J2["Glue Job 2: Silver Cleansing<br/>(bronze_to_silver.py)"]
-    J2 --> J3["Glue Job 3: Gold Aggregations<br/>(silver_to_gold.py)"]
-    class J1,J2,J3 compute;
-
-    J1 -->|Raw extracts| Raw["Raw S3 Bucket<br/>(CSV / JSON)"]
-    J1 -->|Append Iceberg| Bronze["Bronze S3 Bucket<br/>(Append-only Iceberg)"]
-    J2 -->|Cleaned Iceberg| Silver["Silver S3 Bucket<br/>(Deduplicated & Cleaned)"]
-    J3 -->|Business Marts| Gold["Gold S3 Bucket<br/>(Curated Views & Marts)"]
-    class Raw,Bronze,Silver,Gold storage;
-
-    J1 -.->|Corrupted files| Quarantine["Audit S3: Quarantine<br/>(Malformed payloads)"]
-    J2 -.->|Validation failures| Rejects["Audit S3: Rejects Table<br/>(Schema anomalies)"]
-    class Quarantine,Rejects audit;
+```flow
+title: Per-domain pipeline, orchestrated by Step Functions
+EventBridge Scheduler | cron trigger
+-> starts
+* Step Functions | domain state machine with retries, backoff and SNS alerts
+-> runs the Glue jobs in order
+group: AWS Glue PySpark jobs
+Job 1: Bronze append | landing_to_bronze.py
+-> then
+Job 2: Silver cleansing | bronze_to_silver.py
+-> then
+Job 3: Gold aggregation | silver_to_gold.py
+end
+-> reads and writes
+group: Per-domain S3 buckets, encrypted with the domain's KMS key
+Raw | CSV and JSON extracts
+Bronze | append-only Iceberg
+Silver | deduplicated SCD2 Iceberg
+Gold | star-schema marts for Athena and BI
+Audit | quarantined files and rejected rows
+end
 ```
 
 ### Implementation notes
 
-- **Iceberg metadata tree:** Apache Iceberg separates table state into hierarchical metadata files (`Snapshots` $\rightarrow$ `Manifest Lists` $\rightarrow$ `Manifests` $\rightarrow$ `Data Files`). This eliminates expensive S3 `LIST` operations during query execution, reducing query planning time from minutes to milliseconds.
+- **Iceberg metadata tree:** Apache Iceberg separates table state into hierarchical metadata files (`Snapshots` → `Manifest Lists` → `Manifests` → `Data Files`). Engines plan queries from this metadata instead of listing S3 prefixes, so planning stays fast as tables grow.
 - **Partition evolution without rewriting:** Field operations frequently added new regional codes. Iceberg allowed changing table partition schemes without rewriting historical Parquet files or invalidating existing downstream queries.
 - **Controlled bucket layout:** Rather than provisioning separate S3 buckets for every dataset, each business domain received five standardized buckets (`raw`, `bronze`, `silver`, `gold`, `audit`), isolating datasets into dedicated directory prefixes and Glue catalog namespaces.
 - **Serverless state machine orchestration:** AWS Step Functions state machines coordinate multi-job execution with native retry blocks, exponential backoff, and Amazon SNS dead-letter alerting.
@@ -73,8 +70,8 @@ flowchart TD
 ## Security · Dedicated KMS keys and least-privilege IAM
 
 - **Domain-scoped CMKs:** Each business domain is encrypted under a dedicated AWS KMS Customer Managed Key (CMK). IAM execution policies explicitly deny cross-domain key usage, guaranteeing complete isolation at the storage layer.
-- **S3 Bucket Keys enabled:** Activating S3 Bucket Keys reduced KMS API calls by over 98%, eliminating per-request cryptographic charges during multi-terabyte Spark batch operations.
-- **Private network topology:** All ETL tasks execute within private subnets. Traffic to Amazon S3 routes through free S3 Gateway Endpoints, avoiding NAT Gateway hourly fees and data processing surcharges.
+- **Private network topology:** All ETL tasks run in private subnets, and S3 traffic stays on the AWS network through Gateway Endpoints.
+- **Cost controls:** S3 Bucket Keys and the Gateway Endpoints also keep KMS and NAT charges down. The [FinOps and governance study](serverless-etl-orchestration-and-finops.html) covers them.
 
 ## Delivery · Modular Terraform infrastructure
 
@@ -88,4 +85,4 @@ The data platform infrastructure was engineered into 4 decoupled Terraform stack
 ## Trade-offs · Engine concurrency vs. file compaction
 
 - **Small file compaction:** High-frequency streaming appends generate small Parquet files. Iceberg table maintenance required scheduling periodic maintenance jobs to run `rewrite_data_files` and expire obsolete snapshots, balancing write latency against read query performance.
-- **Glue DPU autoscaling:** Serverless Glue DPUs offer zero idle costs, but require 1–2 minutes of container warm-up latency. For ultra-low latency requirements (<10 seconds), an event-driven Lambda micro-batching tier was required.
+- **Glue DPU autoscaling:** Serverless Glue DPUs offer zero idle costs, but require 1–2 minutes of container warm-up latency. For ultra-low latency requirements (<10 seconds), an event-driven Lambda micro-batching tier is the usual complement.

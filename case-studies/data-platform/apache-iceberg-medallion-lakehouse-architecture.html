@@ -13,11 +13,11 @@
     <meta property="og:url" content="https://anupojuprudhvi.github.io/case-studies/data-platform/apache-iceberg-medallion-lakehouse-architecture.html" />
     <meta property="og:title" content="Building a multi-domain Apache Iceberg lakehouse on AWS" />
     <meta property="og:description" content="Designing an ACID-compliant Medallion lakehouse on AWS with domain-isolated S3 storage, PySpark transformations, and automated audit trails." />
-    <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta property="og:image" content="https://anupojuprudhvi.github.io/assets/og/data-platform/apache-iceberg-medallion-lakehouse-architecture.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta name="twitter:image" content="https://anupojuprudhvi.github.io/assets/og/data-platform/apache-iceberg-medallion-lakehouse-architecture.jpg" />
     <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies &amp; Learning Paths" href="https://anupojuprudhvi.github.io/feed.xml" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Case studies","item":"https://anupojuprudhvi.github.io/case-studies/"},{"@type":"ListItem","position":3,"name":"Enterprise Data Lakehouse & Analytics Platform","item":"https://anupojuprudhvi.github.io/case-studies/data-platform/"},{"@type":"ListItem","position":4,"name":"Multi-domain Iceberg lakehouse","item":"https://anupojuprudhvi.github.io/case-studies/data-platform/apache-iceberg-medallion-lakehouse-architecture.html"}]}</script>
@@ -41,7 +41,7 @@
           "name": "Prudhvi Raj Anupoju"
         },
         "url": "https://anupojuprudhvi.github.io/case-studies/data-platform/apache-iceberg-medallion-lakehouse-architecture.html",
-        "image": "https://anupojuprudhvi.github.io/og-image.png",
+        "image": "https://anupojuprudhvi.github.io/assets/og/data-platform/apache-iceberg-medallion-lakehouse-architecture.jpg",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/case-studies/data-platform/apache-iceberg-medallion-lakehouse-architecture.html",
         "datePublished": "2026-10-24",
         "dateModified": "2026-10-24",
@@ -176,7 +176,7 @@
             <div><b>Capability</b><br />Data &amp; storage</div>
             <div><b>Stack</b><br />Apache Iceberg · AWS Glue · PySpark · Amazon S3 · AWS Step Functions · Amazon Athena · Terraform</div>
             <div><b>Tags</b><br />iceberg · lakehouse · data-lake · glue · pyspark · s3 · athena · step-functions</div>
-            <div><b>Reading time</b><br />4 min</div>
+            <div><b>Reading time</b><br />3 min</div>
             <div><b>Published</b><br /><time datetime="2026-10-24">24 Oct 2026</time></div>
           </div>
         </div>
@@ -202,7 +202,7 @@
 <div class="wrap">
 <div class="section-eyebrow">Solution</div>
 <h2 id="medallion-architecture-with-apache-iceberg-and-serverless-etl">Medallion architecture with Apache Iceberg and serverless ETL</h2>
-<p>The platform was architected around a 100% serverless Medallion pattern built on Apache Iceberg format:</p>
+<p>The platform was architected around a serverless Medallion pattern built on Apache Iceberg format:</p>
 <figure class="wide-block"><pre tabindex="0" class="code"><code> Landing (Raw) ──► Bronze (Append) ──► Silver (Cleaned &amp; SCD2) ──► Gold (Aggregated Marts)</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
 <ul>
 <li><b>Raw Layer (Landing):</b> Native CSV/JSON extracts ingested via S3 event notifications with a strict 90-day lifecycle rule.</li>
@@ -216,33 +216,14 @@
 <div class="wrap">
 <div class="section-eyebrow">Architecture</div>
 <h2 id="domain-isolation-and-decoupled-storage">Domain isolation and decoupled storage</h2>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-mermaid">flowchart TD
-    classDef orch fill:#ede7f6,stroke:#512da8,stroke-width:1.5px,color:#311b92;
-    classDef compute fill:#e1f5fe,stroke:#0288d1,stroke-width:1.5px,color:#01579b;
-    classDef storage fill:#fff3e0,stroke:#e65100,stroke-width:1.5px,color:#bf360c;
-    classDef audit fill:#ffebee,stroke:#c62828,stroke-width:1.5px,color:#b71c1c;
-
-    EB[&quot;EventBridge Scheduler&lt;br/&gt;(Cron triggers)&quot;] --&gt; SF[&quot;AWS Step Functions&lt;br/&gt;(Domain State Machine)&quot;]
-    class EB,SF orch;
-
-    SF --&gt; J1[&quot;Glue Job 1: Bronze Append&lt;br/&gt;(landing_to_bronze.py)&quot;]
-    J1 --&gt; J2[&quot;Glue Job 2: Silver Cleansing&lt;br/&gt;(bronze_to_silver.py)&quot;]
-    J2 --&gt; J3[&quot;Glue Job 3: Gold Aggregations&lt;br/&gt;(silver_to_gold.py)&quot;]
-    class J1,J2,J3 compute;
-
-    J1 --&gt;|Raw extracts| Raw[&quot;Raw S3 Bucket&lt;br/&gt;(CSV / JSON)&quot;]
-    J1 --&gt;|Append Iceberg| Bronze[&quot;Bronze S3 Bucket&lt;br/&gt;(Append-only Iceberg)&quot;]
-    J2 --&gt;|Cleaned Iceberg| Silver[&quot;Silver S3 Bucket&lt;br/&gt;(Deduplicated &amp; Cleaned)&quot;]
-    J3 --&gt;|Business Marts| Gold[&quot;Gold S3 Bucket&lt;br/&gt;(Curated Views &amp; Marts)&quot;]
-    class Raw,Bronze,Silver,Gold storage;
-
-    J1 -.-&gt;|Corrupted files| Quarantine[&quot;Audit S3: Quarantine&lt;br/&gt;(Malformed payloads)&quot;]
-    J2 -.-&gt;|Validation failures| Rejects[&quot;Audit S3: Rejects Table&lt;br/&gt;(Schema anomalies)&quot;]
-    class Quarantine,Rejects audit;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<figure class="flow">
+<figcaption class="flow-title">Per-domain pipeline, orchestrated by Step Functions</figcaption>
+<div class="flow-body"><div class="flow-node"><strong>EventBridge Scheduler</strong><span>cron trigger</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">starts</span></div><div class="flow-node is-key"><strong>Step Functions</strong><span>domain state machine with retries, backoff and SNS alerts</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">runs the Glue jobs in order</span></div><div class="flow-group"><span class="flow-group-label">AWS Glue PySpark jobs</span><div class="flow-node"><strong>Job 1: Bronze append</strong><span>landing_to_bronze.py</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">then</span></div><div class="flow-node"><strong>Job 2: Silver cleansing</strong><span>bronze_to_silver.py</span></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">then</span></div><div class="flow-node"><strong>Job 3: Gold aggregation</strong><span>silver_to_gold.py</span></div></div><div class="flow-edge"><span class="flow-arrow" aria-hidden="true"></span><span class="flow-edge-label">reads and writes</span></div><div class="flow-group"><span class="flow-group-label">Per-domain S3 buckets, encrypted with the domain's KMS key</span><div class="flow-node"><strong>Raw</strong><span>CSV and JSON extracts</span></div><div class="flow-node"><strong>Bronze</strong><span>append-only Iceberg</span></div><div class="flow-node"><strong>Silver</strong><span>deduplicated SCD2 Iceberg</span></div><div class="flow-node"><strong>Gold</strong><span>star-schema marts for Athena and BI</span></div><div class="flow-node"><strong>Audit</strong><span>quarantined files and rejected rows</span></div></div></div>
+</figure>
 <details class="implementation-notes">
 <summary>Implementation notes</summary>
 <ul>
-<li><b>Iceberg metadata tree:</b> Apache Iceberg separates table state into hierarchical metadata files (<code>Snapshots</code> $\rightarrow$ <code>Manifest Lists</code> $\rightarrow$ <code>Manifests</code> $\rightarrow$ <code>Data Files</code>). This eliminates expensive S3 <code>LIST</code> operations during query execution, reducing query planning time from minutes to milliseconds.</li>
+<li><b>Iceberg metadata tree:</b> Apache Iceberg separates table state into hierarchical metadata files (<code>Snapshots</code> → <code>Manifest Lists</code> → <code>Manifests</code> → <code>Data Files</code>). Engines plan queries from this metadata instead of listing S3 prefixes, so planning stays fast as tables grow.</li>
 <li><b>Partition evolution without rewriting:</b> Field operations frequently added new regional codes. Iceberg allowed changing table partition schemes without rewriting historical Parquet files or invalidating existing downstream queries.</li>
 <li><b>Controlled bucket layout:</b> Rather than provisioning separate S3 buckets for every dataset, each business domain received five standardized buckets (<code>raw</code>, <code>bronze</code>, <code>silver</code>, <code>gold</code>, <code>audit</code>), isolating datasets into dedicated directory prefixes and Glue catalog namespaces.</li>
 <li><b>Serverless state machine orchestration:</b> AWS Step Functions state machines coordinate multi-job execution with native retry blocks, exponential backoff, and Amazon SNS dead-letter alerting.</li>
@@ -256,8 +237,8 @@
 <h2 id="dedicated-kms-keys-and-least-privilege-iam">Dedicated KMS keys and least-privilege IAM</h2>
 <ul>
 <li><b>Domain-scoped CMKs:</b> Each business domain is encrypted under a dedicated AWS KMS Customer Managed Key (CMK). IAM execution policies explicitly deny cross-domain key usage, guaranteeing complete isolation at the storage layer.</li>
-<li><b>S3 Bucket Keys enabled:</b> Activating S3 Bucket Keys reduced KMS API calls by over 98%, eliminating per-request cryptographic charges during multi-terabyte Spark batch operations.</li>
-<li><b>Private network topology:</b> All ETL tasks execute within private subnets. Traffic to Amazon S3 routes through free S3 Gateway Endpoints, avoiding NAT Gateway hourly fees and data processing surcharges.</li>
+<li><b>Private network topology:</b> All ETL tasks run in private subnets, and S3 traffic stays on the AWS network through Gateway Endpoints.</li>
+<li><b>Cost controls:</b> S3 Bucket Keys and the Gateway Endpoints also keep KMS and NAT charges down. The <a href="serverless-etl-orchestration-and-finops.html">FinOps and governance study</a> covers them.</li>
 </ul>
 </div>
 </section>
@@ -280,7 +261,7 @@
 <h2 id="engine-concurrency-vs-file-compaction">Engine concurrency vs. file compaction</h2>
 <ul>
 <li><b>Small file compaction:</b> High-frequency streaming appends generate small Parquet files. Iceberg table maintenance required scheduling periodic maintenance jobs to run <code>rewrite_data_files</code> and expire obsolete snapshots, balancing write latency against read query performance.</li>
-<li><b>Glue DPU autoscaling:</b> Serverless Glue DPUs offer zero idle costs, but require 1–2 minutes of container warm-up latency. For ultra-low latency requirements (&lt;10 seconds), an event-driven Lambda micro-batching tier was required.</li>
+<li><b>Glue DPU autoscaling:</b> Serverless Glue DPUs offer zero idle costs, but require 1–2 minutes of container warm-up latency. For ultra-low latency requirements (&lt;10 seconds), an event-driven Lambda micro-batching tier is the usual complement.</li>
 </ul>
 </div>
 </section>
@@ -328,6 +309,7 @@
     </footer>
     <script src="../../assets/assistant.js" defer></script>
     <script src="../../assets/diagram-viewer.js" defer></script>
+    <script src="../../assets/flow-player.js" defer></script>
     
   </body>
 </html>

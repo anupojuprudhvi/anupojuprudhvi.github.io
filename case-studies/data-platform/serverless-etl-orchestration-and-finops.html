@@ -7,17 +7,17 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
     <title>Enterprise FinOps and serverless data lakehouse governance</title>
-    <meta name="description" content="Slashing lakehouse operational costs through S3 Bucket Keys, VPC Gateway endpoints, Iceberg metadata pruning, and automated compute teardown." />
+    <meta name="description" content="Reducing lakehouse operating costs through S3 Bucket Keys, VPC Gateway endpoints, Iceberg metadata pruning, and automated compute teardown." />
     <link rel="canonical" href="https://anupojuprudhvi.github.io/case-studies/data-platform/serverless-etl-orchestration-and-finops.html" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="https://anupojuprudhvi.github.io/case-studies/data-platform/serverless-etl-orchestration-and-finops.html" />
     <meta property="og:title" content="Enterprise FinOps and serverless data lakehouse governance" />
-    <meta property="og:description" content="Slashing lakehouse operational costs through S3 Bucket Keys, VPC Gateway endpoints, Iceberg metadata pruning, and automated compute teardown." />
-    <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta property="og:description" content="Reducing lakehouse operating costs through S3 Bucket Keys, VPC Gateway endpoints, Iceberg metadata pruning, and automated compute teardown." />
+    <meta property="og:image" content="https://anupojuprudhvi.github.io/assets/og/data-platform/serverless-etl-orchestration-and-finops.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta name="twitter:image" content="https://anupojuprudhvi.github.io/assets/og/data-platform/serverless-etl-orchestration-and-finops.jpg" />
     <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies &amp; Learning Paths" href="https://anupojuprudhvi.github.io/feed.xml" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Case studies","item":"https://anupojuprudhvi.github.io/case-studies/"},{"@type":"ListItem","position":3,"name":"Enterprise Data Lakehouse & Analytics Platform","item":"https://anupojuprudhvi.github.io/case-studies/data-platform/"},{"@type":"ListItem","position":4,"name":"Lakehouse FinOps & governance","item":"https://anupojuprudhvi.github.io/case-studies/data-platform/serverless-etl-orchestration-and-finops.html"}]}</script>
@@ -26,7 +26,7 @@
         "@context": "https://schema.org",
         "@type": "TechArticle",
         "headline": "Enterprise FinOps and serverless data lakehouse governance",
-        "description": "Slashing lakehouse operational costs through S3 Bucket Keys, VPC Gateway endpoints, Iceberg metadata pruning, and automated compute teardown.",
+        "description": "Reducing lakehouse operating costs through S3 Bucket Keys, VPC Gateway endpoints, Iceberg metadata pruning, and automated compute teardown.",
         "author": {
           "@type": "Person",
           "name": "Prudhvi Raj Anupoju",
@@ -41,7 +41,7 @@
           "name": "Prudhvi Raj Anupoju"
         },
         "url": "https://anupojuprudhvi.github.io/case-studies/data-platform/serverless-etl-orchestration-and-finops.html",
-        "image": "https://anupojuprudhvi.github.io/og-image.png",
+        "image": "https://anupojuprudhvi.github.io/assets/og/data-platform/serverless-etl-orchestration-and-finops.jpg",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/case-studies/data-platform/serverless-etl-orchestration-and-finops.html",
         "datePublished": "2026-10-28",
         "dateModified": "2026-10-28",
@@ -157,7 +157,7 @@
             <div>
               <div class="eyebrow">Enterprise Data Lakehouse &amp; Analytics Platform · FinOps &amp; governance</div>
               <h1>Enterprise FinOps and serverless data lakehouse governance</h1>
-              <p class="sub">Slashing lakehouse operational costs through S3 Bucket Keys, VPC Gateway endpoints, Iceberg metadata pruning, and automated compute teardown.</p>
+              <p class="sub">Reducing lakehouse operating costs through S3 Bucket Keys, VPC Gateway endpoints, Iceberg metadata pruning, and automated compute teardown.</p>
             </div>
             <svg class="motif motif-replication" viewBox="0 0 240 180" width="240" height="180" aria-hidden="true" focusable="false">
     <defs><path id="mR" d="M86 85 H154" /></defs>
@@ -181,7 +181,7 @@
           </div>
         </div>
       </header>
-<section class="case-overview"><div class="wrap"><h2>At a glance</h2><dl><div><dt>Problem</dt><dd>Data platform running costs threatened project viability due to 24/7 idle infrastructure, per-request KMS API charges, and uncompressed full-table scans.</dd></div><div><dt>Approach</dt><dd>Deploy 100% serverless event-driven architecture with zero idle compute, S3 Gateway Endpoints, S3 Bucket Keys, and Athena per-query cost bounds.</dd></div></dl></div></section>
+<section class="case-overview"><div class="wrap"><h2>At a glance</h2><dl><div><dt>Problem</dt><dd>Data platform running costs threatened project viability due to 24/7 idle infrastructure, per-request KMS API charges, and uncompressed full-table scans.</dd></div><div><dt>Approach</dt><dd>Deploy a serverless, event-driven architecture with no idle compute, S3 Gateway Endpoints, S3 Bucket Keys, and Athena per-query cost bounds.</dd></div></dl></div></section>
 
       <div class="cs-body has-toc">
         <div class="cs-main">
@@ -204,25 +204,10 @@
 <div class="section-eyebrow">Solution</div>
 <h2 id="four-tier-serverless-finops-optimization">Four-tier serverless FinOps optimization</h2>
 <p>The lakehouse was restructured to guarantee that infrastructure expenditures scale strictly with actual data movement and query consumption:</p>
-<figure class="wide-block"><pre tabindex="0" class="code"><code class="language-mermaid">flowchart LR
-    classDef waste fill:#ffebee,stroke:#c62828,stroke-width:1.5px,color:#b71c1c;
-    classDef opt fill:#e8f5e9,stroke:#2e7d32,stroke-width:1.5px,color:#1b5e20;
-
-    subgraph Legacy [&quot;Traditional Pattern (Compounding Waste)&quot;]
-        W1[&quot;24/7 Spark Cluster&lt;br/&gt;(Idle bill: $300-$1,000/mo)&quot;]
-        W2[&quot;NAT Gateway S3 Routing&lt;br/&gt;($0.045/GB bandwidth fees)&quot;]
-        W3[&quot;Per-Object KMS Calls&lt;br/&gt;($0.03 per 10k calls)&quot;]
-        W4[&quot;Full CSV Table Scans&lt;br/&gt;($5.00/TB unindexed)&quot;]
-    end
-    class Legacy,W1,W2,W3,W4 waste;
-
-    subgraph Serverless [&quot;FinOps Lakehouse Architecture&quot;]
-        O1[&quot;Serverless AWS Glue&lt;br/&gt;($0.44/DPU-hr, per-second)&quot;]
-        O2[&quot;S3 Gateway Endpoints&lt;br/&gt;(Free internal VPC routing)&quot;]
-        O3[&quot;S3 Bucket Keys&lt;br/&gt;(99% KMS request reduction)&quot;]
-        O4[&quot;Iceberg Metadata Pruning&lt;br/&gt;(85%+ bytes skipped)&quot;]
-    end
-    class Serverless,O1,O2,O3,O4 opt;</code></pre><figcaption class="scroll-hint">Scroll sideways to see the full diagram →</figcaption></figure>
+<figure class="flow">
+<figcaption class="flow-title">Where the lakehouse cost leaks were, and what replaced each one</figcaption>
+<div class="flow-body"><div class="flow-paths"><div class="flow-path"><span class="flow-path-label">Traditional pattern</span><div class="flow-node"><strong>Always-on Spark cluster</strong><span>pays for idle hours</span></div><div class="flow-node"><strong>Routing S3 traffic through a NAT Gateway</strong><span>$0.045 per GB processed</span></div><div class="flow-node"><strong>Per-object KMS calls</strong><span>$0.03 per 10,000 requests</span></div><div class="flow-node"><strong>Full CSV scans in Athena</strong><span>$5.00 per TB scanned</span></div></div><div class="flow-path"><span class="flow-path-label">FinOps lakehouse</span><div class="flow-node is-key"><strong>Serverless AWS Glue</strong><span>$0.44 per DPU-hour, billed per second</span></div><div class="flow-node is-key"><strong>S3 Gateway Endpoints</strong><span>no hourly or per-GB charge</span></div><div class="flow-node is-key"><strong>S3 Bucket Keys</strong><span>up to 99% fewer KMS requests</span></div><div class="flow-node is-key"><strong>Iceberg metadata pruning</strong><span>skips data files on partition and column filters</span></div></div></div></div>
+</figure>
 </div>
 </section>
 <section>
@@ -232,12 +217,12 @@
 <h3>1. Zero-cost VPC routing via S3 Gateway Endpoints</h3>
 <p>Configured S3 Gateway Endpoints inside VPC route tables across all private subnets. Traffic between AWS Glue ETL jobs and Amazon S3 routes directly over the AWS private network backbone at <b>$0.00/hour and $0.00/GB data transfer</b>, completely bypassing NAT Gateways.</p>
 <h3>2. S3 Bucket Keys for cryptographic cost containment</h3>
-<p>Standard AWS KMS encryption invokes the KMS service for every individual S3 object <code>GET</code> and <code>PUT</code>. By enabling <b>S3 Bucket Keys</b>, S3 uses a short-lived bucket-level key to create data keys, reducing KMS cryptographic API calls from $1:1$ down to under $1:1,000$—an immediate 99% reduction in KMS charges during ETL operations.</p>
+<p>Standard AWS KMS encryption invokes the KMS service for every individual S3 object <code>GET</code> and <code>PUT</code>. By enabling <b>S3 Bucket Keys</b>, S3 uses a short-lived bucket-level key to create data keys, cutting KMS requests from one per object operation to a small fraction of that. AWS documents up to a 99% reduction in KMS request costs for this pattern.</p>
 <h3>3. Apache Iceberg columnar partitioning &amp; file skipping</h3>
-<p>Migrating from raw CSV to Apache Iceberg (Parquet columnar format with zstandard compression) achieved:</p>
+<p>Migrating from raw CSV to Apache Iceberg (Parquet columnar format with zstandard compression) changed the cost profile in two ways:</p>
 <ul>
-<li><b>80% storage footprint reduction</b> via columnar compression.</li>
-<li><b>Min/max metadata statistics:</b> Athena inspects Iceberg manifest files and skips 85% to 95% of data files during predicate queries (<code>WHERE date &gt;= ... AND region = ...</code>), slashing per-query scan costs.</li>
+<li><b>Smaller storage footprint:</b> Columnar compression typically shrinks delimited text several-fold, which lowers both storage and bytes scanned.</li>
+<li><b>Min/max metadata statistics:</b> Athena reads Iceberg manifest files and skips data files that cannot match a predicate (<code>WHERE date &gt;= ... AND region = ...</code>), so selective queries scan far less data.</li>
 </ul>
 <h3>4. Per-query spend caps and workgroup governance</h3>
 <p>Configured dedicated Amazon Athena workgroups with:</p>
@@ -250,14 +235,15 @@
 <section>
 <div class="wrap">
 <div class="section-eyebrow">Delivery</div>
-<h2 id="measurable-cost-reductions">Measurable cost reductions</h2>
+<h2 id="modeled-cost-impact">Modeled cost impact</h2>
+<p>The figures below are a modeled comparison for a mid-sized workload, built from the published unit prices above. They show how each design choice changes the bill, not audited production invoices.</p>
 <div class="table-wrap"><table class="md-table">
-<thead><tr><th scope="col">Metric / Service</th><th scope="col">Unoptimized Baseline</th><th scope="col">FinOps Serverless Architecture</th></tr></thead>
+<thead><tr><th scope="col">Cost area</th><th scope="col">Always-on baseline (modeled)</th><th scope="col">Serverless design (modeled)</th></tr></thead>
 <tbody>
-<tr><td data-label="Metric / Service"><b>ETL Compute</b></td><td data-label="Unoptimized Baseline">$450/month (idle provisioned EMR)</td><td data-label="FinOps Serverless Architecture">~$35/month (serverless Glue billed per second)</td></tr>
-<tr><td data-label="Metric / Service"><b>VPC Data Transfer</b></td><td data-label="Unoptimized Baseline">~$180/month (NAT Gateway GB processing)</td><td data-label="FinOps Serverless Architecture">$0.00/month (S3 Gateway Endpoint)</td></tr>
-<tr><td data-label="Metric / Service"><b>KMS API Calls</b></td><td data-label="Unoptimized Baseline">~$120/month (1:1 object decrypts)</td><td data-label="FinOps Serverless Architecture">&lt;$1.50/month (S3 Bucket Keys enabled)</td></tr>
-<tr><td data-label="Metric / Service"><b>Query Scanning (Athena)</b></td><td data-label="Unoptimized Baseline">~$200/month (unindexed CSV scans)</td><td data-label="FinOps Serverless Architecture">~$25/month (Iceberg partition pruning)</td></tr>
+<tr><td data-label="Cost area"><b>ETL Compute</b></td><td data-label="Always-on baseline (modeled)">$450/month (idle provisioned EMR)</td><td data-label="Serverless design (modeled)">~$35/month (serverless Glue billed per second)</td></tr>
+<tr><td data-label="Cost area"><b>VPC Data Transfer</b></td><td data-label="Always-on baseline (modeled)">~$180/month (NAT Gateway GB processing)</td><td data-label="Serverless design (modeled)">$0.00/month (S3 Gateway Endpoint)</td></tr>
+<tr><td data-label="Cost area"><b>KMS API Calls</b></td><td data-label="Always-on baseline (modeled)">~$120/month (1:1 object decrypts)</td><td data-label="Serverless design (modeled)">&lt;$1.50/month (S3 Bucket Keys enabled)</td></tr>
+<tr><td data-label="Cost area"><b>Query Scanning (Athena)</b></td><td data-label="Always-on baseline (modeled)">~$200/month (unindexed CSV scans)</td><td data-label="Serverless design (modeled)">~$25/month (Iceberg partition pruning)</td></tr>
 </tbody>
 </table></div>
 </div>
@@ -267,15 +253,15 @@
 <div class="section-eyebrow">Trade-offs</div>
 <h2 id="serverless-cold-starts-vs-predictable-performance">Serverless cold-starts vs. predictable performance</h2>
 <ul>
-<li><b>Glue Job Warm-Up:</b> Serverless Glue jobs have an initiation delay of 60–90 seconds while worker nodes are allocated. For streaming workloads requiring sub-minute turnaround, serverless Glue was supplemented with lightweight AWS Lambda micro-batching.</li>
-<li><b>Iceberg Table Compaction Overhead:</b> Small files generated by frequent writes can degrade query performance over time. A lightweight weekly maintenance Glue job was scheduled during off-peak hours to rewrite and compact small files into 128 MB blocks.</li>
+<li><b>Glue job warm-up:</b> Serverless Glue jobs take roughly a minute or two to allocate workers. For workloads that need sub-minute turnaround, Lambda micro-batching is the usual complement.</li>
+<li><b>Iceberg Table Compaction Overhead:</b> Small files generated by frequent writes can degrade query performance over time. A weekly maintenance Glue job, scheduled off-peak, rewrites small files into larger blocks (128 MB is a common target).</li>
 </ul>
 </div>
 </section>
         </div>
         <aside class="cs-toc" aria-label="On this page">
           <p class="cs-toc-title">On this page</p>
-          <ol><li><a href="#idle-infrastructure-waste-in-enterprise-data-pipelines" title="Idle infrastructure waste in enterprise data pipelines">Problem</a></li><li><a href="#four-tier-serverless-finops-optimization" title="Four-tier serverless FinOps optimization">Solution</a></li><li><a href="#architectural-mechanisms-that-cut-bills" title="Architectural mechanisms that cut bills">Architecture</a></li><li><a href="#measurable-cost-reductions" title="Measurable cost reductions">Delivery</a></li><li><a href="#serverless-cold-starts-vs-predictable-performance" title="Serverless cold-starts vs. predictable performance">Trade-offs</a></li></ol>
+          <ol><li><a href="#idle-infrastructure-waste-in-enterprise-data-pipelines" title="Idle infrastructure waste in enterprise data pipelines">Problem</a></li><li><a href="#four-tier-serverless-finops-optimization" title="Four-tier serverless FinOps optimization">Solution</a></li><li><a href="#architectural-mechanisms-that-cut-bills" title="Architectural mechanisms that cut bills">Architecture</a></li><li><a href="#modeled-cost-impact" title="Modeled cost impact">Delivery</a></li><li><a href="#serverless-cold-starts-vs-predictable-performance" title="Serverless cold-starts vs. predictable performance">Trade-offs</a></li></ol>
         </aside>
       </div>
       <aside class="next-study wrap">
@@ -315,6 +301,7 @@
     </footer>
     <script src="../../assets/assistant.js" defer></script>
     <script src="../../assets/diagram-viewer.js" defer></script>
+    <script src="../../assets/flow-player.js" defer></script>
     
   </body>
 </html>

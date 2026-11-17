@@ -818,7 +818,7 @@
     "project": "data-platform",
     "projectName": "Enterprise Data Lakehouse & Analytics Platform",
     "projectShort": "Data Lakehouse",
-    "minutes": 4,
+    "minutes": 3,
     "layer": "Data & storage",
     "stack": [
       "Apache Iceberg",
@@ -846,7 +846,7 @@
   {
     "title": "Enterprise FinOps and serverless data lakehouse governance",
     "nav": "Lakehouse FinOps & governance",
-    "summary": "Slashing lakehouse operational costs through S3 Bucket Keys, VPC Gateway endpoints, Iceberg metadata pruning, and automated compute teardown.",
+    "summary": "Reducing lakehouse operating costs through S3 Bucket Keys, VPC Gateway endpoints, Iceberg metadata pruning, and automated compute teardown.",
     "project": "data-platform",
     "projectName": "Enterprise Data Lakehouse & Analytics Platform",
     "projectShort": "Data Lakehouse",
@@ -871,7 +871,7 @@
     ],
     "url": "case-studies/data-platform/serverless-etl-orchestration-and-finops.html",
     "problem": "Data platform running costs threatened project viability due to 24/7 idle infrastructure, per-request KMS API charges, and uncompressed full-table scans.",
-    "solution": "Deploy 100% serverless event-driven architecture with zero idle compute, S3 Gateway Endpoints, S3 Bucket Keys, and Athena per-query cost bounds."
+    "solution": "Deploy a serverless, event-driven architecture with no idle compute, S3 Gateway Endpoints, S3 Bucket Keys, and Athena per-query cost bounds."
   },
   {
     "title": "An AI-assisted HRMS tool: leave, attendance, timesheets, and policy answers in one place",

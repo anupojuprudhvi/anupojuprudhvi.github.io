@@ -13,11 +13,11 @@
     <meta property="og:url" content="https://anupojuprudhvi.github.io/case-studies/data-platform/" />
     <meta property="og:title" content="Enterprise Data Lakehouse &amp; Analytics Platform" />
     <meta property="og:description" content="An enterprise lakehouse architecture built on Apache Iceberg, AWS Glue, Amazon S3, and AWS Step Functions with domain-level isolation and serverless FinOps…" />
-    <meta property="og:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta property="og:image" content="https://anupojuprudhvi.github.io/assets/og/data-platform/index.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://anupojuprudhvi.github.io/og-image.png" />
+    <meta name="twitter:image" content="https://anupojuprudhvi.github.io/assets/og/data-platform/index.jpg" />
     <link rel="alternate" type="application/rss+xml" title="Prudhvi Raj Anupoju — Case Studies &amp; Learning Paths" href="https://anupojuprudhvi.github.io/feed.xml" />
     <link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://anupojuprudhvi.github.io/"},{"@type":"ListItem","position":2,"name":"Case studies","item":"https://anupojuprudhvi.github.io/case-studies/"},{"@type":"ListItem","position":3,"name":"Enterprise Data Lakehouse & Analytics Platform","item":"https://anupojuprudhvi.github.io/case-studies/data-platform/"}]}</script>
@@ -41,7 +41,7 @@
           "name": "Prudhvi Raj Anupoju"
         },
         "url": "https://anupojuprudhvi.github.io/case-studies/data-platform/",
-        "image": "https://anupojuprudhvi.github.io/og-image.png",
+        "image": "https://anupojuprudhvi.github.io/assets/og/data-platform/index.jpg",
         "mainEntityOfPage": "https://anupojuprudhvi.github.io/case-studies/data-platform/",
         "keywords": ""
       }
@@ -202,12 +202,12 @@
 <div class="wrap">
 <div class="section-eyebrow">Solution</div>
 <h2 id="multi-domain-medallion-architecture-with-apache-iceberg">Multi-domain Medallion architecture with Apache Iceberg</h2>
-<p>The platform replaced monolithic, always-on data infrastructure with a modular, 100% serverless Medallion lakehouse architecture built on Apache Iceberg:</p>
+<p>The platform replaced monolithic, always-on data infrastructure with a modular, serverless Medallion lakehouse architecture built on Apache Iceberg:</p>
 <ul>
 <li><b>Medallion Pipeline:</b> A 4-stage pipeline moving data from Raw landing through append-only Bronze Iceberg tables, deduplicated Silver conformed entities with audit tracking, and curated Gold business data marts.</li>
 <li><b>Event-Driven Orchestration:</b> AWS Step Functions state machines coordinate AWS Glue PySpark jobs with native failure handling, parameter passing, and dead-letter queue notifications.</li>
 <li><b>Domain-Isolated Storage &amp; Encryption:</b> Standardized 5-bucket per-domain architecture (<code>raw</code>, <code>bronze</code>, <code>silver</code>, <code>gold</code>, <code>audit</code>) protected by dedicated AWS KMS Customer Managed Keys.</li>
-<li><b>FinOps Controls by Design:</b> S3 Gateway Endpoints for free internal VPC routing, S3 Bucket Keys reducing KMS request charges by 99%, and query spend caps on Amazon Athena workgroups.</li>
+<li><b>FinOps Controls by Design:</b> S3 Gateway Endpoints for free internal VPC routing, S3 Bucket Keys cutting KMS request charges (AWS documents up to 99%), and query spend caps on Amazon Athena workgroups.</li>
 </ul>
 </div>
 </section>
@@ -242,7 +242,7 @@
 <h2 id="architectural-implementation-and-finops-deep-dive">Architectural implementation and FinOps deep-dive</h2>
 <div class="case-study-links">
             <a href="apache-iceberg-medallion-lakehouse-architecture.html"><span>01 / Lakehouse architecture</span><strong>Multi-domain Iceberg lakehouse</strong><small>Designing an ACID-compliant Medallion lakehouse on AWS with domain-isolated S3 storage, PySpark transformations, and automated audit trails. →</small></a>
-            <a href="serverless-etl-orchestration-and-finops.html"><span>02 / FinOps &amp; governance</span><strong>Lakehouse FinOps &amp; governance</strong><small>Slashing lakehouse operational costs through S3 Bucket Keys, VPC Gateway endpoints, Iceberg metadata pruning, and automated compute teardown. →</small></a>
+            <a href="serverless-etl-orchestration-and-finops.html"><span>02 / FinOps &amp; governance</span><strong>Lakehouse FinOps &amp; governance</strong><small>Reducing lakehouse operating costs through S3 Bucket Keys, VPC Gateway endpoints, Iceberg metadata pruning, and automated compute teardown. →</small></a>
 </div>
 </div>
 </section>
